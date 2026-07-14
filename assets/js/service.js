@@ -2,19 +2,6 @@
    service.js
    Renders /service/service.html for whichever service is requested via
    the URL, e.g. service.html?id=aadhaar-card
-
-   Data sources:
-   - /data/services.json    (the service record — see services.module2-sample.json
-     for the full field shape: officialLinks, applyOnline, downloadForm,
-     trackStatus, helpline, documentsRequired, eligibility, fees, timeline,
-     faqs, relatedServices)
-   - /data/categories.json  (to resolve category name for badge/breadcrumb)
-
-   Every section is optional: if a service record omits a field (e.g. no
-   downloadForm yet), that section is simply skipped rather than rendered
-   empty. This lets Module 3+ content go live incrementally.
-
-   Depends on i18n-helper.js and window.SS_ROOT (set by main.js).
    ========================================================================== */
 
 (function () {
@@ -28,17 +15,47 @@
   const relatedSection = document.getElementById("related-section");
   const relatedGrid = document.getElementById("related-grid");
 
+  function getServiceTitle(service) {
+    if (service.name) return t(service.name);
+    const lang = getLang();
+    return (service[lang] && service[lang].title) || (service.en && service.en.title) || "";
+  }
+
+  function getServiceSummary(service) {
+    if (service.shortDescription) return t(service.shortDescription);
+    const lang = getLang();
+    return (service[lang] && service[lang].summary) || (service.en && service.en.summary) || "";
+  }
+
+  function getOfficialLinks(service) {
+    if (service.officialLinks) return service.officialLinks;
+    if (service.official_links) {
+      return service.official_links.map((l) => ({
+        url: l.url,
+        label: { en: l.label_en, hi: l.label_hi },
+      }));
+    }
+    return [];
+  }
+
   if (!serviceId) {
     renderMissing();
     return;
+  }
+
+  function normalizeServices(data) {
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.services)) return data.services;
+    return [];
   }
 
   Promise.all([
     fetch(`${ROOT}data/services.json`).then((r) => r.json()),
     fetch(`${ROOT}data/categories.json`).then((r) => r.json()),
   ])
-    .then(([services, categories]) => {
-      const service = services.find((s) => s.id === serviceId);
+    .then(([servicesRaw, categories]) => {
+      const services = normalizeServices(servicesRaw);
+      const service = services.find((s) => (s.slug || s.id) === serviceId);
       if (!service) {
         renderMissing();
         return;
@@ -53,7 +70,7 @@
     });
 
   function renderAll(service, category, allServices) {
-    document.title = `${t(service.name)} — SarkariSewa Portal`;
+    document.title = `${getServiceTitle(service)} — SarkariSewa Portal`;
     renderBreadcrumb(service, category);
     renderHero(service, category);
     renderSections(service);
@@ -68,19 +85,20 @@
       <a href="${ROOT}index.html">Home</a>
       <span class="sep">/</span>
       ${catCrumb}
-      <span class="current">${t(service.name)}</span>
+      <span class="current">${getServiceTitle(service)}</span>
     `;
   }
 
   function renderHero(service, category) {
+    const officialLinks = getOfficialLinks(service);
     const primaryUrl =
       (service.applyOnline && service.applyOnline.url) ||
-      (service.officialLinks && service.officialLinks[0] && service.officialLinks[0].url) ||
+      (officialLinks[0] && officialLinks[0].url) ||
       "#";
     heroEl.innerHTML = `
       ${category ? `<span class="service-hero__badge">${category.icon || ""} ${t(category.name)}</span>` : ""}
-      <h1 class="service-hero__title">${t(service.name)}</h1>
-      <p class="service-hero__desc">${t(service.shortDescription)}</p>
+      <h1 class="service-hero__title">${getServiceTitle(service)}</h1>
+      <p class="service-hero__desc">${getServiceSummary(service)}</p>
       <div class="service-hero__actions">
         <a class="btn btn--primary" href="${primaryUrl}" target="_blank" rel="noopener">Apply / Official Site</a>
         ${
@@ -122,8 +140,9 @@
   }
 
   function officialLinksBlock(service) {
-    if (!service.officialLinks || !service.officialLinks.length) return "";
-    const items = service.officialLinks
+    const links = getOfficialLinks(service);
+    if (!links.length) return "";
+    const items = links
       .map(
         (link) => `
       <li class="link-list__item">
@@ -177,7 +196,15 @@
   }
 
   function helplineBlock(service) {
-    if (!service.helpline || !service.helpline.length) return "";
+    if (!service.helpline) return "";
+    if (typeof service.helpline === "string") {
+      return section(
+        "☎️",
+        "Helpline",
+        `<ul class="helpline-list"><li class="helpline-card"><div class="helpline-card__phone">${service.helpline}</div></li></ul>`
+      );
+    }
+    if (!service.helpline.length) return "";
     const cards = service.helpline
       .map(
         (h) => `
@@ -245,7 +272,7 @@
       return;
     }
     const related = service.relatedServices
-      .map((id) => allServices.find((s) => s.id === id))
+      .map((id) => allServices.find((s) => (s.slug || s.id) === id))
       .filter(Boolean);
     if (!related.length) {
       relatedSection.hidden = true;
@@ -255,9 +282,9 @@
     relatedGrid.innerHTML = related
       .map(
         (r) => `
-      <a class="service-card" href="${ROOT}service/service.html?id=${r.id}">
-        <div class="service-card__name">${t(r.name)}</div>
-        <div class="service-card__desc">${t(r.shortDescription)}</div>
+      <a class="service-card" href="${ROOT}service/service.html?id=${r.slug || r.id}">
+        <div class="service-card__name">${getServiceTitle(r)}</div>
+        <div class="service-card__desc">${getServiceSummary(r)}</div>
         <div class="service-card__arrow">View details →</div>
       </a>`
       )
