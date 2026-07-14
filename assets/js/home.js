@@ -38,7 +38,7 @@ function renderServices(data, lang) {
         <p>${s[lang].summary}</p>
         <div class="service-links">
           ${links}
-          <a href="${ROOT}service/${s.slug}.html">${dict.read_more || "Read guide"}</a>
+         <a href="${ROOT}service/service.html?id=${s.slug}">${dict.read_more || "Read guide"}</a>
         </div>
       </article>
     `;
