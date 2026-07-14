@@ -14,7 +14,7 @@ function renderCategories(data, lang) {
   const host = document.getElementById("category-grid");
   if (!host) return;
   host.innerHTML = data.categories.map((c) => `
-    <a class="cat-card" href="${ROOT}category/${c.slug}.html">
+    <a class="cat-card" href="${ROOT}category/category.html?cat=${c.slug}">
       <div class="cat-icon" aria-hidden="true">${c.icon}</div>
       <div class="cat-name">${c[lang]}</div>
       <div class="cat-count mono">${c.count} ${lang === "hi" ? "सेवाएँ" : "services"}</div>
