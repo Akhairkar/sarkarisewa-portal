@@ -1,41 +1,4 @@
-/* ==========================================================================
-   category.js
-   Renders /category/category.html for whichever category is requested via
-   the URL, e.g. category.html?cat=identity-documents
-
-   Data sources:
-   - /data/categories.json  (category metadata: name, icon, description)
-   - /data/services.json    (all services; filtered here by .category field)
-
-   Depends on i18n-helper.js (t(), getLang(), onLangChange()) being loaded
-   first, and on main.js having set window.SS_ROOT.
-   ========================================================================== */
-
-(function () {
-  const ROOT = window.SS_ROOT || "";
-  const params = new URLSearchParams(window.location.search);
-  const catSlug = params.get("cat");
-
-  const heroEl = document.getElementById("category-hero");
-  const gridEl = document.getElementById("service-grid");
-  const breadcrumbEl = document.getElementById("breadcrumb");
-
-  if (!catSlug) {
-    renderMissingCategory();
-    return;
-  }
-
-  Promise.all([
-    fetch(`${ROOT}data/categories.json`).then((r) => r.json()),
-    fetch(`${ROOT}data/services.json`).then((r) => r.json()),
-  ])
-    .then(([categories, services]) => {
-      const category = categories.find((c) => c.slug === catSlug);
-      if (!category) {
-        renderMissingCategory();
-        return;
-      }
-      const servicesInCategory = services.filter((s) => s.category === catSlug);
+servicesInCategory = services.filter((s) => s.category === catSlug);
       document.title = `${t(category.name)} — SarkariSewa Portal`;
       renderBreadcrumb(category);
       renderHero(category, servicesInCategory.length);
