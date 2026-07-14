@@ -21,9 +21,24 @@
 **Tech approach:** Plain HTML/CSS/JS, no build step, no framework. Pages are data-driven where possible (categories + service cards render from JSON) so adding new services later mostly means adding JSON, not new code.
 
 
+## ✅ Module 2 — DONE (Category + Service page templates)
+
+**Built (new files, delivered separately for you to merge into the repo):**
+- `/category/category.html` + `/assets/js/category.js` — single reusable category template, not one file per category. Reads the category from the URL query string: `category.html?cat=identity-documents`. Renders hero (icon/title/description/count) + a data-driven grid of service cards, filtered from `services.json` by matching `service.category === cat`.
+- `/service/service.html` + `/assets/js/service.js` — single reusable service template. Reads the service from the URL query string: `service.html?id=aadhaar-card`. Renders the full section set from the plan: Official Links, Apply Online, Download Form, Track Status, Helpline, Documents Required, Eligibility, Fees, Timeline, FAQs (as native `<details>` accordions), Related Services. **Every section is optional** — if a service record omits a field, that section is skipped rather than rendered empty, so Module 3+ content can go live incrementally without breaking the template.
+- `/assets/js/i18n-helper.js` — shared `t()` helper that picks the right string out of bilingual `{ en, hi }` objects, plus `getLang()`/`onLangChange()`.
+- `/assets/css/module2.css` — additive stylesheet (breadcrumb, hero, service-card, section shells, link-list, helpline cards, fees table, timeline, FAQ accordion). Built from the same tokens as `style.css` (primary/saffron/green, Fraunces/Noto Sans/JetBrains Mono, 10px radius, tricolor rule) — link it *after* `style.css`, it does not redeclare `:root` tokens.
+- `/data/categories.json` — new file: 6 categories (slug, icon, bilingual name + description) matching the Module 3–6 category plan.
+- `/data/services.module2-sample.json` — **reference only, do not overwrite your real `services.json`.** Shows the full extended per-service schema (`officialLinks`, `applyOnline`, `downloadForm`, `trackStatus`, `helpline`, `documentsRequired`, `eligibility`, `fees`, `timeline`, `faqs`, `relatedServices`, plus a `category` slug) with 2 fully-worked example services (Aadhaar, PAN). Merge these new fields into your existing 8 services, or add `category` + the new fields incrementally as Module 3 content is written.
+
+**⚠️ Things to verify/wire up when merging:**
+1. **Language toggle key** — `i18n-helper.js` assumes the language toggle saves to `localStorage` under the key `"ss-lang"` (`"en"`/`"hi"`). If Module 1's actual key is named differently, change the one `LANG_KEY` constant at the top of `i18n-helper.js`.
+2. **Live language switching** — for the toggle to re-render category/service pages without a full reload, have the toggle's click handler in `main.js` fire `window.dispatchEvent(new CustomEvent("ss:langchange"))` after updating `localStorage`. If that event isn't wired up yet, the pages still work correctly on page load/refresh — they just won't re-render live until reload.
+3. **`services.json` needs a `category` field** on each existing entry (matching a slug in `categories.json`) for the category page's filtering to find them.
+4. Home page category grid and service cards should be updated to link to `category/category.html?cat=…` and `service/service.html?id=…` respectively, per the new routing convention (query-string based, no per-page static files).
+
 ## 🔜 Next modules (planned order)
 
-- **Module 2:** Category listing page template (`/category/[slug].html`) + individual service page template (`/service/[slug].html`) with the full section set: Official Links, Apply Online, Download Form, Track Status, Helpline, Documents, Eligibility, Fees, Timeline, FAQs, Related Services — built once as a template, then populated per service.
 - **Module 3:** Identity Documents category — full content for all 15 services (Aadhaar, PAN, Voter ID, Passport, Driving Licence, etc.)
 - **Module 4:** Government Schemes category — 20 services
 - **Module 5:** Finance & Tax + Jobs & Education
@@ -64,7 +79,7 @@ Then open `http://localhost:8000/index.html`.
 - GitHub Pages → Settings → Pages → Source: branch + `/ (root)`
 - Path handling for the `/sarkarisewa-portal/` sub-path is already solved — see `SS_ROOT` note above. If a custom domain is added later, `SS_ROOT` can stay `""` everywhere and it'll still work.
 
-## File map (Module 1)
+## File map (through Module 2)
 
 ```
 govservices/
@@ -72,11 +87,17 @@ govservices/
 ├── admin/
 │   ├── login.html
 │   └── dashboard.html
+├── category/
+│   └── category.html
+├── service/
+│   └── service.html
 ├── assets/
-│   ├── css/style.css
-│   └── js/main.js, home.js
+│   ├── css/style.css, module2.css
+│   └── js/main.js, home.js, category.js, service.js, i18n-helper.js
 ├── data/
-│   ├── services.json
+│   ├── services.json                    (needs `category` field added — see Module 2 notes)
+│   ├── services.module2-sample.json     (reference schema, not for production use)
+│   ├── categories.json
 │   └── lang.json
 ├── partials/
 │   ├── header.html

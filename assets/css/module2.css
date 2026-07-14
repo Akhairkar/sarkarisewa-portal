@@ -1,0 +1,266 @@
+/* ==========================================================================
+   Module 2 — Category & Service page components
+   Built on top of the existing design tokens from style.css:
+   --primary #10243E, --saffron #D97F2B, --green #146B3A,
+   --bg #F5F3ED, --surface #FFFFFF, --radius 10px, --shadow-card
+   Link this file AFTER style.css. It only adds new component classes —
+   it does not redeclare :root tokens.
+   ========================================================================== */
+
+/* ---- Breadcrumb ---- */
+.breadcrumb {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--primary) 65%, transparent);
+  margin: 1.25rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+.breadcrumb a { color: var(--primary); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb .sep { opacity: 0.4; }
+.breadcrumb .current { color: var(--saffron); }
+
+/* ---- Tricolor rule (reuse existing signature element, sparingly) ---- */
+.tricolor-rule {
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    var(--saffron) 0%, var(--saffron) 33%,
+    #ffffff 33%, #ffffff 66%,
+    var(--green) 66%, var(--green) 100%
+  );
+  border-radius: 2px;
+}
+
+/* ---- Category hero ---- */
+.category-hero {
+  padding: 2.5rem 0 2rem;
+}
+.category-hero__icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+.category-hero__title {
+  font-family: "Fraunces", serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  color: var(--primary);
+  margin: 0 0 0.5rem;
+}
+.category-hero__desc {
+  max-width: 60ch;
+  color: color-mix(in srgb, var(--primary) 75%, transparent);
+  font-size: 1.05rem;
+}
+.category-hero__count {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  color: var(--green);
+  margin-top: 0.5rem;
+}
+
+/* ---- Service grid (category page) reuses .card pattern from home page ---- */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0 3rem;
+}
+.service-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  border-top: 3px solid transparent;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.service-card:hover,
+.service-card:focus-visible {
+  border-top-color: var(--saffron);
+  transform: translateY(-2px);
+}
+.service-card__name {
+  font-family: "Fraunces", serif;
+  font-size: 1.15rem;
+  color: var(--primary);
+}
+.service-card__desc {
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--primary) 70%, transparent);
+}
+.service-card__arrow {
+  margin-top: auto;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--green);
+}
+
+.empty-state {
+  padding: 2rem 0;
+  color: color-mix(in srgb, var(--primary) 60%, transparent);
+  font-style: italic;
+}
+
+/* ==========================================================================
+   Service page
+   ========================================================================== */
+
+.service-hero {
+  padding: 2rem 0 1.5rem;
+}
+.service-hero__badge {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--green);
+  background: color-mix(in srgb, var(--green) 10%, transparent);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+.service-hero__title {
+  font-family: "Fraunces", serif;
+  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  color: var(--primary);
+  margin: 0 0 0.6rem;
+}
+.service-hero__desc {
+  max-width: 65ch;
+  font-size: 1.1rem;
+  color: color-mix(in srgb, var(--primary) 78%, transparent);
+}
+.service-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.btn--primary { background: var(--saffron); color: #fff; }
+.btn--primary:hover { background: color-mix(in srgb, var(--saffron) 85%, black); }
+.btn--outline { background: transparent; border-color: var(--primary); color: var(--primary); }
+.btn--outline:hover { background: color-mix(in srgb, var(--primary) 8%, transparent); }
+
+/* Section shell used for every content section on the service page */
+.service-section {
+  padding: 1.75rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--primary) 10%, transparent);
+}
+.service-section:last-of-type { border-bottom: none; }
+.service-section__title {
+  font-family: "Fraunces", serif;
+  font-size: 1.4rem;
+  color: var(--primary);
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.service-section__title .icon { font-size: 1.2rem; }
+
+/* Official links / apply / download / track — action-link list */
+.link-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.link-list__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 0.85rem 1rem;
+}
+.link-list__label { font-weight: 500; color: var(--primary); }
+.link-list__go {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+/* Steps (apply online) */
+.steps-list { margin: 0.75rem 0 0; padding-left: 1.4rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.steps-list li { padding-left: 0.2rem; }
+
+/* Helpline */
+.helpline-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 1rem; }
+.helpline-card {
+  background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card);
+  padding: 1rem 1.25rem; min-width: 220px;
+}
+.helpline-card__phone {
+  font-family: "JetBrains Mono", monospace; font-size: 1.15rem; color: var(--saffron); font-weight: 700;
+}
+.helpline-card__hours { font-size: 0.85rem; color: color-mix(in srgb, var(--primary) 65%, transparent); }
+
+/* Documents / eligibility — simple checklist */
+.check-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.check-list li { position: relative; padding-left: 1.5rem; }
+.check-list li::before {
+  content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700;
+}
+
+/* Fees table */
+.fees-table { width: 100%; border-collapse: collapse; }
+.fees-table td { padding: 0.6rem 0; border-bottom: 1px solid color-mix(in srgb, var(--primary) 8%, transparent); }
+.fees-table td:last-child { text-align: right; font-family: "JetBrains Mono", monospace; color: var(--green); }
+
+/* Timeline */
+.timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--saffron); }
+.timeline li { position: relative; padding: 0 0 1.25rem 1.25rem; }
+.timeline li::before {
+  content: ""; position: absolute; left: -6px; top: 4px;
+  width: 10px; height: 10px; border-radius: 50%; background: var(--saffron);
+}
+.timeline li:last-child { padding-bottom: 0; }
+.timeline__duration {
+  display: block; font-family: "JetBrains Mono", monospace; font-size: 0.8rem; color: var(--green); margin-top: 0.15rem;
+}
+
+/* FAQs accordion */
+.faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.faq-item {
+  background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); overflow: hidden;
+}
+.faq-item__q {
+  width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+  padding: 0.9rem 1.1rem; font-weight: 600; color: var(--primary);
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  font-size: 0.98rem;
+}
+.faq-item__q .chev { transition: transform 0.15s ease; color: var(--saffron); }
+.faq-item[open] .faq-item__q .chev { transform: rotate(180deg); }
+.faq-item__a {
+  padding: 0 1.1rem 1rem; color: color-mix(in srgb, var(--primary) 78%, transparent); font-size: 0.92rem;
+}
+
+/* Related services */
+.related-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .link-list__item { flex-direction: column; align-items: flex-start; }
+  .helpline-list { flex-direction: column; }
+}
