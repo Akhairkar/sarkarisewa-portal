@@ -1,0 +1,317 @@
+/* =========================================================
+   SarkariSewa Portal — Design Tokens
+   Palette: deep indigo (trust/authority) + muted saffron &
+   green accents (drawn from the tricolor, used sparingly as
+   a structural signature rather than decoration).
+   Type: Fraunces (display) + Noto Sans / Noto Sans Devanagari
+   (bilingual body) + JetBrains Mono (codes, helpline numbers,
+   fees — anything numeric/official-feeling).
+   ========================================================= */
+
+:root {
+  --color-bg: #F5F3ED;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #EFECE3;
+  --color-primary: #10243E;
+  --color-primary-light: #1C3A5E;
+  --color-accent-saffron: #D97F2B;
+  --color-accent-green: #146B3A;
+  --color-text: #1A1D22;
+  --color-text-muted: #5B6472;
+  --color-border: #E2DFD3;
+  --color-link: #10243E;
+  --shadow-card: 0 1px 2px rgba(16,36,62,0.06), 0 4px 14px rgba(16,36,62,0.06);
+
+  --font-display: "Fraunces", "Tiro Devanagari Hindi", serif;
+  --font-body: "Noto Sans", "Noto Sans Devanagari", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius: 10px;
+  --tricolor: linear-gradient(90deg, var(--color-accent-saffron) 0 33%, #ffffff 33% 66%, var(--color-accent-green) 66% 100%);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --color-bg: #0B1420;
+  --color-surface: #101D2C;
+  --color-surface-alt: #0E1826;
+  --color-primary: #E8EDF3;
+  --color-primary-light: #C7D3E0;
+  --color-accent-saffron: #F2A65A;
+  --color-accent-green: #35B172;
+  --color-text: #E8EDF3;
+  --color-text-muted: #93A1B2;
+  --color-border: #223244;
+  --color-link: #9FC0E8;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.35);
+  --tricolor: linear-gradient(90deg, var(--color-accent-saffron) 0 33%, #1a2635 33% 66%, var(--color-accent-green) 66% 100%);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+img { max-width: 100%; display: block; }
+a { color: var(--color-link); }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--color-primary);
+  margin: 0 0 0.5em;
+}
+[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4 { color: var(--color-primary); }
+
+.mono { font-family: var(--font-mono); letter-spacing: 0.01em; }
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 3px solid var(--color-accent-saffron);
+  outline-offset: 2px;
+}
+
+/* Tricolor rule — signature structural element, used only at
+   major boundaries (below header, above footer) to mark the
+   page as an official-services context, never as decoration. */
+.tricolor-rule {
+  height: 3px;
+  width: 100%;
+  background: var(--tricolor);
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  background: var(--color-primary);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+[data-theme="dark"] .site-header { background: #0E1826; border-bottom: 1px solid var(--color-border); }
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.brand-mark {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--tricolor);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; color: var(--color-primary);
+}
+.brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+.brand-title { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; }
+.brand-tagline { font-size: 0.72rem; opacity: 0.75; }
+
+.main-nav { display: none; flex: 1; }
+.main-nav ul { list-style: none; display: flex; gap: 4px; margin: 0; padding: 0; flex-wrap: wrap; }
+.main-nav a {
+  color: #fff; text-decoration: none; font-size: 0.92rem;
+  padding: 8px 10px; border-radius: 6px; opacity: 0.88;
+}
+.main-nav a:hover, .main-nav a.active { background: rgba(255,255,255,0.12); opacity: 1; }
+
+@media (min-width: 980px) {
+  .main-nav { display: block; }
+  .nav-toggle { display: none; }
+}
+
+.header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+.icon-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  border-radius: 8px;
+  padding: 7px 11px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.icon-btn:hover { background: rgba(255,255,255,0.18); }
+
+.nav-toggle {
+  background: transparent; border: 1px solid rgba(255,255,255,0.3);
+  color: #fff; border-radius: 8px; padding: 7px 10px; cursor: pointer;
+}
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  background: var(--color-primary-light);
+  padding: 10px 0 16px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a { color: #fff; text-decoration: none; padding: 10px 20px; opacity: 0.9; }
+.mobile-nav a:hover { background: rgba(255,255,255,0.08); }
+
+@media (min-width: 980px) { .mobile-nav { display: none !important; } .nav-toggle { display: none; } }
+
+/* ---------- Hero ---------- */
+.hero {
+  background: var(--color-surface);
+  padding: 56px 0 48px;
+  border-bottom: 1px solid var(--color-border);
+}
+.hero-inner { max-width: 760px; }
+.hero h1 { font-size: clamp(1.7rem, 4vw, 2.6rem); }
+.hero p.lead { color: var(--color-text-muted); font-size: 1.05rem; max-width: 620px; }
+
+.search-form {
+  display: flex; gap: 8px; margin-top: 26px; max-width: 560px;
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: 10px; padding: 6px;
+}
+.search-form input {
+  flex: 1; border: none; background: transparent; padding: 10px 12px;
+  font-size: 0.95rem; color: var(--color-text); font-family: var(--font-body);
+}
+.search-form input:focus { outline: none; }
+.search-form button {
+  background: var(--color-primary); color: #fff; border: none;
+  padding: 10px 20px; border-radius: 7px; font-weight: 600; cursor: pointer;
+  font-family: var(--font-body);
+}
+.search-form button:hover { background: var(--color-primary-light); }
+
+.hero-cta { margin-top: 18px; }
+.btn {
+  display: inline-block; padding: 11px 22px; border-radius: 8px;
+  font-weight: 600; text-decoration: none; font-size: 0.95rem;
+  border: 1px solid var(--color-primary);
+}
+.btn-primary { background: var(--color-primary); color: #fff; }
+.btn-primary:hover { background: var(--color-primary-light); }
+.btn-ghost { background: transparent; color: var(--color-primary); }
+[data-theme="dark"] .btn-ghost { color: var(--color-primary); border-color: var(--color-border); }
+
+/* ---------- Sections ---------- */
+.section { padding: 52px 0; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 26px; flex-wrap: wrap; gap: 10px; }
+.section-head h2 { font-size: 1.5rem; margin: 0; }
+
+/* ---------- Category grid ---------- */
+.cat-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.cat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-decoration: none;
+  color: var(--color-text);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease;
+}
+.cat-card::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: var(--tricolor); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.2s ease;
+}
+.cat-card:hover { transform: translateY(-2px); }
+.cat-card:hover::after { transform: scaleX(1); }
+.cat-icon { font-size: 1.6rem; }
+.cat-name { font-family: var(--font-display); font-weight: 600; margin-top: 10px; font-size: 1.05rem; }
+.cat-count { color: var(--color-text-muted); font-size: 0.85rem; margin-top: 4px; font-family: var(--font-mono); }
+
+/* ---------- Service cards (latest / listings) ---------- */
+.service-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.service-card {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-card);
+}
+.service-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.service-card p { color: var(--color-text-muted); font-size: 0.9rem; margin: 0 0 14px; }
+.service-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.service-links a {
+  font-size: 0.78rem; text-decoration: none; padding: 6px 10px;
+  border-radius: 999px; border: 1px solid var(--color-border);
+  color: var(--color-text); background: var(--color-surface-alt);
+}
+.service-links a:hover { border-color: var(--color-accent-saffron); }
+.service-links a.official { border-color: var(--color-accent-green); color: var(--color-accent-green); font-weight: 600; }
+
+/* ---------- Why section ---------- */
+.why-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.why-item { padding: 4px 0; }
+.why-item .num { font-family: var(--font-mono); color: var(--color-accent-saffron); font-size: 0.8rem; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--color-primary);
+  color: rgba(255,255,255,0.85);
+  padding: 44px 0 24px;
+  margin-top: 40px;
+}
+[data-theme="dark"] .site-footer { background: #0E1826; border-top: 1px solid var(--color-border); }
+.footer-grid { display: grid; gap: 32px; grid-template-columns: 2fr 1fr 1fr 1fr; }
+.footer-grid h4 { color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
+.footer-grid p { font-size: 0.88rem; opacity: 0.85; }
+.footer-grid ul { list-style: none; margin: 0; padding: 0; }
+.footer-grid li { margin-bottom: 8px; }
+.footer-grid a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.88rem; }
+.footer-grid a:hover { color: #fff; text-decoration: underline; }
+.footer-bottom { margin-top: 32px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; opacity: 0.7; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+@media (max-width: 760px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---------- Admin (login) ---------- */
+.admin-wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: var(--color-bg); padding: 20px;
+}
+.admin-card {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius); padding: 36px 32px; width: 100%; max-width: 380px;
+  box-shadow: var(--shadow-card);
+}
+.admin-card label { display: block; font-size: 0.85rem; margin: 16px 0 6px; color: var(--color-text-muted); }
+.admin-card input {
+  width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--color-border);
+  background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); font-size: 0.95rem;
+}
+.admin-card button {
+  width: 100%; margin-top: 22px; padding: 11px; border-radius: 8px; border: none;
+  background: var(--color-primary); color: #fff; font-weight: 600; cursor: pointer; font-size: 0.95rem;
+}
+.admin-card button:hover { background: var(--color-primary-light); }
+.admin-error { color: #B3261E; font-size: 0.85rem; margin-top: 12px; display: none; }

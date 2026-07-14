@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Login — SarkariSewa Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Noto+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div class="admin-wrap">
+  <div class="admin-card">
+    <h2 style="margin-bottom:4px;">Staff Login</h2>
+    <p style="color:var(--color-text-muted); font-size:0.88rem; margin-top:0;">Content &amp; admin access for SarkariSewa Portal.</p>
+
+    <form id="login-form">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+
+      <button type="submit">Log in</button>
+      <p class="admin-error" id="login-error">Incorrect username or password.</p>
+    </form>
+
+    <p style="margin-top:22px; font-size:0.8rem; color:var(--color-text-muted);">
+      ⚠ Demo-only login for now — check STATUS.md, "Admin auth" section, before going live.
+    </p>
+    <p style="margin-top:10px;"><a href="../index.html" style="font-size:0.85rem;">← Back to site</a></p>
+  </div>
+</div>
+
+<script>
+/* -------------------------------------------------------------
+   IMPORTANT — read this before deploying:
+   This is a placeholder client-side check ONLY, for wiring up
+   the UI. It is NOT secure: anyone can read this file's source
+   and see the credentials, or bypass it entirely via devtools.
+
+   Before this site goes live with real admin data, replace this
+   with real authentication — e.g. Netlify Identity, a small
+   serverless function + hashed password, or a headless CMS
+   login (Decap CMS, etc). Tracked in STATUS.md.
+------------------------------------------------------------- */
+const DEMO_USER = "admin";
+const DEMO_PASS = "changeme123";
+
+document.getElementById("login-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const u = document.getElementById("username").value.trim();
+  const p = document.getElementById("password").value;
+  const errorEl = document.getElementById("login-error");
+
+  if (u === DEMO_USER && p === DEMO_PASS) {
+    sessionStorage.setItem("ss_admin_demo", "1");
+    window.location.href = "dashboard.html";
+  } else {
+    errorEl.style.display = "block";
+  }
+});
+</script>
+</body>
+</html>

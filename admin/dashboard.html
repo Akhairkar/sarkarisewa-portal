@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — SarkariSewa Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Noto+Sans:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  .dash-wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .dash-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow-card); }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin: 20px 0 30px; }
+  .stat-num { font-family: var(--font-mono); font-size: 1.8rem; color: var(--color-primary); }
+  .stat-label { color: var(--color-text-muted); font-size: 0.85rem; }
+  .logout-btn { background: transparent; border: 1px solid var(--color-border); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: var(--font-body); }
+</style>
+</head>
+<body>
+<div class="dash-wrap">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+    <h1 style="margin:0;">Admin Dashboard</h1>
+    <button class="logout-btn" id="logout">Log out</button>
+  </div>
+
+  <div class="stat-grid">
+    <div class="dash-card"><div class="stat-num">8</div><div class="stat-label">Services published</div></div>
+    <div class="dash-card"><div class="stat-num">7</div><div class="stat-label">Categories</div></div>
+    <div class="dash-card"><div class="stat-num">2</div><div class="stat-label">Languages</div></div>
+    <div class="dash-card"><div class="stat-num">M1</div><div class="stat-label">Current module</div></div>
+  </div>
+
+  <div class="dash-card">
+    <h3>Coming in later modules</h3>
+    <p style="color:var(--color-text-muted); font-size:0.92rem;">This dashboard is currently a static placeholder. Once we build the CMS module, it will let you:</p>
+    <ul style="color:var(--color-text-muted); font-size:0.92rem; line-height:1.8;">
+      <li>Add / edit a service (both languages) without touching code</li>
+      <li>Manage categories</li>
+      <li>Edit official government links per service</li>
+      <li>Publish blog / latest-update posts</li>
+      <li>Real authenticated login (see STATUS.md → "Admin auth")</li>
+    </ul>
+  </div>
+
+  <div class="dash-card">
+    <h3>Right now, content lives in:</h3>
+    <p class="mono" style="font-size:0.85rem; color:var(--color-text-muted);">/data/services.json — all services + official links<br>/data/lang.json — all site text (Hindi + English)</p>
+  </div>
+</div>
+
+<script>
+  if (sessionStorage.getItem("ss_admin_demo") !== "1") {
+    window.location.href = "login.html";
+  }
+  document.getElementById("logout").addEventListener("click", function () {
+    sessionStorage.removeItem("ss_admin_demo");
+    window.location.href = "login.html";
+  });
+</script>
+</body>
+</html>
