@@ -1,21 +1,26 @@
 /* ==========================================================================
-   i18n-helper.js
-   Module 2 scripts (category.js, service.js) need to know the current
-   language ("en" | "hi") to pick the right string out of bilingual JSON
-   objects like { en: "...", hi: "..." }.
+   i18n-helper.js  (FIXED — now matches core.js, the site's real language system)
+   Module 2 scripts (category.js, service.js) and home.js all use this to
+   know the current language ("en" | "hi") and pick the right string out of
+   bilingual JSON objects like { en: "...", hi: "..." }.
 
-   ASSUMPTION TO VERIFY AGAINST MODULE 1:
-   Module 1's STATUS.md says the language toggle is "saved in localStorage".
-   This helper assumes the key is "ss-lang" with value "en" or "hi".
-   If Module 1 actually used a different key name (e.g. "lang", "ss_lang"),
-   change LANG_KEY below to match — that's the only line that needs to change.
+   PREVIOUS BUG: this file used its own invented localStorage key ("ss-lang")
+   and its own invented event ("ss:langchange"), which core.js never wrote to
+   or fired. That meant getLang()/onLangChange() were silently disconnected
+   from the site's real language toggle. Fixed below to match core.js exactly:
+     - real key:   "ss_lang"   (underscore, set by core.js applyLanguage())
+     - real event: "ss:language-changed", fired with e.detail.lang
+     - default:    "hi"        (core.js defaults to Hindi, not English)
    ========================================================================== */
 
-const LANG_KEY = "ss-lang";
+const LANG_KEY = "ss_lang";
 
 function getLang() {
+  // Prefer the live in-memory value core.js maintains (most up to date,
+  // available the instant applyLanguage() runs, even before the event fires).
+  if (window.SITE && SITE.lang) return SITE.lang;
   const stored = localStorage.getItem(LANG_KEY);
-  return stored === "hi" ? "hi" : "en";
+  return stored === "en" ? "en" : "hi";
 }
 
 /**
@@ -32,10 +37,10 @@ function t(bilingualObj) {
 
 /**
  * Re-render callback registration for when the user flips the language
- * toggle without a page reload. Module 1's toggle should call
- * window.dispatchEvent(new CustomEvent("ss:langchange")) after it updates
- * localStorage — wire that up in main.js if it doesn't already exist.
+ * toggle without a page reload. core.js's applyLanguage() already fires
+ * window's "ss:language-changed" CustomEvent with { detail: { lang, dict } }
+ * on the `document` — this just listens for the real thing.
  */
 function onLangChange(callback) {
-  window.addEventListener("ss:langchange", callback);
+  document.addEventListener("ss:language-changed", (e) => callback(e.detail.lang));
 }

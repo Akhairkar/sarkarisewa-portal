@@ -1,44 +1,76 @@
-/* Runs only on index.html. Depends on core.js (main.js) having
-   set up SITE.lang and fired ss:ready / ss:language-changed. */
+/* ==========================================================================
+   home.js  (FIXED)
+   Runs only on index.html. Depends on core.js (main.js) having set up
+   SITE.lang and fired ss:ready / ss:language-changed, AND on i18n-helper.js
+   being loaded before this file (for t() / getLang() / onLangChange()).
+
+   PREVIOUS BUGS FIXED:
+   1. Used to read data.categories straight out of services.json — but
+      Module 2 moved categories into their own file (data/categories.json).
+      data.categories was `undefined`, so `.map()` threw and crashed BOTH
+      renderCategories() and renderServices() (the whole script stopped),
+      which is why the homepage category grid AND latest-services grid were
+      both blank.
+   2. Used the old snake_case service schema (official_links, s[lang].title).
+      services.json now uses the same camelCase schema as category.js /
+      service.js (officialLinks, name:{en,hi}, shortDescription:{en,hi}).
+   3. Category cards used a hardcoded "count" field that goes stale as
+      services are added. Count is now computed live from services.json.
+   ========================================================================== */
 
 let SERVICES_DATA = null;
+let CATEGORIES_DATA = null;
 
-async function loadServicesData() {
-  if (SERVICES_DATA) return SERVICES_DATA;
-  const res = await fetch(ROOT + "data/services.json");
-  SERVICES_DATA = await res.json();
-  return SERVICES_DATA;
+async function loadHomeData() {
+  if (SERVICES_DATA && CATEGORIES_DATA) return;
+  const [servicesRaw, categoriesRaw] = await Promise.all([
+    fetch(ROOT + "data/services.json").then((r) => r.json()),
+    fetch(ROOT + "data/categories.json").then((r) => r.json()),
+  ]);
+  // Support either a plain array or an older { services: [...] } wrapper.
+  SERVICES_DATA = Array.isArray(servicesRaw) ? servicesRaw : (servicesRaw.services || []);
+  CATEGORIES_DATA = Array.isArray(categoriesRaw) ? categoriesRaw : (categoriesRaw.categories || []);
 }
 
-function renderCategories(data, lang) {
+function renderCategories() {
   const host = document.getElementById("category-grid");
   if (!host) return;
-  host.innerHTML = data.categories.map((c) => `
-    <a class="cat-card" href="${ROOT}category/category.html?cat=${c.slug}">
-      <div class="cat-icon" aria-hidden="true">${c.icon}</div>
-      <div class="cat-name">${c[lang]}</div>
-      <div class="cat-count mono">${c.count} ${lang === "hi" ? "सेवाएँ" : "services"}</div>
-    </a>
-  `).join("");
+  const lang = getLang();
+  host.innerHTML = CATEGORIES_DATA.map((c) => {
+    const count = SERVICES_DATA.filter((s) => s.category === c.slug).length;
+    return `
+      <a class="cat-card" href="${ROOT}category/category.html?cat=${c.slug}">
+        <div class="cat-icon" aria-hidden="true">${c.icon}</div>
+        <div class="cat-name">${t(c.name)}</div>
+        <div class="cat-count mono">${count} ${lang === "hi" ? "सेवाएँ" : "services"}</div>
+      </a>
+    `;
+  }).join("");
 }
 
-function renderServices(data, lang) {
+function renderServices() {
   const host = document.getElementById("latest-grid");
   if (!host) return;
+  const lang = getLang();
   const dict = (window.SITE && SITE.langData && SITE.langData[lang]) || {};
-  host.innerHTML = data.services.map((s) => {
-    const links = s.official_links.slice(0, 3).map((l, i) => `
+
+  // "Latest" = last 6 entries in services.json (new services get appended
+  // to the end of the array as modules are added).
+  const latest = SERVICES_DATA.slice(-6).reverse();
+
+  host.innerHTML = latest.map((s) => {
+    const links = (s.officialLinks || []).slice(0, 3).map((l, i) => `
       <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="${i === 0 ? "official" : ""}">
-        ${lang === "hi" ? l.label_hi : l.label_en}
+        ${t(l.label)}
       </a>
     `).join("");
     return `
       <article class="service-card">
-        <h3>${s[lang].title}</h3>
-        <p>${s[lang].summary}</p>
+        <h3>${t(s.name)}</h3>
+        <p>${t(s.shortDescription)}</p>
         <div class="service-links">
           ${links}
-         <a href="${ROOT}service/service.html?id=${s.slug}">${dict.read_more || "Read guide"}</a>
+          <a href="${ROOT}service/service.html?id=${s.slug || s.id}">${dict.read_more || (lang === "hi" ? "गाइड पढ़ें" : "Read guide")}</a>
         </div>
       </article>
     `;
@@ -46,14 +78,17 @@ function renderServices(data, lang) {
 }
 
 async function renderHome() {
-  const data = await loadServicesData();
-  renderCategories(data, SITE.lang);
-  renderServices(data, SITE.lang);
+  await loadHomeData();
+  renderCategories();
+  renderServices();
 }
 
 document.addEventListener("ss:ready", renderHome);
-document.addEventListener("ss:language-changed", (e) => {
-  if (!SERVICES_DATA) return;
-  renderCategories(SERVICES_DATA, e.detail.lang);
-  renderServices(SERVICES_DATA, e.detail.lang);
+
+// Re-render on language toggle (onLangChange comes from i18n-helper.js and
+// is now correctly wired to core.js's real "ss:language-changed" event).
+onLangChange(() => {
+  if (!SERVICES_DATA || !CATEGORIES_DATA) return;
+  renderCategories();
+  renderServices();
 });
