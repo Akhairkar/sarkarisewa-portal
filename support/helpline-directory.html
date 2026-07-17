@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helpline Directory — SarkariSewa Portal</title>
+  <meta name="description" content="Official helpline numbers for every Indian government service on SarkariSewa Portal, searchable in one table." />
+  <link rel="canonical" href="https://akhairkar.github.io/sarkarisewa-portal/support/helpline-directory.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/module2.css" />
+  <link rel="stylesheet" href="../assets/css/module7.css" />
+</head>
+<body>
+  <script>window.SS_ROOT = "../";</script>
+
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><a href="index.html" data-i18n="support_title">Support</a><span class="sep">/</span><span class="current" data-i18n="helpline_dir_title">Helpline Directory</span>
+    </nav>
+
+    <div class="tricolor-rule" aria-hidden="true"></div>
+
+    <section class="page-hero">
+      <h1 class="page-hero__title" data-i18n="helpline_dir_title">Helpline Directory</h1>
+      <p class="page-updated" data-i18n="helpline_dir_updated">Last updated: July 2026</p>
+      <p class="page-hero__desc" data-i18n="helpline_dir_intro">Official helpline numbers for every service on this portal, in one searchable table. Numbers are sourced from official government pages and may change — always confirm on the linked service page before calling.</p>
+    </section>
+
+    <div class="helpline-toolbar">
+      <input
+        type="text"
+        id="helpline-search"
+        class="helpline-search"
+        data-i18n-placeholder="helpline_dir_search_placeholder"
+        placeholder="Search a service, e.g. Aadhaar, PAN, PM Kisan..."
+        autocomplete="off"
+      />
+      <select id="helpline-filter" class="helpline-filter">
+        <option value="" data-i18n="helpline_dir_filter_all">All categories</option>
+      </select>
+    </div>
+
+    <p class="helpline-count" id="helpline-count"></p>
+
+    <div class="helpline-table-wrap">
+      <table class="helpline-table">
+        <thead>
+          <tr>
+            <th data-i18n="helpline_dir_col_service">Service</th>
+            <th data-i18n="helpline_dir_col_category">Category</th>
+            <th data-i18n="helpline_dir_col_number">Helpline</th>
+          </tr>
+        </thead>
+        <tbody id="helpline-tbody"></tbody>
+      </table>
+      <p class="empty-state" id="helpline-empty" style="padding:20px;" hidden data-i18n="helpline_dir_empty">No services match your search.</p>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/i18n-helper.js"></script>
+  <script src="../assets/js/support.js"></script>
+</body>
+</html>

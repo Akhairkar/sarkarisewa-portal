@@ -67,13 +67,35 @@
 3. Helpline numbers, fees, and processing-day estimates should be spot-checked before going fully live — these change periodically via government notification.
 4. No HTML/JS changes were needed — Module 2's optional-section rendering means this is a pure data merge into `services.json`.
 
-## 🔜 Next modules (planned order)
+## ✅ Module 4 — DONE (Government Schemes category — 20 services)
 
-- **Module 4:** Government Schemes category — 20 services
-- **Module 5:** Finance & Tax + Jobs & Education
-- **Module 6:** Utilities + Health
-- **Module 7:** Support pages (state-wise services, helpline directory, RTI guide, etc.) + legal pages (Privacy Policy, Disclaimer, Terms) — required for AdSense approval
-- **Module 8:** Search page, sitemap.html (HTML + XML), robots.txt, schema markup pass, meta description pass on every page
+**Built (see `MODULE4-NOTES.md` for merge steps):** full replacement of `data/services.json` — 20 Government Schemes services added (PM Awas Yojana, PM Ujjwala Yojana, PM Jan Dhan Yojana, and others), combined total 38 services at this point.
+
+## ✅ Module 5 — DONE (Finance & Tax + Jobs & Education — 22 services)
+
+**Built (see `MODULE5-NOTES.md` for merge steps):** full replacement of `data/services.json` — Finance & Tax completed to 10 services, Jobs & Education completed to 15 services, combined total 60 services at this point.
+
+## ✅ Module 6 — DONE (Utilities + Health — 20 services)
+
+**Built (see `MODULE6-NOTES.md` for merge steps):** full replacement of `data/services.json` — 10 Utilities + 10 Health services added. **All 6 planned categories now complete, 80 services total.**
+
+## ✅ Module 7 — DONE (Support pages + Legal pages)
+
+**Built (new files, delivered separately — see `MODULE7-NOTES.md` for merge steps):**
+
+- `privacy-policy.html` — was already partially built; finished by adding its missing `assets/css/module7.css` styling and its missing `lang.json` translation keys (page was unstyled and non-bilingual before).
+- `disclaimer.html`, `terms.html` — new legal pages, same structure as Privacy Policy.
+- `support/index.html` — new Support hub linking to the 3 pages below.
+- `support/state-wise-services.html` — reference grid of all states/UTs + data-driven list of every service whose application portal varies by state (pulled from the existing `note` field in `services.json`, no invented links).
+- `support/helpline-directory.html` — live search + category filter over all 80 services' helpline numbers.
+- `support/rti-guide.html` — static 6-step guide to filing an RTI request.
+- `assets/css/module7.css`, `assets/js/support.js` — styling and data-rendering for all of the above.
+
+**⚠️ Bonus bug fix (found while building this module):** `module2.css` referenced `--primary`/`--saffron`/`--green`/`--surface`, but `style.css` only defined `--color-primary` etc. — meaning category/service page cards were rendering with unset colors. Fixed by adding alias variables in `style.css`'s `:root` and `[data-theme="dark"]`.
+
+**Also fixed:** `partials/header.html` desktop nav was missing the "Support" link that mobile-nav already had; `partials/footer.html` now has a Support column linking to all 3 new support pages.
+
+## 🔜 Next modules (planned order)
 - **Module 9:** Blog system (simple JSON or Markdown-driven post list)
 - **Module 10:** Final QA — broken link check, mobile pass, Lighthouse/SEO audit, AdSense pre-check
 - **Module 11 (proposed, discuss before starting):** CSC (Common Service Centre) lead-generation add-on — a service where users submit a request and it's routed as a lead to a partner CSC centre for a commission. Recommended to slot this in *after* Module 7 (legal pages), since a lead-gen/commission model needs clear Privacy Policy/Disclaimer/Terms language about third-party fulfillment.
@@ -111,11 +133,14 @@ Then open `http://localhost:8000/index.html`.
 - GitHub Pages → Settings → Pages → Source: branch + `/ (root)`
 - Path handling for the `/sarkarisewa-portal/` sub-path is already solved — see `SS_ROOT` note above.
 
-## File map (through Module 3)
+## File map (through Module 7)
 
 ```
 govservices/
 ├── index.html
+├── privacy-policy.html
+├── disclaimer.html                                      (NEW — Module 7)
+├── terms.html                                           (NEW — Module 7)
 ├── admin/
 │   ├── login.html
 │   └── dashboard.html
@@ -123,18 +148,28 @@ govservices/
 │   └── category.html
 ├── service/
 │   └── service.html
+├── support/                                              (NEW folder — Module 7)
+│   ├── index.html
+│   ├── state-wise-services.html
+│   ├── helpline-directory.html
+│   └── rti-guide.html
 ├── assets/
-│   ├── css/style.css, module2.css
-│   └── js/main.js, home.js, category.js, service.js, i18n-helper.js
+│   ├── css/style.css, module2.css, module7.css
+│   └── js/main.js, home.js, category.js, service.js, i18n-helper.js, support.js
 ├── data/
-│   ├── services.json                                  (merge Module 3's 15 records into this)
-│   ├── services.module2-sample.json                   (reference schema, not for production use)
-│   ├── services.module3-identity-documents.json        (NEW — 15 Identity Documents records)
+│   ├── services.json                                    (80 services — all 6 categories complete)
+│   ├── services.module2-sample.json                     (reference schema, not for production use)
+│   ├── services.module3-identity-documents.json          (reference — Module 3, already merged)
 │   ├── categories.json
-│   └── lang.json
+│   └── lang.json                                        (135 keys, en + hi)
 ├── partials/
 │   ├── header.html
 │   └── footer.html
-├── MODULE3-NOTES.md                                     (NEW — merge instructions for Module 3)
+├── MODULE3-NOTES.md
+├── MODULE4-NOTES.md
+├── MODULE5-NOTES.md
+├── MODULE6-NOTES.md
+├── MODULE7-NOTES.md                                      (NEW — merge instructions for Module 7)
 └── STATUS.md
 ```
+

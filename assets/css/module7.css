@@ -1,0 +1,261 @@
+/* ==========================================================================
+   Module 7 — Legal pages (Privacy Policy, Disclaimer, Terms) +
+   Support pages (Support hub, State-wise Services, Helpline Directory,
+   RTI Guide).
+   Built on top of the existing design tokens from style.css. Reuses
+   .cat-grid/.cat-card and .service-grid/.service-card from style.css /
+   module2.css wherever a card grid is needed, so this file only adds the
+   pieces those don't already cover.
+   Link this file AFTER style.css and module2.css.
+   ========================================================================== */
+
+/* ---------- Shared page hero (legal + support pages) ---------- */
+.page-hero {
+  padding: 2rem 0 1.5rem;
+}
+.page-hero__title {
+  font-size: clamp(1.75rem, 4vw, 2.4rem);
+  margin-bottom: 0.4rem;
+}
+.page-updated {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: 0 0 0.9rem;
+}
+.page-hero__desc {
+  max-width: 68ch;
+  color: var(--color-text-muted);
+  font-size: 1.02rem;
+}
+
+/* ---------- Legal pages (Privacy Policy, Disclaimer, Terms) ---------- */
+.legal-page {
+  padding-bottom: 3rem;
+}
+.content-section {
+  max-width: 72ch;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.content-section:last-of-type { border-bottom: none; }
+.content-section__title {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+.content-section p {
+  color: var(--color-text-muted);
+  margin: 0 0 0.6rem;
+}
+.content-section ul {
+  margin: 0 0 0.6rem;
+  padding-left: 1.2rem;
+  color: var(--color-text-muted);
+}
+.content-section li { margin-bottom: 0.35rem; }
+
+/* ---------- Support hub ---------- */
+.support-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin: 1.5rem 0 3rem;
+}
+.support-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 22px;
+  text-decoration: none;
+  color: var(--color-text);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 3px solid transparent;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.support-card:hover,
+.support-card:focus-visible {
+  transform: translateY(-2px);
+  border-top-color: var(--color-accent-saffron);
+}
+.support-card__icon { font-size: 1.7rem; }
+.support-card__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-primary);
+}
+.support-card__desc {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+.support-card__arrow {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-accent-green);
+}
+
+/* ---------- State-wise Services directory ---------- */
+.state-note-banner {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent-saffron);
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+  margin: 1.5rem 0;
+  max-width: 72ch;
+}
+.state-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  margin: 1.5rem 0 2.5rem;
+}
+.state-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+.state-services-list {
+  margin: 3rem 0;
+}
+.state-services-list h2 { margin-bottom: 0.4rem; }
+.state-services-list > p {
+  color: var(--color-text-muted);
+  max-width: 68ch;
+  margin-bottom: 1.2rem;
+}
+
+/* ---------- Helpline Directory ---------- */
+.helpline-toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 1.5rem 0 1.2rem;
+}
+.helpline-search {
+  flex: 1;
+  min-width: 220px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+.helpline-search:focus { outline: none; border-color: var(--color-accent-saffron); }
+.helpline-filter {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+.helpline-count {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.8rem;
+}
+.helpline-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  margin-bottom: 3rem;
+}
+table.helpline-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.helpline-table th {
+  text-align: left;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  position: sticky;
+  top: 0;
+}
+.helpline-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+.helpline-table tr:last-child td { border-bottom: none; }
+.helpline-table a { text-decoration: none; }
+.helpline-table a:hover { text-decoration: underline; }
+.helpline-table .cat-pill {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+.helpline-number {
+  font-family: var(--font-mono);
+  color: var(--color-accent-green);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------- RTI Guide ---------- */
+.rti-steps {
+  list-style: none;
+  margin: 1.5rem 0 2.5rem;
+  padding: 0;
+  max-width: 72ch;
+  counter-reset: rti-step;
+}
+.rti-steps li {
+  counter-increment: rti-step;
+  position: relative;
+  padding: 4px 0 20px 44px;
+  border-left: 2px solid var(--color-border);
+  margin-left: 16px;
+}
+.rti-steps li:last-child { border-left-color: transparent; padding-bottom: 0; }
+.rti-steps li::before {
+  content: counter(rti-step);
+  position: absolute;
+  left: -17px;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rti-steps strong { color: var(--color-primary); }
+.rti-steps p { color: var(--color-text-muted); margin: 6px 0 0; }
+
+.empty-state { padding: 2rem 0; color: var(--color-text-muted); font-style: italic; }
