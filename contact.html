@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — SarkariSewa Portal</title>
+  <meta name="description" content="Contact SarkariSewa Portal — report a broken link, outdated information, or ask a question." />
+  <link rel="canonical" href="https://akhairkar.github.io/sarkarisewa-portal/contact.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/module2.css" />
+  <link rel="stylesheet" href="assets/css/module7.css" />
+</head>
+<body>
+  <script>window.SS_ROOT = "";</script>
+
+  <div id="site-header"></div>
+
+  <main class="container legal-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a><span class="sep">/</span><span class="current" data-i18n="contact_title">Contact Us</span>
+    </nav>
+
+    <div class="tricolor-rule" aria-hidden="true"></div>
+
+    <section class="page-hero">
+      <h1 class="page-hero__title" data-i18n="contact_title">Contact Us</h1>
+      <p class="page-hero__desc" data-i18n="contact_intro">Found outdated information, a broken link, or have a question about a service? Reach out below.</p>
+    </section>
+
+    <form class="contact-form" id="contact-form">
+      <div class="contact-form__row">
+        <label for="contact-name" data-i18n="contact_form_name">Your name</label>
+        <input type="text" id="contact-name" name="name" required>
+      </div>
+      <div class="contact-form__row">
+        <label for="contact-email" data-i18n="contact_form_email">Your email</label>
+        <input type="email" id="contact-email" name="email" required>
+      </div>
+      <div class="contact-form__row">
+        <label for="contact-subject" data-i18n="contact_form_subject">Subject</label>
+        <input type="text" id="contact-subject" name="subject" required>
+      </div>
+      <div class="contact-form__row">
+        <label for="contact-message" data-i18n="contact_form_message">Message</label>
+        <textarea id="contact-message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" data-i18n="contact_form_submit">Send message</button>
+      <p class="contact-form__note" data-i18n="contact_form_note">This opens your email app with your message pre-filled — we don't store anything you type here.</p>
+    </form>
+
+    <section class="content-section">
+      <h2 class="content-section__title" data-i18n="contact_email_title">Prefer email directly?</h2>
+      <p data-i18n="contact_email_body">Write to us anytime, we usually reply within a few working days.</p>
+      <p><a href="mailto:contact@sarkarisewaportal.example" class="mono" id="contact-email-link">contact@sarkarisewaportal.example</a></p>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/i18n-helper.js"></script>
+  <script>
+    // No backend on this static site — build a mailto: link from the form
+    // fields so the visitor's own email app sends the message. Nothing
+    // typed here is stored or transmitted by this site itself.
+    document.getElementById("contact-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("contact-name").value.trim();
+      const email = document.getElementById("contact-email").value.trim();
+      const subject = document.getElementById("contact-subject").value.trim();
+      const message = document.getElementById("contact-message").value.trim();
+      const to = "contact@sarkarisewaportal.example";
+      const body = `From: ${name} <${email}>\n\n${message}`;
+      window.location.href =
+        `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  </script>
+</body>
+</html>
