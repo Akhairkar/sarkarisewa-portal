@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search — SarkariSewa Portal</title>
+  <meta name="description" content="Search across all 80+ Indian government services on SarkariSewa Portal by name, category, or keyword." />
+  <link rel="canonical" href="https://akhairkar.github.io/sarkarisewa-portal/search.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/module2.css" />
+  <link rel="stylesheet" href="assets/css/module7.css" />
+  <link rel="stylesheet" href="assets/css/module8.css" />
+</head>
+<body>
+  <script>window.SS_ROOT = "";</script>
+
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a><span class="sep">/</span><span class="current" data-i18n="search_title">Search Services</span>
+    </nav>
+
+    <div class="tricolor-rule" aria-hidden="true"></div>
+
+    <section class="page-hero">
+      <h1 class="page-hero__title" data-i18n="search_title">Search Services</h1>
+      <p class="page-hero__desc" data-i18n="search_intro">Search across all 80+ government services by name.</p>
+    </section>
+
+    <form class="search-page-form" role="search" id="search-page-form">
+      <label for="search-page-input" class="visually-hidden" data-i18n="search_title">Search Services</label>
+      <input
+        type="search"
+        id="search-page-input"
+        class="search-page-input"
+        data-i18n-placeholder="nav_search_placeholder"
+        placeholder="Search a service, e.g. Aadhaar, PAN, PM Kisan..."
+        autocomplete="off"
+      />
+    </form>
+
+    <div class="search-page-filters" id="search-page-filters" role="group" aria-label="Filter by category"></div>
+
+    <p class="search-page-status" id="search-page-status"></p>
+
+    <div class="service-grid" id="search-page-results"></div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/i18n-helper.js"></script>
+  <script src="assets/js/search.js"></script>
+</body>
+</html>

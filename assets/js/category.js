@@ -54,12 +54,14 @@
         const servicesInCategory = services.filter((s) => s.category === catSlug);
 
         document.title = `${t(category.name)} — SarkariSewa Portal`;
+        renderMeta(category, servicesInCategory);
         renderBreadcrumb(category);
         renderHero(category, servicesInCategory.length);
         renderGrid(servicesInCategory);
 
         onLangChange(() => {
           document.title = `${t(category.name)} — SarkariSewa Portal`;
+          renderMeta(category, servicesInCategory);
           renderBreadcrumb(category);
           renderHero(category, servicesInCategory.length);
           renderGrid(servicesInCategory);
@@ -69,6 +71,74 @@
         console.error("Failed to load category data:", err);
         gridEl.innerHTML = `<p class="empty-state">Could not load this category. Please try again later.</p>`;
       });
+  }
+
+  function setMetaTag(attr, key, content) {
+    let el = document.querySelector(`meta[${attr}="${key}"]`);
+    if (!el) {
+      el = document.createElement("meta");
+      el.setAttribute(attr, key);
+      document.head.appendChild(el);
+    }
+    el.setAttribute("content", content);
+  }
+
+  function renderMeta(category, servicesInCategory) {
+    const title = t(category.name);
+    const desc = t(category.description) || `Browse ${title} government services on SarkariSewa Portal.`;
+    const url = `https://akhairkar.github.io/sarkarisewa-portal/category/category.html?cat=${category.slug}`;
+
+    setMetaTag("name", "description", desc);
+    setMetaTag("property", "og:title", `${title} — SarkariSewa Portal`);
+    setMetaTag("property", "og:description", desc);
+    setMetaTag("property", "og:type", "website");
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", url);
+
+    const existing = document.getElementById("category-schema");
+    if (existing) existing.remove();
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "ItemList",
+          name: title,
+          description: desc,
+          numberOfItems: servicesInCategory.length,
+          itemListElement: servicesInCategory.map((s, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: t(s.name),
+            url: `https://akhairkar.github.io/sarkarisewa-portal/service/service.html?id=${s.slug || s.id}`,
+          })),
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://akhairkar.github.io/sarkarisewa-portal/index.html",
+            },
+            { "@type": "ListItem", position: 2, name: title, item: url },
+          ],
+        },
+      ],
+    };
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "category-schema";
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
   }
 
   function renderBreadcrumb(category) {

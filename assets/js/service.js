@@ -71,10 +71,96 @@
 
   function renderAll(service, category, allServices) {
     document.title = `${getServiceTitle(service)} — SarkariSewa Portal`;
+    renderMeta(service, category);
     renderBreadcrumb(service, category);
     renderHero(service, category);
     renderSections(service);
     renderRelated(service, allServices);
+  }
+
+  function setMetaTag(attr, key, content) {
+    let el = document.querySelector(`meta[${attr}="${key}"]`);
+    if (!el) {
+      el = document.createElement("meta");
+      el.setAttribute(attr, key);
+      document.head.appendChild(el);
+    }
+    el.setAttribute("content", content);
+  }
+
+  function renderMeta(service, category) {
+    const title = getServiceTitle(service);
+    const summary = getServiceSummary(service) || "";
+    const url = `https://akhairkar.github.io/sarkarisewa-portal/service/service.html?id=${service.slug || service.id}`;
+
+    setMetaTag("name", "description", summary || `${title} — official links, documents, fees and process on SarkariSewa Portal.`);
+    setMetaTag("property", "og:title", `${title} — SarkariSewa Portal`);
+    setMetaTag("property", "og:description", summary);
+    setMetaTag("property", "og:type", "article");
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", url);
+
+    renderSchema(service, category, title, summary, url);
+  }
+
+  function renderSchema(service, category, title, summary, url) {
+    const existing = document.getElementById("service-schema");
+    if (existing) existing.remove();
+
+    const officialLinks = getOfficialLinks(service);
+    const schema = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "GovernmentService",
+          name: title,
+          description: summary,
+          url: url,
+          serviceType: title,
+          provider: { "@type": "GovernmentOrganization", name: "Government of India" },
+          ...(officialLinks[0] && officialLinks[0].url ? { sameAs: officialLinks.map((l) => l.url).filter(Boolean) } : {}),
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://akhairkar.github.io/sarkarisewa-portal/index.html",
+            },
+            ...(category
+              ? [
+                  {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: t(category.name),
+                    item: `https://akhairkar.github.io/sarkarisewa-portal/category/category.html?cat=${category.slug}`,
+                  },
+                ]
+              : []),
+            {
+              "@type": "ListItem",
+              position: category ? 3 : 2,
+              name: title,
+              item: url,
+            },
+          ],
+        },
+      ],
+    };
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "service-schema";
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
   }
 
   function renderBreadcrumb(service, category) {

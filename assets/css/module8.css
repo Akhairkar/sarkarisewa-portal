@@ -1,0 +1,49 @@
+/* ==========================================================================
+   module8.css — Search page (Module 8)
+   Load after style.css, module2.css, module7.css.
+   ========================================================================== */
+
+.search-page-form { margin: 1.5rem 0 1rem; }
+.search-page-input {
+  width: 100%;
+  font: inherit;
+  font-size: 1.05rem;
+  padding: 14px 18px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius, 10px);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+.search-page-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.search-page-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 1.25rem;
+}
+.chip {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+.chip:hover { border-color: var(--color-primary); }
+.chip--active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.search-page-status {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
