@@ -20,16 +20,19 @@
 
 let SERVICES_DATA = null;
 let CATEGORIES_DATA = null;
+let BLOG_DATA = null;
 
 async function loadHomeData() {
-  if (SERVICES_DATA && CATEGORIES_DATA) return;
-  const [servicesRaw, categoriesRaw] = await Promise.all([
+  if (SERVICES_DATA && CATEGORIES_DATA && BLOG_DATA) return;
+  const [servicesRaw, categoriesRaw, blogRaw] = await Promise.all([
     fetch(ROOT + "data/services.json").then((r) => r.json()),
     fetch(ROOT + "data/categories.json").then((r) => r.json()),
+    fetch(ROOT + "data/blog-posts.json").then((r) => r.json()).catch(() => []),
   ]);
   // Support either a plain array or an older { services: [...] } wrapper.
   SERVICES_DATA = Array.isArray(servicesRaw) ? servicesRaw : (servicesRaw.services || []);
   CATEGORIES_DATA = Array.isArray(categoriesRaw) ? categoriesRaw : (categoriesRaw.categories || []);
+  BLOG_DATA = Array.isArray(blogRaw) ? blogRaw : (blogRaw.posts || []);
 }
 
 function renderCategories() {
@@ -77,10 +80,40 @@ function renderServices() {
   }).join("");
 }
 
+function renderBlogSection() {
+  const host = document.getElementById("homepage-blog-list");
+  if (!host || !BLOG_DATA) return;
+  const lang = getLang();
+  const locale = lang === "hi" ? "hi-IN" : "en-IN";
+
+  const latest = BLOG_DATA.slice()
+    .sort((a, b) => (a.datePublished < b.datePublished ? 1 : -1))
+    .slice(0, 3);
+
+  if (!latest.length) {
+    host.innerHTML = "";
+    return;
+  }
+
+  host.innerHTML = latest.map((post) => {
+    const d = new Date(post.datePublished + "T00:00:00");
+    const dateStr = isNaN(d.getTime()) ? post.datePublished : d.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" });
+    return `
+      <a class="blog-card" href="${ROOT}blog/post.html?slug=${post.slug}">
+        <div class="blog-card__date">${dateStr}</div>
+        <div class="blog-card__title">${t(post.title)}</div>
+        <div class="blog-card__excerpt">${t(post.excerpt)}</div>
+        <div class="blog-card__arrow">${t({ en: "Read more →", hi: "और पढ़ें →" })}</div>
+      </a>
+    `;
+  }).join("");
+}
+
 async function renderHome() {
   await loadHomeData();
   renderCategories();
   renderServices();
+  renderBlogSection();
 }
 
 document.addEventListener("ss:ready", renderHome);
@@ -91,4 +124,5 @@ onLangChange(() => {
   if (!SERVICES_DATA || !CATEGORIES_DATA) return;
   renderCategories();
   renderServices();
+  renderBlogSection();
 });

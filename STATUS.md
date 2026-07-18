@@ -105,10 +105,29 @@
 - Search icon added to header nav (desktop + mobile) — previously only reachable from the homepage.
 - `assets/css/module8.css`.
 
-## 🔜 Next modules (planned order)
-- **Module 9:** Blog system (simple JSON or Markdown-driven post list)
-- **Module 10:** Final QA — broken link check, mobile pass, Lighthouse/SEO audit, AdSense pre-check
-- **Module 11 (proposed, discuss before starting):** CSC (Common Service Centre) lead-generation add-on — a service where users submit a request and it's routed as a lead to a partner CSC centre for a commission. Recommended to slot this in *after* Module 7 (legal pages), since a lead-gen/commission model needs clear Privacy Policy/Disclaimer/Terms language about third-party fulfillment.
+## ✅ Module 9 — DONE (Blog System)
+
+**Built (see `MODULE9-NOTES.md` for full details):**
+
+- `data/blog-posts.json` — 5 bilingual seed posts, cross-linked to real `services.json` ids (verified, not assumed)
+- `blog/index.html` + `assets/js/blog.js` — post list
+- `blog/post.html` + `assets/js/blog-post.js` — single post template, dynamic meta + `BlogPosting`/`BreadcrumbList` schema
+- `assets/css/module9.css`
+- Header nav "Blog" link (desktop + mobile)
+- Homepage "From the Blog" section (latest 3 posts)
+- `generate-sitemap.py` updated — now emits 105 URLs (was 99)
+- 12 new `lang.json` keys (total now 199)
+
+## 🔜 Next modules (planned order — see `PROJECT-ROADMAP.md` for the full, current 21-module plan)
+- **Module 10:** Final QA & Launch Prep — broken link check, mobile pass, accessibility, Lighthouse/SEO audit, 404 page, favicon/manifest. **Publish the site right after this module.**
+- **Module 10.5 (optional, right before launch):** GA4, Search Console verification, Microsoft Clarity, cookie consent banner (DPDP-compliant — consent-gated script loading, not just an overlay banner), 404 page tracking
+- **Module 11:** Design & Branding fixes (dark mode search bar/button-text bug — 5 places, favicon/logo/og:image, ad-space reservation, homepage trust stats, "Latest Updates" `dateAdded` fix)
+- **Module 12:** Per-service content upgrades (Common Issues/Troubleshooting, structured Summary box, tag-based Matching Services)
+- **Module 13:** Downloadable master PDF + "Find Services For You" eligibility wizard
+- **Module 14:** Backend Foundation (Supabase) — shared by Modules 15–16 and later CSC modules
+- **Module 15:** Comments/Q&A on service pages
+- **Module 16:** Email/WhatsApp subscribe
+- **Modules 17–21:** CSC Centre Listings (public directory → claim flow → owner dashboard/free period → lead generation → monetization)
 
 ## ⚠️ Admin auth — must fix before going live
 

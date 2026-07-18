@@ -21,6 +21,7 @@ TODAY = date.today().isoformat()
 STATIC_PAGES = [
     ("/index.html", "1.0", "weekly"),
     ("/search.html", "0.8", "weekly"),
+    ("/blog/index.html", "0.7", "weekly"),
     ("/sitemap.html", "0.3", "monthly"),
     ("/about.html", "0.5", "monthly"),
     ("/contact.html", "0.5", "monthly"),
@@ -48,6 +49,11 @@ def main():
         services = normalize(json.load(f), "services")
     with open(os.path.join(ROOT, "data/categories.json"), encoding="utf-8") as f:
         categories = normalize(json.load(f), "categories")
+    blog_path = os.path.join(ROOT, "data/blog-posts.json")
+    blog_posts = []
+    if os.path.exists(blog_path):
+        with open(blog_path, encoding="utf-8") as f:
+            blog_posts = normalize(json.load(f), "posts")
 
     urls = []
     for path, priority, freq in STATIC_PAGES:
@@ -62,6 +68,11 @@ def main():
         sid = s.get("slug") or s.get("id")
         if sid:
             urls.append((f"{BASE_URL}/service/service.html?id={sid}", "0.6", "monthly"))
+
+    for post in blog_posts:
+        slug = post.get("slug")
+        if slug:
+            urls.append((f"{BASE_URL}/blog/post.html?slug={slug}", "0.6", "monthly"))
 
     lines = ['<?xml version="1.0" encoding="UTF-8"?>']
     lines.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
