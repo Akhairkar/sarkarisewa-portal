@@ -10,7 +10,7 @@
    ========================================================================== */
 
 (function () {
-  const GA4_MEASUREMENT_ID = "G-XXXXXXXXXX"; // <-- replace with your real ID
+  const GA4_MEASUREMENT_ID = "G-53V7LXHXVF"; // <-- replace with your real ID
   const CONSENT_KEY = "ss_cookie_consent"; // "accepted" | "rejected"
 
   function loadGA4() {
