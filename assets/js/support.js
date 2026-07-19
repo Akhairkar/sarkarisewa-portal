@@ -134,7 +134,26 @@
   ];
 
   if (stateGrid) {
-    stateGrid.innerHTML = INDIA_STATES.map((s) => `<div class="state-card">${s}</div>`).join("");
+    stateGrid.innerHTML = INDIA_STATES.map(
+      (s) => `<button type="button" class="state-card" data-state="${s}">${s}</button>`
+    ).join("");
+
+    const selectedLabel = document.getElementById("state-selected-label");
+    const stateServicesList = document.querySelector(".state-services-list");
+
+    stateGrid.querySelectorAll(".state-card").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        stateGrid.querySelectorAll(".state-card").forEach((b) => b.classList.remove("state-card--active"));
+        btn.classList.add("state-card--active");
+        if (selectedLabel) {
+          selectedLabel.hidden = false;
+          selectedLabel.textContent = `${t({ en: "Selected state:", hi: "चयनित राज्य:" })} ${btn.dataset.state}`;
+        }
+        if (stateServicesList) {
+          stateServicesList.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
   }
 
   if (stateServicesGrid) {

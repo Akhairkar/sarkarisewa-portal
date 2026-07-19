@@ -69,3 +69,27 @@
   one factual error `audit-site.py`-style tooling could catch; verifying
   every phone number/fee against the source department is manual work,
   not something an automated pass finds.
+
+## Addendum — real bug found after publish check (state-wise-services.html)
+A screenshot of the **live, already-published site**
+(`akhairkar.github.io/sarkarisewa-portal`) surfaced a genuine bug the
+link/i18n audit couldn't catch, because it wasn't a broken link or
+missing translation — it was a **dead interactive element**:
+
+- The 35 state/UT buttons on `support/state-wise-services.html` were
+  rendered as plain `<div class="state-card">` elements — visually
+  identical to buttons (border, background, padding) but with **no
+  click handler, no `href`, nothing** wired to them at all. Clicking any
+  state did literally nothing, which is exactly the "click karne pe kuch
+  nahi khulta" behaviour reported.
+- **Fixed:** state cards are now real `<button>` elements. Clicking one
+  marks it visually selected, shows a "Selected state: X" label, and
+  smooth-scrolls down to the "Services that vary by state" list below —
+  matching what the page's own intro text already told users to expect.
+- `assets/css/module7.css` — `.state-card` given proper button-reset
+  styling, hover/focus/active states, and a `.state-card--active`
+  selected style.
+- 1 new `lang.json` key (`state_selected_prefix`) — total now 205.
+- This is the kind of bug that only shows up by actually clicking
+  through the live site, not from static link/i18n auditing — worth
+  keeping in mind for Module 11's design pass too.

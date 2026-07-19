@@ -117,13 +117,34 @@
   margin: 1.5rem 0 2.5rem;
 }
 .state-card {
+  display: block;
+  width: 100%;
+  appearance: none;
+  margin: 0;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   padding: 14px 16px;
   font-size: 0.92rem;
+  font-family: var(--font-body);
   font-weight: 500;
   color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+.state-card:hover { border-color: var(--color-accent-saffron); }
+.state-card:focus-visible { outline: 2px solid var(--color-accent-saffron); outline-offset: 2px; }
+.state-card--active {
+  border-color: var(--color-accent-saffron);
+  background: var(--color-surface-alt);
+  font-weight: 700;
+}
+.state-selected-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent-saffron);
+  margin: -0.4rem 0 1rem;
 }
 .state-services-list {
   margin: 3rem 0;
