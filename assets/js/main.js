@@ -109,9 +109,15 @@ function wireHeaderControls() {
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 }
 
+function ensureMainId() {
+  const main = document.querySelector("main");
+  if (main && !main.id) main.id = "main-content";
+}
+
 async function initSite() {
   // Apply theme immediately (before paint-ish) to avoid flash
   applyTheme(SITE.theme);
+  ensureMainId();
 
   await Promise.all([
     includePartial("#site-header", ROOT + "partials/header.html"),

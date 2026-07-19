@@ -118,10 +118,22 @@
 - `generate-sitemap.py` updated — now emits 105 URLs (was 99)
 - 12 new `lang.json` keys (total now 199)
 
+## ✅ Module 10 — DONE (Final QA & Launch Prep)
+
+**Built (see `MODULE10-NOTES.md` for full details):**
+
+- `404.html` (GitHub Pages auto-serves this at repo root) + `assets/css/module10.css`
+- Site-wide skip-to-content accessibility link (in `partials/header.html` + auto-tagging in `main.js`)
+- `audit-site.py` — permanent, reusable QA script (broken links, i18n coverage, JSON validity, dangling cross-references). Run before every future deploy.
+- **Real content bug fixed:** homepage claimed "100+" services in 3 places (meta description, og:description, `hero_sub` EN+HI) while the actual count is 80 — now consistent everywhere
+- **SEO fix:** homepage meta description trimmed from 163 to 132 characters (was over Google's ~160-char limit)
+- Explicitly deferred to Module 11 (per your instruction): favicon/manifest, dark mode bug, og:image, ad-space, trust stats
+
+**⚠️ Sequence change (your instruction):** originally planned to publish right after Module 10 — **changed to publish after Module 11 instead**, so branding/design fixes (especially the dark mode bug) ship before the site goes live.
+
 ## 🔜 Next modules (planned order — see `PROJECT-ROADMAP.md` for the full, current 21-module plan)
-- **Module 10:** Final QA & Launch Prep — broken link check, mobile pass, accessibility, Lighthouse/SEO audit, 404 page, favicon/manifest. **Publish the site right after this module.**
-- **Module 10.5 (optional, right before launch):** GA4, Search Console verification, Microsoft Clarity, cookie consent banner (DPDP-compliant — consent-gated script loading, not just an overlay banner), 404 page tracking
-- **Module 11:** Design & Branding fixes (dark mode search bar/button-text bug — 5 places, favicon/logo/og:image, ad-space reservation, homepage trust stats, "Latest Updates" `dateAdded` fix)
+- **Module 11:** Design & Branding fixes (dark mode search bar/button-text bug — 5 places, favicon/logo/og:image, ad-space reservation, homepage trust stats, "Latest Updates" `dateAdded` fix). **Publish the site right after this module.**
+- **Module 10.5 (optional, do around publish time):** GA4, Search Console verification, Microsoft Clarity, cookie consent banner (DPDP-compliant — consent-gated script loading, not just an overlay banner), 404 page tracking
 - **Module 12:** Per-service content upgrades (Common Issues/Troubleshooting, structured Summary box, tag-based Matching Services)
 - **Module 13:** Downloadable master PDF + "Find Services For You" eligibility wizard
 - **Module 14:** Backend Foundation (Supabase) — shared by Modules 15–16 and later CSC modules
