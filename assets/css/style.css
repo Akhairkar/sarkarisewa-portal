@@ -467,3 +467,28 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 @media (max-width: 600px) {
   .ad-slot { min-height: 100px; }
 }
+
+/* ---------- Hero chakra watermark (Module 11 background texture) ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -60px;
+  transform: translateY(-50%);
+  width: 440px;
+  height: 440px;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="440" height="440" viewBox="0 0 440 440"><g fill="none" stroke="%2310243E" stroke-opacity="0.07" stroke-width="2"><circle cx="220.0" cy="220.0" r="214.0"/><circle cx="220.0" cy="220.0" r="22"/><line x1="242.0" y1="220.0" x2="434.0" y2="220.0"/><line x1="241.3" y1="225.7" x2="426.7" y2="275.4"/><line x1="239.1" y1="231.0" x2="405.3" y2="327.0"/><line x1="235.6" y1="235.6" x2="371.3" y2="371.3"/><line x1="231.0" y1="239.1" x2="327.0" y2="405.3"/><line x1="225.7" y1="241.3" x2="275.4" y2="426.7"/><line x1="220.0" y1="242.0" x2="220.0" y2="434.0"/><line x1="214.3" y1="241.3" x2="164.6" y2="426.7"/><line x1="209.0" y1="239.1" x2="113.0" y2="405.3"/><line x1="204.4" y1="235.6" x2="68.7" y2="371.3"/><line x1="200.9" y1="231.0" x2="34.7" y2="327.0"/><line x1="198.7" y1="225.7" x2="13.3" y2="275.4"/><line x1="198.0" y1="220.0" x2="6.0" y2="220.0"/><line x1="198.7" y1="214.3" x2="13.3" y2="164.6"/><line x1="200.9" y1="209.0" x2="34.7" y2="113.0"/><line x1="204.4" y1="204.4" x2="68.7" y2="68.7"/><line x1="209.0" y1="200.9" x2="113.0" y2="34.7"/><line x1="214.3" y1="198.7" x2="164.6" y2="13.3"/><line x1="220.0" y1="198.0" x2="220.0" y2="6.0"/><line x1="225.7" y1="198.7" x2="275.4" y2="13.3"/><line x1="231.0" y1="200.9" x2="327.0" y2="34.7"/><line x1="235.6" y1="204.4" x2="371.3" y2="68.7"/><line x1="239.1" y1="209.0" x2="405.3" y2="113.0"/><line x1="241.3" y1="214.3" x2="426.7" y2="164.6"/></g></svg>');
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+[data-theme="dark"] .hero::after {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="440" height="440" viewBox="0 0 440 440"><g fill="none" stroke="%23FFFFFF" stroke-opacity="0.06" stroke-width="2"><circle cx="220.0" cy="220.0" r="214.0"/><circle cx="220.0" cy="220.0" r="22"/><line x1="242.0" y1="220.0" x2="434.0" y2="220.0"/><line x1="241.3" y1="225.7" x2="426.7" y2="275.4"/><line x1="239.1" y1="231.0" x2="405.3" y2="327.0"/><line x1="235.6" y1="235.6" x2="371.3" y2="371.3"/><line x1="231.0" y1="239.1" x2="327.0" y2="405.3"/><line x1="225.7" y1="241.3" x2="275.4" y2="426.7"/><line x1="220.0" y1="242.0" x2="220.0" y2="434.0"/><line x1="214.3" y1="241.3" x2="164.6" y2="426.7"/><line x1="209.0" y1="239.1" x2="113.0" y2="405.3"/><line x1="204.4" y1="235.6" x2="68.7" y2="371.3"/><line x1="200.9" y1="231.0" x2="34.7" y2="327.0"/><line x1="198.7" y1="225.7" x2="13.3" y2="275.4"/><line x1="198.0" y1="220.0" x2="6.0" y2="220.0"/><line x1="198.7" y1="214.3" x2="13.3" y2="164.6"/><line x1="200.9" y1="209.0" x2="34.7" y2="113.0"/><line x1="204.4" y1="204.4" x2="68.7" y2="68.7"/><line x1="209.0" y1="200.9" x2="113.0" y2="34.7"/><line x1="214.3" y1="198.7" x2="164.6" y2="13.3"/><line x1="220.0" y1="198.0" x2="220.0" y2="6.0"/><line x1="225.7" y1="198.7" x2="275.4" y2="13.3"/><line x1="231.0" y1="200.9" x2="327.0" y2="34.7"/><line x1="235.6" y1="204.4" x2="371.3" y2="68.7"/><line x1="239.1" y1="209.0" x2="405.3" y2="113.0"/><line x1="241.3" y1="214.3" x2="426.7" y2="164.6"/></g></svg>');
+}
+.hero-inner { position: relative; z-index: 1; }
+@media (max-width: 780px) {
+  .hero::after { width: 280px; height: 280px; right: -100px; opacity: 0.7; }
+}
