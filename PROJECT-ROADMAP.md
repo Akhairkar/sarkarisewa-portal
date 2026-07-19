@@ -9,8 +9,9 @@ _Last updated: 18 July 2026. Upload this file back into a new chat with Claude t
 - **Module 8:** DONE. `search.html` (was missing — homepage search was 404ing), `robots.txt`, `sitemap.xml` (auto-generated via `generate-sitemap.py`), dynamic Schema.org JSON-LD + meta tags on category/service pages, header search icon.
 - **Module 9:** DONE. Blog system — `blog/index.html`, `blog/post.html`, 5 bilingual seed posts in `data/blog-posts.json`, header nav link, homepage "From the Blog" section, sitemap updated (105 URLs). See `MODULE9-NOTES.md`.
 - **Module 10:** DONE. `404.html`, site-wide skip-to-content link, `audit-site.py` (reusable QA script — run before every deploy), a real content bug fixed ("100+" services claimed on homepage, actual count is 80 — now consistent), homepage meta description trimmed for SEO (163→132 chars). See `MODULE10-NOTES.md`.
-- **Sequence change (your instruction):** publish was originally planned right after Module 10 — **now happens after Module 11 instead**, so branding/design fixes (especially the dark mode bug) ship before the site goes live.
-- **Module 11 and later: NOT started yet.**
+- **Module 10.5:** DONE. Cookie consent banner (`assets/js/consent.js`, DPDP-compliant opt-in, GA4 gated until Accept) + GA4 wired and confirmed tracking live via Realtime report.
+- **Module 11:** DONE. Dark-mode invisible-text bug fixed (8 instances — 5 originally flagged + 3 more found in a full sweep), favicon/app-icons/manifest, og:image, ad-space reserved, homepage trust stats, "Latest Updates" real `dateAdded` fix. See `MODULE11-NOTES.md`.
+- **Module 12 and later: NOT started yet.**
 
 ---
 
@@ -44,7 +45,7 @@ _Last updated: 18 July 2026. Upload this file back into a new chat with Claude t
 - AdSense approval takes time and favors an established site
 - robots.txt/sitemap.xml should be submitted to Google Search Console right after publish to kick off indexing early
 
-## Module 10.5 — Analytics & Tracking Setup (optional, do around publish time)
+## Module 10.5 — Analytics & Tracking Setup (DONE)
 1. **Google Analytics 4** — `gtag.js`, loaded async so it doesn't hurt the Lighthouse score
 2. **Google Search Console verification** — verify via meta tag, submit `sitemap.xml` (already built in Module 8) right after publish to kick off indexing
 3. **Microsoft Clarity** — heatmaps & session recordings, same async-load treatment as GA4
@@ -60,30 +61,17 @@ _Last updated: 18 July 2026. Upload this file back into a new chat with Claude t
 
 (Found via actual code inspection during Module 8, not guesses — see details below.)
 
-## Module 11 — Design & Branding Fixes  ⬅️ **Publish happens right after this module now**
-(Found via actual code inspection during Module 8, not guesses — see details below.)
+## Module 11 — Design & Branding Fixes (DONE)
 
-### Bugs (functional, not cosmetic)
-1. **Dark mode: hero search bar is invisible.** `.hero` and `.search-form` both use `var(--color-surface)` as background in dark mode, with only a low-contrast border between them — the search box visually disappears into the hero section.
-2. **Dark mode: search button text is invisible.** `.search-form button` uses `background: var(--color-primary)` + `color: #fff`. In dark mode, `--color-primary` flips to a near-white color (`#E8EDF3`) because it's reused as the heading/text color — so it becomes white text on near-white background. Same root-cause bug repeats in **5 places total**:
-   - `.search-form button` (style.css)
-   - `.btn-primary` (style.css)
-   - `.admin-card button` (style.css)
-   - RTI guide step-number badge (module7.css)
-   - `.chip--active` filter chip on search.html (module8.css)
-   - **Root cause:** `--color-primary` is overloaded — used both as "brand navy" for button backgrounds AND as "heading text color" that intentionally flips light/dark with theme. **Fix:** introduce a separate `--color-brand` (fixed navy, doesn't flip with theme) for anything that needs a solid-color button background, and leave `--color-primary` for text/headings only.
-3. **"नवीनतम अपडेट" (Latest Updates) section is mislabeled.** It just shows the last 6 entries of `services.json` array order — there's no `dateAdded` field in the data at all, so nothing is actually "latest." Fix:
-   - Add a `dateAdded` field to each service in `services.json` (needed for genuine "latest" sorting, and useful for future CSC/blog "recently added" sections too)
-   - Increase shown count from 6 to ~10–12 (not 20 — a long homepage hurts more than it helps; the real dwell-time lever is relevance/curation, not raw count)
-   - Add a clear "View all 80+ services →" CTA linking to `search.html`
-   - Consider curating so at least one service from each of the 6 categories appears
+1. **Dark-mode invisible-text bug — 8 instances found and fixed**, not just the 5 originally flagged. Root cause: `--color-primary` was overloaded as both heading/text color (intentionally flips to near-white in dark mode) *and* solid button background (paired with white text) — invisible white-on-near-white in dark mode. Fixed with 3 new tokens that never flip with theme: `--color-brand` (#10243E), `--color-brand-text` (#FFFFFF), `--color-brand-hover` (#1C3A5E). The 8 instances: `.search-form button` + hover, `.btn-primary` + hover, `.admin-card button` + hover, RTI guide step-number badge, `.chip--active` filter chip, and `.mobile-nav` (found during a full CSS sweep, not in the original 5). Also fixed a related contrast issue on `.btn--primary` (Apply/Start Application CTAs) — white text on the saffron accent, which is lighter in dark mode; switched to navy text, which reads well in both themes.
+2. **Hero search bar dark-mode blend fixed** — `.hero` now uses `--color-bg` (matches the page, like every other section) instead of `--color-surface`, so the `.search-form` card visibly pops on top of it — the same surface-vs-bg pattern already used correctly everywhere else on the site. Border strengthened to 2px + shadow for extra visibility.
+3. **"नवीनतम अपडेट" (Latest Updates) — real fix.** Added a `dateAdded` field to all 80 services (didn't exist before — the section wasn't showing "latest" anything, just the last 6 array entries). `home.js` now sorts by real date, shows 12 (capped at 2 per category on the first pass so one category can't dominate), and a "View all 80+ services →" link was added under the grid pointing to `search.html`.
+4. **Favicon + app icons + manifest** — tricolor "S" mark matching the existing header brand mark, all standard sizes (16/32/48/180/192/512) + `favicon.ico`, `manifest.json`, wired into all 20 HTML pages.
+5. **`og:image`** — 1200×630 branded social-share card (navy, tricolor rule, brand mark, headline, trust stats) + `twitter:card`, on every page.
+6. **Ad-space reserved** — `.ad-slot`, fixed-height (250px desktop / 100px mobile), dashed border, "Advertisement" label — on homepage, category pages, and service pages. No layout shift when real ads are added later.
+7. **Homepage trust-stats strip** — "80+ Services · 6 Categories · Bilingual · Always free to use", solid navy background, directly under the hero.
 
-### Missing assets
-4. **Zero images anywhere on the site.** No favicon, no logo image (current logo is a text/CSS "S" letter-mark, fine for perf, but a favicon is still needed), no illustrations, no `og:image` for social share previews.
-
-### Monetization/CSC readiness
-5. **No ad space reserved anywhere in the layout.** When AdSense goes in, un-reserved ad slots cause layout shift (hurts Core Web Vitals → hurts ranking). Fix: add fixed-size placeholder containers in planned ad positions now, even empty.
-6. **No trust-building elements on homepage** (e.g. a stats strip: "80+ Services · 6 Categories · Bilingual").
+See `MODULE11-NOTES.md` for full details. Verified with `audit-site.py` (0 issues) plus a manual sweep of every white-text CSS rule in the codebase to catch anything the original 5-bug list missed.
 
 ## Module 12 — Per-Service Content Enhancements
 Ideas gathered from studying govtschemes.in, myscheme.gov.in, and sarkariyojana.com (large Indian govt-info sites) — see notes below each.

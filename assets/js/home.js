@@ -57,11 +57,33 @@ function renderServices() {
   const lang = getLang();
   const dict = (window.SITE && SITE.langData && SITE.langData[lang]) || {};
 
-  // "Latest" = last 6 entries in services.json (new services get appended
-  // to the end of the array as modules are added).
-  const latest = SERVICES_DATA.slice(-6).reverse();
+  // "Latest" = genuinely sorted by each service's dateAdded (Module 11 fix —
+  // this used to just be the last 6 array entries, which wasn't actually
+  // "latest" by any real criteria since services.json had no date field).
+  const sorted = SERVICES_DATA.slice().sort((a, b) => (a.dateAdded < b.dateAdded ? 1 : -1));
 
-  host.innerHTML = latest.map((s) => {
+  // Category diversity: cap at 2 per category on the first pass so the
+  // section doesn't get dominated by whichever category happened to be
+  // added most recently, then fill any remaining slots from the rest.
+  const TARGET = 12;
+  const perCategoryCount = {};
+  const picked = [];
+  const leftover = [];
+  for (const s of sorted) {
+    const c = s.category || "_none";
+    if (picked.length < TARGET && (perCategoryCount[c] || 0) < 2) {
+      picked.push(s);
+      perCategoryCount[c] = (perCategoryCount[c] || 0) + 1;
+    } else {
+      leftover.push(s);
+    }
+  }
+  for (const s of leftover) {
+    if (picked.length >= TARGET) break;
+    picked.push(s);
+  }
+
+  host.innerHTML = picked.map((s) => {
     const links = (s.officialLinks || []).slice(0, 3).map((l, i) => `
       <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="${i === 0 ? "official" : ""}">
         ${t(l.label)}
@@ -78,6 +100,14 @@ function renderServices() {
       </article>
     `;
   }).join("");
+
+  const viewAllHost = document.getElementById("latest-view-all");
+  if (viewAllHost) {
+    viewAllHost.innerHTML = `<a href="${ROOT}search.html">${t({
+      en: `View all ${SERVICES_DATA.length}+ services →`,
+      hi: `सभी ${SERVICES_DATA.length}+ सेवाएं देखें →`,
+    })}</a>`;
+  }
 }
 
 function renderBlogSection() {

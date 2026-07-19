@@ -131,9 +131,25 @@
 
 **⚠️ Sequence change (your instruction):** originally planned to publish right after Module 10 — **changed to publish after Module 11 instead**, so branding/design fixes (especially the dark mode bug) ship before the site goes live.
 
+## ✅ Module 10.5 — DONE (Analytics & Tracking Setup)
+- `assets/js/consent.js` — DPDP-compliant cookie consent banner (opt-in, GA4 does not load until Accept is clicked), wired onto all 18 pages that load `main.js`
+- GA4 confirmed live and tracking (verified via Realtime report: page_view, session_start, scroll, user_engagement events all firing correctly)
+- Privacy Policy updated with a new "Cookies" section explaining the consent-gated analytics cookie
+
+## ✅ Module 11 — DONE (Design & Branding Fixes)
+
+**Built (see `MODULE11-NOTES.md` for full details):**
+
+- **Dark-mode invisible-text bug fixed — 8 instances total** (the 5 originally flagged, plus 3 more found during a full CSS sweep: button hover states + `.mobile-nav`). New fixed tokens `--color-brand` / `--color-brand-text` / `--color-brand-hover` that never flip with theme.
+- Hero search bar no longer blends into its own section in dark mode (`.hero` now matches page background like every other section; `.search-form` card now visibly pops on top of it)
+- Favicon + app icons (16/32/48/180/192/512) + `manifest.json`, matching the existing brand mark, wired into all 20 HTML pages
+- `og:image` (1200×630 branded social-share card) + `twitter:card`, on every page
+- Ad-space reserved (`.ad-slot`, fixed-height, no layout shift) on homepage, category pages, and service pages
+- Homepage trust-stats strip: "80+ Services · 6 Categories · Bilingual · Free"
+- "Latest Updates" fixed: added a real `dateAdded` field to all 80 services (previously didn't exist — the section wasn't actually showing "latest" anything), now sorts by it, shows 12 with category diversity, plus a "View all 80+ services →" link
+
 ## 🔜 Next modules (planned order — see `PROJECT-ROADMAP.md` for the full, current 21-module plan)
-- **Module 11:** Design & Branding fixes (dark mode search bar/button-text bug — 5 places, favicon/logo/og:image, ad-space reservation, homepage trust stats, "Latest Updates" `dateAdded` fix). **Publish the site right after this module.**
-- **Module 10.5 (optional, do around publish time):** GA4, Search Console verification, Microsoft Clarity, cookie consent banner (DPDP-compliant — consent-gated script loading, not just an overlay banner), 404 page tracking
+- **Publish the site now** (or re-confirm it's live with all of the above) — this was the agreed gate before going further
 - **Module 12:** Per-service content upgrades (Common Issues/Troubleshooting, structured Summary box, tag-based Matching Services)
 - **Module 13:** Downloadable master PDF + "Find Services For You" eligibility wizard
 - **Module 14:** Backend Foundation (Supabase) — shared by Modules 15–16 and later CSC modules

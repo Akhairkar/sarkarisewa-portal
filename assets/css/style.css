@@ -41,6 +41,16 @@
   --saffron: var(--color-accent-saffron);
   --green: var(--color-accent-green);
   --surface: var(--color-surface);
+
+  /* Module 11 fix: --color-primary is also reused as heading/text color
+     and intentionally flips to near-white in dark mode. Anything that
+     needs a solid navy BUTTON background (paired with white text) must
+     use --color-brand instead, which never flips. Using --color-primary
+     for a button background was the root cause of 5 separate
+     invisible-white-text-on-near-white-button instances in dark mode. */
+  --color-brand: #10243E;
+  --color-brand-text: #FFFFFF;
+  --color-brand-hover: #1C3A5E;
 }
 
 [data-theme="dark"] {
@@ -189,7 +199,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 .mobile-nav {
   display: none;
   flex-direction: column;
-  background: var(--color-primary-light);
+  background: var(--color-brand-hover);
   padding: 10px 0 16px;
 }
 .mobile-nav.open { display: flex; }
@@ -200,7 +210,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 
 /* ---------- Hero ---------- */
 .hero {
-  background: var(--color-surface);
+  background: var(--color-bg);
   padding: 56px 0 48px;
   border-bottom: 1px solid var(--color-border);
 }
@@ -210,8 +220,9 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 
 .search-form {
   display: flex; gap: 8px; margin-top: 26px; max-width: 560px;
-  background: var(--color-surface); border: 1px solid var(--color-border);
+  background: var(--color-surface); border: 2px solid var(--color-border);
   border-radius: 10px; padding: 6px;
+  box-shadow: var(--shadow-card);
 }
 .search-form input {
   flex: 1; border: none; background: transparent; padding: 10px 12px;
@@ -219,11 +230,11 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 }
 .search-form input:focus { outline: none; }
 .search-form button {
-  background: var(--color-primary); color: #fff; border: none;
+  background: var(--color-brand); color: var(--color-brand-text); border: none;
   padding: 10px 20px; border-radius: 7px; font-weight: 600; cursor: pointer;
   font-family: var(--font-body);
 }
-.search-form button:hover { background: var(--color-primary-light); }
+.search-form button:hover { background: var(--color-brand-hover); }
 
 .hero-cta { margin-top: 18px; }
 .btn {
@@ -231,8 +242,8 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   font-weight: 600; text-decoration: none; font-size: 0.95rem;
   border: 1px solid var(--color-primary);
 }
-.btn-primary { background: var(--color-primary); color: #fff; }
-.btn-primary:hover { background: var(--color-primary-light); }
+.btn-primary { background: var(--color-brand); color: var(--color-brand-text); }
+.btn-primary:hover { background: var(--color-brand-hover); }
 .btn-ghost { background: transparent; color: var(--color-primary); }
 [data-theme="dark"] .btn-ghost { color: var(--color-primary); border-color: var(--color-border); }
 
@@ -329,9 +340,9 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 }
 .admin-card button {
   width: 100%; margin-top: 22px; padding: 11px; border-radius: 8px; border: none;
-  background: var(--color-primary); color: #fff; font-weight: 600; cursor: pointer; font-size: 0.95rem;
+  background: var(--color-brand); color: var(--color-brand-text); font-weight: 600; cursor: pointer; font-size: 0.95rem;
 }
-.admin-card button:hover { background: var(--color-primary-light); }
+.admin-card button:hover { background: var(--color-brand-hover); }
 .admin-error { color: #B3261E; font-size: 0.85rem; margin-top: 12px; display: none; }
 
 /* ---------- Accessibility: skip-to-content link (Module 10) ---------- */
@@ -397,4 +408,62 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   background: transparent;
   color: var(--color-text);
   border: 1px solid var(--color-border);
+}
+
+/* ---------- Homepage "View all services" CTA (Module 11) ---------- */
+.section-view-all { text-align: center; margin: 24px 0 0; }
+.section-view-all a {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-accent-saffron);
+  text-decoration: none;
+}
+.section-view-all a:hover { text-decoration: underline; }
+
+/* ---------- Homepage trust stats strip (Module 11) ---------- */
+.trust-stats {
+  background: var(--color-brand);
+  padding: 22px 0;
+}
+.trust-stats__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 36px;
+  text-align: center;
+}
+.trust-stat { display: flex; flex-direction: column; gap: 2px; }
+.trust-stat__num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--color-brand-text);
+}
+.trust-stat__label {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Ad slot placeholders (Module 11) ----------
+   Fixed-height reserved space so real ads (added in a later module)
+   don't cause layout shift (Core Web Vitals). Empty for now. */
+.ad-slot {
+  max-width: 728px;
+  min-height: 250px;
+  margin: 8px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-alt);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+@media (max-width: 600px) {
+  .ad-slot { min-height: 100px; }
 }
