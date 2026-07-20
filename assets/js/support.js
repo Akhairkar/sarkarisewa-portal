@@ -107,11 +107,21 @@
         <tr>
           <td><a href="${ROOT}service/service.html?id=${s.slug || s.id}">${t(s.name)}</a></td>
           <td><span class="cat-pill">${categoryName(s.category)}</span></td>
-          <td class="helpline-number">${s.helpline || "—"}</td>
+          <td class="helpline-number">${formatHelpline(s.helpline)}</td>
         </tr>
       `
         )
         .join("");
+    }
+
+    function formatHelpline(helpline) {
+      if (!helpline) return "—";
+      if (typeof helpline === "string") return helpline;
+      if (Array.isArray(helpline)) {
+        if (!helpline.length) return "—";
+        return helpline.map((h) => h.phone).filter(Boolean).join(" / ");
+      }
+      return "—";
     }
 
     if (searchEl) searchEl.addEventListener("input", render);
