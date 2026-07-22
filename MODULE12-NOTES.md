@@ -94,3 +94,32 @@ Deferred to a future batch (medium priority, more niche): FASTag-related
 extras, e-Courts/Case Status, GST Return Filing Guide (distinct from GST
 registration), Passport Police Verification Status tracker, PM SHRI
 Schools, Beti Bachao Beti Padhao.
+
+---
+
+## Admin Dashboard — fixed (was stale Module 1 placeholder)
+
+`admin/dashboard.html` was hardcoded with numbers from Module 1 ("8
+Services published", "7 Categories", "M1 Current module") and never
+updated since — it explicitly labelled itself a static placeholder.
+
+**Fixed:** the dashboard now fetches live data from `services.json`,
+`categories.json`, `blog-posts.json`, and `lang.json` on load, and shows:
+- Real counts (services, categories, blog posts, translation keys)
+- Services-by-category breakdown table
+- Content completeness (how many services have eligibility/fees/
+  documents/FAQs filled in vs. still missing — currently 92/92 complete)
+- Latest 5 services added, by real `dateAdded`
+
+It's explicitly labelled **read-only** — a clear banner explains that
+adding/editing content still requires the Module 14 (Supabase) backend,
+and until then content changes are made directly in the JSON files.
+This is an honest, working improvement, not a promise of capabilities
+that don't exist yet.
+
+**Not changed:** the login itself is still the documented client-side
+demo-only check (`admin/login.html`, hardcoded `admin`/`changeme123`,
+flagged insecure in STATUS.md). Since the dashboard only displays public
+data already visible elsewhere on the site (service/category counts),
+current risk is low, but this still needs real auth before the admin
+area is used for anything sensitive.

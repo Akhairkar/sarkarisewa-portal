@@ -15,12 +15,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Noto+Sans:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/style.css">
 <style>
-  .dash-wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .dash-wrap { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
   .dash-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow-card); }
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin: 20px 0 30px; }
   .stat-num { font-family: var(--font-mono); font-size: 1.8rem; color: var(--color-primary); }
   .stat-label { color: var(--color-text-muted); font-size: 0.85rem; }
   .logout-btn { background: transparent; border: 1px solid var(--color-border); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: var(--font-body); }
+  .cat-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  .cat-table th, .cat-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--color-border); }
+  .cat-table th { color: var(--color-text-muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+  .badge--ok { background: rgba(20,107,58,0.12); color: var(--color-accent-green); }
+  .badge--warn { background: rgba(217,127,43,0.15); color: var(--color-accent-saffron); }
+  .loading { color: var(--color-text-muted); font-size: 0.9rem; }
 </style>
 </head>
 <body>
@@ -30,28 +37,58 @@
     <button class="logout-btn" id="logout">Log out</button>
   </div>
 
-  <div class="stat-grid">
-    <div class="dash-card"><div class="stat-num">8</div><div class="stat-label">Services published</div></div>
-    <div class="dash-card"><div class="stat-num">7</div><div class="stat-label">Categories</div></div>
-    <div class="dash-card"><div class="stat-num">2</div><div class="stat-label">Languages</div></div>
-    <div class="dash-card"><div class="stat-num">M1</div><div class="stat-label">Current module</div></div>
+  <div class="dash-card" style="background:rgba(217,127,43,0.08); border-color:var(--color-accent-saffron);">
+    <strong>⚠ Read-only dashboard.</strong> This shows live stats pulled directly from the site's data files —
+    it does not yet let you add/edit content (that needs the backend planned in Module 14). To change content,
+    edit <code>/data/services.json</code>, <code>/data/categories.json</code>, or <code>/data/blog-posts.json</code> directly.
+  </div>
+
+  <div class="stat-grid" id="stat-grid">
+    <div class="dash-card"><div class="stat-num loading">…</div><div class="stat-label">Services published</div></div>
+    <div class="dash-card"><div class="stat-num loading">…</div><div class="stat-label">Categories</div></div>
+    <div class="dash-card"><div class="stat-num loading">…</div><div class="stat-label">Blog posts</div></div>
+    <div class="dash-card"><div class="stat-num loading">…</div><div class="stat-label">Translation keys</div></div>
+  </div>
+
+  <div class="dash-card">
+    <h3 style="margin-top:0;">Services by category</h3>
+    <table class="cat-table" id="cat-table">
+      <thead><tr><th>Category</th><th>Services</th></tr></thead>
+      <tbody><tr><td colspan="2" class="loading">Loading…</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="dash-card">
+    <h3 style="margin-top:0;">Content completeness</h3>
+    <p style="color:var(--color-text-muted); font-size:0.9rem; margin-top:0;">
+      Services with Eligibility / Fees / Documents / FAQs filled in vs. still missing.
+    </p>
+    <div id="completeness-summary" class="loading">Loading…</div>
+  </div>
+
+  <div class="dash-card">
+    <h3 style="margin-top:0;">Latest 5 services added</h3>
+    <table class="cat-table" id="latest-table">
+      <thead><tr><th>Service</th><th>Category</th><th>Date added</th></tr></thead>
+      <tbody><tr><td colspan="3" class="loading">Loading…</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="dash-card">
+    <h3>Content lives in:</h3>
+    <p class="mono" style="font-size:0.85rem; color:var(--color-text-muted);">/data/services.json — all services + official links<br>/data/categories.json — category list<br>/data/blog-posts.json — blog posts<br>/data/lang.json — all site text (Hindi + English)</p>
   </div>
 
   <div class="dash-card">
     <h3>Coming in later modules</h3>
-    <p style="color:var(--color-text-muted); font-size:0.92rem;">This dashboard is currently a static placeholder. Once we build the CMS module, it will let you:</p>
+    <p style="color:var(--color-text-muted); font-size:0.92rem;">Once Module 14 (Supabase backend) is built, this dashboard will let you:</p>
     <ul style="color:var(--color-text-muted); font-size:0.92rem; line-height:1.8;">
       <li>Add / edit a service (both languages) without touching code</li>
       <li>Manage categories</li>
       <li>Edit official government links per service</li>
-      <li>Publish blog / latest-update posts</li>
-      <li>Real authenticated login (see STATUS.md → "Admin auth")</li>
+      <li>Publish blog / latest-update posts from a form</li>
+      <li>Real authenticated login (current login is a client-side demo only — see STATUS.md → "Admin auth")</li>
     </ul>
-  </div>
-
-  <div class="dash-card">
-    <h3>Right now, content lives in:</h3>
-    <p class="mono" style="font-size:0.85rem; color:var(--color-text-muted);">/data/services.json — all services + official links<br>/data/lang.json — all site text (Hindi + English)</p>
   </div>
 </div>
 
@@ -63,6 +100,62 @@
     sessionStorage.removeItem("ss_admin_demo");
     window.location.href = "login.html";
   });
+
+  const ROOT = "../";
+
+  function catName(cats, slug) {
+    const c = cats.find((x) => x.slug === slug);
+    return c ? (c.name.en || slug) : slug;
+  }
+
+  Promise.all([
+    fetch(ROOT + "data/services.json").then((r) => r.json()),
+    fetch(ROOT + "data/categories.json").then((r) => r.json()),
+    fetch(ROOT + "data/blog-posts.json").then((r) => r.json()),
+    fetch(ROOT + "data/lang.json").then((r) => r.json()),
+  ])
+    .then(([services, categories, blogPosts, lang]) => {
+      const statCards = document.querySelectorAll("#stat-grid .stat-num");
+      statCards[0].textContent = services.length;
+      statCards[0].classList.remove("loading");
+      statCards[1].textContent = categories.length;
+      statCards[1].classList.remove("loading");
+      statCards[2].textContent = blogPosts.length;
+      statCards[2].classList.remove("loading");
+      statCards[3].textContent = Object.keys(lang.en || {}).length;
+      statCards[3].classList.remove("loading");
+
+      // Services by category
+      const counts = {};
+      services.forEach((s) => { counts[s.category] = (counts[s.category] || 0) + 1; });
+      const catRows = categories
+        .map((c) => `<tr><td>${c.name.en}</td><td>${counts[c.slug] || 0}</td></tr>`)
+        .join("");
+      document.querySelector("#cat-table tbody").innerHTML = catRows;
+
+      // Content completeness
+      const complete = services.filter((s) => s.eligibility && s.eligibility.length).length;
+      const incomplete = services.length - complete;
+      document.getElementById("completeness-summary").innerHTML = `
+        <span class="badge badge--ok">${complete} complete</span>
+        &nbsp; ${incomplete > 0 ? `<span class="badge badge--warn">${incomplete} missing content</span>` : ""}
+      `;
+      document.getElementById("completeness-summary").classList.remove("loading");
+
+      // Latest 5 by dateAdded
+      const latest = services
+        .slice()
+        .sort((a, b) => ((a.dateAdded || "") < (b.dateAdded || "") ? 1 : -1))
+        .slice(0, 5);
+      const latestRows = latest
+        .map((s) => `<tr><td>${s.name.en}</td><td>${catName(categories, s.category)}</td><td>${s.dateAdded || "—"}</td></tr>`)
+        .join("");
+      document.querySelector("#latest-table tbody").innerHTML = latestRows;
+    })
+    .catch((err) => {
+      console.error("Dashboard data load failed:", err);
+      document.querySelectorAll(".loading").forEach((el) => { el.textContent = "Could not load."; });
+    });
 </script>
 </body>
 </html>
