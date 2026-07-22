@@ -57,3 +57,40 @@ a Helpline number.
 - The original Module 12 roadmap items — Common Issues/Troubleshooting
   section, structured Summary box, tag-based Matching Services — still
   pending, now lower urgency since the core thin-content problem is fixed
+
+---
+
+## Batch 2 — 12 new high-priority services added (total now 92)
+
+Based on a gap-analysis you provided (high-search-volume services not
+yet in the catalog), checked each suggestion against the existing 80 to
+avoid duplicates — most were already covered (e-Shram, ABHA, Sukanya
+Samriddhi, PM Svanidhi, FASTag, CGHS, NOTTO, eRaktKosh, Property Tax,
+Electricity, National Scholarship, PMKVY). The real gaps, now added with
+full content (officialLinks, applyOnline steps, helpline, documents,
+eligibility, fees, FAQs — same depth as the rest of the catalog):
+
+**Identity Documents (3):** aadhaar-mobile-update, character-certificate,
+police-clearance-certificate
+
+**Government Schemes (1):** pm-vishwakarma-yojana
+
+**Finance & Tax (5):** tds-refund-status, form16-form26as,
+kisan-credit-card, sovereign-gold-bond, udyam-registration
+
+**Utilities (1):** lpg-subsidy-pahal
+
+**Health (1):** esic
+
+**Jobs & Education (1):** labour-card-construction-workers
+
+Official URLs for less-certain ones (PM Vishwakarma, PAHAL/mylpg.in)
+were verified via web search before use, not assumed from memory.
+
+`generate-sitemap.py` re-run after this batch — sitemap now has **117
+URLs** (was 105).
+
+Deferred to a future batch (medium priority, more niche): FASTag-related
+extras, e-Courts/Case Status, GST Return Filing Guide (distinct from GST
+registration), Passport Police Verification Status tracker, PM SHRI
+Schools, Beti Bachao Beti Padhao.
