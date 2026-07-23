@@ -11,7 +11,10 @@ _Last updated: 18 July 2026. Upload this file back into a new chat with Claude t
 - **Module 10:** DONE. `404.html`, site-wide skip-to-content link, `audit-site.py` (reusable QA script — run before every deploy), a real content bug fixed ("100+" services claimed on homepage, actual count is 80 — now consistent), homepage meta description trimmed for SEO (163→132 chars). See `MODULE10-NOTES.md`.
 - **Module 10.5:** DONE. Cookie consent banner (`assets/js/consent.js`, DPDP-compliant opt-in, GA4 gated until Accept) + GA4 wired and confirmed tracking live via Realtime report.
 - **Module 11:** DONE. Dark-mode invisible-text bug fixed (8 instances — 5 originally flagged + 3 more found in a full sweep), favicon/app-icons/manifest, og:image, ad-space reserved, homepage trust stats, "Latest Updates" real `dateAdded` fix. See `MODULE11-NOTES.md`.
-- **Module 12 and later: NOT started yet.**
+- **Module 12:** DONE. Filled eligibility/fees/documents/FAQs for all services (corrected an earlier wrong "thin content" claim caused by checking a non-existent field name — real gap was 20 services, not 80, now closed) + 12 new high-priority services added (80→92 total) + admin dashboard rebuilt to show live data instead of stale Module 1 numbers. See `MODULE12-NOTES.md`.
+- **Module 13:** DONE. "Find Services For You" eligibility wizard (client-side, persona + category filtering) + downloadable master PDF of all services (English-only for now — no Devanagari font available in this environment, see `MODULE13-NOTES.md` for how to add Hindi later).
+- **Also done outside the original module numbering:** GitHub Actions automation (`audit.yml` auto-runs QA checks on every push, `regenerate-sitemap.yml` auto-updates sitemap.xml when data changes) — see `AUTOMATION-NOTES.md`.
+- **Module 14 and later: NOT started yet.**
 
 ---
 
@@ -73,13 +76,13 @@ _Last updated: 18 July 2026. Upload this file back into a new chat with Claude t
 
 See `MODULE11-NOTES.md` for full details. Verified with `audit-site.py` (0 issues) plus a manual sweep of every white-text CSS rule in the codebase to catch anything the original 5-bug list missed.
 
-## Module 12 — Per-Service Content Enhancements
+## Module 12 — Per-Service Content Enhancements (DONE)
 Ideas gathered from studying govtschemes.in, myscheme.gov.in, and sarkariyojana.com (large Indian govt-info sites) — see notes below each.
 1. **"Common Issues / Troubleshooting" section per service** — e.g. "payment not received," "application rejected." Pure content (`commonIssues` array in `services.json`, rendered on `service.html`), no backend needed. Matches real search intent people type into Google.
 2. **Structured "Summary box" at the top of each service page** — scheme/service name, launch info, benefit, who can apply, official portal, all in one scannable table.
 3. **Tag-based "Matching Services"** — beyond category, add lightweight tags like person-type (Women, Senior Citizen, Student) and benefit-type (Financial Assistance, Health, Education) so related services cross-link more precisely than the current category-only relation. Improves internal linking for SEO too.
 
-## Module 13 — Discovery Features
+## Module 13 — Discovery Features (DONE)
 1. **Downloadable master PDF** of all services/categories — low effort, high perceived value, generate once as a static file (regenerate when services.json changes, similar to `generate-sitemap.py`).
 2. **"Find Services For You" eligibility wizard** — inspired by the official myScheme.gov.in platform's flow: user answers a few quick questions (state, category of interest, etc.) and gets a filtered list back. Fully client-side, no backend needed — built on the same `services.json`/`categories.json` data already in use.
 

@@ -148,10 +148,27 @@
 - Homepage trust-stats strip: "80+ Services · 6 Categories · Bilingual · Free"
 - "Latest Updates" fixed: added a real `dateAdded` field to all 80 services (previously didn't exist — the section wasn't actually showing "latest" anything), now sorts by it, shows 12 with category diversity, plus a "View all 80+ services →" link
 
+## ✅ Module 12 — DONE (Per-Service Content + Catalog Expansion)
+
+**Correction to an earlier claim:** a prior "thin content on all 80 services" finding was wrong — it came from checking a JSON field name (`blocks`) that never existed; the real fields are `eligibility`/`fees`/`documentsRequired`/`faqs`. The actual gap was 20 services (15 Identity Documents + 5 stragglers: pm-kisan, ayushman-bharat, gst, epfo, digilocker), now filled with full bilingual content.
+
+- **12 new high-priority services added** (80 → 92 total) based on a user-provided gap analysis, after checking for duplicates against the existing catalog: aadhaar-mobile-update, character-certificate, police-clearance-certificate, pm-vishwakarma-yojana, tds-refund-status, form16-form26as, kisan-credit-card, sovereign-gold-bond, lpg-subsidy-pahal, esic, udyam-registration, labour-card-construction-workers
+- **Admin dashboard rebuilt** — was a static Module 1 placeholder showing stale hardcoded numbers ("8 services", "7 categories"); now dynamically loads and displays live stats from the actual data files (service/category/blog counts, content completeness, latest additions). Clearly labelled read-only until Module 14's backend exists.
+- See `MODULE12-NOTES.md` for full details.
+
+## ✅ Module 13 — DONE (Discovery Features)
+
+- **"Find Services For You" wizard** (`find-services.html`) — 3-step client-side eligibility helper: persona selection (8 personas) → category filter → matching results, using keyword-based matching against service name/description. Linked from the homepage hero.
+- **Downloadable master PDF** (`assets/downloads/sarkarisewa-portal-all-services.pdf`) — all 92 services grouped by category, linked from `sitemap.html`. **English-only for now** — this environment has no Devanagari font available to render Hindi text in a PDF; see `MODULE13-NOTES.md` for how to add a bilingual version later.
+- Sitemap regenerated — now 118 URLs.
+
+## 🔧 Also done — GitHub Actions automation
+Two workflows added under `.github/workflows/`:
+- `audit.yml` — runs `audit-site.py` automatically on every push, shows ✅/❌ on the commit
+- `regenerate-sitemap.yml` — auto-regenerates and commits `sitemap.xml` whenever a data file changes, so it's never forgotten
+See `AUTOMATION-NOTES.md`.
+
 ## 🔜 Next modules (planned order — see `PROJECT-ROADMAP.md` for the full, current 21-module plan)
-- **Publish the site now** (or re-confirm it's live with all of the above) — this was the agreed gate before going further
-- **Module 12:** Per-service content upgrades (Common Issues/Troubleshooting, structured Summary box, tag-based Matching Services)
-- **Module 13:** Downloadable master PDF + "Find Services For You" eligibility wizard
 - **Module 14:** Backend Foundation (Supabase) — shared by Modules 15–16 and later CSC modules
 - **Module 15:** Comments/Q&A on service pages
 - **Module 16:** Email/WhatsApp subscribe

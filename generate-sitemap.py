@@ -21,6 +21,7 @@ TODAY = date.today().isoformat()
 STATIC_PAGES = [
     ("/index.html", "1.0", "weekly"),
     ("/search.html", "0.8", "weekly"),
+    ("/find-services.html", "0.8", "monthly"),
     ("/blog/index.html", "0.7", "weekly"),
     ("/sitemap.html", "0.3", "monthly"),
     ("/about.html", "0.5", "monthly"),
