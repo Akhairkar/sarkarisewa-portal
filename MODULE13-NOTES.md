@@ -52,3 +52,29 @@ script is straightforward to extend once a font is available.
 - `generate-sitemap.py` re-run — sitemap now has 118 URLs (was 117)
 - New i18n keys added: wizard (14 keys) + persona labels (8) + PDF/hero
   link CTAs (3) = 25 new keys, total now 237
+
+---
+
+## Bug found and fixed: stale "80+" count (recurring bug class)
+
+After Module 12 grew the catalog from 80 to 92 services, **6 hardcoded
+"80+" references** across the site went stale — the exact same bug
+class fixed once before in Module 10 ("100+" vs actual count). Found via
+a site-wide grep after a screenshot showed the homepage trust-stats bar
+still saying "80+":
+- Homepage meta description, `og:description`, `hero_sub` (EN + HI in `lang.json`, plus the static HTML fallback)
+- Homepage trust-stats bar service count
+- `about.html`'s `about_s1_body` (EN + HI)
+- `search.html`'s meta description + `search_intro` (EN + HI)
+
+**Fixed content:** all corrected to 92+.
+
+**Fixed the recurring root cause, not just this instance:** the
+homepage trust-stats service count is no longer hardcoded text at all —
+`home.js` now reads `SERVICES_DATA.length` and writes it into the
+`#trust-stat-services` element on load, so it can never go stale again
+as the catalog grows in future modules. The categories count
+(`#trust-stat-categories`) was made dynamic the same way. The other
+mentions (about.html, search.html) are still static text since they're
+prose sentences, not a dedicated stat display — worth a periodic grep
+check (`grep -rn "80+\|92+"`) after any future catalog size change.

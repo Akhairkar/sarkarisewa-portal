@@ -139,11 +139,19 @@ function renderBlogSection() {
   }).join("");
 }
 
+function renderTrustStats() {
+  const servicesEl = document.getElementById("trust-stat-services");
+  const categoriesEl = document.getElementById("trust-stat-categories");
+  if (servicesEl && SERVICES_DATA) servicesEl.textContent = SERVICES_DATA.length + "+";
+  if (categoriesEl && CATEGORIES_DATA) categoriesEl.textContent = CATEGORIES_DATA.length;
+}
+
 async function renderHome() {
   await loadHomeData();
   renderCategories();
   renderServices();
   renderBlogSection();
+  renderTrustStats();
 }
 
 document.addEventListener("ss:ready", renderHome);
