@@ -14,7 +14,34 @@ _Last updated: 18 July 2026. Upload this file back into a new chat with Claude t
 - **Module 12:** DONE. Filled eligibility/fees/documents/FAQs for all services (corrected an earlier wrong "thin content" claim caused by checking a non-existent field name — real gap was 20 services, not 80, now closed) + 12 new high-priority services added (80→92 total) + admin dashboard rebuilt to show live data instead of stale Module 1 numbers. See `MODULE12-NOTES.md`.
 - **Module 13:** DONE. "Find Services For You" eligibility wizard (client-side, persona + category filtering) + downloadable master PDF of all services (English-only for now — no Devanagari font available in this environment, see `MODULE13-NOTES.md` for how to add Hindi later).
 - **Also done outside the original module numbering:** GitHub Actions automation (`audit.yml` auto-runs QA checks on every push, `regenerate-sitemap.yml` auto-updates sitemap.xml when data changes) — see `AUTOMATION-NOTES.md`.
-- **Module 14 and later: NOT started yet.**
+- **Module 14:** DONE. Supabase project connected (`assets/js/supabase-client.js` wired with real Project URL + anon key), `comments` and `subscribers` tables created via `supabase/schema.sql`, RLS policies verified live in the dashboard.
+- **Module 15:** DONE. Comments/Q&A section on every service page — post form + list, HTML-escaped, length-capped both client and server side (RLS). See `MODULE15-NOTES.md`.
+- **Module 16:** DONE. Email/WhatsApp subscribe widget (per-service on service pages + general on homepage), insert-only into `subscribers`. Actual outbound sending is a separate future task. See `MODULE16-NOTES.md`.
+- **Decision (your instruction):** CSC modules (17–21) are on hold. Next up instead: an **AdSense-readiness audit phase** (new, inserted before CSC) — see below.
+- **Module 17 onward (CSC): ON HOLD, not started.**
+
+---
+
+## AdSense-Readiness Audit Phase (inserted before CSC, per your instruction)
+
+You flagged several concrete gaps after using the live site: few blog posts, per-service info still feels light in places, related services showing only ~2, and the admin panel needing real functionality. Breaking this into focused pieces:
+
+### A. Content depth pass
+- **Related Services expansion** — confirmed via data check: 67 of 92 services have exactly 2 related services, 6 have zero, only 9 have 3+. Needs deliberate curation (not just "any 2 same-category IDs") — cross-link by actual user journeys (e.g. Aadhaar → PAN → Bank Account, or Birth Certificate → School Admission → Scholarship), aiming for 3–5 per service.
+- **More blog posts** — only 5 exist (from Module 9). AdSense reviewers and general content depth both benefit from a steadier cadence; a batch of 10–15 more posts, covering common pain points per category, matching the existing tone/format.
+- **Common Issues / Summary box** — these were in the original Module 12 plan but deprioritized once the bigger thin-content gap (eligibility/fees/documents/FAQs) got fixed. Worth revisiting now that the baseline is solid — adds another layer of depth per service page.
+
+### B. Technical AdSense-readiness checklist
+- **Lighthouse audit** on the live URL (performance, accessibility, best practices, SEO scores) — better done against the live site than local files, as noted back in Module 10
+- **Mobile responsiveness pass** on real devices — layout already uses responsive grids (Module 10 audit), but an actual walkthrough hasn't been done since the site grew (Modules 11–16 added a lot of new UI: wizard, comments, subscribe widget, trust stats)
+- **ads.txt** — required by AdSense once approved, doesn't exist yet; trivial to add but easy to forget
+- **Full manual content-policy read-through** — AdSense's policies on content quality, prohibited content, and navigation — a final check against the actual current site, not assumptions
+- **Real helpline/fee spot-check** — pick a sample of services and manually verify the numbers/fees against the actual government source, since this is the one class of error automated tooling can't catch
+
+### C. Admin panel — now genuinely buildable
+Back in Module 12, the admin dashboard was upgraded to show live *read-only* stats because there was no backend yet. **That constraint no longer applies** — Module 14 connected Supabase, so real CRUD (add/edit a service, manage categories, moderate comments, view subscribers) is now realistic to build, using the same Supabase project and proper authenticated access (replacing the current insecure client-side demo login).
+
+This phase will get broken into smaller pieces (matching how Modules 12/13 were split) once you're ready to start — this is the outline, not yet built.
 
 ---
 
@@ -86,21 +113,31 @@ Ideas gathered from studying govtschemes.in, myscheme.gov.in, and sarkariyojana.
 1. **Downloadable master PDF** of all services/categories — low effort, high perceived value, generate once as a static file (regenerate when services.json changes, similar to `generate-sitemap.py`).
 2. **"Find Services For You" eligibility wizard** — inspired by the official myScheme.gov.in platform's flow: user answers a few quick questions (state, category of interest, etc.) and gets a filtered list back. Fully client-side, no backend needed — built on the same `services.json`/`categories.json` data already in use.
 
-## Module 14 — Backend Foundation (Supabase)
-- Set up the Supabase project and core schema
-- This is a **shared foundation** — Modules 15–16 (comments, subscribe) and the later CSC modules (17–21) will all build on this same backend, so it only needs to be set up once.
+## Module 14 — Backend Foundation (Supabase) (DONE)
+- Supabase project created, connected to the site (`assets/js/supabase-client.js`)
+- `supabase/schema.sql` run — `comments` and `subscribers` tables live with RLS policies, verified in the dashboard's Table Editor
+- Shared foundation for Modules 15–16 and (whenever resumed) the CSC modules
 
-## Module 15 — Comments / Q&A on Service Pages
-- Lightweight comment thread under each service page (Supabase-backed)
-- Why: on govtschemes.in, scheme pages have 100s of comments — real engagement, a freshness signal for Google, and free long-tail keyword capture (people type their actual problem as a comment)
+## Module 15 — Comments / Q&A on Service Pages (DONE)
+- Comment form + list on every service page, backed by the `comments` table
+- HTML-escaped, length-capped both client-side and via the database's RLS `with check` constraint
+- No moderation UI yet — hiding a bad comment currently means editing its `status` directly in Supabase's Table Editor
 
-## Module 16 — Email / WhatsApp Subscribe
-- "Get updates about this service" — simple email capture (saved to Supabase) + WhatsApp channel link
-- Builds a return-visitor/lead channel ahead of the CSC modules, where this pattern gets reused for CSC-specific updates too
+## Module 16 — Email / WhatsApp Subscribe (DONE)
+- Reusable widget (`assets/js/subscribe.js`), on every service page (scoped to that service) and the homepage (general)
+- Insert-only into `subscribers`, matches its RLS policy and check constraint
+- Captures the WhatsApp opt-in flag; actually sending messages/emails is a distinct future task, not yet built
 
 ---
 
-## Module 17 onward — CSC Centre Listings Feature
+## AdSense-Readiness Audit Phase (inserted before CSC)
+See the top-of-file summary for the full breakdown (content depth pass,
+technical checklist, admin panel). CSC (Modules 17–21) is on hold until
+this phase is worked through.
+
+---
+
+## Module 17 onward — CSC Centre Listings Feature (ON HOLD)
 
 ### Critical architecture note
 Everything built in Modules 1–13 is a **fully static site** — plain HTML/JS/JSON, no backend, no database, no login system (Module 14 changes this, but only for comments/subscribe). Claim/edit/ownership/6-month-tracking flows for CSC need the same Supabase backend, extended with new tables — nothing about Modules 1–16 needs to change for this, the CSC section is purely additive (new `csc/` folder, new nav link).

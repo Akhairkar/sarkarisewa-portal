@@ -168,11 +168,22 @@ Two workflows added under `.github/workflows/`:
 - `regenerate-sitemap.yml` — auto-regenerates and commits `sitemap.xml` whenever a data file changes, so it's never forgotten
 See `AUTOMATION-NOTES.md`.
 
-## 🔜 Next modules (planned order — see `PROJECT-ROADMAP.md` for the full, current 21-module plan)
-- **Module 14:** Backend Foundation (Supabase) — shared by Modules 15–16 and later CSC modules
-- **Module 15:** Comments/Q&A on service pages
-- **Module 16:** Email/WhatsApp subscribe
-- **Modules 17–21:** CSC Centre Listings (public directory → claim flow → owner dashboard/free period → lead generation → monetization)
+## ✅ Module 14 — DONE (Backend Foundation)
+Supabase connected, `comments` + `subscribers` tables live with RLS. See `MODULE14-NOTES.md`.
+
+## ✅ Module 15 — DONE (Comments / Q&A)
+Comment form + list on every service page. See `MODULE15-NOTES.md`.
+
+## ✅ Module 16 — DONE (Email / WhatsApp Subscribe)
+Subscribe widget on service pages + homepage. See `MODULE16-NOTES.md`.
+
+## 🔜 Next: AdSense-Readiness Audit Phase (CSC on hold)
+Per your instruction, CSC (Modules 17–21) is on hold. Next up instead:
+- **Content depth:** expand Related Services (currently 67/92 services stuck at exactly 2), add 10–15 more blog posts (only 5 exist), revisit Common Issues/Summary box sections deferred from Module 12
+- **Technical checklist:** live-site Lighthouse audit, fresh mobile pass (site has grown a lot since Module 10's check), `ads.txt`, manual AdSense content-policy read-through, spot-check real helpline/fee accuracy
+- **Admin panel:** now genuinely buildable with real CRUD since Supabase exists — no longer blocked like it was back in Module 12
+See `PROJECT-ROADMAP.md`'s "AdSense-Readiness Audit Phase" section for the full breakdown.
+- **Modules 17–21 (CSC):** ON HOLD until the above phase is worked through
 
 ## ⚠️ Admin auth — must fix before going live
 
@@ -194,7 +205,7 @@ See `AUTOMATION-NOTES.md`.
 Partials (`header.html`/`footer.html`) and JSON data load via `fetch()`, which browsers block on `file://` URLs. You need a local server:
 
 ```
-cd govservices
+cd sarkarisewa-portal
 python3 -m http.server 8000
 ```
 
@@ -207,43 +218,87 @@ Then open `http://localhost:8000/index.html`.
 - GitHub Pages → Settings → Pages → Source: branch + `/ (root)`
 - Path handling for the `/sarkarisewa-portal/` sub-path is already solved — see `SS_ROOT` note above.
 
-## File map (through Module 7)
+## File map (current, through Module 16)
 
 ```
-govservices/
+sarkarisewa-portal/
 ├── index.html
+├── search.html                                          (Module 8)
+├── find-services.html                                   (Module 13 — eligibility wizard)
+├── sitemap.html
+├── about.html
+├── contact.html
+├── faq.html
 ├── privacy-policy.html
-├── disclaimer.html                                      (NEW — Module 7)
-├── terms.html                                           (NEW — Module 7)
+├── disclaimer.html
+├── terms.html
+├── 404.html                                              (Module 10)
+├── robots.txt                                            (Module 8)
+├── sitemap.xml                                           (auto-generated — see generate-sitemap.py)
+├── manifest.json                                         (Module 11 — PWA/favicon)
+├── favicon.ico                                           (Module 11)
+├── audit-site.py                                         (Module 10 — run before every deploy)
+├── generate-sitemap.py                                   (Module 8 — run after adding services/posts)
+│
 ├── admin/
-│   ├── login.html
-│   └── dashboard.html
+│   ├── login.html                                        (⚠ client-side demo login, see "Admin auth" note)
+│   └── dashboard.html                                    (Module 12 — live read-only stats, no CRUD yet)
+│
 ├── category/
 │   └── category.html
 ├── service/
-│   └── service.html
-├── support/                                              (NEW folder — Module 7)
+│   └── service.html                                      (+ Comments + Subscribe widget, Modules 15–16)
+├── blog/                                                  (Module 9)
+│   ├── index.html
+│   └── post.html
+├── support/
 │   ├── index.html
 │   ├── state-wise-services.html
 │   ├── helpline-directory.html
 │   └── rti-guide.html
+│
+├── supabase/                                              (Module 14)
+│   └── schema.sql                                        (comments + subscribers tables, RLS policies)
+│
+├── .github/workflows/                                     (automation, see AUTOMATION-NOTES.md)
+│   ├── audit.yml                                         (auto-runs audit-site.py on every push)
+│   └── regenerate-sitemap.yml                            (auto-regenerates sitemap.xml on data changes)
+│
 ├── assets/
-│   ├── css/style.css, module2.css, module7.css
-│   └── js/main.js, home.js, category.js, service.js, i18n-helper.js, support.js
+│   ├── css/
+│   │   ├── style.css                                     (base — includes --color-brand tokens, Module 11)
+│   │   ├── module2.css, module7.css, module8.css, module9.css
+│   │   ├── module10.css, module13.css, module15.css, module16.css
+│   ├── js/
+│   │   ├── main.js, i18n-helper.js, consent.js           (site-wide: theme/lang, cookie consent + GA4 gate)
+│   │   ├── home.js, category.js, service.js, support.js, sitemap.js
+│   │   ├── search.js, blog.js, blog-post.js
+│   │   ├── find-services.js                              (Module 13)
+│   │   ├── supabase-client.js                            (Module 14 — shared DB connection)
+│   │   ├── comments.js                                   (Module 15)
+│   │   └── subscribe.js                                  (Module 16)
+│   ├── img/                                               (Module 11 — favicons, apple-touch-icon, og-image.png)
+│   └── downloads/
+│       └── sarkarisewa-portal-all-services.pdf            (Module 13 — English only, see MODULE13-NOTES.md)
+│
 ├── data/
-│   ├── services.json                                    (80 services — all 6 categories complete)
-│   ├── services.module2-sample.json                     (reference schema, not for production use)
-│   ├── services.module3-identity-documents.json          (reference — Module 3, already merged)
-│   ├── categories.json
-│   └── lang.json                                        (135 keys, en + hi)
+│   ├── services.json                                     (92 services — all 6 categories, full content)
+│   ├── categories.json                                   (6 categories)
+│   ├── blog-posts.json                                   (5 posts)
+│   ├── lang.json                                         (266 keys, en + hi)
+│   ├── services.module2-sample.json                      (reference schema, not for production use)
+│   └── services.module3-identity-documents.json          (reference — Module 3, already merged)
+│
 ├── partials/
 │   ├── header.html
 │   └── footer.html
-├── MODULE3-NOTES.md
-├── MODULE4-NOTES.md
-├── MODULE5-NOTES.md
-├── MODULE6-NOTES.md
-├── MODULE7-NOTES.md                                      (NEW — merge instructions for Module 7)
-└── STATUS.md
+│
+└── Module notes: MODULE3–MODULE16-NOTES.md, AUTOMATION-NOTES.md,
+    CATEGORY-FIX-NOTES.md, HOMEPAGE-FIX-NOTES.md, MASTER-FIX-CHECKLIST.md,
+    PROJECT-ROADMAP.md, README.md, STATUS.md (this file)
 ```
+
+**Note:** `services.module2-sample.json` and `services.module3-identity-documents.json`
+are historical reference files from early modules, already merged into
+`services.json` — safe to ignore/delete, kept only for history.
 
