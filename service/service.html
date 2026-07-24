@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link rel="stylesheet" href="../assets/css/module2.css" />
   <link rel="stylesheet" href="../assets/css/module15.css" />
+  <link rel="stylesheet" href="../assets/css/module16.css" />
 </head>
 <body>
   <script>window.SS_ROOT = "../";</script>
@@ -42,6 +43,15 @@
       <h2 class="service-section__title"><span class="icon">🔗</span> Related Services</h2>
       <div class="related-grid" id="related-grid"></div>
     </section>
+
+    <div id="subscribe-widget"></div>
+    <script>
+      (function () {
+        var id = new URLSearchParams(window.location.search).get("id");
+        var el = document.getElementById("subscribe-widget");
+        if (el && id) el.dataset.serviceId = id;
+      })();
+    </script>
 
     <section class="service-section" id="comments-section">
       <h2 class="service-section__title"><span class="icon">💬</span> <span data-i18n="comments_title">Questions &amp; Comments</span></h2>
@@ -76,5 +86,6 @@
   <script src="../assets/js/service.js"></script>
   <script src="../assets/js/supabase-client.js"></script>
   <script src="../assets/js/comments.js"></script>
+  <script src="../assets/js/subscribe.js"></script>
 </body>
 </html>
