@@ -1,4 +1,17 @@
-# Module 14 — Backend Foundation (Supabase) — IN PROGRESS
+# Module 14 — Backend Foundation (Supabase) — Connected ✅
+
+## Status: connected, schema needs to be run (if not done already)
+`assets/js/supabase-client.js` now has your real Project URL
+(`https://yjxsgkqspmhxndvhnjcd.supabase.co`) and anon key wired in.
+
+**⚠️ Security note:** you also shared your `service_role` key in chat.
+That key was **not** used anywhere in the site code — only the `anon`
+key belongs in client-side code (Row-Level Security policies control
+what it can actually do). Since the service_role key was typed into
+this conversation, consider rotating it from Supabase Dashboard →
+Settings → API → regenerate service_role key, as a precaution — it's
+not currently exposed anywhere public, but it's good hygiene to rotate
+a key once it's been shared outside the dashboard.
 
 ## What's built and ready
 1. **`supabase/schema.sql`** — SQL schema for `comments` (Module 15) and
