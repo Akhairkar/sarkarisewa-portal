@@ -15,6 +15,7 @@
 
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link rel="stylesheet" href="../assets/css/module2.css" />
+  <link rel="stylesheet" href="../assets/css/module15.css" />
 </head>
 <body>
   <script>window.SS_ROOT = "../";</script>
@@ -41,6 +42,30 @@
       <h2 class="service-section__title"><span class="icon">🔗</span> Related Services</h2>
       <div class="related-grid" id="related-grid"></div>
     </section>
+
+    <section class="service-section" id="comments-section">
+      <h2 class="service-section__title"><span class="icon">💬</span> <span data-i18n="comments_title">Questions &amp; Comments</span></h2>
+      <p class="comments-note" data-i18n="comments_note">This is a public discussion for this service — not official support. For account-specific help, use the helpline above.</p>
+
+      <form id="comment-form" class="comment-form">
+        <div class="comment-form__row">
+          <label for="comment-name" class="visually-hidden" data-i18n="comments_name_label">Your name</label>
+          <input type="text" id="comment-name" maxlength="80" data-i18n-placeholder="comments_name_placeholder" placeholder="Your name" required />
+        </div>
+        <div class="comment-form__row">
+          <label for="comment-message" class="visually-hidden" data-i18n="comments_message_label">Your question or comment</label>
+          <textarea id="comment-message" maxlength="2000" rows="3" data-i18n-placeholder="comments_message_placeholder" placeholder="Ask a question or share your experience with this service..." required></textarea>
+        </div>
+        <div class="comment-form__actions">
+          <span class="comment-form__status" id="comment-form-status"></span>
+          <button type="submit" class="btn-primary" id="comment-submit" data-i18n="comments_submit">Post</button>
+        </div>
+      </form>
+
+      <div id="comments-list" class="comments-list">
+        <p class="loading" data-i18n="comments_loading">Loading comments…</p>
+      </div>
+    </section>
   </main>
 
   <div id="site-footer"></div>
@@ -49,5 +74,7 @@
   <script src="../assets/js/consent.js"></script>
   <script src="../assets/js/i18n-helper.js"></script>
   <script src="../assets/js/service.js"></script>
+  <script src="../assets/js/supabase-client.js"></script>
+  <script src="../assets/js/comments.js"></script>
 </body>
 </html>
