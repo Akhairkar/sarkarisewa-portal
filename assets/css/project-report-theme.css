@@ -1,52 +1,53 @@
 /**
  * project-report-theme.css
  * ------------------------------------------------------------------
- * Visual identity for the Project Report tool ONLY — deliberately
- * distinct from the rest of the site so a visitor immediately reads
- * this as "a tool", not another content page.
- *
- * Design concept: an Indian bank passbook / ledger. Ruled lines,
- * hand-filled entries, an official rubber stamp — the same visual
- * language as the physical document this tool replaces. Grounded in
- * the subject, not a generic fintech gradient.
+ * Modern Smart Banking & Business Financial Report Theme
+ * Clean, High-Trust Fintech Design for PMEGP & Mudra Loan Generator.
+ * Fully Responsive for Mobile, Tablet & Desktop viewports.
  * ------------------------------------------------------------------
  */
 
 :root {
-  /* ---- Color tokens ---- */
-  --pr-ink: #0f3d3e;           /* passbook ink — headings, primary text */
-  --pr-paper: #fbf7ee;         /* aged ledger paper — page background */
-  --pr-paper-line: #c9d6d3;    /* ruled line on the paper */
-  --pr-stamp: #9b2226;         /* rubber-stamp maroon — used sparingly */
-  --pr-brass: #b08d57;         /* brass seal accent — progress, highlights */
-  --pr-success: #3f6b4f;       /* muted ledger-green — approved/positive states */
-  --pr-paper-raised: #ffffff;  /* card surface, slightly lifted off the paper */
-  --pr-text-muted: #5b6b68;
-
-  /* ---- Type tokens ---- */
+  --pr-ink: #0f172a;
+  --pr-ink-muted: #475569;
+  --pr-bg: #f8fafc;
+  --pr-surface: #ffffff;
+  --pr-border: #e2e8f0;
+  --pr-border-focus: #3b82f6;
+  
+  --pr-primary: #1e3a8a;
+  --pr-primary-hover: #1e40af;
+  --pr-emerald: #10b981;
+  --pr-emerald-light: rgba(16, 185, 129, 0.1);
+  --pr-saffron: #d97f2b;
+  --pr-saffron-light: rgba(217, 127, 43, 0.1);
+  
+  --pr-radius: 12px;
+  --pr-shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --pr-shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.08);
   --pr-font-display: "Zilla Slab", "Noto Serif", Georgia, serif;
   --pr-font-body: "Source Sans 3", "Noto Sans Devanagari", "Noto Sans", sans-serif;
-  --pr-font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+  --pr-max-width: 840px;
+}
 
-  /* ---- Layout tokens ---- */
-  --pr-radius: 3px;           /* passbook pages are square-cornered, not app-rounded */
-  --pr-stamp-radius: 50%;
-  --pr-max-width: 760px;      /* narrow — a passbook page, not a marketing landing page */
+[data-theme="dark"] {
+  --pr-ink: #f8fafc;
+  --pr-ink-muted: #94a3b8;
+  --pr-bg: #0f172a;
+  --pr-surface: #1e293b;
+  --pr-border: #334155;
+  --pr-border-focus: #60a5fa;
+  --pr-primary: #3b82f6;
+  --pr-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 .pr-scope {
-  background: var(--pr-paper);
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 35px,
-    var(--pr-paper-line) 35px,
-    var(--pr-paper-line) 36px
-  );
+  background: var(--pr-bg);
   color: var(--pr-ink);
   font-family: var(--pr-font-body);
-  line-height: 1.55;
+  line-height: 1.6;
   min-height: 100vh;
+  padding-bottom: 60px;
 }
 
 .pr-scope * {
@@ -59,356 +60,246 @@
   padding: 0 20px;
 }
 
-/* ---- Hero: a live passbook entry, not a gradient banner ---- */
+.pr-breadcrumb {
+  padding: 20px 0 10px;
+  font-size: 0.9rem;
+  color: var(--pr-ink-muted);
+}
+.pr-breadcrumb a {
+  color: var(--pr-primary);
+  text-decoration: none;
+}
+
+/* ============ HERO SECTION ============ */
 .pr-hero {
-  padding: 56px 0 32px;
+  background: linear-gradient(135deg, var(--pr-surface) 0%, rgba(30, 58, 138, 0.03) 100%);
+  border: 1px solid var(--pr-border);
+  border-radius: var(--pr-radius);
+  padding: 36px;
+  margin-bottom: 30px;
+  box-shadow: var(--pr-shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.pr-stamp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--pr-emerald-light);
+  color: var(--pr-emerald);
+  border: 1px solid var(--pr-emerald);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 99px;
+  margin-bottom: 16px;
 }
 
 .pr-hero h1 {
   font-family: var(--pr-font-display);
-  font-weight: 600;
-  font-size: clamp(28px, 5vw, 40px);
-  line-height: 1.15;
+  font-size: clamp(24px, 4vw, 36px);
+  color: var(--pr-ink);
   margin: 0 0 12px;
-  letter-spacing: -0.01em;
+  line-height: 1.25;
 }
 
-.pr-hero p.pr-subhead {
-  font-size: 17px;
-  color: var(--pr-text-muted);
-  max-width: 46ch;
-  margin: 0 0 28px;
+.pr-subhead {
+  font-size: 1.1rem;
+  color: var(--pr-ink-muted);
+  margin: 0 0 24px;
 }
 
-/* The signature element: a rotated rubber-stamp badge */
-.pr-stamp-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--pr-stamp);
-  color: var(--pr-stamp);
-  font-family: var(--pr-font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 6px 14px;
-  border-radius: var(--pr-stamp-radius);
-  transform: rotate(-6deg);
-  opacity: 0.9;
-}
-
-/* ---- Ledger card: the sample entry shown in the hero ---- */
+/* Ledger Card Preview */
 .pr-ledger-card {
-  background: var(--pr-paper-raised);
-  border: 1px solid var(--pr-paper-line);
-  border-radius: var(--pr-radius);
-  padding: 24px 28px;
-  margin: 28px 0;
-  box-shadow: 0 1px 0 var(--pr-paper-line), 0 8px 24px -18px rgba(15, 61, 62, 0.4);
-  position: relative;
+  background: var(--pr-surface);
+  border: 1px solid var(--pr-border);
+  border-radius: 10px;
+  padding: 18px 24px;
+  margin: 20px 0;
+  box-shadow: var(--pr-shadow-sm);
 }
 
 .pr-ledger-row {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  padding: 9px 0;
-  border-bottom: 1px dashed var(--pr-paper-line);
-  font-size: 15px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--pr-border);
+  font-size: 0.95rem;
 }
-
 .pr-ledger-row:last-child {
   border-bottom: none;
 }
-
-.pr-ledger-row .pr-label {
-  color: var(--pr-text-muted);
+.pr-ledger-row.pr-total {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--pr-primary);
+  border-top: 2px solid var(--pr-border);
+  padding-top: 12px;
+  margin-top: 4px;
 }
 
-.pr-ledger-row .pr-value {
-  font-family: var(--pr-font-mono);
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-}
-
-.pr-ledger-row.pr-total .pr-value {
-  color: var(--pr-stamp);
-  font-size: 17px;
-}
-
-/* ---- CTA ---- */
-.pr-btn {
-  display: inline-block;
-  font-family: var(--pr-font-body);
-  font-weight: 600;
-  font-size: 15px;
-  padding: 13px 26px;
-  border-radius: var(--pr-radius);
-  border: none;
-  cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-}
-
-.pr-btn-primary {
-  background: var(--pr-ink);
-  color: var(--pr-paper);
-}
-
-.pr-btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px -8px rgba(15, 61, 62, 0.5);
-}
-
-.pr-btn-primary:focus-visible {
-  outline: 3px solid var(--pr-brass);
-  outline-offset: 2px;
-}
-
-/* ---- Step indicator: "passbook pages", not generic circles ---- */
+/* ============ STEP TABS ============ */
 .pr-page-tabs {
-  display: flex;
-  gap: 4px;
-  margin: 32px 0 20px;
-  border-bottom: 2px solid var(--pr-ink);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+  background: var(--pr-surface);
+  padding: 6px;
+  border-radius: 10px;
+  border: 1px solid var(--pr-border);
 }
 
 .pr-page-tab {
-  font-family: var(--pr-font-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 8px 14px 10px;
-  color: var(--pr-text-muted);
-  border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
+  text-align: center;
+  padding: 12px 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--pr-ink-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .pr-page-tab.pr-active {
-  color: var(--pr-ink);
-  font-weight: 700;
-  border-bottom-color: var(--pr-stamp);
+  background: var(--pr-primary);
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.3);
 }
 
-.pr-page-tab.pr-done::before {
-  content: "✓ ";
-  color: var(--pr-success);
+/* ============ FORM & FIELDS ============ */
+.pr-step {
+  background: var(--pr-surface);
+  border: 1px solid var(--pr-border);
+  border-radius: var(--pr-radius);
+  padding: 30px;
+  box-shadow: var(--pr-shadow-lg);
+  margin-bottom: 30px;
 }
 
-/* ---- Form fields ---- */
 .pr-field {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .pr-field label {
   display: block;
-  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  color: var(--pr-ink);
+  font-size: 0.95rem;
 }
 
 .pr-field input,
 .pr-field select,
 .pr-field textarea {
   width: 100%;
-  font-family: var(--pr-font-body);
-  font-size: 15px;
-  padding: 11px 12px;
-  border: 1px solid var(--pr-paper-line);
-  border-radius: var(--pr-radius);
-  background: var(--pr-paper-raised);
+  padding: 14px 16px;
+  border: 1.5px solid var(--pr-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--pr-bg);
   color: var(--pr-ink);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.pr-field input:focus-visible,
-.pr-field select:focus-visible,
-.pr-field textarea:focus-visible {
-  outline: 3px solid var(--pr-brass);
-  outline-offset: 1px;
-  border-color: var(--pr-ink);
+.pr-field input:focus,
+.pr-field select:focus,
+.pr-field textarea:focus {
+  border-color: var(--pr-border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-.pr-field .pr-error {
-  color: var(--pr-stamp);
-  font-size: 13px;
-  margin-top: 6px;
+.pr-error {
   display: none;
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: 6px;
 }
-
-.pr-field.pr-has-error input,
-.pr-field.pr-has-error select {
-  border-color: var(--pr-stamp);
-}
-
-.pr-field.pr-has-error .pr-error {
+.pr-field.has-error .pr-error {
   display: block;
 }
-
-/* ---- Login nudge (shown when not logged in) ---- */
-.pr-login-nudge {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  background: rgba(176, 141, 87, 0.1);
-  border: 1px dashed var(--pr-brass);
-  border-radius: var(--pr-radius);
-  padding: 12px 16px;
-  font-size: 13.5px;
-  margin-bottom: 24px;
-}
-.pr-login-nudge__btn {
-  background: var(--pr-ink);
-  color: #fff;
-  border: none;
-  border-radius: var(--pr-radius);
-  padding: 7px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  margin-left: auto;
+.pr-field.has-error input,
+.pr-field.has-error select {
+  border-color: #ef4444;
 }
 
-/* ---- Homepage dedicated feature section ---- */
-.pr-home-feature {
-  padding: 48px 0;
-  background:
-    var(--pr-paper)
-    repeating-linear-gradient(
-      var(--pr-paper) 0px,
-      var(--pr-paper) 34px,
-      var(--pr-paper-line) 35px,
-      var(--pr-paper-line) 36px
-    );
-  border-top: 3px solid var(--pr-brass);
-  border-bottom: 3px solid var(--pr-brass);
-}
-.pr-home-feature__inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 40px;
-  align-items: center;
-}
-.pr-home-feature__title {
-  font-family: var(--pr-font-display);
-  font-weight: 600;
-  font-size: clamp(24px, 4vw, 32px);
-  line-height: 1.2;
-  margin: 12px 0 10px;
-}
-.pr-home-feature__subhead {
-  font-size: 16px;
-  color: var(--pr-text-muted);
-  max-width: 52ch;
-  margin: 0 0 20px;
-}
-.pr-home-feature__list {
-  list-style: none;
-  margin: 0 0 26px;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.pr-home-feature__list li {
-  font-size: 14.5px;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-.pr-home-feature__cta {
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  padding: 14px 26px;
-}
-.pr-home-feature__preview {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  transform: rotate(1.5deg);
-}
-.pr-home-feature__preview .pr-ledger-card { transform: rotate(-1deg); }
-.pr-home-feature__preview .pr-ledger-card:nth-child(2) { transform: rotate(1deg); margin-left: 24px; }
-
-@media (max-width: 820px) {
-  .pr-home-feature__inner { grid-template-columns: 1fr; }
-  .pr-home-feature__preview { display: none; } /* keeps mobile focused on the pitch, not decorative mockups */
-}
-
-/* ---- Advanced assumptions (collapsible) ---- */
+/* Advanced Accordion */
 .pr-advanced {
-  border: 1px dashed var(--pr-paper-line);
-  border-radius: var(--pr-radius);
-  padding: 10px 14px;
-  margin: 4px 0 20px;
-  background: rgba(176, 141, 87, 0.06);
+  background: var(--pr-bg);
+  border: 1px solid var(--pr-border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 20px 0;
 }
 .pr-advanced summary {
-  cursor: pointer;
-  font-size: 14px;
   font-weight: 600;
-  color: var(--pr-ink);
-  padding: 4px 0;
+  cursor: pointer;
+  color: var(--pr-primary);
 }
-.pr-advanced .pr-field { margin-top: 12px; }
 
-/* ---- PDF download ---- */
-.pr-pdf-btn {
+/* Buttons */
+.pr-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  margin-top: 4px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  width: 100%;
 }
-.pr-pdf-status {
-  font-size: 13px;
-  color: var(--pr-text-muted);
-  margin-top: 8px;
+.pr-btn-primary {
+  background: var(--pr-primary);
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(30, 58, 138, 0.25);
+}
+.pr-btn-primary:hover {
+  background: var(--pr-primary-hover);
+  transform: translateY(-2px);
 }
 
-/* ---- Long-form content sections (SEO depth, below/around the tool) ---- */
-.pr-content { padding: 8px 0 32px; }
+/* ============ CONTENT & FAQ ============ */
+.pr-content {
+  background: var(--pr-surface);
+  border: 1px solid var(--pr-border);
+  border-radius: var(--pr-radius);
+  padding: 36px;
+  margin-top: 40px;
+  box-shadow: var(--pr-shadow-sm);
+}
+
 .pr-content h2 {
-  font-family: var(--pr-font-display);
-  font-size: 20px;
-  margin: 32px 0 10px;
-  color: var(--pr-ink);
-}
-.pr-content h3 {
-  font-family: var(--pr-font-display);
-  font-size: 16px;
-  margin: 20px 0 6px;
-  color: var(--pr-ink);
-}
-.pr-content p { margin: 0 0 12px; line-height: 1.65; }
-.pr-content ul, .pr-content ol { margin: 0 0 12px; padding-left: 20px; line-height: 1.65; }
-.pr-content li { margin-bottom: 6px; }
-.pr-faq-item { border-bottom: 1px dashed var(--pr-paper-line); padding: 14px 0; }
-.pr-faq-item:last-child { border-bottom: none; }
-.pr-faq-item h3 { margin: 0 0 6px; }
-.pr-breadcrumb { font-size: 13px; color: var(--pr-text-muted); margin-bottom: 16px; }
-.pr-breadcrumb a { color: var(--pr-ink); }
-
-/* ---- Reduced motion ---- */
-@media (prefers-reduced-motion: reduce) {
-  .pr-btn {
-    transition: none;
-  }
+  color: var(--pr-primary);
+  margin-top: 28px;
+  margin-bottom: 12px;
+  font-size: 1.4rem;
 }
 
-/* ---- Mobile ---- */
-@media (max-width: 600px) {
+.pr-faq-item {
+  border-bottom: 1px dashed var(--pr-border);
+  padding: 16px 0;
+}
+.pr-faq-item h3 {
+  font-size: 1.1rem;
+  color: var(--pr-ink);
+  margin: 0 0 8px;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 640px) {
   .pr-hero {
-    padding: 32px 0 20px;
+    padding: 24px 18px;
   }
-  .pr-ledger-card {
-    padding: 18px 16px;
+  .pr-step {
+    padding: 20px 16px;
   }
-  .pr-ledger-row {
-    font-size: 14px;
+  .pr-page-tabs {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
