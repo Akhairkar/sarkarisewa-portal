@@ -144,7 +144,7 @@ async function initSite() {
 
 function initWhatsAppFloatingWidget() {
   if (document.getElementById("ss-wa-widget") || localStorage.getItem("ss_wa_closed")) return;
-  const link = "https://whatsapp.com/channel/0029Va9SarkariSewaChannel";
+  const link = "https://whatsapp.com/channel/0029VbDj7gCDp2Q8SYdFwj14";
   const isHindi = SITE.lang === "hi";
   const text = isHindi ? "👉 ताज़ा भर्ती व योजना अपडेट्स हेतु WhatsApp से जुड़ें" : "👉 Join WhatsApp Channel for instant job & scheme alerts";
 
