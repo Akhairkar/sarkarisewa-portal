@@ -1,0 +1,72 @@
+/* ==========================================================================
+   module16.css — Email / WhatsApp Subscribe (Module 16)
+   Load after style.css.
+   ========================================================================== */
+
+.subscribe-widget {
+  background: var(--color-brand);
+  color: var(--color-brand-text);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin: 28px 0;
+}
+.subscribe-widget__title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin: 0 0 4px;
+  color: var(--color-brand-text);
+}
+.subscribe-widget__desc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.75);
+  margin: 0 0 16px;
+  max-width: 60ch;
+}
+
+.subscribe-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.subscribe-email,
+.subscribe-phone {
+  font: inherit;
+  font-size: 0.92rem;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  flex: 1 1 200px;
+  min-width: 160px;
+}
+.subscribe-email::placeholder,
+.subscribe-phone::placeholder { color: rgba(255,255,255,0.55); }
+.subscribe-email:focus,
+.subscribe-phone:focus { outline: none; border-color: var(--color-accent-saffron); }
+
+.subscribe-whatsapp-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.85);
+  flex: 1 1 100%;
+}
+
+.subscribe-form__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 100%;
+}
+.subscribe-submit {
+  padding: 9px 22px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  background: var(--color-accent-saffron);
+  color: #10243E;
+}
+.subscribe-submit:disabled { opacity: 0.6; cursor: default; }
+.subscribe-form__status { font-size: 0.82rem; }
+.subscribe-form__status--success { color: #8FE0B0; }
+.subscribe-form__status--error { color: #FFB4A8; }

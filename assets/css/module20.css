@@ -1,0 +1,92 @@
+/* ==========================================================================
+   module20.css — Exam Calendar (Module 20)
+   Load after style.css, module2.css (and module7.css for card base styles).
+   Mirrors module19.css (Job Alerts) card styling for visual consistency.
+   ========================================================================== */
+
+.exam-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.exam-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.exam-card:hover {
+  border-color: var(--color-accent-saffron);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.1);
+}
+.exam-card--closed { opacity: 0.6; }
+
+[data-theme="dark"] .exam-card {
+  background: #16273C;
+  border-color: #2A3E56;
+}
+[data-theme="dark"] .exam-card:hover {
+  border-color: var(--color-accent-saffron);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.45), 0 8px 28px rgba(0,0,0,0.4);
+}
+
+.exam-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.exam-card__title { margin: 0; font-size: 1.05rem; line-height: 1.35; }
+
+.exam-card__org {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.exam-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--color-border);
+}
+
+.exam-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.exam-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.exam-badge--open {
+  background: rgba(20, 107, 58, 0.12);
+  color: var(--color-accent-green);
+}
+.exam-badge--upcoming {
+  background: rgba(217, 127, 43, 0.15);
+  color: var(--color-accent-saffron);
+}
+.exam-badge--closed {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--color-text-muted);
+}
+
+.exam-empty {
+  color: var(--color-text-muted);
+  padding: 24px 0;
+}

@@ -1,0 +1,78 @@
+/* ==========================================================================
+   module13.css — Discovery Features: Find Services For You wizard
+   Load after style.css, module2.css, module7.css.
+   ========================================================================== */
+
+.wizard { margin-top: 1.5rem; }
+.wizard-step__title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin: 0 0 6px;
+}
+.wizard-step__sub {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  margin: 0 0 24px;
+}
+
+.wizard-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.wizard-option {
+  font: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.wizard-option:hover { border-color: var(--color-accent-saffron); }
+.wizard-option--active {
+  border-color: var(--color-accent-green);
+  background: rgba(20,107,58,0.08);
+  font-weight: 600;
+}
+
+.wizard-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.wizard-actions .btn-primary {
+  padding: 11px 24px;
+  border-radius: var(--radius);
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.wizard-back {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 11px 20px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.92rem;
+}
+
+.wizard-results-head { margin-bottom: 4px; }
+.wizard-fallback-note {
+  background: rgba(217,127,43,0.1);
+  border: 1px solid var(--color-accent-saffron);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  color: var(--color-text);
+  margin-bottom: 20px;
+}
+.wizard-step .service-grid { margin-bottom: 24px; }

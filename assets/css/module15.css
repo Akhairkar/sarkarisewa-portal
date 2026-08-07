@@ -1,0 +1,76 @@
+/* ==========================================================================
+   module15.css — Comments / Q&A on service pages (Module 15)
+   Load after style.css, module2.css.
+   ========================================================================== */
+
+.comments-note {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin: 0 0 20px;
+  max-width: 60ch;
+}
+
+.comment-form {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 28px;
+}
+.comment-form__row { margin-bottom: 10px; }
+.comment-form input,
+.comment-form textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  resize: vertical;
+}
+.comment-form input:focus,
+.comment-form textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-saffron);
+}
+.comment-form__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.comment-form__actions .btn-primary {
+  padding: 9px 22px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.92rem;
+}
+.comment-form__actions .btn-primary:disabled { opacity: 0.6; cursor: default; }
+.comment-form__status { font-size: 0.85rem; }
+.comment-form__status--success { color: var(--color-accent-green); }
+.comment-form__status--error { color: #B3261E; }
+
+.comments-list { display: flex; flex-direction: column; gap: 14px; }
+.comments-empty {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+.comment-item {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 14px;
+}
+.comment-item__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.comment-item__name { font-weight: 600; font-size: 0.92rem; }
+.comment-item__date { font-size: 0.78rem; color: var(--color-text-muted); font-family: var(--font-mono); }
+.comment-item__message { margin: 0; font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; }

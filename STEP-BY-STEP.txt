@@ -1,0 +1,70 @@
+==============================================================================
+CSC pages — full wiring — step by step
+==============================================================================
+
+FILES IN THIS ZIP (upload to GitHub at these exact paths, replacing what's
+already there):
+
+  generate-sitemap.py                       -> repo root
+  tools/generate-csc-pages.py                -> tools/  (NEW file)
+  assets/js/csc-directory.js                 -> assets/js/
+  assets/js/csc-profile.js                   -> assets/js/
+  csc/profile.html                           -> csc/
+  .github/workflows/regenerate-content.yml   -> .github/workflows/
+
+------------------------------------------------------------------------------
+STEP 1 — Upload these 6 files to GitHub (same paths as above)
+------------------------------------------------------------------------------
+Nothing runs automatically the moment you upload — the workflow only runs
+on its own schedule (daily, 7am IST) OR when you trigger it manually.
+
+------------------------------------------------------------------------------
+STEP 2 — Trigger the workflow manually (don't wait for tomorrow's 7am run)
+------------------------------------------------------------------------------
+1. On github.com, open your repo
+2. Click the "Actions" tab (top menu)
+3. Click "Regenerate site content" in the left sidebar
+4. Click the "Run workflow" button (top right) -> "Run workflow" again to
+   confirm
+5. Wait ~1-2 minutes, refresh — you'll see a green checkmark when done
+
+This single run will:
+  - Generate all 543 CSC centre static pages in csc/ (each ~700-800 words,
+    unique title/meta/FAQ/schema — the work from earlier in this chat)
+  - ALSO catch two things that were pending from earlier sessions:
+    generate-state-pages.py and generate-state-service-pages.py existed
+    already but weren't actually being called by the workflow — now fixed,
+    so your 20 state pages + 102 state-service pages will get regenerated
+    too (harmless if they already existed — this just keeps them in sync
+    going forward)
+  - Rebuild sitemap.xml with all of the above included (also fixes a bug
+    where the CSC sitemap entries were checking for a status value —
+    "approved" — that never actually existed in your database, so CSC
+    pages were silently never being added to the sitemap before)
+  - Commit and push all the new/changed files back to your repo
+    automatically — you don't need to do anything else
+
+------------------------------------------------------------------------------
+STEP 3 — Verify it worked
+------------------------------------------------------------------------------
+1. On GitHub, check the csc/ folder — you should now see ~543 new .html
+   files (e.g. csc/nitin-bhaidas-mothe-csc-centre-palghar-1eec4e0f.html)
+2. Open sitemap.xml on GitHub — search for "csc/" — you should see ~543
+   csc/*.html URLs listed (not csc/profile.html?id=... anymore)
+3. Visit sarkarisewaindia.com/csc/index.html — the directory cards should
+   now link to these new static pages instead of profile.html?id=...
+
+------------------------------------------------------------------------------
+STEP 4 — Resubmit the sitemap in Google Search Console
+------------------------------------------------------------------------------
+Same as before — Search Console -> Sitemaps -> paste sitemap.xml URL again
+-> Submit. This tells Google to re-crawl and pick up the ~543 new pages.
+
+------------------------------------------------------------------------------
+GOING FORWARD — nothing further to do
+------------------------------------------------------------------------------
+The workflow now runs automatically every day at 7am IST. Any centre added
+via csc/add.html, or claimed via csc/claim.html, or added for a brand new
+state, gets its own static page within 24 hours automatically — no manual
+HTML editing, ever, for this.
+==============================================================================

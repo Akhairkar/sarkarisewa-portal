@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="manifest" href="../manifest.json">
+<title>Staff Login — SarkariSewa Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Noto+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div class="admin-wrap">
+  <div class="admin-card">
+    <h2 style="margin-bottom:4px;">Staff Login</h2>
+    <p style="color:var(--color-text-muted); font-size:0.88rem; margin-top:0;">Content &amp; admin access for SarkariSewa Portal.</p>
+
+    <form id="login-form">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" autocomplete="username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+
+      <button type="submit" id="login-submit">Log in</button>
+      <p id="login-error" class="admin-error">Incorrect email or password.</p>
+    </form>
+
+    <p style="margin-top:22px; font-size:0.8rem; color:var(--color-text-muted);">
+      Real authentication via Supabase Auth. Admin users are created directly in the Supabase Dashboard → Authentication → Users — there's no public sign-up.
+    </p>
+    <p style="margin-top:10px;"><a href="../index.html" style="font-size:0.85rem;">← Back to site</a></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script>
+  const form = document.getElementById("login-form");
+  const errorEl = document.getElementById("login-error");
+  const submitBtn = document.getElementById("login-submit");
+
+  // If already logged in, skip straight to the dashboard.
+  (async function checkExisting() {
+    const client = await getSupabaseClient();
+    if (!client) return;
+    const { data } = await client.auth.getSession();
+    if (data && data.session) window.location.href = "dashboard.html";
+  })();
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    errorEl.style.display = "none";
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    const client = await getSupabaseClient();
+    if (!client) {
+      errorEl.textContent = "Login is not configured right now.";
+      errorEl.style.display = "block";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Logging in…";
+
+    const { error } = await client.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      errorEl.textContent = "Incorrect email or password.";
+      errorEl.style.display = "block";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Log in";
+      return;
+    }
+
+    window.location.href = "dashboard.html";
+  });
+</script>
+</body>
+</html>

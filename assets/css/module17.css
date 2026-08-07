@@ -1,0 +1,188 @@
+/* ==========================================================================
+   module17.css — CSC Centre Directory (Module 17)
+   Load after style.css, module2.css, module7.css (and module15.css on
+   pages that also use the shared .comment-form styles for CSC forms).
+   ========================================================================== */
+
+.csc-hero-actions { margin-top: 14px; }
+
+.csc-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.csc-filters label { font-size: 0.9rem; font-weight: 600; }
+.csc-filters select,
+.csc-filters input[type="search"] {
+  font: inherit;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+.csc-filters input[type="search"] {
+  flex: 1 1 240px;
+  min-width: 200px;
+}
+
+.csc-search-hint {
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #666);
+  margin: -10px 0 18px;
+}
+
+.csc-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.csc-card {
+  display: block;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease;
+}
+.csc-card:hover { border-color: var(--color-accent-saffron); }
+.csc-card--verified { border-color: var(--color-accent-green); }
+
+.csc-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.csc-card__name { margin: 0; font-size: 1.05rem; }
+.csc-card__address {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+.csc-card__location {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.csc-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-accent-green);
+  white-space: nowrap;
+}
+
+.csc-empty, .csc-loading {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  font-style: italic;
+  padding: 20px 0;
+}
+
+.csc-profile-card {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-top: 10px;
+}
+.csc-profile-address { margin: 0 0 4px; font-size: 1rem; }
+.csc-profile-location {
+  margin: 0 0 14px;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+.csc-profile-description { margin: 0 0 16px; line-height: 1.6; }
+
+.csc-profile-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.csc-profile-actions .btn { padding: 9px 20px; border-radius: 8px; font-weight: 600; font-size: 0.92rem; }
+
+.csc-map { margin-top: 10px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--color-border); }
+.csc-map iframe { width: 100%; height: 280px; border: 0; display: block; }
+
+.csc-claim-prompt {
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--color-border);
+}
+.csc-claim-prompt p { margin: 0 0 12px; color: var(--color-text-muted); font-size: 0.92rem; }
+
+.csc-form-note {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin: 0 0 18px;
+  max-width: 60ch;
+}
+.csc-form .comment-form__row label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.csc-form-row-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.csc-form-row-split > div { margin: 0; }
+.csc-form-hint {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin: -6px 0 14px;
+}
+.csc-form-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 18px 0;
+}
+
+@media (max-width: 560px) {
+  .csc-form-row-split { grid-template-columns: 1fr; }
+}
+
+.csc-services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 6px 14px;
+  margin-top: 4px;
+}
+.csc-service-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.86rem;
+  font-weight: 400 !important;
+  cursor: pointer;
+}
+.csc-service-check input { margin: 0; }
+
+.csc-profile-mode { margin: 0 0 10px; font-size: 0.9rem; }
+.csc-profile-services { margin: 0 0 16px; }
+.csc-services-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.csc-service-tag {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
