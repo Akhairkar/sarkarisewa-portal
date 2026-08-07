@@ -624,15 +624,63 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 }
 .ss-auth-submit:disabled { opacity: 0.6; cursor: default; }
 .ss-auth-status { margin: 14px 0 0; font-size: 13px; color: var(--color-text-muted); }
-.ss-auth-logout {
-  margin-top: 14px;
-  background: none;
-  border: 1px solid var(--color-border);
+/* Compact 2-Line Project Report Banner */
+.pr-compact-banner {
+  background: linear-gradient(90deg, #1e3a8a 0%, #0f172a 100%);
+  color: #ffffff;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.pr-compact-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.pr-compact-text {
+  font-size: 0.92rem;
+  line-height: 1.35;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pr-compact-badge {
+  background: #10b981;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.pr-compact-btn {
+  background: #d97f2b;
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 6px 16px;
   border-radius: 6px;
-  padding: 8px 14px;
-  font-size: 13px;
-  cursor: pointer;
-  color: var(--color-text);
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: transform 0.2s, opacity 0.2s;
+  flex-shrink: 0;
+}
+.pr-compact-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .pr-compact-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .pr-compact-btn {
+    align-self: flex-start;
+  }
 }
 
 /* =========================================================
