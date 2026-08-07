@@ -39,13 +39,18 @@ function rewriteInternalLinks(host) {
 async function includePartial(selector, url) {
   const host = document.querySelector(selector);
   if (!host) return;
+  // If header/footer is already baked into static HTML, do not wipe it via fetch!
+  if (host.children.length > 0 && host.innerHTML.trim().length > 50) return;
   try {
     const res = await fetch(url);
-    host.innerHTML = await res.text();
-    rewriteInternalLinks(host);
+    if (!res.ok) return;
+    const text = await res.text();
+    if (text && text.trim().length > 10) {
+      host.innerHTML = text;
+      rewriteInternalLinks(host);
+    }
   } catch (err) {
     console.error("Could not load partial:", url, err);
-    host.innerHTML = "<!-- partial failed to load -->";
   }
 }
 
@@ -65,11 +70,15 @@ function applyLanguage(lang) {
   const dict = SITE.langData[lang] || {};
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (dict[key] !== undefined) el.textContent = dict[key];
+    if (dict[key] !== undefined && dict[key] !== null && dict[key] !== "") {
+      el.textContent = dict[key];
+    }
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     const key = el.getAttribute("data-i18n-placeholder");
-    if (dict[key] !== undefined) el.setAttribute("placeholder", dict[key]);
+    if (dict[key] !== undefined && dict[key] !== null && dict[key] !== "") {
+      el.setAttribute("placeholder", dict[key]);
+    }
   });
   document.dispatchEvent(new CustomEvent("ss:language-changed", { detail: { lang, dict } }));
 }
