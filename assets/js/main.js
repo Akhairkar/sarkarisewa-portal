@@ -139,10 +139,35 @@ async function initSite() {
 
   document.dispatchEvent(new CustomEvent("ss:ready"));
   loadAnalyticsTracking();
-  // loadAuthUI(); — TEMPORARILY DISABLED. Was causing a site-wide blocking
-  // bug (see assets/css/style.css and partials/header.html comments near
-  // .ss-auth-modal for the full explanation). Re-enable by uncommenting
-  // this line once the login feature is revisited.
+  initWhatsAppFloatingWidget();
+}
+
+function initWhatsAppFloatingWidget() {
+  if (document.getElementById("ss-wa-widget") || localStorage.getItem("ss_wa_closed")) return;
+  const link = "https://whatsapp.com/channel/0029Va9SarkariSewaChannel";
+  const isHindi = SITE.lang === "hi";
+  const text = isHindi ? "👉 ताज़ा भर्ती व योजना अपडेट्स हेतु WhatsApp से जुड़ें" : "👉 Join WhatsApp Channel for instant job & scheme alerts";
+
+  const bar = document.createElement("div");
+  bar.id = "ss-wa-widget";
+  bar.className = "ss-wa-wrapper";
+  bar.innerHTML = `
+    <a href="${link}" target="_blank" rel="noopener noreferrer" class="ss-wa-floating-bar" aria-label="Join WhatsApp Channel">
+      <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.4-1.5-.9-.8-1.5-1.8-1.6-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.4.1-.2 0-.4 0-.5C10 9 9.4 7.6 9.2 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.1L2 22l5-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+      <span>${text}</span>
+    </a>
+    <button type="button" class="ss-wa-close-btn" id="ss-wa-close" title="Close">✕</button>
+  `;
+  document.body.appendChild(bar);
+
+  const closeBtn = document.getElementById("ss-wa-close");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      bar.remove();
+      localStorage.setItem("ss_wa_closed", "1");
+    });
+  }
 }
 
 // Module 18: Visitor Analytics — self-contained script, loaded once per

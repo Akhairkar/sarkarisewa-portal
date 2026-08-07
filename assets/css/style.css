@@ -634,3 +634,82 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   cursor: pointer;
   color: var(--color-text);
 }
+
+/* =========================================================
+   Floating WhatsApp Join Bar & Badge
+   ========================================================= */
+.ss-wa-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ss-wa-floating-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #25D366;
+  color: #ffffff !important;
+  padding: 10px 18px;
+  border-radius: 99px;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: ss-pulse 2.2s infinite;
+}
+.ss-wa-floating-bar:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 26px rgba(37, 211, 102, 0.65);
+}
+.ss-wa-floating-bar svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+.ss-wa-close-btn {
+  background: #128C7E;
+  border: none;
+  color: #ffffff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+@keyframes ss-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+  70% { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+@media (max-width: 640px) {
+  .ss-wa-wrapper {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+  }
+  .ss-wa-floating-bar {
+    width: 100%;
+    border-radius: 0;
+    justify-content: center;
+    padding: 12px 16px;
+    font-size: 0.84rem;
+  }
+  .ss-wa-close-btn {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+  }
+}
