@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+
 /**
- * hidden-tax-theme.css
+ * hidden-tax-theme.css (v2.0)
  * ------------------------------------------------------------------
  * Visual identity for Hidden Tax & MPBCDC pages — supporting full
  * Light & Dark theme modes, and Devanagari typography for Hindi.
@@ -7,18 +9,18 @@
  */
 
 :root {
-  --htc-ink: #10243E;
-  --htc-bg: #F6F7FB;
-  --htc-surface: #FFFFFF;
-  --htc-border: #E4E7F0;
+  --htc-ink: var(--color-text, #10243E);
+  --htc-bg: var(--color-bg, #F6F7FB);
+  --htc-surface: var(--color-surface, #FFFFFF);
+  --htc-border: var(--color-border, #E4E7F0);
   --htc-teal: #0F766E;
-  --htc-teal-light: #CCFBF1;
+  --htc-teal-light: rgba(15, 118, 110, 0.12);
   --htc-violet: #6D28D9;
-  --htc-violet-light: #EDE6FB;
+  --htc-violet-light: rgba(109, 40, 217, 0.12);
   --htc-amber: #D97F2B;
   --htc-red: #B3261E;
   --htc-green: #146B3A;
-  --htc-text-muted: #5B6472;
+  --htc-text-muted: var(--color-text-muted, #5B6472);
 
   --htc-font-display: "Noto Sans Devanagari", "Fraunces", serif;
   --htc-font-body: "Noto Sans Devanagari", "Noto Sans", sans-serif;
@@ -28,30 +30,71 @@
   --htc-max-width: 1080px;
 }
 
-[data-theme="dark"] {
-  --htc-ink: #E8EDF3;
-  --htc-bg: #0B1420;
-  --htc-surface: #101D2C;
-  --htc-border: #223244;
-  --htc-teal: #14998E;
-  --htc-teal-light: rgba(20, 153, 142, 0.22);
-  --htc-violet: #A78BFA;
-  --htc-violet-light: rgba(167, 139, 250, 0.2);
-  --htc-text-muted: #93A1B2;
+/* ================= DARK MODE OVERRIDES ================= */
+[data-theme="dark"],
+html[data-theme="dark"] body {
+  --htc-ink: #E8EDF3 !important;
+  --htc-bg: #0B1420 !important;
+  --htc-surface: #101D2C !important;
+  --htc-border: #223244 !important;
+  --htc-teal: #14998E !important;
+  --htc-teal-light: rgba(20, 153, 142, 0.22) !important;
+  --htc-violet: #A78BFA !important;
+  --htc-violet-light: rgba(167, 139, 250, 0.2) !important;
+  --htc-text-muted: #93A1B2 !important;
 }
 
-.htc-scope {
-  background: var(--htc-bg);
-  color: var(--htc-ink);
-  font-family: var(--htc-font-body);
+[data-theme="dark"] .htc-scope {
+  background-color: #0B1420 !important;
+  color: #E8EDF3 !important;
 }
 
-.htc-scope h1, .htc-scope h2, .htc-scope h3 { 
-  font-family: var(--htc-font-display); 
-  color: var(--htc-ink); 
+[data-theme="dark"] .htc-card,
+[data-theme="dark"] .htc-stat,
+[data-theme="dark"] .htc-chart-card,
+[data-theme="dark"] .htc-related-card,
+[data-theme="dark"] .mpbcdc-table {
+  background-color: #101D2C !important;
+  border-color: #223244 !important;
+  color: #E8EDF3 !important;
 }
 
-/* Universal Hindi Devanagari font enforcer */
+[data-theme="dark"] .htc-scope h1,
+[data-theme="dark"] .htc-scope h2,
+[data-theme="dark"] .htc-scope h3,
+[data-theme="dark"] .htc-hero h1,
+[data-theme="dark"] .htc-card h2,
+[data-theme="dark"] .htc-stat__value,
+[data-theme="dark"] .htc-related-card strong,
+[data-theme="dark"] .mpbcdc-table th,
+[data-theme="dark"] .mpbcdc-table td {
+  color: #E8EDF3 !important;
+}
+
+[data-theme="dark"] .mpbcdc-table th {
+  background-color: #0E1826 !important;
+  border-color: #223244 !important;
+}
+
+[data-theme="dark"] .mpbcdc-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+[data-theme="dark"] .htc-field input,
+[data-theme="dark"] .htc-field select,
+[data-theme="dark"] .htc-cat__body input {
+  background-color: #0E1826 !important;
+  border-color: #223244 !important;
+  color: #E8EDF3 !important;
+}
+
+[data-theme="dark"] .htc-disclaimer {
+  background-color: #1C160C !important;
+  border-color: #4A3010 !important;
+  color: #F2A65A !important;
+}
+
+/* ================= HINDI FONT ENFORCEMENT ================= */
 html[lang="hi"],
 html[lang="hi"] body,
 html[lang="hi"] .htc-scope,
@@ -67,63 +110,54 @@ html[lang="hi"] .htc-field input,
 html[lang="hi"] .htc-field select,
 html[lang="hi"] .htc-action-btn,
 html[lang="hi"] .mpbcdc-table th,
-html[lang="hi"] .mpbcdc-table td {
-  font-family: "Noto Sans Devanagari", "Tiro Devanagari Hindi", sans-serif !important;
+html[lang="hi"] .mpbcdc-table td,
+html[lang="hi"] p,
+html[lang="hi"] li,
+html[lang="hi"] span,
+html[lang="hi"] strong {
+  font-family: "Noto Sans Devanagari", "Tiro Devanagari Hindi", -apple-system, sans-serif !important;
 }
 
-[data-theme="dark"] .htc-scope {
-  background: #0B1420 !important;
-  color: #E8EDF3 !important;
+/* Base Styles */
+.htc-scope {
+  background: var(--htc-bg);
+  color: var(--htc-ink);
+  font-family: var(--htc-font-body);
 }
 
-[data-theme="dark"] .htc-card,
-[data-theme="dark"] .htc-stat,
-[data-theme="dark"] .htc-chart-card,
-[data-theme="dark"] .htc-related-card,
-[data-theme="dark"] .mpbcdc-table {
-  background: #101D2C !important;
-  border-color: #223244 !important;
-  color: #E8EDF3 !important;
-}
-
-[data-theme="dark"] .htc-scope h1,
-[data-theme="dark"] .htc-scope h2,
-[data-theme="dark"] .htc-scope h3,
-[data-theme="dark"] .htc-hero h1,
-[data-theme="dark"] .htc-card h2,
-[data-theme="dark"] .htc-stat__value,
-[data-theme="dark"] .htc-related-card strong {
-  color: #E8EDF3 !important;
-}
-
-[data-theme="dark"] .mpbcdc-table th {
-  background: #0E1826 !important;
-  color: #E8EDF3 !important;
-  border-color: #223244 !important;
-}
-
-[data-theme="dark"] .mpbcdc-table td {
-  border-color: #223244 !important;
-  color: #E8EDF3 !important;
-}
-
-[data-theme="dark"] .htc-field input,
-[data-theme="dark"] .htc-field select,
-[data-theme="dark"] .htc-cat__body input {
-  background: #0E1826 !important;
-  border-color: #223244 !important;
-  color: #E8EDF3 !important;
-}
-
-[data-theme="dark"] .htc-disclaimer {
-  background: #1C160C !important;
-  border-color: #4A3010 !important;
-  color: #F2A65A !important;
+.htc-scope h1, .htc-scope h2, .htc-scope h3 { 
+  font-family: var(--htc-font-display); 
+  color: var(--htc-ink); 
 }
 
 .htc-wrap { max-width: var(--htc-max-width); margin: 0 auto; padding: 30px 20px 80px; }
 
-/* ---------- Hero ---------- */
+/* MPBCDC Table styling */
+.mpbcdc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  background: var(--htc-surface);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+.mpbcdc-table th, .mpbcdc-table td {
+  padding: 1rem;
+  border: 1px solid var(--htc-border);
+  text-align: left;
+}
+.mpbcdc-table th {
+  background: rgba(0,0,0,0.03);
+  font-weight: 600;
+  color: var(--htc-ink);
+}
+.mpbcdc-table tr:hover {
+  background: rgba(0,0,0,0.02);
+}
+
+/* Hero */
 .htc-hero {
   display: grid;
   grid-template-columns: 1fr;
@@ -161,7 +195,7 @@ html[lang="hi"] .mpbcdc-table td {
 }
 .htc-hero__art span:nth-child(2) { transform: translateY(-10px); }
 
-/* ---------- Calculator card ---------- */
+/* Calculator card */
 .htc-card {
   background: var(--htc-surface); border: 1px solid var(--htc-border);
   border-radius: var(--htc-radius); box-shadow: 0 6px 24px rgba(16,36,62,0.06);
@@ -214,7 +248,7 @@ html[lang="hi"] .mpbcdc-table td {
 }
 .htc-submit:hover { background: #5b21b6; }
 
-/* ---------- Results ---------- */
+/* Results */
 .htc-results { display: none; margin-top: 8px; }
 .htc-results.is-visible { display: block; }
 
@@ -237,12 +271,12 @@ html[lang="hi"] .mpbcdc-table td {
 }
 .htc-disclaimer strong { display: block; margin-bottom: 4px; color: #5C3610; }
 
-/* ---------- Content sections below tool ---------- */
+/* Content sections */
 .htc-section { padding: 26px 0; }
 .htc-section h2 { font-size: 1.2rem; margin: 0 0 12px; }
 .htc-section p, .htc-section li { color: var(--htc-ink); line-height: 1.7; }
 
-/* ---------- Related tools ---------- */
+/* Related tools */
 .htc-related-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 14px; }
 @media (min-width: 700px) { .htc-related-grid { grid-template-columns: 1fr 1fr; } }
 .htc-related-card {
@@ -258,7 +292,7 @@ html[lang="hi"] .mpbcdc-table td {
 .htc-related-card strong { display: block; font-size: 0.95rem; margin-bottom: 3px; }
 .htc-related-card span { font-size: 0.8rem; color: var(--htc-text-muted); }
 
-/* ---------- Compact CTA card ---------- */
+/* Compact CTA card */
 .htc-cta {
   display: flex; align-items: center; gap: 16px;
   background: linear-gradient(135deg, var(--htc-teal) 0%, var(--htc-violet) 100%);

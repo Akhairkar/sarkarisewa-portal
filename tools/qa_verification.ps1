@@ -16,7 +16,8 @@ foreach ($file in $mpbcdcFiles) {
     $html = [System.IO.File]::ReadAllText($path, $utf8NoBOM)
     $matches = [regex]::Matches($html, 'href="([^"]+)"')
     foreach ($m in $matches) {
-        $url = $m.Groups[1].Value
+        $rawUrl = $m.Groups[1].Value
+        $url = $rawUrl.Split('?')[0]
         if (-not ($url -match '^(https?:)?//' -or $url.StartsWith('#') -or $url.StartsWith('mailto:') -or $url.StartsWith('tel:'))) {
             $targetPath = Join-Path $ROOT $url.Replace('/', '\')
             if (-not (Test-Path $targetPath)) {
