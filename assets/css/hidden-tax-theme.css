@@ -1,11 +1,8 @@
 /**
  * hidden-tax-theme.css
  * ------------------------------------------------------------------
- * Visual identity for the Hidden Tax Calculator ONLY — a clean
- * fintech "insights dashboard" look, deliberately distinct from the
- * Project Report passbook theme and the Exam Age Calculator admit-
- * card theme. Teal + violet accent pair on white cards, built for a
- * results-dashboard feel (stat cards, donut/bar charts, gauge ring).
+ * Visual identity for Hidden Tax & MPBCDC pages — supporting full
+ * Light & Dark theme modes, and Devanagari typography for Hindi.
  * ------------------------------------------------------------------
  */
 
@@ -23,12 +20,24 @@
   --htc-green: #146B3A;
   --htc-text-muted: #5B6472;
 
-  --htc-font-display: "Fraunces", "Noto Sans Devanagari", serif;
-  --htc-font-body: "Noto Sans", "Noto Sans Devanagari", sans-serif;
+  --htc-font-display: "Noto Sans Devanagari", "Fraunces", serif;
+  --htc-font-body: "Noto Sans Devanagari", "Noto Sans", sans-serif;
   --htc-font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --htc-radius: 14px;
   --htc-max-width: 1080px;
+}
+
+[data-theme="dark"] {
+  --htc-ink: #E8EDF3;
+  --htc-bg: #0B1420;
+  --htc-surface: #101D2C;
+  --htc-border: #223244;
+  --htc-teal: #14998E;
+  --htc-teal-light: rgba(20, 153, 142, 0.22);
+  --htc-violet: #A78BFA;
+  --htc-violet-light: rgba(167, 139, 250, 0.2);
+  --htc-text-muted: #93A1B2;
 }
 
 .htc-scope {
@@ -36,15 +45,16 @@
   color: var(--htc-ink);
   font-family: var(--htc-font-body);
 }
-.htc-scope h1, .htc-scope h2, .htc-scope h3 { font-family: var(--htc-font-display); color: var(--htc-ink); }
 
-/* Hindi Devanagari font overrides */
-html[lang="hi"] .htc-scope {
-  --htc-font-display: "Noto Sans Devanagari", "Fraunces", serif;
-  --htc-font-body: "Noto Sans Devanagari", "Noto Sans", sans-serif;
-  font-family: var(--htc-font-body);
+.htc-scope h1, .htc-scope h2, .htc-scope h3 { 
+  font-family: var(--htc-font-display); 
+  color: var(--htc-ink); 
 }
 
+/* Universal Hindi Devanagari font enforcer */
+html[lang="hi"],
+html[lang="hi"] body,
+html[lang="hi"] .htc-scope,
 html[lang="hi"] .htc-scope h1,
 html[lang="hi"] .htc-scope h2,
 html[lang="hi"] .htc-scope h3,
@@ -55,8 +65,60 @@ html[lang="hi"] .htc-hero__cta,
 html[lang="hi"] .htc-field label,
 html[lang="hi"] .htc-field input,
 html[lang="hi"] .htc-field select,
-html[lang="hi"] .htc-action-btn {
-  font-family: "Noto Sans Devanagari", sans-serif;
+html[lang="hi"] .htc-action-btn,
+html[lang="hi"] .mpbcdc-table th,
+html[lang="hi"] .mpbcdc-table td {
+  font-family: "Noto Sans Devanagari", "Tiro Devanagari Hindi", sans-serif !important;
+}
+
+[data-theme="dark"] .htc-scope {
+  background: #0B1420 !important;
+  color: #E8EDF3 !important;
+}
+
+[data-theme="dark"] .htc-card,
+[data-theme="dark"] .htc-stat,
+[data-theme="dark"] .htc-chart-card,
+[data-theme="dark"] .htc-related-card,
+[data-theme="dark"] .mpbcdc-table {
+  background: #101D2C !important;
+  border-color: #223244 !important;
+  color: #E8EDF3 !important;
+}
+
+[data-theme="dark"] .htc-scope h1,
+[data-theme="dark"] .htc-scope h2,
+[data-theme="dark"] .htc-scope h3,
+[data-theme="dark"] .htc-hero h1,
+[data-theme="dark"] .htc-card h2,
+[data-theme="dark"] .htc-stat__value,
+[data-theme="dark"] .htc-related-card strong {
+  color: #E8EDF3 !important;
+}
+
+[data-theme="dark"] .mpbcdc-table th {
+  background: #0E1826 !important;
+  color: #E8EDF3 !important;
+  border-color: #223244 !important;
+}
+
+[data-theme="dark"] .mpbcdc-table td {
+  border-color: #223244 !important;
+  color: #E8EDF3 !important;
+}
+
+[data-theme="dark"] .htc-field input,
+[data-theme="dark"] .htc-field select,
+[data-theme="dark"] .htc-cat__body input {
+  background: #0E1826 !important;
+  border-color: #223244 !important;
+  color: #E8EDF3 !important;
+}
+
+[data-theme="dark"] .htc-disclaimer {
+  background: #1C160C !important;
+  border-color: #4A3010 !important;
+  color: #F2A65A !important;
 }
 
 .htc-wrap { max-width: var(--htc-max-width); margin: 0 auto; padding: 30px 20px 80px; }
@@ -133,7 +195,7 @@ html[lang="hi"] .htc-action-btn {
   padding: 10px 12px; background: var(--htc-bg);
 }
 .htc-cat__icon {
-  width: 34px; height: 34px; flex-shrink: 0; border-radius: 9px;
+  width: 34px; height: 34px; flex-shrink: 0; border-radius: 999px;
   display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
   background: var(--htc-teal-light);
 }
@@ -159,7 +221,7 @@ html[lang="hi"] .htc-action-btn {
 .htc-stat-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;
 }
-@media (min-width: 760px) { .htc-stat-grid { grid-template-columns: repeat(5, 1fr); } }
+@media (min-width: 760px) { .htc-stat-grid { grid-template-columns: repeat(4, 1fr); } }
 .htc-stat {
   background: var(--htc-surface); border: 1px solid var(--htc-border); border-radius: 12px;
   padding: 16px; text-align: left;
@@ -168,54 +230,6 @@ html[lang="hi"] .htc-action-btn {
 .htc-stat__value { font-family: var(--htc-font-mono); font-size: 1.25rem; font-weight: 700; }
 .htc-stat--highlight { background: var(--htc-violet); color: #fff; }
 .htc-stat--highlight .htc-stat__label { color: rgba(255,255,255,0.75); }
-
-.htc-charts-grid {
-  display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 18px;
-}
-@media (min-width: 900px) { .htc-charts-grid { grid-template-columns: 1.1fr 1.1fr 0.8fr; } }
-.htc-chart-card {
-  background: var(--htc-surface); border: 1px solid var(--htc-border); border-radius: 12px;
-  padding: 18px; text-align: center;
-}
-.htc-chart-card h3 { font-size: 0.95rem; margin: 0 0 12px; text-align: left; }
-.htc-chart-card canvas { max-height: 220px; }
-
-.htc-gauge { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
-.htc-gauge__ring {
-  width: 150px; height: 150px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  background: conic-gradient(var(--htc-teal) calc(var(--htc-pct, 0) * 1%), var(--htc-border) 0);
-  margin: 6px 0 12px;
-}
-.htc-gauge__ring::before {
-  content: ""; width: 112px; height: 112px; border-radius: 50%; background: var(--htc-surface);
-  position: absolute;
-}
-.htc-gauge__ring { position: relative; }
-.htc-gauge__value { position: relative; z-index: 1; font-family: var(--htc-font-mono); font-size: 1.3rem; font-weight: 700; }
-.htc-gauge__caption { font-size: 0.8rem; color: var(--htc-text-muted); }
-
-.htc-insights-grid {
-  display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px;
-}
-@media (min-width: 760px) { .htc-insights-grid { grid-template-columns: 1fr 1fr 1fr; } }
-.htc-insight {
-  background: var(--htc-violet-light); border-radius: 12px; padding: 16px;
-  display: flex; gap: 12px; align-items: flex-start;
-}
-.htc-insight__icon { font-size: 1.4rem; flex-shrink: 0; }
-.htc-insight strong { display: block; font-size: 0.9rem; margin-bottom: 4px; }
-.htc-insight span { font-size: 0.82rem; color: var(--htc-text-muted); line-height: 1.5; }
-
-.htc-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
-.htc-action-btn {
-  flex: 1; min-width: 160px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  background: var(--htc-surface); border: 1px solid var(--htc-border); border-radius: 10px;
-  padding: 12px 16px; font-weight: 600; font-size: 0.92rem; cursor: pointer; color: var(--htc-ink);
-}
-.htc-action-btn:hover { background: var(--htc-bg); }
-.htc-action-btn--primary { background: var(--htc-teal); color: #fff; border-color: var(--htc-teal); }
-.htc-action-btn--primary:hover { background: #0b5c55; }
 
 .htc-disclaimer {
   background: #FFF7ED; border: 1px solid #FCD9B4; border-radius: 12px;
@@ -227,9 +241,6 @@ html[lang="hi"] .htc-action-btn {
 .htc-section { padding: 26px 0; }
 .htc-section h2 { font-size: 1.2rem; margin: 0 0 12px; }
 .htc-section p, .htc-section li { color: var(--htc-ink); line-height: 1.7; }
-.htc-section table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin: 12px 0 20px; background: var(--htc-surface); }
-.htc-section th, .htc-section td { border: 1px solid var(--htc-border); padding: 9px 10px; text-align: left; }
-.htc-section th { background: var(--htc-bg); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
 
 /* ---------- Related tools ---------- */
 .htc-related-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 14px; }
@@ -247,7 +258,7 @@ html[lang="hi"] .htc-action-btn {
 .htc-related-card strong { display: block; font-size: 0.95rem; margin-bottom: 3px; }
 .htc-related-card span { font-size: 0.8rem; color: var(--htc-text-muted); }
 
-/* ---------- Compact CTA card used site-wide to promote this tool ---------- */
+/* ---------- Compact CTA card ---------- */
 .htc-cta {
   display: flex; align-items: center; gap: 16px;
   background: linear-gradient(135deg, var(--htc-teal) 0%, var(--htc-violet) 100%);
@@ -258,9 +269,3 @@ html[lang="hi"] .htc-action-btn {
 .htc-cta__text strong { display: block; font-size: 1rem; }
 .htc-cta__text span { font-size: 0.85rem; color: rgba(255,255,255,0.85); }
 .htc-cta__arrow { margin-left: auto; font-size: 1.2rem; flex-shrink: 0; }
-
-@media print {
-  .site-header, .site-footer, .htc-hero__cta, .htc-actions, .ad-slot, .breadcrumb, .htc-related-grid, .htc-section:has(.htc-related-grid) { display: none !important; }
-  .htc-card:first-of-type { display: none !important; }
-  body { background: #fff; }
-}
