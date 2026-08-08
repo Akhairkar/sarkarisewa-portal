@@ -58,6 +58,8 @@ function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   const icon = document.getElementById("theme-icon");
   if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
+  const mobileIcon = document.getElementById("mobile-theme-icon");
+  if (mobileIcon) mobileIcon.textContent = theme === "dark" ? "☀️" : "🌙";
   SITE.theme = theme;
   localStorage.setItem("ss_theme", theme);
 }
@@ -94,12 +96,12 @@ async function loadLangData() {
 }
 
 function wireHeaderControls() {
+  const toggleTheme = () => applyTheme(SITE.theme === "dark" ? "light" : "dark");
   const themeBtn = document.getElementById("theme-toggle");
-  if (themeBtn) {
-    themeBtn.addEventListener("click", () => {
-      applyTheme(SITE.theme === "dark" ? "light" : "dark");
-    });
-  }
+  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
+  const mobileThemeBtn = document.getElementById("mobile-theme-toggle");
+  if (mobileThemeBtn) mobileThemeBtn.addEventListener("click", toggleTheme);
+
   const langBtn = document.getElementById("lang-toggle");
   if (langBtn) {
     langBtn.addEventListener("click", () => {
