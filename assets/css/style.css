@@ -103,6 +103,35 @@ h1, h2, h3, h4 {
 
 .mono { font-family: var(--font-mono); letter-spacing: 0.01em; }
 
+/* Language-specific Devanagari font overrides for Hindi mode */
+html[lang="hi"],
+[lang="hi"] {
+  --font-display: "Noto Sans Devanagari", "Tiro Devanagari Hindi", serif;
+  --font-body: "Noto Sans Devanagari", "Noto Sans", sans-serif;
+}
+
+html[lang="hi"] body {
+  font-family: var(--font-body);
+}
+
+html[lang="hi"] h1,
+html[lang="hi"] h2,
+html[lang="hi"] h3,
+html[lang="hi"] h4,
+html[lang="hi"] h5,
+html[lang="hi"] h6,
+html[lang="hi"] .brand-title,
+html[lang="hi"] .hero h1,
+html[lang="hi"] .section-title,
+html[lang="hi"] .service-card__name,
+html[lang="hi"] .btn,
+html[lang="hi"] button,
+html[lang="hi"] input,
+html[lang="hi"] select,
+html[lang="hi"] textarea {
+  font-family: "Noto Sans Devanagari", sans-serif;
+}
+
 .container {
   max-width: 1180px;
   margin: 0 auto;
