@@ -68,6 +68,13 @@ function applyLanguage(lang) {
   SITE.lang = lang;
   localStorage.setItem("ss_lang", lang);
   document.documentElement.setAttribute("lang", lang === "hi" ? "hi" : "en");
+  
+  // Explicitly update toggle button label
+  const langSpan = document.querySelector("#lang-toggle [data-i18n='lang_toggle']") || document.getElementById("lang-toggle");
+  if (langSpan) {
+    langSpan.textContent = lang === "hi" ? "English" : "हिंदी";
+  }
+
   if (!SITE.langData) return;
   const dict = SITE.langData[lang] || {};
   document.querySelectorAll("[data-i18n]").forEach((el) => {
