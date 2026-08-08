@@ -10,31 +10,42 @@
   <link rel="manifest" href="../manifest.json">
 <title>Staff Login — SarkariSewa Portal</title>
 <meta name="robots" content="noindex, nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Noto+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="canonical" href="https://sarkarisewaindia.com/admin/login.html">
+<link rel="stylesheet" href="../assets/css/admin-theme.css?v=2">
+<link rel="canonical" href="https://sarkarisewaindia.com/admin/login.html">
 </head>
-<body>
-<div class="admin-wrap">
-  <div class="admin-card">
-    <h2 style="margin-bottom:4px;">Staff Login</h2>
-    <p style="color:var(--color-text-muted); font-size:0.88rem; margin-top:0;">Content &amp; admin access for SarkariSewa Portal.</p>
+<body class="admin-wrap-login">
+<div class="admin-card-login">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+    <div class="admin-logo-icon">S</div>
+    <div>
+      <h2 style="margin:0; font-size:1.4rem;">Staff Portal</h2>
+      <span style="font-size:0.78rem; color:var(--admin-accent-teal); font-weight:600;">SarkariSewa Admin</span>
+    </div>
+  </div>
+  <p style="color:var(--admin-text-muted); font-size:0.88rem; margin-top:0; margin-bottom:24px;">Content &amp; admin management access.</p>
 
-    <form id="login-form">
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" autocomplete="username" required>
+  <form id="login-form">
+    <div style="margin-bottom:16px;">
+      <label for="email" style="display:block; margin-bottom:6px;">Email address</label>
+      <input type="email" id="email" name="email" autocomplete="username" placeholder="admin@sarkarisewaindia.com" style="width:100%;" required>
+    </div>
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" autocomplete="current-password" required>
+    <div style="margin-bottom:20px;">
+      <label for="password" style="display:block; margin-bottom:6px;">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••••••" style="width:100%;" required>
+    </div>
 
-      <button type="submit" id="login-submit">Log in</button>
-      <p id="login-error" class="admin-error">Incorrect email or password.</p>
-    </form>
+    <button type="submit" id="login-submit" class="logout-btn logout-btn--primary" style="width:100%; justify-content:center; padding:12px 18px !important; font-size:0.92rem !important;">Log in</button>
+    <p id="login-error" class="admin-error">Incorrect email or password.</p>
+  </form>
 
-    <p style="margin-top:22px; font-size:0.8rem; color:var(--color-text-muted);">
-      Real authentication via Supabase Auth. Admin users are created directly in the Supabase Dashboard → Authentication → Users — there's no public sign-up.
+  <div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--admin-border);">
+    <p style="font-size:0.8rem; color:var(--admin-text-muted); margin:0; line-height:1.5;">
+      Authentication powered by Supabase Auth. Admin accounts are managed directly in the Supabase Dashboard.
     </p>
-    <p style="margin-top:10px;"><a href="../index.html" style="font-size:0.85rem;">← Back to site</a></p>
+    <p style="margin-top:14px; margin-bottom:0;"><a href="../index.html" style="font-size:0.85rem; color:var(--admin-primary); text-decoration:none; font-weight:600;">← Back to site</a></p>
   </div>
 </div>
 

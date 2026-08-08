@@ -10,61 +10,64 @@
   <link rel="manifest" href="../manifest.json">
 <title>Admin Dashboard — SarkariSewa Portal</title>
 <meta name="robots" content="noindex, nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Noto+Sans:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/style.css">
-<style>
-  .dash-wrap { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
-  .dash-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow-card); }
-  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin: 20px 0 30px; }
-  .stat-num { font-family: var(--font-mono); font-size: 1.8rem; color: var(--color-primary); }
-  .stat-label { color: var(--color-text-muted); font-size: 0.85rem; }
-  .logout-btn { background: transparent; border: 1px solid var(--color-border); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: var(--font-body); }
-  .cat-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
-  .cat-table th, .cat-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--color-border); vertical-align: top; }
-  .cat-table th { color: var(--color-text-muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
-  .badge--ok { background: rgba(20,107,58,0.12); color: var(--color-accent-green); }
-  .badge--warn { background: rgba(217,127,43,0.15); color: var(--color-accent-saffron); }
-  .badge--hidden { background: rgba(179,38,30,0.12); color: #B3261E; }
-  .loading { color: var(--color-text-muted); font-size: 0.9rem; }
-  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .tab-btn { background: var(--color-surface-alt); border: 1px solid var(--color-border); padding: 8px 16px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 0.88rem; }
-  .tab-btn--active { background: var(--color-brand); color: var(--color-brand-text); border-color: var(--color-brand); }
-  .tab-panel { display: none; }
-  .tab-panel--active { display: block; }
-  .row-actions button { font: inherit; font-size: 0.78rem; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface); cursor: pointer; margin-right: 6px; }
-  .row-actions button:hover { border-color: var(--color-accent-saffron); }
-  .comment-msg-cell { max-width: 320px; }
-  .editor-toolbar { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
-  .editor-toolbar button { font: inherit; font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface-alt); cursor: pointer; }
-  .editor-toolbar button:hover { border-color: var(--color-accent-saffron); }
-  .rte { min-height: 180px; max-height: 420px; overflow-y: auto; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-surface); }
-  .rte:focus { outline: 2px solid var(--color-accent-saffron); outline-offset: -1px; }
-  .rte h2 { font-size: 1.1rem; margin: 0.6em 0 0.3em; }
-  .rte ul, .rte ol { padding-left: 1.4em; }
-</style>
-    <link rel="canonical" href="https://sarkarisewaindia.com/admin/dashboard.html">
+<link rel="stylesheet" href="../assets/css/admin-theme.css?v=2">
+<link rel="canonical" href="https://sarkarisewaindia.com/admin/dashboard.html">
 </head>
 <body>
+
 <div class="dash-wrap" id="dash-wrap" hidden>
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-    <div>
-      <h1 style="margin:0;">Admin Dashboard</h1>
-      <p style="margin:2px 0 0; font-size:0.85rem; color:var(--color-text-muted);" id="whoami"></p>
+  <!-- Pro Admin Header Bar -->
+  <div class="admin-header">
+    <div class="admin-header-title">
+      <div class="admin-logo-icon">S</div>
+      <div>
+        <h1>SarkariSewa Pro Console</h1>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:3px;">
+          <span class="user-chip-dot"></span>
+          <span style="font-size:0.83rem; color:var(--admin-text-sub);" id="whoami">Loading identity…</span>
+        </div>
+      </div>
     </div>
-    <button class="logout-btn" id="logout">Log out</button>
+    <div class="admin-header-meta">
+      <button type="button" class="logout-btn" id="cmd-palette-trigger" title="Quick Search (Ctrl + K)">
+        <span style="font-size:0.9rem;">🔍</span>
+        <span style="font-size:0.8rem; font-family:var(--admin-font-mono);">Ctrl+K</span>
+      </button>
+      <button class="logout-btn" id="logout">Log out</button>
+    </div>
   </div>
 
+  <!-- Segmented Navigation Tab Bar -->
   <div class="tabs">
-    <button class="tab-btn tab-btn--active" data-tab="overview">Overview</button>
-    <button class="tab-btn" data-tab="comments">Comments</button>
-    <button class="tab-btn" data-tab="subscribers">Subscribers</button>
-    <button class="tab-btn" data-tab="csc">CSC Listings <span id="csc-pending-count" class="badge badge--warn" style="display:none;"></span></button>
-    <button class="tab-btn" data-tab="blog">Blog</button>
-    <button class="tab-btn" data-tab="jobs">Job Alerts <span id="jobs-notify-count" class="badge badge--warn" style="display:none;"></span></button>
-    <button class="tab-btn" data-tab="exams">Exam Calendar</button>
-    <button class="tab-btn" data-tab="services">Services</button>
-    <button class="tab-btn" data-tab="analytics">Analytics</button>
+    <button class="tab-btn tab-btn--active" data-tab="overview">📊 Overview</button>
+    <button class="tab-btn" data-tab="comments">💬 Comments</button>
+    <button class="tab-btn" data-tab="subscribers">📬 Subscribers</button>
+    <button class="tab-btn" data-tab="csc">🏬 CSC Listings <span id="csc-pending-count" class="badge badge--warn" style="display:none;"></span></button>
+    <button class="tab-btn" data-tab="blog">📝 Blog</button>
+    <button class="tab-btn" data-tab="jobs">💼 Job Alerts <span id="jobs-notify-count" class="badge badge--warn" style="display:none;"></span></button>
+    <button class="tab-btn" data-tab="exams">📅 Exam Calendar</button>
+    <button class="tab-btn" data-tab="services">⚙️ Services</button>
+    <button class="tab-btn" data-tab="analytics">📈 Analytics</button>
+  </div>
+
+  <!-- Command Palette Modal -->
+  <div class="cmd-palette-backdrop" id="cmd-palette-backdrop">
+    <div class="cmd-palette-box">
+      <input type="text" class="cmd-palette-input" id="cmd-palette-input" placeholder="Type a tab name or quick action… (e.g. blog, jobs, csc)" autocomplete="off">
+      <div class="cmd-palette-list" id="cmd-palette-list">
+        <div class="cmd-palette-item" data-jump="overview"><span>📊 Go to Overview</span> <span style="font-family:var(--admin-font-mono); font-size:0.75rem; opacity:0.6;">Tab 1</span></div>
+        <div class="cmd-palette-item" data-jump="comments"><span>💬 Go to Comments</span> <span style="font-family:var(--admin-font-mono); font-size:0.75rem; opacity:0.6;">Tab 2</span></div>
+        <div class="cmd-palette-item" data-jump="subscribers"><span>📬 Go to Subscribers</span> <span style="font-family:var(--admin-font-mono); font-size:0.75rem; opacity:0.6;">Tab 3</span></div>
+        <div class="cmd-palette-item" data-jump="csc"><span>🏬 Go to CSC Listings</span> <span style="font-family:var(--admin-font-mono); font-size:0.75rem; opacity:0.6;">Tab 4</span></div>
+        <div class="cmd-palette-item" data-jump="blog"><span>📝 Go to Blog Manager</span> <span style="font-family:var(--admin-font-mono); font-size:0.75rem; opacity:0.6;">Tab 5</span></div>
+        <div class="cmd-palette-item" data-jump="jobs"><span>💼 Go to Job Alerts Manager</span> <span style="font-family:var(--admin-font-mono); font-size:0.75rem; opacity:0.6;">Tab 6</span></div>
+        <div class="cmd-palette-item" data-jump="exams"><span>📅 Go to Exam Calendar</span> <span style="font-family:var(--admin-font-mono); font-size:0.75rem; opacity:0.6;">Tab 7</span></div>
+        <div class="cmd-palette-item" data-jump="services"><span>⚙️ Go to Services Manager</span> <span style="font-family:var(--admin-font-mono); font-size:0.75rem; opacity:0.6;">Tab 8</span></div>
+        <div class="cmd-palette-item" data-jump="analytics"><span>📈 Go to Analytics Dashboard</span> <span style="font-family:var(--admin-font-mono); font-size:0.75rem; opacity:0.6;">Tab 9</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- ================= OVERVIEW TAB ================= -->
@@ -109,7 +112,7 @@
   <!-- ================= COMMENTS TAB ================= -->
   <div class="tab-panel" id="tab-comments">
     <div class="dash-card">
-      <h3 style="margin-top:0;">All comments <span id="comments-count" style="color:var(--color-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <h3 style="margin-top:0;">All comments <span id="comments-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
       <table class="cat-table" id="comments-table">
         <thead><tr><th>Service</th><th>Name</th><th>Message</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
         <tbody><tr><td colspan="6" class="loading">Loading…</td></tr></tbody>
@@ -120,7 +123,7 @@
   <!-- ================= SUBSCRIBERS TAB ================= -->
   <div class="tab-panel" id="tab-subscribers">
     <div class="dash-card">
-      <h3 style="margin-top:0;">All subscribers <span id="subscribers-count" style="color:var(--color-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <h3 style="margin-top:0;">All subscribers <span id="subscribers-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
       <table class="cat-table" id="subscribers-table">
         <thead><tr><th>Email</th><th>Phone</th><th>WhatsApp?</th><th>Service</th><th>Date</th></tr></thead>
         <tbody><tr><td colspan="5" class="loading">Loading…</td></tr></tbody>
@@ -141,7 +144,7 @@
     </div>
 
     <div class="dash-card">
-      <h3 style="margin-top:0;">New centre submissions <span id="csc-new-count" style="color:var(--color-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <h3 style="margin-top:0;">New centre submissions <span id="csc-new-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
       <table class="cat-table" id="csc-new-table">
         <thead><tr><th>Name</th><th>Address</th><th>State</th><th>Owner</th><th>Services</th><th>Mode</th><th>Actions</th></tr></thead>
         <tbody><tr><td colspan="7" class="loading">Loading…</td></tr></tbody>
@@ -149,7 +152,7 @@
     </div>
 
     <div class="dash-card">
-      <h3 style="margin-top:0;">Claims on existing centres <span id="csc-claims-count" style="color:var(--color-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <h3 style="margin-top:0;">Claims on existing centres <span id="csc-claims-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
       <table class="cat-table" id="csc-claims-table">
         <thead><tr><th>Centre</th><th>Owner</th><th>Services</th><th>Mode</th><th>Actions</th></tr></thead>
         <tbody><tr><td colspan="5" class="loading">Loading…</td></tr></tbody>
@@ -164,6 +167,7 @@
       </table>
     </div>
   </div>
+
   <!-- ================= BLOG TAB ================= -->
   <div class="tab-panel" id="tab-blog">
     <div class="dash-card" style="background:rgba(217,127,43,0.08); border-color:var(--color-accent-saffron);">
@@ -178,7 +182,7 @@
 
     <div class="dash-card">
       <h3 style="margin-top:0;">Bulk import</h3>
-      <p style="font-size:0.85rem; color:var(--color-text-muted); margin-top:0;">
+      <p style="font-size:0.85rem; color:var(--admin-text-muted); margin-top:0;">
         Paste a JSON list of posts here (Claude can prepare this for you)
         and click Import — all of them get added in one go instead of
         writing them one by one. Each one is added as a <strong>draft</strong>;
@@ -187,13 +191,13 @@
         simple HTML (e.g. <code>&lt;p&gt;</code>, <code>&lt;h2&gt;</code>,
         <code>&lt;ul&gt;&lt;li&gt;</code>).
       </p>
-      <textarea id="blog-bulk-json" rows="6" placeholder='[{"title_en": "...", "title_hi": "...", "category": "identity-documents", "excerpt_en": "...", "excerpt_hi": "...", "body_en": "<p>...</p>", "body_hi": "<p>...</p>", "date_published": "2026-08-01", "related_service_id": "aadhaar-card"}]' style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit; font-family:monospace; font-size:0.82rem;"></textarea>
+      <textarea id="blog-bulk-json" rows="6" placeholder='[{"title_en": "...", "title_hi": "...", "category": "identity-documents", "excerpt_en": "...", "excerpt_hi": "...", "body_en": "<p>...</p>", "body_hi": "<p>...</p>", "date_published": "2026-08-01", "related_service_id": "aadhaar-card"}]' style="width:100%; font-family:var(--admin-font-mono); font-size:0.82rem;"></textarea>
       <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;">
-        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px; color:var(--admin-text-sub);">
           <input type="checkbox" id="blog-bulk-publish"> Publish immediately (skip draft review)
         </label>
         <button id="blog-bulk-import-btn" class="logout-btn" type="button">Import</button>
-        <span id="blog-bulk-msg" style="font-size:0.85rem; color:var(--color-text-muted);"></span>
+        <span id="blog-bulk-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
       </div>
     </div>
 
@@ -203,37 +207,37 @@
       <div style="display:grid; gap:14px;">
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Title (English) *</label>
-          <input type="text" id="blog-title-en" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="blog-title-en" style="width:100%;">
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Title (Hindi)</label>
-          <input type="text" id="blog-title-hi" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="blog-title-hi" style="width:100%;">
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Category</label>
-            <select id="blog-category" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <select id="blog-category" style="width:100%;">
               <option value="">— None —</option>
             </select>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Date published</label>
-            <input type="date" id="blog-date" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="date" id="blog-date" style="width:100%;">
           </div>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Related official service — shows a "View details →" link to that service's page at the bottom of the post</label>
-          <select id="blog-related-service" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <select id="blog-related-service" style="width:100%;">
             <option value="">— None —</option>
           </select>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Excerpt (English) — short summary shown on the blog list</label>
-          <textarea id="blog-excerpt-en" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+          <textarea id="blog-excerpt-en" rows="2" style="width:100%;"></textarea>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Excerpt (Hindi)</label>
-          <textarea id="blog-excerpt-hi" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+          <textarea id="blog-excerpt-hi" rows="2" style="width:100%;"></textarea>
         </div>
 
         <div>
@@ -265,21 +269,22 @@
 
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
           <button id="blog-save-draft" class="logout-btn" type="button">Save draft</button>
-          <button id="blog-publish" class="logout-btn" type="button" style="background:var(--color-brand); color:var(--color-brand-text); border-color:var(--color-brand);">Publish</button>
+          <button id="blog-publish" class="logout-btn logout-btn--primary" type="button">Publish</button>
           <button id="blog-cancel-edit" class="logout-btn" type="button" style="display:none;">Cancel edit</button>
-          <span id="blog-form-msg" style="font-size:0.85rem; color:var(--color-text-muted);"></span>
+          <span id="blog-form-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
         </div>
       </div>
     </div>
 
     <div class="dash-card">
-      <h3 style="margin-top:0;">Posts written here <span id="blog-count" style="color:var(--color-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <h3 style="margin-top:0;">Posts written here <span id="blog-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
       <table class="cat-table" id="blog-table">
         <thead><tr><th>Title</th><th>Category</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody><tr><td colspan="5" class="loading">Loading…</td></tr></tbody>
       </table>
     </div>
   </div>
+
   <!-- ================= JOB ALERTS TAB ================= -->
   <div class="tab-panel" id="tab-jobs">
     <div class="dash-card" style="background:rgba(217,127,43,0.08); border-color:var(--color-accent-saffron);">
@@ -293,7 +298,7 @@
 
     <div class="dash-card">
       <h3 style="margin-top:0;">Bulk import</h3>
-      <p style="font-size:0.85rem; color:var(--color-text-muted); margin-top:0;">
+      <p style="font-size:0.85rem; color:var(--admin-text-muted); margin-top:0;">
         Paste a JSON list of job alerts here (Claude can prepare this for
         you after researching current vacancies) and click Import — all of
         them get added in one go instead of filling the form one by one.
@@ -301,13 +306,13 @@
         them individually below, or check "Publish immediately" to skip
         review.
       </p>
-      <textarea id="job-bulk-json" rows="6" placeholder='[{"title_en": "...", "title_hi": "...", "department_en": "...", "job_type": "central", "vacancies": "500", "last_date": "2026-09-30", "apply_link": "https://...", "qualification_en": "..."}]' style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit; font-family:monospace; font-size:0.82rem;"></textarea>
+      <textarea id="job-bulk-json" rows="6" placeholder='[{"title_en": "...", "title_hi": "...", "department_en": "...", "job_type": "central", "vacancies": "500", "last_date": "2026-09-30", "apply_link": "https://...", "qualification_en": "..."}]' style="width:100%; font-family:var(--admin-font-mono); font-size:0.82rem;"></textarea>
       <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;">
-        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px; color:var(--admin-text-sub);">
           <input type="checkbox" id="job-bulk-publish"> Publish immediately (skip draft review)
         </label>
         <button id="job-bulk-import-btn" class="logout-btn" type="button">Import</button>
-        <span id="job-bulk-msg" style="font-size:0.85rem; color:var(--color-text-muted);"></span>
+        <span id="job-bulk-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
       </div>
     </div>
 
@@ -317,26 +322,26 @@
       <div style="display:grid; gap:14px;">
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Post / Recruitment Title (English) *</label>
-          <input type="text" id="job-title-en" placeholder="e.g. RRB Group D Recruitment 2026" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="job-title-en" placeholder="e.g. RRB Group D Recruitment 2026" style="width:100%;">
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Post / Recruitment Title (Hindi)</label>
-          <input type="text" id="job-title-hi" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="job-title-hi" style="width:100%;">
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Department / Organisation (English)</label>
-            <input type="text" id="job-dept-en" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="job-dept-en" style="width:100%;">
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Department / Organisation (Hindi)</label>
-            <input type="text" id="job-dept-hi" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="job-dept-hi" style="width:100%;">
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Type</label>
-            <select id="job-type" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <select id="job-type" style="width:100%;">
               <option value="central">Central Govt</option>
               <option value="state">State Govt</option>
               <option value="psu">PSU</option>
@@ -349,63 +354,63 @@
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Vacancies</label>
-            <input type="text" id="job-vacancies" placeholder="e.g. 5000+" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="job-vacancies" placeholder="e.g. 5000+" style="width:100%;">
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Location (English)</label>
-            <input type="text" id="job-location-en" placeholder="e.g. All India" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="job-location-en" placeholder="e.g. All India" style="width:100%;">
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Location (Hindi)</label>
-            <input type="text" id="job-location-hi" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="job-location-hi" style="width:100%;">
           </div>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Eligibility / Qualification (English)</label>
-          <textarea id="job-qualification-en" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+          <textarea id="job-qualification-en" rows="2" style="width:100%;"></textarea>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Eligibility / Qualification (Hindi)</label>
-          <textarea id="job-qualification-hi" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+          <textarea id="job-qualification-hi" rows="2" style="width:100%;"></textarea>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Age Limit (English)</label>
-            <input type="text" id="job-age-en" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="job-age-en" style="width:100%;">
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Age Limit (Hindi)</label>
-            <input type="text" id="job-age-hi" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="job-age-hi" style="width:100%;">
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Application Fee (English)</label>
-            <input type="text" id="job-fee-en" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="job-fee-en" style="width:100%;">
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Application Fee (Hindi)</label>
-            <input type="text" id="job-fee-hi" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="job-fee-hi" style="width:100%;">
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Last Date to Apply *</label>
-            <input type="date" id="job-last-date" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="date" id="job-last-date" style="width:100%;">
           </div>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Apply Link (official application URL) *</label>
-          <input type="url" id="job-apply-link" placeholder="https://" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="url" id="job-apply-link" placeholder="https://" style="width:100%;">
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Notification Link (PDF, optional)</label>
-          <input type="url" id="job-notification-link" placeholder="https://" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="url" id="job-notification-link" placeholder="https://" style="width:100%;">
         </div>
 
-        <h4 style="margin:10px 0 0; border-top:1px solid var(--color-border); padding-top:16px;">Detail page content (optional — leave blank to skip a section)</h4>
+        <h4 style="margin:10px 0 0; border-top:1px solid var(--admin-border); padding-top:16px; color:var(--admin-text-main);">Detail page content (optional — leave blank to skip a section)</h4>
 
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Overview (English)</label>
@@ -430,65 +435,65 @@
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Vacancy Breakdown (English) — one line per category</label>
-            <textarea id="job-breakdown-en" rows="4" placeholder="UR: 100&#10;OBC: 60&#10;SC: 40&#10;ST: 20&#10;EWS: 25" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="job-breakdown-en" rows="4" placeholder="UR: 100&#10;OBC: 60&#10;SC: 40&#10;ST: 20&#10;EWS: 25" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Vacancy Breakdown (Hindi)</label>
-            <textarea id="job-breakdown-hi" rows="4" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="job-breakdown-hi" rows="4" style="width:100%;"></textarea>
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Selection Process (English) — one stage per line</label>
-            <textarea id="job-selection-en" rows="3" placeholder="Written Exam&#10;Physical Test&#10;Interview&#10;Document Verification" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="job-selection-en" rows="3" placeholder="Written Exam&#10;Physical Test&#10;Interview&#10;Document Verification" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Selection Process (Hindi)</label>
-            <textarea id="job-selection-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="job-selection-hi" rows="3" style="width:100%;"></textarea>
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Salary / Pay Scale (English)</label>
-            <textarea id="job-salary-en" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="job-salary-en" rows="2" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Salary / Pay Scale (Hindi)</label>
-            <textarea id="job-salary-hi" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="job-salary-hi" rows="2" style="width:100%;"></textarea>
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Important Dates (English) — one per line</label>
-            <textarea id="job-dates-en" rows="3" placeholder="Notification: 24 July 2026&#10;Apply Start: 24 July 2026&#10;Last Date: 13 Aug 2026&#10;Exam Date: TBA" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="job-dates-en" rows="3" placeholder="Notification: 24 July 2026&#10;Apply Start: 24 July 2026&#10;Last Date: 13 Aug 2026&#10;Exam Date: TBA" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Important Dates (Hindi)</label>
-            <textarea id="job-dates-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="job-dates-hi" rows="3" style="width:100%;"></textarea>
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">How to Apply (English) — one step per line</label>
-            <textarea id="job-howtoapply-en" rows="3" placeholder="Visit the official website&#10;Click on 'Apply Online'&#10;Fill the form and upload documents&#10;Pay the fee and submit" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="job-howtoapply-en" rows="3" placeholder="Visit the official website&#10;Click on 'Apply Online'&#10;Fill the form and upload documents&#10;Pay the fee and submit" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">How to Apply (Hindi)</label>
-            <textarea id="job-howtoapply-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="job-howtoapply-hi" rows="3" style="width:100%;"></textarea>
           </div>
         </div>
 
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
           <button id="job-save-draft" class="logout-btn" type="button">Save draft</button>
-          <button id="job-publish" class="logout-btn" type="button" style="background:var(--color-brand); color:var(--color-brand-text); border-color:var(--color-brand);">Publish</button>
+          <button id="job-publish" class="logout-btn logout-btn--primary" type="button">Publish</button>
           <button id="job-cancel-edit" class="logout-btn" type="button" style="display:none;">Cancel edit</button>
-          <span id="job-form-msg" style="font-size:0.85rem; color:var(--color-text-muted);"></span>
+          <span id="job-form-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
         </div>
       </div>
     </div>
 
     <div class="dash-card">
-      <h3 style="margin-top:0;">Job alerts <span id="job-count" style="color:var(--color-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <h3 style="margin-top:0;">Job alerts <span id="job-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
       <table class="cat-table" id="job-table">
         <thead><tr><th>Title</th><th>Type</th><th>Last Date</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody><tr><td colspan="5" class="loading">Loading…</td></tr></tbody>
@@ -509,7 +514,7 @@
 
     <div class="dash-card">
       <h3 style="margin-top:0;">Bulk import</h3>
-      <p style="font-size:0.85rem; color:var(--color-text-muted); margin-top:0;">
+      <p style="font-size:0.85rem; color:var(--admin-text-muted); margin-top:0;">
         Paste a JSON list of exams here (Claude can prepare this for you
         after researching current notifications — see
         content-depth-prompt.md for a ready-to-use prompt that also fills
@@ -519,13 +524,13 @@
         review and publish them individually below, or check "Publish
         immediately" to skip review.
       </p>
-      <textarea id="exam-bulk-json" rows="6" placeholder='[{"exam_name_en": "SSC CGL 2026", "exam_name_hi": "...", "organisation_en": "SSC", "category": "ssc", "notification_date": "2026-07-20", "last_date": "2026-09-10", "exam_date": "2026-11-20", "official_link": "https://...", "notification_pdf_link": "https://...", "description_en": "...", "description_hi": "...", "eligibility_en": "...", "eligibility_hi": "..."}]' style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit; font-family:monospace; font-size:0.82rem;"></textarea>
+      <textarea id="exam-bulk-json" rows="6" placeholder='[{"exam_name_en": "SSC CGL 2026", "exam_name_hi": "...", "organisation_en": "SSC", "category": "ssc", "notification_date": "2026-07-20", "last_date": "2026-09-10", "exam_date": "2026-11-20", "official_link": "https://...", "notification_pdf_link": "https://...", "description_en": "...", "description_hi": "...", "eligibility_en": "...", "eligibility_hi": "..."}]' style="width:100%; font-family:var(--admin-font-mono); font-size:0.82rem;"></textarea>
       <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;">
-        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px; color:var(--admin-text-sub);">
           <input type="checkbox" id="exam-bulk-publish"> Publish immediately (skip draft review)
         </label>
         <button id="exam-bulk-import-btn" class="logout-btn" type="button">Import</button>
-        <span id="exam-bulk-msg" style="font-size:0.85rem; color:var(--color-text-muted);"></span>
+        <span id="exam-bulk-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
       </div>
     </div>
 
@@ -535,25 +540,25 @@
       <div style="display:grid; gap:14px;">
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Exam Name (English) *</label>
-          <input type="text" id="exam-name-en" placeholder="e.g. SSC CGL 2026" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="exam-name-en" placeholder="e.g. SSC CGL 2026" style="width:100%;">
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Exam Name (Hindi)</label>
-          <input type="text" id="exam-name-hi" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="exam-name-hi" style="width:100%;">
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Organisation (English)</label>
-            <input type="text" id="exam-org-en" placeholder="e.g. Staff Selection Commission" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="exam-org-en" placeholder="e.g. Staff Selection Commission" style="width:100%;">
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Organisation (Hindi)</label>
-            <input type="text" id="exam-org-hi" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="exam-org-hi" style="width:100%;">
           </div>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Category</label>
-          <select id="exam-category" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <select id="exam-category" style="width:100%;">
             <option value="central">Central Govt</option>
             <option value="state">State Govt</option>
             <option value="banking">Banking</option>
@@ -564,114 +569,114 @@
             <option value="defence">Defence</option>
             <option value="other">Other</option>
           </select>
-          <p style="font-size:0.78rem; color:var(--color-text-muted); margin:4px 0 0;">Stored now so it's ready for a filter dropdown on the public page later — not shown there yet.</p>
+          <p style="font-size:0.78rem; color:var(--admin-text-muted); margin:4px 0 0;">Stored now so it's ready for a filter dropdown on the public page later — not shown there yet.</p>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Notification Date</label>
-            <input type="date" id="exam-notification-date" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="date" id="exam-notification-date" style="width:100%;">
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Last Date to Apply *</label>
-            <input type="date" id="exam-last-date" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="date" id="exam-last-date" style="width:100%;">
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Exam Date</label>
-            <input type="date" id="exam-date" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="date" id="exam-date" style="width:100%;">
           </div>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Link *</label>
-          <input type="text" id="exam-official-link" placeholder="https://..." style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="exam-official-link" placeholder="https://..." style="width:100%;">
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Notification (PDF link)</label>
-          <input type="text" id="exam-notification-pdf" placeholder="https://... (optional)" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="exam-notification-pdf" placeholder="https://... (optional)" style="width:100%;">
         </div>
 
-        <h4 style="margin:10px 0 0; border-top:1px solid var(--color-border); padding-top:16px;">Detail page content — fill these in, or this exam only gets a thin listing card</h4>
-        <p style="font-size:0.8rem; color:var(--color-text-muted); margin:0 0 6px;">
+        <h4 style="margin:10px 0 0; border-top:1px solid var(--admin-border); padding-top:16px; color:var(--admin-text-main);">Detail page content — fill these in, or this exam only gets a thin listing card</h4>
+        <p style="font-size:0.8rem; color:var(--admin-text-muted); margin:0 0 6px;">
           Every field below becomes a real, indexable section on the exam's own page (exams/&lt;slug&gt;.html) — leaving them blank is exactly the thin-content problem Google flagged this site for. See content-depth-prompt.md for a ready-to-use prompt that fills these properly from the official notification.
         </p>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Description (English)</label>
-            <textarea id="exam-description-en" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-description-en" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Description (Hindi)</label>
-            <textarea id="exam-description-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-description-hi" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Eligibility (English)</label>
-            <textarea id="exam-eligibility-en" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-eligibility-en" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Eligibility (Hindi)</label>
-            <textarea id="exam-eligibility-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-eligibility-hi" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Age Limit (English)</label>
-            <textarea id="exam-age-limit-en" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-age-limit-en" rows="2" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Age Limit (Hindi)</label>
-            <textarea id="exam-age-limit-hi" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-age-limit-hi" rows="2" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Exam Pattern (English)</label>
-            <textarea id="exam-pattern-en" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-pattern-en" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Exam Pattern (Hindi)</label>
-            <textarea id="exam-pattern-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-pattern-hi" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Syllabus (English)</label>
-            <textarea id="exam-syllabus-en" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-syllabus-en" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Syllabus (Hindi)</label>
-            <textarea id="exam-syllabus-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-syllabus-hi" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Selection Process (English)</label>
-            <textarea id="exam-selection-process-en" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-selection-process-en" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Selection Process (Hindi)</label>
-            <textarea id="exam-selection-process-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-selection-process-hi" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Application Fee (English)</label>
-            <textarea id="exam-application-fee-en" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-application-fee-en" rows="2" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Application Fee (Hindi)</label>
-            <textarea id="exam-application-fee-hi" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-application-fee-hi" rows="2" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">How to Apply (English)</label>
-            <textarea id="exam-how-to-apply-en" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-how-to-apply-en" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">How to Apply (Hindi)</label>
-            <textarea id="exam-how-to-apply-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="exam-how-to-apply-hi" rows="3" style="width:100%;"></textarea>
           </div>
         </div>
 
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
           <button id="exam-save-draft" class="logout-btn" type="button">Save draft</button>
-          <button id="exam-publish" class="logout-btn" type="button" style="background:var(--color-brand); color:var(--color-brand-text); border-color:var(--color-brand);">Publish</button>
+          <button id="exam-publish" class="logout-btn logout-btn--primary" type="button">Publish</button>
           <button id="exam-cancel-edit" class="logout-btn" type="button" style="display:none;">Cancel edit</button>
-          <span id="exam-form-msg" style="font-size:0.85rem; color:var(--color-text-muted);"></span>
+          <span id="exam-form-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
         </div>
       </div>
     </div>
 
     <div class="dash-card">
-      <h3 style="margin-top:0;">Exams <span id="exam-count" style="color:var(--color-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <h3 style="margin-top:0;">Exams <span id="exam-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
       <table class="cat-table" id="exam-table">
         <thead><tr><th>Exam Name</th><th>Category</th><th>Last Date</th><th>Computed Status</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody><tr><td colspan="6" class="loading">Loading…</td></tr></tbody>
@@ -693,19 +698,19 @@
 
     <div class="dash-card">
       <h3 style="margin-top:0;">Bulk import</h3>
-      <p style="font-size:0.85rem; color:var(--color-text-muted); margin-top:0;">
+      <p style="font-size:0.85rem; color:var(--admin-text-muted); margin-top:0;">
         Paste a JSON list of services here (Claude can prepare this after
         researching official info) and click Import. Any slug that already
         exists — in <code>data/services.json</code> or already added here —
         is skipped automatically.
       </p>
-      <textarea id="svc-bulk-json" rows="6" placeholder='[{"slug": "example-service", "category": "identity-documents", "name_en": "...", "name_hi": "...", "short_description_en": "...", "official_links": [{"label":{"en":"Official Portal","hi":"..."},"url":"https://..."}], "helpline": "...", "eligibility": [{"en":"...","hi":"..."}], "documents_required": [{"en":"...","hi":"..."}], "faqs": [{"q":{"en":"...","hi":"..."},"a":{"en":"...","hi":"..."}}], "related_services": ["aadhaar-card"]}]' style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit; font-family:monospace; font-size:0.82rem;"></textarea>
+      <textarea id="svc-bulk-json" rows="6" placeholder='[{"slug": "example-service", "category": "identity-documents", "name_en": "...", "name_hi": "...", "short_description_en": "...", "official_links": [{"label":{"en":"Official Portal","hi":"..."},"url":"https://..."}], "helpline": "...", "eligibility": [{"en":"...","hi":"..."}], "documents_required": [{"en":"...","hi":"..."}], "faqs": [{"q":{"en":"...","hi":"..."},"a":{"en":"...","hi":"..."}}], "related_services": ["aadhaar-card"]}]' style="width:100%; font-family:var(--admin-font-mono); font-size:0.82rem;"></textarea>
       <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;">
-        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px;">
+        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px; color:var(--admin-text-sub);">
           <input type="checkbox" id="svc-bulk-publish"> Publish immediately (skip draft review)
         </label>
         <button id="svc-bulk-import-btn" class="logout-btn" type="button">Import</button>
-        <span id="svc-bulk-msg" style="font-size:0.85rem; color:var(--color-text-muted);"></span>
+        <span id="svc-bulk-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
       </div>
     </div>
 
@@ -715,96 +720,96 @@
       <div style="display:grid; gap:14px;">
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Name (English) *</label>
-          <input type="text" id="svc-name-en" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="svc-name-en" style="width:100%;">
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Name (Hindi)</label>
-          <input type="text" id="svc-name-hi" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="svc-name-hi" style="width:100%;">
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Slug (URL id) * — lowercase, hyphens only</label>
-            <input type="text" id="svc-slug" placeholder="e.g. pmbjp" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="svc-slug" placeholder="e.g. pmbjp" style="width:100%;">
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Category *</label>
-            <select id="svc-category" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <select id="svc-category" style="width:100%;">
               <option value="">— Select —</option>
             </select>
           </div>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Short Description (English)</label>
-          <textarea id="svc-desc-en" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+          <textarea id="svc-desc-en" rows="2" style="width:100%;"></textarea>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Short Description (Hindi)</label>
-          <textarea id="svc-desc-hi" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+          <textarea id="svc-desc-hi" rows="2" style="width:100%;"></textarea>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Link Label (English)</label>
-            <input type="text" id="svc-link-label-en" placeholder="Official Portal" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="svc-link-label-en" placeholder="Official Portal" style="width:100%;">
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Link Label (Hindi)</label>
-            <input type="text" id="svc-link-label-hi" placeholder="आधिकारिक पोर्टल" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+            <input type="text" id="svc-link-label-hi" placeholder="आधिकारिक पोर्टल" style="width:100%;">
           </div>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Link URL</label>
-          <input type="url" id="svc-link-url" placeholder="https://" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="url" id="svc-link-url" placeholder="https://" style="width:100%;">
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Helpline</label>
-          <input type="text" id="svc-helpline" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="svc-helpline" style="width:100%;">
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Eligibility (English) — one point per line</label>
-            <textarea id="svc-eligibility-en" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="svc-eligibility-en" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Eligibility (Hindi) — same order, one per line</label>
-            <textarea id="svc-eligibility-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="svc-eligibility-hi" rows="3" style="width:100%;"></textarea>
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Documents Required (English) — one per line</label>
-            <textarea id="svc-documents-en" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="svc-documents-en" rows="3" style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Documents Required (Hindi) — same order</label>
-            <textarea id="svc-documents-hi" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="svc-documents-hi" rows="3" style="width:100%;"></textarea>
           </div>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">FAQs (English) — "Q: ..." then "A: ..." lines, blank line between FAQs</label>
-            <textarea id="svc-faqs-en" rows="4" placeholder="Q: How much does it cost?&#10;A: It is free.&#10;&#10;Q: How long does it take?&#10;A: 15-20 days." style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="svc-faqs-en" rows="4" placeholder="Q: How much does it cost?&#10;A: It is free.&#10;&#10;Q: How long does it take?&#10;A: 15-20 days." style="width:100%;"></textarea>
           </div>
           <div>
             <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">FAQs (Hindi) — same order/format</label>
-            <textarea id="svc-faqs-hi" rows="4" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;"></textarea>
+            <textarea id="svc-faqs-hi" rows="4" style="width:100%;"></textarea>
           </div>
         </div>
         <div>
           <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Related Services — comma-separated slugs (existing or new)</label>
-          <input type="text" id="svc-related" placeholder="aadhaar-card, pan-card" style="width:100%; padding:8px 10px; border:1px solid var(--color-border); border-radius:6px; font:inherit;">
+          <input type="text" id="svc-related" placeholder="aadhaar-card, pan-card" style="width:100%;">
         </div>
 
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
           <button id="svc-save-draft" class="logout-btn" type="button">Save draft</button>
-          <button id="svc-publish" class="logout-btn" type="button" style="background:var(--color-brand); color:var(--color-brand-text); border-color:var(--color-brand);">Publish</button>
+          <button id="svc-publish" class="logout-btn logout-btn--primary" type="button">Publish</button>
           <button id="svc-cancel-edit" class="logout-btn" type="button" style="display:none;">Cancel edit</button>
-          <span id="svc-form-msg" style="font-size:0.85rem; color:var(--color-text-muted);"></span>
+          <span id="svc-form-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
         </div>
       </div>
     </div>
 
     <div class="dash-card">
-      <h3 style="margin-top:0;">Services added here <span id="svc-count" style="color:var(--color-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <h3 style="margin-top:0;">Services added here <span id="svc-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
       <table class="cat-table" id="svc-table">
         <thead><tr><th>Name</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody><tr><td colspan="4" class="loading">Loading…</td></tr></tbody>
@@ -864,8 +869,8 @@
   </div>
 </div>
 
-<div class="dash-wrap" id="dash-loading">
-  <p class="loading">Checking login…</p>
+<div class="dash-wrap" id="dash-loading" style="text-align:center; padding-top:100px;">
+  <p class="loading" style="font-size:1.1rem; color:var(--admin-text-sub);">Connecting to Supabase Console…</p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -873,6 +878,56 @@
 <script>
   const ROOT = "../";
   let SUPABASE_CLIENT = null;
+
+  // ---------- Command Palette Quick Navigation ----------
+  const cmdBackdrop = document.getElementById("cmd-palette-backdrop");
+  const cmdTrigger = document.getElementById("cmd-palette-trigger");
+  const cmdInput = document.getElementById("cmd-palette-input");
+  const cmdList = document.getElementById("cmd-palette-list");
+
+  function openCmdPalette() {
+    cmdBackdrop.classList.add("active");
+    cmdInput.value = "";
+    cmdInput.focus();
+  }
+
+  function closeCmdPalette() {
+    cmdBackdrop.classList.remove("active");
+  }
+
+  if (cmdTrigger) cmdTrigger.addEventListener("click", openCmdPalette);
+
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      cmdBackdrop.classList.contains("active") ? closeCmdPalette() : openCmdPalette();
+    } else if (e.key === "Escape" && cmdBackdrop.classList.contains("active")) {
+      closeCmdPalette();
+    }
+  });
+
+  cmdBackdrop.addEventListener("click", (e) => {
+    if (e.target === cmdBackdrop) closeCmdPalette();
+  });
+
+  cmdList.querySelectorAll(".cmd-palette-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      const tabTarget = item.dataset.jump;
+      const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabTarget}"]`);
+      if (targetBtn) targetBtn.click();
+      closeCmdPalette();
+    });
+  });
+
+  if (cmdInput) {
+    cmdInput.addEventListener("input", () => {
+      const val = cmdInput.value.toLowerCase().trim();
+      cmdList.querySelectorAll(".cmd-palette-item").forEach((item) => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(val) ? "flex" : "none";
+      });
+    });
+  }
 
   // ---------- Auth guard ----------
   (async function init() {
@@ -1111,7 +1166,7 @@
         <td>${escapeHtml(c.name)}</td>
         <td>${escapeHtml(c.address)}</td>
         <td>${escapeHtml(c.state)}</td>
-        <td>${escapeHtml(c.owner_name)}<br><span style="color:var(--color-text-muted);font-size:0.8rem;">${escapeHtml(c.owner_phone)}</span></td>
+        <td>${escapeHtml(c.owner_name)}<br><span style="color:var(--admin-text-muted);font-size:0.8rem;">${escapeHtml(c.owner_phone)}</span></td>
         <td>${fmtServices(c.services_offered)}</td>
         <td>${fmtMode(c.service_mode)}</td>
         <td class="row-actions">
@@ -1159,8 +1214,8 @@
       .map(
         (c) => `
       <tr data-id="${c.id}">
-        <td>${escapeHtml(c.csc_centres ? c.csc_centres.name : c.csc_centre_id)}<br><span style="color:var(--color-text-muted);font-size:0.8rem;">${escapeHtml(c.csc_centres ? c.csc_centres.address : "")}</span></td>
-        <td>${escapeHtml(c.owner_name)}<br><span style="color:var(--color-text-muted);font-size:0.8rem;">${escapeHtml(c.owner_phone)}</span></td>
+        <td>${escapeHtml(c.csc_centres ? c.csc_centres.name : c.csc_centre_id)}<br><span style="color:var(--admin-text-muted);font-size:0.8rem;">${escapeHtml(c.csc_centres ? c.csc_centres.address : "")}</span></td>
+        <td>${escapeHtml(c.owner_name)}<br><span style="color:var(--admin-text-muted);font-size:0.8rem;">${escapeHtml(c.owner_phone)}</span></td>
         <td>${fmtServices(c.services_offered)}</td>
         <td>${fmtMode(c.service_mode)}</td>
         <td class="row-actions">
@@ -1826,13 +1881,10 @@
       .slice(0, 80);
   }
 
-  // Base keys for the exam detail-content fields — each has an _en and
-  // _hi textarea in the form (ids: exam-<dashed-key>-en / -hi).
   const EXAM_DETAIL_FIELDS = [
     "description", "eligibility", "age-limit", "exam-pattern",
     "syllabus", "selection-process", "application-fee", "how-to-apply",
   ];
-  // Supabase column names use underscores, not dashes.
   function examFieldToColumn(field) {
     return field.replace(/-/g, "_");
   }
@@ -1970,9 +2022,6 @@
     loadExamCalendar();
   });
 
-  // Same computed-status logic as the public /exams/index.html page
-  // (assets/js/exam-calendar.js) — kept in sync so the admin table shows
-  // exactly what visitors will see.
   function computeExamStatus(ex) {
     const today = new Date().toISOString().slice(0, 10);
     if (ex.notification_date && today < ex.notification_date) return "upcoming";
@@ -2163,14 +2212,12 @@
     return new Set([...jsonSlugs, ...dbSlugs]);
   }
 
-  // "one item per line" textarea -> [{en, hi}], zipped by line position.
   function linesToBilingualArray(enText, hiText) {
     const enLines = (enText || "").split("\n").map((l) => l.trim()).filter(Boolean);
     const hiLines = (hiText || "").split("\n").map((l) => l.trim()).filter(Boolean);
     return enLines.map((en, i) => ({ en, hi: hiLines[i] || en }));
   }
 
-  // "Q: ...\nA: ...\n\nQ: ...\nA: ..." -> [{q:{en,hi}, a:{en,hi}}]
   function textToFaqs(enText, hiText) {
     function parseBlock(text) {
       const blocks = (text || "").split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
@@ -2325,7 +2372,7 @@
         skipped.push(`#${i + 1} "${slug}" (duplicate)`);
         return;
       }
-      existing.add(slug); // guard against duplicates within the same pasted batch
+      existing.add(slug);
       rows.push({
         slug,
         category: s.category,
@@ -2405,7 +2452,7 @@
         document.getElementById("svc-name-en").value = s.name_en || "";
         document.getElementById("svc-name-hi").value = s.name_hi || "";
         document.getElementById("svc-slug").value = s.slug || "";
-        document.getElementById("svc-slug").disabled = true; // slug is permanent once created
+        document.getElementById("svc-slug").disabled = true;
         document.getElementById("svc-category").value = s.category || "";
         document.getElementById("svc-desc-en").value = s.short_description_en || "";
         document.getElementById("svc-desc-hi").value = s.short_description_hi || "";
