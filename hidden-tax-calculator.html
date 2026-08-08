@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){if(screen&&screen.width<=800&&window.innerWidth>800){var m=document.querySelector('meta[name="viewport"]');if(m)m.setAttribute('content','width=device-width, initial-scale=1.0');}})();</script>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+<link rel="icon" href="favicon.ico">
+<link rel="manifest" href="manifest.json">
+<link rel="canonical" href="https://sarkarisewaindia.com/hidden-tax-calculator.html">
+<meta property="og:title" content="Hidden Tax Calculator — Aapka Asli Tax Kitna Hai? | SarkariSewaIndia">
+<meta property="og:description" content="Petrol, grocery, mobile, alcohol, shopping — har cheez par chhupa hua GST/excise tax hota hai. Apna monthly aur annual hidden tax turant calculate karein, free.">
+<meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Hidden Tax Calculator — Aapka Asli Tax Kitna Hai? | SarkariSewaIndia</title>
+<meta name="description" content="Apni monthly spending (petrol, grocery, mobile, alcohol, shopping aur aur) bharein aur turant dekhein aap indirect tax (GST + excise) me kitna de rahe hain. Free calculator, no login, pie chart ke saath.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/hidden-tax-theme.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js" defer></script>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Hidden Tax Calculator India",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "url": "https://sarkarisewaindia.com/hidden-tax-calculator.html",
+      "description": "Free tool to estimate the indirect tax (GST + excise/VAT) hidden inside everyday monthly spending — petrol, grocery, mobile, alcohol, shopping, and more.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+      "provider": { "@type": "Organization", "name": "SarkariSewaIndia" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Hidden tax kya hota hai?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Jab aap petrol, grocery, mobile recharge ya shopping karte hain, toh price ke andar hi GST, excise duty ya VAT chhupa hota hai — aapko alag se dikhta nahi, lekin aap wo tax har purchase par chuka rahe hote hain. Isi ko hidden ya indirect tax kehte hain, direct income tax se alag." }
+        },
+        {
+          "@type": "Question",
+          "name": "Yeh calculator kitna accurate hai?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yeh ek estimated range deta hai, exact figure nahi — kyunki actual tax product, brand, state aur applicable GST slab ke hisaab se alag hota hai. Yeh tool sirf general awareness ke liye hai, financial ya tax advice nahi." }
+        },
+        {
+          "@type": "Question",
+          "name": "Petrol par itna zyada tax kyun hai?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Petrol par central excise duty aur state VAT dono lagte hain, jo combined milakar base price ka 45-55% tak ho sakta hai — state ke hisaab se rate alag hota hai. Yeh India ke sabse zyada indirect-tax-heavy categories mein se ek hai." }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sarkarisewaindia.com/index.html" },
+        { "@type": "ListItem", "position": 2, "name": "Hidden Tax Calculator", "item": "https://sarkarisewaindia.com/hidden-tax-calculator.html" }
+      ]
+    }
+  ]
+}</script>
+</head>
+<body>
+<script>window.SS_ROOT = "";</script>
+
+<div id="site-header">
+<div class="tricolor-rule"></div>
+<a class="skip-link" href="#main-content" data-i18n="skip_to_content">Skip to main content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">S</span>
+      <span class="brand-text">
+        <span class="brand-title" data-i18n="site_name">SarkariSewa Portal</span>
+        <span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+        <li><a href="category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a></li>
+        <li><a href="category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a></li>
+        <li><a href="category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a></li>
+        <li><a href="category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a></li>
+        <li><a href="category/utilities.html" data-i18n="nav_utilities">Utilities</a></li>
+        <li><a href="category/health.html" data-i18n="nav_health">Health</a></li>
+        <li><a href="support/index.html" data-i18n="nav_support">Support</a></li>
+        <li><a href="blog/index.html" data-i18n="nav_blog">Blog</a></li>
+        <li><a href="jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a></li>
+        <li><a href="exams/index.html" data-i18n="nav_examcal">Exam Calendar</a></li>
+        <li><a href="csc/index.html" data-i18n="nav_csc">CSC Centres</a></li>
+        <li><a href="project-report/index.html" class="nav-highlight" data-i18n="nav_project_report">Project Report <span class="nav-badge">Free</span></a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a class="icon-btn" href="search.html" aria-label="Search">
+        <span aria-hidden="true">🔍</span>
+        <span class="visually-hidden" data-i18n="search_title">Search Services</span>
+      </a>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme">
+        <span id="theme-icon" aria-hidden="true">🌙</span>
+        <span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
+      </button>
+      <button class="icon-btn" id="lang-toggle" type="button">
+        <span data-i18n="lang_toggle">हिंदी</span>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Primary mobile">
+    <a href="search.html" data-i18n="search_title">Search Services</a>
+    <a href="index.html" data-i18n="nav_home">Home</a>
+    <a href="category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a>
+    <a href="category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a>
+    <a href="category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a>
+    <a href="category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a>
+    <a href="category/utilities.html" data-i18n="nav_utilities">Utilities</a>
+    <a href="category/health.html" data-i18n="nav_health">Health</a>
+    <a href="support/index.html" data-i18n="nav_support">Support</a>
+    <a href="blog/index.html" data-i18n="nav_blog">Blog</a>
+    <a href="jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a>
+    <a href="exams/index.html" data-i18n="nav_examcal">Exam Calendar</a>
+    <a href="csc/index.html" data-i18n="nav_csc">CSC Centres</a>
+    <a href="project-report/index.html" data-i18n="nav_project_report">Project Report (Free)</a>
+  </nav>
+</header>
+</div>
+
+<main id="main-content" class="htc-scope">
+  <div class="htc-wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb" style="margin-bottom:10px;">
+      <a href="index.html">Home</a><span class="sep">/</span><span class="current">Hidden Tax Calculator</span>
+    </nav>
+
+    <section class="htc-hero">
+      <div>
+        <span class="htc-hero__eyebrow">Free · No Login · No Upload</span>
+        <h1>Hidden Tax Calculator India</h1>
+        <p>Petrol, grocery, mobile, alcohol, shopping — har purchase ke andar GST/excise tax chhupa hota hai. Apni monthly spending bharein aur ek click mein dekhein aapka <strong>asli hidden tax</strong> kitna hai.</p>
+        <a href="#htc-form" class="htc-hero__cta" id="htc-hero-cta">Calculate Hidden Tax →</a>
+      </div>
+      <div class="htc-hero__art" aria-hidden="true">
+        <span>💰</span><span>🧾</span><span>🛍️</span>
+      </div>
+    </section>
+
+    <div class="ad-slot" aria-hidden="true"><span>Advertisement</span></div>
+
+    <form class="htc-card" id="htc-form">
+      <h2>Apni Monthly Spending Bharein</h2>
+      <div class="htc-topfields">
+        <div class="htc-field">
+          <label for="htc-salary">Monthly Salary (₹)</label>
+          <input type="number" id="htc-salary" min="0" step="1" placeholder="e.g. 50000">
+        </div>
+        <div class="htc-field">
+          <label for="htc-state">State Selection</label>
+          <select id="htc-state">
+            <!-- populated by JS -->
+          </select>
+        </div>
+      </div>
+
+      <div class="htc-cat-grid">
+        <div class="htc-cat">
+          <span class="htc-cat__icon">⛽</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-petrol">Petrol/Fuel</label>
+            <input type="number" id="htc-cat-petrol" min="0" step="1" placeholder="₹0">
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">🛒</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-grocery">Grocery/Kirana</label>
+            <input type="number" id="htc-cat-grocery" min="0" step="1" placeholder="₹0">
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">📱</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-mobile">Mobile Recharge &amp; Subscriptions</label>
+            <input type="number" id="htc-cat-mobile" min="0" step="1" placeholder="₹0">
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">💳</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-emi">EMI/Installments</label>
+            <input type="number" id="htc-cat-emi" min="0" step="1" placeholder="₹0">
+            <span class="htc-cat__note">Tax calculation se excluded (N/A)</span>
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">🍽️</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-hotels">Hotels/Cafes/Restaurants</label>
+            <input type="number" id="htc-cat-hotels" min="0" step="1" placeholder="₹0">
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">🍾</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-alcohol">Alcohol</label>
+            <input type="number" id="htc-cat-alcohol" min="0" step="1" placeholder="₹0">
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">🛍️</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-shopping">Shopping</label>
+            <input type="number" id="htc-cat-shopping" min="0" step="1" placeholder="₹0">
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">💡</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-electricity">Electricity Bill</label>
+            <input type="number" id="htc-cat-electricity" min="0" step="1" placeholder="₹0">
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">📺</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-ott">OTT/Subscriptions</label>
+            <input type="number" id="htc-cat-ott" min="0" step="1" placeholder="₹0">
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">✈️</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-travel">Travel (Bus/Flight/Train)</label>
+            <input type="number" id="htc-cat-travel" min="0" step="1" placeholder="₹0">
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">🛣️</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-toll">Toll</label>
+            <input type="number" id="htc-cat-toll" min="0" step="1" placeholder="₹0">
+            <span class="htc-cat__note">Fixed govt cess, hidden tax se excluded</span>
+          </div>
+        </div>
+        <div class="htc-cat">
+          <span class="htc-cat__icon">🧾</span>
+          <div class="htc-cat__body">
+            <label for="htc-cat-other">Other</label>
+            <input type="number" id="htc-cat-other" min="0" step="1" placeholder="₹0">
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="htc-submit">Calculate Estimated Hidden Tax</button>
+    </form>
+
+    <div class="ad-slot" aria-hidden="true"><span>Advertisement</span></div>
+
+    <section class="htc-results" id="htc-results">
+      <h2 style="font-size:1.3rem;margin-bottom:14px;">Aapka Results</h2>
+
+      <div class="htc-stat-grid">
+        <div class="htc-stat">
+          <div class="htc-stat__label">Total Monthly Spending</div>
+          <div class="htc-stat__value" id="htc-stat-spend">₹0</div>
+        </div>
+        <div class="htc-stat htc-stat--highlight">
+          <div class="htc-stat__label">Estimated Hidden Tax (Range)</div>
+          <div class="htc-stat__value" id="htc-stat-range">₹0</div>
+        </div>
+        <div class="htc-stat">
+          <div class="htc-stat__label">Annual Estimated Hidden Tax</div>
+          <div class="htc-stat__value" id="htc-stat-annual">₹0</div>
+        </div>
+        <div class="htc-stat">
+          <div class="htc-stat__label">Tax as % of Salary</div>
+          <div class="htc-stat__value" id="htc-stat-pct">—</div>
+        </div>
+        <div class="htc-stat">
+          <div class="htc-stat__label">Savings Remaining</div>
+          <div class="htc-stat__value" id="htc-stat-savings">—</div>
+        </div>
+      </div>
+
+      <div class="htc-charts-grid">
+        <div class="htc-chart-card">
+          <h3>Tax by Category</h3>
+          <canvas id="htc-donut-chart"></canvas>
+        </div>
+        <div class="htc-chart-card">
+          <h3>Expense Breakdown</h3>
+          <canvas id="htc-bar-chart"></canvas>
+        </div>
+        <div class="htc-chart-card">
+          <h3>Tax Percentage</h3>
+          <div class="htc-gauge">
+            <div class="htc-gauge__ring" id="htc-gauge-ring">
+              <span class="htc-gauge__value" id="htc-gauge-value">—</span>
+            </div>
+            <span class="htc-gauge__caption">of your salary</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="htc-insights-grid">
+        <div class="htc-insight">
+          <span class="htc-insight__icon">🎯</span>
+          <div><strong>Biggest tax contributor</strong><span id="htc-insight-tax">—</span></div>
+        </div>
+        <div class="htc-insight">
+          <span class="htc-insight__icon">📊</span>
+          <div><strong>Highest spending category</strong><span id="htc-insight-spend">—</span></div>
+        </div>
+        <div class="htc-insight">
+          <span class="htc-insight__icon">💡</span>
+          <div><strong>Suggested monthly savings</strong><span id="htc-insight-savings">—</span></div>
+        </div>
+      </div>
+
+      <div class="htc-actions">
+        <button type="button" class="htc-action-btn htc-action-btn--primary" id="htc-share-btn">📤 Share Result</button>
+        <button type="button" class="htc-action-btn" id="htc-pdf-btn">⬇️ Download PDF</button>
+        <button type="button" class="htc-action-btn" id="htc-reset-btn">↺ Reset Calculator</button>
+      </div>
+
+      <div class="htc-disclaimer">
+        <strong>Disclaimer</strong>
+        Yeh sirf estimated calculation hai. Actual tax product, brand, state aur applicable GST/excise rate ke hisaab se alag ho sakta hai. Yeh tool financial ya tax advice nahi hai.
+        <br>This is only an estimated calculation. Actual tax varies by product, brand, state, and the applicable GST/excise rate. This tool does not constitute financial or tax advice.
+      </div>
+    </section>
+
+    <div class="ad-slot" aria-hidden="true"><span>Advertisement</span></div>
+
+    <section class="htc-section">
+      <h2>Yeh Calculator Kaise Kaam Karta Hai</h2>
+      <p>Bharat me har purchase — chahe petrol ho ya grocery, mobile recharge ho ya shopping — uski price ke andar hi indirect tax (GST, excise duty, ya state VAT) chhupa hota hai. Yeh direct income tax se alag hai; ismein aapko koi separate bill nahi milta jo bataye ki kitna tax gaya, isliye zyadatar log ise notice hi nahi karte.</p>
+      <p>Yeh calculator har category ke liye ek approximate tax-rate range use karta hai (jaise petrol ~45-55%, mobile/OTT 18% flat GST, alcohol 40-60% state excise ke saath) aur aapki bhari hui monthly amount par apply karke ek estimated range deta hai — exact figure nahi, kyunki real-world rates state, brand aur product ke hisaab se badalte hain.</p>
+    </section>
+
+    <section class="htc-section">
+      <h2>Category-wise Approximate Tax Rate</h2>
+      <table>
+        <thead><tr><th>Category</th><th>Approx. Tax Range</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Petrol/Fuel</td><td>45% – 55%</td><td>Excise + state VAT, state-wise varies</td></tr>
+          <tr><td>Grocery/Kirana</td><td>0% – 5%</td><td>Zyada basic items GST-exempt</td></tr>
+          <tr><td>Mobile &amp; Subscriptions</td><td>18% (flat)</td><td>Standard GST slab</td></tr>
+          <tr><td>Hotels/Cafes/Restaurants</td><td>5% – 18%</td><td>GST slab ke hisaab se</td></tr>
+          <tr><td>Alcohol</td><td>40% – 60%</td><td>State excise heavy, kuch states prohibited</td></tr>
+          <tr><td>Shopping</td><td>12% – 18%</td><td>Average across categories</td></tr>
+          <tr><td>Electricity</td><td>0% – 2%</td><td>Most states largely exempt</td></tr>
+          <tr><td>OTT/Subscriptions</td><td>18% (flat)</td><td>Standard GST slab</td></tr>
+          <tr><td>Travel</td><td>5% – 12%</td><td>Mode aur class ke hisaab se</td></tr>
+          <tr><td>EMI/Toll</td><td>Excluded (N/A)</td><td>EMI: tax product par pehle lag chuka. Toll: fixed govt cess, GST se bahar</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.85rem;color:var(--htc-text-muted);">Yeh general-guideline figures hain, exact rate product/state-wise alag ho sakta hai.</p>
+    </section>
+
+    <section class="htc-section htc-related">
+      <h2>Aur Tools Try Karo</h2>
+      <div class="htc-related-grid">
+        <a class="htc-related-card" href="project-report/index.html">
+          <span class="htc-related-card__icon">📄</span>
+          <div><strong>Project Report Generator</strong><span>PMEGP/Mudra bank loan ke liye free project report banayein</span></div>
+        </a>
+        <a class="htc-related-card" href="exam-age-calculator.html">
+          <span class="htc-related-card__icon">🎓</span>
+          <div><strong>Exam Age Eligibility Calculator</strong><span>SSC, UPSC, Railway, Banking exams ke liye age check karein</span></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="htc-section htc-faq">
+      <h2>FAQ</h2>
+      <details>
+        <summary>Hidden tax kya hota hai?</summary>
+        <p>Jab aap petrol, grocery, mobile recharge ya shopping karte hain, toh price ke andar hi GST, excise duty ya VAT chhupa hota hai — aapko alag se dikhta nahi, lekin aap wo tax har purchase par chuka rahe hote hain.</p>
+      </details>
+      <details>
+        <summary>Yeh calculator kitna accurate hai?</summary>
+        <p>Yeh ek estimated range deta hai, exact figure nahi — kyunki actual tax product, brand, state aur applicable GST slab ke hisaab se alag hota hai. Yeh tool sirf general awareness ke liye hai, financial ya tax advice nahi.</p>
+      </details>
+      <details>
+        <summary>Petrol par itna zyada tax kyun hai?</summary>
+        <p>Petrol par central excise duty aur state VAT dono lagte hain, jo combined milakar base price ka 45-55% tak ho sakta hai — state ke hisaab se rate alag hota hai.</p>
+      </details>
+    </section>
+  </div>
+</main>
+
+<div id="site-footer">
+<footer class="site-footer">
+  <div class="tricolor-rule"></div>
+  <div class="container" style="padding-top:36px;">
+    <div class="footer-grid">
+      <div>
+        <h4 data-i18n="site_name">SarkariSewa Portal</h4>
+        <p data-i18n="footer_about">SarkariSewa Portal is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
+      </div>
+      <div>
+        <h4 data-i18n="footer_links_title">Quick Links</h4>
+        <ul>
+          <li><a href="project-report/index.html" data-i18n="nav_project_report">Project Report Generator</a></li>
+          <li><a href="exam-age-calculator.html">Exam Age Eligibility Calculator</a></li>
+          <li><a href="hidden-tax-calculator.html">Hidden Tax Calculator</a></li>
+          <li><a href="states/index.html" data-i18n="states_hub_title">State-wise Popular Services</a></li>
+          <li><a href="about.html" data-i18n="footer_about_link">About</a></li>
+          <li><a href="contact.html" data-i18n="footer_contact_link">Contact</a></li>
+          <li><a href="sitemap.html" data-i18n="footer_sitemap_link">Sitemap</a></li>
+          <li><a href="faq.html" data-i18n="footer_faq_link">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_legal_title">Legal</h4>
+        <ul>
+          <li><a href="privacy-policy.html" data-i18n="privacy_title">Privacy Policy</a></li>
+          <li><a href="disclaimer.html" data-i18n="disclaimer_title">Disclaimer</a></li>
+          <li><a href="terms.html" data-i18n="terms_title">Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_support_title">Support</h4>
+        <ul>
+          <li><a href="support/index.html" data-i18n="footer_support_home_link">Support Home</a></li>
+          <li><a href="support/state-wise-services.html" data-i18n="footer_state_link">State-wise Services</a></li>
+          <li><a href="support/helpline-directory.html" data-i18n="footer_helpline_link">Helpline Directory</a></li>
+          <li><a href="support/rti-guide.html" data-i18n="footer_rti_link">RTI Guide</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_contact_title">Contact</h4>
+        <ul>
+          <li><a href="contact.html" data-i18n="footer_contact_form_link">Contact form</a></li>
+          <li><a href="admin/login.html" data-i18n="admin_link">Staff Login</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="footer-year"></span> SarkariSewa Portal · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
+    </div>
+  </div>
+</footer>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/consent.js"></script>
+<script src="assets/js/i18n-helper.js"></script>
+<script src="assets/js/hidden-tax-calculator.js"></script>
+</body>
+</html>

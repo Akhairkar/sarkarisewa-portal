@@ -1,0 +1,245 @@
+/**
+ * hidden-tax-theme.css
+ * ------------------------------------------------------------------
+ * Visual identity for the Hidden Tax Calculator ONLY — a clean
+ * fintech "insights dashboard" look, deliberately distinct from the
+ * Project Report passbook theme and the Exam Age Calculator admit-
+ * card theme. Teal + violet accent pair on white cards, built for a
+ * results-dashboard feel (stat cards, donut/bar charts, gauge ring).
+ * ------------------------------------------------------------------
+ */
+
+:root {
+  --htc-ink: #10243E;
+  --htc-bg: #F6F7FB;
+  --htc-surface: #FFFFFF;
+  --htc-border: #E4E7F0;
+  --htc-teal: #0F766E;
+  --htc-teal-light: #CCFBF1;
+  --htc-violet: #6D28D9;
+  --htc-violet-light: #EDE6FB;
+  --htc-amber: #D97F2B;
+  --htc-red: #B3261E;
+  --htc-green: #146B3A;
+  --htc-text-muted: #5B6472;
+
+  --htc-font-display: "Fraunces", "Noto Sans Devanagari", serif;
+  --htc-font-body: "Noto Sans", "Noto Sans Devanagari", sans-serif;
+  --htc-font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --htc-radius: 14px;
+  --htc-max-width: 1080px;
+}
+
+.htc-scope {
+  background: var(--htc-bg);
+  color: var(--htc-ink);
+  font-family: var(--htc-font-body);
+}
+.htc-scope h1, .htc-scope h2, .htc-scope h3 { font-family: var(--htc-font-display); color: var(--htc-ink); }
+
+.htc-wrap { max-width: var(--htc-max-width); margin: 0 auto; padding: 30px 20px 80px; }
+
+/* ---------- Hero ---------- */
+.htc-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 0 8px;
+  text-align: center;
+}
+@media (min-width: 860px) {
+  .htc-hero { grid-template-columns: 1.2fr 0.8fr; text-align: left; padding: 36px 0 12px; }
+}
+.htc-hero__eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--htc-font-mono); font-size: 0.75rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--htc-teal);
+  border: 1px dashed var(--htc-teal); border-radius: 999px; padding: 4px 14px; margin-bottom: 16px;
+}
+.htc-hero h1 { font-size: clamp(1.8rem, 4.2vw, 2.6rem); line-height: 1.15; margin: 0 0 14px; }
+.htc-hero p { color: var(--htc-text-muted); font-size: 1.04rem; max-width: 56ch; margin: 0 0 20px; }
+@media (min-width: 860px) { .htc-hero p { margin: 0 0 20px; } }
+.htc-hero__cta {
+  display: inline-block; background: var(--htc-teal); color: #fff; text-decoration: none;
+  font-weight: 700; padding: 13px 26px; border-radius: 999px; font-size: 1rem;
+  transition: background 0.15s ease;
+}
+.htc-hero__cta:hover { background: #0b5c55; }
+.htc-hero__art {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  font-size: 2.4rem;
+}
+.htc-hero__art span {
+  background: var(--htc-surface); border: 1px solid var(--htc-border);
+  border-radius: 20px; width: 72px; height: 72px; display: flex;
+  align-items: center; justify-content: center; box-shadow: var(--shadow-card, 0 4px 14px rgba(16,36,62,0.06));
+}
+.htc-hero__art span:nth-child(2) { transform: translateY(-10px); }
+
+/* ---------- Calculator card ---------- */
+.htc-card {
+  background: var(--htc-surface); border: 1px solid var(--htc-border);
+  border-radius: var(--htc-radius); box-shadow: 0 6px 24px rgba(16,36,62,0.06);
+  padding: 26px; margin: 24px 0;
+}
+.htc-card h2 { font-size: 1.2rem; margin: 0 0 18px; }
+
+.htc-topfields { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 20px; }
+@media (min-width: 640px) { .htc-topfields { grid-template-columns: 1fr 1fr; } }
+
+.htc-field label {
+  display: block; font-size: 0.82rem; font-weight: 600; color: var(--htc-text-muted);
+  margin-bottom: 6px;
+}
+.htc-field input, .htc-field select {
+  width: 100%; font-family: var(--htc-font-body); font-size: 1rem;
+  padding: 11px 12px; border: 1px solid var(--htc-border); border-radius: 8px;
+  background: var(--htc-bg); color: var(--htc-ink);
+}
+.htc-field input:focus, .htc-field select:focus { outline: 2px solid var(--htc-teal); outline-offset: 1px; }
+
+.htc-cat-grid {
+  display: grid; grid-template-columns: 1fr; gap: 12px;
+}
+@media (min-width: 640px) { .htc-cat-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 980px) { .htc-cat-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+.htc-cat {
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid var(--htc-border); border-radius: 10px;
+  padding: 10px 12px; background: var(--htc-bg);
+}
+.htc-cat__icon {
+  width: 34px; height: 34px; flex-shrink: 0; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+  background: var(--htc-teal-light);
+}
+.htc-cat__body { flex: 1; min-width: 0; }
+.htc-cat__body label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--htc-ink); margin-bottom: 3px; }
+.htc-cat__body input {
+  width: 100%; border: 1px solid var(--htc-border); border-radius: 6px;
+  padding: 6px 8px; font-family: var(--htc-font-mono); font-size: 0.92rem; background: #fff;
+}
+.htc-cat__note { font-size: 0.68rem; color: var(--htc-text-muted); margin-top: 2px; display: block; }
+
+.htc-submit {
+  width: 100%; margin-top: 22px; background: var(--htc-violet); color: #fff;
+  border: none; font-weight: 700; font-size: 1.02rem; padding: 15px 18px;
+  border-radius: 10px; cursor: pointer; transition: background 0.15s ease;
+}
+.htc-submit:hover { background: #5b21b6; }
+
+/* ---------- Results ---------- */
+.htc-results { display: none; margin-top: 8px; }
+.htc-results.is-visible { display: block; }
+
+.htc-stat-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;
+}
+@media (min-width: 760px) { .htc-stat-grid { grid-template-columns: repeat(5, 1fr); } }
+.htc-stat {
+  background: var(--htc-surface); border: 1px solid var(--htc-border); border-radius: 12px;
+  padding: 16px; text-align: left;
+}
+.htc-stat__label { font-size: 0.72rem; color: var(--htc-text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.htc-stat__value { font-family: var(--htc-font-mono); font-size: 1.25rem; font-weight: 700; }
+.htc-stat--highlight { background: var(--htc-violet); color: #fff; }
+.htc-stat--highlight .htc-stat__label { color: rgba(255,255,255,0.75); }
+
+.htc-charts-grid {
+  display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 18px;
+}
+@media (min-width: 900px) { .htc-charts-grid { grid-template-columns: 1.1fr 1.1fr 0.8fr; } }
+.htc-chart-card {
+  background: var(--htc-surface); border: 1px solid var(--htc-border); border-radius: 12px;
+  padding: 18px; text-align: center;
+}
+.htc-chart-card h3 { font-size: 0.95rem; margin: 0 0 12px; text-align: left; }
+.htc-chart-card canvas { max-height: 220px; }
+
+.htc-gauge { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+.htc-gauge__ring {
+  width: 150px; height: 150px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: conic-gradient(var(--htc-teal) calc(var(--htc-pct, 0) * 1%), var(--htc-border) 0);
+  margin: 6px 0 12px;
+}
+.htc-gauge__ring::before {
+  content: ""; width: 112px; height: 112px; border-radius: 50%; background: var(--htc-surface);
+  position: absolute;
+}
+.htc-gauge__ring { position: relative; }
+.htc-gauge__value { position: relative; z-index: 1; font-family: var(--htc-font-mono); font-size: 1.3rem; font-weight: 700; }
+.htc-gauge__caption { font-size: 0.8rem; color: var(--htc-text-muted); }
+
+.htc-insights-grid {
+  display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px;
+}
+@media (min-width: 760px) { .htc-insights-grid { grid-template-columns: 1fr 1fr 1fr; } }
+.htc-insight {
+  background: var(--htc-violet-light); border-radius: 12px; padding: 16px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.htc-insight__icon { font-size: 1.4rem; flex-shrink: 0; }
+.htc-insight strong { display: block; font-size: 0.9rem; margin-bottom: 4px; }
+.htc-insight span { font-size: 0.82rem; color: var(--htc-text-muted); line-height: 1.5; }
+
+.htc-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+.htc-action-btn {
+  flex: 1; min-width: 160px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--htc-surface); border: 1px solid var(--htc-border); border-radius: 10px;
+  padding: 12px 16px; font-weight: 600; font-size: 0.92rem; cursor: pointer; color: var(--htc-ink);
+}
+.htc-action-btn:hover { background: var(--htc-bg); }
+.htc-action-btn--primary { background: var(--htc-teal); color: #fff; border-color: var(--htc-teal); }
+.htc-action-btn--primary:hover { background: #0b5c55; }
+
+.htc-disclaimer {
+  background: #FFF7ED; border: 1px solid #FCD9B4; border-radius: 12px;
+  padding: 16px 18px; font-size: 0.85rem; color: #7C4A17; line-height: 1.6; margin-bottom: 10px;
+}
+.htc-disclaimer strong { display: block; margin-bottom: 4px; color: #5C3610; }
+
+/* ---------- Content sections below tool ---------- */
+.htc-section { padding: 26px 0; }
+.htc-section h2 { font-size: 1.2rem; margin: 0 0 12px; }
+.htc-section p, .htc-section li { color: var(--htc-ink); line-height: 1.7; }
+.htc-section table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin: 12px 0 20px; background: var(--htc-surface); }
+.htc-section th, .htc-section td { border: 1px solid var(--htc-border); padding: 9px 10px; text-align: left; }
+.htc-section th { background: var(--htc-bg); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
+
+/* ---------- Related tools ---------- */
+.htc-related-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 14px; }
+@media (min-width: 700px) { .htc-related-grid { grid-template-columns: 1fr 1fr; } }
+.htc-related-card {
+  display: flex; gap: 14px; align-items: center; text-decoration: none;
+  background: var(--htc-surface); border: 1px solid var(--htc-border); border-radius: 12px;
+  padding: 16px; color: var(--htc-ink);
+}
+.htc-related-card:hover { border-color: var(--htc-teal); }
+.htc-related-card__icon {
+  width: 44px; height: 44px; flex-shrink: 0; border-radius: 10px; background: var(--htc-teal-light);
+  display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+}
+.htc-related-card strong { display: block; font-size: 0.95rem; margin-bottom: 3px; }
+.htc-related-card span { font-size: 0.8rem; color: var(--htc-text-muted); }
+
+/* ---------- Compact CTA card used site-wide to promote this tool ---------- */
+.htc-cta {
+  display: flex; align-items: center; gap: 16px;
+  background: linear-gradient(135deg, var(--htc-teal) 0%, var(--htc-violet) 100%);
+  color: #fff; border-radius: 12px; padding: 18px 20px; margin: 18px 0 26px; text-decoration: none;
+}
+.htc-cta:hover { opacity: 0.94; }
+.htc-cta__icon { font-size: 1.8rem; flex-shrink: 0; }
+.htc-cta__text strong { display: block; font-size: 1rem; }
+.htc-cta__text span { font-size: 0.85rem; color: rgba(255,255,255,0.85); }
+.htc-cta__arrow { margin-left: auto; font-size: 1.2rem; flex-shrink: 0; }
+
+@media print {
+  .site-header, .site-footer, .htc-hero__cta, .htc-actions, .ad-slot, .breadcrumb, .htc-related-grid, .htc-section:has(.htc-related-grid) { display: none !important; }
+  .htc-card:first-of-type { display: none !important; }
+  body { background: #fff; }
+}
