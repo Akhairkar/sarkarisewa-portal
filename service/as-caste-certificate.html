@@ -41,7 +41,7 @@
         {
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sarkarisewaindia.com/" },
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sarkarisewaindia.com/index.html" },
             { "@type": "ListItem", "position": 2, "name": "State-wise Services", "item": "https://sarkarisewaindia.com/states/index.html" },
             { "@type": "ListItem", "position": 3, "name": "असम", "item": "https://sarkarisewaindia.com/states/assam.html" },
             { "@type": "ListItem", "position": 4, "name": "জাতি প্ৰমাণপত্ৰ (जाति प्रमाणपत्र)", "item": "https://sarkarisewaindia.com/service/as-caste-certificate.html" }
@@ -49,10 +49,6 @@
         }
       ]
     }</script>
-
-  <link rel="alternate" hreflang="hi" href="https://sarkarisewaindia.com/service/as-caste-certificate.html" />
-  <link rel="alternate" hreflang="en" href="?lang=en" />
-  <link rel="alternate" hreflang="x-default" href="https://sarkarisewaindia.com/service/as-caste-certificate.html" />
 </head>
 <body data-slug="as-caste-certificate">
   <script>window.SS_ROOT = "../";</script>
@@ -119,11 +115,27 @@
     <a href="../exams/index.html" data-i18n="nav_examcal">Exam Calendar</a>
     
     <a href="../project-report/index.html" data-i18n="nav_project_report">Project Report (Free)</a>
+    <div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
+      <button class="btn btn--outline" id="mobile-theme-toggle" type="button" style="width:100%; justify-content:center; gap:8px;">
+        <span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
+      </button>
+    </div>
   </nav>
 </header>
 
+<!-- Site-wide login/signup modal — TEMPORARILY REMOVED (was causing a
+     site-wide blocking bug: assets/css/style.css had no ".ss-auth-modal[hidden]"
+     rule, so the modal always rendered as a fixed full-screen overlay on
+     every page, regardless of its `hidden` attribute or JS state. Pulled
+     out entirely rather than just patching the CSS, per instruction, until
+     this gets revisited properly. To bring it back: restore this block,
+     the account-btn/mobile-account-btn buttons above, and re-enable the
+     auth-modal.js load in assets/js/main.js — the underlying CSS bug is
+     already fixed in style.css (.ss-auth-modal[hidden] { display: none })
+     if/when this returns. -->
+  </div>
 
-<main class="container">
+  <main class="container">
     <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
       <a href="../index.html">Home</a>
       <span class="sep">/</span>
@@ -185,35 +197,6 @@
       <h2 class="service-section__title"><span class="icon">📍</span> असम की अन्य लोकप्रिय सेवाएं</h2>
       <p><a href="../states/assam.html">← असम की सभी लोकप्रिय सेवाएं देखें</a></p>
     </section>
-      <!-- SEO Rich Content Block for Crawlers & Users -->
-    <section class="content-section" style="margin-top:28px; padding-top:24px; border-top:1px solid var(--color-border,#E2DFD3);">
-        <h2>(जाति प्रमाणपत्र) — मुख्य जानकारी व आवेदन मार्गदर्शिका</h2>
-        <p>SarkariSewa Portal पर (जाति प्रमाणपत्र) के लिए ऑनलाइन आवेदन, आवश्यक पात्रता मानदंड, दस्तावेज़ सूची और आधिकारिक पोर्टल लिंक की पूरी जानकारी प्राप्त करें।</p>
-        
-        <h3>पात्रता मानदंड (Eligibility Criteria):</h3>
-        <ul>
-            <li>आवेदक का भारत का नागरिक / संबंधित राज्य का स्थायी निवासी होना अनिवार्य है।</li>
-            <li>संबंधित सरकारी योजना या सेवा की निर्धारित आयु सीमा व आय सीमा पूरी होनी चाहिए।</li>
-            <li>आवेदक का बैंक खाता और आधार कार्ड आपस में लिंक होना चाहिए।</li>
-        </ul>
-
-        <h3>आवश्यक दस्तावेज़ (Required Documents):</h3>
-        <ul>
-            <li>आधार कार्ड व वोटर आईडी कार्ड</li>
-            <li>आय प्रमाण पत्र व निवास प्रमाण पत्र (यदि लागू हो)</li>
-            <li>पासपोर्ट साइज नवीनतम रंगीन फोटो</li>
-            <li>सक्रिय मोबाइल नंबर व बैंक पासबुक विवरण</li>
-        </ul>
-
-        <h3>ऑनलाइन आवेदन की चरणबद्ध प्रक्रिया (Step-by-Step Guide):</h3>
-        <ol>
-            <li>आधिकारिक सरकारी पोर्टल पर जाएं और 'New Registration' लिंक पर क्लिक करें।</li>
-            <li>अपनी आधार संख्या व मोबाइल नंबर दर्ज करके ओटीपी सत्यापित करें।</li>
-            <li>आवेदन फॉर्म में मांगी गई अपनी सभी व्यक्तिगत, शैक्षणिक व पते की जानकारी सही-सही भरें।</li>
-            <li>मांगे गए आवश्यक दस्तावेज़ों की स्कैन कॉपी निर्धारित साइज में अपलोड करें।</li>
-            <li>फॉर्म सबमिट करके प्राप्त संदर्भ संख्या (Application ID) का प्रिंटआउट संभाल कर रखें।</li>
-        </ol>
-    </section>
   </main>
 
   <div id="site-footer">
@@ -268,11 +251,9 @@
 </footer>
   </div>
 
-  <script src="../assets/js/main.js" defer></script>
-  <script src="../assets/js/consent.js" defer></script>
-  <script src="../assets/js/i18n-helper.js" defer></script>
-  <script src="../assets/js/supabase-client.js" defer></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/consent.js"></script>
+  <script src="../assets/js/i18n-helper.js"></script>
+  <script src="../assets/js/supabase-client.js"></script>
 </body>
 </html>
-
-
