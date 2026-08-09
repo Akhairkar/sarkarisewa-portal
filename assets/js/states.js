@@ -134,12 +134,12 @@
         return;
       }
 
-      document.title = `${t(state.name)} — ${lang === "hi" ? "राज्यवार लोकप्रिय सेवाएं" : "State-wise Popular Services"} — SarkariSewa Portal`;
+      document.title = `${t(state.name)} — ${lang === "hi" ? "राज्यवार लोकप्रिय सेवाएं" : "State-wise Popular Services"} — SarkariSewa India`;
 
       const desc = t(state.intro);
       const pageUrl = `https://sarkarisewaindia.com/states/${state.slug}.html`;
       setMetaTag("name", "description", desc);
-      setMetaTag("property", "og:title", `${t(state.name)} — SarkariSewa Portal`);
+      setMetaTag("property", "og:title", `${t(state.name)} — SarkariSewa India`);
       setMetaTag("property", "og:description", desc);
       setMetaTag("property", "og:type", "website");
       setCanonical(pageUrl);

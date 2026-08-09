@@ -25,7 +25,7 @@
 
     host.innerHTML = `
       <div class="subscribe-widget">
-        <h3 class="subscribe-widget__title">${tk(isGeneral ? "subscribe_title_general" : "subscribe_title", isGeneral ? "Get updates from SarkariSewa Portal" : "Get updates about this service")}</h3>
+        <h3 class="subscribe-widget__title">${tk(isGeneral ? "subscribe_title_general" : "subscribe_title", isGeneral ? "Get updates from SarkariSewa India" : "Get updates about this service")}</h3>
         <p class="subscribe-widget__desc">${tk(isGeneral ? "subscribe_desc_general" : "subscribe_desc", "New info — sent occasionally, no spam.")}</p>
         <form class="subscribe-form">
           <input type="email" class="subscribe-email" data-i18n-placeholder="subscribe_email_placeholder" placeholder="${tk("subscribe_email_placeholder", "Your email address")}" />

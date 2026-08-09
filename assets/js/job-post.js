@@ -1,5 +1,5 @@
 /* ==========================================================================
-   job-post.js — SarkariSewa Portal
+   job-post.js — SarkariSewa India
    Renders /jobs/post.html or static job pages with 100% null-guards & safe i18n
    ========================================================================== */
 
@@ -150,7 +150,7 @@
     const title = pick(job, "title") || "Sarkari Job Alert";
     if (heroEl) heroEl.hidden = false;
     if (bodyEl) bodyEl.hidden = false;
-    document.title = `${title} — SarkariSewaPortal`;
+    document.title = `${title} — SarkariSewaIndia`;
     renderMeta(job, title);
     renderBreadcrumb(job, title);
     renderHero(job, title);
@@ -173,7 +173,7 @@
     const url = `https://sarkarisewaindia.com/jobs/post.html?slug=${job.slug}`;
 
     setMetaTag("name", "description", desc.slice(0, 160));
-    setMetaTag("property", "og:title", `${title} — SarkariSewaPortal`);
+    setMetaTag("property", "og:title", `${title} — SarkariSewaIndia`);
     setMetaTag("property", "og:description", desc.slice(0, 160));
     setMetaTag("property", "og:type", "article");
 

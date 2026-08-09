@@ -99,7 +99,7 @@
 
   function render(centre) {
     allowIndexing();
-    document.getElementById("csc-page-title").textContent = `${centre.name} — CSC Centre — SarkariSewa Portal`;
+    document.getElementById("csc-page-title").textContent = `${centre.name} — CSC Centre — SarkariSewa India`;
     const metaDesc = document.getElementById("csc-meta-description");
     if (metaDesc) metaDesc.setAttribute("content", `${centre.name}, ${centre.address}, ${centre.state}. Common Service Centre details, location and contact.`);
     breadcrumbEl.textContent = centre.name;

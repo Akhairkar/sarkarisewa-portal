@@ -56,14 +56,14 @@
 
         const servicesInCategory = services.filter((s) => s.category === catSlug);
 
-        document.title = `${t(category.name)} — SarkariSewa Portal`;
+        document.title = `${t(category.name)} — SarkariSewa India`;
         renderMeta(category, servicesInCategory);
         renderBreadcrumb(category);
         renderHero(category, servicesInCategory.length);
         renderGrid(servicesInCategory);
 
         onLangChange(() => {
-          document.title = `${t(category.name)} — SarkariSewa Portal`;
+          document.title = `${t(category.name)} — SarkariSewa India`;
           renderMeta(category, servicesInCategory);
           renderBreadcrumb(category);
           renderHero(category, servicesInCategory.length);
@@ -88,11 +88,11 @@
 
   function renderMeta(category, servicesInCategory) {
     const title = t(category.name);
-    const desc = t(category.description) || `Browse ${title} government services on SarkariSewa Portal.`;
+    const desc = t(category.description) || `Browse ${title} government services on SarkariSewa India.`;
     const url = ssCategoryCanonicalUrl(category.slug);
 
     setMetaTag("name", "description", desc);
-    setMetaTag("property", "og:title", `${title} — SarkariSewa Portal`);
+    setMetaTag("property", "og:title", `${title} — SarkariSewa India`);
     setMetaTag("property", "og:description", desc);
     setMetaTag("property", "og:type", "website");
 

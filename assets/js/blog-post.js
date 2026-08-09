@@ -111,7 +111,7 @@
   }
 
   function renderAll(post, category, relatedService) {
-    document.title = `${t(post.title)} — SarkariSewa Portal Blog`;
+    document.title = `${t(post.title)} — SarkariSewa India Blog`;
     renderMeta(post, category);
     renderBreadcrumb(post);
     renderHero(post, category);
@@ -135,7 +135,7 @@
     const url = `https://sarkarisewaindia.com/blog/post.html?slug=${post.slug}`;
 
     setMetaTag("name", "description", excerpt);
-    setMetaTag("property", "og:title", `${title} — SarkariSewa Portal Blog`);
+    setMetaTag("property", "og:title", `${title} — SarkariSewa India Blog`);
     setMetaTag("property", "og:description", excerpt);
     setMetaTag("property", "og:type", "article");
 
@@ -163,7 +163,7 @@
           description: excerpt,
           datePublished: post.datePublished,
           url: url,
-          author: { "@type": "Organization", name: "SarkariSewa Portal" },
+          author: { "@type": "Organization", name: "SarkariSewa India" },
         },
         {
           "@type": "BreadcrumbList",

@@ -144,7 +144,7 @@
     });
 
   function renderAll(service, crumb, allServices) {
-    document.title = `${getServiceTitle(service)} — SarkariSewa Portal`;
+    document.title = `${getServiceTitle(service)} — SarkariSewa India`;
     renderMeta(service, crumb);
     renderBreadcrumb(service, crumb);
     renderHero(service, crumb);
@@ -167,8 +167,8 @@
     const summary = getServiceSummary(service) || "";
     const url = ssServiceCanonicalUrl(service);
 
-    setMetaTag("name", "description", summary || `${title} — official links, documents, fees and process on SarkariSewa Portal.`);
-    setMetaTag("property", "og:title", `${title} — SarkariSewa Portal`);
+    setMetaTag("name", "description", summary || `${title} — official links, documents, fees and process on SarkariSewa India.`);
+    setMetaTag("property", "og:title", `${title} — SarkariSewa India`);
     setMetaTag("property", "og:description", summary);
     setMetaTag("property", "og:type", "article");
 
