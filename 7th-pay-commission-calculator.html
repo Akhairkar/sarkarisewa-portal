@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7th Pay Commission Calculator 2026 | SarkariSewa India - DA, HRA, TA & In-Hand Salary</title>
+    <meta name="description" content="Calculate 7th Pay Commission In-Hand Salary on SarkariSewaIndia.com for Central & State Govt Employees (Pay Level 1 to 18). Accurate Basic Pay, DA (50%+), HRA (X, Y, Z Cities), TA, TATP & NPS deductions.">
+    <meta name="keywords" content="7th Pay Commission Calculator, SarkariSewa India, Pay Level Salary Calculator, DA HRA TA Calculator, 7th Pay Matrix Level 1 to 18, Central Govt Salary Slip Calculator, TATP Calculation">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://sarkarisewaindia.com/tools/7th-pay-commission-calculator.html">
+    
+    <!-- Open Graph for Social Sharing -->
+    <meta property="og:title" content="7th Pay Commission Salary Calculator 2026 - SarkariSewa India">
+    <meta property="og:description" content="Select Pay Level (1-18), City Category (X/Y/Z) and get instant breakdown of DA, HRA, TA, TATP & NPS deductions with downloadable Pay Slip on sarkarisewaindia.com.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sarkarisewaindia.com/tools/7th-pay-commission-calculator.html">
+
+    <!-- Google Fonts Matching SarkariSewaIndia -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- JSON-LD Structured Data for 100% SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "7th Pay Commission Salary Calculator - SarkariSewa India",
+      "url": "https://sarkarisewaindia.com/tools/7th-pay-commission-calculator.html",
+      "description": "Calculate 7th Pay Commission gross and net in-hand salary based on Pay Level, Basic Pay, DA percentage, HRA city category, Transport Allowance (TA), and TATP.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "7th Pay Commission me DA aur HRA kaise calculate hota hai?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "DA (Dearness Allowance) Basic Pay ke percentage par nikalta hai. HRA City Category par nirbhar karta hai: X Class (30%), Y Class (20%), aur Z Class (10%) jab DA 50% cross kar jata hai."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "TATP (DA on TA) kya hai?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "TATP transport allowance par milne wala Dearness Allowance hota hai. Iska formula: Transport Allowance x (Current DA % / 100) hota hai."
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+<body>
+
+    <!-- SarkariSewa India Header with Tricolor Rule -->
+    <div id="site-header">
+        <div class="tricolor-rule"></div>
+        <header class="site-header">
+            <div class="header-container">
+                <a href="../index.html" class="brand-logo">
+                    <span class="logo-icon">S</span>
+                    <span class="logo-text">SarkariSewa <span class="highlight">India</span></span>
+                </a>
+                
+                <nav class="main-nav" aria-label="Primary">
+                    <ul class="nav-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../category/identity-documents.html">Identity</a></li>
+                        <li><a href="../category/government-schemes.html">Schemes</a></li>
+                        <li><a href="../category/finance-tax.html">Finance & Tax</a></li>
+                        <li><a href="#" class="active" data-i18n="calc_title">7th Pay Calculator</a></li>
+                        <li><a href="8th-pay-calculator.html">8th Pay Projections</a></li>
+                        <li><a href="nps-pension-calculator.html">NPS Pension</a></li>
+                        <li><a href="index.html" class="nav-highlight">Sarkari Calculators <span class="nav-badge">New</span></a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <!-- Language Switcher (Hindi | English) -->
+                    <button id="lang-toggle-btn" class="theme-btn lang-btn" aria-label="Toggle Language">
+                        🌐 <span class="lang-label">English</span>
+                    </button>
+                    <!-- Theme Switcher (Dark | Light) -->
+                    <button id="theme-toggle-btn" class="theme-btn" aria-label="Toggle Dark/Light Mode">
+                        🌙 <span class="theme-label">Dark</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- Search & Scalable Tools Header Bar -->
+    <div class="tools-search-bar">
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="tool-search-input" placeholder="Search SarkariSewa India Calculators & Tools (e.g. 7th Pay, 8th Pay, NPS Pension, HRA Exemption)...">
+            <div id="search-results-dropdown" class="search-dropdown hidden"></div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="main-wrapper">
+        
+        <!-- Hero & Calculator Section -->
+        <section class="hero-calculator-section">
+            <div class="hero-header">
+                <span class="badge" data-i18n="badge_updated">SARKARI SEWA INDIA - 2026 RATES</span>
+                <h1 data-i18n="calc_title">7th Pay Commission Salary Calculator</h1>
+                <p class="subtitle" data-i18n="calc_subtitle">Pay Level select karein aur instant Basic, DA (50%+), HRA (X/Y/Z), TA, TATP aur NPS deduction ke saath accurate In-Hand Salary check karein.</p>
+            </div>
+
+            <div class="calculator-grid">
+                <!-- Inputs Column -->
+                <div class="calc-card input-card">
+                    <div class="card-header">
+                        <h2>⚙️ Enter Salary Details</h2>
+                        <span class="card-subtitle">Pay Matrix Level 1 to 18</span>
+                    </div>
+
+                    <form id="salary-calc-form" class="calc-form" onsubmit="return false;">
+                        
+                        <!-- Employee Govt Type Select -->
+                        <div class="form-group">
+                            <label for="govt-type-select" data-i18n="label_govt_type">Government Employee Type:</label>
+                            <div class="select-wrapper">
+                                <select id="govt-type-select" class="form-select">
+                                    <option value="central">Central Govt Employee / Railways / Defense</option>
+                                    <option value="up">Uttar Pradesh (UP) State Govt</option>
+                                    <option value="mp">Madhya Pradesh (MP) State Govt</option>
+                                    <option value="rajasthan">Rajasthan State Govt</option>
+                                    <option value="bihar">Bihar State Govt</option>
+                                    <option value="other_state">Other State Govt Employees</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Pay Level Select -->
+                        <div class="form-group">
+                            <label for="pay-level-select" data-i18n="label_pay_level">Select Pay Level (Group & Grade Pay):</label>
+                            <div class="select-wrapper">
+                                <select id="pay-level-select" class="form-select">
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Basic Pay Dropdown / Range -->
+                        <div class="form-group">
+                            <div class="label-with-val">
+                                <label for="basic-pay-select" data-i18n="label_basic_pay">Basic Pay (₹):</label>
+                                <span class="val-display" id="basic-pay-val-display">₹18,000</span>
+                            </div>
+                            <div class="select-wrapper">
+                                <select id="basic-pay-select" class="form-select">
+                                    <!-- Populated dynamically based on Pay Level -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- DA Rate Input -->
+                        <div class="form-group">
+                            <div class="label-with-val">
+                                <label for="da-rate-input" data-i18n="label_da_rate">Dearness Allowance (DA %):</label>
+                                <span class="val-display" id="da-val-display">50%</span>
+                            </div>
+                            <div class="input-range-row">
+                                <input type="range" id="da-rate-slider" min="0" max="70" value="50" step="1" class="form-range">
+                                <input type="number" id="da-rate-input" min="0" max="100" value="50" class="form-num-input">%
+                            </div>
+                        </div>
+
+                        <!-- HRA City Select -->
+                        <div class="form-group">
+                            <label data-i18n="label_hra_cat">HRA City Category (Rent Allowance):</label>
+                            <div class="radio-cards-group">
+                                <label class="radio-card">
+                                    <input type="radio" name="hra_category" value="X" checked>
+                                    <div class="radio-content">
+                                        <span class="city-class">X Class (30%)</span>
+                                        <span class="city-desc">Metro Cities (Delhi, Mumbai, Kolkata, etc.)</span>
+                                    </div>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="hra_category" value="Y">
+                                    <div class="radio-content">
+                                        <span class="city-class">Y Class (20%)</span>
+                                        <span class="city-desc">Tier-2 Cities (Jaipur, Lucknow, Patna, etc.)</span>
+                                    </div>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="hra_category" value="Z">
+                                    <div class="radio-content">
+                                        <span class="city-class">Z Class (10%)</span>
+                                        <span class="city-desc">Tier-3 Cities & Towns</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Govt Quarter Allocation Checkbox -->
+                        <div class="form-checkbox-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="govt-quarter-chk">
+                                <span class="checkmark"></span>
+                                <span data-i18n="label_govt_quarter">Government Quarter Allocated? (HRA will be ₹0)</span>
+                            </label>
+                        </div>
+
+                        <!-- Transport Allowance (TA) City Category -->
+                        <div class="form-group">
+                            <label for="ta-city-select" data-i18n="label_ta_city">Transport Allowance (TA) Area:</label>
+                            <select id="ta-city-select" class="form-select">
+                                <option value="higher">Higher TPTA Cities (Delhi, Mumbai, Bengaluru, Hyderabad, Kolkata, Chennai, Pune, Ahmedabad, etc.)</option>
+                                <option value="other">Other Cities / Places</option>
+                            </select>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Outputs Column / Pay Slip -->
+                <div class="calc-card output-card">
+                    <div class="card-header">
+                        <h2>📊 Monthly Salary Breakdown</h2>
+                        <div class="action-buttons-group">
+                            <button class="action-btn share-btn" id="share-whatsapp-btn" data-i18n="btn_share">💬 Share</button>
+                            <button class="action-btn print-btn" onclick="window.print()" data-i18n="btn_print">🖨️ Print Slip</button>
+                        </div>
+                    </div>
+
+                    <!-- Gross vs Net Hero Summary -->
+                    <div class="salary-hero-box">
+                        <div class="salary-metric net-salary-metric">
+                            <span class="metric-label" data-i18n="metric_net">Estimated Net In-Hand Salary</span>
+                            <span class="metric-val" id="net-salary-display">₹0</span>
+                            <span class="metric-subtext" data-i18n="metric_sub">Gross Salary minus NPS & Deductions</span>
+                        </div>
+                        <div class="salary-metric gross-salary-metric">
+                            <span class="metric-label" data-i18n="metric_gross">Total Gross Salary</span>
+                            <span class="metric-val" id="gross-salary-display">₹0</span>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown Table -->
+                    <div class="table-responsive">
+                        <table class="breakdown-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="th_component">Allowance / Component</th>
+                                    <th data-i18n="th_formula">Calculation Formula</th>
+                                    <th class="text-right" data-i18n="th_amount">Amount (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong data-i18n="row_basic">Basic Pay</strong></td>
+                                    <td>Pay Level Index</td>
+                                    <td class="text-right bold-text" id="res-basic-pay">₹0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong data-i18n="row_da">Dearness Allowance (DA)</strong></td>
+                                    <td><span id="res-da-pct">50</span>% of Basic</td>
+                                    <td class="text-right text-success" id="res-da-amount">+ ₹0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong data-i18n="row_hra">House Rent Allowance (HRA)</strong></td>
+                                    <td><span id="res-hra-pct">30</span>% of Basic</td>
+                                    <td class="text-right text-success" id="res-hra-amount">+ ₹0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong data-i18n="row_ta">Transport Allowance (TA)</strong></td>
+                                    <td>Base Rate by Level</td>
+                                    <td class="text-right text-success" id="res-ta-amount">+ ₹0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong data-i18n="row_tatp">DA on TA (TATP)</strong></td>
+                                    <td>TA × DA %</td>
+                                    <td class="text-right text-success" id="res-tatp-amount">+ ₹0</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong data-i18n="row_total_gross">TOTAL GROSS SALARY</strong></td>
+                                    <td>Sum of Basic + All Allowances</td>
+                                    <td class="text-right bold-text text-primary" id="res-total-gross">₹0</td>
+                                </tr>
+                                <tr class="deduction-row">
+                                    <td><strong data-i18n="row_nps">NPS Employee Contribution</strong></td>
+                                    <td>10% of (Basic + DA)</td>
+                                    <td class="text-right text-danger" id="res-nps-deduction">- ₹0</td>
+                                </tr>
+                                <tr class="deduction-row">
+                                    <td><strong data-i18n="row_cghs">Govt Health Scheme (CGHS Estimate)</strong></td>
+                                    <td>Fixed Standard Rate</td>
+                                    <td class="text-right text-danger" id="res-cghs-deduction">- ₹650</td>
+                                </tr>
+                                <tr class="highlight-net-row">
+                                    <td><strong data-i18n="row_total_net">NET IN-HAND SALARY</strong></td>
+                                    <td>Gross minus Total Deductions</td>
+                                    <td class="text-right bold-text text-accent" id="res-total-net">₹0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Govt Employer Contribution Information Note -->
+                    <div class="employer-nps-note">
+                        <span>💡 <strong data-i18n="note_nps_govt">Government NPS Contribution is 14% of (Basic + DA) = </strong> <strong id="res-govt-nps">₹0</strong> (credited directly into your PRAN Account).</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8th Pay Commission Estimated Calculator Section (High Traffic Magnet) -->
+        <section id="8th-pay-section" class="cpc8-section">
+            <div class="cpc8-card">
+                <div class="cpc8-header">
+                    <span class="badge upcoming">UPCOMING 8TH PAY COMMISSION</span>
+                    <h2 data-i18n="cpc8_heading">8th Pay Commission Estimated Salary Projection</h2>
+                    <p data-i18n="cpc8_sub">Select expected Fitment Factor (2.57, 2.86 or 3.68) to preview projected basic & gross salary under upcoming 8th Pay Commission:</p>
+                </div>
+                
+                <div class="cpc8-grid">
+                    <div class="cpc8-input-box">
+                        <label for="fitment-factor-select" data-i18n="cpc8_label_fitment">Select Expected Fitment Factor:</label>
+                        <select id="fitment-factor-select" class="form-select">
+                            <option value="2.57">2.57 (Standard Conservative Minimum)</option>
+                            <option value="2.86" selected>2.86 (Expected Standard Recommendation)</option>
+                            <option value="3.00">3.00 (Moderate Demand Factor)</option>
+                            <option value="3.68">3.68 (Staff Side Demand Factor)</option>
+                        </select>
+                    </div>
+
+                    <div class="cpc8-result-box">
+                        <div class="cpc8-metric">
+                            <span class="cpc8-label" data-i18n="cpc8_metric_basic">Projected 8th CPC Minimum Basic Pay</span>
+                            <span class="cpc8-val" id="cpc8-basic-val">₹51,476</span>
+                        </div>
+                        <div class="cpc8-metric">
+                            <span class="cpc8-label" data-i18n="cpc8_metric_gross">Projected 8th CPC Gross Salary (with 0% DA)</span>
+                            <span class="cpc8-val text-accent" id="cpc8-gross-val">₹66,919</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Category Tool Directory (Prevents Homepage Clutter for Future Tools) -->
+        <section id="all-tools" class="tools-directory-section">
+            <div class="section-title-wrap">
+                <span class="sub-heading">SARKARI SEWA INDIA TOOLKITS</span>
+                <h2>Explore More Govt & Financial Calculators</h2>
+                <p>Naye tools add hone par homepage cluttered nahi hoga. Nichhe apni zaroorat ke mutabiq category select karein:</p>
+            </div>
+
+            <!-- Tool Category Filter Tabs -->
+            <div class="category-tabs">
+                <button class="cat-tab active" data-cat="all">All Tools (12)</button>
+                <button class="cat-tab" data-cat="pay">Pay & Salary</button>
+                <button class="cat-tab" data-cat="pension">Pension & NPS</button>
+                <button class="cat-tab" data-cat="tax">Income Tax</button>
+                <button class="cat-tab" data-cat="loans">PF & Govt Savings</button>
+            </div>
+
+            <!-- Tool Cards Grid -->
+            <div class="tool-cards-grid" id="tool-cards-grid">
+                
+                <!-- Tool Card 1 (Active) -->
+                <div class="tool-card active-card" data-category="pay">
+                    <div class="card-icon">🧮</div>
+                    <div class="card-tag">Popular</div>
+                    <h3>7th Pay Commission Calculator</h3>
+                    <p>Calculate DA, HRA, TA, TATP & NPS for Pay Level 1 to 18 Central Govt Employees.</p>
+                    <a href="#" class="tool-link-btn">Using Now ✓</a>
+                </div>
+
+                <!-- Tool Card 2 -->
+                <div class="tool-card" data-category="pay">
+                    <div class="card-icon">🚀</div>
+                    <div class="card-tag upcoming">Upcoming 8th Pay</div>
+                    <h3>8th Pay Commission Estimated Salary Calculator</h3>
+                    <p>Expected Fitment Factor 2.86 & 3.68 ke basis par future salary calculate karein.</p>
+                    <a href="8th-pay-calculator.html" class="tool-link-btn outline">Calculate 8th Pay →</a>
+                </div>
+
+                <!-- Tool Card 3 -->
+                <div class="tool-card" data-category="pension">
+                    <div class="card-icon">🏦</div>
+                    <div class="card-tag">Pension</div>
+                    <h3>NPS Accumulation & Pension Calculator</h3>
+                    <p>Retirement par lump sum payout aur monthly annuity pension calculate karein.</p>
+                    <a href="nps-pension-calculator.html" class="tool-link-btn outline">Open Calculator →</a>
+                </div>
+
+                <!-- Tool Card 4 -->
+                <div class="tool-card" data-category="tax">
+                    <div class="card-icon">📝</div>
+                    <div class="card-tag">Income Tax</div>
+                    <h3>New Regime vs Old Tax Regime Calculator</h3>
+                    <p>Section 80C, HRA Exemption aur Standard Deduction compare karein.</p>
+                    <a href="#all-tools" class="tool-link-btn outline">Compare Tax →</a>
+                </div>
+
+                <!-- Tool Card 5 -->
+                <div class="tool-card" data-category="pension">
+                    <div class="card-icon">🎖️</div>
+                    <div class="card-tag">Gratuity</div>
+                    <h3>Govt & Private Gratuity Calculator</h3>
+                    <p>15/26 formula & 20 Lakh tax-free limit ke mutabiq Gratuity nikalein.</p>
+                    <a href="#all-tools" class="tool-link-btn outline">Calculate Gratuity →</a>
+                </div>
+
+                <!-- Tool Card 6 -->
+                <div class="tool-card" data-category="loans">
+                    <div class="card-icon">💰</div>
+                    <div class="card-tag">GPF / EPF</div>
+                    <h3>GPF Maturity & Interest Calculator</h3>
+                    <p>Monthly GPF subscription & interest accumulation tracker.</p>
+                    <a href="#all-tools" class="tool-link-btn outline">Calculate GPF →</a>
+                </div>
+
+                <!-- Tool Card 7 -->
+                <div class="tool-card" data-category="pay">
+                    <div class="card-icon">🏠</div>
+                    <div class="card-tag">HRA Tax</div>
+                    <h3>HRA Exemption Tax Calculator</h3>
+                    <p>Actual Rent Paid, 10% Basic Pay, aur City Category par tax waiver check karein.</p>
+                    <a href="#all-tools" class="tool-link-btn outline">Check Exemption →</a>
+                </div>
+
+                <!-- Tool Card 8 -->
+                <div class="tool-card" data-category="tax">
+                    <div class="card-icon">💼</div>
+                    <div class="card-tag">Form 16</div>
+                    <h3>Govt Employee TDS & Form 16 Helper</h3>
+                    <p>Annual taxable income projection for Central & State Employees.</p>
+                    <a href="#all-tools" class="tool-link-btn outline">Open TDS Tool →</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 7th Pay Matrix Full Reference Section (High SEO Keywords & User Dwell Time) -->
+        <section id="matrix-section" class="pay-matrix-section">
+            <div class="section-title-wrap">
+                <span class="sub-heading">GOVERNMENT SALARY TABLE</span>
+                <h2>7th Pay Commission Pay Matrix Table (Level 1 to 18)</h2>
+                <p>Complete Grade Pay wise Basic Pay starting range reference for Central Govt Employees:</p>
+            </div>
+
+            <div class="table-responsive matrix-table-wrap">
+                <table class="pay-matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Pay Level</th>
+                            <th>Group Category</th>
+                            <th>Corresponding 6th CPC Grade Pay</th>
+                            <th>Minimum Starting Basic Pay</th>
+                            <th>Maximum Basic Pay (Index 40)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Level 1</strong></td>
+                            <td>Group D / C</td>
+                            <td>Grade Pay ₹1800</td>
+                            <td>₹18,000</td>
+                            <td>₹56,900</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 2</strong></td>
+                            <td>Group C</td>
+                            <td>Grade Pay ₹1900</td>
+                            <td>₹19,900</td>
+                            <td>₹63,200</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 3</strong></td>
+                            <td>Group C</td>
+                            <td>Grade Pay ₹2000</td>
+                            <td>₹21,700</td>
+                            <td>₹69,100</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 4</strong></td>
+                            <td>Group C</td>
+                            <td>Grade Pay ₹2400</td>
+                            <td>₹25,500</td>
+                            <td>₹81,100</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 5</strong></td>
+                            <td>Group C</td>
+                            <td>Grade Pay ₹2800</td>
+                            <td>₹29,200</td>
+                            <td>₹92,300</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 6</strong></td>
+                            <td>Group B (Non-Gazetted)</td>
+                            <td>Grade Pay ₹4200</td>
+                            <td>₹35,400</td>
+                            <td>₹1,12,400</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 7</strong></td>
+                            <td>Group B (Gazetted/Non-Gaz)</td>
+                            <td>Grade Pay ₹4600</td>
+                            <td>₹44,900</td>
+                            <td>₹1,42,400</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 8</strong></td>
+                            <td>Group B (Gazetted)</td>
+                            <td>Grade Pay ₹4800</td>
+                            <td>₹47,600</td>
+                            <td>₹1,51,100</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 9</strong></td>
+                            <td>Group A / B</td>
+                            <td>Grade Pay ₹5400 (PB-2)</td>
+                            <td>₹53,100</td>
+                            <td>₹1,67,800</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 10</strong></td>
+                            <td>Group A (Entry)</td>
+                            <td>Grade Pay ₹5400 (PB-3)</td>
+                            <td>₹56,100</td>
+                            <td>₹1,77,500</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 11</strong></td>
+                            <td>Group A</td>
+                            <td>Grade Pay ₹6600</td>
+                            <td>₹67,700</td>
+                            <td>₹2,08,700</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 12</strong></td>
+                            <td>Group A (Senior Grade)</td>
+                            <td>Grade Pay ₹7600</td>
+                            <td>₹78,800</td>
+                            <td>₹2,09,200</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 13</strong></td>
+                            <td>Group A (Selection Grade)</td>
+                            <td>Grade Pay ₹8700</td>
+                            <td>₹1,23,100</td>
+                            <td>₹2,15,900</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Level 14</strong></td>
+                            <td>Group A (SAG)</td>
+                            <td>Grade Pay ₹10000</td>
+                            <td>₹1,44,200</td>
+                            <td>₹2,18,200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SEO Article & FAQ Section (For Google #1 Ranking & Visitors Traffic) -->
+        <section id="faq-section" class="seo-content-section">
+            <div class="seo-article-card">
+                <h2>7th Pay Commission In-Hand Salary Components Explained</h2>
+                
+                <article class="article-body">
+                    <h3>1. Dearness Allowance (DA) Calculation Formula</h3>
+                    <p>Dearness allowance central govt employees ko inflation se protect karne ke liye saal me do baar (January & July) modify kiya jata hai. Calculation formula:</p>
+                    <div class="code-box">
+                        <code>DA Amount = Basic Pay × (Current DA Percentage / 100)</code>
+                    </div>
+
+                    <h3>2. House Rent Allowance (HRA) Revision Rules</h3>
+                    <p>7th Pay Commission guidelines ke mutabiq, jab DA 50% cross kar jata hai, tab HRA revised percentage par lagta hai:</p>
+                    <ul>
+                        <li><strong>X Class Cities (Metro):</strong> 30% of Basic Pay (Pahle 24% tha)</li>
+                        <li><strong>Y Class Cities (Tier-2):</strong> 20% of Basic Pay (Pahle 16% tha)</li>
+                        <li><strong>Z Class Cities (Tier-3/Rural):</strong> 10% of Basic Pay (Pahle 8% tha)</li>
+                    </ul>
+
+                    <h3>3. Transport Allowance (TA) & DA on TA (TATP) Rules</h3>
+                    <p>Transport allowance monthly travel cost ke liye diya jata hai. Higher TPTA cities ke liye Pay Level 9 aur usse upar Rs. 7200 + DA milta hai, jabki lower levels ke liye Rs. 3600 ya Rs. 1350 hota hai.</p>
+
+                    <h3>4. NPS (National Pension System) Employee Deduction</h3>
+                    <p>Har Govt Employee ki monthly basic pay aur DA ka 10% NPS me deduct hota hai, aur Government usme 14% apni taraf se PRAN account me accumulate karti hai.</p>
+                </article>
+
+                <hr class="divider">
+
+                <!-- FAQ Accordion -->
+                <h2>Frequently Asked Questions (FAQs)</h2>
+                <div class="faq-accordion">
+                    
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Q1. 7th Pay Commission me Pay Level 7 ka Starting In-Hand Salary kitna hota hai?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Level 7 (Grade Pay ₹4600) ka starting Basic Pay ₹44,900 hota hai. 50% DA, X Class HRA (30%) aur TA add karne par Gross salary lagbhag ₹85,000+ banti hai. NPS 10% deduction ke baad net in-hand salary approximate ₹75,000 to ₹78,000 milti hai.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Q2. TATP kya hota hai aur iski calculation kaise karein?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>TATP ka full form 'Dearness Allowance on Transport Allowance' hai. Transport Allowance (TA) par jo current DA percentage chala hota hai use TATP kehte hain. For example: Agar TA ₹3,600 hai aur DA 50% hai, toh TATP = ₹3,600 × 50% = ₹1,800 hoga.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Q3. Kya Government Quarter lene par HRA deduct hota hai?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Haan, agar aapko Government Accommodation / Quarter allotted hai toh aapko House Rent Allowance (HRA) nahi milega, balki Licence Fee deduct ho sakti hai.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer with Internal Linking Architecture -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col brand-col">
+                <a href="../index.html" class="brand-logo light">
+                    <span class="logo-icon">S</span>
+                    <span class="logo-text">SarkariSewa <span class="highlight">India</span></span>
+                </a>
+                <p>100% Free, Accurate & Updated Salary, Pension, and Tax Calculators for Central & State Government Employees across India on SarkariSewaIndia.com.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter">🐦</a>
+                    <a href="#" aria-label="Telegram">✈️</a>
+                    <a href="#" aria-label="YouTube">▶️</a>
+                </div>
+            </div>
+
+            <!-- Footer Links Col 1: Pay Calculators -->
+            <div class="footer-col">
+                <h4>Pay & Allowance Tools</h4>
+                <ul class="footer-links">
+                    <li><a href="7th-pay-commission-calculator.html">7th Pay Commission Calculator</a></li>
+                    <li><a href="8th-pay-calculator.html">8th Pay Expected Salary Calculator</a></li>
+                    <li><a href="#">DA Arrears Calculator 2026</a></li>
+                    <li><a href="#">HRA Exemption Checker</a></li>
+                    <li><a href="#">Transport Allowance (TA/TATP) Tool</a></li>
+                </ul>
+            </div>
+
+            <!-- Footer Links Col 2: Pension & Retirement -->
+            <div class="footer-col">
+                <h4>Pension & Retirement</h4>
+                <ul class="footer-links">
+                    <li><a href="nps-pension-calculator.html">NPS Pension & Annuity Calculator</a></li>
+                    <li><a href="#">Govt Employee Gratuity Calculator</a></li>
+                    <li><a href="#">Commutation of Pension Calculator</a></li>
+                    <li><a href="#">GPF Interest & Maturity Calculator</a></li>
+                    <li><a href="#">Leave Encashment Calculator</a></li>
+                </ul>
+            </div>
+
+            <!-- Footer Links Col 3: Quick Navigation -->
+            <div class="footer-col">
+                <h4>Quick Reference</h4>
+                <ul class="footer-links">
+                    <li><a href="#matrix-section">7th Pay Matrix Level 1-18</a></li>
+                    <li><a href="#faq-section">HRA City X, Y, Z List</a></li>
+                    <li><a href="#all-tools">All 15+ Financial Tools</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-container">
+                <p>© 2026 SarkariSewaIndia.com. Updated for 7th Pay Commission latest DA/HRA notification rules.</p>
+                <p class="disclaimer">Disclaimer: This tool provides estimations based on 7th CPC rules. Official salary may vary slightly based on local allowances and deductions.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Script File -->
+    <script src="app.js"></script>
+</body>
+</html>

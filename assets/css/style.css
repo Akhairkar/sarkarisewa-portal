@@ -258,6 +258,65 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   font-size: 0.66rem; font-weight: 700; vertical-align: middle;
 }
 
+/* Nav Dropdown Menu for Tools */
+.main-nav .nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.main-nav .nav-dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.main-nav .nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 240px;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  padding: 8px 0;
+  z-index: 1000;
+  list-style: none;
+}
+[data-theme="dark"] .main-nav .nav-dropdown-menu {
+  background: #101D2C;
+  border-color: #223244;
+}
+.main-nav .nav-dropdown:hover .nav-dropdown-menu,
+.main-nav .nav-dropdown:focus-within .nav-dropdown-menu {
+  display: block;
+}
+.main-nav .nav-dropdown-menu li {
+  display: block;
+  margin: 0;
+}
+.main-nav .nav-dropdown-menu a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #10243E;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  border-radius: 0;
+  opacity: 1;
+}
+[data-theme="dark"] .main-nav .nav-dropdown-menu a {
+  color: #E8EDF3;
+}
+.main-nav .nav-dropdown-menu a:hover {
+  background: rgba(16,36,62,0.06);
+  color: #D97F2B;
+}
+[data-theme="dark"] .main-nav .nav-dropdown-menu a:hover {
+  background: rgba(255,255,255,0.08);
+  color: #F2A65A;
+}
+
 @media (min-width: 980px) {
   .main-nav { display: block; }
   .nav-toggle { display: none; }

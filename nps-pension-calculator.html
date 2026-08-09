@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="hi-IN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPS Pension & Annuity Calculator 2026 | Govt Employee Retirement Payout - Sarkari Sewa India</title>
+    <meta name="description" content="Calculate NPS Retirement Lump Sum Payout and Monthly Annuity Pension for Central & State Govt Employees on SarkariSewaIndia.com. Real-time compounding calculator with PRAN accumulation estimation.">
+    <meta name="keywords" content="NPS Pension Calculator, Govt Employee NPS Annuity, National Pension System Payout, PRAN Accumulation Calculator, Sarkari Sewa India">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://sarkarisewaindia.com/nps-pension-calculator">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="index.html" class="brand-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">SarkariSewa<span class="highlight">India</span></span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html">7th Pay Calculator</a></li>
+                    <li><a href="8th-pay-calculator.html">8th Pay Projection</a></li>
+                    <li><a href="nps-pension-calculator.html" class="active">NPS Pension Tool</a></li>
+                    <li><a href="index.html#all-tools">All Finance Tools</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <button id="theme-toggle-btn" class="theme-btn" aria-label="Toggle Dark/Light Mode">
+                    🌙 <span class="theme-label">Dark</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-wrapper">
+        <section class="hero-calculator-section">
+            <div class="hero-header">
+                <span class="badge">SARKARI SEWA INDIA - RETIREMENT PLANNING</span>
+                <h1>NPS Pension & Corpus Accumulation Calculator</h1>
+                <p class="subtitle">Monthly contribution (10% Employee + 14% Govt) par 60 saal ki umar par total retirement wealth aur monthly pension check karein.</p>
+            </div>
+
+            <div class="calculator-grid">
+                <div class="calc-card input-card">
+                    <div class="card-header">
+                        <h2>⚙️ NPS Investment Details</h2>
+                    </div>
+
+                    <form onsubmit="return false;" class="calc-form">
+                        <div class="form-group">
+                            <label for="monthly-nps-input">Total Monthly NPS Contribution (₹):</label>
+                            <input type="number" id="monthly-nps-input" class="form-select" value="12500" step="500">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="working-years-input">Years until Retirement (Age 60):</label>
+                            <input type="number" id="working-years-input" class="form-select" value="25" min="1" max="40">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nps-return-rate">Expected Annual Return (%):</label>
+                            <input type="number" id="nps-return-rate" class="form-num-input" value="10" step="0.5">%
+                        </div>
+                    </form>
+                </div>
+
+                <div class="calc-card output-card">
+                    <div class="card-header">
+                        <h2>📊 Projected Retirement Wealth</h2>
+                    </div>
+
+                    <div class="salary-hero-box">
+                        <div class="salary-metric net-salary-metric">
+                            <span class="metric-label">Estimated Total NPS Corpus</span>
+                            <span class="metric-val" id="nps-total-corpus">₹1.67 Crore</span>
+                        </div>
+                        <div class="salary-metric gross-salary-metric">
+                            <span class="metric-label">Estimated Monthly Pension</span>
+                            <span class="metric-val" id="nps-monthly-pension">₹33,500</span>
+                        </div>
+                    </div>
+
+                    <div class="employer-nps-note">
+                        <span>💡 <strong>NPS Rule:</strong> 60% Corpus (₹1.00 Cr) tax-free withdraw kar sakte hain aur 40% (₹67 Lakh) se monthly annuity pension milti hai.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="brand-logo light">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">SarkariSewa<span class="highlight">India</span></span>
+                </a>
+                <p>100% Free, Accurate & Updated Salary, Pension, and Tax Calculators for Central & State Government Employees across India on SarkariSewaIndia.com.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Calculators</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">7th Pay Commission Calculator</a></li>
+                    <li><a href="8th-pay-calculator.html">8th Pay Expected Calculator</a></li>
+                    <li><a href="nps-pension-calculator.html">NPS Pension Calculator</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const monthlyInp = document.getElementById("monthly-nps-input");
+            const yearsInp = document.getElementById("working-years-input");
+            const returnInp = document.getElementById("nps-return-rate");
+
+            const corpusOut = document.getElementById("nps-total-corpus");
+            const pensionOut = document.getElementById("nps-monthly-pension");
+
+            function calcNps() {
+                const P = parseFloat(monthlyInp.value) || 12500;
+                const n = (parseFloat(yearsInp.value) || 25) * 12;
+                const r = (parseFloat(returnInp.value) || 10) / 100 / 12;
+
+                const FV = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+                const pension = (FV * 0.40 * 0.06) / 12; // 6% annuity rate on 40%
+
+                if (FV >= 10000000) {
+                    corpusOut.textContent = `₹${(FV / 10000000).toFixed(2)} Crore`;
+                } else {
+                    corpusOut.textContent = `₹${(FV / 100000).toFixed(2)} Lakh`;
+                }
+
+                pensionOut.textContent = `₹${Math.round(pension).toLocaleString('en-IN')}`;
+            }
+
+            monthlyInp.addEventListener("input", calcNps);
+            yearsInp.addEventListener("input", calcNps);
+            returnInp.addEventListener("input", calcNps);
+
+            calcNps();
+        });
+    </script>
+</body>
+</html>
