@@ -1,0 +1,479 @@
+/* ==========================================================================
+   SarkariSewa India - 7th Pay, 8th Pay & NPS Pension Calculator Theme
+   Integrates seamlessly with SarkariSewa design tokens:
+   --color-primary (#10243E), --color-surface, --color-accent-saffron (#D97F2B), --color-accent-green (#146B3A)
+   ========================================================================== */
+
+/* Main Layout Wrapper */
+.calc-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.hero-calculator-section {
+  margin-bottom: 3rem;
+}
+
+.hero-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+}
+
+.hero-header h1 {
+  font-family: var(--font-display, "Fraunces", serif);
+  font-size: 2.2rem;
+  color: var(--color-primary);
+  margin: 0.5rem 0;
+}
+
+[data-theme="dark"] .hero-header h1 {
+  color: #E8EDF3;
+}
+
+.hero-header .subtitle {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+}
+
+.badge {
+  background: rgba(217, 127, 43, 0.15);
+  color: var(--color-accent-saffron, #D97F2B);
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: inline-block;
+  border: 1px solid rgba(217, 127, 43, 0.3);
+}
+
+.badge.upcoming {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+/* Calculator Grid */
+.calculator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .calculator-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calc-card {
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #E2DFD3);
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: 0 4px 14px rgba(16,36,62,0.06);
+}
+
+[data-theme="dark"] .calc-card {
+  background: #101D2C !important;
+  border-color: #223244 !important;
+  color: #E8EDF3 !important;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border, #E2DFD3);
+}
+
+.card-header h2 {
+  font-size: 1.25rem;
+  font-family: var(--font-display, "Fraunces", serif);
+  margin: 0;
+}
+
+.card-subtitle {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+/* Form Elements */
+.calc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.label-with-val {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.val-display {
+  color: var(--color-accent-saffron, #D97F2B);
+  font-weight: 700;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  background: var(--color-surface-alt, #EFECE3);
+  border: 1px solid var(--color-border, #E2DFD3);
+  border-radius: 8px;
+  color: var(--color-text, #1A1D22);
+  font-size: 0.95rem;
+  outline: none;
+}
+
+[data-theme="dark"] .form-select {
+  background: #0E1826 !important;
+  border-color: #223244 !important;
+  color: #E8EDF3 !important;
+}
+
+.input-range-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.form-range {
+  flex: 1;
+  accent-color: var(--color-accent-saffron, #D97F2B);
+  cursor: pointer;
+}
+
+.form-num-input {
+  width: 75px;
+  padding: 0.45rem 0.6rem;
+  background: var(--color-surface-alt, #EFECE3);
+  border: 1px solid var(--color-border, #E2DFD3);
+  border-radius: 6px;
+  color: var(--color-text);
+  font-weight: 700;
+  text-align: center;
+}
+
+[data-theme="dark"] .form-num-input {
+  background: #0E1826 !important;
+  border-color: #223244 !important;
+  color: #E8EDF3 !important;
+}
+
+/* Radio Cards */
+.radio-cards-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radio-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--color-surface-alt, #EFECE3);
+  border: 1px solid var(--color-border, #E2DFD3);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+[data-theme="dark"] .radio-card {
+  background: #0E1826 !important;
+  border-color: #223244 !important;
+}
+
+.city-class {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.city-desc {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+/* Checkbox */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+/* Results Hero Box */
+.salary-hero-box {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1rem;
+  background: rgba(16, 107, 58, 0.08);
+  border: 1px solid rgba(16, 107, 58, 0.2);
+  border-radius: 10px;
+  padding: 1.1rem;
+  margin-bottom: 1.25rem;
+}
+
+[data-theme="dark"] .salary-hero-box {
+  background: rgba(53, 177, 114, 0.12);
+  border-color: rgba(53, 177, 114, 0.3);
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.metric-val {
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0.2rem 0;
+}
+
+.net-salary-metric .metric-val {
+  color: var(--color-accent-green, #146B3A);
+}
+
+[data-theme="dark"] .net-salary-metric .metric-val {
+  color: #35B172;
+}
+
+.gross-salary-metric .metric-val {
+  color: var(--color-accent-saffron, #D97F2B);
+  font-size: 1.4rem;
+}
+
+.metric-subtext {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+/* Table Styling */
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.breakdown-table th,
+.breakdown-table td {
+  padding: 0.7rem 0.5rem;
+  border-bottom: 1px solid var(--color-border, #E2DFD3);
+}
+
+[data-theme="dark"] .breakdown-table th,
+[data-theme="dark"] .breakdown-table td {
+  border-bottom-color: #223244;
+}
+
+.breakdown-table th {
+  text-align: left;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.text-right { text-align: right; }
+.bold-text { font-weight: 700; }
+.text-success { color: var(--color-accent-green, #146B3A); }
+[data-theme="dark"] .text-success { color: #35B172; }
+.text-danger { color: #d93838; }
+.text-accent { color: var(--color-accent-saffron, #D97F2B); }
+
+.highlight-row {
+  background: var(--color-surface-alt, #EFECE3);
+}
+
+[data-theme="dark"] .highlight-row {
+  background: #0E1826;
+}
+
+.highlight-net-row {
+  background: rgba(16, 107, 58, 0.1);
+}
+
+[data-theme="dark"] .highlight-net-row {
+  background: rgba(53, 177, 114, 0.15);
+}
+
+.employer-nps-note {
+  background: var(--color-surface-alt, #EFECE3);
+  border: 1px dashed var(--color-border);
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .employer-nps-note {
+  background: #0E1826;
+  border-color: #223244;
+}
+
+/* Action Buttons */
+.action-buttons-group {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.action-btn {
+  background: var(--color-surface-alt, #EFECE3);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+[data-theme="dark"] .action-btn {
+  background: #0E1826;
+  border-color: #223244;
+  color: #E8EDF3;
+}
+
+.share-btn {
+  background: rgba(16, 107, 58, 0.15);
+  color: var(--color-accent-green);
+}
+
+/* Pay Matrix Table Section */
+.pay-matrix-section, .seo-content-section, .cpc8-section {
+  margin-top: 3.5rem;
+}
+
+.matrix-table-wrap {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+[data-theme="dark"] .matrix-table-wrap {
+  background: #101D2C;
+  border-color: #223244;
+}
+
+.pay-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pay-matrix-table th, .pay-matrix-table td {
+  padding: 0.8rem 0.9rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+[data-theme="dark"] .pay-matrix-table th, [data-theme="dark"] .pay-matrix-table td {
+  border-bottom-color: #223244;
+}
+
+.pay-matrix-table th {
+  background: var(--color-surface-alt);
+  color: var(--color-primary);
+}
+
+[data-theme="dark"] .pay-matrix-table th {
+  background: #0E1826;
+  color: #E8EDF3;
+}
+
+/* FAQ Accordion */
+.seo-article-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+[data-theme="dark"] .seo-article-card {
+  background: #101D2C;
+  border-color: #223244;
+}
+
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.faq-item {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface-alt);
+  overflow: hidden;
+}
+
+[data-theme="dark"] .faq-item {
+  background: #0E1826;
+  border-color: #223244;
+}
+
+.faq-question {
+  width: 100%;
+  padding: 1rem 1.1rem;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  text-align: left;
+}
+
+[data-theme="dark"] .faq-question {
+  color: #E8EDF3;
+}
+
+.faq-answer {
+  padding: 0 1.1rem 1.1rem 1.1rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  display: none;
+}
+
+.faq-item.open .faq-answer {
+  display: block;
+}
+
+/* Print CSS */
+@media print {
+  .site-header, .site-footer, .tools-search-bar, .tools-directory-section, .pay-matrix-section, .seo-content-section, .cpc8-section, .action-buttons-group {
+    display: none !important;
+  }
+  body { background: #fff !important; color: #000 !important; }
+  .calc-card { box-shadow: none !important; border: 1px solid #ccc !important; }
+}
