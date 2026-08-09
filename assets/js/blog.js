@@ -79,7 +79,7 @@
     listEl.innerHTML = posts
       .map(
         (post) => `
-      <a class="blog-card" href="${ROOT}blog/post.html?slug=${post.slug}">
+      <a class="blog-card" href="${ROOT}blog/${post.isStatic ? post.slug + '.html' : 'post.html?slug=' + post.slug}">
         <div class="blog-card__date">${formatDate(post.datePublished)}</div>
         <div class="blog-card__title">${t(post.title)}</div>
         <div class="blog-card__excerpt">${t(post.excerpt)}</div>
