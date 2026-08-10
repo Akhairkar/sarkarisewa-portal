@@ -39,8 +39,6 @@ STATIC_PAGES = [
     ("/blog/index.html", "0.7", "weekly"),
     ("/jobs/index.html", "0.9", "daily"),
     ("/exams/index.html", "0.9", "daily"),
-    ("/csc/index.html", "0.7", "weekly"),
-    ("/csc/add.html", "0.5", "monthly"),
     ("/sitemap.html", "0.3", "monthly"),
     ("/about.html", "0.5", "monthly"),
     ("/contact.html", "0.5", "monthly"),
@@ -154,25 +152,6 @@ def fetch_db_service_slugs():
         return []
 
 
-def fetch_db_csc_slugs():
-    """Pull IDs of approved CSC (Common Service Centre) directory listings
-    added from the admin dashboard / public claim form."""
-    url = f"{SUPABASE_URL}/rest/v1/csc_centres?select=id&status=eq.approved"
-    req = urllib.request.Request(
-        url,
-        headers={
-            "apikey": SUPABASE_ANON_KEY,
-            "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
-        },
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            rows = json.loads(resp.read().decode("utf-8"))
-        return [str(r["id"]) for r in rows if r.get("id") is not None]
-    except (urllib.error.URLError, TimeoutError, ValueError) as err:
-        print(f"Warning: could not fetch CSC directory listings ({err}). "
-              f"Sitemap will not include CSC profile URLs this run.")
-        return []
 
 
 def main():
@@ -228,10 +207,8 @@ def main():
         urls.append((f"{BASE_URL}/jobs/{slug}.html", "0.8", "daily"))
 
     for slug in sorted(fetch_db_exam_slugs()):
-        urls.append((f"{BASE_URL}/exams/{slug}.html", "0.7", "weekly"))
+        urls.append((f"{BASE_URL}/exams/exam.html?slug={slug}", "0.7", "weekly"))
 
-    for csc_id in sorted(fetch_db_csc_slugs()):
-        urls.append((f"{BASE_URL}/csc/profile.html?id={csc_id}", "0.5", "monthly"))
 
     lines = ['<?xml version="1.0" encoding="UTF-8"?>']
     lines.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
