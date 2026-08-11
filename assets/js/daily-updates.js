@@ -10,7 +10,8 @@ const ITEMS_PER_PAGE = 10;
 async function loadDailyUpdates() {
   if (DAILY_UPDATES_DATA) return;
   try {
-    const res = await fetch(ROOT + "data/latest-updates.json");
+    const cacheBuster = new Date().getTime();
+    const res = await fetch(ROOT + "data/latest-updates.json?v=" + cacheBuster);
     if (!res.ok) throw new Error("Not found");
     DAILY_UPDATES_DATA = await res.json();
   } catch (e) {
