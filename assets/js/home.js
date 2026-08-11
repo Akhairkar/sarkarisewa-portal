@@ -163,4 +163,43 @@ onLangChange(() => {
   renderCategories();
   renderServices();
   renderBlogSection();
+  renderHomeDailyUpdates();
 });
+
+async function renderHomeDailyUpdates() {
+  const host = document.getElementById("home-daily-updates-grid");
+  if (!host) return;
+  const lang = getLang();
+  try {
+    const cb = new Date().getTime();
+    const res = await fetch(ROOT + "data/latest-updates.json?v=" + cb);
+    if (!res.ok) throw new Error("Not found");
+    const data = await res.json();
+    if (!data || data.length === 0) { host.innerHTML = ""; return; }
+    
+    // Only show top 4 on homepage
+    const topData = data.slice(0, 4);
+    host.innerHTML = topData.map(update => {
+      const title = lang === "hi" ? update.title_hi : update.title_en;
+      const d = new Date(update.published_date);
+      const dateStr = isNaN(d.getTime()) ? update.published_date : d.toLocaleDateString(lang === "hi" ? "hi-IN" : "en-IN", { year: "numeric", month: "long", day: "numeric" });
+      return `
+        <article class="service-card">
+          <div style="font-size: 0.8rem; color: var(--color-text-light); margin-bottom: 0.5rem;">
+            <strong>${update.source_name}</strong> • ${dateStr} • <span class="nav-badge" style="background:var(--color-primary); color:#fff; padding:2px 6px; border-radius:4px; font-size:11px;">${update.category}</span>
+          </div>
+          <h3 style="font-size: 1.1rem; margin-top:0;">${title}</h3>
+          <div class="service-links" style="margin-top: 1rem;">
+            <a href="latest-updates.html" class="primary">
+              ${lang === "hi" ? "पूरा पढ़ें →" : "Read Full →"}
+            </a>
+          </div>
+        </article>
+      `;
+    }).join("");
+  } catch (e) {
+    host.innerHTML = "";
+  }
+}
+
+document.addEventListener("ss:ready", renderHomeDailyUpdates);
