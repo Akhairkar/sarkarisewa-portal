@@ -1,0 +1,38 @@
+name: Daily Government Updates
+
+on:
+  schedule:
+    # Runs at 23:30 UTC every day (05:00 IST)
+    - cron: '30 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch_updates:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install Dependencies
+        run: pip install -r automation/requirements.txt
+        
+      - name: Run Update Pipeline
+        env:
+          # Add AI API keys here as GitHub Secrets if available
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python automation/update_pipeline.py
+        
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/latest-updates.json data/pending-updates.json sitemap.xml automation/run.log
+          git commit -m "Automated update of government data" || exit 0
+          git push
