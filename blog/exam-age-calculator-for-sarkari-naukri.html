@@ -171,6 +171,167 @@
 
       <div class="blog-post-body" id="blog-post-body">
         
+<!-- Professional Exam Age Eligibility Calculator -->
+<style>
+.age-calc-wrapper { max-width: 100%; margin: 30px auto; background: #fff; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; border: 1px solid #eaeaea; }
+.age-calc-header { background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); color: white; padding: 25px 20px; text-align: center; }
+.age-calc-header h3 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 0.5px; }
+.age-calc-header p { margin: 8px 0 0 0; font-size: 14px; opacity: 0.9; }
+.age-calc-body { padding: 30px 25px; background: #fafbfc; }
+.input-row { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 25px; }
+.input-group { flex: 1; min-width: 200px; }
+.input-group label { display: block; margin-bottom: 8px; color: #495057; font-weight: 600; font-size: 14px; }
+.input-group input, .input-group select { width: 100%; padding: 12px 15px; border: 2px solid #dde1e5; border-radius: 8px; font-size: 15px; color: #333; transition: all 0.3s ease; box-sizing: border-box; }
+.input-group input:focus, .input-group select:focus { border-color: #0d6efd; outline: none; box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15); }
+.calc-action { text-align: center; margin-top: 10px; }
+.calc-action button { background: #0d6efd; color: #fff; border: none; padding: 14px 35px; font-size: 16px; font-weight: 700; border-radius: 50px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3); }
+.calc-action button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(13, 110, 253, 0.4); background: #0b5ed7; }
+.age-results { display: none; margin-top: 35px; border-top: 1px solid #eee; padding-top: 25px; animation: slideDown 0.5s ease; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.result-card { background: #fff; border-left: 5px solid #198754; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center; margin-bottom: 25px; }
+.result-card h4 { margin: 0 0 10px 0; color: #495057; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; }
+.exact-age { font-size: 28px; font-weight: 800; color: #198754; margin: 0; }
+.eligibility-box { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.eligibility-box h4 { margin: 0 0 15px 0; color: #212529; font-size: 18px; border-bottom: 2px solid #f1f3f5; padding-bottom: 10px; }
+.exam-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f3f5; }
+.exam-row:last-child { border-bottom: none; }
+.exam-name { font-weight: 600; color: #495057; }
+.exam-status { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+.status-eligible { background: #d1e7dd; color: #0f5132; }
+.status-not-eligible { background: #f8d7da; color: #842029; }
+</style>
+
+<div class="age-calc-wrapper" id="exam-age-calc">
+  <div class="age-calc-header">
+    <h3>Sarkari Naukri Age Eligibility Calculator</h3>
+    <p>Find your exact age and check eligibility for SSC, UPSC, Bank PO & Railway exams instantly.</p>
+  </div>
+  <div class="age-calc-body">
+    <div class="input-row">
+      <div class="input-group">
+        <label>Date of Birth (DOB)</label>
+        <input type="date" id="ac_dob">
+      </div>
+      <div class="input-group">
+        <label>Calculate Age As Of</label>
+        <input type="date" id="ac_asof">
+      </div>
+      <div class="input-group">
+        <label>Reservation Category</label>
+        <select id="ac_category">
+          <option value="0">General / UR</option>
+          <option value="3">OBC (+3 Years Relaxation)</option>
+          <option value="5">SC / ST (+5 Years Relaxation)</option>
+          <option value="10">PwD (+10 Years Relaxation)</option>
+        </select>
+      </div>
+    </div>
+    <div class="calc-action">
+      <button onclick="calculateExamAge()">Calculate My Age & Eligibility</button>
+    </div>
+
+    <div class="age-results" id="ac_results">
+      <div class="result-card">
+        <h4>Your Exact Age</h4>
+        <p class="exact-age" id="ac_exact_age">0 Years, 0 Months, 0 Days</p>
+      </div>
+      
+      <div class="eligibility-box">
+        <h4>Top Exams Eligibility Check <span style="font-size:12px; font-weight:normal; color:#6c757d;">(Approximate based on max age)</span></h4>
+        <div class="exam-row">
+          <span class="exam-name">UPSC Civil Services (IAS/IPS)</span>
+          <span class="exam-status" id="ac_upsc">Evaluating...</span>
+        </div>
+        <div class="exam-row">
+          <span class="exam-name">SSC CGL (Combined Graduate Level)</span>
+          <span class="exam-status" id="ac_ssc">Evaluating...</span>
+        </div>
+        <div class="exam-row">
+          <span class="exam-name">IBPS / SBI PO (Bank Officer)</span>
+          <span class="exam-status" id="ac_bank">Evaluating...</span>
+        </div>
+        <div class="exam-row">
+          <span class="exam-name">Railway NTPC / Group D</span>
+          <span class="exam-status" id="ac_rrb">Evaluating...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Set default "As of" date to today
+document.getElementById('ac_asof').valueAsDate = new Date();
+
+function calculateExamAge() {
+  const dobVal = document.getElementById('ac_dob').value;
+  const asofVal = document.getElementById('ac_asof').value;
+  const catRelaxation = parseInt(document.getElementById('ac_category').value) || 0;
+  
+  if (!dobVal || !asofVal) {
+    alert("Please enter both Date of Birth and As Of Date.");
+    return;
+  }
+  
+  const dob = new Date(dobVal);
+  const asof = new Date(asofVal);
+  
+  if (asof < dob) {
+    alert("As of Date cannot be before Date of Birth.");
+    return;
+  }
+  
+  let years = asof.getFullYear() - dob.getFullYear();
+  let months = asof.getMonth() - dob.getMonth();
+  let days = asof.getDate() - dob.getDate();
+  
+  if (days < 0) {
+    months--;
+    // Get days in previous month
+    const prevMonth = new Date(asof.getFullYear(), asof.getMonth(), 0);
+    days += prevMonth.getDate();
+  }
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+  
+  // Display Exact Age
+  document.getElementById('ac_exact_age').innerText = years + " Years, " + months + " Months, " + days + " Days";
+  
+  // Evaluate Eligibility
+  // These are standard generic base max ages.
+  const upscBaseMax = 32;
+  const sscBaseMax = 32;
+  const bankBaseMax = 30;
+  const rrbBaseMax = 33;
+  
+  const effectiveMaxUpsc = upscBaseMax + catRelaxation;
+  const effectiveMaxSsc = sscBaseMax + catRelaxation;
+  const effectiveMaxBank = bankBaseMax + catRelaxation;
+  const effectiveMaxRrb = rrbBaseMax + catRelaxation;
+  
+  // Generic min age is usually 18 or 21 depending on the exam. 
+  // For simplicity, let's assume min age is 21 for UPSC/Bank, 18 for SSC/RRB
+  
+  function getStatusHtml(min, max, currentY) {
+    if (currentY < min) return '<span class="exam-status status-not-eligible">Underage (Min ' + min + ')</span>';
+    if (currentY >= max) return '<span class="exam-status status-not-eligible">Overage (Max ' + max + ')</span>';
+    return '<span class="exam-status status-eligible">Eligible</span>';
+  }
+  
+  document.getElementById('ac_upsc').innerHTML = getStatusHtml(21, effectiveMaxUpsc, years);
+  document.getElementById('ac_ssc').innerHTML = getStatusHtml(18, effectiveMaxSsc, years);
+  document.getElementById('ac_bank').innerHTML = getStatusHtml(21, effectiveMaxBank, years);
+  document.getElementById('ac_rrb').innerHTML = getStatusHtml(18, effectiveMaxRrb, years);
+  
+  document.getElementById('ac_results').style.display = 'block';
+}
+</script>
+<!-- /Calculator -->
+
+
+
   <div class="blog-content-body">
     <p><strong>सरकारी नौकरी परीक्षाओं के लिए आयु कैलकुलेटर</strong> के बारे में संपूर्ण जानकारी प्राप्त करने के लिए आप बिल्कुल सही जगह पर आए हैं। आज के इस डिजिटल युग में, जहाँ हर जानकारी ऑनलाइन उपलब्ध है, वहां सही और सटीक जानकारी खोजना एक चुनौती बन गया है। हमारा यह विशेष लेख (Blog Post) विशेष रूप से उन लोगों के लिए तैयार किया गया है जो <em>"Exam Age Calculator for UPSC, SSC & Bank Exams"</em> या <em>"सरकारी नौकरी परीक्षाओं के लिए आयु कैलकुलेटर"</em> से संबंधित नवीनतम अपडेट्स, प्रक्रिया और महत्वपूर्ण दिशा-निर्देशों की तलाश में हैं।</p>
     
