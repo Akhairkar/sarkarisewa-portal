@@ -251,6 +251,17 @@ def section(icon, title, inner_html):
       </section>
     '''
 
+def long_description_block(service):
+    ld = service.get("longDescription")
+    if not ld:
+        return ""
+    content = t(ld)
+    return f'''
+      <section class="service-section service-section--longdesc">
+        {content}
+      </section>
+    '''
+
 
 def related_grid(service, services_by_slug):
     related_ids = service.get("relatedServices") or []
@@ -307,6 +318,7 @@ def build_page(service, category, services_by_slug):
         filter(
             None,
             [
+                long_description_block(service),
                 official_links_block(service),
                 apply_online_block(service),
                 download_form_block(service),
