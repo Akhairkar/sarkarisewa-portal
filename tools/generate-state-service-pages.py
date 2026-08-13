@@ -158,12 +158,21 @@ def faqs_block(svc):
         f'''
       <details class="faq-item" {"open" if i == 0 else ""}>
         <summary class="faq-item__q">{esc(t(f.get("q")))} <span class="chev">&#8964;</span></summary>
-        <div class="faq-item__a">{esc(t(f.get("a")))}</div>
+        <div class="faq-item__a">{t(f.get("a"))}</div>
       </details>'''
         for i, f in enumerate(faqs)
     )
     return section("❓", "सामान्य प्रश्न (FAQs)", f'<div class="faq-list">{items}</div>')
 
+def long_description_block(svc):
+    desc = t(svc.get("longDescription"))
+    if not desc:
+        return ""
+    return f'''
+      <section class="service-section">
+        {desc}
+      </section>
+    '''
 
 def build_page(svc, state):
     slug = svc["id"]
@@ -183,6 +192,7 @@ def build_page(svc, state):
         filter(
             None,
             [
+                long_description_block(svc),
                 official_link_block(svc),
                 apply_online_block(svc),
                 documents_block(svc),
