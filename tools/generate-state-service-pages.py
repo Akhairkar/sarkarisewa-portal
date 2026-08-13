@@ -132,6 +132,39 @@ def processing_time_block(svc):
     return section("⏱️", "प्रोसेसिंग समय", f"<p>{esc(pt)}</p>")
 
 
+def apply_online_block(svc):
+    a = svc.get("applyOnline")
+    if not a:
+        return ""
+    steps = a.get("steps") or []
+    steps_html = ""
+    if steps:
+        items = "".join(f"<li>{esc(t(s))}</li>" for s in steps)
+        steps_html = f'<ol class="steps-list">{items}</ol>'
+    note = t(a.get("note"))
+    return section(
+        "📝",
+        "ऑनलाइन आवेदन करें",
+        f'<p>{esc(note)}</p>{steps_html}'
+        f'<div style="margin-top:1rem;"><a class="btn btn--primary" href="{esc(a.get("url", "#"))}" target="_blank" rel="noopener">आवेदन शुरू करें</a></div>',
+    )
+
+
+def faqs_block(svc):
+    faqs = svc.get("faqs") or []
+    if not faqs:
+        return ""
+    items = "".join(
+        f'''
+      <details class="faq-item" {"open" if i == 0 else ""}>
+        <summary class="faq-item__q">{esc(t(f.get("q")))} <span class="chev">&#8964;</span></summary>
+        <div class="faq-item__a">{esc(t(f.get("a")))}</div>
+      </details>'''
+        for i, f in enumerate(faqs)
+    )
+    return section("❓", "सामान्य प्रश्न (FAQs)", f'<div class="faq-list">{items}</div>')
+
+
 def build_page(svc, state):
     slug = svc["id"]
     name = t(svc.get("name"))
@@ -151,10 +184,12 @@ def build_page(svc, state):
             None,
             [
                 official_link_block(svc),
+                apply_online_block(svc),
                 documents_block(svc),
                 eligibility_block(svc),
                 fees_block(svc),
                 processing_time_block(svc),
+                faqs_block(svc),
             ],
         )
     )
