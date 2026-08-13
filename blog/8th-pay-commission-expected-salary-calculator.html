@@ -171,6 +171,64 @@
 
       <div class="blog-post-body" id="blog-post-body">
         
+<!-- 8th Pay Commission Interactive Calculator -->
+<style>
+.calc-container { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin: 20px 0; font-family: sans-serif; }
+.calc-container h3 { margin-top: 0; color: #6610f2; text-align: center; }
+.calc-group { margin-bottom: 15px; }
+.calc-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+.calc-group input, .calc-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
+.calc-btn { width: 100%; padding: 12px; background: #6610f2; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; }
+.calc-btn:hover { background: #520dc2; }
+.calc-results { margin-top: 20px; display: none; background: #e9ecef; padding: 15px; border-radius: 4px; }
+.calc-results h4 { margin-top: 0; color: #198754; text-align: center; }
+.res-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #ccc; }
+.res-row.total { font-weight: bold; font-size: 1.1em; color: #6610f2; border-bottom: none; border-top: 2px solid #ccc; margin-top: 5px; padding-top: 10px; }
+</style>
+
+<div class="calc-container" id="calc8th">
+  <h3>8th Pay Commission Expected Salary Calculator</h3>
+  <div class="calc-group">
+    <label>Current 7th Pay Basic Salary [₹]:</label>
+    <input type="number" id="c8_basic" placeholder="e.g. 18000" value="18000">
+  </div>
+  <div class="calc-group">
+    <label>Expected Fitment Factor:</label>
+    <select id="c8_factor">
+      <option value="1.92">1.92 (Minimum Expected)</option>
+      <option value="2.86" selected>2.86 (Most Likely Recommendation)</option>
+      <option value="3.68">3.68 (Staff Demand)</option>
+    </select>
+  </div>
+  <button class="calc-btn" onclick="calc8()">Calculate Expected Basic</button>
+  
+  <div class="calc-results" id="c8_res">
+    <h4>Your Expected 8th Pay Details</h4>
+    <div class="res-row"><span>Current Basic:</span> <span id="c8_r_current">₹0</span></div>
+    <div class="res-row"><span>Fitment Factor:</span> <span id="c8_r_factor">0</span></div>
+    <div class="res-row total"><span>New Expected Basic Pay:</span> <span id="c8_r_new">₹0</span></div>
+    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">*Note: This is an estimated basic pay. Allowances like DA, HRA, TA will be calculated on this new basic once the 8th Pay Commission is officially implemented.</p>
+  </div>
+</div>
+
+<script>
+function calc8() {
+  const current = parseFloat(document.getElementById('c8_basic').value) || 0;
+  const factor = parseFloat(document.getElementById('c8_factor').value) || 0;
+  
+  const newBasic = Math.round(current * factor);
+  
+  document.getElementById('c8_r_current').innerText = '₹' + current;
+  document.getElementById('c8_r_factor').innerText = factor;
+  document.getElementById('c8_r_new').innerText = '₹' + newBasic;
+  
+  document.getElementById('c8_res').style.display = 'block';
+}
+</script>
+<!-- /Calculator -->
+
+
+
   <div class="blog-content-body">
     <p><strong>आठवां वेतन आयोग: अनुमानित सैलरी और फिटमेंट फैक्टर</strong> के बारे में संपूर्ण जानकारी प्राप्त करने के लिए आप बिल्कुल सही जगह पर आए हैं। आज के इस डिजिटल युग में, जहाँ हर जानकारी ऑनलाइन उपलब्ध है, वहां सही और सटीक जानकारी खोजना एक चुनौती बन गया है। हमारा यह विशेष लेख (Blog Post) विशेष रूप से उन लोगों के लिए तैयार किया गया है जो <em>"8th Pay Commission Expected Salary & Fitment Factor"</em> या <em>"आठवां वेतन आयोग: अनुमानित सैलरी और फिटमेंट फैक्टर"</em> से संबंधित नवीनतम अपडेट्स, प्रक्रिया और महत्वपूर्ण दिशा-निर्देशों की तलाश में हैं।</p>
     

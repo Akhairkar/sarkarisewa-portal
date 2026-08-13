@@ -171,6 +171,89 @@
 
       <div class="blog-post-body" id="blog-post-body">
         
+<!-- 7th Pay Commission Interactive Calculator -->
+<style>
+.calc-container { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin: 20px 0; font-family: sans-serif; }
+.calc-container h3 { margin-top: 0; color: #0d6efd; text-align: center; }
+.calc-group { margin-bottom: 15px; }
+.calc-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+.calc-group input, .calc-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
+.calc-btn { width: 100%; padding: 12px; background: #0d6efd; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; }
+.calc-btn:hover { background: #0b5ed7; }
+.calc-results { margin-top: 20px; display: none; background: #e9ecef; padding: 15px; border-radius: 4px; }
+.calc-results h4 { margin-top: 0; color: #198754; text-align: center; }
+.res-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #ccc; }
+.res-row.total { font-weight: bold; font-size: 1.1em; color: #0d6efd; border-bottom: none; border-top: 2px solid #ccc; margin-top: 5px; padding-top: 10px; }
+</style>
+
+<div class="calc-container" id="calc7th">
+  <h3>7th Pay Commission Salary Calculator</h3>
+  <div class="calc-group">
+    <label>Basic Pay (बेसिक पे) [₹]:</label>
+    <input type="number" id="c7_basic" placeholder="e.g. 18000" value="18000">
+  </div>
+  <div class="calc-group">
+    <label>Dearness Allowance (महंगाई भत्ता DA %):</label>
+    <input type="number" id="c7_da" placeholder="e.g. 50" value="50">
+  </div>
+  <div class="calc-group">
+    <label>City Category (HRA %):</label>
+    <select id="c7_hra">
+      <option value="30">X City (30%)</option>
+      <option value="20">Y City (20%)</option>
+      <option value="10">Z City (10%)</option>
+    </select>
+  </div>
+  <div class="calc-group">
+    <label>Transport Allowance (TA) [₹]:</label>
+    <input type="number" id="c7_ta" placeholder="e.g. 1350" value="1350">
+  </div>
+  <button class="calc-btn" onclick="calc7()">Calculate Salary</button>
+  
+  <div class="calc-results" id="c7_res">
+    <h4>Your Estimated Salary Details</h4>
+    <div class="res-row"><span>Basic Pay:</span> <span id="c7_r_basic">₹0</span></div>
+    <div class="res-row"><span>DA Amount:</span> <span id="c7_r_da">₹0</span></div>
+    <div class="res-row"><span>HRA Amount:</span> <span id="c7_r_hra">₹0</span></div>
+    <div class="res-row"><span>TA Amount:</span> <span id="c7_r_ta">₹0</span></div>
+    <div class="res-row"><span>DA on TA:</span> <span id="c7_r_data">₹0</span></div>
+    <div class="res-row total"><span>Gross Salary:</span> <span id="c7_r_gross">₹0</span></div>
+    <div class="res-row" style="color:#dc3545"><span>NPS Deduction (10% of Basic+DA):</span> <span id="c7_r_ded">₹0</span></div>
+    <div class="res-row total" style="color:#198754"><span>Net In-Hand Salary:</span> <span id="c7_r_net">₹0</span></div>
+  </div>
+</div>
+
+<script>
+function calc7() {
+  const basic = parseFloat(document.getElementById('c7_basic').value) || 0;
+  const da_pct = parseFloat(document.getElementById('c7_da').value) || 0;
+  const hra_pct = parseFloat(document.getElementById('c7_hra').value) || 0;
+  const ta = parseFloat(document.getElementById('c7_ta').value) || 0;
+  
+  const da = Math.round(basic * (da_pct / 100));
+  const hra = Math.round(basic * (hra_pct / 100));
+  const data = Math.round(ta * (da_pct / 100));
+  const gross = basic + da + hra + ta + data;
+  
+  const deduction = Math.round((basic + da) * 0.10);
+  const net = gross - deduction;
+  
+  document.getElementById('c7_r_basic').innerText = '₹' + basic;
+  document.getElementById('c7_r_da').innerText = '₹' + da;
+  document.getElementById('c7_r_hra').innerText = '₹' + hra;
+  document.getElementById('c7_r_ta').innerText = '₹' + ta;
+  document.getElementById('c7_r_data').innerText = '₹' + data;
+  document.getElementById('c7_r_gross').innerText = '₹' + gross;
+  document.getElementById('c7_r_ded').innerText = '-₹' + deduction;
+  document.getElementById('c7_r_net').innerText = '₹' + net;
+  
+  document.getElementById('c7_res').style.display = 'block';
+}
+</script>
+<!-- /Calculator -->
+
+
+
   <div class="blog-content-body">
     <p><strong>सातवें वेतन आयोग सैलरी कैलकुलेटर 2026 की जानकारी</strong> के बारे में संपूर्ण जानकारी प्राप्त करने के लिए आप बिल्कुल सही जगह पर आए हैं। आज के इस डिजिटल युग में, जहाँ हर जानकारी ऑनलाइन उपलब्ध है, वहां सही और सटीक जानकारी खोजना एक चुनौती बन गया है। हमारा यह विशेष लेख (Blog Post) विशेष रूप से उन लोगों के लिए तैयार किया गया है जो <em>"7th Pay Commission Salary Calculator Guide 2026"</em> या <em>"सातवें वेतन आयोग सैलरी कैलकुलेटर 2026 की जानकारी"</em> से संबंधित नवीनतम अपडेट्स, प्रक्रिया और महत्वपूर्ण दिशा-निर्देशों की तलाश में हैं।</p>
     
