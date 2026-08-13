@@ -1,5 +1,5 @@
 /* =========================================================
-   SarkariSewa India — core.js
+   SarkariSewa Portal — core.js
    Runs on every page. Responsibilities:
    1. Inject header/footer partials
    2. Apply saved theme (dark/light)
@@ -21,6 +21,10 @@ const SITE = {
   lang: localStorage.getItem("ss_lang") || "hi",
   theme: localStorage.getItem("ss_theme") || "light",
 };
+// `const` doesn't attach to `window` automatically — expose it explicitly so
+// page-specific scripts (e.g. hidden-tax-calculator.js) can read the current
+// language/dictionary without duplicating the i18n loading logic.
+window.SITE = SITE;
 
 // Rewrites plain relative hrefs inside an injected partial (e.g. "index.html",
 // "category/x.html") to be correct from the current page's location, by
@@ -39,18 +43,13 @@ function rewriteInternalLinks(host) {
 async function includePartial(selector, url) {
   const host = document.querySelector(selector);
   if (!host) return;
-  // If header/footer is already baked into static HTML, do not wipe it via fetch!
-  if (host.children.length > 0 && host.innerHTML.trim().length > 50) return;
   try {
     const res = await fetch(url);
-    if (!res.ok) return;
-    const text = await res.text();
-    if (text && text.trim().length > 10) {
-      host.innerHTML = text;
-      rewriteInternalLinks(host);
-    }
+    host.innerHTML = await res.text();
+    rewriteInternalLinks(host);
   } catch (err) {
     console.error("Could not load partial:", url, err);
+    host.innerHTML = "<!-- partial failed to load -->";
   }
 }
 
@@ -58,8 +57,6 @@ function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   const icon = document.getElementById("theme-icon");
   if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
-  const mobileIcon = document.getElementById("mobile-theme-icon");
-  if (mobileIcon) mobileIcon.textContent = theme === "dark" ? "☀️" : "🌙";
   SITE.theme = theme;
   localStorage.setItem("ss_theme", theme);
 }
@@ -68,26 +65,15 @@ function applyLanguage(lang) {
   SITE.lang = lang;
   localStorage.setItem("ss_lang", lang);
   document.documentElement.setAttribute("lang", lang === "hi" ? "hi" : "en");
-  
-  // Explicitly update toggle button label
-  const langSpan = document.querySelector("#lang-toggle [data-i18n='lang_toggle']") || document.getElementById("lang-toggle");
-  if (langSpan) {
-    langSpan.textContent = lang === "hi" ? "English" : "हिंदी";
-  }
-
   if (!SITE.langData) return;
   const dict = SITE.langData[lang] || {};
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (dict[key] !== undefined && dict[key] !== null && dict[key] !== "") {
-      el.textContent = dict[key];
-    }
+    if (dict[key] !== undefined) el.textContent = dict[key];
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     const key = el.getAttribute("data-i18n-placeholder");
-    if (dict[key] !== undefined && dict[key] !== null && dict[key] !== "") {
-      el.setAttribute("placeholder", dict[key]);
-    }
+    if (dict[key] !== undefined) el.setAttribute("placeholder", dict[key]);
   });
   document.dispatchEvent(new CustomEvent("ss:language-changed", { detail: { lang, dict } }));
 }
@@ -103,12 +89,27 @@ async function loadLangData() {
 }
 
 function wireHeaderControls() {
-  const toggleTheme = () => applyTheme(SITE.theme === "dark" ? "light" : "dark");
-  const themeBtn = document.getElementById("theme-toggle");
-  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
-  const mobileThemeBtn = document.getElementById("mobile-theme-toggle");
-  if (mobileThemeBtn) mobileThemeBtn.addEventListener("click", toggleTheme);
+  // CSC directory temporarily hidden while the feature is still being
+  // finished — hides the nav link (desktop + mobile) on every page without
+  // needing to edit each page's own baked-in header markup. Also see
+  // robots.txt (Disallow: /csc/) which stops Google indexing those pages
+  // in the meantime, and csc/index.html (shows a "coming soon" message
+  // instead of the live directory). To bring this back: delete this
+  // block, remove the robots.txt line, and restore csc/index.html.
+  document
+    .querySelectorAll('a[href$="csc/index.html"], a[href="csc/index.html"]')
+    .forEach((el) => {
+      const li = el.closest("li");
+      if (li) li.style.display = "none";
+      else el.style.display = "none";
+    });
 
+  const themeBtn = document.getElementById("theme-toggle");
+  if (themeBtn) {
+    themeBtn.addEventListener("click", () => {
+      applyTheme(SITE.theme === "dark" ? "light" : "dark");
+    });
+  }
   const langBtn = document.getElementById("lang-toggle");
   if (langBtn) {
     langBtn.addEventListener("click", () => {
@@ -148,35 +149,10 @@ async function initSite() {
 
   document.dispatchEvent(new CustomEvent("ss:ready"));
   loadAnalyticsTracking();
-  initWhatsAppFloatingWidget();
-}
-
-function initWhatsAppFloatingWidget() {
-  if (document.getElementById("ss-wa-widget") || localStorage.getItem("ss_wa_closed")) return;
-  const link = "https://whatsapp.com/channel/0029VbDj7gCDp2Q8SYdFwj14";
-  const isHindi = SITE.lang === "hi";
-  const text = isHindi ? "👉 ताज़ा भर्ती व योजना अपडेट्स हेतु WhatsApp से जुड़ें" : "👉 Join WhatsApp Channel for instant job & scheme alerts";
-
-  const bar = document.createElement("div");
-  bar.id = "ss-wa-widget";
-  bar.className = "ss-wa-wrapper";
-  bar.innerHTML = `
-    <a href="${link}" target="_blank" rel="noopener noreferrer" class="ss-wa-floating-bar" aria-label="Join WhatsApp Channel">
-      <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.4-1.5-.9-.8-1.5-1.8-1.6-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.4.1-.2 0-.4 0-.5C10 9 9.4 7.6 9.2 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.1L2 22l5-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
-      <span>${text}</span>
-    </a>
-    <button type="button" class="ss-wa-close-btn" id="ss-wa-close" title="Close">✕</button>
-  `;
-  document.body.appendChild(bar);
-
-  const closeBtn = document.getElementById("ss-wa-close");
-  if (closeBtn) {
-    closeBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      bar.remove();
-      localStorage.setItem("ss_wa_closed", "1");
-    });
-  }
+  // loadAuthUI(); — TEMPORARILY DISABLED. Was causing a site-wide blocking
+  // bug (see assets/css/style.css and partials/header.html comments near
+  // .ss-auth-modal for the full explanation). Re-enable by uncommenting
+  // this line once the login feature is revisited.
 }
 
 // Module 18: Visitor Analytics — self-contained script, loaded once per

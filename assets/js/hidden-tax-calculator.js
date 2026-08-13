@@ -11,6 +11,19 @@
   // Category tax-rate ranges (min%, max%). `null` = excluded from the
   // "hidden tax" total (either already-taxed product, or a fixed
   // government charge that isn't really a hidden indirect tax).
+  // Returns the category label in the currently active site language
+  // (falls back to the English default baked into CATEGORY_RATES if the
+  // site's language data hasn't loaded yet).
+  function catLabel(key, meta) {
+    try {
+      var lang = window.SITE && window.SITE.lang;
+      var dict = window.SITE && window.SITE.langData && window.SITE.langData[lang];
+      var i18nKey = "htc_cat_" + key;
+      if (dict && dict[i18nKey]) return dict[i18nKey];
+    } catch (e) {}
+    return meta.label;
+  }
+
   var CATEGORY_RATES = {
     petrol: { min: 45, max: 55, icon: "⛽", label: "Petrol/Fuel" },
     grocery: { min: 0, max: 5, icon: "🛒", label: "Grocery/Kirana" },
@@ -119,7 +132,7 @@
       if (amount > 0) {
         perCategory.push({
           key: key,
-          label: meta.label,
+          label: catLabel(key, meta),
           icon: meta.icon,
           amount: amount,
           min: catMin,
@@ -295,5 +308,10 @@
         document.getElementById("htc-form").scrollIntoView({ behavior: "smooth", block: "start" });
       });
     }
+    // If results are already showing, re-calculate on language toggle so
+    // category names inside the insights/charts switch language too.
+    document.addEventListener("ss:language-changed", function () {
+      if (resultsEl.classList.contains("is-visible")) calculate();
+    });
   });
 })();
