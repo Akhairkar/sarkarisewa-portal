@@ -57,11 +57,35 @@ def generate_id(url, title):
     hash_str = f"{url}-{title}".encode('utf-8')
     return hashlib.md5(hash_str).hexdigest()[:12]
 
+REQUEST_HEADERS = {
+    # Some government feeds (PIB in particular) reject requests that don't
+    # look like they're coming from a real browser and return 403/empty
+    # bodies to plain library user-agents. Fetch the bytes ourselves with a
+    # browser-like UA, then hand them to feedparser instead of letting
+    # feedparser open the URL directly.
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/rss+xml, application/xml, text/xml, */*",
+}
+
 def fetch_rss(source):
     items = []
-    feed = feedparser.parse(source['url'])
-    if feed.bozo:
-        raise Exception(f"Failed to parse RSS: {source['url']}")
+    try:
+        resp = requests.get(source['url'], headers=REQUEST_HEADERS, timeout=20)
+        resp.raise_for_status()
+        feed = feedparser.parse(resp.content)
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"HTTP error fetching {source['url']}: {e}")
+
+    # feedparser sets bozo=1 for lots of harmless reasons (minor encoding
+    # quirks, non-standard date formats, etc.) even when the feed parsed
+    # fine and has usable entries. Only treat it as a real failure when
+    # there are zero entries to show for it — otherwise this was silently
+    # discarding perfectly good feed data every single run.
+    if feed.bozo and not feed.entries:
+        raise Exception(f"Failed to parse RSS: {source['url']} ({feed.bozo_exception})")
     for entry in feed.entries:
         items.append({
             'title': entry.get('title', ''),

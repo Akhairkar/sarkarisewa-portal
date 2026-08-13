@@ -190,7 +190,7 @@ async function renderHomeDailyUpdates() {
           </div>
           <h3 style="font-size: 1.1rem; margin-top:0;">${title}</h3>
           <div class="service-links" style="margin-top: 1rem;">
-            <a href="latest-updates.html" class="primary">
+            <a href="${update.source_url}" target="_blank" rel="noopener noreferrer" class="official">
               ${lang === "hi" ? "पूरा पढ़ें →" : "Read Full →"}
             </a>
           </div>
