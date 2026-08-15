@@ -92,9 +92,9 @@ def inject(html: str, div_id: str, content: str) -> str:
     return html[:start] + replacement + html[end:]
 
 
-def get_root(html: str) -> str:
-    m = re.search(r'SS_ROOT\s*=\s*"([^"]*)"', html)
-    return m.group(1) if m else ""
+def get_root(path: Path, repo_root: Path) -> str:
+    depth = len(path.relative_to(repo_root).parts) - 1
+    return "../" * depth if depth > 0 else ""
 
 
 def main():
@@ -109,7 +109,7 @@ def main():
         if 'id="site-header"' not in html:
             continue
 
-        root = get_root(html)
+        root = get_root(path, REPO_ROOT)
         header_html = rewrite_links(header_src, root)
         footer_html = rewrite_links(footer_src, root)
 
