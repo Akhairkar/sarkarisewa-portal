@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <title>Govt Exam Signature Resizer — SarkariSewa India</title>
+  <meta name="description" content="Free tool to resize, crop, enhance, and compress your signature for UPSC, SSC, IBPS, and other government exams. Supports exact KB limits.">
+  <link rel="canonical" href="https://sarkarisewaindia.com/tools/signature-resizer.html">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/module9.css">
+  <link rel="stylesheet" href="../assets/css/module16.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js" defer></script>
+
+  <style>
+    .resizer-layout {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 32px;
+      margin: 40px 0;
+      align-items: start;
+    }
+    
+    @media (max-width: 900px) {
+      .resizer-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .editor-section {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .controls-section {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      position: sticky;
+      top: 24px;
+    }
+
+    .upload-area {
+      border: 2px dashed var(--color-primary);
+      border-radius: 8px;
+      padding: 60px 20px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--color-surface-alt);
+      transition: background 0.2s;
+    }
+
+    .upload-area:hover, .upload-area.dragover {
+      background: #eef2f6;
+    }
+    
+    [data-theme="dark"] .upload-area:hover, [data-theme="dark"] .upload-area.dragover {
+      background: #1a2635;
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .upload-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 8px;
+    }
+
+    .workspace {
+      display: none;
+      width: 100%;
+      height: 400px; /* shorter for signatures */
+      background: #eee;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    
+    [data-theme="dark"] .workspace {
+      background: #000;
+    }
+
+    .workspace img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem; }
+    .form-control { width: 100%; padding: 10px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 1rem; background: var(--color-surface); color: var(--color-text); }
+    
+    .preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .chip {
+      padding: 6px 12px;
+      background: var(--color-surface-alt);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--color-text);
+      transition: all 0.2s;
+    }
+    
+    .chip:hover, .chip.active {
+      background: var(--color-primary);
+      color: #fff;
+      border-color: var(--color-primary);
+    }
+
+    .btn-action {
+      display: block;
+      width: 100%;
+      background: var(--color-brand);
+      color: var(--color-brand-text);
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-align: center;
+      text-decoration: none;
+    }
+    
+    .btn-action:hover {
+      background: var(--color-brand-hover);
+    }
+
+    .btn-secondary {
+      background: var(--color-surface-alt);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+
+    .result-section {
+      display: none;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+    }
+
+    .result-preview {
+      max-width: 300px; /* Wider for signatures */
+      margin: 0 auto 16px;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      background: #fff; /* Signatures look best on white preview */
+    }
+    
+    .result-stats {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    .stat-badge {
+      background: #10b981;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .privacy-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      background: rgba(20, 107, 58, 0.1);
+      color: var(--color-accent-green);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    
+    .loader {
+      display: none;
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.95rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Range slider for enhancement */
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--color-primary);
+    }
+  </style>
+</head>
+<body>
+  <script>window.SS_ROOT = "../";</script>
+  <div id="site-header">
+<div class="tricolor-rule"></div>
+<a class="skip-link" href="#main-content" data-i18n="skip_to_content">Skip to main content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark">S</span>
+      <span class="brand-text">
+        <span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
+        <span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../index.html" data-i18n="nav_home">Home</a></li>
+        <li><a href="../category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a></li>
+        <li><a href="../category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a></li>
+        <li><a href="../category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a></li>
+        <li><a href="../category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a></li>
+        <li><a href="../category/utilities.html" data-i18n="nav_utilities">Utilities</a></li>
+        <li><a href="../category/health.html" data-i18n="nav_health">Health</a></li>
+        <li><a href="../support/index.html" data-i18n="nav_support">Support</a></li>
+        <li><a href="../blog/index.html" data-i18n="nav_blog">Blog</a></li>
+        <li><a href="../jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a></li>
+        <li><a href="../exams/index.html" data-i18n="nav_examcal">Exam Calendar</a></li>
+        
+        <!-- Image Tools Dropdown -->
+        <li class="nav-dropdown">
+          <a href="../tools/index.html" class="nav-highlight nav-dropdown-toggle" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
+          <ul class="nav-dropdown-menu">
+            <li><a href="../tools/photo-resizer.html">🖼️ Govt Exam Photo Resizer</a></li>
+            <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+            <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+          </ul>
+        </li>
+
+        <!-- Tools Dropdown Menu -->
+        <li class="nav-dropdown">
+          <a href="../tools/index.html" class="nav-highlight nav-dropdown-toggle" data-i18n="nav_tools">Calculators 🧮 ▾</a>
+          <ul class="nav-dropdown-menu">
+            <li><a href="../tools/index.html">🛠️ All Tools Hub</a></li>
+            <li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
+            <li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
+            <li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
+            <li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
+            <li><a href="../tools/age-calculator.html">⏳ Age & Retirement Calculator</a></li>
+            <li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
+            <li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a class="icon-btn" href="../search.html" aria-label="Search">
+        <span aria-hidden="true">🔍</span>
+        <span class="visually-hidden" data-i18n="search_title">Search Services</span>
+      </a>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme">
+        <span id="theme-icon" aria-hidden="true">🌙</span>
+        <span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
+      </button>
+      <button class="icon-btn" id="lang-toggle" type="button">
+        <span data-i18n="lang_toggle">हिंदी</span>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Primary mobile">
+    <a href="../search.html" data-i18n="search_title">Search Services</a>
+    <a href="../index.html" data-i18n="nav_home">Home</a>
+    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
+    <a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
+    <a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
+    <a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
+    
+    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🧮 Calculators</div>
+    <a href="../tools/index.html" style="padding-left: 32px;">🛠️ All Tools Hub</a>
+    <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
+    <a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
+    
+    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
+    <a href="../category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a>
+    <a href="../category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a>
+    <a href="../category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a>
+    <a href="../category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a>
+    <a href="../category/utilities.html" data-i18n="nav_utilities">Utilities</a>
+    <a href="../category/health.html" data-i18n="nav_health">Health</a>
+    
+    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
+    <a href="../support/index.html" data-i18n="nav_support">Support</a>
+    <a href="../blog/index.html" data-i18n="nav_blog">Blog</a>
+    <a href="../jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a>
+    <a href="../exams/index.html" data-i18n="nav_examcal">Exam Calendar</a>
+    <div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
+      <button class="btn btn--outline" id="mobile-theme-toggle" type="button" style="width:100%; justify-content:center; gap:8px;">
+        <span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
+      </button>
+    </div>
+  </nav>
+</header>
+</div> 
+
+  <main class="container">
+    <nav class="breadcrumb" style="margin-top:20px;">
+      <a href="../index.html">Home</a><span class="sep">/</span>
+      <a href="index.html">Tools</a><span class="sep">/</span>
+      <span class="current">Govt Exam Signature Resizer</span>
+    </nav>
+
+    <div style="text-align: center; margin: 30px 0;">
+      <h1 style="color: var(--color-primary); font-size: 2.2rem; margin-bottom: 12px;">Signature Resizer & Enhancer</h1>
+      <p style="color: var(--color-text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Crop, enhance contrast (make faded ink darker), and compress your signature to strict KB limits for govt exam forms.</p>
+    </div>
+
+    <div class="resizer-layout">
+      <!-- Left Column: Editor -->
+      <div class="editor-section">
+        <div class="privacy-badge">
+          <span>🔒</span> 100% Secure. Signatures are processed locally.
+        </div>
+
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">✍️</div>
+          <div class="upload-text">Click or Drag Signature Photo Here</div>
+          <div class="upload-subtext">Supports JPG, PNG, WEBP (Max 10MB)</div>
+          <input type="file" id="fileInput" accept="image/jpeg, image/png, image/webp" style="display:none;">
+        </div>
+
+        <div class="workspace" id="workspace">
+          <img id="image" src="" alt="Workspace">
+        </div>
+        
+        <div class="result-section" id="resultSection">
+          <h3 style="margin-bottom:16px;">Final Result</h3>
+          <img id="resultImage" class="result-preview" src="" alt="Final Signature">
+          <div class="result-stats">
+            <div>Size: <span id="finalSize" class="stat-badge">-- KB</span></div>
+            <div>Dimensions: <strong id="finalDims">-- x -- px</strong></div>
+          </div>
+          <a id="downloadBtn" class="btn-action" download="sarkarisewa_signature.jpg">⬇️ Download Signature</a>
+          <button type="button" id="resetBtn" class="btn-action btn-secondary" style="margin-top:12px;">🔄 Upload New Signature</button>
+        </div>
+      </div>
+
+      <!-- Right Column: Controls -->
+      <div class="controls-section" id="controlsSection" style="opacity: 0.5; pointer-events: none;">
+        <h3 style="margin-bottom: 20px; font-size: 1.3rem;">Settings</h3>
+        
+        <div class="form-group">
+          <label>Exam Presets</label>
+          <div class="preset-chips">
+            <div class="chip active" data-ratio="NaN">Free Crop</div>
+            <div class="chip" data-ratio="2.33">SSC / Railways (140x60)</div>
+            <div class="chip" data-ratio="3">UPSC / Bank (150x50)</div>
+            <div class="chip" data-ratio="2">Standard (2:1)</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Enhance Ink (Contrast)</label>
+          <input type="range" id="contrastFilter" min="100" max="300" value="100">
+          <small style="color: var(--color-text-muted); display: block; margin-top: 4px;">Slide right to make light blue/black ink much darker.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Target File Size (Max KB)</label>
+          <input type="number" id="targetKb" class="form-control" value="20" min="5" max="100">
+          <small style="color: var(--color-text-muted); display: block; margin-top: 4px;">Standard limit for signatures is 10KB - 20KB.</small>
+        </div>
+
+        <button type="button" id="processBtn" class="btn-action">✂️ Process Signature</button>
+        <div class="loader" id="loader">Processing... ⏳</div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer">
+<footer class="site-footer">
+  <div class="tricolor-rule"></div>
+  <div class="container" style="padding-top:36px;">
+    <div class="footer-disclaimer-banner" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
+      <h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
+    </div>
+    <div class="footer-grid">
+      <div>
+        <h4 data-i18n="site_name">SarkariSewa India</h4>
+        <p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
+      </div>
+      <div>
+        <h4 data-i18n="footer_links_title">Quick Links</h4>
+        <ul>
+          <li><a href="../tools/index.html">🧮 Tools & Calculators</a></li>
+          <li><a href="../tools/photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
+          <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+          <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+          <li><a href="../project-report/index.html" data-i18n="nav_project_report">Project Report Generator</a></li>
+          <li><a href="../states/index.html" data-i18n="states_hub_title">State-wise Popular Services</a></li>
+          <li><a href="../about.html" data-i18n="footer_about_link">About</a></li>
+          <li><a href="../contact.html" data-i18n="footer_contact_link">Contact</a></li>
+          <li><a href="../sitemap.html" data-i18n="footer_sitemap_link">Sitemap</a></li>
+          <li><a href="../faq.html" data-i18n="footer_faq_link">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_legal_title">Legal</h4>
+        <ul>
+          <li><a href="../privacy-policy.html" data-i18n="privacy_title">Privacy Policy</a></li>
+          <li><a href="../disclaimer.html" data-i18n="disclaimer_title">Disclaimer</a></li>
+          <li><a href="../terms.html" data-i18n="terms_title">Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_support_title">Support</h4>
+        <ul>
+          <li><a href="../support/index.html" data-i18n="footer_support_home_link">Support Home</a></li>
+          <li><a href="../support/state-wise-services.html" data-i18n="footer_state_link">State-wise Services</a></li>
+          <li><a href="../support/helpline-directory.html" data-i18n="footer_helpline_link">Helpline Directory</a></li>
+          <li><a href="../support/rti-guide.html" data-i18n="footer_rti_link">RTI Guide</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_contact_title">Contact</h4>
+        <ul>
+          <li><a href="../contact.html" data-i18n="footer_contact_form_link">Contact form</a></li>
+          <li><a href="../admin/login.html" data-i18n="admin_link">Staff Login</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
+    </div>
+  </div>
+</footer>
+<div class="ss-wa-wrapper" id="ss-wa-wrapper">
+  <button id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" aria-label="Close" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
+  <a href="https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g" target="_blank" rel="noopener noreferrer" class="ss-wa-floating-bar" aria-label="Join our WhatsApp Channel">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+    <span data-i18n="wa_join" style="font-weight: 600;">Join WhatsApp Channel</span>
+  </a>
+</div>
+</div>
+  <script src="../assets/js/main.js?v=2.2" defer></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('fileInput');
+      const workspace = document.getElementById('workspace');
+      const image = document.getElementById('image');
+      const controlsSection = document.getElementById('controlsSection');
+      const chips = document.querySelectorAll('.chip');
+      const contrastFilter = document.getElementById('contrastFilter');
+      const processBtn = document.getElementById('processBtn');
+      const loader = document.getElementById('loader');
+      const resultSection = document.getElementById('resultSection');
+      const resultImage = document.getElementById('resultImage');
+      const finalSize = document.getElementById('finalSize');
+      const finalDims = document.getElementById('finalDims');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      
+      let cropper = null;
+
+      // Realtime contrast preview
+      contrastFilter.addEventListener('input', (e) => {
+        if(cropper) {
+           const container = document.querySelector('.cropper-canvas img');
+           if(container) {
+             container.style.filter = `contrast(${e.target.value}%) grayscale(100%) brightness(110%)`;
+           }
+        }
+      });
+
+      // Handle Upload
+      uploadArea.addEventListener('click', () => fileInput.click());
+      uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+      uploadArea.addEventListener('dragleave', () => { uploadArea.classList.remove('dragover'); });
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) handleFile(e.target.files[0]);
+      });
+
+      function handleFile(file) {
+        if (!file.type.startsWith('image/')) {
+          alert('Please upload a valid image file.');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          image.src = e.target.result;
+          uploadArea.style.display = 'none';
+          workspace.style.display = 'block';
+          controlsSection.style.opacity = '1';
+          controlsSection.style.pointerEvents = 'auto';
+          resultSection.style.display = 'none';
+          contrastFilter.value = 100;
+          
+          if (cropper) cropper.destroy();
+          initCropper();
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function initCropper() {
+        if (typeof Cropper === 'undefined') {
+          setTimeout(initCropper, 100);
+          return;
+        }
+        cropper = new Cropper(image, {
+          viewMode: 1,
+          dragMode: 'crop',
+          autoCropArea: 0.8,
+          restore: false,
+          guides: true,
+          center: true,
+          highlight: false,
+          cropBoxMovable: true,
+          cropBoxResizable: true,
+          ready() {
+            // Apply initial filter if any
+            document.querySelector('.cropper-canvas img').style.filter = `contrast(${contrastFilter.value}%) grayscale(100%) brightness(110%)`;
+          }
+        });
+      }
+
+      // Handle Presets
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          const ratio = parseFloat(chip.dataset.ratio);
+          if (cropper) cropper.setAspectRatio(isNaN(ratio) ? NaN : ratio);
+        });
+      });
+
+      // Reset
+      resetBtn.addEventListener('click', () => {
+        uploadArea.style.display = 'block';
+        workspace.style.display = 'none';
+        resultSection.style.display = 'none';
+        controlsSection.style.opacity = '0.5';
+        controlsSection.style.pointerEvents = 'none';
+        fileInput.value = '';
+        if (cropper) cropper.destroy();
+      });
+
+      // Process
+      processBtn.addEventListener('click', async () => {
+        if (!cropper) return;
+        
+        processBtn.style.display = 'none';
+        loader.style.display = 'block';
+        
+        setTimeout(async () => {
+          try {
+            // 1. Get raw cropped canvas
+            const rawCanvas = cropper.getCroppedCanvas({
+              fillColor: '#fff',
+              imageSmoothingEnabled: true,
+              imageSmoothingQuality: 'high'
+            });
+            
+            // 2. Apply filters to a new canvas to bake them in
+            const canvas = document.createElement('canvas');
+            canvas.width = rawCanvas.width;
+            canvas.height = rawCanvas.height;
+            const ctx = canvas.getContext('2d');
+            
+            // Signatures should ideally be B&W with high contrast
+            ctx.filter = `contrast(${contrastFilter.value}%) grayscale(100%) brightness(110%)`;
+            ctx.drawImage(rawCanvas, 0, 0);
+
+            // 3. Binary Search Compression for Target KB
+            const targetKb = parseFloat(document.getElementById('targetKb').value);
+            const targetBytes = targetKb * 1024;
+            
+            let minQ = 0.0, maxQ = 1.0, currentQ = 0.8;
+            let bestBlob = null;
+            
+            for (let i = 0; i < 8; i++) {
+              const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', currentQ));
+              if (!bestBlob || Math.abs(blob.size - targetBytes) < Math.abs(bestBlob.size - targetBytes)) {
+                 if (blob.size <= targetBytes) bestBlob = blob;
+              }
+              if (blob.size > targetBytes) {
+                maxQ = currentQ; currentQ = (minQ + maxQ) / 2;
+              } else {
+                minQ = currentQ; currentQ = (minQ + maxQ) / 2;
+              }
+            }
+            
+            if (!bestBlob) {
+               bestBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.1));
+            }
+
+            const url = URL.createObjectURL(bestBlob);
+            resultImage.src = url;
+            downloadBtn.href = url;
+            finalSize.textContent = (bestBlob.size / 1024).toFixed(1) + ' KB';
+            finalSize.style.background = bestBlob.size > targetBytes ? '#ef4444' : '#10b981';
+            finalDims.textContent = `${canvas.width} x ${canvas.height} px`;
+            
+            workspace.style.display = 'none';
+            resultSection.style.display = 'block';
+            
+          } catch(e) {
+            console.error(e);
+            alert("Error processing signature.");
+          } finally {
+            loader.style.display = 'none';
+            processBtn.style.display = 'block';
+          }
+        }, 100);
+      });
+    });
+  </script>
+</body>
+</html>
