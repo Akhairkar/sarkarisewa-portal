@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <title>PAN-Aadhaar Conflict Resolver Wizard — SarkariSewa India</title>
+  <meta name="description" content="Resolve PAN-Aadhaar linking failures instantly. Step-by-step wizard for Name Mismatch, DOB Mismatch, and Gender issues. Official links and penalty guidance included.">
+  <link rel="canonical" href="https://sarkarisewaindia.com/tools/pan-aadhaar-conflict-resolver.html">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/module9.css">
+  <style>
+    .wizard-container { max-width: 800px; margin: 40px auto; background: var(--color-surface); padding: 32px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .wizard-title { font-size: 2rem; color: var(--color-brand); margin-bottom: 8px; text-align: center; }
+    .wizard-desc { text-align: center; color: var(--color-text-muted); margin-bottom: 32px; font-size: 1.05rem; }
+    
+    .wizard-step { display: none; animation: fadeIn 0.4s ease; }
+    .wizard-step.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .question-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 20px; color: var(--color-text); }
+    
+    .options-grid { display: grid; gap: 16px; margin-bottom: 24px; }
+    .option-btn { background: var(--color-surface-alt); border: 2px solid var(--color-border); padding: 16px 20px; border-radius: 10px; font-size: 1.05rem; font-weight: 500; cursor: pointer; text-align: left; transition: all 0.2s; display: flex; align-items: center; gap: 12px; color: var(--color-text); }
+    .option-btn:hover { border-color: var(--color-primary); background: var(--color-bg); }
+    .option-btn.selected { border-color: var(--color-primary); background: var(--color-surface); }
+    .option-icon { font-size: 1.5rem; }
+    
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 32px; border-top: 1px solid var(--color-border); padding-top: 24px; }
+    .btn-next { background: var(--color-brand); color: var(--color-brand-text); padding: 12px 24px; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; margin-left: auto; }
+    .btn-next:hover { background: var(--color-brand-hover); }
+    .btn-prev { background: var(--color-surface-alt); color: var(--color-text); padding: 12px 24px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; }
+    .btn-prev:hover { background: var(--color-border); }
+
+    .result-box { background: var(--color-surface-alt); border: 2px solid var(--color-border); border-radius: 12px; padding: 32px; display: none; }
+    .result-box.active { display: block; }
+    .result-heading { font-size: 1.5rem; color: var(--color-text); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .result-step { background: var(--color-surface); padding: 20px; border-radius: 8px; border-left: 4px solid var(--color-primary); margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .result-step h4 { margin-top: 0; margin-bottom: 8px; color: var(--color-brand); }
+    .result-step p { margin: 0; color: var(--color-text-muted); font-size: 0.95rem; }
+    .official-link { display: inline-block; margin-top: 12px; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+    .official-link:hover { text-decoration: underline; }
+    
+    .penalty-warning { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.5); padding: 16px; border-radius: 8px; margin-top: 24px; display: flex; gap: 12px; align-items: flex-start; }
+    .penalty-warning p { margin: 0; font-size: 0.9rem; color: var(--color-text); }
+    
+    .btn-restart { display: block; width: 100%; text-align: center; margin-top: 24px; color: var(--color-text-muted); text-decoration: underline; cursor: pointer; background: none; border: none; font-size: 1rem; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PAN-Aadhaar Conflict Resolver Wizard",
+    "operatingSystem": "Any",
+    "applicationCategory": "UtilityApplication",
+    "description": "Interactive wizard to troubleshoot and resolve PAN-Aadhaar linking failures due to name mismatch, DOB mismatch, or payment issues.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+  }
+  </script>
+</head>
+<body>
+  <script>window.SS_ROOT = "../";</script>
+  <div id="header-placeholder"></div>
+
+  <main id="main-content" style="padding: 20px;">
+    <div class="wizard-container">
+      <h1 class="wizard-title" data-i18n="wiz_pan_title">PAN-Aadhaar Conflict Resolver</h1>
+      <p class="wizard-desc" data-i18n="wiz_pan_desc">Is your PAN-Aadhaar linking failing? Answer a few simple questions below to get your exact resolution steps, official links, and penalty guidance.</p>
+      
+      <!-- Step 1: Issue Type -->
+      <div class="wizard-step active" id="step-1">
+        <h3 class="question-title" data-i18n="wiz_pan_s1_q">Step 1: Why is your linking failing?</h3>
+        <div class="options-grid">
+          <button class="option-btn" data-issue="name">
+            <span class="option-icon">🔤</span>
+            <span data-i18n="wiz_pan_s1_name"><strong>Name Mismatch</strong> (Spelling differs in PAN and Aadhaar)</span>
+          </button>
+          <button class="option-btn" data-issue="dob">
+            <span class="option-icon">📅</span>
+            <span data-i18n="wiz_pan_s1_dob"><strong>Date of Birth Mismatch</strong> (DOB is different)</span>
+          </button>
+          <button class="option-btn" data-issue="gender">
+            <span class="option-icon">👤</span>
+            <span data-i18n="wiz_pan_s1_gender"><strong>Gender Mismatch</strong> (Male/Female/Transgender error)</span>
+          </button>
+          <button class="option-btn" data-issue="payment">
+            <span class="option-icon">💳</span>
+            <span data-i18n="wiz_pan_s1_pay"><strong>Payment Stuck</strong> (Paid ₹1000 but status not updating)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Which document is correct? (Only for mismatch issues) -->
+      <div class="wizard-step" id="step-2">
+        <h3 class="question-title" data-i18n="wiz_pan_s2_q">Step 2: Which document has your CORRECT details?</h3>
+        <div class="options-grid">
+          <button class="option-btn" data-correct="aadhaar">
+            <span class="option-icon">✅</span>
+            <span data-i18n="wiz_pan_s2_aadhaar"><strong>Aadhaar is correct.</strong> My PAN card has the wrong details.</span>
+          </button>
+          <button class="option-btn" data-correct="pan">
+            <span class="option-icon">✅</span>
+            <span data-i18n="wiz_pan_s2_pan"><strong>PAN is correct.</strong> My Aadhaar card has the wrong details.</span>
+          </button>
+          <button class="option-btn" data-correct="none">
+            <span class="option-icon">❌</span>
+            <span data-i18n="wiz_pan_s2_none"><strong>Both are wrong.</strong> I need to fix both documents.</span>
+          </button>
+        </div>
+        <div class="nav-buttons">
+          <button class="btn-prev" onclick="goToStep(1)" data-i18n="wiz_pan_back">← Back</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Result -->
+      <div class="result-box" id="result-box">
+        <h2 class="result-heading"><span data-i18n="wiz_pan_res_title">✅ Your Custom Resolution Plan</span></h2>
+        <div id="dynamic-result-content"></div>
+        
+        <div class="penalty-warning">
+          <span style="font-size:1.5rem;">⚠️</span>
+          <p data-i18n="wiz_pan_warn"><strong>Note on ₹1000 Penalty:</strong> Once you successfully update your details and the mismatch is resolved, you do <strong>not</strong> need to pay the ₹1000 late fee again if you have already paid it. The e-Filing portal will automatically detect your previous payment when you try linking again.</p>
+        </div>
+        <button class="btn-restart" onclick="location.reload()" data-i18n="wiz_pan_restart">↺ Start Over</button>
+      </div>
+
+    </div>
+    
+    <div style="max-width: 800px; margin: 40px auto; padding: 24px; background: var(--color-surface); border-radius: 12px; border: 1px solid var(--color-border);">
+      <h3 style="margin-top: 0; color: var(--color-brand);" data-i18n="wiz_pan_common">Common Reasons for Linking Failure</h3>
+      <ul style="color: var(--color-text-muted); padding-left: 20px; margin-bottom: 0;">
+        <li style="margin-bottom: 12px;" data-i18n="wiz_pan_common_1"><strong>Initials vs Full Name:</strong> Aadhaar has "R. Sharma" but PAN has "Rahul Sharma". This is a mismatch and will fail. You must expand the initials in Aadhaar or shorten them in PAN to match exactly.</li>
+        <li style="margin-bottom: 12px;" data-i18n="wiz_pan_common_2"><strong>Only Year of Birth in Aadhaar:</strong> Old Aadhaar cards only printed the Year of Birth (e.g., 1985) instead of the full DOB (e.g., 12/04/1985). You must update your Aadhaar to show the full DOB before linking.</li>
+        <li data-i18n="wiz_pan_common_3"><strong>Challan 280 Confusion:</strong> The ₹1000 penalty MUST be paid under "Major Head 0021" and "Minor Head 500". Any other combination will result in payment failure and linking will not proceed.</li>
+      </ul>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../assets/js/pan-aadhaar-resolver.js"></script>
+
+  <!-- Script to load header and footer templates -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('../partials/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header-placeholder').innerHTML = data;
+          // Apply JS logic for mobile menu and dropdowns manually after loading
+          const mobileToggle = document.querySelector('.mobile-menu-toggle');
+          const mainNav = document.querySelector('.main-nav');
+          if (mobileToggle && mainNav) {
+            mobileToggle.addEventListener('click', () => {
+              mainNav.classList.toggle('active');
+            });
+          }
+          const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle');
+          dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+              e.preventDefault();
+              const parent = e.target.parentElement;
+              parent.classList.toggle('active');
+            });
+          });
+        });
+
+      fetch('../partials/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer-placeholder').innerHTML = data;
+        })
+        .catch(() => console.log('Footer partial not found, standard script ignored.'));
+    });
+  </script>
+</body>
+</html>
