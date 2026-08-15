@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="canonical" href="https://sarkarisewaindia.com/tools/deadline-calendar.html" />
+  <meta name="description" content="सभी सरकारी योजनाओं, आयकर रिटर्न (ITR), और भर्ती परीक्षाओं की अंतिम तिथियां (Deadlines) ट्रैक करें। कोई भी मौका न छूटने दें।" />
+  <meta property="og:title" content="सरकारी डेडलाइन कैलेंडर (Sarkari Deadline Tracker) — SarkariSewa India" />
+  <meta property="og:description" content="सरकारी योजनाओं और फॉर्म भरने की अंतिम तिथियां (Last Dates) जानें।" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sarkarisewaindia.com/tools/deadline-calendar.html" />
+  <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
+  <title>सरकारी डेडलाइन कैलेंडर (Deadline Tracker) — SarkariSewa India</title>
+
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  
+  <style>
+    .calendar-container {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+    
+    .filter-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-tab {
+      padding: 8px 16px;
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      background: var(--color-bg);
+      color: var(--color-text);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .filter-tab.active {
+      background: var(--color-primary);
+      color: #fff;
+      border-color: var(--color-primary);
+    }
+
+    .timeline {
+      position: relative;
+      margin-left: 16px;
+      padding-left: 24px;
+      border-left: 3px solid var(--color-border);
+    }
+
+    .event-card {
+      position: relative;
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+      transition: transform 0.2s;
+    }
+
+    .event-card:hover {
+      transform: translateX(4px);
+    }
+
+    .event-card::before {
+      content: '';
+      position: absolute;
+      left: -31px;
+      top: 16px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--color-border);
+      border: 3px solid var(--color-surface);
+    }
+    
+    .event-card.urgent::before { background: #ef4444; }
+    .event-card.upcoming::before { background: #f59e0b; }
+    .event-card.passed::before { background: #9ca3af; }
+
+    .event-date {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .badge {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    .badge.urgent { background: #fee2e2; color: #991b1b; }
+    .badge.upcoming { background: #fef3c7; color: #92400e; }
+    .badge.passed { background: #f3f4f6; color: #374151; }
+
+    .event-title {
+      font-size: 1.1rem;
+      color: var(--color-primary);
+      margin-bottom: 4px;
+    }
+    
+    .event-desc {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      margin-bottom: 12px;
+    }
+
+    .event-category {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      color: var(--color-text);
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body data-slug="deadline-calendar">
+  <script>window.SS_ROOT = "../";</script>
+
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="index.html">Tools & Calculators</a>
+      <span class="sep">/</span>
+      <span class="current">Deadline Calendar</span>
+    </nav>
+
+    <div class="calculator-header text-center">
+      <h1 class="calculator-title">📅 सरकारी डेडलाइन कैलेंडर (Sarkari Deadline Tracker)</h1>
+      <p class="calculator-desc">इनकम टैक्स रिटर्न, आधार लिंकिंग, पीएम किसान eKYC और अन्य महत्वपूर्ण सरकारी योजनाओं की अंतिम तिथि (Last Date) ट्रैक करें।</p>
+    </div>
+
+    <div class="calendar-container">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-cat="all">सभी (All)</button>
+        <button class="filter-tab" data-cat="tax">टैक्स (Tax)</button>
+        <button class="filter-tab" data-cat="scheme">योजनाएं (Schemes)</button>
+        <button class="filter-tab" data-cat="exam">नौकरी/परीक्षा (Exams)</button>
+      </div>
+
+      <div class="timeline" id="event-timeline">
+        <!-- Events will be populated by JS -->
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/js/main.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Dummy data representing deadlines
+      const today = new Date();
+      
+      const events = [
+        {
+          date: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3),
+          title: "PM Kisan 17th Installment eKYC",
+          desc: "अगर आपने अभी तक eKYC नहीं किया है, तो पीएम किसान की अगली किश्त रुक सकती है।",
+          category: "scheme",
+          catLabel: "Schemes",
+          url: "../category/government-schemes.html"
+        },
+        {
+          date: new Date(today.getFullYear(), 6, 31), // July 31
+          title: "Income Tax Return (ITR) Filing",
+          desc: "बिना पेनल्टी के वित्त वर्ष के लिए ITR फाइल करने की अंतिम तिथि।",
+          category: "tax",
+          catLabel: "Finance & Tax",
+          url: "../category/finance-tax.html"
+        },
+        {
+          date: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 15),
+          title: "SSC CGL Application Last Date",
+          desc: "Staff Selection Commission CGL भर्ती परीक्षा के लिए आवेदन की अंतिम तिथि।",
+          category: "exam",
+          catLabel: "Jobs & Exams",
+          url: "../exams/index.html"
+        },
+        {
+          date: new Date(today.getFullYear(), today.getMonth() - 1, 15), // Passed
+          title: "Aadhaar Card Free Update",
+          desc: "UIDAI पोर्टल पर मुफ्त में आधार डेमोग्राफिक अपडेट करने की समय-सीमा समाप्त।",
+          category: "scheme",
+          catLabel: "Identity",
+          url: "../category/identity-documents.html"
+        }
+      ];
+
+      // Sort events by date ascending
+      events.sort((a, b) => a.date - b.date);
+
+      const timeline = document.getElementById('event-timeline');
+      const tabs = document.querySelectorAll('.filter-tab');
+
+      function renderEvents(filterCat) {
+        timeline.innerHTML = '';
+        
+        let filteredEvents = events;
+        if (filterCat !== 'all') {
+          filteredEvents = events.filter(e => e.category === filterCat);
+        }
+
+        if (filteredEvents.length === 0) {
+          timeline.innerHTML = '<div style="padding: 20px; color: var(--color-text-muted);">इस श्रेणी में कोई आने वाली डेडलाइन नहीं है।</div>';
+          return;
+        }
+
+        filteredEvents.forEach(e => {
+          const daysDiff = Math.ceil((e.date - today) / (1000 * 60 * 60 * 24));
+          
+          let statusClass = "upcoming";
+          let statusLabel = "Upcoming";
+          
+          if (daysDiff < 0) {
+            statusClass = "passed";
+            statusLabel = "Passed";
+          } else if (daysDiff <= 7) {
+            statusClass = "urgent";
+            statusLabel = "Ends in " + daysDiff + " Days";
+          }
+
+          const options = { year: 'numeric', month: 'long', day: 'numeric' };
+          const dateStr = e.date.toLocaleDateString('en-IN', options);
+
+          const card = document.createElement('div');
+          card.className = `event-card ${statusClass}`;
+          card.innerHTML = `
+            <div class="event-date">
+              ${dateStr} <span class="badge ${statusClass}">${statusLabel}</span>
+            </div>
+            <div class="event-title">${e.title}</div>
+            <div class="event-desc">${e.desc}</div>
+            <div>
+              <span class="event-category">${e.catLabel}</span>
+              <a href="${e.url}" style="font-size: 0.85rem; font-weight: 600;">Details →</a>
+            </div>
+          `;
+          timeline.appendChild(card);
+        });
+      }
+
+      renderEvents('all');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          tabs.forEach(t => t.classList.remove('active'));
+          e.target.classList.add('active');
+          renderEvents(e.target.getAttribute('data-cat'));
+        });
+      });
+    });
+  </script>
+</body>
+</html>

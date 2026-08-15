@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="canonical" href="https://sarkarisewaindia.com/tools/status-troubleshooter.html" />
+  <meta name="description" content="PAN, Aadhaar, PM Kisan, और Passport एप्लीकेशन के स्टेटस एरर का मतलब और समाधान जानें।" />
+  <meta property="og:title" content="एप्लीकेशन स्टेटस एरर सॉल्वर (Status Troubleshooter) — SarkariSewa India" />
+  <meta property="og:description" content="जानिए आपके सरकारी एप्लीकेशन स्टेटस का असल मतलब क्या है और आगे क्या करना है।" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sarkarisewaindia.com/tools/status-troubleshooter.html" />
+  <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
+  <title>एप्लीकेशन स्टेटस एरर सॉल्वर (Status Troubleshooter) — SarkariSewa India</title>
+
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  
+  <style>
+    .ts-container {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--color-text);
+      font-size: 1.1rem;
+    }
+
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 2px solid var(--color-border);
+      border-radius: 8px;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+    
+    .form-group select:focus {
+      border-color: var(--color-primary);
+      outline: none;
+    }
+
+    #error-select-container {
+      display: none;
+    }
+
+    .solution-card {
+      display: none;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-left: 5px solid var(--color-accent);
+      border-radius: 8px;
+      padding: 24px;
+      margin-top: 32px;
+      animation: slideDown 0.3s ease-out;
+    }
+    
+    [data-theme="dark"] .solution-card {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .solution-title {
+      color: var(--color-primary);
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .solution-text {
+      color: var(--color-text);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .next-steps {
+      background: #fff;
+      border: 1px solid var(--color-border);
+      padding: 16px;
+      border-radius: 6px;
+    }
+    
+    [data-theme="dark"] .next-steps {
+      background: #0f172a;
+    }
+
+    .next-steps h4 {
+      margin: 0 0 12px 0;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .next-steps ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--color-text-muted);
+    }
+    .next-steps li { margin-bottom: 6px; }
+  </style>
+</head>
+<body data-slug="status-troubleshooter">
+  <script>window.SS_ROOT = "../";</script>
+
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="index.html">Tools & Calculators</a>
+      <span class="sep">/</span>
+      <span class="current">Status Troubleshooter</span>
+    </nav>
+
+    <div class="calculator-header text-center">
+      <h1 class="calculator-title">🔍 एप्लीकेशन स्टेटस ट्रबलशूटर (Status Error Decoder)</h1>
+      <p class="calculator-desc">पैन कार्ड, पासपोर्ट या पीएम किसान का स्टेटस चेक करने पर "Under Processing at CPC" या "Pending at RO" जैसे मैसेज आ रहे हैं? यहाँ उनका असल मतलब जानें।</p>
+    </div>
+
+    <div class="ts-container">
+      <div class="form-group">
+        <label for="service">1. सेवा चुनें (Select Service)</label>
+        <select id="service">
+          <option value="">-- सेवा का चयन करें --</option>
+          <option value="pan">PAN Card (पैन कार्ड)</option>
+          <option value="passport">Passport (पासपोर्ट)</option>
+          <option value="pmkisan">PM Kisan (पीएम किसान)</option>
+          <option value="aadhaar">Aadhaar (आधार अपडेट)</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="error-select-container">
+        <label for="error-msg">2. स्टेटस मैसेज चुनें (Select Status Message)</label>
+        <select id="error-msg">
+          <option value="">-- मैसेज चुनें --</option>
+        </select>
+      </div>
+
+      <div id="solution-card" class="solution-card">
+        <div class="solution-title" id="sol-title"></div>
+        <div class="solution-text" id="sol-text"></div>
+        <div class="next-steps">
+          <h4>✅ अगला कदम (Next Action)</h4>
+          <ul id="sol-steps"></ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="../assets/js/main.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const errorData = {
+        "pan": [
+          {
+            code: "cpc",
+            text: "Under processing at NSDL/UTIITL or CPC",
+            title: "एप्लीकेशन प्रोसेसिंग में है",
+            desc: "आपका पैन एप्लीकेशन फॉर्म विभाग द्वारा प्राप्त कर लिया गया है और इसका डाटा एंट्री/वेरिफिकेशन का काम चल रहा है। इसमें कोई गड़बड़ी नहीं है।",
+            steps: ["अभी आपको कुछ नहीं करना है।", "कृपया 3-5 कार्य दिवस (Working Days) तक प्रतीक्षा करें।"]
+          },
+          {
+            code: "discrepancy",
+            text: "Discrepancy letter has been dispatched",
+            title: "फॉर्म में गड़बड़ी (डॉक्यूमेंट मिसमैच)",
+            desc: "आपके नाम, पिता के नाम, या जन्मतिथि में आधार और दिए गए फॉर्म के बीच अंतर है। आयकर विभाग ने आपके पते पर एक पत्र भेजा है जिसमें गड़बड़ी बताई गई है।",
+            steps: ["पत्र का इंतज़ार करें या NSDL/UTIITL पोर्टल पर जाकर अपनी एप्लीकेशन रसीद (Acknowledgment Number) से एरर चेक करें।", "आपको सही सपोर्टिंग डॉक्यूमेंट (जैसे 10वीं की मार्कशीट या सही आधार) दोबारा अपलोड या पोस्ट करना होगा।"]
+          }
+        ],
+        "passport": [
+          {
+            code: "ro",
+            text: "Pending at Regional Passport Office (RPO)",
+            title: "एप्लीकेशन RPO में पेंडिंग है",
+            desc: "पासपोर्ट सेवा केंद्र (PSK) से फाइल रीजनल ऑफिस भेज दी गई है, लेकिन किसी डॉक्यूमेंट या पुलिस वेरिफिकेशन रिपोर्ट के कारण वहां रुकी हुई है।",
+            steps: ["पुलिस वेरिफिकेशन रिपोर्ट का स्टेटस चेक करें।", "यदि पुलिस रिपोर्ट क्लियर है, तो RPO में ऑनलाइन अपॉइंटमेंट लेकर विजिट करें।"]
+          },
+          {
+            code: "police",
+            text: "Police Verification Report is not clear",
+            title: "पुलिस वेरिफिकेशन क्लियर नहीं है",
+            desc: "पुलिस ने आपके पते, क्रिमिनल रिकॉर्ड या दस्तावेजों में कोई संदेह व्यक्त किया है और प्रतिकूल रिपोर्ट (Adverse Report) लगा दी है।",
+            steps: ["तुरंत अपने स्थानीय थाने (Police Station) या SP ऑफिस जाएं।", "अपने स्थायी और वर्तमान पते के पुख्ता प्रमाण (Address Proof) लेकर जाएं।"]
+          }
+        ],
+        "pmkisan": [
+          {
+            code: "state_approval",
+            text: "Pending for approval at State/District level",
+            title: "राज्य या जिले स्तर पर पेंडिंग",
+            desc: "आपने ऑनलाइन आवेदन कर दिया है, लेकिन आपके ब्लॉक (Tehsil) या जिला कृषि अधिकारी ने अभी तक आपके दस्तावेजों (खतौनी, आधार) का सत्यापन नहीं किया है।",
+            steps: ["अपने ब्लॉक के कृषि समन्वयक (Agriculture Coordinator) या लेखपाल से मिलें।", "अपने आधार कार्ड, बैंक पासबुक और खतौनी की कॉपी उन्हें भौतिक रूप से जमा करें।"]
+          },
+          {
+            code: "pfms",
+            text: "Farmer Record has been rejected by PFMS/Bank",
+            title: "PFMS/बैंक द्वारा रिकॉर्ड रिजेक्ट",
+            desc: "आपका बैंक खाता आधार से लिंक (NPCI Seeded) नहीं है, या आपके बैंक खाते और आधार कार्ड के नाम में अंतर है, जिसके कारण पेमेंट सिस्टम (PFMS) ने इसे रिजेक्ट कर दिया है।",
+            steps: ["अपने बैंक जाएं और 'Aadhaar NPCI Seeding' या 'DBT Linking' फॉर्म भरें।", "ई-केवाईसी (eKYC) पूरी करें।"]
+          }
+        ],
+        "aadhaar": [
+          {
+            code: "manual",
+            text: "Under Manual Quality Check",
+            title: "मैनुअल क्वालिटी चेक (वेरिफिकेशन पेंडिंग)",
+            desc: "सिस्टम आपके दिए गए डॉक्यूमेंट्स को आटोमेटिक तरीके से वेरीफाई नहीं कर पाया, इसलिए UIDAI के अधिकारी इसे खुद (मैनुअली) चेक कर रहे हैं।",
+            steps: ["यह एक सामान्य प्रक्रिया है।", "कृपया 7 से 15 दिनों तक प्रतीक्षा करें, अपडेट हो जाएगा।"]
+          }
+        ]
+      };
+
+      const serviceSelect = document.getElementById('service');
+      const errorContainer = document.getElementById('error-select-container');
+      const errorSelect = document.getElementById('error-msg');
+      const solCard = document.getElementById('solution-card');
+
+      serviceSelect.addEventListener('change', function() {
+        const srv = this.value;
+        solCard.style.display = 'none';
+        
+        if (srv && errorData[srv]) {
+          errorSelect.innerHTML = '<option value="">-- मैसेज चुनें --</option>';
+          errorData[srv].forEach(err => {
+            const opt = document.createElement('option');
+            opt.value = err.code;
+            opt.textContent = err.text;
+            errorSelect.appendChild(opt);
+          });
+          errorContainer.style.display = 'block';
+        } else {
+          errorContainer.style.display = 'none';
+        }
+      });
+
+      errorSelect.addEventListener('change', function() {
+        const srv = serviceSelect.value;
+        const errCode = this.value;
+        
+        if (srv && errCode) {
+          const errObj = errorData[srv].find(e => e.code === errCode);
+          if (errObj) {
+            document.getElementById('sol-title').textContent = errObj.title;
+            document.getElementById('sol-text').textContent = errObj.desc;
+            
+            const stepsUl = document.getElementById('sol-steps');
+            stepsUl.innerHTML = '';
+            errObj.steps.forEach(st => {
+              const li = document.createElement('li');
+              li.textContent = st;
+              stepsUl.appendChild(li);
+            });
+            
+            solCard.style.display = 'block';
+          }
+        } else {
+          solCard.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
