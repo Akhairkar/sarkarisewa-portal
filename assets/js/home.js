@@ -57,31 +57,16 @@ function renderServices() {
   const lang = getLang();
   const dict = (window.SITE && SITE.langData && SITE.langData[lang]) || {};
 
-  // "Latest" = genuinely sorted by each service's dateAdded (Module 11 fix —
-  // this used to just be the last 6 array entries, which wasn't actually
-  // "latest" by any real criteria since services.json had no date field).
-  const sorted = SERVICES_DATA.slice().sort((a, b) => (a.dateAdded < b.dateAdded ? 1 : -1));
+  // "Latest" = genuinely sorted by each service's dateAdded
+  // Handle undefined dates by defaulting to empty string.
+  const sorted = SERVICES_DATA.slice().sort((a, b) => {
+    const da = a.dateAdded || "";
+    const db = b.dateAdded || "";
+    return da < db ? 1 : (da > db ? -1 : 0);
+  });
 
-  // Category diversity: cap at 2 per category on the first pass so the
-  // section doesn't get dominated by whichever category happened to be
-  // added most recently, then fill any remaining slots from the rest.
-  const TARGET = 12;
-  const perCategoryCount = {};
-  const picked = [];
-  const leftover = [];
-  for (const s of sorted) {
-    const c = s.category || "_none";
-    if (picked.length < TARGET && (perCategoryCount[c] || 0) < 2) {
-      picked.push(s);
-      perCategoryCount[c] = (perCategoryCount[c] || 0) + 1;
-    } else {
-      leftover.push(s);
-    }
-  }
-  for (const s of leftover) {
-    if (picked.length >= TARGET) break;
-    picked.push(s);
-  }
+  const TARGET = 8;
+  const picked = sorted.slice(0, TARGET);
 
   host.innerHTML = picked.map((s) => {
     const links = (s.officialLinks || []).slice(0, 3).map((l, i) => `
@@ -176,9 +161,8 @@ async function renderHomeDailyUpdates() {
     if (!res.ok) throw new Error("Not found");
     const data = await res.json();
     if (!data || data.length === 0) { host.innerHTML = ""; return; }
-    
-    // Only show top 4 on homepage
-    const topData = data.slice(0, 4);
+    // Only show top 8 on homepage
+    const topData = data.slice(0, 8);
     host.innerHTML = topData.map(update => {
       const title = lang === "hi" ? update.title_hi : update.title_en;
       const d = new Date(update.published_date);
