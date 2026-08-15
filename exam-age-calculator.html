@@ -141,46 +141,107 @@
       <a href="index.html" data-i18n="nav_home">Home</a><span class="sep">/</span><span class="current" data-i18n="eac_breadcrumb_current">Exam Age Eligibility Calculator</span>
     </nav>
 
-    <section class="eac-hero">
-      <span class="eac-hero__eyebrow" data-i18n="eac_eyebrow">Free · No Login · No Upload</span>
+    <section class="age-calc-header">
+      <span class="eac-hero__eyebrow" data-i18n="eac_eyebrow" style="display:inline-block; margin-bottom:10px; background:rgba(255,255,255,0.2); padding:5px 15px; border-radius:20px; font-size:12px; font-weight:bold; letter-spacing:1px; text-transform:uppercase;">Free · No Login · No Upload</span>
       <h1 data-i18n="eac_title">Exam Age Eligibility Calculator</h1>
       <p data-i18n="eac_subtitle">Apni exact age nikalein aur ek click mein dekhein ki aap SSC, UPSC, Railway, Banking jaise 11+ major exams ke liye age-wise eligible hain ya nahi — category relaxation (OBC/SC/ST/PwD) ke saath.</p>
     </section>
 
-    <form class="eac-ticket" id="eac-form">
-      <div class="eac-ticket__form">
-        <div class="eac-field">
-          <label for="eac-dob" data-i18n="eac_label_dob">Date of Birth</label>
-          <input type="date" id="eac-dob" required>
-        </div>
-        <div class="eac-field">
-          <label for="eac-cutoff" data-i18n="eac_label_cutoff">Age As On (Cut-off Date)</label>
-          <input type="date" id="eac-cutoff" required>
-        </div>
-        <div class="eac-field">
-          <label for="eac-category" data-i18n="eac_label_category">Category</label>
-          <select id="eac-category">
-            <option value="general" data-i18n="eac_opt_general">General / EWS</option>
-            <option value="obc" data-i18n="eac_opt_obc">OBC (Non-Creamy Layer) — +3 yrs</option>
-            <option value="sc" data-i18n="eac_opt_sc">SC — +5 yrs</option>
-            <option value="st" data-i18n="eac_opt_st">ST — +5 yrs</option>
-            <option value="pwd" data-i18n="eac_opt_pwd">PwD (any category) — +10 yrs</option>
-          </select>
-        </div>
-        <button type="submit" class="eac-btn" data-i18n="eac_submit_btn">Calculate Age &amp; Check Eligibility</button>
+    <form class="age-calc-wrapper" id="eac-form">
+      <div class="age-calc-header">
+        <h2 data-i18n="eac_title">Sarkari Naukri Age Calculator</h2>
+        <p>Find your exact age and check eligibility for SSC, UPSC, Bank PO & Railway exams instantly.</p>
       </div>
-      <div class="eac-ticket__result" id="eac-result">
-        <div class="eac-result-empty">
-          <div class="eac-photo-box">🎓</div>
-          <span data-i18n="eac_result_empty">Details bharkar apni age aur 11 exams ke liye eligibility dekhein</span>
+      <div class="age-calc-body">
+        <div class="input-row">
+          <div class="input-group">
+            <label for="eac-dob" data-i18n="eac_label_dob">Date of Birth</label>
+            <input type="date" id="eac-dob" required>
+          </div>
+          <div class="input-group">
+            <label for="eac-cutoff" data-i18n="eac_label_cutoff">Age As On (Cut-off Date)</label>
+            <input type="date" id="eac-cutoff" required>
+          </div>
+          <div class="input-group">
+            <label for="eac-category" data-i18n="eac_label_category">Category</label>
+            <select id="eac-category">
+              <option value="general" data-i18n="eac_opt_general">General / UR</option>
+              <option value="obc" data-i18n="eac_opt_obc">OBC (+3 yrs Relaxation)</option>
+              <option value="sc" data-i18n="eac_opt_sc">SC / ST (+5 yrs Relaxation)</option>
+              <option value="pwd" data-i18n="eac_opt_pwd">PwD (+10 yrs Relaxation)</option>
+            </select>
+          </div>
+        </div>
+        <div class="calc-action">
+          <button type="submit" data-i18n="eac_submit_btn">Calculate Age &amp; Check Eligibility</button>
+        </div>
+        <div class="eac-ticket__result" id="eac-result">
+          <div class="eac-result-empty">
+            <div class="eac-photo-box">🎯</div>
+            <span data-i18n="eac_result_empty">Details bharkar apni age aur 11 exams ke liye eligibility dekhein</span>
+          </div>
         </div>
       </div>
     </form>
 
     <section class="eac-section">
-      <h2 data-i18n="eac_how_heading">Yeh Kaise Kaam Karta Hai</h2>
-      <p data-i18n="eac_how_p1">Har government exam notification mein ek "age as on" cut-off date di jaati hai — jaise UPSC Civil Services ke liye 1 August, ya SSC exams ke liye notification mein di gayi specific date. Aapki age is exact date tak, saal-mahine-din mein calculate hoti hai — form bharne ke din tak nahi. Ek din ka farak bhi eligibility decide kar sakta hai, isliye manual calculation mein galti hona aam baat hai.</p>
-      <p data-i18n="eac_how_p2">Yeh tool aapki date of birth aur cut-off date ke beech ka exact gap nikalta hai, phir usse 11 major exams ki general age-limit range se compare karta hai — aapki category ke hisaab se relaxation add karke. Result turant, bina kisi login ya document upload ke milta hai.</p>
+      <h2 data-i18n="eac_how_heading">Comprehensive Guide to Government Exam Age Limits in India (2026-2027)</h2>
+      <p>Are you aspiring for a Sarkari Naukri (Government Job) in India? The first and most crucial step before starting your preparation is to verify your age eligibility. The <strong>Exam Age Eligibility Calculator</strong> provided above is a precision tool designed specifically for Indian government job aspirants to check if they fall within the permissible age criteria for exams conducted by UPSC, SSC, RRB, IBPS, and State PSCs.</p>
+      
+      <h3>Why Exact Age Calculation is Crucial for Sarkari Naukri</h3>
+      <p>In the highly competitive landscape of Indian government exams, a single day can make or break your eligibility. Exam conducting bodies like the Staff Selection Commission (SSC) and Union Public Service Commission (UPSC) specify a strict "Cut-off Date" or "Age As On" date. Your age is calculated up to this exact date, not the date you are filling out the application form or the date of the exam.</p>
+      <p>For example, if the UPSC Civil Services Examination (CSE) notification states that the candidate must have attained the age of 21 years and must not have attained the age of 32 years on the 1st of August of the examination year, your exact age in years, months, and days must be calculated against August 1st.</p>
+      
+      <h3>How to Use the Exam Age Eligibility Calculator</h3>
+      <ol>
+        <li><strong>Enter your Date of Birth:</strong> Select your exact date of birth as recorded in your Class 10th (Matriculation) certificate. This is the only valid proof of age accepted by government commissions.</li>
+        <li><strong>Select the Cut-off Date:</strong> Enter the "Age As On" date mentioned in the official exam notification. If a notification is not yet released, you can use standard dates (like August 1st for UPSC, or January 1st for many SSC exams) to estimate your eligibility.</li>
+        <li><strong>Choose your Category:</strong> Select your social category to apply the constitutionally mandated age relaxations (e.g., +3 years for OBC, +5 years for SC/ST, and +10 years for PwD).</li>
+        <li><strong>Click Calculate:</strong> The tool will instantly calculate your exact age and display a comprehensive breakdown of your eligibility across 11 major government exams simultaneously.</li>
+      </ol>
+
+      <h3>Category-Wise Age Relaxations Explained</h3>
+      <p>The Government of India provides upper age limit relaxations for candidates belonging to reserved categories. Our calculator automatically applies these rules:</p>
+      <ul>
+        <li><strong>General/Unreserved (UR) & EWS:</strong> Standard age limits apply. No upper age relaxation is provided.</li>
+        <li><strong>OBC (Non-Creamy Layer):</strong> A standard relaxation of <strong>3 years</strong> is added to the maximum age limit.</li>
+        <li><strong>SC / ST:</strong> A standard relaxation of <strong>5 years</strong> is provided across almost all central and state government exams.</li>
+        <li><strong>Persons with Disabilities (PwD/Divyangjan):</strong> A general relaxation of <strong>10 years</strong> is provided. This can be combined with social category relaxations (e.g., PwD + SC/ST = 15 years relaxation).</li>
+      </ul>
+      <p><em>Note: Defense personnel, Ex-Servicemen, and widows/divorced women may receive additional relaxations depending on the specific exam rules, which are not universally applicable and must be checked in the official notification.</em></p>
+
+      <h3>Detailed Age Criteria for Top Government Exams</h3>
+      <h4>1. UPSC Civil Services Examination (IAS/IPS)</h4>
+      <p>The UPSC CSE is the most prestigious exam in India. The minimum age to appear is 21 years. For General/EWS candidates, the maximum age is 32 years (with 6 attempts). OBC candidates can apply up to 35 years (9 attempts), and SC/ST candidates up to 37 years (unlimited attempts). The cut-off date is traditionally August 1st of the exam year.</p>
+
+      <h4>2. Staff Selection Commission (SSC) Exams</h4>
+      <p>SSC conducts multiple exams with varying age requirements:</p>
+      <ul>
+        <li><strong>SSC CGL (Combined Graduate Level):</strong> Depending on the post (e.g., Inspector, Assistant, Auditor), the age limits vary from 18-27 years, 18-30 years, to 18-32 years for the General category.</li>
+        <li><strong>SSC CHSL (10+2 Level):</strong> The standard age limit is 18 to 27 years.</li>
+        <li><strong>SSC MTS & Havaldar:</strong> Generally 18 to 25 years, with some posts allowing up to 27 years.</li>
+        <li><strong>SSC GD Constable:</strong> A strict age limit of 18 to 23 years applies for General candidates.</li>
+      </ul>
+
+      <h4>3. Railway Recruitment Board (RRB) Exams</h4>
+      <p>Indian Railways is one of the largest employers. The RRB NTPC (Non-Technical Popular Categories) typically requires candidates to be between 18 and 30 years (for undergraduate posts) and 18 to 33 years (for graduate posts). Assistant Loco Pilot (ALP) and Technician posts usually have an age limit of 18 to 30 years.</p>
+
+      <h4>4. Banking Sector Exams (IBPS & SBI)</h4>
+      <p>The Institute of Banking Personnel Selection (IBPS) and State Bank of India (SBI) conduct annual exams for Probationary Officers (PO) and Clerks.</p>
+      <ul>
+        <li><strong>Bank PO:</strong> The minimum age is strictly 20 or 21 years (depending on the bank), and the maximum age is 30 years for General candidates.</li>
+        <li><strong>Bank Clerk:</strong> The age limit is generally 20 to 28 years.</li>
+      </ul>
+
+      <h3>Common Mistakes While Calculating Age for Exams</h3>
+      <p>Many candidates face rejection during the document verification stage due to simple miscalculations. The most common mistakes include:</p>
+      <ul>
+        <li><strong>Calculating age as of today:</strong> Always use the official cut-off date. Using today's date will give you a false sense of eligibility.</li>
+        <li><strong>Ignoring the specific dates of birth mentioned:</strong> Notifications often state "candidate must have been born not earlier than X and not later than Y". Our calculator takes care of the exact day math.</li>
+        <li><strong>Discrepancies in documents:</strong> Ensure the Date of Birth you enter matches your 10th-grade mark sheet perfectly. Changes made via Aadhaar card later are often heavily scrutinized or rejected if they don't match school records.</li>
+      </ul>
+      
+      <p>Use our free Sarkari Naukri Exam Age Eligibility Calculator repeatedly for different exams and different years to plan your preparation strategy effectively. Knowing your remaining attempts and eligible years can help you prioritize your exams and focus your studies.</p>
     </section>
 
     <section class="eac-section">

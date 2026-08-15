@@ -3,13 +3,54 @@
  * Theme styles for Exam Age Eligibility Calculator
  */
 :root {
-  --eac-primary: #10243E;
-  --eac-accent: #D97F2B;
-  --eac-bg: #F5F3ED;
+  --eac-primary: #0d6efd;
+  --eac-accent: #198754;
+  --eac-bg: #fafbfc;
   --eac-surface: #FFFFFF;
 }
 [data-theme="dark"] {
-  --eac-primary: #E8EDF3;
+  --eac-primary: #0a58ca;
   --eac-bg: #0B1420;
   --eac-surface: #101D2C;
 }
+
+.eac-wrap { max-width: 900px; margin: 0 auto; padding: 20px; }
+.eac-band { font-size: 0.8rem; background: #e9ecef; color: #495057; text-align: center; padding: 8px; font-weight: bold; margin-bottom: 20px; border-radius: 4px;}
+[data-theme="dark"] .eac-band { background: #1a2a40; color: #cbd5e1; }
+
+.age-calc-wrapper { max-width: 100%; margin: 10px auto 40px; background: var(--eac-surface); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; border: 1px solid #eaeaea; }
+[data-theme="dark"] .age-calc-wrapper { border-color: #1a2a40; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+
+.age-calc-header { background: linear-gradient(135deg, var(--eac-primary) 0%, #0a58ca 100%); color: white; padding: 30px 20px; text-align: center; }
+.age-calc-header h1 { margin: 0; font-size: 32px; font-weight: 700; letter-spacing: 0.5px; color: white; }
+.age-calc-header p { margin: 12px 0 0 0; font-size: 16px; opacity: 0.9; max-width: 650px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+
+.age-calc-body { padding: 35px 30px; background: var(--eac-bg); }
+.input-row { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 25px; }
+.input-group { flex: 1; min-width: 250px; }
+.input-group label { display: block; margin-bottom: 8px; color: var(--text-color, #495057); font-weight: 600; font-size: 14px; }
+.input-group input, .input-group select { width: 100%; padding: 14px 15px; border: 2px solid #dde1e5; border-radius: 8px; font-size: 15px; color: #333; transition: all 0.3s ease; box-sizing: border-box; background: #fff; }
+.input-group input:focus, .input-group select:focus { border-color: var(--eac-primary); outline: none; box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15); }
+
+.calc-action { text-align: center; margin-top: 15px; }
+.calc-action button { background: var(--eac-primary); color: #fff; border: none; padding: 16px 40px; font-size: 18px; font-weight: 700; border-radius: 50px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3); }
+.calc-action button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(13, 110, 253, 0.4); background: #0b5ed7; }
+
+.eac-ticket__result { margin-top: 35px; border-top: 1px solid #eee; padding-top: 25px; min-height: 100px; }
+.eac-result-empty { text-align: center; color: #6c757d; font-size: 1.1rem; padding: 40px 20px; }
+.eac-photo-box { font-size: 3.5rem; margin-bottom: 15px; opacity: 0.8; }
+
+/* Existing sections styling */
+.eac-section { margin-top: 40px; background: var(--eac-surface); padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid #eaeaea; }
+.eac-section h2 { color: var(--eac-primary); margin-top: 0; font-size: 1.8rem; margin-bottom: 20px; border-bottom: 2px solid #f1f3f5; padding-bottom: 12px; }
+.eac-section p { line-height: 1.7; font-size: 1.05rem; margin-bottom: 15px; }
+.eac-section table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+.eac-section th, .eac-section td { padding: 12px 15px; border-bottom: 1px solid #eee; text-align: left; }
+.eac-section th { background: #f8f9fa; font-weight: 600; color: #333; }
+
+/* Dark mode tweaks */
+[data-theme="dark"] .input-group input, [data-theme="dark"] .input-group select { background: #1a2a40; border-color: #2c3e50; color: #f8f9fa; }
+[data-theme="dark"] .eac-section th { background: #1a2a40; color: #f8f9fa; }
+[data-theme="dark"] .eac-section th, [data-theme="dark"] .eac-section td { border-bottom-color: #2c3e50; }
+[data-theme="dark"] .eac-ticket__result { border-top-color: #2c3e50; }
+[data-theme="dark"] .eac-section { border-color: #1a2a40; }
