@@ -14,7 +14,9 @@
    site lives at a domain root or under a GitHub Pages sub-path like
    /sarkarisewa-portal/ — every fetch and internal link below is built
    from SS_ROOT instead of assuming "/" is the site root. */
-const ROOT = typeof window.SS_ROOT === "string" ? window.SS_ROOT : "";
+// Infer root path automatically by looking at where this script is loaded from
+const scriptTag = document.currentScript || document.querySelector('script[src$="main.js"]');
+const ROOT = scriptTag ? scriptTag.getAttribute('src').replace('assets/js/main.js', '') : "";
 
 const SITE = {
   langData: null,
