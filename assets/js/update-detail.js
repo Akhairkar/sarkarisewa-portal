@@ -84,6 +84,15 @@ function renderUpdateDetail() {
   const officialBtn = document.getElementById("official-link-btn");
   officialBtn.href = UPDATE_DATA.source_url;
   officialBtn.textContent = lang === "hi" ? "पूरा आधिकारिक अपडेट पढ़ें →" : "Read Full Official Update →";
+
+  const shareBtn = document.getElementById("share-whatsapp-btn");
+  if (shareBtn) {
+    shareBtn.onclick = () => {
+      const shareTitle = `*${title}*\n\n${summary}\n\n`;
+      const shareUrl = window.location.href;
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareTitle + shareUrl)}`, "_blank");
+    };
+  }
 }
 
 document.addEventListener("ss:ready", loadUpdateDetail);
