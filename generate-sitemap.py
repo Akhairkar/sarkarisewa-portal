@@ -33,7 +33,6 @@ SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 STATIC_PAGES = [
     ("/index.html", "1.0", "weekly"),
-    ("/search.html", "0.8", "weekly"),
     ("/find-services.html", "0.8", "monthly"),
     ("/project-report/index.html", "0.9", "monthly"),
     ("/blog/index.html", "0.7", "weekly"),
