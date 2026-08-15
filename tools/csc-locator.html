@@ -144,7 +144,7 @@
     }
     .btn-verify {
       background: white;
-      color: var(--color-primary);
+      color: #10243E; /* Fixed dark blue so it doesn't disappear in dark mode */
       font-weight: 700;
       white-space: nowrap;
     }
@@ -405,20 +405,20 @@
       
       <form id="operator-form">
         <div style="margin-bottom: 16px;">
-          <label class="input-label">Center Name</label>
-          <input type="text" class="input-field" required>
+          <label class="input-label" for="op-name">Center Name</label>
+          <input type="text" id="op-name" class="input-field" required>
         </div>
         <div style="margin-bottom: 16px;">
-          <label class="input-label">CSC / VLE ID Number</label>
-          <input type="text" class="input-field" required>
+          <label class="input-label" for="op-cscid">CSC / VLE ID Number</label>
+          <input type="text" id="op-cscid" class="input-field" required>
         </div>
         <div style="margin-bottom: 16px;">
-          <label class="input-label">Pincode</label>
-          <input type="text" class="input-field" required>
+          <label class="input-label" for="op-pincode">Pincode</label>
+          <input type="text" id="op-pincode" class="input-field" required>
         </div>
         <div style="margin-bottom: 24px;">
-          <label class="input-label">Contact Number (For Citizens)</label>
-          <input type="text" class="input-field" required>
+          <label class="input-label" for="op-contact">Contact Number (For Citizens)</label>
+          <input type="text" id="op-contact" class="input-field" required>
         </div>
         <button type="submit" class="btn btn--primary" style="width: 100%;">Submit for Verification</button>
       </form>
@@ -498,5 +498,6 @@
   
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/csc-locator.js"></script>
+  <script src="../assets/js/csc-submit.js"></script>
 </body>
 </html>

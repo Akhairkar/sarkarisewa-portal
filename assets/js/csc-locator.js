@@ -13,17 +13,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let cscData = [];
 
-  // Fetch JSON Data
-  fetch(`../data/csc-centers.json?v=${new Date().getTime()}`)
-    .then(response => response.json())
-    .then(data => {
-      cscData = data;
+  // Fetch JSON Data + Supabase Data
+  async function loadAllData() {
+    try {
+      resultsContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--color-text-muted);">Loading nearest centers...</div>';
+      
+      // 1. Fetch static JSON
+      const resJson = await fetch(`../data/csc-centers.json?v=${new Date().getTime()}`);
+      let jsonData = await resJson.json();
+
+      // 2. Fetch live approved from Supabase (if loaded)
+      let supabaseData = [];
+      if (typeof getSupabaseClient === "function") {
+        const client = await getSupabaseClient();
+        if (client) {
+          const { data, error } = await client
+            .from("csc_centres")
+            .select("*")
+            .eq("is_verified", true);
+            
+          if (!error && data) {
+            // Map Supabase schema to match JSON schema
+            supabaseData = data.map(row => ({
+              id: row.id,
+              name: row.center_name,
+              state: row.state || "Unknown",
+              district: row.district || "Unknown",
+              pincode: row.pincode,
+              address: `${row.center_name}, ${row.pincode}`,
+              contact: row.contact,
+              services: ["Aadhar Update", "PAN Card", "Income Certificate"],
+              timings: "9:00 AM - 6:00 PM (Mon-Sat)",
+              rating: 4.8,
+              is_verified: true
+            }));
+          }
+        }
+      }
+
+      cscData = [...supabaseData, ...jsonData];
       renderCenters(cscData);
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error fetching CSC data:', error);
       resultsContainer.innerHTML = '<div style="color:red; padding: 20px;">Error loading centers. Please try again later.</div>';
-    });
+    }
+  }
+
+  loadAllData();
 
   function renderCenters(centers) {
     if (centers.length === 0) {
@@ -123,11 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   
-  operatorForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Application submitted successfully! Our admin team will verify your details and contact you shortly.');
-    modalOverlay.classList.remove('active');
-    operatorForm.reset();
-  });
+  // Operator Form submission handled by csc-submit.js now
 
 });
