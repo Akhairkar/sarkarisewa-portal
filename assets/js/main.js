@@ -90,7 +90,8 @@ function applyLanguage(lang) {
 
 async function loadLangData() {
   try {
-    const res = await fetch(ROOT + "data/lang.json");
+    const cacheBusterUrl = ROOT + "data/lang.json?v=" + new Date().getTime();
+    const res = await fetch(cacheBusterUrl);
     SITE.langData = await res.json();
   } catch (err) {
     console.error("Could not load language data:", err);

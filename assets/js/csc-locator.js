@@ -82,6 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       resultsContainer.appendChild(card);
     });
+
+    if (window.applyLanguage && window.SITE && window.SITE.lang === 'hi') {
+      window.applyLanguage('hi');
+    }
   }
 
   function filterData() {
