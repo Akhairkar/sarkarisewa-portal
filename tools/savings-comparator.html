@@ -303,6 +303,159 @@
 </div>
 
   <script src="../assets/js/main.js" defer></script>
-  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('../partials/header.html').then(r => r.text()).then(html => {
+        document.getElementById('site-header').innerHTML = html;
+      });
+      fetch('../partials/footer.html').then(r => r.text()).then(html => {
+        document.getElementById('site-footer').innerHTML = html;
+      });
+
+      const schemes = [
+        {
+          id: "ssy",
+          title: "Sukanya Samriddhi Yojana",
+          subtitle: "बेटियों के भविष्य के लिए सर्वश्रेष्ठ",
+          rate: "8.2%",
+          lockin: "21 साल",
+          minMax: "₹250 - ₹1.5 लाख",
+          tax: "EEE (पूरी तरह टैक्स फ्री)",
+          tags: ["tax", "child", "tax-free"],
+          url: "../service/sukanya-samriddhi-yojana.html"
+        },
+        {
+          id: "ppf",
+          title: "Public Provident Fund (PPF)",
+          subtitle: "सुरक्षित और टैक्स फ्री रिटायरमेंट फंड",
+          rate: "7.1%",
+          lockin: "15 साल",
+          minMax: "₹500 - ₹1.5 लाख",
+          tax: "EEE (पूरी तरह टैक्स फ्री)",
+          tags: ["tax", "tax-free"],
+          url: "../service/public-provident-fund.html"
+        },
+        {
+          id: "nps",
+          title: "National Pension System (NPS)",
+          subtitle: "मार्केट लिंक्ड पेंशन योजना",
+          rate: "9-12% (अनुमानित)",
+          lockin: "60 वर्ष की आयु तक",
+          minMax: "न्यूनतम ₹1,000",
+          tax: "₹1.5L (80C) + ₹50k (80CCD)",
+          tags: ["tax"],
+          url: "../service/national-pension-system.html"
+        },
+        {
+          id: "scss",
+          title: "Senior Citizen Savings Scheme",
+          subtitle: "वरिष्ठ नागरिकों के लिए उच्च रिटर्न",
+          rate: "8.2%",
+          lockin: "5 साल",
+          minMax: "₹1000 - ₹30 लाख",
+          tax: "80C के तहत छूट (TDS लागू)",
+          tags: ["tax", "senior"],
+          url: "../category/finance-tax.html"
+        },
+        {
+          id: "mssm",
+          title: "Mahila Samman Savings",
+          subtitle: "महिलाओं के लिए छोटी अवधि का निवेश",
+          rate: "7.5%",
+          lockin: "2 साल",
+          minMax: "₹1000 - ₹2 लाख",
+          tax: "कोई टैक्स छूट नहीं",
+          tags: ["short"],
+          url: "../service/mahila-samman-bachat-patra.html"
+        },
+        {
+          id: "nsc",
+          title: "National Savings Certificate (NSC)",
+          subtitle: "गारंटीड रिटर्न और टैक्स बेनिफिट",
+          rate: "7.7%",
+          lockin: "5 साल",
+          minMax: "₹1000 - कोई सीमा नहीं",
+          tax: "80C के तहत छूट",
+          tags: ["tax"],
+          url: "../category/finance-tax.html"
+        },
+        {
+          id: "kvp",
+          title: "Kisan Vikas Patra (KVP)",
+          subtitle: "पैसा दोगुना करने वाली योजना",
+          rate: "7.5%",
+          lockin: "115 महीने (9.5 साल)",
+          minMax: "₹1000 - कोई सीमा नहीं",
+          tax: "कोई टैक्स छूट नहीं",
+          tags: [],
+          url: "../category/finance-tax.html"
+        }
+      ];
+
+      const grid = document.getElementById('scheme-grid');
+      const filters = document.querySelectorAll('.filter-btn');
+
+      function renderSchemes(filterType) {
+        grid.innerHTML = '';
+        const filtered = filterType === 'all' ? schemes : schemes.filter(s => s.tags.includes(filterType));
+        
+        if (filtered.length === 0) {
+          grid.innerHTML = '<div class="empty-state">इस फ़िल्टर के लिए कोई योजना नहीं मिली।</div>';
+          return;
+        }
+
+        filtered.forEach(s => {
+          const isTaxFree = s.tags.includes('tax-free');
+          const taxTagHtml = isTaxFree ? '<span class="sc-tag tax-free">✨ Tax Free Return</span>' : '';
+          const tagsHtml = s.tags.filter(t => t !== 'tax-free').map(t => {
+            const labels = { 'tax': '80C Benefit', 'child': 'Girl Child', 'senior': '60+ Years', 'short': 'Short Term' };
+            return `<span class="sc-tag">${labels[t] || t}</span>`;
+          }).join('');
+
+          const card = document.createElement('div');
+          card.className = 'scheme-card';
+          card.innerHTML = `
+            <div class="sc-header">
+              <div>
+                <h3 class="sc-title">${s.title}</h3>
+                <div class="sc-subtitle">${s.subtitle}</div>
+              </div>
+              <div class="sc-rate">${s.rate}</div>
+            </div>
+            <div class="sc-tags">${taxTagHtml}${tagsHtml}</div>
+            <div class="sc-body">
+              <div class="sc-row">
+                <span class="sc-label">लॉक-इन अवधि (Lock-in)</span>
+                <span class="sc-value">${s.lockin}</span>
+              </div>
+              <div class="sc-row">
+                <span class="sc-label">निवेश सीमा (Limit/Yr)</span>
+                <span class="sc-value">${s.minMax}</span>
+              </div>
+              <div class="sc-row">
+                <span class="sc-label">टैक्स नियम (Tax Rules)</span>
+                <span class="sc-value">${s.tax}</span>
+              </div>
+            </div>
+            <div class="sc-footer">
+              <a href="${s.url}" class="btn btn--primary">पूरी जानकारी पढ़ें →</a>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      filters.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          filters.forEach(f => f.classList.remove('active'));
+          e.target.classList.add('active');
+          renderSchemes(e.target.getAttribute('data-filter'));
+        });
+      });
+
+      // Initial render
+      renderSchemes('all');
+    });
+  </script>
 </body>
 </html>

@@ -327,6 +327,191 @@
 </div>
 
   <script src="../assets/js/main.js" defer></script>
-  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('../partials/header.html').then(r => r.text()).then(html => {
+        document.getElementById('site-header').innerHTML = html;
+      });
+      fetch('../partials/footer.html').then(r => r.text()).then(html => {
+        document.getElementById('site-footer').innerHTML = html;
+      });
+    });
+
+    const checklists = {
+      'income': {
+        title: "आय प्रमाण पत्र (Income Certificate) चेकलिस्ट",
+        categories: [
+          {
+            title: "👤 पहचान प्रमाण (Identity Proof) - इनमें से कोई एक",
+            items: [
+              { id: "i_id_1", title: "आधार कार्ड (Aadhaar Card)", desc: "मोबाइल नंबर लिंक होना चाहिए।" },
+              { id: "i_id_2", title: "वोटर आईडी (Voter ID Card)", desc: "या पैन कार्ड / पासपोर्ट।" }
+            ]
+          },
+          {
+            title: "🏠 पता प्रमाण (Address Proof) - इनमें से कोई एक",
+            items: [
+              { id: "i_add_1", title: "राशन कार्ड (Ration Card)", desc: "आवेदक का नाम होना अनिवार्य है।" },
+              { id: "i_add_2", title: "बिजली का बिल (Electricity Bill)", desc: "पिछले 3 महीनों का।" }
+            ]
+          },
+          {
+            title: "💰 आय का प्रमाण (Proof of Income) - अनिवार्य",
+            items: [
+              { id: "i_inc_1", title: "वेतन पर्ची (Salary Slip)", desc: "अगर नौकरी करते हैं तो पिछले 3 महीने की सैलरी स्लिप।" },
+              { id: "i_inc_2", title: "ITR (Income Tax Return)", desc: "पिछले वर्ष का ITR (यदि भरते हैं)।" },
+              { id: "i_inc_3", title: "स्व-घोषणा पत्र (Self Declaration)", desc: "आय का शपथ पत्र (Affidavit) जो नोटरी से प्रमाणित हो।" }
+            ]
+          },
+          {
+            title: "📸 अन्य (Others)",
+            items: [
+              { id: "i_oth_1", title: "पासपोर्ट साइज़ फोटो", desc: "हाल ही में खींची गई 2 रंगीन फोटो।" }
+            ]
+          }
+        ]
+      },
+      'caste': {
+        title: "जाति प्रमाण पत्र (Caste Certificate) चेकलिस्ट",
+        categories: [
+          {
+            title: "👤 पहचान और पता प्रमाण",
+            items: [
+              { id: "c_id_1", title: "आधार कार्ड (Aadhaar Card)", desc: "आवेदक का आधार कार्ड।" },
+              { id: "c_add_1", title: "राशन कार्ड / बिजली बिल", desc: "पते के प्रमाण के लिए।" }
+            ]
+          },
+          {
+            title: "📜 जाति का प्रमाण (Proof of Caste) - अनिवार्य",
+            items: [
+              { id: "c_caste_1", title: "पिता/रिश्तेदार का जाति प्रमाण पत्र", desc: "खून के रिश्ते (पिता, चाचा, भाई) का पुराना जाति प्रमाण पत्र।" },
+              { id: "c_caste_2", title: "ज़मीन के कागज़ (खतौनी / Land Records)", desc: "अगर पुराना जाति प्रमाण पत्र नहीं है, तो 1950 (SC/ST) या 1984 (OBC) से पहले का ज़मीन का रिकॉर्ड।" },
+              { id: "c_caste_3", title: "स्कूल लीविंग सर्टिफिकेट (TC)", desc: "जिसमें जाति का उल्लेख हो।" }
+            ]
+          },
+          {
+            title: "📸 अन्य",
+            items: [
+              { id: "c_oth_1", title: "स्व-घोषणा पत्र (Self Declaration)", desc: "निर्धारित प्रारूप में एफिडेविट।" },
+              { id: "c_oth_2", title: "पासपोर्ट साइज़ फोटो", desc: "2 रंगीन फोटो।" }
+            ]
+          }
+        ]
+      },
+      'domicile': {
+        title: "मूल निवास प्रमाण पत्र (Domicile Certificate) चेकलिस्ट",
+        categories: [
+          {
+            title: "👤 पहचान प्रमाण",
+            items: [
+              { id: "d_id_1", title: "आधार कार्ड (Aadhaar Card)", desc: "अनिवार्य।" }
+            ]
+          },
+          {
+            title: "🏠 निवास का प्रमाण (Proof of Residence) - 10+ साल का प्रमाण",
+            items: [
+              { id: "d_res_1", title: "बिजली / पानी का बिल", desc: "पुराना बिल जो साबित करे आप यहाँ कई सालों से रह रहे हैं।" },
+              { id: "d_res_2", title: "राशन कार्ड / वोटर लिस्ट में नाम", desc: "स्थानीय पते का प्रमाण।" },
+              { id: "d_res_3", title: "स्कूल/कॉलेज का सर्टिफिकेट", desc: "उसी राज्य से की गई पढ़ाई का प्रमाण।" }
+            ]
+          },
+          {
+            title: "📸 अन्य",
+            items: [
+              { id: "d_oth_1", title: "स्व-घोषणा पत्र (Self Declaration)", desc: "निवास की घोषणा।" },
+              { id: "d_oth_2", title: "पासपोर्ट साइज़ फोटो", desc: "2 रंगीन फोटो।" }
+            ]
+          }
+        ]
+      },
+      'passport': {
+        title: "नया पासपोर्ट (New Passport) चेकलिस्ट",
+        categories: [
+          {
+            title: "📅 जन्म तिथि प्रमाण (DOB Proof) - कोई एक",
+            items: [
+              { id: "p_dob_1", title: "जन्म प्रमाण पत्र (Birth Certificate)", desc: "नगर निगम से जारी।" },
+              { id: "p_dob_2", title: "10वीं की मार्कशीट (10th Marksheet)", desc: "बोर्ड द्वारा जारी।" },
+              { id: "p_dob_3", title: "आधार कार्ड / पैन कार्ड", desc: "जिसमें पूरी जन्मतिथि (DD/MM/YYYY) लिखी हो।" }
+            ]
+          },
+          {
+            title: "🏠 पता प्रमाण (Address Proof) - कोई एक",
+            items: [
+              { id: "p_add_1", title: "आधार कार्ड (Aadhaar Card)", desc: "पासपोर्ट पते और आधार पते में अंतर नहीं होना चाहिए।" },
+              { id: "p_add_2", title: "बिजली बिल / बैंक पासबुक", desc: "वर्तमान पते के साथ।" }
+            ]
+          },
+          {
+            title: "🎓 शिक्षा प्रमाण (ECNR के लिए)",
+            items: [
+              { id: "p_edu_1", title: "10वीं या उच्च शिक्षा की डिग्री", desc: "ECNR (Non-ECR) कैटेगरी के लिए अनिवार्य।" }
+            ]
+          }
+        ]
+      },
+      'dl': {
+        title: "लर्निंग ड्राइविंग लाइसेंस (Learner's DL) चेकलिस्ट",
+        categories: [
+          {
+            title: "📅 आयु प्रमाण (Age Proof)",
+            items: [
+              { id: "dl_age_1", title: "10वीं की मार्कशीट या जन्म प्रमाण पत्र", desc: "जन्म तिथि के लिए।" },
+              { id: "dl_age_2", title: "पैन कार्ड / पासपोर्ट", desc: "विकल्प के रूप में।" }
+            ]
+          },
+          {
+            title: "🏠 पता प्रमाण",
+            items: [
+              { id: "dl_add_1", title: "आधार कार्ड (Aadhaar Card)", desc: "आधार OTP के ज़रिए बिना RTO गए लाइसेंस बन सकता है।" }
+            ]
+          },
+          {
+            title: "⚕️ मेडिकल",
+            items: [
+              { id: "dl_med_1", title: "मेडिकल सर्टिफिकेट (Form 1A)", desc: "40 वर्ष से अधिक आयु के लोगों के लिए MBBS डॉक्टर द्वारा प्रमाणित अनिवार्य।" }
+            ]
+          }
+        ]
+      }
+    };
+
+    function generateChecklist() {
+      const select = document.getElementById('service-select');
+      const serviceId = select.value;
+      const resultDiv = document.getElementById('checklist-result');
+      const titleEl = document.getElementById('result-title');
+      const contentEl = document.getElementById('checklist-content');
+
+      if (!serviceId || !checklists[serviceId]) {
+        resultDiv.style.display = 'none';
+        return;
+      }
+
+      const data = checklists[serviceId];
+      titleEl.innerText = data.title;
+      
+      let html = '';
+      data.categories.forEach(cat => {
+        html += `<div class="checklist-category">
+                  <h3>${cat.title}</h3>`;
+        
+        cat.items.forEach(item => {
+          html += `<div class="doc-item">
+                     <input type="checkbox" id="${item.id}">
+                     <label for="${item.id}">
+                       <span class="doc-title">${item.title}</span>
+                       <span class="doc-desc">${item.desc}</span>
+                     </label>
+                   </div>`;
+        });
+        
+        html += `</div>`;
+      });
+
+      contentEl.innerHTML = html;
+      resultDiv.style.display = 'block';
+    }
+  </script>
 </body>
 </html>
