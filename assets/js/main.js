@@ -43,8 +43,18 @@ function rewriteInternalLinks(host) {
 async function includePartial(selector, url) {
   const host = document.querySelector(selector);
   if (!host) return;
+  
+  // If the partial was already inlined by the build script, don't overwrite it
+  // (prevents stale cache bugs and saves network requests).
+  if (host.innerHTML.trim() !== "") {
+    // The build script already rewrote links, but just in case, we can ensure events bind
+    return;
+  }
+
   try {
-    const res = await fetch(url);
+    // Cache bust during development/updates
+    const cacheBusterUrl = url + "?v=" + new Date().getTime();
+    const res = await fetch(cacheBusterUrl);
     host.innerHTML = await res.text();
     rewriteInternalLinks(host);
   } catch (err) {
