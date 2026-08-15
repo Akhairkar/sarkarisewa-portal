@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="canonical" href="https://sarkarisewaindia.com/tools/self-declaration-builder.html" />
+  <meta name="description" content="मुफ़्त में स्व-घोषणा पत्र (Self Declaration) और शपथ पत्र (Affidavit) बनाएँ। नाम परिवर्तन, गैप ईयर, और आय प्रमाण पत्र के लिए PDF जेनरेट करें।" />
+  <meta property="og:title" content="स्व-घोषणा पत्र निर्माता (Self Declaration PDF Builder) — SarkariSewa India" />
+  <meta property="og:description" content="1 मिनट में अपना Affidavit या Self Declaration बनाएँ और फ्री में PDF डाउनलोड करें।" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sarkarisewaindia.com/tools/self-declaration-builder.html" />
+  <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>स्व-घोषणा पत्र निर्माता (Self Declaration Builder) — SarkariSewa India</title>
+
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/module2.css" />
+  <link rel="stylesheet" href="../assets/css/module15.css" />
+  <link rel="stylesheet" href="../assets/css/module16.css" />
+  
+  <style>
+    .builder-container { display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; }
+    @media (min-width: 992px) {
+      .builder-container { flex-direction: row; align-items: flex-start; }
+      .builder-form { flex: 1; position: sticky; top: 20px; }
+      .builder-preview { flex: 1.2; }
+    }
+    
+    .builder-form { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .builder-form label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--color-text); font-size: 0.95rem; }
+    .builder-form input, .builder-form select, .builder-form textarea { width: 100%; padding: 10px; margin-bottom: 16px; border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-bg); color: var(--color-text); font-family: inherit; }
+    .builder-form input:focus, .builder-form select:focus, .builder-form textarea:focus { border-color: var(--color-primary); outline: none; }
+    
+    .builder-preview { background: #eef2f6; border: 1px dashed var(--color-border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+    [data-theme="dark"] .builder-preview { background: #0f172a; }
+    
+    .a4-paper { background: white; color: black; width: 100%; max-width: 210mm; min-height: 297mm; padding: 25mm 20mm; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 4px; box-sizing: border-box; line-height: 1.8; font-size: 14px; position: relative; }
+    
+    .doc-title { text-align: center; font-size: 18px; font-weight: bold; text-decoration: underline; margin-bottom: 30px; text-transform: uppercase; }
+    .doc-body { text-align: justify; margin-bottom: 40px; }
+    .doc-field { font-weight: bold; border-bottom: 1px dotted #000; padding: 0 5px; min-width: 50px; display: inline-block; text-align: center; }
+    
+    .doc-footer { display: flex; justify-content: space-between; margin-top: 60px; }
+    .doc-sign-box { text-align: center; }
+    .doc-sign-line { width: 150px; border-top: 1px solid black; margin-top: 50px; padding-top: 5px; }
+
+    .print-actions { margin-top: 20px; width: 100%; display: flex; gap: 10px; justify-content: center; }
+    
+    .placeholder-text { color: #94a3b8; font-style: italic; }
+
+    @media print {
+      body * { visibility: hidden; }
+      .a4-paper, .a4-paper * { visibility: visible; }
+      .a4-paper { position: absolute; left: 0; top: 0; width: 100%; max-width: none; min-height: auto; box-shadow: none; padding: 0; margin: 0; }
+      .print-actions, .builder-form, #site-header, #site-footer, .breadcrumb, .calculator-header, .info-card { display: none !important; }
+      @page { margin: 20mm; size: A4 portrait; }
+    }
+  </style>
+</head>
+<body data-slug="self-declaration-builder">
+  <script>window.SS_ROOT = "../";</script>
+
+  <div id="site-header">
+<div class="tricolor-rule"></div>
+<a class="skip-link" href="#main-content" data-i18n="skip_to_content">Skip to main content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark">S</span>
+      <span class="brand-text">
+        <span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
+        <span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../index.html" data-i18n="nav_home">Home</a></li>
+        <li><a href="../category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a></li>
+        <li><a href="../category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a></li>
+        <li><a href="../category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a></li>
+        <li><a href="../category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a></li>
+        <li><a href="../category/utilities.html" data-i18n="nav_utilities">Utilities</a></li>
+        <li><a href="../category/health.html" data-i18n="nav_health">Health</a></li>
+        <li><a href="../support/index.html" data-i18n="nav_support">Support</a></li>
+        <li><a href="../blog/index.html" data-i18n="nav_blog">Blog</a></li>
+        <li><a href="../jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a></li>
+        <li><a href="../exams/index.html" data-i18n="nav_examcal">Exam Calendar</a></li>
+        
+        <!-- Image Tools Dropdown -->
+        <li class="nav-dropdown">
+          <a href="../tools/index.html" class="nav-highlight nav-dropdown-toggle" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
+          <ul class="nav-dropdown-menu">
+            <li><a href="../tools/photo-resizer.html">🖼️ Govt Exam Photo Resizer</a></li>
+            <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+            <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+          </ul>
+        </li>
+
+        <!-- State Services Dropdown -->
+        <li class="nav-dropdown">
+          <a href="../states/index.html" class="nav-dropdown-toggle" data-i18n="nav_state_services">State Services 🏛️ ▾</a>
+          <ul class="nav-dropdown-menu">
+            <li><a href="../states/index.html">🗺️ All States Hub</a></li>
+            <li><a href="../states/uttar-pradesh.html">📍 Uttar Pradesh</a></li>
+            <li><a href="../states/maharashtra.html">📍 Maharashtra</a></li>
+            <li><a href="../states/bihar.html">📍 Bihar</a></li>
+            <li><a href="../states/rajasthan.html">📍 Rajasthan</a></li>
+            <li><a href="../states/madhya-pradesh.html">📍 Madhya Pradesh</a></li>
+          </ul>
+        </li>
+
+        <!-- Tools Dropdown Menu -->
+        <li class="nav-dropdown">
+          <a href="../tools/index.html" class="nav-highlight nav-dropdown-toggle" data-i18n="nav_tools">Tools & Calculators 🧮 ▾</a>
+          <ul class="nav-dropdown-menu">
+            <li><a href="../tools/index.html">🛠️ All Tools Hub</a></li>
+            <li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
+            <li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+            <li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+            <li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+            <li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
+            <li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
+            <li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
+            <li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
+            <li><a href="../tools/age-calculator.html">⏳ Age & Retirement Calculator</a></li>
+            <li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
+            <li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a class="icon-btn" href="../search.html" aria-label="Search">
+        <span aria-hidden="true">🔍</span>
+        <span class="visually-hidden" data-i18n="search_title">Search Services</span>
+      </a>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme">
+        <span id="theme-icon" aria-hidden="true">🌙</span>
+        <span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
+      </button>
+      <button class="icon-btn" id="lang-toggle" type="button">
+        <span data-i18n="lang_toggle">हिंदी</span>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Primary mobile">
+    <a href="../search.html" data-i18n="search_title">Search Services</a>
+    <a href="../index.html" data-i18n="nav_home">Home</a>
+    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
+    <a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
+    <a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
+    <a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
+    
+    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🧮 Tools & Calculators</div>
+    <a href="../tools/index.html" style="padding-left: 32px;">🛠️ All Tools Hub</a>
+    <a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
+    <a href="../tools/self-declaration-builder.html" style="padding-left: 32px;">📝 Self-Declaration Builder</a>
+    <a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
+    <a href="../tools/govt-card-clarifier.html" style="padding-left: 32px;">💳 Govt Card Clarifier</a>
+    <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
+    <a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
+    
+    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🏛️ State Services</div>
+    <a href="../states/index.html" style="padding-left: 32px;">🗺️ All States Hub</a>
+    <a href="../states/uttar-pradesh.html" style="padding-left: 32px;">📍 Uttar Pradesh</a>
+    <a href="../states/maharashtra.html" style="padding-left: 32px;">📍 Maharashtra</a>
+    <a href="../states/bihar.html" style="padding-left: 32px;">📍 Bihar</a>
+
+    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
+    <a href="../category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a>
+    <a href="../category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a>
+    <a href="../category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a>
+    <a href="../category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a>
+    <a href="../category/utilities.html" data-i18n="nav_utilities">Utilities</a>
+    <a href="../category/health.html" data-i18n="nav_health">Health</a>
+    
+    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
+    <a href="../support/index.html" data-i18n="nav_support">Support</a>
+    <a href="../blog/index.html" data-i18n="nav_blog">Blog</a>
+    <a href="../jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a>
+    <a href="../exams/index.html" data-i18n="nav_examcal">Exam Calendar</a>
+    <div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
+      <button class="btn btn--outline" id="mobile-theme-toggle" type="button" style="width:100%; justify-content:center; gap:8px;">
+        <span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
+      </button>
+    </div>
+  </nav>
+</header>
+</div>
+
+  <main class="container">
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="index.html">Tools & Calculators</a>
+      <span class="sep">/</span>
+      <span class="current">Self Declaration Builder</span>
+    </nav>
+
+    <div class="calculator-header text-center">
+      <h1 class="calculator-title">📝 स्व-घोषणा पत्र निर्माता (Self Declaration PDF Builder)</h1>
+      <p class="calculator-desc">सरकारी कामों के लिए आवश्यक Affidavit या स्व-घोषणा पत्र बनाएँ और मुफ्त में PDF डाउनलोड करें।</p>
+    </div>
+
+    <div class="builder-container">
+      <div class="builder-form">
+        <label for="template-select">टेम्पलेट चुनें (Select Template):</label>
+        <select id="template-select" onchange="updateTemplate()">
+          <option value="income">आय प्रमाण पत्र हेतु स्व-घोषणा (Income Declaration)</option>
+          <option value="name_change">नाम परिवर्तन शपथ पत्र (Name Change Affidavit)</option>
+          <option value="gap_year">गैप ईयर सर्टिफिकेट (Gap Year Affidavit)</option>
+          <option value="noc">सामान्य अनापत्ति प्रमाण पत्र (General NOC)</option>
+          <option value="address">पता परिवर्तन स्व-घोषणा (Address Change)</option>
+        </select>
+
+        <label for="f_name">आपका पूरा नाम (Your Name):</label>
+        <input type="text" id="f_name" placeholder="उदा. Rahul Kumar" oninput="updatePreview()" />
+
+        <label for="f_fname">पिता/पति का नाम (Father/Husband Name):</label>
+        <input type="text" id="f_fname" placeholder="उदा. Suresh Kumar" oninput="updatePreview()" />
+
+        <div style="display: flex; gap: 10px;">
+          <div style="flex:1;">
+            <label for="f_age">आयु (Age):</label>
+            <input type="number" id="f_age" placeholder="उदा. 25" oninput="updatePreview()" />
+          </div>
+          <div style="flex:2;">
+            <label for="f_date">दिनांक (Date):</label>
+            <input type="date" id="f_date" oninput="updatePreview()" />
+          </div>
+        </div>
+
+        <label for="f_address">पूरा पता (Full Address):</label>
+        <textarea id="f_address" rows="3" placeholder="मकान नं, गली, शहर, पिनकोड" oninput="updatePreview()"></textarea>
+
+        <div id="dynamic-fields">
+          <!-- Dynamic fields injected here based on template -->
+        </div>
+
+        <div class="alert alert--info" style="margin-top: 10px; font-size: 0.85rem;">
+          💡 <strong>सुझाव:</strong> यह एक स्टैंडर्ड ड्राफ्ट है। PDF डाउनलोड करने के बाद आप इसे ₹10/₹50 के स्टाम्प पेपर पर प्रिंट करवा सकते हैं (यदि नोटरी करवानी हो)।
+        </div>
+      </div>
+
+      <div class="builder-preview">
+        <div class="a4-paper" id="pdf-content">
+          <div class="doc-title" id="p_title">SELF DECLARATION</div>
+          
+          <div class="doc-body" id="p_body">
+            I, <span class="doc-field" id="p_name">__________</span>, Son/Daughter/Wife of <span class="doc-field" id="p_fname">__________</span>, aged about <span class="doc-field" id="p_age">___</span> years, residing at <span class="doc-field" id="p_address">____________________________________________________________</span>, do hereby solemnly affirm and declare as follows:<br><br>
+            
+            <div id="p_dynamic_content">
+              1. That I am a citizen of India.<br>
+              2. <span class="placeholder-text">[कृपया बाईं ओर फॉर्म भरें]</span>
+            </div>
+            <br>
+            That the statements made above are true to the best of my knowledge and belief, and nothing has been concealed therein.
+          </div>
+          
+          <div class="doc-footer">
+            <div>
+              <strong>Date:</strong> <span class="doc-field" id="p_date">__________</span><br>
+              <strong>Place:</strong> <span class="doc-field" id="p_place">__________</span>
+            </div>
+            <div class="doc-sign-box">
+              <div class="doc-sign-line">Signature of Deponent</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-actions">
+          <button class="btn btn--primary" onclick="window.print()" style="font-size: 1.1rem; padding: 12px 24px;">🖨️ Print / Save as PDF</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="site-footer">
+<footer class="site-footer">
+  <div class="tricolor-rule"></div>
+  <div class="container" style="padding-top:36px;">
+    <div class="footer-disclaimer-banner" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
+      <h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
+    </div>
+    <div class="footer-grid">
+      <div>
+        <h4 data-i18n="site_name">SarkariSewa India</h4>
+        <p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
+      </div>
+      <div>
+        <h4 data-i18n="footer_links_title">Quick Links</h4>
+        <ul>
+          <li><a href="../tools/index.html">🧮 Tools & Calculators</a></li>
+          <li><a href="../tools/document-checklist.html">📋 Document Checklist Generator</a></li>
+          <li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration PDF Builder</a></li>
+          <li><a href="../tools/photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
+          <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+          <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+          <li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+          <li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+          <li><a href="../project-report/index.html" data-i18n="nav_project_report">Project Report Generator</a></li>
+          <li><a href="../states/index.html" data-i18n="states_hub_title">State-wise Popular Services</a></li>
+          <li><a href="../about.html" data-i18n="footer_about_link">About</a></li>
+          <li><a href="../contact.html" data-i18n="footer_contact_link">Contact</a></li>
+          <li><a href="../sitemap.html" data-i18n="footer_sitemap_link">Sitemap</a></li>
+          <li><a href="../faq.html" data-i18n="footer_faq_link">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_legal_title">Legal</h4>
+        <ul>
+          <li><a href="../privacy-policy.html" data-i18n="privacy_title">Privacy Policy</a></li>
+          <li><a href="../disclaimer.html" data-i18n="disclaimer_title">Disclaimer</a></li>
+          <li><a href="../terms.html" data-i18n="terms_title">Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_support_title">Support</h4>
+        <ul>
+          <li><a href="../support/index.html" data-i18n="footer_support_home_link">Support Home</a></li>
+          <li><a href="../support/state-wise-services.html" data-i18n="footer_state_link">State-wise Services</a></li>
+          <li><a href="../support/helpline-directory.html" data-i18n="footer_helpline_link">Helpline Directory</a></li>
+          <li><a href="../support/rti-guide.html" data-i18n="footer_rti_link">RTI Guide</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer_contact_title">Contact</h4>
+        <ul>
+          <li><a href="../contact.html" data-i18n="footer_contact_form_link">Contact form</a></li>
+          <li><a href="../admin/login.html" data-i18n="admin_link">Staff Login</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
+    </div>
+  </div>
+</footer>
+<div class="ss-wa-wrapper" id="ss-wa-wrapper">
+  <button id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" aria-label="Close" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
+  <a href="https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g" target="_blank" rel="noopener noreferrer" class="ss-wa-floating-bar" aria-label="Join our WhatsApp Channel">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+    <span data-i18n="wa_join" style="font-weight: 600;">Join WhatsApp Channel</span>
+  </a>
+</div>
+</div>
+
+  <script src="../assets/js/main.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('../partials/header.html').then(r => r.text()).then(html => {
+        document.getElementById('site-header').innerHTML = html;
+      });
+      fetch('../partials/footer.html').then(r => r.text()).then(html => {
+        document.getElementById('site-footer').innerHTML = html;
+      });
+      
+      // Set today's date
+      document.getElementById('f_date').valueAsDate = new Date();
+      updateTemplate();
+    });
+
+    const templates = {
+      'income': {
+        title: "SELF DECLARATION FOR INCOME CERTIFICATE",
+        extraFields: [
+          { id: "e_income", label: "वार्षिक आय (Annual Family Income in ₹):", type: "number", placeholder: "उदा. 150000" },
+          { id: "e_source", label: "आय का मुख्य स्रोत (Source of Income):", type: "text", placeholder: "उदा. Agriculture / Private Job" }
+        ],
+        bodyGenerator: (data) => `
+          1. That I am a citizen of India and a permanent resident of the above-mentioned address.<br>
+          2. That my total family annual income from all sources (including ${data.e_source || '<span class="placeholder-text">[Source]</span>'}) is ₹<span class="doc-field">${data.e_income || '________'}</span> for the current financial year.<br>
+          3. That I need an Income Certificate for the purpose of availing government scheme benefits / educational scholarships.<br>
+          4. That no other member of my family pays income tax.
+        `
+      },
+      'name_change': {
+        title: "AFFIDAVIT FOR CHANGE OF NAME",
+        extraFields: [
+          { id: "e_oldname", label: "पुराना नाम (Old Name):", type: "text", placeholder: "उदा. Rahul" },
+          { id: "e_newname", label: "नया नाम (New Name):", type: "text", placeholder: "उदा. Rahul Kumar" },
+          { id: "e_reason", label: "नाम बदलने का कारण (Reason):", type: "text", placeholder: "उदा. Spelling correction in Aadhaar" }
+        ],
+        bodyGenerator: (data) => `
+          1. That my old name was recorded as <span class="doc-field">${data.e_oldname || '__________'}</span> in my documents.<br>
+          2. That I have now changed my name from <span class="doc-field">${data.e_oldname || '__________'}</span> to <span class="doc-field">${data.e_newname || '__________'}</span>.<br>
+          3. That the reason for this name change is <span class="doc-field">${data.e_reason || '____________________'}</span>.<br>
+          4. That hereafter, I shall be known and addressed by my new name <span class="doc-field">${data.e_newname || '__________'}</span> for all official and non-official purposes.<br>
+          5. That both the names belong to one and the same person.
+        `
+      },
+      'gap_year': {
+        title: "AFFIDAVIT FOR GAP YEAR",
+        extraFields: [
+          { id: "e_lastcourse", label: "अंतिम कोर्स (Last Course Completed):", type: "text", placeholder: "उदा. 12th Standard" },
+          { id: "e_passyear", label: "पास करने का वर्ष (Passing Year):", type: "number", placeholder: "उदा. 2024" },
+          { id: "e_gapreason", label: "गैप का कारण (Reason for Gap):", type: "text", placeholder: "उदा. Preparation for NEET/JEE" }
+        ],
+        bodyGenerator: (data) => `
+          1. That I have completed my <span class="doc-field">${data.e_lastcourse || '__________'}</span> in the year <span class="doc-field">${data.e_passyear || '____'}</span>.<br>
+          2. That after passing the said examination, I did not join any regular college/institution.<br>
+          3. That the gap between my last qualification and present admission is due to <span class="doc-field">${data.e_gapreason || '____________________'}</span>.<br>
+          4. That during this gap period, I was neither involved in any illegal activity nor was any criminal case registered against me.
+        `
+      },
+      'noc': {
+        title: "NO OBJECTION CERTIFICATE (NOC)",
+        extraFields: [
+          { id: "e_party", label: "किसके पक्ष में (In favor of):", type: "text", placeholder: "उदा. State Electricity Board" },
+          { id: "e_purpose", label: "किस काम के लिए (Purpose):", type: "text", placeholder: "उदा. Installation of new electricity meter" }
+        ],
+        bodyGenerator: (data) => `
+          1. That I am the absolute and lawful owner of the property located at the address mentioned above.<br>
+          2. That I have no objection whatsoever if <span class="doc-field">${data.e_party || '__________'}</span> grants permission/approval for <span class="doc-field">${data.e_purpose || '______________________________'}</span> at my premises.<br>
+          3. That this NOC is being issued voluntarily without any pressure or coercion.
+        `
+      },
+      'address': {
+        title: "SELF DECLARATION FOR ADDRESS PROOF",
+        extraFields: [
+          { id: "e_stay_years", label: "कितने साल से रह रहे हैं? (Years of Stay):", type: "number", placeholder: "उदा. 10" },
+          { id: "e_purpose", label: "प्रयोजन (Purpose):", type: "text", placeholder: "उदा. Aadhaar Address Update / Bank Account" }
+        ],
+        bodyGenerator: (data) => `
+          1. That I am a citizen of India.<br>
+          2. That I have been residing at the above-mentioned address for the past <span class="doc-field">${data.e_stay_years || '___'}</span> years.<br>
+          3. That I am submitting this self-declaration as a proof of address for the purpose of <span class="doc-field">${data.e_purpose || '____________________'}</span>.<br>
+          4. That if the said address is found incorrect, I shall be solely responsible for the consequences.
+        `
+      }
+    };
+
+    function updateTemplate() {
+      const tplId = document.getElementById('template-select').value;
+      const tpl = templates[tplId];
+      
+      const dynamicContainer = document.getElementById('dynamic-fields');
+      dynamicContainer.innerHTML = '';
+      
+      if (tpl.extraFields) {
+        tpl.extraFields.forEach(f => {
+          dynamicContainer.innerHTML += `
+            <label for="${f.id}">${f.label}</label>
+            <input type="${f.type}" id="${f.id}" placeholder="${f.placeholder}" oninput="updatePreview()" />
+          `;
+        });
+      }
+      updatePreview();
+    }
+
+    function updatePreview() {
+      const val = (id) => document.getElementById(id) ? document.getElementById(id).value.trim() : '';
+      const setTxt = (id, defaultTxt, valTxt) => {
+        document.getElementById(id).innerText = valTxt || defaultTxt;
+      };
+
+      setTxt('p_name', '__________', val('f_name'));
+      setTxt('p_fname', '__________', val('f_fname'));
+      setTxt('p_age', '___', val('f_age'));
+      setTxt('p_address', '____________________________________________________________', val('f_address'));
+      
+      const dateVal = val('f_date');
+      setTxt('p_date', '__________', dateVal ? new Date(dateVal).toLocaleDateString('en-IN') : '');
+      
+      const cityMatch = val('f_address').split(',').pop().trim();
+      setTxt('p_place', '__________', cityMatch || '');
+
+      const tplId = document.getElementById('template-select').value;
+      const tpl = templates[tplId];
+      
+      document.getElementById('p_title').innerText = tpl.title;
+      
+      // Gather extra data
+      const extraData = {};
+      if (tpl.extraFields) {
+        tpl.extraFields.forEach(f => {
+          extraData[f.id] = val(f.id);
+        });
+      }
+      
+      document.getElementById('p_dynamic_content').innerHTML = tpl.bodyGenerator(extraData);
+    }
+  </script>
+</body>
+</html>
