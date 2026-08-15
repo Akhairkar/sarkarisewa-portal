@@ -176,15 +176,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Auto-scroll logic
     const currentSpan = document.getElementById(`word-${currentWordIndex}`);
     if (currentSpan) {
-      const containerTop = textDisplay.scrollTop;
-      const containerBottom = containerTop + textDisplay.clientHeight;
       const spanTop = currentSpan.offsetTop;
-      const spanBottom = spanTop + currentSpan.offsetHeight;
+      const containerScrollTop = textDisplay.scrollTop;
+      const containerHeight = textDisplay.clientHeight;
       
-      if (spanBottom > containerBottom) {
-        textDisplay.scrollTop += 50;
-      } else if (spanTop < containerTop) {
-        textDisplay.scrollTop -= 50;
+      // If the word goes past the middle of the container, scroll so it stays near the middle
+      if (spanTop > containerScrollTop + (containerHeight / 2)) {
+        textDisplay.scrollTop = spanTop - (containerHeight / 3);
+      } else if (spanTop < containerScrollTop) {
+        textDisplay.scrollTop = spanTop - 20;
       }
     }
     
