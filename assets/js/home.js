@@ -186,11 +186,11 @@ async function renderHomeDailyUpdates() {
       return `
         <article class="service-card">
           <div style="font-size: 0.8rem; color: var(--color-text-light); margin-bottom: 0.5rem;">
-            <strong>${update.source_name}</strong> • ${dateStr} • <span class="nav-badge" style="background:var(--color-primary); color:#fff; padding:2px 6px; border-radius:4px; font-size:11px;">${update.category}</span>
+            <strong>${update.source_name}</strong> • ${dateStr} • <span class="nav-badge">${update.category}</span>
           </div>
           <h3 style="font-size: 1.1rem; margin-top:0;">${title}</h3>
           <div class="service-links" style="margin-top: 1rem;">
-            <a href="${update.source_url}" target="_blank" rel="noopener noreferrer" class="official">
+            <a href="${ROOT}update.html?id=${update.id}" class="official">
               ${lang === "hi" ? "पूरा पढ़ें →" : "Read Full →"}
             </a>
           </div>
