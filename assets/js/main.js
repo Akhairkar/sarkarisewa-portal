@@ -1,5 +1,5 @@
 /* =========================================================
-   SarkariSewa Portal — core.js
+   SarkariSewa India — core.js
    Runs on every page. Responsibilities:
    1. Inject header/footer partials
    2. Apply saved theme (dark/light)
