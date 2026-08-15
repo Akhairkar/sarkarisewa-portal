@@ -353,8 +353,8 @@
     </nav>
     
     <div class="page-header">
-      <h1 class="page-title">Sarkari Scheme Eligibility Engine</h1>
-      <p class="page-desc">Answer a few simple questions to instantly find which government schemes, subsidies, and scholarships you are eligible for.</p>
+      <h1 class="page-title" data-i18n="ee_title">Sarkari Scheme Eligibility Engine</h1>
+      <p class="page-desc" data-i18n="ee_desc">Answer a few simple questions to instantly find which government schemes, subsidies, and scholarships you are eligible for.</p>
     </div>
     
     <div class="wizard-container">
@@ -370,31 +370,31 @@
         <!-- STEP 1: Personal Details -->
         <div class="wizard-step active" id="step1">
           <div class="wizard-header">
-            <h2>Personal Details</h2>
-            <p>Tell us about yourself to find age and gender specific schemes.</p>
+            <h2 data-i18n="ee_step1_title">Personal Details</h2>
+            <p data-i18n="ee_step1_desc">Tell us about yourself to find age and gender specific schemes.</p>
           </div>
           <div class="form-grid">
             <div class="form-group">
-              <label for="age">Age (in years)</label>
-              <input type="number" id="age" name="age" class="form-control" min="0" max="120" placeholder="e.g. 25" required>
+              <label for="age" data-i18n="ee_age">Age (in years)</label>
+              <input type="number" id="age" name="age" class="form-control" min="0" max="120" placeholder="e.g. 25" data-i18n-placeholder="ee_age_ph" required>
             </div>
             <div class="form-group">
-              <label for="gender">Gender</label>
+              <label for="gender" data-i18n="ee_gender">Gender</label>
               <select id="gender" name="gender" class="form-control" required>
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other / Transgender</option>
+                <option value="" data-i18n="ee_gender_select">Select Gender</option>
+                <option value="Male" data-i18n="ee_gender_male">Male</option>
+                <option value="Female" data-i18n="ee_gender_female">Female</option>
+                <option value="Other" data-i18n="ee_gender_other">Other / Transgender</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="maritalStatus">Marital Status</label>
+              <label for="maritalStatus" data-i18n="ee_marital">Marital Status</label>
               <select id="maritalStatus" name="maritalStatus" class="form-control" required>
-                <option value="">Select Status</option>
-                <option value="Unmarried">Single / Unmarried</option>
-                <option value="Married">Married</option>
-                <option value="Widowed">Widowed</option>
-                <option value="Divorced">Divorced</option>
+                <option value="" data-i18n="ee_marital_select">Select Status</option>
+                <option value="Unmarried" data-i18n="ee_marital_single">Single / Unmarried</option>
+                <option value="Married" data-i18n="ee_marital_married">Married</option>
+                <option value="Widowed" data-i18n="ee_marital_widowed">Widowed</option>
+                <option value="Divorced" data-i18n="ee_marital_divorced">Divorced</option>
               </select>
             </div>
           </div>
@@ -403,19 +403,19 @@
         <!-- STEP 2: Socio-Economic Details -->
         <div class="wizard-step" id="step2">
           <div class="wizard-header">
-            <h2>Socio-Economic Details</h2>
-            <p>Help us find financial assistance and category-specific benefits.</p>
+            <h2 data-i18n="ee_step2_title">Socio-Economic Details</h2>
+            <p data-i18n="ee_step2_desc">Help us find financial assistance and category-specific benefits.</p>
           </div>
           <div class="form-grid">
             <div class="form-group">
-              <label for="income">Annual Family Income (₹)</label>
-              <input type="number" id="income" name="income" class="form-control" min="0" step="10000" placeholder="e.g. 250000" required>
-              <div class="form-hint">Total income of all earning family members.</div>
+              <label for="income" data-i18n="ee_income">Annual Family Income (₹)</label>
+              <input type="number" id="income" name="income" class="form-control" min="0" step="10000" placeholder="e.g. 250000" data-i18n-placeholder="ee_income_ph" required>
+              <div class="form-hint" data-i18n="ee_income_hint">Total income of all earning family members.</div>
             </div>
             <div class="form-group">
-              <label for="caste">Category / Caste</label>
+              <label for="caste" data-i18n="ee_caste">Category / Caste</label>
               <select id="caste" name="caste" class="form-control" required>
-                <option value="">Select Category</option>
+                <option value="" data-i18n="ee_caste_select">Select Category</option>
                 <option value="General">General</option>
                 <option value="OBC">OBC</option>
                 <option value="SC">SC</option>
@@ -424,16 +424,16 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="occupation">Primary Occupation</label>
+              <label for="occupation" data-i18n="ee_occupation">Primary Occupation</label>
               <select id="occupation" name="occupation" class="form-control" required>
-                <option value="">Select Occupation</option>
-                <option value="Student">Student</option>
-                <option value="Farmer">Farmer / Agriculture</option>
-                <option value="Unorganized Worker">Unorganized Worker / Laborer</option>
-                <option value="Artisan">Artisan / Craftsman</option>
-                <option value="Business">Business / Self-employed</option>
-                <option value="Salaried">Salaried Employee</option>
-                <option value="Unemployed">Unemployed</option>
+                <option value="" data-i18n="ee_occ_select">Select Occupation</option>
+                <option value="Student" data-i18n="ee_occ_student">Student</option>
+                <option value="Farmer" data-i18n="ee_occ_farmer">Farmer / Agriculture</option>
+                <option value="Unorganized Worker" data-i18n="ee_occ_worker">Unorganized Worker / Laborer</option>
+                <option value="Artisan" data-i18n="ee_occ_artisan">Artisan / Craftsman</option>
+                <option value="Business" data-i18n="ee_occ_business">Business / Self-employed</option>
+                <option value="Salaried" data-i18n="ee_occ_salaried">Salaried Employee</option>
+                <option value="Unemployed" data-i18n="ee_occ_unemployed">Unemployed</option>
               </select>
             </div>
           </div>
@@ -442,21 +442,21 @@
         <!-- STEP 3: Location -->
         <div class="wizard-step" id="step3">
           <div class="wizard-header">
-            <h2>Location</h2>
-            <p>Find schemes specific to your state of residence.</p>
+            <h2 data-i18n="ee_step3_title">Location</h2>
+            <p data-i18n="ee_step3_desc">Find schemes specific to your state of residence.</p>
           </div>
           <div class="form-group">
-            <label for="state">State / UT</label>
+            <label for="state" data-i18n="ee_state">State / UT</label>
             <select id="state" name="state" class="form-control" required>
-              <option value="">Select State</option>
-              <option value="All">Central Govt (All States)</option>
+              <option value="" data-i18n="ee_state_select">Select State</option>
+              <option value="All" data-i18n="ee_state_all">Central Govt (All States)</option>
               <!-- State specific logic can be expanded here -->
-              <option value="Uttar Pradesh">Uttar Pradesh</option>
-              <option value="Maharashtra">Maharashtra</option>
-              <option value="Bihar">Bihar</option>
-              <option value="Rajasthan">Rajasthan</option>
-              <option value="Madhya Pradesh">Madhya Pradesh</option>
-              <option value="Other">Other State</option>
+              <option value="Uttar Pradesh" data-i18n="ee_state_up">Uttar Pradesh</option>
+              <option value="Maharashtra" data-i18n="ee_state_mh">Maharashtra</option>
+              <option value="Bihar" data-i18n="ee_state_bh">Bihar</option>
+              <option value="Rajasthan" data-i18n="ee_state_rj">Rajasthan</option>
+              <option value="Madhya Pradesh" data-i18n="ee_state_mp">Madhya Pradesh</option>
+              <option value="Other" data-i18n="ee_state_other">Other State</option>
             </select>
           </div>
         </div>
@@ -464,8 +464,8 @@
         <!-- STEP 4: Results -->
         <div class="wizard-step" id="step4">
           <div class="wizard-header">
-            <h2>Your Eligible Schemes</h2>
-            <p id="resultsSummary">Analyzing your profile against our database...</p>
+            <h2 data-i18n="ee_step4_title">Your Eligible Schemes</h2>
+            <p id="resultsSummary" data-i18n="ee_step4_desc">Analyzing your profile against our database...</p>
           </div>
           <div id="resultsContainer" class="results-grid">
             <!-- Results injected here -->
@@ -474,11 +474,11 @@
         
         <!-- Actions -->
         <div class="wizard-actions">
-          <button type="button" class="btn btn--outline" id="btnPrev" style="display: none;">← Previous</button>
+          <button type="button" class="btn btn--outline" id="btnPrev" style="display: none;" data-i18n="ee_btn_prev">← Previous</button>
           <div style="flex-grow: 1;"></div>
-          <button type="button" class="btn btn--primary" id="btnNext">Next Step →</button>
-          <button type="button" class="btn btn--primary" id="btnSubmit" style="display: none;">Check Eligibility 🚀</button>
-          <button type="button" class="btn btn--outline" id="btnReset" style="display: none;" onclick="location.reload()">Start Over 🔄</button>
+          <button type="button" class="btn btn--primary" id="btnNext" data-i18n="ee_btn_next">Next Step →</button>
+          <button type="button" class="btn btn--primary" id="btnSubmit" style="display: none;" data-i18n="ee_btn_submit">Check Eligibility 🚀</button>
+          <button type="button" class="btn btn--outline" id="btnReset" style="display: none;" onclick="location.reload()" data-i18n="ee_btn_reset">Start Over 🔄</button>
         </div>
         
       </form>
@@ -676,19 +676,31 @@
         
         container.innerHTML = '';
         
+        const dict = (window.SITE && window.SITE.langData && window.SITE.langData[window.SITE.lang]) || {};
+        
+        const t_no_match_title = dict["ee_no_match_title"] || "No Exact Matches Found";
+        const t_no_match_desc = dict["ee_no_match_desc"] || "We couldn't find any specific schemes matching all your criteria. Try adjusting your income or occupation.";
+        const t_no_match_summary = dict["ee_no_match_summary"] || "We couldn't find any exact matches based on your inputs.";
+        const t_match_sum_1 = dict["ee_match_summary_1"] || "Great news! Based on your profile, you are eligible for ";
+        const t_match_sum_2 = dict["ee_match_summary_2"] || " government schemes.";
+        const t_benefit_upto = dict["ee_benefit_upto"] || "Up to ₹";
+        const t_benefit = dict["ee_benefit"] || " Benefit";
+        const t_benefit_var = dict["ee_benefit_var"] || "Variable / Non-Cash Benefit";
+        const t_view_details = dict["ee_view_details"] || "View Details & Apply";
+
         if (schemes.length === 0) {
-          summary.textContent = "We couldn't find any exact matches based on your inputs.";
+          summary.textContent = t_no_match_summary;
           container.innerHTML = `
             <div class="empty-state" style="grid-column: 1 / -1;">
               <div class="empty-state-icon">🔍</div>
-              <h3>No Exact Matches Found</h3>
-              <p>We couldn't find any specific schemes matching all your criteria. Try adjusting your income or occupation.</p>
+              <h3>${t_no_match_title}</h3>
+              <p>${t_no_match_desc}</p>
             </div>
           `;
           return;
         }
         
-        summary.innerHTML = `Great news! Based on your profile, you are eligible for <strong>${schemes.length}</strong> government schemes.`;
+        summary.innerHTML = `${t_match_sum_1}<strong>${schemes.length}</strong>${t_match_sum_2}`;
         
         schemes.forEach(scheme => {
           const card = document.createElement('div');
@@ -698,9 +710,9 @@
           
           let benefitHtml = '';
           if (scheme.benefitAmount) {
-            benefitHtml = `<div class="scheme-benefit">💰 Up to ₹${scheme.benefitAmount.toLocaleString('en-IN')} Benefit</div>`;
+            benefitHtml = `<div class="scheme-benefit">💰 ${t_benefit_upto}${scheme.benefitAmount.toLocaleString('en-IN')}${t_benefit}</div>`;
           } else {
-            benefitHtml = `<div class="scheme-benefit">📈 Variable / Non-Cash Benefit</div>`;
+            benefitHtml = `<div class="scheme-benefit">📈 ${t_benefit_var}</div>`;
           }
           
           card.innerHTML = `
@@ -708,7 +720,7 @@
             <h3 class="scheme-title">${scheme.title}</h3>
             <p class="scheme-desc">${scheme.description}</p>
             ${benefitHtml}
-            <a href="${scheme.url}" class="btn btn--outline" style="text-align: center; width: 100%;">View Details & Apply</a>
+            <a href="${scheme.url}" class="btn btn--outline" style="text-align: center; width: 100%;">${t_view_details}</a>
           `;
           container.appendChild(card);
         });

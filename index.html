@@ -217,10 +217,11 @@
       <h1 data-i18n="hero_title">कोई भी सरकारी सेवा खोजें। मिनटों में समझें।</h1>
       <p class="lead" data-i18n="hero_sub">92+ भारतीय सरकारी सेवाओं के लिए स्टेप-बाय-स्टेप गाइड, ज़रूरी दस्तावेज़, फीस और आधिकारिक लिंक — हिंदी और अंग्रेज़ी में।</p>
 
-      <form class="search-form" action="search.html" method="get" role="search">
+      <form class="search-form" action="search.html" method="get" role="search" style="position: relative;">
         <label for="hero-search" class="visually-hidden">Search</label>
-        <input type="search" id="hero-search" name="q" data-i18n-placeholder="nav_search_placeholder" placeholder="सेवा खोजें, जैसे आधार, पैन, पीएम किसान...">
+        <input type="search" id="hero-search" name="q" data-i18n-placeholder="nav_search_placeholder" placeholder="सेवा खोजें, जैसे आधार, पैन, पीएम किसान..." autocomplete="off">
         <button type="submit" data-i18n="hero_search_cta">खोजें</button>
+        <ul id="search-suggestions" class="search-suggestions" style="display: none;"></ul>
       </form>
 
       <div class="hero-cta">

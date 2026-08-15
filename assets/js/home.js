@@ -187,3 +187,92 @@ async function renderHomeDailyUpdates() {
 }
 
 document.addEventListener("ss:ready", renderHomeDailyUpdates);
+
+
+// ==========================================
+// Live Search Suggestions (Autocomplete)
+// ==========================================
+function initSearchAutocomplete() {
+  const searchInput = document.getElementById("hero-search");
+  const suggestionsBox = document.getElementById("search-suggestions");
+  if (!searchInput || !suggestionsBox) return;
+
+  // Utility to escape html
+  const escapeHTML = (str) => {
+    return (str || "").replace(/[&<>'"]/g, 
+      tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag])
+    );
+  };
+
+  searchInput.addEventListener("input", (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    if (!query) {
+      suggestionsBox.innerHTML = "";
+      suggestionsBox.style.display = "none";
+      return;
+    }
+
+    if (!SERVICES_DATA) return;
+
+    const lang = getLang();
+    
+    // Filter services based on query
+    const matches = SERVICES_DATA.filter(s => {
+      const nameEn = (s.name && s.name.en ? s.name.en.toLowerCase() : "");
+      const nameHi = (s.name && s.name.hi ? s.name.hi.toLowerCase() : "");
+      const descEn = (s.shortDescription && s.shortDescription.en ? s.shortDescription.en.toLowerCase() : "");
+      const descHi = (s.shortDescription && s.shortDescription.hi ? s.shortDescription.hi.toLowerCase() : "");
+      const tags = (s.tags || []).join(" ").toLowerCase();
+      
+      return nameEn.includes(query) || nameHi.includes(query) || tags.includes(query) || descEn.includes(query) || descHi.includes(query);
+    }).slice(0, 8); // top 8 results
+
+    if (matches.length === 0) {
+      suggestionsBox.innerHTML = `
+        <li style="padding: 10px 16px; color: var(--color-text-muted); font-size: 0.95rem;">
+          ${lang === 'hi' ? 'कोई परिणाम नहीं मिला' : 'No results found'}
+        </li>
+      `;
+      suggestionsBox.style.display = "block";
+      return;
+    }
+
+    suggestionsBox.innerHTML = matches.map(s => {
+      const href = ssServiceHref(ROOT, s);
+      const title = escapeHTML(t(s.name));
+      const desc = escapeHTML(t(s.shortDescription));
+      return `
+        <li class="search-suggestion-item">
+          <a href="${href}">
+            <span class="search-suggestion-title">${title}</span>
+            <span class="search-suggestion-desc">${desc.substring(0, 80)}${desc.length > 80 ? '...' : ''}</span>
+          </a>
+        </li>
+      `;
+    }).join("");
+    
+    suggestionsBox.style.display = "block";
+  });
+
+  // Hide when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+      suggestionsBox.style.display = "none";
+    }
+  });
+
+  // Show again on focus if query exists
+  searchInput.addEventListener("focus", () => {
+    if (searchInput.value.trim() && suggestionsBox.innerHTML.trim() !== "") {
+      suggestionsBox.style.display = "block";
+    }
+  });
+}
+
+document.addEventListener("ss:ready", initSearchAutocomplete);

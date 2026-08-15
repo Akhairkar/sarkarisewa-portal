@@ -404,6 +404,59 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 }
 .search-form button:hover { background: var(--color-brand-hover); }
 
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  margin-top: 8px;
+  box-shadow: var(--shadow-flyout);
+  max-height: 350px;
+  overflow-y: auto;
+  z-index: 100;
+  list-style: none;
+  padding: 8px 0;
+  text-align: left;
+}
+.search-suggestions:empty {
+  display: none !important;
+}
+.search-suggestion-item {
+  display: block;
+}
+.search-suggestion-item a {
+  display: block;
+  padding: 10px 16px;
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.search-suggestion-item a:hover, .search-suggestion-item a:focus {
+  background: rgba(0,0,0,0.03);
+  color: var(--color-primary);
+  outline: none;
+}
+[data-theme="dark"] .search-suggestion-item a:hover {
+  background: rgba(255,255,255,0.05);
+}
+.search-suggestion-item:last-child a {
+  border-bottom: none;
+}
+.search-suggestion-title {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.search-suggestion-desc {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
 .hero-cta { margin-top: 18px; }
 .btn {
   display: inline-block; padding: 11px 22px; border-radius: 8px;
