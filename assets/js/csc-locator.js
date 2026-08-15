@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let cscData = [];
 
   // Fetch JSON Data
-  fetch('../data/csc-centers.json')
+  fetch(`../data/csc-centers.json?v=${new Date().getTime()}`)
     .then(response => response.json())
     .then(data => {
       cscData = data;
