@@ -359,12 +359,6 @@
   <script src="../assets/js/main.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      fetch('../partials/header.html').then(r => r.text()).then(html => {
-        document.getElementById('site-header').innerHTML = html;
-      });
-      fetch('../partials/footer.html').then(r => r.text()).then(html => {
-        document.getElementById('site-footer').innerHTML = html;
-      });
       
       // Set today's date
       document.getElementById('f_date').valueAsDate = new Date();

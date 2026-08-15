@@ -305,12 +305,6 @@
   <script src="../assets/js/main.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      fetch('../partials/header.html').then(r => r.text()).then(html => {
-        document.getElementById('site-header').innerHTML = html;
-      });
-      fetch('../partials/footer.html').then(r => r.text()).then(html => {
-        document.getElementById('site-footer').innerHTML = html;
-      });
 
       const schemes = [
         {
@@ -388,6 +382,17 @@
           minMax: "₹1000 - कोई सीमा नहीं",
           tax: "कोई टैक्स छूट नहीं",
           tags: [],
+          url: "../category/finance-tax.html"
+        },
+        {
+          id: "potd",
+          title: "Post Office Time Deposit (POTD)",
+          subtitle: "पोस्ट ऑफिस एफडी (Fixed Deposit)",
+          rate: "7.5% (5-Year)",
+          lockin: "1, 2, 3, या 5 साल",
+          minMax: "₹1000 - कोई सीमा नहीं",
+          tax: "5-Year FD पर 80C के तहत छूट",
+          tags: ["tax", "short"],
           url: "../category/finance-tax.html"
         }
       ];
