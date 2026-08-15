@@ -219,7 +219,7 @@
      The full list (all states) is always shown on states/index.html via
      renderHub() above; "View all states →" links there.
      --------------------------------------------------------------------- */
-  const HOME_SPOTLIGHT_LIMIT = 5;
+  const HOME_SPOTLIGHT_LIMIT = 4;
 
   function renderHomeSpotlight() {
     const gridEl = document.getElementById("state-spotlight-grid");
