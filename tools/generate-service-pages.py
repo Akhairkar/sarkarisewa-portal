@@ -243,6 +243,34 @@ def faqs_block(service):
     return section("❓", "सामान्य प्रश्न (FAQs)", f'<div class="faq-list">{items}</div>')
 
 
+def fact_checking_block(service):
+    import urllib.parse
+    official_links = service.get("officialLinks") or []
+    domain = "Official Government Source"
+    url = "#"
+    if official_links and official_links[0].get("url"):
+        url = official_links[0].get("url")
+        try:
+            parsed = urllib.parse.urlparse(url)
+            domain = parsed.netloc
+            if domain.startswith("www."):
+                domain = domain[4:]
+        except Exception:
+            pass
+    date_str = service.get("lastVerified") or "Verification Pending"
+    date_hi = "सत्यापन लंबित" if date_str == "Verification Pending" else date_str
+    
+    return section(
+        "🛡️", 
+        "तथ्य-जांच और स्रोत (Fact-Checking & Sources)", 
+        f'<div class="trust-box" style="background:var(--color-bg-alt); border:1px solid var(--color-border); border-radius:8px; padding:16px; margin-top:8px;">'
+        f'<p style="margin:0 0 8px 0; font-size:14px; color:var(--color-text);"><strong>Primary Source:</strong> <a href="{esc(url)}" target="_blank" rel="noopener">{esc(domain)}</a></p>'
+        f'<p style="margin:0 0 8px 0; font-size:14px; color:var(--color-text);"><strong>Last Verified:</strong> {esc(date_hi)}</p>'
+        f'<p style="margin:0; font-size:13px; color:var(--color-text-muted);">SarkariSewa India is an independent platform and not affiliated with the government. Information is sourced directly from official government portals.</p>'
+        f'</div>'
+    )
+
+
 def section(icon, title, inner_html):
     return f'''
       <section class="service-section">
@@ -329,6 +357,7 @@ def build_page(service, category, services_by_slug):
                 fees_block(service),
                 timeline_block(service),
                 faqs_block(service),
+                fact_checking_block(service),
             ],
         )
     )
