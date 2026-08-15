@@ -532,6 +532,153 @@ def build_page(service, category, services_by_slug):
 '''
 
 
+
+def quick_info_block(service):
+    dept = esc(t(service.get("departmentLabel", "विभिन्न विभाग")))
+    mode = "ऑनलाइन (Online)" if service.get("applyOnline") else "ऑफलाइन (Offline)"
+    
+    official_links = service.get("officialLinks") or []
+    portal = "-"
+    if official_links and official_links[0].get("url"):
+        portal = f'<a href="{esc(official_links[0].get("url"))}" target="_blank" rel="noopener">Official Portal &nearr;</a>'
+        
+    return section(
+        "⚡", "त्वरित जानकारी (Quick Info)",
+        f'''
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+          <div style="background: var(--color-bg-alt); padding: 16px; border-radius: 8px;">
+            <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:4px;">विभाग (Department)</div>
+            <div style="font-weight:600;">{dept}</div>
+          </div>
+          <div style="background: var(--color-bg-alt); padding: 16px; border-radius: 8px;">
+            <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:4px;">आवेदन का प्रकार</div>
+            <div style="font-weight:600;">{mode}</div>
+          </div>
+          <div style="background: var(--color-bg-alt); padding: 16px; border-radius: 8px; grid-column: 1 / -1;">
+            <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:4px;">आधिकारिक पोर्टल</div>
+            <div style="font-weight:600;">{portal}</div>
+          </div>
+        </div>
+        '''
+    )
+
+def application_process_block(service):
+    html = apply_online_block(service)
+    if html:
+        return section("📝", "आवेदन प्रक्रिया (Application Process)", html.replace('class="service-section"', ''))
+    return ""
+
+def build_page_v2(service, category, services_by_slug):
+    slug = service.get("slug") or service.get("id")
+    name = t(service.get("name"))
+    summary = t(service.get("shortDescription"))
+    meta_desc = build_meta_description(name, summary)
+    title = f"{name} — SarkariSewa India"
+    canonical_url = f"{BASE_URL}/service/{slug}.html"
+
+    official_links = service.get("officialLinks") or []
+    cat_crumb = ""
+    if category:
+        cat_crumb = f'<a href="../category/{category["slug"]}.html">{esc(category["icon"])} {esc(t(category.get("name")))}</a><span class="sep">/</span>'
+
+    blocks = "".join(
+        filter(
+            None,
+            [
+                quick_info_block(service),
+                eligibility_block(service),
+                documents_block(service),
+                fees_block(service),
+                application_process_block(service),
+                timeline_block(service),
+                track_status_block(service),
+                faqs_block(service),
+                fact_checking_block(service),
+            ],
+        )
+    )
+
+    related_html, related_hidden = related_grid(service, services_by_slug)
+    header_html = rewrite_links(HEADER_PARTIAL.read_text(encoding="utf-8"), ROOT)
+    footer_html = rewrite_links(FOOTER_PARTIAL.read_text(encoding="utf-8"), ROOT)
+
+    official_links_sameas = ""
+    if official_links and official_links[0].get("url"):
+        urls_json = json.dumps([l.get("url") for l in official_links if l.get("url")], ensure_ascii=False)
+        official_links_sameas = f',\n          "sameAs": {urls_json}'
+
+    schema = f'''{{
+      "@context": "https://schema.org",
+      "@graph": [
+        {{
+          "@type": "GovernmentService",
+          "name": {json.dumps(name, ensure_ascii=False)},
+          "description": {json.dumps(summary, ensure_ascii=False)},
+          "url": {json.dumps(canonical_url, ensure_ascii=False)},
+          "serviceType": {json.dumps(name, ensure_ascii=False)},
+          "provider": {{ "@type": "GovernmentOrganization", "name": {json.dumps(t(service.get("departmentLabel", "Government of India")), ensure_ascii=False)} }}{official_links_sameas}
+        }}
+      ]
+    }}'''
+
+    return f'''<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="canonical" href="{esc(canonical_url)}" />
+  <meta name="description" content="{esc(meta_desc)}" />
+  <meta property="og:title" content="{esc(title)}" />
+  <meta property="og:description" content="{esc(meta_desc)}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="{esc(canonical_url)}" />
+  <title>{esc(title)}</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/module2.css" />
+  <link rel="stylesheet" href="../assets/css/module15.css" />
+  <link rel="stylesheet" href="../assets/css/module16.css" />
+  <style>
+    .v2-template .service-hero {{ padding-bottom: 0; border-bottom: none; text-align: left; }}
+    .v2-template h1 {{ font-size: 2.5rem; margin-bottom: 16px; }}
+    .v2-template .service-section {{ background: #fff; padding: 32px; border-radius: 12px; margin-bottom: 24px; border: 1px solid var(--color-border); }}
+    .v2-template .service-section__title {{ font-size: 1.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 16px; margin-bottom: 24px; }}
+  </style>
+  <script type="application/ld+json" id="service-schema">{schema}</script>
+</head>
+<body data-slug="{esc(slug)}" class="v2-template">
+  <script>window.SS_ROOT = "../";</script>
+  <div id="site-header">{header_html.strip()}</div>
+
+  <main class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span>
+      {cat_crumb}<span class="current">{esc(name)}</span>
+    </nav>
+
+    <section class="service-hero">
+      <h1 class="service-hero__title">{esc(name)}</h1>
+      <p class="service-hero__desc">{esc(summary)}</p>
+    </section>
+
+    <div id="service-sections">
+      {blocks}
+    </div>
+    
+    <section class="service-section" id="related-section" {"hidden" if related_hidden else ""}>
+      <h2 class="service-section__title"><span class="icon">🔗</span> संबंधित सेवाएं</h2>
+      <div class="related-grid" id="related-grid">{related_html}</div>
+    </section>
+  </main>
+
+  <div id="site-footer">{footer_html.strip()}</div>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>'''
 def main():
     services = json.loads(SERVICES_JSON.read_text(encoding="utf-8"))
     categories = json.loads(CATEGORIES_JSON.read_text(encoding="utf-8"))
@@ -543,7 +690,10 @@ def main():
     for service in services:
         slug = service.get("slug") or service.get("id")
         category = categories_by_slug.get(service.get("category"))
-        page_html = build_page(service, category, services_by_slug)
+        if service.get("migrated_v2"):
+            page_html = build_page_v2(service, category, services_by_slug)
+        else:
+            page_html = build_page(service, category, services_by_slug)
         out_path = OUT_DIR / f"{slug}.html"
         out_path.write_text(page_html, encoding="utf-8")
         written.append(str(out_path.relative_to(REPO_ROOT)))
