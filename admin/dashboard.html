@@ -168,5 +168,27 @@
       });
   }
 </script>
+
+<script>
+  // Fallback for browsers that don't support modern scroll-driven animations natively
+  if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) {
+    const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'scale(1) translateY(0)';
+            observer.unobserve(entry.target);
+          }
+        }
+      }, { threshold: 0.1 });
+
+    document.querySelectorAll('.dash-card').forEach((el) => {
+      el.style.opacity = 0;
+      el.style.transform = 'scale(0.95) translateY(15px)';
+      el.style.transition = 'all 0.5s ease-out';
+      observer.observe(el);
+    });
+  }
+</script>
 </body>
 </html>
