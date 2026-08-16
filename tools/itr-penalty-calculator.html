@@ -150,6 +150,7 @@
             <li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
             <li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
             <li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
+            <li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
             <li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
             <li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
             <li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
@@ -198,6 +199,7 @@
     <a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
     <a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
     <a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
+    <a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
     <a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
     <a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
     <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
@@ -229,9 +231,9 @@
     </div>
   </nav>
 </header>
-</div>
 
-  <main class="container" id="main-content">
+</div>
+<main class="container" id="main-content">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="../index.html">Home</a><span class="sep">/</span><a href="index.html">Tools</a><span class="sep">/</span><span class="current" data-i18n="tool_itr_title">ITR Penalty Calculator</span>
     </nav>
@@ -401,40 +403,8 @@
 </div>
 </div>
 
-  <script src="../assets/js/pan-aadhaar-resolver.js"></script>
-
-  <!-- Script to load header and footer templates -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      fetch('../partials/header.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('header-placeholder').innerHTML = data;
-          // Apply JS logic for mobile menu and dropdowns manually after loading
-          const mobileToggle = document.querySelector('.mobile-menu-toggle');
-          const mainNav = document.querySelector('.main-nav');
-          if (mobileToggle && mainNav) {
-            mobileToggle.addEventListener('click', () => {
-              mainNav.classList.toggle('active');
-            });
-          }
-          const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle');
-          dropdownToggles.forEach(toggle => {
-            toggle.addEventListener('click', (e) => {
-              e.preventDefault();
-              const parent = e.target.parentElement;
-              parent.classList.toggle('active');
-            });
-          });
-        });
-
-      fetch('../partials/footer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('footer-placeholder').innerHTML = data;
-        })
-        .catch(() => console.log('Footer partial not found, standard script ignored.'));
-    });
-  </script>
+  <script src="../assets/js/main.js?v=2.5" defer></script>
+  <script src="../assets/js/consent.js" defer></script>
+  <script src="../assets/js/i18n-helper.js" defer></script>
 </body>
 </html>

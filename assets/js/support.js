@@ -121,7 +121,7 @@
         // Strip out non-numeric characters for the href, except for '+'
         const cleanNum = num.replace(/[^\d+]/g, '');
         // Return a styled pill that looks good in both light/dark themes
-        return `<a href="tel:${cleanNum}" class="helpline-link" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: 20px; color: var(--color-brand); font-weight: 600; text-decoration: none; font-size: 0.9rem; margin-right: 4px; margin-bottom: 4px; transition: all 0.2s;">📞 ${num}</a>`;
+        return `<a href="tel:${cleanNum}" class="helpline-link" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: 20px; color: var(--color-text); font-weight: 600; text-decoration: none; font-size: 0.9rem; margin-right: 4px; margin-bottom: 4px; transition: all 0.2s;">📞 ${num}</a>`;
       };
 
       if (typeof helpline === "string") return makeLink(helpline);
