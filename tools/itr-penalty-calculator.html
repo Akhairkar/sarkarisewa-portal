@@ -1,58 +1,66 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
-  <link rel="icon" href="../favicon.ico">
-  <link rel="manifest" href="../manifest.json">
-  <link rel="canonical" href="https://sarkarisewaindia.com/service/cg-ration-card.html" />
-  <meta name="description" content="PDS/NFSA के तहत पात्र छत्तीसगढ़ परिवारों को सब्सिडी वाला राशन देता है, और महतारी वंदन योजना जैसी योजनाओं के लिए एक मुख्य सहायक दस्तावेज़ है।" />
-  <meta property="og:title" content="राशन कार्ड (छत्तीसगढ़) — सरकारीसेवा इंडिया" />
-  <meta property="og:description" content="PDS/NFSA के तहत पात्र छत्तीसगढ़ परिवारों को सब्सिडी वाला राशन देता है, और महतारी वंदन योजना जैसी योजनाओं के लिए एक मुख्य सहायक दस्तावेज़ है।" />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://sarkarisewaindia.com/service/cg-ration-card.html" />
-  <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="राशन कार्ड (छत्तीसगढ़) — सरकारीसेवा इंडिया" />
-  <meta name="twitter:description" content="PDS/NFSA के तहत पात्र छत्तीसगढ़ परिवारों को सब्सिडी वाला राशन देता है, और महतारी वंदन योजना जैसी योजनाओं के लिए एक मुख्य सहायक दस्तावेज़ है।" />
-  <title>राशन कार्ड (छत्तीसगढ़) — सरकारीसेवा इंडिया</title>
+  <title>Late Filing Penalty Calculator (ITR) ⚖️ SarkariSewa India</title>
+  <meta name="description" content="Calculate your exact penalty and interest for filing your Income Tax Return (ITR) after the due date under section 234F and 234A.">
+  <link rel="canonical" href="https://sarkarisewaindia.com/tools/itr-penalty-calculator.html">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/module9.css">
+  <style>
+    .wizard-container { max-width: 800px; margin: 40px auto; background: var(--color-surface); padding: 32px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .wizard-title { font-size: 2rem; color: var(--color-brand); margin-bottom: 8px; text-align: center; }
+    .wizard-desc { text-align: center; color: var(--color-text-muted); margin-bottom: 32px; font-size: 1.05rem; }
+    
+    .wizard-step { display: none; animation: fadeIn 0.4s ease; }
+    .wizard-step.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .question-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 20px; color: var(--color-text); }
+    
+    .options-grid { display: grid; gap: 16px; margin-bottom: 24px; }
+    .option-btn { background: var(--color-surface-alt); border: 2px solid var(--color-border); padding: 16px 20px; border-radius: 10px; font-size: 1.05rem; font-weight: 500; cursor: pointer; text-align: left; transition: all 0.2s; display: flex; align-items: center; gap: 12px; color: var(--color-text); }
+    .option-btn:hover { border-color: var(--color-primary); background: var(--color-bg); }
+    .option-btn.selected { border-color: var(--color-primary); background: var(--color-surface); }
+    .option-icon { font-size: 1.5rem; }
+    
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 32px; border-top: 1px solid var(--color-border); padding-top: 24px; }
+    .btn-next { background: var(--color-brand); color: var(--color-brand-text); padding: 12px 24px; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; margin-left: auto; }
+    .btn-next:hover { background: var(--color-brand-hover); }
+    .btn-prev { background: var(--color-surface-alt); color: var(--color-text); padding: 12px 24px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; }
+    .btn-prev:hover { background: var(--color-border); }
 
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <link rel="stylesheet" href="../assets/css/module2.css" />
-  <link rel="stylesheet" href="../assets/css/module15.css" />
-  <link rel="stylesheet" href="../assets/css/module16.css" />
-  <link rel="stylesheet" href="../assets/css/share-widget.css" />
-  <script type="application/ld+json" id="service-schema">{
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "GovernmentService",
-          "name": "राशन कार्ड (छत्तीसगढ़)",
-          "description": "PDS/NFSA के तहत पात्र छत्तीसगढ़ परिवारों को सब्सिडी वाला राशन देता है, और महतारी वंदन योजना जैसी योजनाओं के लिए एक मुख्य सहायक दस्तावेज़ है।",
-          "url": "https://sarkarisewaindia.com/service/cg-ration-card.html",
-          "serviceType": "राशन कार्ड (छत्तीसगढ़)",
-          "areaServed": "छत्तीसगढ़",
-          "provider": { "@type": "GovernmentOrganization", "name": "खाद्य, नागरिक आपूर्ति एवं उपभोक्ता संरक्षण विभाग, छत्तीसगढ़" },
-          "sameAs": ["https://edistrict.cgstate.gov.in"]
-        },
-        {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sarkarisewaindia.com/index.html" },
-            { "@type": "ListItem", "position": 2, "name": "State-wise Services", "item": "https://sarkarisewaindia.com/states/index.html" },
-            { "@type": "ListItem", "position": 3, "name": "छत्तीसगढ़", "item": "https://sarkarisewaindia.com/states/chhattisgarh.html" },
-            { "@type": "ListItem", "position": 4, "name": "राशन कार्ड (छत्तीसगढ़)", "item": "https://sarkarisewaindia.com/service/cg-ration-card.html" }
-          ]
-        }
-      ]
-    }</script>
+    .result-box { background: var(--color-surface-alt); border: 2px solid var(--color-border); border-radius: 12px; padding: 32px; display: none; }
+    .result-box.active { display: block; }
+    .result-heading { font-size: 1.5rem; color: var(--color-text); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .result-step { background: var(--color-surface); padding: 20px; border-radius: 8px; border-left: 4px solid var(--color-primary); margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .result-step h4 { margin-top: 0; margin-bottom: 8px; color: var(--color-brand); }
+    .result-step p { margin: 0; color: var(--color-text-muted); font-size: 0.95rem; }
+    .official-link { display: inline-block; margin-top: 12px; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+    .official-link:hover { text-decoration: underline; }
+    
+    .penalty-warning { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.5); padding: 16px; border-radius: 8px; margin-top: 24px; display: flex; gap: 12px; align-items: flex-start; }
+    .penalty-warning p { margin: 0; font-size: 0.9rem; color: var(--color-text); }
+    
+    .btn-restart { display: block; width: 100%; text-align: center; margin-top: 24px; color: var(--color-text-muted); text-decoration: underline; cursor: pointer; background: none; border: none; font-size: 1rem; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PAN-Aadhaar Conflict Resolver Wizard",
+    "operatingSystem": "Any",
+    "applicationCategory": "UtilityApplication",
+    "description": "Interactive wizard to troubleshoot and resolve PAN-Aadhaar linking failures due to name mismatch, DOB mismatch, or payment issues.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+  }
+  </script>
 </head>
-<body data-slug="cg-ration-card">
+<body>
   <script>window.SS_ROOT = "../";</script>
-
   <div id="site-header">
 <div class="tricolor-rule"></div>
 <a class="skip-link" href="#main-content" data-i18n="skip_to_content">Skip to main content</a>
@@ -142,7 +150,6 @@
             <li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
             <li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
             <li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
-            <li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
             <li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
             <li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
             <li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
@@ -191,7 +198,6 @@
     <a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
     <a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
     <a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
-    <a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
     <a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
     <a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
     <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
@@ -223,70 +229,105 @@
     </div>
   </nav>
 </header>
-
 </div>
-<main class="container">
-    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
-      <a href="../index.html">Home</a>
-      <span class="sep">/</span>
-      <a href="../states/index.html">राज्यवार सेवाएं</a>
-      <span class="sep">/</span>
-      <a href="../states/chhattisgarh.html">छत्तीसगढ़</a>
-      <span class="sep">/</span>
-      <span class="current">राशन कार्ड (छत्तीसगढ़)</span>
+
+  <main class="container" id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><a href="index.html">Tools</a><span class="sep">/</span><span class="current" data-i18n="tool_itr_title">ITR Penalty Calculator</span>
     </nav>
-
-    <section class="service-hero" id="service-hero">
-      <span class="service-hero__badge">🌳 छत्तीसगढ़</span>
-      <h1 class="service-hero__title">राशन कार्ड (छत्तीसगढ़)</h1>
-      <p class="service-hero__dept mono">खाद्य, नागरिक आपूर्ति एवं उपभोक्ता संरक्षण विभाग, छत्तीसगढ़</p>
-      <p class="service-hero__desc">PDS/NFSA के तहत पात्र छत्तीसगढ़ परिवारों को सब्सिडी वाला राशन देता है, और महतारी वंदन योजना जैसी योजनाओं के लिए एक मुख्य सहायक दस्तावेज़ है।</p>
-      <div class="service-hero__actions">
-        <a class="btn btn--primary" href="https://edistrict.cgstate.gov.in" target="_blank" rel="noopener">आवेदन करें / आधिकारिक साइट</a>
-      </div>
-    </section>
-
     <div class="tricolor-rule" aria-hidden="true"></div>
 
-    <div id="service-sections">
-      
-      <section class="service-section">
-        <h2 class="service-section__title"><span class="icon">🔗</span> आधिकारिक लिंक</h2>
-        <ul class="link-list">
-      <li class="link-list__item">
-        <span class="link-list__label">ई-डिस्ट्रिक्ट छत्तीसगढ़ पर अप्लाई करें →</span>
-        <a class="link-list__go" href="https://edistrict.cgstate.gov.in" target="_blank" rel="noopener">Visit &rarr;</a>
-      </li></ul>
-      </section>
-    
-      <section class="service-section">
-        <h2 class="service-section__title"><span class="icon">📋</span> ज़रूरी दस्तावेज़</h2>
-        <ul class="check-list"><li>सभी परिवार सदस्यों का आधार कार्ड</li><li>निवास प्रमाण</li><li>पासपोर्ट साइज़ फोटो</li></ul>
-      </section>
-    
-      <section class="service-section">
-        <h2 class="service-section__title"><span class="icon">✅</span> पात्रता</h2>
-        <ul class="check-list"><li>छत्तीसगढ़ निवासी परिवार, जिसका कहीं और राशन कार्ड जारी न हुआ हो</li></ul>
-      </section>
-    
-      <section class="service-section">
-        <h2 class="service-section__title"><span class="icon">💵</span> शुल्क</h2>
-        <table class="fees-table"><tbody><tr><td>मामूली शुल्क (ज़िले के अनुसार अलग)</td></tr></tbody></table>
-      </section>
-    
-      <section class="service-section">
-        <h2 class="service-section__title"><span class="icon">⏱️</span> प्रोसेसिंग समय</h2>
-        <p>15–30 दिन</p>
-      </section>
-    
+    <div class="wizard-container">
+      <h1 class="wizard-title" data-i18n="tool_itr_title">Late Filing Penalty Calculator (ITR)</h1>
+      <p class="wizard-desc" data-i18n="tool_itr_desc">Calculate your exact penalty (Sec 234F) and interest (Sec 234A) for filing your Income Tax Return after the deadline.</p>
+
+      <div class="calc-form" style="margin-top: 24px;">
+        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--color-text);" data-i18n="tool_itr_slab">What is your Total Taxable Income?</label>
+        <select id="itr-income" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 1rem; margin-bottom: 20px;">
+          <option value="" disabled selected data-i18n="tool_itr_select_slab">-- Select Income Slab --</option>
+          <option value="below25" data-i18n="tool_itr_slab_1">Below ₹2.5 Lakh (Basic Exemption)</option>
+          <option value="upto50" data-i18n="tool_itr_slab_2">₹2.5 Lakh to ₹5 Lakh</option>
+          <option value="above50" data-i18n="tool_itr_slab_3">Above ₹5 Lakh</option>
+        </select>
+
+        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--color-text);" data-i18n="tool_itr_tax_due">Unpaid Tax Amount (₹)</label>
+        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: -4px; margin-bottom: 8px;" data-i18n="tool_itr_tax_due_help">Leave as 0 if all tax was paid via TDS/Advance Tax.</p>
+        <input type="number" id="itr-tax" min="0" value="0" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 1rem; margin-bottom: 20px;">
+
+        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--color-text);" data-i18n="tool_itr_months_delay">Months Delayed (from July 31st)</label>
+        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: -4px; margin-bottom: 8px;" data-i18n="tool_itr_months_help">Count any part of a month as a full month (e.g. Aug 5 = 1 month).</p>
+        <input type="number" id="itr-months" min="0" max="12" value="0" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 1rem; margin-bottom: 24px;">
+
+        <button onclick="calculateITRPenalty()" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 1.1rem;" data-i18n="tool_itr_calc_btn">Calculate Penalty</button>
+      </div>
+
+      <div id="itr-result" style="display: none; margin-top: 32px; padding: 24px; background: var(--color-surface-alt); border-radius: 12px; border: 1px solid var(--color-border);">
+        <h2 style="margin-top: 0; color: var(--color-brand); font-size: 1.4rem;" data-i18n="tool_itr_res_title">💰 Estimated Penalty Breakdown</h2>
+        
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--color-border);">
+          <span style="font-weight: 500; color: var(--color-text);" data-i18n="tool_itr_res_fee">Late Filing Fee (Sec 234F):</span>
+          <span id="res-fee" style="font-weight: 700; color: var(--color-text);">₹0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--color-border);">
+          <span style="font-weight: 500; color: var(--color-text);" data-i18n="tool_itr_res_int">Interest on Tax (Sec 234A):</span>
+          <span id="res-int" style="font-weight: 700; color: var(--color-text);">₹0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 16px 0 4px; font-size: 1.2rem;">
+          <span style="font-weight: 700; color: var(--color-text);" data-i18n="tool_itr_res_total">Total Payable:</span>
+          <span id="res-total" style="font-weight: 800; color: #ef4444;">₹0</span>
+        </div>
+
+        <p id="res-note" style="margin-top: 16px; font-size: 0.95rem; color: var(--color-text-muted);"></p>
+        <p style="margin-top: 16px; font-size: 0.85rem; color: var(--color-text-muted);" data-i18n="tool_itr_disclaimer">*Disclaimer: This is an estimate based on standard rules. Final penalty is determined by the Income Tax Department portal during filing.</p>
+      </div>
     </div>
 
-    <div class="ad-slot" aria-hidden="true"><span data-i18n="ad_slot_label">Advertisement</span></div>
+    <script>
+      function calculateITRPenalty() {
+        const slab = document.getElementById("itr-income").value;
+        const taxDue = parseFloat(document.getElementById("itr-tax").value) || 0;
+        const months = parseInt(document.getElementById("itr-months").value) || 0;
+        const resDiv = document.getElementById("itr-result");
+        
+        if (!slab) {
+          alert((window.SITE && window.SITE.lang === "hi") ? "कृपया अपना आय स्लैब चुनें।" : "Please select your income slab.");
+          return;
+        }
 
-    <section class="service-section">
-      <h2 class="service-section__title"><span class="icon">📍</span> छत्तीसगढ़ की अन्य लोकप्रिय सेवाएं</h2>
-      <p><a href="../states/chhattisgarh.html">← छत्तीसगढ़ की सभी लोकप्रिय सेवाएं देखें</a></p>
-    </section>
+        let lateFee = 0;
+        if (slab === "below25") lateFee = 0;
+        else if (slab === "upto50") lateFee = 1000;
+        else if (slab === "above50") lateFee = 5000;
+
+        let interest = 0;
+        if (taxDue > 0 && months > 0) {
+          interest = Math.ceil(taxDue * 0.01 * months);
+        }
+
+        document.getElementById("res-fee").textContent = "₹" + lateFee.toLocaleString("en-IN");
+        document.getElementById("res-int").textContent = "₹" + interest.toLocaleString("en-IN");
+        document.getElementById("res-total").textContent = "₹" + (lateFee + interest).toLocaleString("en-IN");
+        
+        let note = "";
+        if (slab === "below25") {
+          note = (window.SITE && window.SITE.lang === "hi") ? 
+            "आपकी आय ₹2.5 लाख से कम होने के कारण कोई विलंब शुल्क (234F) नहीं लगेगा।" : 
+            "No late fee (234F) is applicable since your income is below the basic exemption limit.";
+        } else if (slab === "upto50") {
+          note = (window.SITE && window.SITE.lang === "hi") ? 
+            "चूंकि आपकी आय ₹5 लाख से अधिक नहीं है, इसलिए विलंब शुल्क ₹1,000 तक सीमित है।" : 
+            "Since your income does not exceed ₹5 Lakh, the late fee is restricted to ₹1,000.";
+        } else {
+          note = (window.SITE && window.SITE.lang === "hi") ? 
+            "₹5 लाख से अधिक आय होने पर ₹5,000 का विलंब शुल्क लगता है।" : 
+            "A late fee of ₹5,000 is applicable for income exceeding ₹5 Lakh.";
+        }
+        document.getElementById("res-note").textContent = note;
+        
+        resDiv.style.display = "block";
+        resDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    </script>
   </main>
 
   <div id="site-footer">
@@ -360,9 +401,40 @@
 </div>
 </div>
 
-  <script src="../assets/js/main.js?v=2.4"></script>
-  <script src="../assets/js/consent.js"></script>
-  <script src="../assets/js/i18n-helper.js"></script>
-  <script src="../assets/js/supabase-client.js"></script>
+  <script src="../assets/js/pan-aadhaar-resolver.js"></script>
+
+  <!-- Script to load header and footer templates -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('../partials/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header-placeholder').innerHTML = data;
+          // Apply JS logic for mobile menu and dropdowns manually after loading
+          const mobileToggle = document.querySelector('.mobile-menu-toggle');
+          const mainNav = document.querySelector('.main-nav');
+          if (mobileToggle && mainNav) {
+            mobileToggle.addEventListener('click', () => {
+              mainNav.classList.toggle('active');
+            });
+          }
+          const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle');
+          dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+              e.preventDefault();
+              const parent = e.target.parentElement;
+              parent.classList.toggle('active');
+            });
+          });
+        });
+
+      fetch('../partials/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer-placeholder').innerHTML = data;
+        })
+        .catch(() => console.log('Footer partial not found, standard script ignored.'));
+    });
+  </script>
 </body>
 </html>
