@@ -3,7 +3,7 @@
    ========================================================================== */
 
 (function () {
-  const savedTheme = localStorage.getItem("admin_theme") || "dark";
+  const savedTheme = ((function(k){try{return localStorage.getItem(k);}catch(e){return null;}})()) || "dark";
   document.documentElement.setAttribute("data-theme", savedTheme);
 
   window.addEventListener("DOMContentLoaded", () => {
@@ -22,9 +22,10 @@
         const current = document.documentElement.getAttribute("data-theme") || "dark";
         const next = current === "dark" ? "light" : "dark";
         document.documentElement.setAttribute("data-theme", next);
-        localStorage.setItem("admin_theme", next);
+        (function(k,v){try{localStorage.setItem(k,v);}catch(e){}})(, );
         updateBtnText(next);
       });
     });
   });
 })();
+

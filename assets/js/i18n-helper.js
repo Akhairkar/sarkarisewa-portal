@@ -16,11 +16,13 @@
 const LANG_KEY = "ss_lang";
 
 function getLang() {
-  // Prefer the live in-memory value core.js maintains (most up to date,
-  // available the instant applyLanguage() runs, even before the event fires).
   if (window.SITE && SITE.lang) return SITE.lang;
-  const stored = localStorage.getItem(LANG_KEY);
-  return stored === "en" ? "en" : "hi";
+  try {
+    const stored = localStorage.getItem(LANG_KEY);
+    return stored === "en" ? "en" : "hi";
+  } catch (err) {
+    return "hi";
+  }
 }
 
 /**

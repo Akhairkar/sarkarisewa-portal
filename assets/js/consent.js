@@ -35,7 +35,7 @@
   }
 
   function renderBanner() {
-    const lang = (typeof getLang === "function" ? getLang() : localStorage.getItem("ss_lang")) || "hi";
+    const lang = (typeof getLang === "function" ? getLang() : ((function(k){try{return localStorage.getItem(k);}catch(e){return null;}})())) || "hi";
     const copy = {
       en: {
         text: "We use cookies for basic analytics to understand site usage. No data is collected until you accept.",
@@ -69,18 +69,18 @@
     document.body.appendChild(root);
 
     root.querySelector(".cookie-consent-banner__accept").addEventListener("click", () => {
-      localStorage.setItem(CONSENT_KEY, "accepted");
+      (function(k,v){try{localStorage.setItem(k,v);}catch(e){}})(, );
       hideBanner();
       loadGA4();
     });
     root.querySelector(".cookie-consent-banner__reject").addEventListener("click", () => {
-      localStorage.setItem(CONSENT_KEY, "rejected");
+      (function(k,v){try{localStorage.setItem(k,v);}catch(e){}})(, );
       hideBanner();
     });
   }
 
   function init() {
-    const existing = localStorage.getItem(CONSENT_KEY);
+    const existing = ((function(k){try{return localStorage.getItem(k);}catch(e){return null;}})());
     if (existing === "accepted") {
       loadGA4();
       return;
@@ -97,3 +97,4 @@
     init();
   }
 })();
+

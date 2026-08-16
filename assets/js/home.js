@@ -25,8 +25,11 @@ let BLOG_DATA = null;
 async function loadHomeData() {
   if (SERVICES_DATA && CATEGORIES_DATA && BLOG_DATA) return;
   const [services, categoriesRaw, blogRaw] = await Promise.all([
-    fetchAllServices(),
-    fetch(ROOT + "data/categories.json").then((r) => r.json()),
+    fetchAllServices().catch((err) => {
+      console.error("fetchAllServices failed:", err);
+      return [];
+    }),
+    fetch(ROOT + "data/categories.json").then((r) => r.json()).catch(() => []),
     fetch(ROOT + "data/blog-posts.json").then((r) => r.json()).catch(() => []),
   ]);
   // Support either a plain array or an older { services: [...] } wrapper.

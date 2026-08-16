@@ -15,14 +15,30 @@
    /sarkarisewa-portal/ — every fetch and internal link below is built
    from SS_ROOT instead of assuming "/" is the site root. */
 // Infer root path automatically by looking at where this script is loaded from
-const scriptTag = document.currentScript || document.querySelector('script[src$="main.js"]');
-const ROOT = scriptTag ? scriptTag.getAttribute('src').replace('assets/js/main.js', '') : "";
+  let rootVal = "";
+  if (typeof window !== "undefined" && window.SS_ROOT !== undefined) {
+    rootVal = window.SS_ROOT;
+  } else {
+    const scriptTag = document.currentScript || document.querySelector('script[src*="main.js"]');
+    if (scriptTag) {
+      rootVal = scriptTag.getAttribute("src").split("assets/js/main.js")[0];
+    }
+  }
+  const ROOT = rootVal;
+  window.SS_ROOT = ROOT;
 
-const SITE = {
-  langData: null,
-  lang: localStorage.getItem("ss_lang") || "hi",
-  theme: localStorage.getItem("ss_theme") || "light",
-};
+  const getStorage = (key, def) => {
+    try { return localStorage.getItem(key) || def; } catch (e) { return def; }
+  };
+  const setStorage = (key, val) => {
+    try { localStorage.setItem(key, val); } catch (e) {}
+  };
+
+  const SITE = {
+    langData: null,
+    lang: getStorage("ss_lang", "hi"),
+    theme: getStorage("ss_theme", "light"),
+  };
 // `const` doesn't attach to `window` automatically — expose it explicitly so
 // page-specific scripts (e.g. hidden-tax-calculator.js) can read the current
 // language/dictionary without duplicating the i18n loading logic.
@@ -70,12 +86,12 @@ function applyTheme(theme) {
   const icon = document.getElementById("theme-icon");
   if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
   SITE.theme = theme;
-  localStorage.setItem("ss_theme", theme);
+  setStorage("ss_theme", theme);
 }
 
 function applyLanguage(lang) {
   SITE.lang = lang;
-  localStorage.setItem("ss_lang", lang);
+  setStorage("ss_lang", lang);
   document.documentElement.setAttribute("lang", lang === "hi" ? "hi" : "en");
   if (!SITE.langData) return;
   const dict = SITE.langData[lang] || {};
