@@ -63,9 +63,9 @@
   // the sector field to avoid asking an irrelevant question.
   if (schemeSelect) {
     schemeSelect.addEventListener("change", () => {
-      const isMudra = schemeSelect.value === "mudra";
-      sectorField.hidden = isMudra;
-      document.getElementById("pr-sector").required = !isMudra;
+      const isNoSectorScheme = schemeSelect.value === "mudra" || schemeSelect.value === "mpbcdc";
+      sectorField.hidden = isNoSectorScheme;
+      document.getElementById("pr-sector").required = !isNoSectorScheme;
     });
   }
 
@@ -158,8 +158,8 @@
         sector: data.sector,
       });
     } else {
-      // Mudra: own contribution left as a simple default (10% of
-      // project cost) since Mudra doesn't mandate a fixed margin —
+      // Mudra & MPBCDC: own contribution left as a simple default (10% of
+      // project cost) since they don't mandate a fixed margin —
       // this too becomes an editable assumption in the PDF step.
       const ownContribution = Math.round(projectCost * 0.10);
       const mudraResult = window.PRMudraCalculator.calculateMudraFinance({ projectCost, ownContribution });
@@ -167,7 +167,7 @@
         ownContribution,
         subsidy: 0,
         bankLoan: mudraResult.loanAmount,
-        tierLabel: mudraResult.tierLabel,
+        tierLabel: data.scheme === "mpbcdc" ? "MPBCDC Scheme" : mudraResult.tierLabel,
       };
     }
 

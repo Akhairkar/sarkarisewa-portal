@@ -66,7 +66,7 @@
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ unit: "mm", format: "a4" });
 
-    const schemeLabel = report.scheme === "pmegp" ? "PMEGP" : "Mudra Loan (PMMY)";
+    const schemeLabel = report.scheme === "pmegp" ? "PMEGP" : report.scheme === "mpbcdc" ? "MPBCDC Scheme" : "Mudra Loan (PMMY)";
 
     // ---------------- SECTION 1: COVER ----------------
     doc.setFillColor(15, 61, 62);

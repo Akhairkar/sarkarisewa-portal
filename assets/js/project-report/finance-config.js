@@ -80,5 +80,11 @@
     // bank's applicable MSE lending rate" rather than a fixed number.
   };
 
-  return { PMEGP, MUDRA };
+  const MPBCDC = {
+    // MPBCDC state schemes have varying limits and subsidies.
+    // For the purpose of the generator, we handle it as a flexible scheme
+    // similar to Mudra, allowing custom project cost and own contribution.
+  };
+
+  return { PMEGP, MUDRA, MPBCDC };
 });
