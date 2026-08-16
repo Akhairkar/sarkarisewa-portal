@@ -61,11 +61,15 @@ rewrite_links = _svc_mod.rewrite_links
 
 def service_href(svc):
     slug = svc.get("slug") or svc.get("id")
+    if slug and slug.startswith("mpbcdc-"):
+        return f"../{slug}.html"
     return f"../service/{slug}.html" if svc.get("source") == "json" else f"../service/service.html?id={slug}"
 
 
 def service_canonical(svc):
     slug = svc.get("slug") or svc.get("id")
+    if slug and slug.startswith("mpbcdc-"):
+        return f"{BASE_URL}/{slug}.html"
     if svc.get("source") == "json":
         return f"{BASE_URL}/service/{slug}.html"
     return f"{BASE_URL}/service/service.html?id={slug}"
