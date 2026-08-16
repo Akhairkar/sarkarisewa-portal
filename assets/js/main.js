@@ -153,6 +153,26 @@ function wireHeaderControls() {
       navToggle.setAttribute("aria-expanded", String(open));
     });
   }
+  const dropToggles = document.querySelectorAll('.nav-dropdown-toggle');
+  dropToggles.forEach(t => {
+    t.addEventListener('click', (e) => {
+      if (window.innerWidth < 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        const parent = t.closest('.nav-dropdown');
+        if (parent && !parent.classList.contains('active')) {
+          e.preventDefault();
+          document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('active'));
+          parent.classList.add('active');
+        }
+      }
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-dropdown')) {
+      document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('active'));
+    }
+  });
+
   const yearEl = document.getElementById("footer-year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 }
