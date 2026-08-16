@@ -1,23 +1,15 @@
 /* ==========================================================================
-   consent.js — Module 10.5
-   DPDP-compliant cookie consent: GA4 does NOT load until the visitor
-   explicitly opts in. No pre-checked boxes, Reject is equally visible.
-
-   ⚠️ SETUP REQUIRED: replace GA4_MEASUREMENT_ID below with your real
-   GA4 property ID (looks like "G-XXXXXXXXXX") from analytics.google.com
-   before this does anything useful. Until then this file just shows the
-   banner and stores the choice — no data is sent anywhere.
+   consent.js (Repurposed to analytics.js)
+   Cookie banner removed. GA4 loads immediately to track 100% of traffic.
+   Includes custom event tracking for WhatsApp, Tools, Scrolling, and Navigation.
    ========================================================================== */
 
 (function () {
-  const GA4_MEASUREMENT_ID = "G-KERK8GPCCX"; // <-- replace with your real ID
-  const CONSENT_KEY = "ss_cookie_consent"; // "accepted" | "rejected"
+  const GA4_MEASUREMENT_ID = "G-KERK8GPCCX";
 
   function loadGA4() {
-    if (!GA4_MEASUREMENT_ID || GA4_MEASUREMENT_ID.includes("XXXXXXXXXX")) {
-      console.warn("GA4_MEASUREMENT_ID not set in assets/js/consent.js — analytics not loaded.");
-      return;
-    }
+    if (!GA4_MEASUREMENT_ID || GA4_MEASUREMENT_ID.includes("XXXXXXXXXX")) return;
+    
     const s1 = document.createElement("script");
     s1.async = true;
     s1.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`;
@@ -27,74 +19,70 @@
     window.gtag = function () { window.dataLayer.push(arguments); };
     gtag("js", new Date());
     gtag("config", GA4_MEASUREMENT_ID, { anonymize_ip: true });
+    
+    setupCustomTracking();
   }
 
-  function hideBanner() {
-    const el = document.getElementById("cookie-consent-banner");
-    if (el) el.remove();
-  }
-
-  function renderBanner() {
-    const lang = (typeof getLang === "function" ? getLang() : ((function(k){try{return localStorage.getItem(k);}catch(e){return null;}})())) || "hi";
-    const copy = {
-      en: {
-        text: "We use cookies for basic analytics to understand site usage. No data is collected until you accept.",
-        accept: "Accept",
-        reject: "Reject",
-        policy: "Privacy Policy",
-      },
-      hi: {
-        text: "साइट के उपयोग को समझने के लिए हम बुनियादी एनालिटिक्स कुकीज़ का उपयोग करते हैं। आपकी स्वीकृति से पहले कोई डेटा एकत्र नहीं किया जाता।",
-        accept: "स्वीकार करें",
-        reject: "अस्वीकार करें",
-        policy: "गोपनीयता नीति",
-      },
-    }[lang === "en" ? "en" : "hi"];
-
-    const root = document.createElement("div");
-    root.id = "cookie-consent-banner";
-    root.className = "cookie-consent-banner";
-    root.setAttribute("role", "dialog");
-    root.setAttribute("aria-label", "Cookie consent");
-    root.innerHTML = `
-      <p class="cookie-consent-banner__text">
-        ${copy.text}
-        <a href="${(window.SS_ROOT || "") + "privacy-policy.html"}">${copy.policy}</a>
-      </p>
-      <div class="cookie-consent-banner__actions">
-        <button type="button" class="cookie-consent-banner__reject">${copy.reject}</button>
-        <button type="button" class="cookie-consent-banner__accept">${copy.accept}</button>
-      </div>
-    `;
-    document.body.appendChild(root);
-
-    root.querySelector(".cookie-consent-banner__accept").addEventListener("click", () => {
-      (function(k,v){try{localStorage.setItem(k,v);}catch(e){}})(, );
-      hideBanner();
-      loadGA4();
+  function setupCustomTracking() {
+    // 1. Track WhatsApp Clicks
+    document.addEventListener("click", function (e) {
+      const link = e.target.closest("a");
+      if (link && (link.href.includes("whatsapp.com") || link.href.includes("wa.me"))) {
+        gtag("event", "whatsapp_click", {
+          link_url: link.href
+        });
+      }
     });
-    root.querySelector(".cookie-consent-banner__reject").addEventListener("click", () => {
-      (function(k,v){try{localStorage.setItem(k,v);}catch(e){}})(, );
-      hideBanner();
+
+    // 2. Track Tools & Calculators Usage
+    document.addEventListener("submit", function (e) {
+      if (window.location.pathname.includes("/tools/")) {
+        gtag("event", "tool_usage", {
+          tool_name: window.location.pathname.split("/").pop()
+        });
+      }
     });
+    
+    document.addEventListener("click", function (e) {
+      const btn = e.target.closest(".wizard-btn, .btn, button");
+      if (btn && window.location.pathname.includes("/tools/")) {
+        gtag("event", "tool_interaction", {
+          tool_name: window.location.pathname.split("/").pop(),
+          button_text: btn.textContent.trim()
+        });
+      }
+    });
+
+    // 3. Track Next Page / Navigation (Internal Links)
+    document.addEventListener("click", function (e) {
+      const link = e.target.closest("a");
+      if (link && link.href && link.hostname === window.location.hostname && !link.hash) {
+        gtag("event", "next_page_click", {
+          destination_url: link.pathname
+        });
+      }
+    });
+
+    // 4. Track Scroll Depth
+    let scrollMarks = { 25: false, 50: false, 75: false, 90: false };
+    window.addEventListener("scroll", function () {
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      
+      [25, 50, 75, 90].forEach(mark => {
+        if (scrollPercent >= mark && !scrollMarks[mark]) {
+          scrollMarks[mark] = true;
+          gtag("event", "scroll_depth", {
+            percent: mark
+          });
+        }
+      });
+    }, { passive: true });
   }
 
-  function init() {
-    const existing = ((function(k){try{return localStorage.getItem(k);}catch(e){return null;}})());
-    if (existing === "accepted") {
-      loadGA4();
-      return;
-    }
-    if (existing === "rejected") {
-      return; // respect prior choice, don't ask again, don't load anything
-    }
-    renderBanner();
-  }
-
+  // Load immediately
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", loadGA4);
   } else {
-    init();
+    loadGA4();
   }
 })();
-
