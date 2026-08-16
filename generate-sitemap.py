@@ -190,7 +190,10 @@ def main():
         sid = s.get("slug") or s.get("id")
         if sid:
             json_service_slugs.add(sid)
-            urls.append((f"{BASE_URL}/service/{sid}.html", "0.6", "monthly"))
+            if sid.startswith("mpbcdc-"):
+                urls.append((f"{BASE_URL}/{sid}.html", "0.6", "monthly"))
+            else:
+                urls.append((f"{BASE_URL}/service/{sid}.html", "0.6", "monthly"))
 
     for sid in sorted(fetch_db_service_slugs()):
         if sid not in json_service_slugs:
