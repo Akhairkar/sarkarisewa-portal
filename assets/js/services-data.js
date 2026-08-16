@@ -33,6 +33,7 @@ function normalizeJsonServices(data) {
  */
 function ssServiceHref(root, svc) {
   const slug = svc.slug || svc.id;
+  if (svc && svc.customUrl) return root + svc.customUrl;
   if (svc && svc.source === "json") return `${root}service/${slug}.html`;
   return `${root}service/service.html?id=${encodeURIComponent(slug)}`;
 }
@@ -40,6 +41,7 @@ function ssServiceHref(root, svc) {
 /** Same logic as ssServiceHref() but returns the absolute canonical URL. */
 function ssServiceCanonicalUrl(svc) {
   const slug = svc.slug || svc.id;
+  if (svc && svc.customUrl) return `https://sarkarisewaindia.com/${svc.customUrl}`;
   if (svc && svc.source === "json") return `https://sarkarisewaindia.com/service/${slug}.html`;
   return `https://sarkarisewaindia.com/service/service.html?id=${encodeURIComponent(slug)}`;
 }
