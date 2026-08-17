@@ -103,6 +103,10 @@ function applyLanguage(lang) {
     const key = el.getAttribute("data-i18n-placeholder");
     if (dict[key] !== undefined) el.setAttribute("placeholder", dict[key]);
   });
+  document.querySelectorAll("[data-i18n-content]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-content");
+    if (dict[key] !== undefined) el.setAttribute("content", dict[key]);
+  });
   document.dispatchEvent(new CustomEvent("ss:language-changed", { detail: { lang, dict } }));
 }
 
