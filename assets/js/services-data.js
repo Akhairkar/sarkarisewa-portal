@@ -32,6 +32,7 @@ function normalizeJsonServices(data) {
  * original single-page-app route.
  */
 function ssServiceHref(root, svc) {
+  if (svc && svc.customUrl) return `${root}${svc.customUrl}`;
   const slug = svc.slug || svc.id;
   if (slug && slug.startsWith("mpbcdc-")) return `${root}${slug}.html`;
   if (svc && svc.source === "json") return `${root}service/${slug}.html`;
@@ -40,6 +41,7 @@ function ssServiceHref(root, svc) {
 
 /** Same logic as ssServiceHref() but returns the absolute canonical URL. */
 function ssServiceCanonicalUrl(svc) {
+  if (svc && svc.customUrl) return `https://sarkarisewaindia.com/${svc.customUrl}`;
   const slug = svc.slug || svc.id;
   if (slug && slug.startsWith("mpbcdc-")) return `https://sarkarisewaindia.com/${slug}.html`;
   if (svc && svc.source === "json") return `https://sarkarisewaindia.com/service/${slug}.html`;
