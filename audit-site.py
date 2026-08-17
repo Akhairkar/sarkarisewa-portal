@@ -163,10 +163,10 @@ def main():
     check_references()
 
     if had_error:
-        print("❌ Audit found issues — see above.")
+        print("[X] Audit found issues - see above.")
         sys.exit(1)
     else:
-        print("✅ All checks passed.")
+        print("[OK] All checks passed.")
 
 
 if __name__ == "__main__":
