@@ -229,10 +229,10 @@
 
     // Merge and sort
     allJobs = [...localJobs, ...supabaseJobs].sort((a, b) => {
-      // Sort ascending by last_date
+      // Sort descending by last_date (latest deadline at the top)
       const da = new Date(a.last_date + "T00:00:00").getTime() || 0;
       const db = new Date(b.last_date + "T00:00:00").getTime() || 0;
-      return da - db;
+      return db - da;
     });
 
     if (!allJobs.length) {
