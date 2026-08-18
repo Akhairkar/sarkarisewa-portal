@@ -93,7 +93,7 @@
         const location = lang === "hi" && j.location_hi ? j.location_hi : j.location_en;
 
         return `
-      <article class="job-card ${closed ? "job-card--closed" : ""}" data-slug="${escapeHtml(j.slug)}">
+      <article class="job-card ${closed ? "job-card--closed" : ""}" data-slug="${escapeHtml(j.slug)}" data-is-local="${j.isLocal ? 'true' : 'false'}">
         <div class="job-card__head">
           <h3 class="job-card__title">${escapeHtml(title)}</h3>
           ${closed
@@ -109,8 +109,8 @@
           <span><strong>${tk("jobalerts_last_date_label", "Last Date to Apply")}:</strong> ${formatDate(j.last_date)}</span>
         </div>
         <div class="job-card__actions">
-          <a class="btn btn-primary" href="${j.apply_link || '#'}" target="_blank" rel="noopener noreferrer">${tk("jobalerts_apply_now", "Apply Now →")}</a>
-          ${j.notification_link ? `<a class="job-card__notification-link" href="${j.notification_link}" target="_blank" rel="noopener noreferrer">${tk("jobalerts_notification", "Official Notification (PDF)")}</a>` : ""}
+          <a class="btn btn-primary" href="${j.isLocal ? encodeURIComponent(j.slug) + '.html' : 'post.html?slug=' + encodeURIComponent(j.slug)}">${tk("jobalerts_apply_now", "Full Details & Apply →")}</a>
+          ${j.apply_link ? `<a class="job-card__notification-link" href="${j.apply_link}" target="_blank" rel="noopener noreferrer">${tk("jobalerts_notification", "Official Website")}</a>` : ""}
         </div>
       </article>`;
       })
@@ -222,6 +222,7 @@
       const res = await fetch("../data/local-jobs.json");
       if (res.ok) {
         localJobs = await res.json();
+        localJobs.forEach(j => j.isLocal = true);
       }
     } catch (err) {
       console.warn("Failed to load local-jobs.json:", err);
@@ -280,6 +281,11 @@
     if (e.target.closest("a, button")) return;
     const card = e.target.closest(".job-card");
     if (!card) return;
-    window.location.href = `post.html?slug=${encodeURIComponent(card.dataset.slug)}`;
+    
+    if (card.dataset.isLocal === "true") {
+      window.location.href = `${encodeURIComponent(card.dataset.slug)}.html`;
+    } else {
+      window.location.href = `post.html?slug=${encodeURIComponent(card.dataset.slug)}`;
+    }
   });
 })();
