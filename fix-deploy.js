@@ -119,4 +119,4 @@ try {
   fs.writeFileSync(servicesPath, JSON.stringify(services, null, 2), 'utf8');
 } catch(e) {}
 
-conso
+console.log("Fixes applied.");
