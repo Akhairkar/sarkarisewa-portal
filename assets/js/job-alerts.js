@@ -195,25 +195,52 @@
   }
 
   async function loadJobs() {
-    if (typeof getSupabaseClient !== "function") return;
-    try {
-      const client = await getSupabaseClient();
-      if (!client) {
-        listEl.innerHTML = `<p class="job-empty">${tk("jobalerts_error", "Could not load job alerts right now. Please try again later.")}</p>`;
-        return;
+    let supabaseJobs = [];
+    let localJobs = [];
+    
+    // Fetch from Supabase
+    if (typeof getSupabaseClient === "function") {
+      try {
+        const client = await getSupabaseClient();
+        if (client) {
+          const { data, error } = await client
+            .from("job_alerts")
+            .select("id, slug, title_en, title_hi, department_en, department_hi, qualification_en, qualification_hi, location_en, location_hi, vacancies, job_type, last_date, apply_link, notification_link")
+            .eq("status", "published");
+          if (!error && data) {
+            supabaseJobs = data;
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to load Supabase job alerts:", err);
       }
-      const { data, error } = await client
-        .from("job_alerts")
-        .select("id, slug, title_en, title_hi, department_en, department_hi, qualification_en, qualification_hi, location_en, location_hi, vacancies, job_type, last_date, apply_link, notification_link")
-        .eq("status", "published")
-        .order("last_date", { ascending: true });
-      if (error) throw error;
-      allJobs = data || [];
-      applyFilter();
-    } catch (err) {
-      console.warn("Failed to load job alerts:", err);
-      listEl.innerHTML = `<p class="job-empty">${tk("jobalerts_error", "Could not load job alerts right now. Please try again later.")}</p>`;
     }
+
+    // Fetch local jobs (from JSON file)
+    try {
+      // Use relative path to data folder from the jobs/index.html page
+      const res = await fetch("../data/local-jobs.json");
+      if (res.ok) {
+        localJobs = await res.json();
+      }
+    } catch (err) {
+      console.warn("Failed to load local-jobs.json:", err);
+    }
+
+    // Merge and sort
+    allJobs = [...localJobs, ...supabaseJobs].sort((a, b) => {
+      // Sort ascending by last_date
+      const da = new Date(a.last_date + "T00:00:00").getTime() || 0;
+      const db = new Date(b.last_date + "T00:00:00").getTime() || 0;
+      return da - db;
+    });
+
+    if (!allJobs.length) {
+      listEl.innerHTML = `<p class="job-empty">${tk("jobalerts_error", "Could not load job alerts right now. Please try again later.")}</p>`;
+      return;
+    }
+
+    applyFilter();
   }
 
   function applyTypeFromUrl() {
