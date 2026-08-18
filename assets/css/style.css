@@ -997,3 +997,36 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 
 html[lang='hi'] [data-lang-show='en'], html[lang='en'] [data-lang-show='hi'] { display: none !important; }
 
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+.pagination .btn-outline {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.pagination .btn-outline:hover:not([disabled]) {
+  background: var(--color-bg-alt);
+  border-color: var(--color-primary);
+}
+.pagination .btn-outline.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+.pagination .btn-outline[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -67,6 +67,82 @@
     return `<span class="exam-badge exam-badge--closed">${tk("examcal_status_closed", "Closed")}</span>`;
   }
 
+  let currentPage = 1;
+  const ITEMS_PER_PAGE = 15;
+
+  function renderPagination(totalPages) {
+    let pagEl = document.getElementById("exam-pagination");
+    if (!pagEl) {
+      pagEl = document.createElement("div");
+      pagEl.id = "exam-pagination";
+      pagEl.className = "pagination";
+      listEl.parentNode.insertBefore(pagEl, listEl.nextSibling);
+    }
+    
+    if (totalPages <= 1) {
+      pagEl.innerHTML = "";
+      return;
+    }
+
+    let html = '';
+    const prevDisabled = currentPage === 1 ? 'disabled' : '';
+    html += `<button class="btn btn-outline" ${prevDisabled} data-page="${currentPage - 1}">${tk("pag_prev", "Previous")}</button>`;
+
+    let startP = Math.max(1, currentPage - 2);
+    let endP = Math.min(totalPages, startP + 4);
+    if (endP - startP < 4) {
+      startP = Math.max(1, endP - 4);
+    }
+
+    for (let i = startP; i <= endP; i++) {
+      const active = i === currentPage ? 'active' : '';
+      html += `<button class="btn btn-outline ${active}" data-page="${i}">${i}</button>`;
+    }
+
+    const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+    html += `<button class="btn btn-outline" ${nextDisabled} data-page="${currentPage + 1}">${tk("pag_next", "Next")}</button>`;
+
+    pagEl.innerHTML = html;
+
+    const buttons = pagEl.querySelectorAll('button');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (btn.hasAttribute('disabled') || btn.classList.contains('active')) return;
+        const targetPage = parseInt(btn.getAttribute('data-page'));
+        if (targetPage >= 1 && targetPage <= totalPages) {
+          applyFilter(targetPage);
+          listEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  }
+
+  function applyFilter(page = 1) {
+    currentPage = page;
+    
+    const active = [];
+    const closed = [];
+    allExams.forEach(ex => {
+      const status = computeStatus(ex);
+      if (status === "closed") {
+        closed.push(ex);
+      } else {
+        active.push(ex);
+      }
+    });
+
+    closed.reverse();
+    const sorted = [...active, ...closed];
+
+    const totalPages = Math.ceil(sorted.length / ITEMS_PER_PAGE) || 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+    const paged = sorted.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+    renderList(paged);
+    renderPagination(totalPages);
+  }
+
   function renderList(exams) {
     if (!exams.length) {
       listEl.innerHTML = `<p class="exam-empty">${tk("examcal_empty", "No exams posted yet. Check back soon.")}</p>`;
@@ -113,7 +189,7 @@
         .order("last_date", { ascending: true });
       if (error) throw error;
       allExams = data || [];
-      renderList(allExams);
+      applyFilter();
     } catch (err) {
       console.error("Failed to load exam calendar:", err);
       listEl.innerHTML = `<p class="exam-empty">${tk("examcal_error", "Could not load the exam calendar right now. Please try again later.")}</p>`;
@@ -122,6 +198,6 @@
 
   loadExams();
   if (typeof onLangChange === "function") {
-    onLangChange(() => renderList(allExams));
+    onLangChange(() => applyFilter(currentPage));
   }
 })();

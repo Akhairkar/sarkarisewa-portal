@@ -117,14 +117,81 @@
       .join("");
   }
 
-  function applyFilter() {
-    if (!typeFilterEl) {
-      renderList(allJobs);
+  let currentPage = 1;
+  const ITEMS_PER_PAGE = 15;
+
+  function renderPagination(totalPages) {
+    let pagEl = document.getElementById("job-pagination");
+    if (!pagEl) {
+      pagEl = document.createElement("div");
+      pagEl.id = "job-pagination";
+      pagEl.className = "pagination";
+      listEl.parentNode.insertBefore(pagEl, listEl.nextSibling);
+    }
+    
+    if (totalPages <= 1) {
+      pagEl.innerHTML = "";
       return;
     }
-    const type = typeFilterEl.value;
-    const filtered = type ? allJobs.filter((j) => j.job_type === type) : allJobs;
-    renderList(filtered);
+
+    let html = '';
+    const prevDisabled = currentPage === 1 ? 'disabled' : '';
+    html += `<button class="btn btn-outline" ${prevDisabled} data-page="${currentPage - 1}">${tk("pag_prev", "Previous")}</button>`;
+
+    // Show limited pages (max 5)
+    let startP = Math.max(1, currentPage - 2);
+    let endP = Math.min(totalPages, startP + 4);
+    if (endP - startP < 4) {
+      startP = Math.max(1, endP - 4);
+    }
+
+    for (let i = startP; i <= endP; i++) {
+      const active = i === currentPage ? 'active' : '';
+      html += `<button class="btn btn-outline ${active}" data-page="${i}">${i}</button>`;
+    }
+
+    const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+    html += `<button class="btn btn-outline" ${nextDisabled} data-page="${currentPage + 1}">${tk("pag_next", "Next")}</button>`;
+
+    pagEl.innerHTML = html;
+
+    const buttons = pagEl.querySelectorAll('button');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (btn.hasAttribute('disabled') || btn.classList.contains('active')) return;
+        const targetPage = parseInt(btn.getAttribute('data-page'));
+        if (targetPage >= 1 && targetPage <= totalPages) {
+          applyFilter(targetPage);
+          listEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  }
+
+  function applyFilter(page = 1) {
+    currentPage = page;
+    let filtered = typeFilterEl && typeFilterEl.value ? allJobs.filter((j) => j.job_type === typeFilterEl.value) : allJobs;
+    
+    const active = [];
+    const closed = [];
+    filtered.forEach(j => {
+      if (isClosed(j.last_date)) {
+        closed.push(j);
+      } else {
+        active.push(j);
+      }
+    });
+
+    closed.reverse();
+    filtered = [...active, ...closed];
+
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+    const paged = filtered.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+    renderList(paged);
+    renderPagination(totalPages);
   }
 
   async function loadJobs() {
