@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="manifest" href="../manifest.json">
+<title>Blog Manager — SarkariSewa Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/admin-theme.css?v=3">
+<script src="../assets/js/admin-theme-toggle.js"></script>
+</head>
+<body>
+
+<div class="admin-layout" id="dash-wrap" hidden>
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-brand">
+      <div class="admin-sidebar-logo">S</div>
+      <div>
+        <div class="admin-sidebar-title">SarkariSewa</div>
+        <div class="admin-sidebar-subtitle">Admin Console</div>
+      </div>
+    </div>
+    <nav class="admin-nav">
+      <a href="dashboard.html" class="admin-nav-item">📊 Overview</a>
+      <a href="comments.html" class="admin-nav-item">💬 Comments</a>
+      <a href="subscribers.html" class="admin-nav-item">📬 Subscribers</a>
+      <a href="csc.html" class="admin-nav-item">🏬 CSC Listings</a>
+      <a href="blog.html" class="admin-nav-item active">📝 Blog Manager</a>
+      <a href="jobs.html" class="admin-nav-item">💼 Job Alerts</a>
+      <a href="exams.html" class="admin-nav-item">📅 Exam Calendar</a>
+      <a href="deadlines.html" class="admin-nav-item">🗓️ Deadlines</a>
+      <a href="services.html" class="admin-nav-item">⚙️ Services</a>
+      <a href="analytics.html" class="admin-nav-item">📈 Analytics</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <button type="button" class="theme-toggle-btn">☀️ Light Mode</button>
+      <div style="font-size:0.78rem; color:var(--admin-text-muted);" id="whoami">Loading identity…</div>
+      <button class="logout-btn" id="logout" style="width:100%;">Log out</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-page-title">
+        <h1>Blog Posts Manager</h1>
+        <p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Write, publish, and bulk-import blog posts directly to the live site.</p>
+      </div>
+    </div>
+
+    <div class="dash-card" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.3);">
+      <strong>ℹ How this works.</strong> Fill the form and click
+      <strong>Publish</strong> — the post goes live on <code>/blog/</code>
+      immediately, no coding or git push needed. Click <strong>Save draft</strong>
+      to keep working on it without publishing yet.
+    </div>
+
+    <div class="dash-card">
+      <h3 style="margin-top:0;">Bulk import</h3>
+      <p style="font-size:0.85rem; color:var(--admin-text-muted); margin-top:0;">
+        Paste a JSON list of posts here and click Import — all of them get added in one go as drafts or published posts.
+      </p>
+      <textarea id="blog-bulk-json" rows="5" placeholder='[{"title_en": "...", "title_hi": "...", "category": "identity-documents", "excerpt_en": "...", "excerpt_hi": "...", "body_en": "<p>...</p>", "body_hi": "<p>...</p>", "date_published": "2026-08-01", "related_service_id": "aadhaar-card"}]' style="width:100%; font-family:var(--admin-font-mono); font-size:0.82rem;"></textarea>
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;">
+        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px; color:var(--admin-text-sub);">
+          <input type="checkbox" id="blog-bulk-publish"> Publish immediately (skip draft review)
+        </label>
+        <button id="blog-bulk-import-btn" class="logout-btn" type="button">Import</button>
+        <span id="blog-bulk-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <h3 id="blog-form-heading" style="margin-top:0;">Write a new post</h3>
+      <input type="hidden" id="blog-edit-id" value="">
+      <div style="display:grid; gap:14px;">
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Title (English) *</label>
+          <input type="text" id="blog-title-en" style="width:100%;">
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Title (Hindi)</label>
+          <input type="text" id="blog-title-hi" style="width:100%;">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Category</label>
+            <select id="blog-category" style="width:100%;">
+              <option value="">— None —</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Date published</label>
+            <input type="date" id="blog-date" style="width:100%;">
+          </div>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Related official service</label>
+          <select id="blog-related-service" style="width:100%;">
+            <option value="">— None —</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Excerpt (English)</label>
+          <textarea id="blog-excerpt-en" rows="2" style="width:100%;"></textarea>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Excerpt (Hindi)</label>
+          <textarea id="blog-excerpt-hi" rows="2" style="width:100%;"></textarea>
+        </div>
+
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Body (English) *</label>
+          <div class="editor-toolbar" data-target="blog-body-en">
+            <button type="button" data-cmd="bold"><b>B</b></button>
+            <button type="button" data-cmd="italic"><i>I</i></button>
+            <button type="button" data-cmd="formatBlock" data-val="H2">H2</button>
+            <button type="button" data-cmd="insertUnorderedList">• List</button>
+            <button type="button" data-cmd="insertOrderedList">1. List</button>
+            <button type="button" data-cmd="createLink">Link</button>
+            <button type="button" data-cmd="removeFormat">Clear</button>
+          </div>
+          <div id="blog-body-en" class="rte" contenteditable="true" style="min-height:140px;"></div>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Body (Hindi)</label>
+          <div class="editor-toolbar" data-target="blog-body-hi">
+            <button type="button" data-cmd="bold"><b>B</b></button>
+            <button type="button" data-cmd="italic"><i>I</i></button>
+            <button type="button" data-cmd="formatBlock" data-val="H2">H2</button>
+            <button type="button" data-cmd="insertUnorderedList">• List</button>
+            <button type="button" data-cmd="insertOrderedList">1. List</button>
+            <button type="button" data-cmd="createLink">Link</button>
+            <button type="button" data-cmd="removeFormat">Clear</button>
+          </div>
+          <div id="blog-body-hi" class="rte" contenteditable="true" style="min-height:140px;"></div>
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px;">
+          <button id="blog-save-draft" class="logout-btn" type="button">Save draft</button>
+          <button id="blog-publish" class="logout-btn logout-btn--primary" type="button">Publish</button>
+          <button id="blog-cancel-edit" class="logout-btn" type="button" style="display:none;">Cancel edit</button>
+          <span id="blog-form-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <h3 style="margin-top:0;">Posts written here <span id="blog-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <table class="cat-table" id="blog-table">
+        <thead><tr><th>Title</th><th>Category</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody><tr><td colspan="5" class="loading">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="admin-wrap-login" id="dash-loading">
+  <p class="loading" style="font-size:1.1rem; color:var(--admin-text-sub);">Connecting to Supabase Console…</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script>
+  const ROOT = "../";
+  let SUPABASE_CLIENT = null;
+
+  (async function init() {
+    SUPABASE_CLIENT = await getSupabaseClient();
+    if (!SUPABASE_CLIENT) {
+      document.getElementById("dash-loading").innerHTML = "<p class='loading'>Backend not configured.</p>";
+      return;
+    }
+    const { data } = await SUPABASE_CLIENT.auth.getSession();
+    if (!data || !data.session) {
+      window.location.href = "login.html";
+      return;
+    }
+    document.getElementById("whoami").textContent = "Logged in as " + data.session.user.email;
+    document.getElementById("dash-loading").hidden = true;
+    document.getElementById("dash-wrap").hidden = false;
+    loadBlogCategories();
+    loadBlogPosts();
+  })();
+
+  document.getElementById("logout").addEventListener("click", async function () {
+    if (SUPABASE_CLIENT) await SUPABASE_CLIENT.auth.signOut();
+    window.location.href = "login.html";
+  });
+
+  document.querySelectorAll(".editor-toolbar").forEach((bar) => {
+    const target = document.getElementById(bar.dataset.target);
+    bar.querySelectorAll("button[data-cmd]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        target.focus();
+        if (btn.dataset.cmd === "createLink") {
+          const url = prompt("Link URL:");
+          if (!url) return;
+          document.execCommand("createLink", false, url);
+        } else {
+          document.execCommand(btn.dataset.cmd, false, btn.dataset.val || null);
+        }
+      });
+    });
+  });
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : str;
+    return div.innerHTML;
+  }
+
+  function slugify(str) {
+    return (str || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 80);
+  }
+
+  function loadBlogCategories() {
+    fetch(ROOT + "data/categories.json")
+      .then((r) => r.json())
+      .then((cats) => {
+        const sel = document.getElementById("blog-category");
+        cats.forEach((c) => {
+          const opt = document.createElement("option");
+          opt.value = c.slug;
+          opt.textContent = c.name.en;
+          sel.appendChild(opt);
+        });
+      })
+      .catch((err) => console.error("Could not load categories:", err));
+
+    fetch(ROOT + "data/services.json")
+      .then((r) => r.json())
+      .then((services) => {
+        const sel = document.getElementById("blog-related-service");
+        services
+          .slice()
+          .sort((a, b) => a.name.en.localeCompare(b.name.en))
+          .forEach((s) => {
+            const opt = document.createElement("option");
+            opt.value = s.slug || s.id;
+            opt.textContent = s.name.en;
+            sel.appendChild(opt);
+          });
+      })
+      .catch((err) => console.error("Could not load services:", err));
+  }
+
+  function resetBlogForm() {
+    document.getElementById("blog-edit-id").value = "";
+    document.getElementById("blog-title-en").value = "";
+    document.getElementById("blog-title-hi").value = "";
+    document.getElementById("blog-excerpt-en").value = "";
+    document.getElementById("blog-excerpt-hi").value = "";
+    document.getElementById("blog-body-en").innerHTML = "";
+    document.getElementById("blog-body-hi").innerHTML = "";
+    document.getElementById("blog-category").value = "";
+    document.getElementById("blog-related-service").value = "";
+    document.getElementById("blog-date").value = new Date().toISOString().slice(0, 10);
+    document.getElementById("blog-form-heading").textContent = "Write a new post";
+    document.getElementById("blog-cancel-edit").style.display = "none";
+    document.getElementById("blog-form-msg").textContent = "";
+  }
+
+  async function saveBlogPost(status) {
+    const msg = document.getElementById("blog-form-msg");
+    const titleEn = document.getElementById("blog-title-en").value.trim();
+    const bodyEn = document.getElementById("blog-body-en").innerHTML.trim();
+    if (!titleEn || !bodyEn) {
+      msg.textContent = "Title (English) and Body (English) are required.";
+      return;
+    }
+    const editId = document.getElementById("blog-edit-id").value;
+    const payload = {
+      title_en: titleEn,
+      title_hi: document.getElementById("blog-title-hi").value.trim() || null,
+      excerpt_en: document.getElementById("blog-excerpt-en").value.trim() || null,
+      excerpt_hi: document.getElementById("blog-excerpt-hi").value.trim() || null,
+      body_en: bodyEn,
+      body_hi: document.getElementById("blog-body-hi").innerHTML.trim() || null,
+      category: document.getElementById("blog-category").value || null,
+      related_service_id: document.getElementById("blog-related-service").value || null,
+      date_published: document.getElementById("blog-date").value || new Date().toISOString().slice(0, 10),
+      status: status,
+      updated_at: new Date().toISOString(),
+    };
+
+    msg.textContent = "Saving…";
+    let error;
+    if (editId) {
+      ({ error } = await SUPABASE_CLIENT.from("blog_posts").update(payload).eq("id", editId));
+    } else {
+      payload.slug = slugify(titleEn) + "-" + Date.now().toString(36);
+      ({ error } = await SUPABASE_CLIENT.from("blog_posts").insert(payload));
+    }
+    if (error) {
+      msg.textContent = "Could not save: " + error.message;
+      return;
+    }
+    msg.textContent = status === "published" ? "Published ✅" : "Draft saved.";
+    resetBlogForm();
+    loadBlogPosts();
+  }
+
+  document.getElementById("blog-save-draft").addEventListener("click", () => saveBlogPost("draft"));
+  document.getElementById("blog-publish").addEventListener("click", () => saveBlogPost("published"));
+  document.getElementById("blog-cancel-edit").addEventListener("click", resetBlogForm);
+
+  async function loadBlogPosts() {
+    const tbody = document.querySelector("#blog-table tbody");
+    const { data, error } = await SUPABASE_CLIENT
+      .from("blog_posts")
+      .select("id, slug, title_en, title_hi, excerpt_en, excerpt_hi, body_en, body_hi, category, related_service_id, date_published, status")
+      .order("date_published", { ascending: false });
+
+    if (error) {
+      tbody.innerHTML = `<tr><td colspan="5">Could not load: ${escapeHtml(error.message)}</td></tr>`;
+      return;
+    }
+    document.getElementById("blog-count").textContent = `(${data.length})`;
+    if (!data.length) {
+      tbody.innerHTML = `<tr><td colspan="5">No posts written from here yet.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data
+      .map((p) => {
+        const badgeClass = p.status === "published" ? "badge--ok" : "badge--warn";
+        return `
+      <tr data-id="${p.id}">
+        <td>${escapeHtml(p.title_en)}</td>
+        <td>${escapeHtml(p.category) || "—"}</td>
+        <td>${p.date_published || "—"}</td>
+        <td><span class="badge ${badgeClass}">${escapeHtml(p.status)}</span></td>
+        <td class="row-actions">
+          <button data-action="edit-post" data-id="${p.id}">Edit</button>
+          ${p.status === "published"
+            ? `<button data-action="unpublish-post" data-id="${p.id}">Unpublish</button>`
+            : `<button data-action="publish-post" data-id="${p.id}">Publish</button>`}
+          <button data-action="delete-post" data-id="${p.id}">Delete</button>
+        </td>
+      </tr>`;
+      })
+      .join("");
+
+    tbody.querySelectorAll('button[data-action="edit-post"]').forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const post = data.find((p) => p.id === btn.dataset.id);
+        if (!post) return;
+        document.getElementById("blog-edit-id").value = post.id;
+        document.getElementById("blog-title-en").value = post.title_en || "";
+        document.getElementById("blog-title-hi").value = post.title_hi || "";
+        document.getElementById("blog-excerpt-en").value = post.excerpt_en || "";
+        document.getElementById("blog-excerpt-hi").value = post.excerpt_hi || "";
+        document.getElementById("blog-body-en").innerHTML = post.body_en || "";
+        document.getElementById("blog-body-hi").innerHTML = post.body_hi || "";
+        document.getElementById("blog-category").value = post.category || "";
+        document.getElementById("blog-related-service").value = post.related_service_id || "";
+        document.getElementById("blog-date").value = post.date_published || "";
+        document.getElementById("blog-form-heading").textContent = "Editing: " + post.title_en;
+        document.getElementById("blog-cancel-edit").style.display = "inline-block";
+        document.getElementById("blog-form-msg").textContent = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    tbody.querySelectorAll('button[data-action="publish-post"], button[data-action="unpublish-post"]').forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const newStatus = btn.dataset.action === "publish-post" ? "published" : "draft";
+        const { error } = await SUPABASE_CLIENT.from("blog_posts").update({ status: newStatus }).eq("id", btn.dataset.id);
+        if (error) { alert("Could not update: " + error.message); return; }
+        loadBlogPosts();
+      });
+    });
+
+    tbody.querySelectorAll('button[data-action="delete-post"]').forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Delete this post permanently?")) return;
+        const { error } = await SUPABASE_CLIENT.from("blog_posts").delete().eq("id", btn.dataset.id);
+        if (error) { alert("Could not delete: " + error.message); return; }
+        loadBlogPosts();
+      });
+    });
+  }
+
+  document.getElementById("blog-bulk-import-btn").addEventListener("click", async () => {
+    const msg = document.getElementById("blog-bulk-msg");
+    const raw = document.getElementById("blog-bulk-json").value.trim();
+    if (!raw) { msg.textContent = "Paste some JSON first."; return; }
+
+    let list;
+    try {
+      list = JSON.parse(raw);
+      if (!Array.isArray(list)) throw new Error("Must be a JSON array [ ... ]");
+    } catch (err) {
+      msg.textContent = "Invalid JSON: " + err.message;
+      return;
+    }
+
+    const publishNow = document.getElementById("blog-bulk-publish").checked;
+    const today = new Date().toISOString().slice(0, 10);
+    const rows = [];
+    const skipped = [];
+    list.forEach((p, i) => {
+      if (!p.title_en || !p.body_en) {
+        skipped.push(`#${i + 1} (missing title_en/body_en)`);
+        return;
+      }
+      rows.push({
+        slug: slugify(p.title_en) + "-" + Date.now().toString(36) + "-" + i,
+        title_en: p.title_en,
+        title_hi: p.title_hi || null,
+        excerpt_en: p.excerpt_en || null,
+        excerpt_hi: p.excerpt_hi || null,
+        body_en: p.body_en,
+        body_hi: p.body_hi || null,
+        category: p.category || null,
+        related_service_id: p.related_service_id || null,
+        date_published: p.date_published || today,
+        status: publishNow ? "published" : "draft",
+      });
+    });
+
+    if (!rows.length) {
+      msg.textContent = "Nothing to import — " + skipped.join(", ");
+      return;
+    }
+
+    msg.textContent = "Importing " + rows.length + "…";
+    const { error } = await SUPABASE_CLIENT.from("blog_posts").insert(rows);
+    if (error) {
+      msg.textContent = "Could not import: " + error.message;
+      return;
+    }
+    msg.textContent = `Imported ${rows.length} post${rows.length > 1 ? "s" : ""}${publishNow ? " and published" : " as drafts"}.` +
+      (skipped.length ? ` Skipped ${skipped.length}: ${skipped.join(", ")}` : "");
+    document.getElementById("blog-bulk-json").value = "";
+    loadBlogPosts();
+  });
+
+  resetBlogForm();
+</script>
+</body>
+</html>

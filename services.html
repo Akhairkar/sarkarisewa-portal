@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="manifest" href="../manifest.json">
+<title>Services &amp; Schemes — SarkariSewa Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/admin-theme.css?v=3">
+<script src="../assets/js/admin-theme-toggle.js"></script>
+</head>
+<body>
+
+<div class="admin-layout" id="dash-wrap" hidden>
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-brand">
+      <div class="admin-sidebar-logo">S</div>
+      <div>
+        <div class="admin-sidebar-title">SarkariSewa</div>
+        <div class="admin-sidebar-subtitle">Admin Console</div>
+      </div>
+    </div>
+    <nav class="admin-nav">
+      <a href="dashboard.html" class="admin-nav-item">📊 Overview</a>
+      <a href="comments.html" class="admin-nav-item">💬 Comments</a>
+      <a href="subscribers.html" class="admin-nav-item">📬 Subscribers</a>
+      <a href="csc.html" class="admin-nav-item">🏬 CSC Listings</a>
+      <a href="blog.html" class="admin-nav-item">📝 Blog Manager</a>
+      <a href="jobs.html" class="admin-nav-item">💼 Job Alerts</a>
+      <a href="exams.html" class="admin-nav-item">📅 Exam Calendar</a>
+      <a href="deadlines.html" class="admin-nav-item">🗓️ Deadlines</a>
+      <a href="services.html" class="admin-nav-item active">⚙️ Services</a>
+      <a href="analytics.html" class="admin-nav-item">📈 Analytics</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <button type="button" class="theme-toggle-btn">☀️ Light Mode</button>
+      <div style="font-size:0.78rem; color:var(--admin-text-muted);" id="whoami">Loading identity…</div>
+      <button class="logout-btn" id="logout" style="width:100%;">Log out</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-page-title">
+        <h1>Services &amp; Schemes Manager</h1>
+        <p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Add and publish dynamic government services &amp; schemes stored in Supabase.</p>
+      </div>
+    </div>
+
+    <div class="dash-card" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.3);">
+      <strong>ℹ How this works.</strong> The 106 original services stay in <code>data/services.json</code> — this page adds <strong>new</strong> services, stored in Supabase, that appear everywhere alongside JSON services.
+    </div>
+
+    <div class="dash-card">
+      <h3 style="margin-top:0;">Bulk import</h3>
+      <p style="font-size:0.85rem; color:var(--admin-text-muted); margin-top:0;">
+        Paste a JSON list of services here and click Import. Duplicate slugs are skipped automatically.
+      </p>
+      <textarea id="svc-bulk-json" rows="5" placeholder='[{"slug": "example-service", "category": "identity-documents", "name_en": "...", "name_hi": "...", "short_description_en": "..."}]' style="width:100%; font-family:var(--admin-font-mono); font-size:0.82rem;"></textarea>
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;">
+        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px; color:var(--admin-text-sub);">
+          <input type="checkbox" id="svc-bulk-publish"> Publish immediately (skip draft review)
+        </label>
+        <button id="svc-bulk-import-btn" class="logout-btn" type="button">Import</button>
+        <span id="svc-bulk-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <h3 id="svc-form-heading" style="margin-top:0;">Add a new service</h3>
+      <input type="hidden" id="svc-edit-id" value="">
+      <div style="display:grid; gap:14px;">
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Name (English) *</label>
+          <input type="text" id="svc-name-en" style="width:100%;">
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Name (Hindi)</label>
+          <input type="text" id="svc-name-hi" style="width:100%;">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Slug (URL id) *</label>
+            <input type="text" id="svc-slug" placeholder="e.g. pmbjp" style="width:100%;">
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Category *</label>
+            <select id="svc-category" style="width:100%;">
+              <option value="">— Select —</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Short Description (English)</label>
+          <textarea id="svc-desc-en" rows="2" style="width:100%;"></textarea>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Short Description (Hindi)</label>
+          <textarea id="svc-desc-hi" rows="2" style="width:100%;"></textarea>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Link Label (English)</label>
+            <input type="text" id="svc-link-label-en" placeholder="Official Portal" style="width:100%;">
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Link Label (Hindi)</label>
+            <input type="text" id="svc-link-label-hi" placeholder="आधिकारिक पोर्टल" style="width:100%;">
+          </div>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Link URL</label>
+          <input type="url" id="svc-link-url" placeholder="https://" style="width:100%;">
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Helpline</label>
+          <input type="text" id="svc-helpline" style="width:100%;">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Eligibility (English) — one per line</label>
+            <textarea id="svc-eligibility-en" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Eligibility (Hindi)</label>
+            <textarea id="svc-eligibility-hi" rows="3" style="width:100%;"></textarea>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Documents Required (English)</label>
+            <textarea id="svc-documents-en" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Documents Required (Hindi)</label>
+            <textarea id="svc-documents-hi" rows="3" style="width:100%;"></textarea>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">FAQs (English)</label>
+            <textarea id="svc-faqs-en" rows="4" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">FAQs (Hindi)</label>
+            <textarea id="svc-faqs-hi" rows="4" style="width:100%;"></textarea>
+          </div>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Related Services — comma-separated slugs</label>
+          <input type="text" id="svc-related" placeholder="aadhaar-card, pan-card" style="width:100%;">
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button id="svc-save-draft" class="logout-btn" type="button">Save draft</button>
+          <button id="svc-publish" class="logout-btn logout-btn--primary" type="button">Publish</button>
+          <button id="svc-cancel-edit" class="logout-btn" type="button" style="display:none;">Cancel edit</button>
+          <span id="svc-form-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <h3 style="margin-top:0;">Services added here <span id="svc-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <table class="cat-table" id="svc-table">
+        <thead><tr><th>Name</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody><tr><td colspan="4" class="loading">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="admin-wrap-login" id="dash-loading">
+  <p class="loading" style="font-size:1.1rem; color:var(--admin-text-sub);">Connecting to Supabase Console…</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script>
+  const ROOT = "../";
+  let SUPABASE_CLIENT = null;
+
+  (async function init() {
+    SUPABASE_CLIENT = await getSupabaseClient();
+    if (!SUPABASE_CLIENT) {
+      document.getElementById("dash-loading").innerHTML = "<p class='loading'>Backend not configured.</p>";
+      return;
+    }
+    const { data } = await SUPABASE_CLIENT.auth.getSession();
+    if (!data || !data.session) {
+      window.location.href = "login.html";
+      return;
+    }
+    document.getElementById("whoami").textContent = "Logged in as " + data.session.user.email;
+    document.getElementById("dash-loading").hidden = true;
+    document.getElementById("dash-wrap").hidden = false;
+    loadServiceCategories();
+    loadServices();
+  })();
+
+  document.getElementById("logout").addEventListener("click", async function () {
+    if (SUPABASE_CLIENT) await SUPABASE_CLIENT.auth.signOut();
+    window.location.href = "login.html";
+  });
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : str;
+    return div.innerHTML;
+  }
+
+  function slugifyService(str) {
+    return (str || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 80);
+  }
+
+  function loadServiceCategories() {
+    fetch(ROOT + "data/categories.json")
+      .then((r) => r.json())
+      .then((cats) => {
+        const list = Array.isArray(cats) ? cats : (cats.categories || []);
+        const sel = document.getElementById("svc-category");
+        list.forEach((c) => {
+          const opt = document.createElement("option");
+          opt.value = c.slug;
+          opt.textContent = c.name.en;
+          sel.appendChild(opt);
+        });
+      })
+      .catch((err) => console.error("Could not load categories:", err));
+  }
+
+  async function getExistingSlugs() {
+    const jsonSlugs = await fetch(ROOT + "data/services.json")
+      .then((r) => r.json())
+      .then((raw) => {
+        const list = Array.isArray(raw) ? raw : (raw.services || []);
+        return list.map((s) => s.slug || s.id);
+      })
+      .catch(() => []);
+    const { data } = await SUPABASE_CLIENT.from("services").select("slug");
+    const dbSlugs = (data || []).map((r) => r.slug);
+    return new Set([...jsonSlugs, ...dbSlugs]);
+  }
+
+  function linesToBilingualArray(enText, hiText) {
+    const enLines = (enText || "").split("\n").map((l) => l.trim()).filter(Boolean);
+    const hiLines = (hiText || "").split("\n").map((l) => l.trim()).filter(Boolean);
+    return enLines.map((en, i) => ({ en, hi: hiLines[i] || en }));
+  }
+
+  function textToFaqs(enText, hiText) {
+    function parseBlock(text) {
+      const blocks = (text || "").split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
+      return blocks.map((b) => {
+        const qMatch = b.match(/Q:\s*(.+)/i);
+        const aMatch = b.match(/A:\s*(.+)/i);
+        return { q: qMatch ? qMatch[1].trim() : "", a: aMatch ? aMatch[1].trim() : "" };
+      }).filter((f) => f.q || f.a);
+    }
+    const enFaqs = parseBlock(enText);
+    const hiFaqs = parseBlock(hiText);
+    return enFaqs.map((f, i) => ({
+      q: { en: f.q, hi: (hiFaqs[i] && hiFaqs[i].q) || f.q },
+      a: { en: f.a, hi: (hiFaqs[i] && hiFaqs[i].a) || f.a },
+    }));
+  }
+
+  function resetServiceForm() {
+    document.getElementById("svc-edit-id").value = "";
+    document.getElementById("svc-name-en").value = "";
+    document.getElementById("svc-name-hi").value = "";
+    document.getElementById("svc-slug").value = "";
+    document.getElementById("svc-slug").disabled = false;
+    document.getElementById("svc-category").value = "";
+    document.getElementById("svc-desc-en").value = "";
+    document.getElementById("svc-desc-hi").value = "";
+    document.getElementById("svc-link-label-en").value = "";
+    document.getElementById("svc-link-label-hi").value = "";
+    document.getElementById("svc-link-url").value = "";
+    document.getElementById("svc-helpline").value = "";
+    document.getElementById("svc-eligibility-en").value = "";
+    document.getElementById("svc-eligibility-hi").value = "";
+    document.getElementById("svc-documents-en").value = "";
+    document.getElementById("svc-documents-hi").value = "";
+    document.getElementById("svc-faqs-en").value = "";
+    document.getElementById("svc-faqs-hi").value = "";
+    document.getElementById("svc-related").value = "";
+    document.getElementById("svc-form-heading").textContent = "Add a new service";
+    document.getElementById("svc-cancel-edit").style.display = "none";
+    document.getElementById("svc-form-msg").textContent = "";
+  }
+
+  function buildServicePayload() {
+    const officialLinks = [];
+    const linkUrl = document.getElementById("svc-link-url").value.trim();
+    if (linkUrl) {
+      officialLinks.push({
+        label: {
+          en: document.getElementById("svc-link-label-en").value.trim() || "Official Portal",
+          hi: document.getElementById("svc-link-label-hi").value.trim() || "आधिकारिक पोर्टल",
+        },
+        url: linkUrl,
+      });
+    }
+    const relatedServices = document.getElementById("svc-related").value
+      .split(",").map((s) => s.trim()).filter(Boolean);
+
+    return {
+      name_en: document.getElementById("svc-name-en").value.trim(),
+      name_hi: document.getElementById("svc-name-hi").value.trim() || null,
+      category: document.getElementById("svc-category").value,
+      short_description_en: document.getElementById("svc-desc-en").value.trim() || null,
+      short_description_hi: document.getElementById("svc-desc-hi").value.trim() || null,
+      official_links: officialLinks,
+      helpline: document.getElementById("svc-helpline").value.trim() || null,
+      eligibility: linesToBilingualArray(
+        document.getElementById("svc-eligibility-en").value,
+        document.getElementById("svc-eligibility-hi").value
+      ),
+      documents_required: linesToBilingualArray(
+        document.getElementById("svc-documents-en").value,
+        document.getElementById("svc-documents-hi").value
+      ),
+      faqs: textToFaqs(
+        document.getElementById("svc-faqs-en").value,
+        document.getElementById("svc-faqs-hi").value
+      ),
+      related_services: relatedServices,
+    };
+  }
+
+  async function saveService(status) {
+    const msg = document.getElementById("svc-form-msg");
+    const nameEn = document.getElementById("svc-name-en").value.trim();
+    const category = document.getElementById("svc-category").value;
+    const slugInput = document.getElementById("svc-slug");
+    const editId = document.getElementById("svc-edit-id").value;
+
+    if (!nameEn || !category || (!editId && !slugInput.value.trim())) {
+      msg.textContent = "Name, Category, and Slug are required.";
+      return;
+    }
+
+    const payload = buildServicePayload();
+    payload.status = status;
+    payload.updated_at = new Date().toISOString();
+
+    msg.textContent = "Saving…";
+    let error;
+    if (editId) {
+      ({ error } = await SUPABASE_CLIENT.from("services").update(payload).eq("id", editId));
+    } else {
+      const slug = slugifyService(slugInput.value);
+      const existing = await getExistingSlugs();
+      if (existing.has(slug)) {
+        msg.textContent = `Slug "${slug}" already exists — pick a different one.`;
+        return;
+      }
+      payload.slug = slug;
+      ({ error } = await SUPABASE_CLIENT.from("services").insert(payload));
+    }
+    if (error) {
+      msg.textContent = "Could not save: " + error.message;
+      return;
+    }
+    msg.textContent = status === "published" ? "Published ✅" : "Draft saved.";
+    resetServiceForm();
+    loadServices();
+  }
+
+  document.getElementById("svc-save-draft").addEventListener("click", () => saveService("draft"));
+  document.getElementById("svc-publish").addEventListener("click", () => saveService("published"));
+  document.getElementById("svc-cancel-edit").addEventListener("click", resetServiceForm);
+
+  document.getElementById("svc-bulk-import-btn").addEventListener("click", async () => {
+    const msg = document.getElementById("svc-bulk-msg");
+    const raw = document.getElementById("svc-bulk-json").value.trim();
+    if (!raw) { msg.textContent = "Paste a JSON list first."; return; }
+
+    let list;
+    try {
+      list = JSON.parse(raw);
+      if (!Array.isArray(list)) throw new Error("Must be a JSON array (starts with [ and ends with ]).");
+    } catch (err) {
+      msg.textContent = "Invalid JSON: " + err.message;
+      return;
+    }
+
+    msg.textContent = "Checking for duplicates…";
+    const existing = await getExistingSlugs();
+    const publishNow = document.getElementById("svc-bulk-publish").checked;
+    const rows = [];
+    const skipped = [];
+
+    list.forEach((s, i) => {
+      const slug = slugifyService(s.slug || s.name_en);
+      if (!s.name_en || !s.category || !slug) {
+        skipped.push(`#${i + 1} (missing name_en/category/slug)`);
+        return;
+      }
+      if (existing.has(slug)) {
+        skipped.push(`#${i + 1} "${slug}" (duplicate)`);
+        return;
+      }
+      existing.add(slug);
+      rows.push({
+        slug,
+        category: s.category,
+        name_en: s.name_en,
+        name_hi: s.name_hi || null,
+        short_description_en: s.short_description_en || null,
+        short_description_hi: s.short_description_hi || null,
+        official_links: s.official_links || [],
+        helpline: s.helpline || null,
+        date_added: s.date_added || null,
+        eligibility: s.eligibility || [],
+        documents_required: s.documents_required || [],
+        faqs: s.faqs || [],
+        related_services: s.related_services || [],
+        status: publishNow ? "published" : "draft",
+      });
+    });
+
+    if (!rows.length) {
+      msg.textContent = "Nothing to import — " + skipped.join(", ");
+      return;
+    }
+
+    msg.textContent = "Importing " + rows.length + "…";
+    const { error } = await SUPABASE_CLIENT.from("services").insert(rows);
+    if (error) {
+      msg.textContent = "Could not import: " + error.message;
+      return;
+    }
+    msg.textContent = `Imported ${rows.length} service${rows.length > 1 ? "s" : ""}${publishNow ? " and published" : " as drafts"}.` +
+      (skipped.length ? ` Skipped ${skipped.length}: ${skipped.join(", ")}` : "");
+    document.getElementById("svc-bulk-json").value = "";
+    loadServices();
+  });
+
+  async function loadServices() {
+    const tbody = document.querySelector("#svc-table tbody");
+    const { data, error } = await SUPABASE_CLIENT
+      .from("services")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      tbody.innerHTML = `<tr><td colspan="4">Could not load: ${escapeHtml(error.message)}</td></tr>`;
+      return;
+    }
+    document.getElementById("svc-count").textContent = `(${data.length})`;
+    if (!data.length) {
+      tbody.innerHTML = `<tr><td colspan="4">No services added here yet.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data
+      .map((s) => {
+        const badgeClass = s.status === "published" ? "badge--ok" : "badge--warn";
+        return `
+      <tr data-id="${s.id}">
+        <td>${escapeHtml(s.name_en)}</td>
+        <td>${escapeHtml(s.category)}</td>
+        <td><span class="badge ${badgeClass}">${escapeHtml(s.status)}</span></td>
+        <td class="row-actions">
+          <a href="../service/service.html?id=${encodeURIComponent(s.slug)}" target="_blank" rel="noopener noreferrer">Preview</a>
+          <button data-action="edit-svc" data-id="${s.id}">Edit</button>
+          ${s.status === "published"
+            ? `<button data-action="unpublish-svc" data-id="${s.id}">Unpublish</button>`
+            : `<button data-action="publish-svc" data-id="${s.id}">Publish</button>`}
+          <button data-action="delete-svc" data-id="${s.id}">Delete</button>
+        </td>
+      </tr>`;
+      })
+      .join("");
+
+    tbody.querySelectorAll('button[data-action="edit-svc"]').forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const s = data.find((x) => x.id === btn.dataset.id);
+        if (!s) return;
+        document.getElementById("svc-edit-id").value = s.id;
+        document.getElementById("svc-name-en").value = s.name_en || "";
+        document.getElementById("svc-name-hi").value = s.name_hi || "";
+        document.getElementById("svc-slug").value = s.slug || "";
+        document.getElementById("svc-slug").disabled = true;
+        document.getElementById("svc-category").value = s.category || "";
+        document.getElementById("svc-desc-en").value = s.short_description_en || "";
+        document.getElementById("svc-desc-hi").value = s.short_description_hi || "";
+        const link = (s.official_links || [])[0];
+        document.getElementById("svc-link-label-en").value = link ? (link.label && link.label.en) || "" : "";
+        document.getElementById("svc-link-label-hi").value = link ? (link.label && link.label.hi) || "" : "";
+        document.getElementById("svc-link-url").value = link ? link.url || "" : "";
+        document.getElementById("svc-helpline").value = s.helpline || "";
+        document.getElementById("svc-eligibility-en").value = (s.eligibility || []).map((e) => e.en).join("\n");
+        document.getElementById("svc-eligibility-hi").value = (s.eligibility || []).map((e) => e.hi).join("\n");
+        document.getElementById("svc-documents-en").value = (s.documents_required || []).map((d) => d.en).join("\n");
+        document.getElementById("svc-documents-hi").value = (s.documents_required || []).map((d) => d.hi).join("\n");
+        document.getElementById("svc-faqs-en").value = (s.faqs || []).map((f) => `Q: ${f.q.en}\nA: ${f.a.en}`).join("\n\n");
+        document.getElementById("svc-faqs-hi").value = (s.faqs || []).map((f) => `Q: ${f.q.hi}\nA: ${f.a.hi}`).join("\n\n");
+        document.getElementById("svc-related").value = (s.related_services || []).join(", ");
+        document.getElementById("svc-form-heading").textContent = "Editing: " + s.name_en;
+        document.getElementById("svc-cancel-edit").style.display = "inline-block";
+        document.getElementById("svc-form-msg").textContent = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    tbody.querySelectorAll('button[data-action="publish-svc"], button[data-action="unpublish-svc"]').forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const newStatus = btn.dataset.action === "publish-svc" ? "published" : "draft";
+        const { error } = await SUPABASE_CLIENT.from("services").update({ status: newStatus }).eq("id", btn.dataset.id);
+        if (error) { alert("Could not update: " + error.message); return; }
+        loadServices();
+      });
+    });
+
+    tbody.querySelectorAll('button[data-action="delete-svc"]').forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Delete this service permanently?")) return;
+        const { error } = await SUPABASE_CLIENT.from("services").delete().eq("id", btn.dataset.id);
+        if (error) { alert("Could not delete: " + error.message); return; }
+        loadServices();
+      });
+    });
+  }
+
+  resetServiceForm();
+</script>
+</body>
+</html>

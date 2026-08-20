@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="manifest" href="../manifest.json">
+<title>Exam Calendar Manager — SarkariSewa Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/admin-theme.css?v=3">
+<script src="../assets/js/admin-theme-toggle.js"></script>
+</head>
+<body>
+
+<div class="admin-layout" id="dash-wrap" hidden>
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-brand">
+      <div class="admin-sidebar-logo">S</div>
+      <div>
+        <div class="admin-sidebar-title">SarkariSewa</div>
+        <div class="admin-sidebar-subtitle">Admin Console</div>
+      </div>
+    </div>
+    <nav class="admin-nav">
+      <a href="dashboard.html" class="admin-nav-item">📊 Overview</a>
+      <a href="comments.html" class="admin-nav-item">💬 Comments</a>
+      <a href="subscribers.html" class="admin-nav-item">📬 Subscribers</a>
+      <a href="csc.html" class="admin-nav-item">🏬 CSC Listings</a>
+      <a href="blog.html" class="admin-nav-item">📝 Blog Manager</a>
+      <a href="jobs.html" class="admin-nav-item">💼 Job Alerts</a>
+      <a href="exams.html" class="admin-nav-item active">📅 Exam Calendar</a>
+      <a href="deadlines.html" class="admin-nav-item">🗓️ Deadlines</a>
+      <a href="services.html" class="admin-nav-item">⚙️ Services</a>
+      <a href="analytics.html" class="admin-nav-item">📈 Analytics</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <button type="button" class="theme-toggle-btn">☀️ Light Mode</button>
+      <div style="font-size:0.78rem; color:var(--admin-text-muted);" id="whoami">Loading identity…</div>
+      <button class="logout-btn" id="logout" style="width:100%;">Log out</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div class="admin-page-title">
+        <h1>Exam Calendar Manager</h1>
+        <p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Manage upcoming exam schedules, admit card dates, and notification links.</p>
+      </div>
+    </div>
+
+    <div class="dash-card" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.3);">
+      <strong>ℹ How this works.</strong> Fill the form and click
+      <strong>Publish</strong> — the exam goes live on <code>/exams/</code>
+      immediately. Status (Upcoming / Open / Closed) is calculated automatically from dates.
+    </div>
+
+    <div class="dash-card">
+      <h3 style="margin-top:0;">Bulk import</h3>
+      <p style="font-size:0.85rem; color:var(--admin-text-muted); margin-top:0;">
+        Paste a JSON list of exams here and click Import.
+      </p>
+      <textarea id="exam-bulk-json" rows="5" placeholder='[{"exam_name_en": "SSC CGL 2026", "exam_name_hi": "...", "organisation_en": "SSC", "category": "ssc", "notification_date": "2026-07-20", "last_date": "2026-09-10", "exam_date": "2026-11-20", "official_link": "https://...", "notification_pdf_link": "https://..."}]' style="width:100%; font-family:var(--admin-font-mono); font-size:0.82rem;"></textarea>
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;">
+        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px; color:var(--admin-text-sub);">
+          <input type="checkbox" id="exam-bulk-publish"> Publish immediately (skip draft review)
+        </label>
+        <button id="exam-bulk-import-btn" class="logout-btn" type="button">Import</button>
+        <span id="exam-bulk-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <h3 id="exam-form-heading" style="margin-top:0;">Add a new exam</h3>
+      <input type="hidden" id="exam-edit-id" value="">
+      <div style="display:grid; gap:14px;">
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Exam Name (English) *</label>
+          <input type="text" id="exam-name-en" placeholder="e.g. SSC CGL 2026" style="width:100%;">
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Exam Name (Hindi)</label>
+          <input type="text" id="exam-name-hi" style="width:100%;">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Organisation (English)</label>
+            <input type="text" id="exam-org-en" placeholder="e.g. Staff Selection Commission" style="width:100%;">
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Organisation (Hindi)</label>
+            <input type="text" id="exam-org-hi" style="width:100%;">
+          </div>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Category</label>
+          <select id="exam-category" style="width:100%;">
+            <option value="central">Central Govt</option>
+            <option value="state">State Govt</option>
+            <option value="banking">Banking</option>
+            <option value="railway">Railway</option>
+            <option value="ssc">SSC</option>
+            <option value="upsc">UPSC</option>
+            <option value="police">Police</option>
+            <option value="defence">Defence</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;">
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Notification Date</label>
+            <input type="date" id="exam-notification-date" style="width:100%;">
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Last Date to Apply *</label>
+            <input type="date" id="exam-last-date" style="width:100%;">
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Exam Date</label>
+            <input type="date" id="exam-date" style="width:100%;">
+          </div>
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Link *</label>
+          <input type="text" id="exam-official-link" placeholder="https://..." style="width:100%;">
+        </div>
+        <div>
+          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Official Notification (PDF link)</label>
+          <input type="text" id="exam-notification-pdf" placeholder="https://... (optional)" style="width:100%;">
+        </div>
+
+        <h4 style="margin:10px 0 0; border-top:1px solid var(--admin-border); padding-top:16px; color:var(--admin-text-main);">Detail page content (optional)</h4>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Description (English)</label>
+            <textarea id="exam-description-en" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Description (Hindi)</label>
+            <textarea id="exam-description-hi" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Eligibility (English)</label>
+            <textarea id="exam-eligibility-en" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Eligibility (Hindi)</label>
+            <textarea id="exam-eligibility-hi" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Age Limit (English)</label>
+            <textarea id="exam-age-limit-en" rows="2" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Age Limit (Hindi)</label>
+            <textarea id="exam-age-limit-hi" rows="2" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Exam Pattern (English)</label>
+            <textarea id="exam-pattern-en" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Exam Pattern (Hindi)</label>
+            <textarea id="exam-pattern-hi" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Syllabus (English)</label>
+            <textarea id="exam-syllabus-en" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Syllabus (Hindi)</label>
+            <textarea id="exam-syllabus-hi" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Selection Process (English)</label>
+            <textarea id="exam-selection-process-en" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Selection Process (Hindi)</label>
+            <textarea id="exam-selection-process-hi" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Application Fee (English)</label>
+            <textarea id="exam-application-fee-en" rows="2" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Application Fee (Hindi)</label>
+            <textarea id="exam-application-fee-hi" rows="2" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">How to Apply (English)</label>
+            <textarea id="exam-how-to-apply-en" rows="3" style="width:100%;"></textarea>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">How to Apply (Hindi)</label>
+            <textarea id="exam-how-to-apply-hi" rows="3" style="width:100%;"></textarea>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button id="exam-save-draft" class="logout-btn" type="button">Save draft</button>
+          <button id="exam-publish" class="logout-btn logout-btn--primary" type="button">Publish</button>
+          <button id="exam-cancel-edit" class="logout-btn" type="button" style="display:none;">Cancel edit</button>
+          <span id="exam-form-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <h3 style="margin-top:0;">Exams <span id="exam-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+      <table class="cat-table" id="exam-table">
+        <thead><tr><th>Exam Name</th><th>Category</th><th>Last Date</th><th>Computed Status</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody><tr><td colspan="6" class="loading">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="admin-wrap-login" id="dash-loading">
+  <p class="loading" style="font-size:1.1rem; color:var(--admin-text-sub);">Connecting to Supabase Console…</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script>
+  let SUPABASE_CLIENT = null;
+
+  (async function init() {
+    SUPABASE_CLIENT = await getSupabaseClient();
+    if (!SUPABASE_CLIENT) {
+      document.getElementById("dash-loading").innerHTML = "<p class='loading'>Backend not configured.</p>";
+      return;
+    }
+    const { data } = await SUPABASE_CLIENT.auth.getSession();
+    if (!data || !data.session) {
+      window.location.href = "login.html";
+      return;
+    }
+    document.getElementById("whoami").textContent = "Logged in as " + data.session.user.email;
+    document.getElementById("dash-loading").hidden = true;
+    document.getElementById("dash-wrap").hidden = false;
+    loadExamCalendar();
+  })();
+
+  document.getElementById("logout").addEventListener("click", async function () {
+    if (SUPABASE_CLIENT) await SUPABASE_CLIENT.auth.signOut();
+    window.location.href = "login.html";
+  });
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : str;
+    return div.innerHTML;
+  }
+
+  function slugifyExam(str) {
+    return (str || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 80);
+  }
+
+  const EXAM_DETAIL_FIELDS = [
+    "description", "eligibility", "age-limit", "exam-pattern",
+    "syllabus", "selection-process", "application-fee", "how-to-apply",
+  ];
+  function examFieldToColumn(field) {
+    return field.replace(/-/g, "_");
+  }
+
+  function resetExamForm() {
+    document.getElementById("exam-edit-id").value = "";
+    document.getElementById("exam-name-en").value = "";
+    document.getElementById("exam-name-hi").value = "";
+    document.getElementById("exam-org-en").value = "";
+    document.getElementById("exam-org-hi").value = "";
+    document.getElementById("exam-category").value = "central";
+    document.getElementById("exam-notification-date").value = "";
+    document.getElementById("exam-last-date").value = "";
+    document.getElementById("exam-date").value = "";
+    document.getElementById("exam-official-link").value = "";
+    document.getElementById("exam-notification-pdf").value = "";
+    EXAM_DETAIL_FIELDS.forEach((f) => {
+      document.getElementById(`exam-${f}-en`).value = "";
+      document.getElementById(`exam-${f}-hi`).value = "";
+    });
+    document.getElementById("exam-form-heading").textContent = "Add a new exam";
+    document.getElementById("exam-cancel-edit").style.display = "none";
+    document.getElementById("exam-form-msg").textContent = "";
+  }
+
+  async function saveExam(status) {
+    const msg = document.getElementById("exam-form-msg");
+    const nameEn = document.getElementById("exam-name-en").value.trim();
+    const lastDate = document.getElementById("exam-last-date").value;
+    const officialLink = document.getElementById("exam-official-link").value.trim();
+    if (!nameEn || !lastDate || !officialLink) {
+      msg.textContent = "Exam Name, Last Date to Apply, and Official Link are required.";
+      return;
+    }
+    const editId = document.getElementById("exam-edit-id").value;
+    const payload = {
+      exam_name_en: nameEn,
+      exam_name_hi: document.getElementById("exam-name-hi").value.trim() || null,
+      organisation_en: document.getElementById("exam-org-en").value.trim() || null,
+      organisation_hi: document.getElementById("exam-org-hi").value.trim() || null,
+      category: document.getElementById("exam-category").value,
+      notification_date: document.getElementById("exam-notification-date").value || null,
+      last_date: lastDate,
+      exam_date: document.getElementById("exam-date").value || null,
+      official_link: officialLink,
+      notification_pdf_link: document.getElementById("exam-notification-pdf").value.trim() || null,
+      status: status,
+      updated_at: new Date().toISOString(),
+    };
+    EXAM_DETAIL_FIELDS.forEach((f) => {
+      const col = examFieldToColumn(f);
+      payload[`${col}_en`] = document.getElementById(`exam-${f}-en`).value.trim() || null;
+      payload[`${col}_hi`] = document.getElementById(`exam-${f}-hi`).value.trim() || null;
+    });
+
+    msg.textContent = "Saving…";
+    let error;
+    if (editId) {
+      ({ error } = await SUPABASE_CLIENT.from("exam_calendar").update(payload).eq("id", editId));
+    } else {
+      payload.slug = slugifyExam(nameEn) + "-" + Date.now().toString(36);
+      ({ error } = await SUPABASE_CLIENT.from("exam_calendar").insert(payload));
+    }
+    if (error) {
+      msg.textContent = "Could not save: " + error.message;
+      return;
+    }
+    msg.textContent = status === "published" ? "Published ✅" : "Draft saved.";
+    resetExamForm();
+    loadExamCalendar();
+  }
+
+  document.getElementById("exam-save-draft").addEventListener("click", () => saveExam("draft"));
+  document.getElementById("exam-publish").addEventListener("click", () => saveExam("published"));
+  document.getElementById("exam-cancel-edit").addEventListener("click", resetExamForm);
+
+  document.getElementById("exam-bulk-import-btn").addEventListener("click", async () => {
+    const msg = document.getElementById("exam-bulk-msg");
+    const raw = document.getElementById("exam-bulk-json").value.trim();
+    if (!raw) { msg.textContent = "Paste a JSON list first."; return; }
+
+    let list;
+    try {
+      list = JSON.parse(raw);
+      if (!Array.isArray(list)) throw new Error("Must be a JSON array [ ... ]");
+    } catch (err) {
+      msg.textContent = "Invalid JSON: " + err.message;
+      return;
+    }
+
+    const publishNow = document.getElementById("exam-bulk-publish").checked;
+    const rows = [];
+    const skipped = [];
+    list.forEach((ex, i) => {
+      if (!ex.exam_name_en || !ex.last_date || !ex.official_link) {
+        skipped.push(`#${i + 1} (missing exam_name_en/last_date/official_link)`);
+        return;
+      }
+      const row = {
+        slug: slugifyExam(ex.exam_name_en) + "-" + Date.now().toString(36) + "-" + i,
+        exam_name_en: ex.exam_name_en,
+        exam_name_hi: ex.exam_name_hi || null,
+        organisation_en: ex.organisation_en || null,
+        organisation_hi: ex.organisation_hi || null,
+        category: ex.category || "other",
+        notification_date: ex.notification_date || null,
+        last_date: ex.last_date,
+        exam_date: ex.exam_date || null,
+        official_link: ex.official_link,
+        notification_pdf_link: ex.notification_pdf_link || null,
+        status: publishNow ? "published" : "draft",
+      };
+      EXAM_DETAIL_FIELDS.forEach((f) => {
+        const col = examFieldToColumn(f);
+        row[`${col}_en`] = ex[`${col}_en`] || null;
+        row[`${col}_hi`] = ex[`${col}_hi`] || null;
+      });
+      rows.push(row);
+    });
+
+    if (!rows.length) {
+      msg.textContent = "Nothing to import — " + skipped.join(", ");
+      return;
+    }
+
+    msg.textContent = "Importing " + rows.length + "…";
+    const { error } = await SUPABASE_CLIENT.from("exam_calendar").insert(rows);
+    if (error) {
+      msg.textContent = "Could not import: " + error.message;
+      return;
+    }
+    msg.textContent = `Imported ${rows.length} exam${rows.length > 1 ? "s" : ""}${publishNow ? " and published" : " as drafts"}.` +
+      (skipped.length ? ` Skipped ${skipped.length}: ${skipped.join(", ")}` : "");
+    document.getElementById("exam-bulk-json").value = "";
+    loadExamCalendar();
+  });
+
+  function computeExamStatus(ex) {
+    const today = new Date().toISOString().slice(0, 10);
+    if (ex.notification_date && today < ex.notification_date) return "upcoming";
+    if (today <= ex.last_date) return "open";
+    return "closed";
+  }
+
+  async function loadExamCalendar() {
+    const tbody = document.querySelector("#exam-table tbody");
+    const { data, error } = await SUPABASE_CLIENT
+      .from("exam_calendar")
+      .select("*")
+      .order("last_date", { ascending: true });
+
+    if (error) {
+      tbody.innerHTML = `<tr><td colspan="6">Could not load: ${escapeHtml(error.message)}</td></tr>`;
+      return;
+    }
+    document.getElementById("exam-count").textContent = `(${data.length})`;
+    if (!data.length) {
+      tbody.innerHTML = `<tr><td colspan="6">No exams added yet.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data
+      .map((ex) => {
+        const computed = computeExamStatus(ex);
+        const computedBadgeClass = computed === "open" ? "badge--ok" : computed === "upcoming" ? "badge--warn" : "badge--hidden";
+        const statusBadgeClass = ex.status === "published" ? "badge--ok" : "badge--warn";
+        return `
+      <tr data-id="${ex.id}">
+        <td>${escapeHtml(ex.exam_name_en)}</td>
+        <td>${escapeHtml(ex.category || "")}</td>
+        <td>${ex.last_date}</td>
+        <td><span class="badge ${computedBadgeClass}">${computed}</span></td>
+        <td><span class="badge ${statusBadgeClass}">${escapeHtml(ex.status)}</span></td>
+        <td class="row-actions">
+          <button data-action="edit-exam" data-id="${ex.id}">Edit</button>
+          ${ex.status === "published"
+            ? `<button data-action="unpublish-exam" data-id="${ex.id}">Unpublish</button>`
+            : `<button data-action="publish-exam" data-id="${ex.id}">Publish</button>`}
+          <button data-action="delete-exam" data-id="${ex.id}">Delete</button>
+        </td>
+      </tr>`;
+      })
+      .join("");
+
+    tbody.querySelectorAll('button[data-action="edit-exam"]').forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const ex = data.find((e) => e.id === btn.dataset.id);
+        if (!ex) return;
+        document.getElementById("exam-edit-id").value = ex.id;
+        document.getElementById("exam-name-en").value = ex.exam_name_en || "";
+        document.getElementById("exam-name-hi").value = ex.exam_name_hi || "";
+        document.getElementById("exam-org-en").value = ex.organisation_en || "";
+        document.getElementById("exam-org-hi").value = ex.organisation_hi || "";
+        document.getElementById("exam-category").value = ex.category || "central";
+        document.getElementById("exam-notification-date").value = ex.notification_date || "";
+        document.getElementById("exam-last-date").value = ex.last_date || "";
+        document.getElementById("exam-date").value = ex.exam_date || "";
+        document.getElementById("exam-official-link").value = ex.official_link || "";
+        document.getElementById("exam-notification-pdf").value = ex.notification_pdf_link || "";
+        EXAM_DETAIL_FIELDS.forEach((f) => {
+          const col = examFieldToColumn(f);
+          document.getElementById(`exam-${f}-en`).value = ex[`${col}_en`] || "";
+          document.getElementById(`exam-${f}-hi`).value = ex[`${col}_hi`] || "";
+        });
+        document.getElementById("exam-form-heading").textContent = "Editing: " + ex.exam_name_en;
+        document.getElementById("exam-cancel-edit").style.display = "inline-block";
+        document.getElementById("exam-form-msg").textContent = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    tbody.querySelectorAll('button[data-action="publish-exam"], button[data-action="unpublish-exam"]').forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const newStatus = btn.dataset.action === "publish-exam" ? "published" : "draft";
+        const { error } = await SUPABASE_CLIENT.from("exam_calendar").update({ status: newStatus }).eq("id", btn.dataset.id);
+        if (error) { alert("Could not update: " + error.message); return; }
+        loadExamCalendar();
+      });
+    });
+
+    tbody.querySelectorAll('button[data-action="delete-exam"]').forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Delete this exam permanently?")) return;
+        const { error } = await SUPABASE_CLIENT.from("exam_calendar").delete().eq("id", btn.dataset.id);
+        if (error) { alert("Could not delete: " + error.message); return; }
+        loadExamCalendar();
+      });
+    });
+  }
+
+  resetExamForm();
+</script>
+</body>
+</html>
