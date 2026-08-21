@@ -36,6 +36,12 @@ async function loadHomeData() {
   SERVICES_DATA = services;
   CATEGORIES_DATA = Array.isArray(categoriesRaw) ? categoriesRaw : (categoriesRaw.categories || []);
   BLOG_DATA = Array.isArray(blogRaw) ? blogRaw : (blogRaw.posts || []);
+
+  const statEl = document.getElementById("trust-stat-services");
+  if (statEl && SERVICES_DATA && SERVICES_DATA.length > 0) {
+    const roundedCount = Math.floor(SERVICES_DATA.length / 10) * 10;
+    statEl.textContent = roundedCount + "+";
+  }
 }
 
 function renderCategories() {
