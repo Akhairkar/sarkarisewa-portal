@@ -1,10 +1,3 @@
-/* ==========================================================================
-   search.js
-   Powers /search.html — the destination for the homepage hero search form
-   (index.html's <form action="search.html">) and the header search box.
-   Reads ?q= from the URL, then supports live re-filtering by keyword and
-   category chip, across all services in data/services.json.
-   ========================================================================== */
 
 (function () {
   const ROOT = window.SS_ROOT || "";
@@ -33,7 +26,7 @@
 
   Promise.all([
     fetchAllServices(),
-    fetch(`${ROOT}data/categories.json`).then((r) => r.json()),
+    fetch(ROOT + "data/categories.json").then((r) => r.json()),
   ])
     .then(([services, categoriesRaw]) => {
       ALL_SERVICES = services;
@@ -48,23 +41,33 @@
         renderFilters();
         render();
       });
-    })
-    .catch((err) => {
-      console.error("Failed to load search data:", err);
-      resultsEl.innerHTML = `<p class="empty-state">Could not load services. Please try again later.</p>`;
+
+      if (inputEl) {
+        inputEl.addEventListener("input", () => {
+          const newQ = inputEl.value.trim();
+          const url = new URL(window.location);
+          if (newQ) url.searchParams.set("q", newQ);
+          else url.searchParams.delete("q");
+          window.history.replaceState({}, "", url);
+          render();
+        });
+      }
+
+      if (formEl) {
+        formEl.addEventListener("submit", (e) => {
+          e.preventDefault();
+          render();
+        });
+      }
     });
 
   function renderFilters() {
     if (!filtersEl) return;
-    const chips = [`<button type="button" class="chip${activeCategory === "" ? " chip--active" : ""}" data-cat="">${
-      getLang() === "hi" ? "सभी" : "All"
-    }</button>`]
+    const chips = ['<button type="button" class="chip' + (activeCategory === "" ? " chip--active" : "") + '" data-cat="">' + (getLang() === "hi" ? "सभी" : "All") + '</button>']
       .concat(
         ALL_CATEGORIES.map(
           (c) =>
-            `<button type="button" class="chip${activeCategory === c.slug ? " chip--active" : ""}" data-cat="${c.slug}">${t(
-              c.name
-            )}</button>`
+            '<button type="button" class="chip' + (activeCategory === c.slug ? " chip--active" : "") + '" data-cat="' + c.slug + '">' + t(c.name) + '</button>'
         )
       )
       .join("");
@@ -78,6 +81,67 @@
     });
   }
 
+  function getPopularSearchesHTML() {
+    return `
+      <div class="search-initial-view">
+        <h3 class="si-title" style="margin-top: 10px;">${t({en: "Popular Searches", hi: "लोकप्रिय खोजें"})}</h3>
+        <div class="si-chips" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;">
+          <a href="${ROOT}service/pm-kisan.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">PM Kisan</a>
+          <a href="${ROOT}service/ayushman-bharat-card.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">Ayushman Card</a>
+          <a href="${ROOT}service/ration-card.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">Ration Card</a>
+          <a href="${ROOT}service/birth-certificate.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">Birth Certificate</a>
+          <a href="${ROOT}service/income-certificate.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">Income Certificate</a>
+          <a href="${ROOT}states/index.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">State Services</a>
+          <a href="${ROOT}service/pan-card.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">PAN Card</a>
+          <a href="${ROOT}jobs/index.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">Govt Jobs</a>
+        </div>
+        
+        <h3 class="si-title" style="margin-top: 32px; margin-bottom: 15px;">${t({en: "Trending Government Services", hi: "ट्रेंडिंग सरकारी सेवाएं"})}</h3>
+        <div class="service-grid">
+          <a class="service-card" href="${ROOT}service/pm-kisan.html">
+            <div class="service-card__name">PM Kisan Samman Nidhi</div>
+            <div class="service-card__desc">${t({en: "Check eligibility, documents, application and status for PM Kisan Rs. 6000 scheme.", hi: "पीएम किसान योजना की पात्रता, दस्तावेज और आवेदन की पूरी जानकारी।"})}</div>
+            <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
+              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Eligibility", hi:"पात्रता"})}</span>
+              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
+              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Apply", hi:"आवेदन"})}</span>
+              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Status", hi:"स्थिति"})}</span>
+            </div>
+            <div class="service-card__arrow">${t({ en: "View Complete Guide &rarr;", hi: "पूरी गाइड देखें &rarr;" })}</div>
+          </a>
+          <a class="service-card" href="${ROOT}service/ayushman-bharat-card.html">
+            <div class="service-card__name">Ayushman Bharat Card (PMJAY)</div>
+            <div class="service-card__desc">${t({en: "Get free medical coverage up to 5 Lakhs. Apply and download online.", hi: "5 लाख तक का मुफ्त इलाज। आयुष्मान कार्ड के लिए ऑनलाइन आवेदन करें।"})}</div>
+            <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
+              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Eligibility", hi:"पात्रता"})}</span>
+              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
+              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Apply", hi:"आवेदन"})}</span>
+            </div>
+            <div class="service-card__arrow">${t({ en: "View Complete Guide &rarr;", hi: "पूरी गाइड देखें &rarr;" })}</div>
+          </a>
+          <a class="service-card" href="${ROOT}service/aadhaar-card.html">
+            <div class="service-card__name">Aadhaar Card Update & Download</div>
+            <div class="service-card__desc">${t({en: "Update address, mobile number or download e-Aadhaar card online.", hi: "आधार कार्ड में नाम, पता या मोबाइल नंबर अपडेट करें और डाउनलोड करें।"})}</div>
+            <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
+              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
+              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Update", hi:"अपडेट"})}</span>
+              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Download", hi:"डाउनलोड"})}</span>
+            </div>
+            <div class="service-card__arrow">${t({ en: "View Complete Guide &rarr;", hi: "पूरी गाइड देखें &rarr;" })}</div>
+          </a>
+          <a class="service-card" href="${ROOT}tools/eligibility-checker.html">
+            <div class="service-card__name">${t({en: "Govt Scheme Eligibility Checker", hi: "सरकारी योजना पात्रता इंजन"})}</div>
+            <div class="service-card__desc">${t({en: "Answer 4 simple questions to find 35+ govt schemes you are eligible for.", hi: "4 सवालों के जवाब देकर जानें कि आप किन-किन सरकारी योजनाओं के लिए पात्र हैं।"})}</div>
+            <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
+              <span class="sc-tag" style="background:#fef08a; color:#854d0e; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Free Tool", hi:"फ्री टूल"})}</span>
+            </div>
+            <div class="service-card__arrow">${t({ en: "Use Tool &rarr;", hi: "टूल का उपयोग करें &rarr;" })}</div>
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
   function render() {
     const q = ((inputEl && inputEl.value) || "").trim().toLowerCase();
 
@@ -85,33 +149,57 @@
     if (activeCategory) {
       filtered = filtered.filter((s) => s.category === activeCategory);
     }
+    
+    // Typo-tolerant basic matching
+    const normalize = (str) => str.replace(/[^a-z0-9ऀ-ॿ]/gi, '');
+    const qNorm = normalize(q);
+
     if (q) {
       filtered = filtered.filter((s) => {
         const name = t(s.name).toLowerCase();
         const nameOther = ((s.name && (s.name.en + " " + s.name.hi)) || "").toLowerCase();
         const desc = t(s.shortDescription || "").toLowerCase();
-        return name.includes(q) || nameOther.includes(q) || desc.includes(q);
+        
+        if (name.includes(q) || nameOther.includes(q) || desc.includes(q)) return true;
+        if (qNorm.length > 3 && (normalize(name).includes(qNorm) || normalize(nameOther).includes(qNorm))) return true;
+        
+        return false;
+      });
+      
+      // Sort by relevance
+      filtered.sort((a, b) => {
+        const aName = t(a.name).toLowerCase();
+        const bName = t(b.name).toLowerCase();
+        if (aName.startsWith(q) && !bName.startsWith(q)) return -1;
+        if (!aName.startsWith(q) && bName.startsWith(q)) return 1;
+        return 0;
       });
     }
 
     if (!q && !activeCategory) {
-      statusEl.textContent = "";
-      resultsEl.innerHTML = `<p class="empty-state" data-i18n="search_no_query">${t({
-        en: "Start typing above to search all services.",
-        hi: "सभी सेवाओं में खोजने के लिए ऊपर टाइप करना शुरू करें।",
-      })}</p>`;
+      statusEl.innerHTML = '';
+      resultsEl.innerHTML = getPopularSearchesHTML();
+      resultsEl.classList.remove("service-grid"); // we handle grid inside
       return;
+    } else {
+      resultsEl.classList.add("service-grid");
     }
 
-    statusEl.textContent = `${filtered.length} ${
-      t({ en: "results", hi: "परिणाम" })
-    }`;
+    statusEl.innerHTML = `<strong>${filtered.length}</strong> ${t({ en: "results found", hi: "परिणाम मिले" })}`;
 
     if (!filtered.length) {
-      resultsEl.innerHTML = `<p class="empty-state">${t({
-        en: "No services matched your search. Try a different keyword.",
-        hi: "आपकी खोज से कोई सेवा मेल नहीं खाई। कोई अलग शब्द आज़माएं।",
-      })}</p>`;
+      resultsEl.classList.remove("service-grid");
+      resultsEl.innerHTML = `
+        <div class="no-results-box" style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:24px; text-align:center; margin-bottom:40px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <h2 style="margin-top:0; color:#1e293b;">${t({en: "No results found for", hi: "इसके लिए कोई परिणाम नहीं मिला:"})} <span style="color:#ef4444;">"${q}"</span></h2>
+          <p style="color:#64748b;">${t({en: "Don't worry, try one of these instead:", hi: "चिंता न करें, इसके बजाय इनमें से कोई एक आज़माएं:"})}</p>
+          <div style="display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap;">
+            <a href="${ROOT}index.html" class="btn btn--primary">${t({en: "Browse All Schemes", hi: "सभी योजनाएं देखें"})}</a>
+            <a href="${ROOT}tools/eligibility-checker.html" class="btn btn--outline">${t({en: "Use Eligibility Checker", hi: "पात्रता इंजन का उपयोग करें"})}</a>
+          </div>
+        </div>
+        ${getPopularSearchesHTML()}
+      `;
       return;
     }
 
@@ -121,26 +209,16 @@
       <a class="service-card" href="${ssServiceHref(ROOT, service)}">
         <div class="service-card__name">${t(service.name)}</div>
         <div class="service-card__desc">${t(service.shortDescription || "")}</div>
-        <div class="service-card__arrow">${t({ en: "View details →", hi: "विवरण देखें →" })}</div>
+        <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
+          <span class="sc-tag" style="background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Eligibility", hi:"पात्रता"})}</span>
+          <span class="sc-tag" style="background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
+          <span class="sc-tag" style="background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Apply", hi:"आवेदन"})}</span>
+          <span class="sc-tag" style="background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Status", hi:"स्थिति"})}</span>
+        </div>
+        <div class="service-card__arrow">${t({ en: "View Complete Guide &rarr;", hi: "पूरी गाइड देखें &rarr;" })}</div>
       </a>
     `
       )
       .join("");
-  }
-
-  if (inputEl) {
-    inputEl.addEventListener("input", () => {
-      const url = new URL(window.location.href);
-      if (inputEl.value) url.searchParams.set("q", inputEl.value);
-      else url.searchParams.delete("q");
-      window.history.replaceState({}, "", url);
-      render();
-    });
-  }
-  if (formEl) {
-    formEl.addEventListener("submit", (e) => {
-      e.preventDefault();
-      render();
-    });
   }
 })();
