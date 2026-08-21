@@ -9,188 +9,615 @@
   <link rel="icon" href="../favicon.ico">
   <link rel="manifest" href="../manifest.json">
   <meta name="robots" content="max-image-preview:large" />
-  
-  <title>Scheme Eligibility Checker Online | SarkariSewa India</title>
+
+  <title>Sarkari Scheme Eligibility Checker 2026 – Find Your Schemes Instantly</title>
+  <meta name="description" content="सरकारी योजना पात्रता जांचें! अपनी उम्र, आय, व्यवसाय डालें और तुरंत जानें किन योजनाओं के लिए पात्र हैं। Match score, documents, apply steps सब एक जगह।">
+  <link rel="canonical" href="https://sarkarisewaindia.com/tools/eligibility-checker.html">
+
+  <meta property="og:title" content="Sarkari Scheme Eligibility Checker 2026 – Free Instant Check">
+  <meta property="og:description" content="Find which government schemes you are eligible for – PM Kisan, Ayushman Bharat, PMAY, scholarships & 35+ more. Free instant eligibility check.">
+  <meta property="og:type" content="website">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
   <link rel="stylesheet" href="../assets/css/style.css">
-  
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Sarkari Scheme Eligibility Checker",
+    "url": "https://sarkarisewaindia.com/tools/eligibility-checker.html",
+    "description": "Find which Indian government schemes and subsidies you are eligible for based on your profile.",
+    "applicationCategory": "GovernmentApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "inLanguage": ["hi", "en"]
+  }
+  </script>
+
   <style>
-    .wizard-container {
-      background: var(--color-bg);
-      border: 1px solid var(--color-border);
-      border-radius: 12px;
-      padding: 30px;
-      margin-bottom: 40px;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    }
-    
-    .wizard-step {
-      display: none;
-      animation: fadeIn 0.4s ease-out forwards;
-    }
-    
-    .wizard-step.active {
-      display: block;
-    }
-    
-    .wizard-progress {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 30px;
+    /* ─── HERO SECTION ─── */
+    .checker-hero {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%);
+      color: #fff;
+      padding: 48px 24px 80px;
+      text-align: center;
       position: relative;
+      overflow: hidden;
+      margin-bottom: -48px;
     }
-    
-    .wizard-progress::before {
+    .checker-hero::before {
       content: '';
       position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--color-border);
+      top: -50%;
+      left: -20%;
+      width: 140%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .checker-hero h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      margin: 0 0 12px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .checker-hero p {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      max-width: 580px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+    .hero-badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .hero-badge {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(4px);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .disclaimer-banner {
+      background: #fef3c7;
+      border: 1px solid #fbbf24;
+      border-left: 4px solid #f59e0b;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: #78350f;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    [data-theme="dark"] .disclaimer-banner {
+      background: rgba(245,158,11,0.1);
+      color: #fcd34d;
+      border-color: #fbbf24;
+    }
+
+    /* ─── WIZARD CARD ─── */
+    .wizard-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 36px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      margin-bottom: 40px;
+      position: relative;
       z-index: 1;
     }
-    
-    .progress-step {
+    @media (max-width: 600px) {
+      .wizard-card { padding: 20px; }
+    }
+
+    /* ─── PROGRESS BAR ─── */
+    .ec-progress {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 36px;
+    }
+    .ec-step-dot {
       position: relative;
-      z-index: 2;
-      background: var(--color-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+    .ec-step-dot::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: calc(-50% + 18px);
+      right: calc(50% + 18px);
+      height: 2px;
+      background: var(--color-border);
+      z-index: 0;
+    }
+    .ec-step-dot:first-child::before { display: none; }
+    .ec-dot-circle {
       width: 36px;
       height: 36px;
       border-radius: 50%;
+      background: var(--color-bg-alt);
       border: 2px solid var(--color-border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 0.9rem;
       color: var(--color-text-muted);
-      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s;
     }
-    
-    .progress-step.active {
-      border-color: var(--color-primary);
+    .ec-step-dot.active .ec-dot-circle {
       background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.2);
+    }
+    .ec-step-dot.done .ec-dot-circle {
+      background: #10b981;
+      border-color: #10b981;
       color: #fff;
     }
-    
-    .progress-step.completed {
+    .ec-step-dot.done::before { background: #10b981; }
+    .ec-step-dot.active::before { background: var(--color-primary); }
+    .ec-step-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      margin-top: 6px;
+      white-space: nowrap;
+    }
+    .ec-step-dot.active .ec-step-label { color: var(--color-primary); }
+    .ec-step-dot.done .ec-step-label { color: #10b981; }
+
+    /* ─── FORM STEPS ─── */
+    .ec-step { display: none; }
+    .ec-step.active { display: block; animation: fadeSlideIn 0.35s ease; }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .step-header { text-align: center; margin-bottom: 28px; }
+    .step-header h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--color-heading);
+      margin: 0 0 6px;
+    }
+    .step-header p {
+      color: var(--color-text-muted);
+      font-size: 0.92rem;
+    }
+    .step-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--color-text);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .form-group label .required { color: #ef4444; }
+    .ec-hint {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .ec-checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .ec-checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--color-bg-alt);
+      border: 1.5px solid var(--color-border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .ec-checkbox-item:hover, .ec-checkbox-item.selected {
       border-color: var(--color-primary);
+      background: rgba(59,130,246,0.06);
       color: var(--color-primary);
     }
-    
-    .wizard-header {
-      margin-bottom: 24px;
-      text-align: center;
-    }
-    
-    .wizard-header h2 {
-      font-size: 1.5rem;
-      color: var(--color-heading);
-      margin-bottom: 8px;
-    }
-    
-    .wizard-header p {
-      color: var(--color-text-muted);
-      font-size: 0.95rem;
-    }
-    
-    .wizard-actions {
+    .ec-checkbox-item input { display: none; }
+
+    /* ─── ACTIONS ─── */
+    .ec-actions {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-top: 32px;
-      padding-top: 20px;
+      padding-top: 24px;
       border-top: 1px solid var(--color-border);
+      gap: 12px;
     }
-    
+    .ec-actions .btn { min-width: 130px; }
+    @media (max-width: 500px) {
+      .ec-actions { flex-direction: column-reverse; }
+      .ec-actions .btn { width: 100%; }
+    }
+
+    /* ─── RESULTS ─── */
+    .results-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .results-summary-box {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      border: 1px solid #86efac;
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    [data-theme="dark"] .results-summary-box {
+      background: rgba(16,185,129,0.08);
+      border-color: #059669;
+    }
+    .results-summary-box .sum-icon { font-size: 2.5rem; }
+    .results-summary-box h3 { margin: 0 0 4px; font-size: 1.15rem; }
+    .results-summary-box p { margin: 0; font-size: 0.9rem; color: var(--color-text-muted); }
+
+    /* Category tabs */
+    .result-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .result-tab {
+      padding: 8px 18px;
+      border-radius: 24px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .result-tab.eligible { background: #dcfce7; color: #15803d; border-color: #86efac; }
+    .result-tab.check { background: #fef9c3; color: #854d0e; border-color: #fde047; }
+    .result-tab.not_eligible { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+    .result-tab.all { background: var(--color-bg-alt); color: var(--color-text); border-color: var(--color-border); }
+    .result-tab.active { box-shadow: 0 0 0 3px rgba(59,130,246,0.3); border-color: var(--color-primary); }
+    [data-theme="dark"] .result-tab.eligible { background: rgba(21,128,61,0.15); }
+    [data-theme="dark"] .result-tab.check { background: rgba(133,77,14,0.15); }
+    [data-theme="dark"] .result-tab.not_eligible { background: rgba(185,28,28,0.15); }
+
+    /* Scheme cards */
     .results-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 20px;
-      margin-top: 30px;
     }
-    
     .scheme-card {
       background: var(--color-bg);
       border: 1px solid var(--color-border);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      border-radius: 14px;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      position: relative;
     }
-    
     .scheme-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-      border-color: var(--color-primary);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.1);
     }
-    
-    .scheme-tags {
+    .scheme-card.eligible { border-top: 4px solid #22c55e; }
+    .scheme-card.check { border-top: 4px solid #eab308; }
+    .scheme-card.not_eligible { border-top: 4px solid #ef4444; opacity: 0.85; }
+
+    .sc-header {
+      padding: 18px 18px 12px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 12px;
+      align-items: flex-start;
+      gap: 12px;
     }
-    
-    .scheme-tag {
+    .sc-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
       background: var(--color-bg-alt);
-      color: var(--color-primary);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-    
-    .scheme-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--color-heading);
-      margin-bottom: 8px;
-      line-height: 1.3;
-    }
-    
-    .scheme-desc {
-      font-size: 0.9rem;
-      color: var(--color-text-muted);
-      margin-bottom: 16px;
-      flex-grow: 1;
-    }
-    
-    .scheme-benefit {
-      background: #eef2f6;
-      color: var(--color-primary);
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 16px;
       display: flex;
       align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .sc-title-block { flex: 1; min-width: 0; }
+    .sc-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-bottom: 4px;
+    }
+    .sc-status-badge.eligible { background: #dcfce7; color: #15803d; }
+    .sc-status-badge.check { background: #fef9c3; color: #854d0e; }
+    .sc-status-badge.not_eligible { background: #fee2e2; color: #b91c1c; }
+    .sc-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--color-heading);
+      line-height: 1.3;
+      margin: 0;
+    }
+    .sc-score-bar-wrap { padding: 0 18px 12px; }
+    .sc-score-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      margin-bottom: 4px;
+    }
+    .sc-score-bar {
+      height: 7px;
+      background: var(--color-bg-alt);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .sc-score-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.8s ease;
+    }
+    .eligible .sc-score-fill { background: linear-gradient(90deg,#22c55e,#4ade80); }
+    .check .sc-score-fill { background: linear-gradient(90deg,#eab308,#fde047); }
+    .not_eligible .sc-score-fill { background: linear-gradient(90deg,#ef4444,#fca5a5); }
+
+    .sc-body { padding: 0 18px 14px; flex: 1; }
+    .sc-desc { font-size: 0.88rem; color: var(--color-text-muted); margin: 0 0 12px; line-height: 1.5; }
+    .sc-benefit {
+      background: var(--color-bg-alt);
+      border-left: 3px solid var(--color-primary);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sc-reasons-toggle {
+      font-size: 0.8rem;
+      color: var(--color-primary);
+      cursor: pointer;
+      font-weight: 600;
+      background: none;
+      border: none;
+      padding: 0;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .sc-reasons { display: none; margin-bottom: 10px; }
+    .sc-reasons.show { display: block; }
+    .sc-reason-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sc-reason-list li {
+      font-size: 0.8rem;
+      padding: 3px 0;
+      color: var(--color-text);
+      line-height: 1.4;
+    }
+    .sc-reason-list li.fail { color: #dc2626; }
+
+    /* Documents accordion */
+    .sc-docs-toggle {
+      font-size: 0.8rem;
+      color: #6366f1;
+      cursor: pointer;
+      font-weight: 600;
+      background: none;
+      border: none;
+      padding: 0;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .sc-docs { display: none; margin-bottom: 10px; }
+    .sc-docs.show { display: block; }
+    .sc-docs-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .sc-docs-list li {
+      background: rgba(99,102,241,0.08);
+      color: #4338ca;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      font-weight: 500;
+    }
+    [data-theme="dark"] .sc-docs-list li { color: #a5b4fc; }
+
+    .sc-footer {
+      padding: 12px 18px;
+      border-top: 1px solid var(--color-border);
+      display: flex;
       gap: 8px;
+      flex-wrap: wrap;
     }
-    [data-theme="dark"] .scheme-benefit {
-      background: rgba(30, 64, 175, 0.2);
-    }
-    
-    .empty-state {
+    .sc-footer a, .sc-footer button {
+      flex: 1;
       text-align: center;
-      padding: 40px 20px;
+      font-size: 0.82rem;
+    }
+
+    /* ─── PERSONALISED SECTION ─── */
+    .top-picks-section {
+      margin-bottom: 32px;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .top-picks-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scrollbar-width: thin;
+    }
+    .pick-card {
+      flex-shrink: 0;
+      width: 220px;
+      background: var(--color-bg);
+      border: 1.5px solid var(--color-primary);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pick-card:hover { background: rgba(59,130,246,0.04); box-shadow: 0 4px 16px rgba(59,130,246,0.15); }
+    .pick-card-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .pick-card-title { font-size: 0.88rem; font-weight: 700; color: var(--color-heading); margin-bottom: 4px; }
+    .pick-card-benefit { font-size: 0.78rem; color: #22c55e; font-weight: 600; }
+
+    /* ─── NO RESULTS ─── */
+    .no-results {
+      text-align: center;
+      padding: 48px 20px;
       background: var(--color-bg-alt);
       border-radius: 12px;
-      border: 1px dashed var(--color-border);
+      border: 2px dashed var(--color-border);
     }
-    
-    .empty-state-icon {
-      font-size: 3rem;
-      margin-bottom: 16px;
+    .no-results-icon { font-size: 3.5rem; margin-bottom: 12px; }
+    .no-results h3 { font-size: 1.2rem; margin-bottom: 8px; }
+    .no-results p { color: var(--color-text-muted); font-size: 0.9rem; }
+
+    /* ─── PROFILE RECAP ─── */
+    .profile-recap {
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
     }
+    .profile-recap-title { font-size: 0.8rem; font-weight: 700; color: var(--color-text-muted); width: 100%; }
+    .profile-tag {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ─── TOOLS SECTION ─── */
+    .tools-cta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 32px;
+    }
+    .tool-cta-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 14px;
+      text-decoration: none;
+      color: var(--color-text);
+      transition: all 0.2s;
+    }
+    .tool-cta-card:hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 4px 12px rgba(59,130,246,0.1);
+      color: var(--color-primary);
+    }
+    .tool-cta-icon { font-size: 1.6rem; }
+    .tool-cta-label { font-size: 0.85rem; font-weight: 600; }
+
+    /* ─── LOADING ─── */
+    .ec-loading {
+      text-align: center;
+      padding: 40px;
+    }
+    .spinner {
+      width: 44px; height: 44px;
+      border: 4px solid var(--color-border);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
   <link rel="stylesheet" href="../assets/css/hidden-tax-theme.css">
-<meta name="description" content="Check eligibility for Indian government schemes, benefits and support programs. Free bilingual tool for Indian users with practical guidance and related government resources."><link rel="canonical" href="https://sarkarisewaindia.com/tools/eligibility-checker.html"><meta property="og:type" content="website"><meta property="og:title" content="Scheme Eligibility Checker Online | SarkariSewa India"><meta property="og:description" content="Check eligibility for Indian government schemes, benefits and support programs. Free bilingual tool for Indian users with practical guidance and related government resources."><meta property="og:url" content="https://sarkarisewaindia.com/tools/eligibility-checker.html"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Scheme Eligibility Checker","url":"https://sarkarisewaindia.com/tools/eligibility-checker.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","isAccessibleForFree":true}</script></head>
+</head>
 <body class="site-body">
   <div id="site-header">
 <div class="tricolor-rule"></div>
@@ -208,8 +635,6 @@
     <nav class="main-nav" aria-label="Primary">
       <ul>
         <li><a href="../index.html" data-i18n="nav_home">Home</a></li>
-        
-        <!-- Categories Dropdown -->
         <li class="nav-dropdown">
           <a href="#" class="nav-dropdown-toggle">Categories 📁 ▾</a>
           <ul class="nav-dropdown-menu">
@@ -221,8 +646,6 @@
             <li><a href="../category/health.html" data-i18n="nav_health">Health</a></li>
           </ul>
         </li>
-
-        <!-- Updates & Support Dropdown -->
         <li class="nav-dropdown">
           <a href="#" class="nav-dropdown-toggle">Updates &amp; Support 📢 ▾</a>
           <ul class="nav-dropdown-menu">
@@ -232,8 +655,6 @@
             <li><a href="../support/index.html" data-i18n="nav_support">Support</a></li>
           </ul>
         </li>
-        
-        <!-- Image Tools Dropdown -->
         <li class="nav-dropdown">
           <a href="../tools/index.html" class="nav-highlight nav-dropdown-toggle" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
           <ul class="nav-dropdown-menu">
@@ -242,8 +663,6 @@
             <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
           </ul>
         </li>
-
-        <!-- State Services Dropdown -->
         <li class="nav-dropdown">
           <a href="../states/index.html" class="nav-dropdown-toggle" data-i18n="nav_state_services">State Services 🏛️ ▾</a>
           <ul class="nav-dropdown-menu">
@@ -255,35 +674,26 @@
             <li><a href="../states/madhya-pradesh.html">📍 Madhya Pradesh</a></li>
           </ul>
         </li>
-
-        <!-- Citizen Utilities Dropdown Menu -->
         <li class="nav-dropdown">
           <a href="../tools/index.html" class="nav-dropdown-toggle">Citizen Utilities 🛠️ ▾</a>
           <ul class="nav-dropdown-menu">
-            <li><a href="../tools/csc-locator.html" style="font-weight: 600; color: var(--color-primary);">📍 CSC / e-Seva Locator <span style="font-size: 0.75rem; background: var(--color-accent-green); color: white; padding: 2px 4px; border-radius: 4px; margin-left: 4px;">NEW</span></a></li>
-            <li><a href="../tools/eligibility-checker.html" style="font-weight: 600; color: var(--color-accent-green);" data-i18n="nav_eligibility_engine">🎯 Scheme Eligibility Engine</a></li>
+            <li><a href="../tools/csc-locator.html">📍 CSC / e-Seva Locator</a></li>
+            <li><a href="../tools/eligibility-checker.html" style="font-weight:700;color:var(--color-primary)">🎯 Scheme Eligibility Engine</a></li>
             <li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
             <li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
-            <li><a href="../tools/typing-speed-test.html">⌨️ Typing Speed Test</a></li>
-            <li><a href="../tools/deadline-calendar.html">📅 Deadline Calendar</a></li>
-            <li><a href="../tools/pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
             <li><a href="../tools/status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
             <li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
-            <li><a href="../tools/age-calculator.html">⏳ Age & Retirement Calculator</a></li>
+            <li><a href="../tools/age-calculator.html">⏳ Age &amp; Retirement Calculator</a></li>
           </ul>
         </li>
-
-        <!-- Financial Calculators Dropdown Menu -->
         <li class="nav-dropdown">
           <a href="../tools/index.html" class="nav-highlight nav-dropdown-toggle" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;">Financial Calculators 💰 ▾</a>
           <ul class="nav-dropdown-menu">
             <li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
-            <li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
-            <li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
             <li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
-            <li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
-            <li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
-            <li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
+            <li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty</a></li>
+            <li><a href="../tools/hra-calculator.html">🏠 HRA Exemption</a></li>
+            <li><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
             <li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
           </ul>
         </li>
@@ -295,223 +705,365 @@
         <span aria-hidden="true">🔍</span>
         <span class="visually-hidden" data-i18n="search_title">Search Services</span>
       </a>
-      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme">
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
         <span id="theme-icon" aria-hidden="true">🌙</span>
-        <span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
       </button>
-      <button class="icon-btn" id="lang-toggle" type="button">
-        <span data-i18n="lang_toggle">हिंदी</span>
+      <button id="lang-toggle" class="icon-btn btn--lang" aria-label="भाषा बदलें">
+        <span id="lang-label">EN</span>
       </button>
-      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+      <button id="mobile-menu-toggle" class="icon-btn" aria-label="Open menu" aria-expanded="false">
+        <span class="hamburger" aria-hidden="true">☰</span>
+      </button>
+    </div>
+  </div>
+</header>
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile Navigation" hidden>
+  <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🛠️ Citizen Utilities</div>
+  <a href="../tools/eligibility-checker.html" style="padding-left: 32px; font-weight:700">🎯 Scheme Eligibility Engine</a>
+  <a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
+  <a href="../tools/status-troubleshooter.html" style="padding-left: 32px;">🔍 Status Troubleshooter</a>
+  <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
+  <a href="../category/identity-documents.html">Identity Documents</a>
+  <a href="../category/government-schemes.html">Government Schemes</a>
+  <a href="../category/finance-tax.html">Finance &amp; Tax</a>
+</nav>
+</div>
+
+  <div class="checker-hero">
+    <h1>🎯 <span data-lang-show="en">Government Scheme Eligibility Discovery Engine</span><span data-lang-show="hi">सरकारी योजना पात्रता खोज इंजन</span></h1>
+    <p data-lang-show="en">Answer a few simple questions and instantly discover which government schemes, subsidies & scholarships you are potentially eligible for – with match scores, documents & apply links.</p>
+    <p data-lang-show="hi">कुछ सरल प्रश्नों के उत्तर दें और तुरंत जानें कि आप किन सरकारी योजनाओं, सब्सिडी और छात्रवृत्तियों के लिए पात्र हो सकते हैं – match score, दस्तावेज़ और apply लिंक सहित।</p>
+    <div class="hero-badges">
+      <span class="hero-badge">35+ Schemes</span>
+      <span class="hero-badge">Match Score</span>
+      <span class="hero-badge">Documents Guide</span>
+      <span class="hero-badge">Apply Links</span>
+      <span class="hero-badge">100% Free</span>
     </div>
   </div>
 
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Primary mobile">
-    <a href="../search.html" data-i18n="search_title">Search Services</a>
-    <a href="../index.html" data-i18n="nav_home">Home</a>
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
-    <a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
-    <a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
-    <a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🛠️ Citizen Utilities</div>
-    <a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
-    <a href="../tools/eligibility-checker.html" style="padding-left: 32px;">🎯 Scheme Eligibility Engine</a>
-    <a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
-    <a href="../tools/self-declaration-builder.html" style="padding-left: 32px;">📝 Self-Declaration Builder</a>
-    <a href="../tools/typing-speed-test.html" style="padding-left: 32px;">⌨️ Typing Speed Test</a>
-    <a href="../tools/deadline-calendar.html" style="padding-left: 32px;">📅 Deadline Calendar</a>
-    <a href="../tools/pan-aadhaar-conflict-resolver.html" style="padding-left: 32px;">🔗 PAN-Aadhaar Resolver</a>
-    <a href="../tools/status-troubleshooter.html" style="padding-left: 32px;">🔍 Status Troubleshooter</a>
-    <a href="../tools/govt-card-clarifier.html" style="padding-left: 32px;">💳 Govt Card Clarifier</a>
-    <a href="../tools/age-calculator.html" style="padding-left: 32px;">⏳ Age & Retirement Calculator</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #fdf2f8; color: #db2777;">💰 Financial Calculators</div>
-    <a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
-    <a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
-    <a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
-    <a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
-    <a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
-    <a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
-    <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
-    <a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🏛️ State Services</div>
-    <a href="../states/index.html" style="padding-left: 32px;">🗺️ All States Hub</a>
-    <a href="../states/uttar-pradesh.html" style="padding-left: 32px;">📍 Uttar Pradesh</a>
-    <a href="../states/maharashtra.html" style="padding-left: 32px;">📍 Maharashtra</a>
-    <a href="../states/bihar.html" style="padding-left: 32px;">📍 Bihar</a>
-
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
-    <a href="../category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a>
-    <a href="../category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a>
-    <a href="../category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a>
-    <a href="../category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a>
-    <a href="../category/utilities.html" data-i18n="nav_utilities">Utilities</a>
-    <a href="../category/health.html" data-i18n="nav_health">Health</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
-    <a href="../support/index.html" data-i18n="nav_support">Support</a>
-    <a href="../blog/index.html" data-i18n="nav_blog">Blog</a>
-    <a href="../jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a>
-    <a href="../exams/index.html" data-i18n="nav_examcal">Exam Calendar</a>
-    <div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
-      <button class="btn btn--outline" id="mobile-theme-toggle" type="button" style="width:100%; justify-content:center; gap:8px;">
-        <span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
-      </button>
-    </div>
-  </nav>
-</header>
-
-</div>
-<main class="container">
-    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+  <main class="container" id="main-content" style="margin-top: 0; padding-top: 32px;">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
       <ol>
         <li><a href="../index.html" data-i18n="nav_home">Home</a></li>
-        <li><a href="index.html" data-i18n="nav_tools">Tools & Calculators</a></li>
+        <li><a href="index.html">Tools &amp; Calculators</a></li>
         <li aria-current="page">Eligibility Checker</li>
       </ol>
     </nav>
-    
-    <div class="page-header">
-      <h1 class="page-title" data-i18n="ee_title">Sarkari Scheme Eligibility Engine</h1>
-      <p class="page-desc" data-i18n="ee_desc">Answer a few simple questions to instantly find which government schemes, subsidies, and scholarships you are eligible for.</p>
+
+    <div class="disclaimer-banner">
+      <span>⚠️</span>
+      <span data-lang-show="en"><strong>Disclaimer:</strong> Results are preliminary guidance based on your inputs. Final eligibility is determined by the concerned government department/official portal. SarkariSewa India is an independent informational platform, not affiliated with any government body.</span>
+      <span data-lang-show="hi"><strong>अस्वीकरण:</strong> परिणाम आपके इनपुट के आधार पर प्रारंभिक मार्गदर्शन हैं। अंतिम पात्रता संबंधित सरकारी विभाग/आधिकारिक पोर्टल द्वारा निर्धारित की जाती है।</span>
     </div>
-    
-    <div class="wizard-container">
-      <div class="wizard-progress" id="wizardProgress">
-        <div class="progress-step active" data-step="1">1</div>
-        <div class="progress-step" data-step="2">2</div>
-        <div class="progress-step" data-step="3">3</div>
-        <div class="progress-step" data-step="4">4</div>
+
+    <!-- ════ WIZARD CARD ════ -->
+    <div class="wizard-card" id="wizardCard">
+
+      <!-- Progress -->
+      <div class="ec-progress" id="ecProgress">
+        <div class="ec-step-dot active" data-step="1">
+          <div class="ec-dot-circle">1</div>
+          <div class="ec-step-label">Personal</div>
+        </div>
+        <div class="ec-step-dot" data-step="2">
+          <div class="ec-dot-circle">2</div>
+          <div class="ec-step-label">Economic</div>
+        </div>
+        <div class="ec-step-dot" data-step="3">
+          <div class="ec-dot-circle">3</div>
+          <div class="ec-step-label">Situation</div>
+        </div>
+        <div class="ec-step-dot" data-step="4">
+          <div class="ec-dot-circle">4</div>
+          <div class="ec-step-label">Results</div>
+        </div>
       </div>
-      
-      <form id="eligibilityForm" onsubmit="return false;">
-        
-        <!-- STEP 1: Personal Details -->
-        <div class="wizard-step active" id="step1">
-          <div class="wizard-header">
-            <h2 data-i18n="ee_step1_title">Personal Details</h2>
-            <p data-i18n="ee_step1_desc">Tell us about yourself to find age and gender specific schemes.</p>
+
+      <form id="eligibilityForm" novalidate>
+
+        <!-- ─── STEP 1: Personal Details ─── -->
+        <div class="ec-step active" id="step1">
+          <div class="step-header">
+            <span class="step-icon">👤</span>
+            <h2>Personal Details</h2>
+            <p>Tell us about yourself to find age, gender & marital-status specific schemes.</p>
           </div>
-          <div class="form-grid">
+          <div class="form-grid-2">
             <div class="form-group">
-              <label for="age" data-i18n="ee_age">Age (in years)</label>
-              <input type="number" id="age" name="age" class="form-control" min="0" max="120" placeholder="e.g. 25" data-i18n-placeholder="ee_age_ph" required>
+              <label for="age">Age (in years) <span class="required">*</span></label>
+              <input type="number" id="age" name="age" class="form-control" min="0" max="120" placeholder="e.g. 28" required>
+              <div class="ec-hint">ℹ️ Enter your current age</div>
             </div>
             <div class="form-group">
-              <label for="gender" data-i18n="ee_gender">Gender</label>
+              <label for="gender">Gender <span class="required">*</span></label>
               <select id="gender" name="gender" class="form-control" required>
-                <option value="" data-i18n="ee_gender_select">Select Gender</option>
-                <option value="Male" data-i18n="ee_gender_male">Male</option>
-                <option value="Female" data-i18n="ee_gender_female">Female</option>
-                <option value="Other" data-i18n="ee_gender_other">Other / Transgender</option>
+                <option value="">Select Gender</option>
+                <option value="Male">Male / पुरुष</option>
+                <option value="Female">Female / महिला</option>
+                <option value="Other">Transgender / Other</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="maritalStatus" data-i18n="ee_marital">Marital Status</label>
+              <label for="maritalStatus">Marital Status <span class="required">*</span></label>
               <select id="maritalStatus" name="maritalStatus" class="form-control" required>
-                <option value="" data-i18n="ee_marital_select">Select Status</option>
-                <option value="Unmarried" data-i18n="ee_marital_single">Single / Unmarried</option>
-                <option value="Married" data-i18n="ee_marital_married">Married</option>
-                <option value="Widowed" data-i18n="ee_marital_widowed">Widowed</option>
-                <option value="Divorced" data-i18n="ee_marital_divorced">Divorced</option>
+                <option value="">Select Status</option>
+                <option value="Unmarried">Single / Unmarried</option>
+                <option value="Married">Married</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Divorced">Divorced / Separated</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="state">State / UT <span class="required">*</span></label>
+              <select id="state" name="state" class="form-control" required>
+                <option value="">Select State</option>
+                <option value="All">Central Govt (All States)</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Assam">Assam</option>
+                <option value="Bihar">Bihar</option>
+                <option value="Chhattisgarh">Chhattisgarh</option>
+                <option value="Delhi">Delhi (NCT)</option>
+                <option value="Goa">Goa</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Haryana">Haryana</option>
+                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                <option value="Jharkhand">Jharkhand</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Manipur">Manipur</option>
+                <option value="Meghalaya">Meghalaya</option>
+                <option value="Mizoram">Mizoram</option>
+                <option value="Nagaland">Nagaland</option>
+                <option value="Odisha">Odisha</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="Sikkim">Sikkim</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Tripura">Tripura</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Uttarakhand">Uttarakhand</option>
+                <option value="West Bengal">West Bengal</option>
+                <option value="Other">Other State / UT</option>
               </select>
             </div>
           </div>
         </div>
-        
-        <!-- STEP 2: Socio-Economic Details -->
-        <div class="wizard-step" id="step2">
-          <div class="wizard-header">
-            <h2 data-i18n="ee_step2_title">Socio-Economic Details</h2>
-            <p data-i18n="ee_step2_desc">Help us find financial assistance and category-specific benefits.</p>
+
+        <!-- ─── STEP 2: Economic Details ─── -->
+        <div class="ec-step" id="step2">
+          <div class="step-header">
+            <span class="step-icon">💰</span>
+            <h2>Financial & Category Details</h2>
+            <p>This helps us find income-based, BPL, and category-specific schemes for you.</p>
           </div>
-          <div class="form-grid">
+          <div class="form-grid-2">
             <div class="form-group">
-              <label for="income" data-i18n="ee_income">Annual Family Income (₹)</label>
-              <input type="number" id="income" name="income" class="form-control" min="0" step="10000" placeholder="e.g. 250000" data-i18n-placeholder="ee_income_ph" required>
-              <div class="form-hint" data-i18n="ee_income_hint">Total income of all earning family members.</div>
+              <label for="income">Annual Family Income (₹) <span class="required">*</span></label>
+              <input type="number" id="income" name="income" class="form-control" min="0" step="10000" placeholder="e.g. 250000" required>
+              <div class="ec-hint">ℹ️ Total income of all earning members. Write 0 if no fixed income.</div>
             </div>
             <div class="form-group">
-              <label for="caste" data-i18n="ee_caste">Category / Caste</label>
+              <label for="caste">Category / Caste <span class="required">*</span></label>
               <select id="caste" name="caste" class="form-control" required>
-                <option value="" data-i18n="ee_caste_select">Select Category</option>
-                <option value="General">General</option>
-                <option value="OBC">OBC</option>
-                <option value="SC">SC</option>
-                <option value="ST">ST</option>
-                <option value="EBC">EBC</option>
+                <option value="">Select Category</option>
+                <option value="General">General (सामान्य)</option>
+                <option value="OBC">OBC (Other Backward Class)</option>
+                <option value="SC">SC (Scheduled Caste)</option>
+                <option value="ST">ST (Scheduled Tribe)</option>
+                <option value="EBC">EBC (Extremely Backward Class)</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="occupation" data-i18n="ee_occupation">Primary Occupation</label>
+              <label for="occupation">Primary Occupation <span class="required">*</span></label>
               <select id="occupation" name="occupation" class="form-control" required>
-                <option value="" data-i18n="ee_occ_select">Select Occupation</option>
-                <option value="Student" data-i18n="ee_occ_student">Student</option>
-                <option value="Farmer" data-i18n="ee_occ_farmer">Farmer / Agriculture</option>
-                <option value="Unorganized Worker" data-i18n="ee_occ_worker">Unorganized Worker / Laborer</option>
-                <option value="Artisan" data-i18n="ee_occ_artisan">Artisan / Craftsman</option>
-                <option value="Business" data-i18n="ee_occ_business">Business / Self-employed</option>
-                <option value="Salaried" data-i18n="ee_occ_salaried">Salaried Employee</option>
-                <option value="Unemployed" data-i18n="ee_occ_unemployed">Unemployed</option>
+                <option value="">Select Occupation</option>
+                <option value="Student">Student (छात्र)</option>
+                <option value="Farmer">Farmer / Agriculture (किसान)</option>
+                <option value="Unorganized Worker">Unorganized Worker / Laborer (श्रमिक)</option>
+                <option value="Artisan">Artisan / Craftsman (कारीगर)</option>
+                <option value="Business">Business / Shop owner (व्यवसायी)</option>
+                <option value="Self-employed">Self-employed (स्वरोजगार)</option>
+                <option value="Salaried">Salaried Employee (नौकरीपेशा)</option>
+                <option value="Unemployed">Unemployed / Job seeker (बेरोजगार)</option>
+                <option value="Retired">Retired / Senior Citizen (सेवानिवृत्त)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="education">Education Level</label>
+              <select id="education" name="education" class="form-control">
+                <option value="">Select Education</option>
+                <option value="Below 8th">Below 8th Class</option>
+                <option value="8th-10th">8th – 10th Pass</option>
+                <option value="12th">12th Pass (Intermediate)</option>
+                <option value="Graduate">Graduate / Diploma</option>
+                <option value="Postgraduate">Postgraduate</option>
               </select>
             </div>
           </div>
         </div>
-        
-        <!-- STEP 3: Location -->
-        <div class="wizard-step" id="step3">
-          <div class="wizard-header">
-            <h2 data-i18n="ee_step3_title">Location</h2>
-            <p data-i18n="ee_step3_desc">Find schemes specific to your state of residence.</p>
+
+        <!-- ─── STEP 3: Situation Details ─── -->
+        <div class="ec-step" id="step3">
+          <div class="step-header">
+            <span class="step-icon">📋</span>
+            <h2>Your Current Situation</h2>
+            <p>Select all that apply – this helps us find specific schemes for your situation.</p>
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label>Which of these apply to you? (select all)</label>
+            <div class="ec-checkbox-group" id="situationGroup">
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="isFarmer"> 🌾 I own/lease agricultural land
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="hasSmallBusiness"> 🏪 I run a small business/shop
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="isPregnant"> 🤰 I am pregnant / recently delivered
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="hasGirlChild"> 👧 I have a girl child (below 10 yrs)
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="isTBPatient"> 💊 I am a TB patient
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="hasDisability"> ♿ I have a disability
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="noHouse"> 🏠 I don't own a pucca house
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="noGas"> 🔥 I don't have LPG gas connection
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="streetVendor"> 🛒 I am a street vendor / rehri-wala
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="artisan"> 🔨 I am an artisan (carpenter, blacksmith, weaver, etc.)
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="wantsSolarPanel"> ☀️ I want to install solar panel
+              </label>
+              <label class="ec-checkbox-item">
+                <input type="checkbox" name="situation" value="noBankAccount"> 🏦 I don't have a bank account
+              </label>
+            </div>
           </div>
           <div class="form-group">
-            <label for="state" data-i18n="ee_state">State / UT</label>
-            <select id="state" name="state" class="form-control" required>
-              <option value="" data-i18n="ee_state_select">Select State</option>
-              <option value="All" data-i18n="ee_state_all">Central Govt (All States)</option>
-              <!-- State specific logic can be expanded here -->
-              <option value="Uttar Pradesh" data-i18n="ee_state_up">Uttar Pradesh</option>
-              <option value="Maharashtra" data-i18n="ee_state_mh">Maharashtra</option>
-              <option value="Bihar" data-i18n="ee_state_bh">Bihar</option>
-              <option value="Rajasthan" data-i18n="ee_state_rj">Rajasthan</option>
-              <option value="Madhya Pradesh" data-i18n="ee_state_mp">Madhya Pradesh</option>
-              <option value="Other" data-i18n="ee_state_other">Other State</option>
+            <label>Family Size</label>
+            <select id="familySize" name="familySize" class="form-control">
+              <option value="">Select</option>
+              <option value="1">1 (only me)</option>
+              <option value="2-3">2–3 members</option>
+              <option value="4-5">4–5 members</option>
+              <option value="6+">6 or more members</option>
             </select>
           </div>
         </div>
-        
-        <!-- STEP 4: Results -->
-        <div class="wizard-step" id="step4">
-          <div class="wizard-header">
-            <h2 data-i18n="ee_step4_title">Your Eligible Schemes</h2>
-            <p id="resultsSummary" data-i18n="ee_step4_desc">Analyzing your profile against our database...</p>
-          </div>
-          <div id="resultsContainer" class="results-grid">
-            <!-- Results injected here -->
-          </div>
+
+        <!-- ─── STEP 4: RESULTS ─── -->
+        <div class="ec-step" id="step4">
+          <div id="resultsArea"></div>
         </div>
-        
+
         <!-- Actions -->
-        <div class="wizard-actions">
-          <button type="button" class="btn btn--outline" id="btnPrev" style="display: none;" data-i18n="ee_btn_prev">← Previous</button>
-          <div style="flex-grow: 1;"></div>
-          <button type="button" class="btn btn--primary" id="btnNext" data-i18n="ee_btn_next">Next Step →</button>
-          <button type="button" class="btn btn--primary" id="btnSubmit" style="display: none;" data-i18n="ee_btn_submit">Check Eligibility 🚀</button>
-          <button type="button" class="btn btn--outline" id="btnReset" style="display: none;" onclick="location.reload()" data-i18n="ee_btn_reset">Start Over 🔄</button>
+        <div class="ec-actions" id="ecActions">
+          <button type="button" class="btn btn--outline" id="btnPrev" style="display:none;">← Back</button>
+          <div style="flex:1"></div>
+          <button type="button" class="btn btn--primary" id="btnNext">Next Step →</button>
+          <button type="button" class="btn btn--primary" id="btnSubmit" style="display:none;">🚀 Check Eligibility</button>
+          <button type="button" class="btn btn--outline" id="btnReset" style="display:none;" onclick="location.reload()">🔄 Start Over</button>
         </div>
-        
       </form>
     </div>
-    
-  
-<!-- TOOL SEO ENHANCEMENT --><section class="seo-upgrade"><style>.seo-upgrade{margin:42px 0 12px;padding:32px 0;border-top:1px solid var(--color-border);color:var(--color-text)}.seo-upgrade .wrap{max-width:920px;margin:auto}.seo-upgrade h2{font-size:1.55rem;color:var(--color-primary);margin:0 0 14px}.seo-upgrade h3{font-size:1.18rem;margin:25px 0 9px}.seo-upgrade p,.seo-upgrade li{line-height:1.78}.seo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.seo-card{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--color-border);background:var(--color-surface);border-radius:10px;color:var(--color-text);text-decoration:none}.seo-card:hover{border-color:var(--color-primary);transform:translateY(-2px)}.seo-card span{font-size:1.55rem}.seo-card b{display:block}@media(max-width:600px){.seo-grid{grid-template-columns:1fr}.seo-upgrade{padding:26px 0}}</style><div class="wrap">
-<div data-lang-show="en"><h2>Scheme Eligibility Checker: practical guide for Indian users</h2><p>Use this free tool to check eligibility for indian government schemes, benefits and support programs. It helps you prepare information before you apply on an official portal, compare options, or organise documents. Its result is for guidance and planning. Government rules, limits, dates, fees and eligibility can change, so the latest notification or department website remains the final authority.</p><h3>How this tool helps</h3><p>Indian citizens often face short application windows, strict document rules and unfamiliar online forms. A small mismatch in a name, figure, image or date can delay a submission. This page turns a common task into clear steps so that students, employees, families and first-time digital users can act with more confidence. It is useful for people searching for Check eligibility for Indian government schemes, benefits and support programs, but it does not replace an official decision, legal advice or financial advice.</p><h3>Use it carefully</h3><ol><li>Read the current official notification or portal instruction first.</li><li>Enter only correct information from your own records and keep supporting documents nearby.</li><li>Review the result, then verify any important value or condition from the concerned department.</li><li>Save your acknowledgement, application reference and fee receipt after the official submission.</li></ol><h3>Safe next steps</h3><p>Never share OTPs, passwords, bank PINs or complete identity numbers with an unofficial service. If a portal is slow, avoid duplicate payments or repeated form submissions; wait for a confirmation, transaction reference or official helpdesk guidance. Keep a short record of the date checked, source link and document version. This makes correction requests and service-centre visits much easier.</p><h3>Long-tail questions this page answers</h3><p>People search for “Check eligibility for Indian government schemes, benefits and support programs online India”, “free scheme eligibility checker”, “how to check Check eligibility for Indian government schemes, benefits and support programs” and “Scheme Eligibility Checker Hindi English”. The goal here is to answer that real need with useful context, internal resources and a clear next action—not to make a promise that only an authorised department can make.</p><h3>Frequently asked questions</h3><p><strong>Is it free?</strong> Yes. <strong>Is it official?</strong> No, verify important decisions from the department website. <strong>Does it work on mobile?</strong> Yes, the page follows the responsive layout and existing light/dark theme. <strong>What next?</strong> Use the related tools and services below.</p><h3>Prepare before submitting</h3><p>Check the year, state, category and applicable rules before you proceed. Official requirements can differ by employer, state or scheme. Keep clear scans, a working phone number and access to the email or mobile number used during registration. Submit early rather than at the last minute, and retain confirmation messages until the process is complete.</p></div>
-<div data-lang-show="hi"><h2>सरकारी योजना पात्रता चेकर: भारतीय उपयोगकर्ताओं के लिए उपयोगी गाइड</h2><p>यह मुफ्त टूल भारतीय सरकारी योजनाओं, लाभों और सहायता कार्यक्रमों की पात्रता जांचें में आपकी मदद करता है। आधिकारिक पोर्टल पर आवेदन करने, विकल्पों की तुलना करने या दस्तावेज़ तैयार करने से पहले जरूरी जानकारी समझने के लिए इसका उपयोग करें। परिणाम केवल मार्गदर्शन और तैयारी के लिए है। नियम, सीमा, तारीख, फीस और पात्रता बदल सकते हैं, इसलिए विभाग की नई सूचना को अंतिम मानें।</p><h3>यह टूल कैसे मदद करता है?</h3><p>भारत में कई नागरिकों को कम आवेदन समय, सख्त दस्तावेज़ नियम और नए ऑनलाइन फॉर्म का सामना करना पड़ता है। नाम, रकम, फोटो या तारीख की छोटी गलती से आवेदन रुक सकता है। यह पेज सामान्य काम को स्पष्ट चरणों में रखता है ताकि विद्यार्थी, कर्मचारी, परिवार और पहली बार डिजिटल सेवा इस्तेमाल करने वाले लोग अधिक भरोसे से आगे बढ़ सकें। भारतीय सरकारी योजनाओं, लाभों और सहायता कार्यक्रमों की पात्रता जांचें खोजने वालों के लिए यह उपयोगी है, लेकिन यह आधिकारिक निर्णय, कानूनी सलाह या वित्तीय सलाह का विकल्प नहीं है।</p><h3>सावधानी से उपयोग करें</h3><ol><li>पहले नई आधिकारिक सूचना या पोर्टल निर्देश पढ़ें।</li><li>अपने रिकॉर्ड से सही जानकारी भरें और जरूरी दस्तावेज़ पास रखें।</li><li>परिणाम देखने के बाद महत्वपूर्ण शर्त को संबंधित विभाग से मिलाएं।</li><li>आधिकारिक जमा करने के बाद acknowledgement, आवेदन नंबर और फीस रसीद सुरक्षित रखें।</li></ol><h3>सुरक्षित अगला कदम</h3><p>अनधिकृत सेवा के साथ OTP, पासवर्ड, बैंक PIN या पूरा पहचान नंबर साझा न करें। पोर्टल धीमा होने पर डुप्लीकेट भुगतान या बार-बार फॉर्म जमा न करें; confirmation, transaction reference या हेल्पडेस्क निर्देश का इंतजार करें। जांच की तारीख, स्रोत लिंक और दस्तावेज़ का संस्करण लिखकर रखें। इससे बाद में सुधार या सेवा केंद्र पर मदद लेना आसान होगा।</p><h3>आपकी लंबी खोज का जवाब</h3><p>लोग “भारतीय सरकारी योजनाओं, लाभों और सहायता कार्यक्रमों की पात्रता जांचें ऑनलाइन”, “मुफ्त सरकारी योजना पात्रता चेकर”, “भारतीय सरकारी योजनाओं, लाभों और सहायता कार्यक्रमों की पात्रता जांचें कैसे जांचें” और “सरकारी योजना पात्रता चेकर हिंदी में” जैसी खोज करते हैं। इस पेज का उद्देश्य सही जानकारी, आंतरिक संसाधन और अगला उपयोगी कदम देना है; ऐसी गारंटी देना नहीं जो केवल अधिकृत विभाग दे सकता है।</p><h3>अक्सर पूछे जाने वाले सवाल</h3><p><strong>क्या यह मुफ्त है?</strong> हाँ। <strong>क्या यह आधिकारिक है?</strong> नहीं, जरूरी निर्णय विभाग की वेबसाइट से सत्यापित करें। <strong>क्या मोबाइल पर चलेगा?</strong> हाँ, पेज responsive layout और light/dark theme के साथ काम करता है। <strong>अब क्या करें?</strong> नीचे संबंधित टूल और सेवाएं खोलें।</p><h3>जमा करने से पहले तैयारी</h3><p>आगे बढ़ने से पहले वर्ष, राज्य, श्रेणी और लागू नियम जरूर मिलाएं। शर्तें राज्य, योजना या नियोक्ता के अनुसार अलग हो सकती हैं। साफ स्कैन, चालू मोबाइल नंबर और रजिस्ट्रेशन वाले ईमेल या मोबाइल तक पहुंच रखें। अंतिम समय के बजाय पहले जमा करें और प्रक्रिया पूरी होने तक confirmation messages संभालकर रखें।</p></div>
-<div data-lang-show="en"><h3>Detailed preparation checklist</h3><p>For scheme eligibility, begin with information that you can support from an official document, payslip, notification, certificate or acknowledgement. Avoid relying on old screenshots, social media posts or verbal assurances. Read the date on the notice, the financial year or assessment year where relevant, and any state-specific instruction. When two sources appear different, use the most recent official page and contact the responsible department for a clarification. This habit is more valuable than any calculator result because it prevents an otherwise correct form from being submitted under an outdated rule.</p><p>Before you finish, make a simple checklist: confirm spelling and dates; confirm the acceptable format and size of every attachment; check whether an original is needed for verification; write down the application deadline in your own calendar; and save proof of the completed action. If a service requires payment, use the official portal or authorised centre, check the amount shown on screen and preserve the receipt. Do not allow urgency to make you share confidential information. A legitimate process gives you time to read the terms, inspect the acknowledgement and keep a record.</p><p>Use related links only when they serve the same task. For example, document preparation, eligibility, status checking and state-wise information often belong to one application journey. This internal path is intended to help you find the next reliable page quickly, while keeping the final decision with the official authority.</p></div><div data-lang-show="hi"><h3>विस्तृत तैयारी चेकलिस्ट</h3><p>scheme eligibility से जुड़े काम में शुरुआत ऐसी जानकारी से करें जिसे आप आधिकारिक दस्तावेज़, वेतन पर्ची, नोटिफिकेशन, प्रमाणपत्र या acknowledgement से साबित कर सकें। पुराने स्क्रीनशॉट, सोशल मीडिया पोस्ट या केवल मौखिक जानकारी पर निर्भर न रहें। नोटिस की तारीख, जहां लागू हो वहां वित्तीय वर्ष या असेसमेंट वर्ष, और राज्य के विशेष निर्देश जरूर पढ़ें। दो स्रोत अलग दिखें तो सबसे नई आधिकारिक वेबसाइट को मानें और संबंधित विभाग से स्पष्टीकरण लें। यही आदत किसी भी कैलकुलेटर के परिणाम से ज्यादा महत्वपूर्ण है, क्योंकि इससे पुराना नियम लगाकर सही फॉर्म भी गलत जमा होने से बचता है।</p><p>काम पूरा करने से पहले एक छोटी चेकलिस्ट बनाएं: नाम और तारीख मिलाएं; हर attachment का स्वीकार्य format और size देखें; सत्यापन के लिए मूल दस्तावेज़ चाहिए या नहीं जांचें; अंतिम तारीख अपने कैलेंडर में लिखें; और पूरे हुए काम का प्रमाण सुरक्षित रखें। भुगतान जरूरी हो तो आधिकारिक पोर्टल या अधिकृत केंद्र इस्तेमाल करें, स्क्रीन पर दिख रही रकम जांचें और रसीद संभालें। जल्दी के कारण गोपनीय जानकारी साझा न करें। सही प्रक्रिया आपको शर्तें पढ़ने, acknowledgement देखने और रिकॉर्ड रखने का समय देती है।</p><p>संबंधित लिंक केवल तभी खोलें जब वे उसी काम को आगे बढ़ाते हों। दस्तावेज़ तैयारी, पात्रता, स्टेटस जांच और राज्यवार जानकारी एक आवेदन यात्रा के अलग चरण हो सकते हैं। यह आंतरिक लिंकिंग आपको अगले भरोसेमंद पेज तक ले जाने के लिए है, जबकि अंतिम निर्णय हमेशा आधिकारिक विभाग का रहेगा।</p></div><div data-lang-show="en"><h3>Official verification reminder</h3><p>Before taking any final action, compare the information on this page with the latest official notification and portal. Keep a screenshot or PDF of the relevant instruction, because requirements can be revised. Where a department offers an official helpline or helpdesk, use it for a case-specific question. This preparation saves time, supports accurate applications and gives you a clear record if you need to follow up later.</p></div><div data-lang-show="hi"><h3>आधिकारिक सत्यापन की याद</h3><p>अंतिम कदम लेने से पहले इस पेज की जानकारी को नई आधिकारिक सूचना और पोर्टल से जरूर मिलाएं। संबंधित निर्देश का स्क्रीनशॉट या PDF रखें, क्योंकि शर्तें बदल सकती हैं। किसी खास मामले के प्रश्न के लिए विभाग की आधिकारिक हेल्पलाइन या हेल्पडेस्क का उपयोग करें। यह तैयारी समय बचाती है, आवेदन को सही रखती है और बाद में follow-up के लिए स्पष्ट रिकॉर्ड देती है।</p></div><h2 data-lang-show="en">Related tools</h2><h2 data-lang-show="hi">संबंधित टूल्स</h2><div class="seo-grid"><a class="seo-card" href="document-checklist.html"><span>📋</span><b data-lang-show="en">Document Checklist</b><b data-lang-show="hi">Document Checklist</b></a><a class="seo-card" href="govt-card-clarifier.html"><span>🪪</span><b data-lang-show="en">Govt Card Clarifier</b><b data-lang-show="hi">Govt Card Clarifier</b></a><a class="seo-card" href="csc-locator.html"><span>📍</span><b data-lang-show="en">CSC Locator</b><b data-lang-show="hi">CSC Locator</b></a><a class="seo-card" href="self-declaration-builder.html"><span>📝</span><b data-lang-show="en">Self-Declaration Builder</b><b data-lang-show="hi">Self-Declaration Builder</b></a></div><h2 data-lang-show="en">Related services</h2><h2 data-lang-show="hi">संबंधित सेवाएं</h2><div class="seo-grid"><a class="seo-card" href="../support/state-wise-services.html"><span>🏛️</span><b data-lang-show="en">State-wise Services</b><b data-lang-show="hi">राज्यवार सेवाएं</b></a><a class="seo-card" href="../category/identity-documents.html"><span>🪪</span><b data-lang-show="en">Identity Documents</b><b data-lang-show="hi">पहचान दस्तावेज़</b></a><a class="seo-card" href="../category/jobs-education.html"><span>🎓</span><b data-lang-show="en">Jobs & Education</b><b data-lang-show="hi">नौकरी और शिक्षा</b></a><a class="seo-card" href="../states/index.html"><span>🗺️</span><b data-lang-show="en">All States Hub</b><b data-lang-show="hi">सभी राज्य सेवाएं</b></a></div></div></section><!-- /TOOL SEO ENHANCEMENT -->
-</main>
-  
+
+    <!-- ─── SEO Content ─── -->
+    <section class="htc-scope htc-section mt-5 mb-5">
+      <div class="htc-wrap">
+        <div data-lang-show="en">
+          <h2>Advanced Government Scheme Eligibility Checker – How It Works</h2>
+          <p>The <strong>SarkariSewa India Eligibility Discovery Engine</strong> is an advanced tool that intelligently matches your personal profile against India's 35+ major government schemes, subsidies, and scholarships. Unlike basic eligibility checkers, our engine provides:</p>
+          <ul>
+            <li><strong>Match Score (0–100%):</strong> Transparent scoring based on how well your profile matches each scheme's criteria</li>
+            <li><strong>Matched Conditions:</strong> See exactly which criteria you fulfil (age, gender, income, occupation, category)</li>
+            <li><strong>Failed Conditions:</strong> Clearly explained in plain language why a scheme may not apply</li>
+            <li><strong>Documents Required:</strong> Complete document list for each eligible scheme</li>
+            <li><strong>Step-by-Step Apply Process:</strong> How to apply for each scheme</li>
+            <li><strong>Official Apply Links:</strong> Direct links to official government portals</li>
+          </ul>
+          <h3>Which Schemes Are Covered?</h3>
+          <p>Our database covers schemes across Agriculture (PM Kisan, PMFBY, KCC), Housing (PMAY), Health (Ayushman Bharat, PMSMA, RBSK), Women Empowerment (PMMVY, PM Ujjwala, Sukanya Samriddhi), Education (NSP, PMVY, SWAYAM), Pension (PM-SYM, APY, NSAP), Business/MSME (PM Mudra, PM Vishwakarma, Stand-Up India), Employment (PM Internship, PMKVY, NCS), Digital/Insurance (PMJDY, PMJJBY, PMSBY, e-Shram), Food Security (PMGKAY), and Solar Energy (PM Surya Ghar).</p>
+          <h3>Important Disclaimer</h3>
+          <p>This tool provides <strong>preliminary guidance only</strong>. The match score and eligibility results are based on publicly available information and your self-declared inputs. Final eligibility is determined solely by the concerned government department. Always verify from official portals before applying.</p>
+        </div>
+        <div data-lang-show="hi">
+          <h2>उन्नत सरकारी योजना पात्रता जांचकर्ता – यह कैसे काम करता है</h2>
+          <p><strong>SarkariSewa India Eligibility Engine</strong> एक उन्नत टूल है जो आपकी प्रोफ़ाइल का भारत की 35+ प्रमुख सरकारी योजनाओं, सब्सिडी और छात्रवृत्तियों से बुद्धिमान मिलान करता है।</p>
+          <ul>
+            <li><strong>Match Score (0–100%):</strong> पारदर्शी स्कोर जो बताता है कि आपकी प्रोफ़ाइल कितनी अच्छी तरह मेल खाती है</li>
+            <li><strong>मिलान की गई शर्तें:</strong> देखें कि आप कौन सी पात्रता पूरी करते हैं</li>
+            <li><strong>आवश्यक दस्तावेज़:</strong> हर पात्र योजना के लिए पूरी दस्तावेज़ सूची</li>
+            <li><strong>Step-by-Step आवेदन प्रक्रिया:</strong> प्रत्येक योजना के लिए आवेदन कैसे करें</li>
+          </ul>
+        </div>
+
+        <h3 data-lang-show="en">Related Tools</h3>
+        <h3 data-lang-show="hi">सम्बंधित टूल्स</h3>
+        <div class="htc-related-grid">
+          <a href="../tools/document-checklist.html" class="htc-related-card">
+            <span class="htc-icon">📋</span>
+            <div class="htc-card-title">
+              <span data-lang-show="en">Document Checklist Tool</span>
+              <span data-lang-show="hi">दस्तावेज़ चेकलिस्ट</span>
+            </div>
+            <p class="htc-card-desc">
+              <span data-lang-show="en">Get complete document list for any government service</span>
+              <span data-lang-show="hi">किसी भी सरकारी सेवा के लिए पूरी दस्तावेज़ सूची</span>
+            </p>
+          </a>
+          <a href="../tools/status-troubleshooter.html" class="htc-related-card">
+            <span class="htc-icon">🔍</span>
+            <div class="htc-card-title">
+              <span data-lang-show="en">Status Troubleshooter</span>
+              <span data-lang-show="hi">आवेदन स्थिति समस्यानिवारक</span>
+            </div>
+            <p class="htc-card-desc">
+              <span data-lang-show="en">Fix issues with pending/rejected applications</span>
+              <span data-lang-show="hi">लंबित/अस्वीकृत आवेदनों की समस्याएं ठीक करें</span>
+            </p>
+          </a>
+          <a href="../tools/income-tax-calculator.html" class="htc-related-card">
+            <span class="htc-icon">💰</span>
+            <div class="htc-card-title">
+              <span data-lang-show="en">Income Tax Calculator</span>
+              <span data-lang-show="hi">आयकर कैलकुलेटर</span>
+            </div>
+            <p class="htc-card-desc">
+              <span data-lang-show="en">Calculate tax under old vs new regime</span>
+              <span data-lang-show="hi">पुरानी और नई व्यवस्था में टैक्स की गणना</span>
+            </p>
+          </a>
+          <a href="../tools/savings-comparator.html" class="htc-related-card">
+            <span class="htc-icon">📊</span>
+            <div class="htc-card-title">
+              <span data-lang-show="en">Savings Scheme Comparator</span>
+              <span data-lang-show="hi">बचत योजना तुलनाकर्ता</span>
+            </div>
+            <p class="htc-card-desc">
+              <span data-lang-show="en">Compare PPF, NPS, SSY & other savings schemes</span>
+              <span data-lang-show="hi">PPF, NPS, SSY की तुलना करें</span>
+            </p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
   <div id="site-footer">
 <footer class="site-footer">
   <div class="tricolor-rule"></div>
@@ -526,51 +1078,36 @@
         <p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
       </div>
       <div>
-        <h4 data-i18n="footer_tools_title">Tools & Apps</h4>
+        <h4>Tools &amp; Apps</h4>
         <ul>
-          <li><a href="../tools/index.html">🧮 Tools & Calculators</a></li>
-          <li><a href="../tools/eligibility-checker.html" data-i18n="nav_eligibility_engine">🎯 Scheme Eligibility Engine</a></li>
+          <li><a href="../tools/eligibility-checker.html">🎯 Scheme Eligibility Engine</a></li>
           <li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
-          <li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
-          <li><a href="../tools/photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
-          <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
-          <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
-          <li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
-          <li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+          <li><a href="../tools/status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
+          <li><a href="../tools/savings-comparator.html">📊 Savings Comparator</a></li>
+          <li><a href="../tools/photo-resizer.html">📸 Photo Resizer</a></li>
         </ul>
       </div>
       <div>
-        <h4 data-i18n="footer_resources_title">Resources</h4>
+        <h4>Resources</h4>
         <ul>
-          <li><a href="../project-report/index.html" data-i18n="nav_project_report">Project Report Generator</a></li>
-          <li><a href="../states/index.html" data-i18n="states_hub_title">State-wise Popular Services</a></li>
-          <li><a href="../about.html" data-i18n="footer_about_link">About</a></li>
-          <li><a href="../sitemap.html" data-i18n="footer_sitemap_link">Sitemap</a></li>
-          <li><a href="../faq.html" data-i18n="footer_faq_link">FAQ</a></li>
-          <li><a href="../contact.html" data-i18n="footer_contact_link">Contact</a></li>
+          <li><a href="../states/index.html">State Services</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../sitemap.html">Sitemap</a></li>
+          <li><a href="../faq.html">FAQ</a></li>
+          <li><a href="../contact.html">Contact</a></li>
         </ul>
       </div>
       <div>
-        <h4 data-i18n="footer_support_title">Support</h4>
+        <h4>Legal</h4>
         <ul>
-          <li><a href="../support/index.html" data-i18n="footer_support_home_link">Support Home</a></li>
-          <li><a href="../support/state-wise-services.html" data-i18n="footer_state_link">State-wise Services</a></li>
-          <li><a href="../support/helpline-directory.html" data-i18n="footer_helpline_link">Helpline Directory</a></li>
-          <li><a href="../support/rti-guide.html" data-i18n="footer_rti_link">RTI Guide</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 data-i18n="footer_legal_title">Legal</h4>
-        <ul>
-          <li><a href="../privacy-policy.html" data-i18n="privacy_title">Privacy Policy</a></li>
-          <li><a href="../disclaimer.html" data-i18n="disclaimer_title">Disclaimer</a></li>
-          <li><a href="../terms.html" data-i18n="terms_title">Terms &amp; Conditions</a></li>
-          <li><a href="../admin/login.html" data-i18n="admin_link">Staff Login</a></li>
+          <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="../disclaimer.html">Disclaimer</a></li>
+          <li><a href="../terms.html">Terms &amp; Conditions</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
+      <span>© <span id="footer-year"></span> SarkariSewa India · All content is for informational purposes only.</span>
     </div>
   </div>
 </footer>
@@ -578,186 +1115,312 @@
   <button id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" aria-label="Close" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
   <a href="https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g" target="_blank" rel="noopener noreferrer" class="ss-wa-floating-bar" aria-label="Join our WhatsApp Channel">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-    <span data-i18n="wa_join" style="font-weight: 600;">Join WhatsApp Channel</span>
+    <span style="font-weight: 600;">Join WhatsApp Channel</span>
   </a>
 </div>
 </div>
-  
-  <script src="../assets/js/main.js"></script>
-  <!-- Load the Scheme Database Engine -->
-  <script src="../assets/js/schemes-db.js"></script>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const steps = document.querySelectorAll('.wizard-step');
-      const progressSteps = document.querySelectorAll('.progress-step');
-      const btnPrev = document.getElementById('btnPrev');
-      const btnNext = document.getElementById('btnNext');
-      const btnSubmit = document.getElementById('btnSubmit');
-      const btnReset = document.getElementById('btnReset');
-      
-      let currentStep = 1;
-      const totalSteps = steps.length;
-      
-      function updateUI() {
-        // Update Step Visibility
-        steps.forEach((step, index) => {
-          if (index + 1 === currentStep) {
-            step.classList.add('active');
-          } else {
-            step.classList.remove('active');
-          }
-        });
-        
-        // Update Progress Bar
-        progressSteps.forEach((step, index) => {
-          step.classList.remove('active', 'completed');
-          if (index + 1 < currentStep) {
-            step.classList.add('completed');
-          } else if (index + 1 === currentStep) {
-            step.classList.add('active');
-          }
-        });
-        
-        // Update Buttons
-        btnPrev.style.display = currentStep > 1 && currentStep < totalSteps ? 'block' : 'none';
-        btnNext.style.display = currentStep < totalSteps - 1 ? 'block' : 'none';
-        btnSubmit.style.display = currentStep === totalSteps - 1 ? 'block' : 'none';
-        
-        if (currentStep === totalSteps) {
-          btnPrev.style.display = 'none';
-          btnNext.style.display = 'none';
-          btnSubmit.style.display = 'none';
-          btnReset.style.display = 'block';
-          runEngine();
-        }
-      }
-      
-      function validateStep() {
-        const currentStepEl = document.getElementById(`step${currentStep}`);
-        const inputs = currentStepEl.querySelectorAll('input[required], select[required]');
-        let isValid = true;
-        inputs.forEach(input => {
-          if (!input.value) {
-            input.style.borderColor = '#ef4444';
-            isValid = false;
-          } else {
-            input.style.borderColor = '';
-          }
-        });
-        return isValid;
-      }
-      
-      btnNext.addEventListener('click', () => {
-        if (validateStep()) {
-          currentStep++;
-          updateUI();
-        }
-      });
-      
-      btnPrev.addEventListener('click', () => {
-        currentStep--;
-        updateUI();
-      });
-      
-      btnSubmit.addEventListener('click', () => {
-        if (validateStep()) {
-          currentStep++;
-          updateUI();
-        }
-      });
-      
-      // The Matching Engine Execution
-      function runEngine() {
-        // Collect Profile
-        const profile = {
-          age: parseInt(document.getElementById('age').value) || null,
-          gender: document.getElementById('gender').value,
-          maritalStatus: document.getElementById('maritalStatus').value,
-          income: parseInt(document.getElementById('income').value) || null,
-          caste: document.getElementById('caste').value,
-          occupation: document.getElementById('occupation').value,
-          state: document.getElementById('state').value
-        };
-        
-        // Normalize 'Other' states for Central Schemes matching
-        if (profile.state && profile.state !== 'All') {
-          profile.state = profile.state; // Real engine would check both State and Central
-        }
-        
-        // Run match
-        let eligibleSchemes = window.matchSchemes(profile);
-        
-        // Sort by benefit amount (highest first)
-        eligibleSchemes.sort((a, b) => {
-          return (b.benefitAmount || 0) - (a.benefitAmount || 0);
-        });
-        
-        renderResults(eligibleSchemes);
-      }
-      
-      function renderResults(schemes) {
-        const container = document.getElementById('resultsContainer');
-        const summary = document.getElementById('resultsSummary');
-        
-        container.innerHTML = '';
-        
-        const dict = (window.SITE && window.SITE.langData && window.SITE.langData[window.SITE.lang]) || {};
-        
-        const t_no_match_title = dict["ee_no_match_title"] || "No Exact Matches Found";
-        const t_no_match_desc = dict["ee_no_match_desc"] || "We couldn't find any specific schemes matching all your criteria. Try adjusting your income or occupation.";
-        const t_no_match_summary = dict["ee_no_match_summary"] || "We couldn't find any exact matches based on your inputs.";
-        const t_match_sum_1 = dict["ee_match_summary_1"] || "Great news! Based on your profile, you are eligible for ";
-        const t_match_sum_2 = dict["ee_match_summary_2"] || " government schemes.";
-        const t_benefit_upto = dict["ee_benefit_upto"] || "Up to ₹";
-        const t_benefit = dict["ee_benefit"] || " Benefit";
-        const t_benefit_var = dict["ee_benefit_var"] || "Variable / Non-Cash Benefit";
-        const t_view_details = dict["ee_view_details"] || "View Details & Apply";
 
-        if (schemes.length === 0) {
-          summary.textContent = t_no_match_summary;
-          container.innerHTML = `
-            <div class="empty-state" style="grid-column: 1 / -1;">
-              <div class="empty-state-icon">🔍</div>
-              <h3>${t_no_match_title}</h3>
-              <p>${t_no_match_desc}</p>
-            </div>
-          `;
-          return;
-        }
-        
-        summary.innerHTML = `${t_match_sum_1}<strong>${schemes.length}</strong>${t_match_sum_2}`;
-        
-        schemes.forEach(scheme => {
-          const card = document.createElement('div');
-          card.className = 'scheme-card';
-          
-          let tagsHtml = scheme.tags.map(tag => `<span class="scheme-tag">${tag}</span>`).join('');
-          
-          let benefitHtml = '';
-          if (scheme.benefitAmount) {
-            benefitHtml = `<div class="scheme-benefit">💰 ${t_benefit_upto}${scheme.benefitAmount.toLocaleString('en-IN')}${t_benefit}</div>`;
-          } else {
-            benefitHtml = `<div class="scheme-benefit">📈 ${t_benefit_var}</div>`;
-          }
-          
-          card.innerHTML = `
-            <div class="scheme-tags">${tagsHtml}</div>
-            <h3 class="scheme-title">${scheme.title}</h3>
-            <p class="scheme-desc">${scheme.description}</p>
-            ${benefitHtml}
-            <a href="${scheme.url}" class="btn btn--outline" style="text-align: center; width: 100%;">${t_view_details}</a>
-          `;
-          container.appendChild(card);
-        });
-      }
-      
-      // Init
-      updateUI();
-      
-      // Auto-focus first field
-      document.getElementById('age').focus();
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/schemes-db.js"></script>
+  <script>
+  (function() {
+    // ─── Checkbox chips ───
+    document.querySelectorAll('.ec-checkbox-item').forEach(label => {
+      label.addEventListener('click', function () {
+        this.classList.toggle('selected');
+        const cb = this.querySelector('input[type=checkbox]');
+        if (cb) cb.checked = this.classList.contains('selected');
+      });
     });
+
+    // ─── Wizard state ───
+    let currentStep = 1;
+    const TOTAL_STEPS = 4;
+
+    const steps = document.querySelectorAll('.ec-step');
+    const dots = document.querySelectorAll('.ec-step-dot');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const btnReset = document.getElementById('btnReset');
+
+    function updateProgress() {
+      dots.forEach((dot, i) => {
+        dot.classList.remove('active', 'done');
+        if (i + 1 < currentStep) dot.classList.add('done');
+        if (i + 1 === currentStep) dot.classList.add('active');
+      });
+    }
+
+    function showStep(n) {
+      steps.forEach((s, i) => s.classList.toggle('active', i + 1 === n));
+      btnPrev.style.display = n > 1 && n < TOTAL_STEPS ? 'block' : 'none';
+      btnNext.style.display = n < TOTAL_STEPS - 1 ? 'block' : 'none';
+      btnSubmit.style.display = n === TOTAL_STEPS - 1 ? 'block' : 'none';
+      btnReset.style.display = n === TOTAL_STEPS ? 'block' : 'none';
+      if (n === TOTAL_STEPS) {
+        btnPrev.style.display = 'none';
+        btnNext.style.display = 'none';
+        btnSubmit.style.display = 'none';
+      }
+      updateProgress();
+    }
+
+    function validateCurrent() {
+      const stepEl = document.getElementById('step' + currentStep);
+      if (!stepEl) return true;
+      let ok = true;
+      stepEl.querySelectorAll('input[required], select[required]').forEach(el => {
+        el.style.borderColor = '';
+        if (!el.value) { el.style.borderColor = '#ef4444'; ok = false; }
+      });
+      return ok;
+    }
+
+    btnNext.addEventListener('click', () => {
+      if (!validateCurrent()) return;
+      currentStep++;
+      showStep(currentStep);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    btnPrev.addEventListener('click', () => {
+      currentStep--;
+      showStep(currentStep);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    btnSubmit.addEventListener('click', () => {
+      if (!validateCurrent()) return;
+      currentStep++;
+      showStep(currentStep);
+      renderResults();
+    });
+
+    // ─── Collect profile ───
+    function collectProfile() {
+      const situations = [...document.querySelectorAll('input[name=situation]:checked')].map(el => el.value);
+      return {
+        age: parseInt(document.getElementById('age').value) || null,
+        gender: document.getElementById('gender').value,
+        maritalStatus: document.getElementById('maritalStatus').value,
+        state: document.getElementById('state').value,
+        income: parseInt(document.getElementById('income').value) ?? null,
+        caste: document.getElementById('caste').value,
+        occupation: document.getElementById('occupation').value,
+        education: document.getElementById('education').value,
+        isFarmer: situations.includes('isFarmer') || document.getElementById('occupation').value === 'Farmer',
+        hasSmallBusiness: situations.includes('hasSmallBusiness'),
+        isPregnant: situations.includes('isPregnant'),
+        hasGirlChild: situations.includes('hasGirlChild'),
+        isTBPatient: situations.includes('isTBPatient'),
+        hasDisability: situations.includes('hasDisability'),
+        noHouse: situations.includes('noHouse'),
+        noGas: situations.includes('noGas'),
+        streetVendor: situations.includes('streetVendor'),
+        artisan: situations.includes('artisan') || document.getElementById('occupation').value === 'Artisan',
+        wantsSolarPanel: situations.includes('wantsSolarPanel'),
+        noBankAccount: situations.includes('noBankAccount'),
+        familySize: document.getElementById('familySize').value
+      };
+    }
+
+    // ─── Render Results ───
+    function renderResults() {
+      const profile = collectProfile();
+      const area = document.getElementById('resultsArea');
+
+      // Loading
+      area.innerHTML = `<div class="ec-loading"><div class="spinner"></div><p>Analyzing your profile against 35+ schemes...</p></div>`;
+
+      setTimeout(() => {
+        const allResults = window.matchSchemesAdvanced ? window.matchSchemesAdvanced(profile) : [];
+
+        // Special boosts based on situation flags
+        allResults.forEach(r => {
+          if (profile.isFarmer && (r.criteria.requiresFarmer || r.criteria.occupations.includes('Farmer'))) r.score = Math.min(100, r.score + 10);
+          if (profile.isPregnant && r.id === 'pm-matru-vandana') { r.score = 92; r.category = 'eligible'; }
+          if (profile.isPregnant && r.id === 'pmsma') { r.score = 95; r.category = 'eligible'; }
+          if (profile.hasGirlChild && r.id === 'sukanya-samriddhi') { r.score = 95; r.category = 'eligible'; }
+          if (profile.noHouse && r.id === 'pm-awas') { r.score = Math.min(100, r.score + 15); }
+          if (profile.noGas && r.id === 'pm-ujjwala') { r.score = Math.min(100, r.score + 15); }
+          if (profile.isTBPatient && r.id === 'nikshay-poshan') { r.score = 96; r.category = 'eligible'; }
+          if (profile.wantsSolarPanel && r.id === 'pm-surya-ghar') { r.score = Math.min(100, r.score + 15); }
+          if (profile.streetVendor && r.id === 'pm-svanidhi') { r.score = 90; r.category = 'eligible'; }
+          if (profile.artisan && r.id === 'pm-vishwakarma') { r.score = 92; r.category = 'eligible'; }
+          if (profile.noBankAccount && r.id === 'pm-jandhan') { r.score = 98; r.category = 'eligible'; }
+        });
+
+        // Re-sort
+        const order = { eligible: 0, check: 1, not_eligible: 2 };
+        allResults.sort((a, b) => order[a.category] - order[b.category] || b.score - a.score);
+
+        const eligible = allResults.filter(r => r.category === 'eligible');
+        const check = allResults.filter(r => r.category === 'check');
+        const notEligible = allResults.filter(r => r.category === 'not_eligible');
+
+        // Profile tags
+        const tags = [];
+        if (profile.age) tags.push({ label: `Age: ${profile.age}`, icon: '👤' });
+        if (profile.gender) tags.push({ label: profile.gender, icon: '⚥' });
+        if (profile.occupation) tags.push({ label: profile.occupation, icon: '💼' });
+        if (profile.caste) tags.push({ label: profile.caste, icon: '🏷️' });
+        if (profile.income !== null) tags.push({ label: `₹${Number(profile.income).toLocaleString('en-IN')}/yr`, icon: '💰' });
+        if (profile.state) tags.push({ label: profile.state, icon: '📍' });
+
+        let html = `
+          <div class="results-header">
+            <div class="results-summary-box">
+              <span class="sum-icon">🎯</span>
+              <div>
+                <h3>Profile Analysis Complete!</h3>
+                <p><strong>${eligible.length} schemes</strong> likely eligible · <strong>${check.length}</strong> need verification · Showing top matches</p>
+              </div>
+            </div>
+
+            <div class="profile-recap">
+              <div class="profile-recap-title">Your Profile:</div>
+              ${tags.map(t => `<span class="profile-tag">${t.icon} ${t.label}</span>`).join('')}
+            </div>
+
+            <div class="result-tabs">
+              <button class="result-tab all active" onclick="filterResults('all', this)">All (${allResults.length})</button>
+              <button class="result-tab eligible" onclick="filterResults('eligible', this)">🟢 Likely Eligible (${eligible.length})</button>
+              <button class="result-tab check" onclick="filterResults('check', this)">🟡 Check Required (${check.length})</button>
+              ${notEligible.length > 0 ? `<button class="result-tab not_eligible" onclick="filterResults('not_eligible', this)">🔴 Not Eligible (${notEligible.length})</button>` : ''}
+            </div>
+          </div>
+
+          <div class="results-grid" id="resultsGrid">
+            ${allResults.map(scheme => renderSchemeCard(scheme)).join('')}
+          </div>
+
+          <div style="margin-top: 40px; text-align: center; padding: 24px; background: var(--color-bg-alt); border-radius: 12px; border: 1px solid var(--color-border);">
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0 0 12px;">
+              ⚠️ <strong>Disclaimer:</strong> These results are preliminary guidance based on your inputs. Final eligibility is determined by the concerned government department/official portal. SarkariSewa India is an independent informational platform, not affiliated with any government body.
+            </p>
+            <a href="../service/pm-kisan.html" style="font-size: 0.82rem; color: var(--color-primary);">Browse all 286 services →</a>
+          </div>
+
+          <div style="margin-top: 32px;">
+            <div class="section-label">🛠️ Useful Tools for Next Steps</div>
+            <div class="tools-cta-grid">
+              <a href="document-checklist.html" class="tool-cta-card">
+                <span class="tool-cta-icon">📋</span>
+                <span class="tool-cta-label">Document Checklist</span>
+              </a>
+              <a href="status-troubleshooter.html" class="tool-cta-card">
+                <span class="tool-cta-icon">🔍</span>
+                <span class="tool-cta-label">Status Troubleshooter</span>
+              </a>
+              <a href="../tools/csc-locator.html" class="tool-cta-card">
+                <span class="tool-cta-icon">📍</span>
+                <span class="tool-cta-label">CSC Locator – Apply Offline</span>
+              </a>
+              <a href="../tools/savings-comparator.html" class="tool-cta-card">
+                <span class="tool-cta-icon">📊</span>
+                <span class="tool-cta-label">Savings Comparator</span>
+              </a>
+            </div>
+          </div>
+        `;
+
+        area.innerHTML = html;
+
+        // Animate score bars
+        setTimeout(() => {
+          document.querySelectorAll('.sc-score-fill').forEach(bar => {
+            bar.style.width = bar.dataset.width + '%';
+          });
+        }, 50);
+
+      }, 800); // Simulated analysis delay
+    }
+
+    function renderSchemeCard(scheme) {
+      const statusLabel = scheme.category === 'eligible' ? '🟢 Likely Eligible' : scheme.category === 'check' ? '🟡 Verify Required' : '🔴 Likely Not Eligible';
+      const docsHtml = (scheme.documents || []).map(d => `<li>${d}</li>`).join('');
+      const stepsHtml = (scheme.steps || []).map((s, i) => `<li><strong>Step ${i+1}:</strong> ${s}</li>`).join('');
+      const matchHtml = (scheme.matchedReasons || []).map(r => `<li>${r}</li>`).join('');
+      const failHtml = (scheme.failedReasons || []).map(r => `<li class="fail">${r}</li>`).join('');
+
+      return `
+        <div class="scheme-card ${scheme.category}" data-category="${scheme.category}">
+          <div class="sc-header">
+            <div class="sc-icon">${scheme.icon || '📄'}</div>
+            <div class="sc-title-block">
+              <span class="sc-status-badge ${scheme.category}">${statusLabel}</span>
+              <h3 class="sc-title">${scheme.title}</h3>
+            </div>
+          </div>
+
+          <div class="sc-score-bar-wrap">
+            <div class="sc-score-label">
+              <span>Eligibility Match</span>
+              <span><strong>${scheme.score}%</strong></span>
+            </div>
+            <div class="sc-score-bar">
+              <div class="sc-score-fill" data-width="${scheme.score}" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="sc-body">
+            <p class="sc-desc">${scheme.description}</p>
+
+            <div class="sc-benefit">
+              💰 ${scheme.benefitText || 'Variable Benefit'}
+            </div>
+
+            ${matchHtml || failHtml ? `
+            <button class="sc-reasons-toggle" onclick="toggleBlock(this, 'reasons')">
+              ${scheme.failedReasons?.length ? '⚠️ View match analysis' : '✅ View why you match'}
+            </button>
+            <div class="sc-reasons">
+              <ul class="sc-reason-list">
+                ${matchHtml}
+                ${failHtml}
+              </ul>
+            </div>` : ''}
+
+            ${docsHtml ? `
+            <button class="sc-docs-toggle" onclick="toggleBlock(this, 'docs')">📎 Documents required (${scheme.documents.length})</button>
+            <div class="sc-docs">
+              <ul class="sc-docs-list">${docsHtml}</ul>
+              ${stepsHtml ? `<details style="margin-top:8px"><summary style="font-size:0.8rem;font-weight:600;cursor:pointer;color:var(--color-primary)">📝 How to Apply</summary><ol style="font-size:0.8rem;margin:8px 0 0;padding-left:18px;line-height:1.6">${stepsHtml}</ol></details>` : ''}
+            </div>` : ''}
+          </div>
+
+          <div class="sc-footer">
+            <a href="${scheme.url}" class="btn btn--outline" style="font-size:0.8rem">Details →</a>
+            ${scheme.applyUrl ? `<a href="${scheme.applyUrl}" target="_blank" rel="noopener" class="btn btn--primary" style="font-size:0.8rem">Apply Online ↗</a>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    // Tab filter
+    window.filterResults = function(category, tabEl) {
+      document.querySelectorAll('.result-tab').forEach(t => t.classList.remove('active'));
+      tabEl.classList.add('active');
+      document.querySelectorAll('.scheme-card').forEach(card => {
+        card.style.display = (category === 'all' || card.dataset.category === category) ? '' : 'none';
+      });
+    };
+
+    // Toggle blocks
+    window.toggleBlock = function(btn, type) {
+      const next = btn.nextElementSibling;
+      if (!next) return;
+      const isOpen = next.classList.toggle('show');
+      if (type === 'reasons') btn.textContent = isOpen ? '▲ Hide analysis' : (btn.textContent.includes('⚠️') ? '⚠️ View match analysis' : '✅ View why you match');
+      if (type === 'docs') btn.textContent = isOpen ? '▲ Hide documents' : btn.textContent.replace('▲', '📎');
+    };
+
+    // Init
+    showStep(1);
+    document.getElementById('age').focus();
+
+  })();
   </script>
 </body>
 </html>
