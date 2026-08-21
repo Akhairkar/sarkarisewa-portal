@@ -84,7 +84,7 @@
   function getPopularSearchesHTML() {
     return `
       <div class="search-initial-view">
-        <h3 class="si-title" style="margin-top: 10px;">${t({en: "Popular Searches", hi: "लोकप्रिय खोजें"})}</h3>
+        <h3 class="si-title" style="margin-top: 10px; color: var(--color-text);">${t({en: "Popular Searches", hi: "लोकप्रिय खोजें"})}</h3>
         <div class="si-chips" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;">
           <a href="${ROOT}service/pm-kisan.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">PM Kisan</a>
           <a href="${ROOT}service/ayushman-bharat-card.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">Ayushman Card</a>
@@ -96,16 +96,16 @@
           <a href="${ROOT}jobs/index.html" class="btn btn--outline" style="padding:6px 14px; font-size:0.9rem;">Govt Jobs</a>
         </div>
         
-        <h3 class="si-title" style="margin-top: 32px; margin-bottom: 15px;">${t({en: "Trending Government Services", hi: "ट्रेंडिंग सरकारी सेवाएं"})}</h3>
+        <h3 class="si-title" style="margin-top: 32px; margin-bottom: 15px; color: var(--color-text);">${t({en: "Trending Government Services", hi: "ट्रेंडिंग सरकारी सेवाएं"})}</h3>
         <div class="service-grid">
           <a class="service-card" href="${ROOT}service/pm-kisan.html">
             <div class="service-card__name">PM Kisan Samman Nidhi</div>
             <div class="service-card__desc">${t({en: "Check eligibility, documents, application and status for PM Kisan Rs. 6000 scheme.", hi: "पीएम किसान योजना की पात्रता, दस्तावेज और आवेदन की पूरी जानकारी।"})}</div>
             <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
-              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Eligibility", hi:"पात्रता"})}</span>
-              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
-              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Apply", hi:"आवेदन"})}</span>
-              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Status", hi:"स्थिति"})}</span>
+              <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Eligibility", hi:"पात्रता"})}</span>
+              <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
+              <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Apply", hi:"आवेदन"})}</span>
+              <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Status", hi:"स्थिति"})}</span>
             </div>
             <div class="service-card__arrow">${t({ en: "View Complete Guide &rarr;", hi: "पूरी गाइड देखें &rarr;" })}</div>
           </a>
@@ -113,19 +113,9 @@
             <div class="service-card__name">Ayushman Bharat Card (PMJAY)</div>
             <div class="service-card__desc">${t({en: "Get free medical coverage up to 5 Lakhs. Apply and download online.", hi: "5 लाख तक का मुफ्त इलाज। आयुष्मान कार्ड के लिए ऑनलाइन आवेदन करें।"})}</div>
             <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
-              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Eligibility", hi:"पात्रता"})}</span>
-              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
-              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Apply", hi:"आवेदन"})}</span>
-            </div>
-            <div class="service-card__arrow">${t({ en: "View Complete Guide &rarr;", hi: "पूरी गाइड देखें &rarr;" })}</div>
-          </a>
-          <a class="service-card" href="${ROOT}service/aadhaar-card.html">
-            <div class="service-card__name">Aadhaar Card Update & Download</div>
-            <div class="service-card__desc">${t({en: "Update address, mobile number or download e-Aadhaar card online.", hi: "आधार कार्ड में नाम, पता या मोबाइल नंबर अपडेट करें और डाउनलोड करें।"})}</div>
-            <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
-              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
-              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Update", hi:"अपडेट"})}</span>
-              <span class="sc-tag" style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Download", hi:"डाउनलोड"})}</span>
+              <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Eligibility", hi:"पात्रता"})}</span>
+              <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
+              <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Apply", hi:"आवेदन"})}</span>
             </div>
             <div class="service-card__arrow">${t({ en: "View Complete Guide &rarr;", hi: "पूरी गाइड देखें &rarr;" })}</div>
           </a>
@@ -133,7 +123,7 @@
             <div class="service-card__name">${t({en: "Govt Scheme Eligibility Checker", hi: "सरकारी योजना पात्रता इंजन"})}</div>
             <div class="service-card__desc">${t({en: "Answer 4 simple questions to find 35+ govt schemes you are eligible for.", hi: "4 सवालों के जवाब देकर जानें कि आप किन-किन सरकारी योजनाओं के लिए पात्र हैं।"})}</div>
             <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
-              <span class="sc-tag" style="background:#fef08a; color:#854d0e; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Free Tool", hi:"फ्री टूल"})}</span>
+              <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Free Tool", hi:"फ्री टूल"})}</span>
             </div>
             <div class="service-card__arrow">${t({ en: "Use Tool &rarr;", hi: "टूल का उपयोग करें &rarr;" })}</div>
           </a>
@@ -190,9 +180,9 @@
     if (!filtered.length) {
       resultsEl.classList.remove("service-grid");
       resultsEl.innerHTML = `
-        <div class="no-results-box" style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:24px; text-align:center; margin-bottom:40px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-          <h2 style="margin-top:0; color:#1e293b;">${t({en: "No results found for", hi: "इसके लिए कोई परिणाम नहीं मिला:"})} <span style="color:#ef4444;">"${q}"</span></h2>
-          <p style="color:#64748b;">${t({en: "Don't worry, try one of these instead:", hi: "चिंता न करें, इसके बजाय इनमें से कोई एक आज़माएं:"})}</p>
+        <div class="no-results-box" style="background: var(--color-surface); border:1px solid var(--color-border); border-radius:8px; padding:24px; text-align:center; margin-bottom:40px; box-shadow: var(--shadow-card);">
+          <h2 style="margin-top:0; color: var(--color-text);">${t({en: "No results found for", hi: "इसके लिए कोई परिणाम नहीं मिला:"})} <span style="color: var(--color-accent-saffron);">"${q}"</span></h2>
+          <p style="color: var(--color-text-muted);">${t({en: "Don't worry, try one of these instead:", hi: "चिंता न करें, इसके बजाय इनमें से कोई एक आज़माएं:"})}</p>
           <div style="display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap;">
             <a href="${ROOT}index.html" class="btn btn--primary">${t({en: "Browse All Schemes", hi: "सभी योजनाएं देखें"})}</a>
             <a href="${ROOT}tools/eligibility-checker.html" class="btn btn--outline">${t({en: "Use Eligibility Checker", hi: "पात्रता इंजन का उपयोग करें"})}</a>
@@ -210,10 +200,10 @@
         <div class="service-card__name">${t(service.name)}</div>
         <div class="service-card__desc">${t(service.shortDescription || "")}</div>
         <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
-          <span class="sc-tag" style="background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Eligibility", hi:"पात्रता"})}</span>
-          <span class="sc-tag" style="background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
-          <span class="sc-tag" style="background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Apply", hi:"आवेदन"})}</span>
-          <span class="sc-tag" style="background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Status", hi:"स्थिति"})}</span>
+          <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Eligibility", hi:"पात्रता"})}</span>
+          <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
+          <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Apply", hi:"आवेदन"})}</span>
+          <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Status", hi:"स्थिति"})}</span>
         </div>
         <div class="service-card__arrow">${t({ en: "View Complete Guide &rarr;", hi: "पूरी गाइड देखें &rarr;" })}</div>
       </a>
