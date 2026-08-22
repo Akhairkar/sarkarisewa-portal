@@ -291,25 +291,50 @@
         <span data-lang-show="hi">महाराष्ट्र में सत्यापित जन सेवा केंद्र (VLE) खोजने के लिए आपका स्वागत है। यहां आप आधार अपडेट, पैन कार्ड, आयुष्मान भारत जैसी सेवाओं के लिए अपने नजदीकी केंद्र को खोज सकते हैं।</span>
       </p>
 
-      <!-- Supabase Search & Results UI -->
-      <h2 style="border-bottom: 2px solid var(--color-primary); padding-bottom: 5px; margin-bottom: 20px;">
-        <span data-lang-show="en">🔍 Find Nearest CSC Center</span>
-        <span data-lang-show="hi">🔍 नज़दीकी जन सेवा केंद्र खोजें</span>
-      </h2>
-      
-      <div style="background: var(--color-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--color-border); margin-bottom: 30px;">
+      <!-- Premium Directory Search UI -->
+      <div style="background: linear-gradient(135deg, var(--color-primary) 0%, #1e3a8a 100%); padding: 40px 20px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); color: white; text-align: center;">
+        <h2 style="color: white; margin-bottom: 10px; font-size: 2rem;">Find Verified VLEs Near You</h2>
+        <p style="color: #e2e8f0; margin-bottom: 25px; font-size: 1.1rem;">Select your district or use GPS to find authorized CSC centers instantly.</p>
+        
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; max-width: 800px; margin: 0 auto; background: white; padding: 15px; border-radius: 8px;">
+          
+          <select id="csc-state-select" style="flex: 1; min-width: 200px; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f8fafc; color: #334155; font-size: 1rem; font-weight: 500;">
+            <option value="maharashtra" selected>📍 Maharashtra</option>
+          </select>
+
+          <select id="csc-district-select" style="flex: 1; min-width: 200px; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f8fafc; color: #334155; font-size: 1rem; font-weight: 500;">
+            <option value="">-- Select District --</option>
+            <option value="nagpur">Nagpur</option>
+            <option value="pune">Pune</option>
+            <option value="mumbai">Mumbai</option>
+            <option value="nashik">Nashik</option>
+            <option value="thane">Thane</option>
+            <option value="aurangabad">Aurangabad</option>
+          </select>
+          
+          <button class="btn btn-primary" id="csc-search-btn" style="padding: 12px 30px; font-weight: bold; background: #10b981; border: none; font-size: 1.05rem;">Search</button>
+          
+          <button class="btn btn-outline" id="csc-gps-btn" style="padding: 12px 20px; border: 1px solid #cbd5e1; background: #f1f5f9; color: #0f172a; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+            <span style="font-size: 1.2rem;">🎯</span> Near Me
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick City Links (SEO & UX) -->
+      <div style="margin-bottom: 30px;">
+        <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--color-text);">Top Searched Cities in Maharashtra:</h3>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <input type="text" id="csc-search-input" placeholder="Enter Pincode, Village, or Ward..." style="flex: 1; min-width: 250px; padding: 12px; border: 1px solid var(--color-border); border-radius: 4px; background: var(--color-surface); color: var(--color-text); font-size: 1rem;" />
-          <button class="btn btn-primary" id="csc-search-btn" style="padding: 12px 24px;">Search</button>
-          <button class="btn btn-outline" id="csc-gps-btn" style="padding: 12px 24px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text);">📍 Near Me</button>
+          <a href="maharashtra/nagpur.html" style="padding: 8px 16px; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 20px; color: var(--color-primary); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: all 0.2s;">Nagpur (240+ Centers)</a>
+          <a href="maharashtra/pune.html" style="padding: 8px 16px; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 20px; color: var(--color-primary); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: all 0.2s;">Pune (500+ Centers)</a>
+          <a href="#" style="padding: 8px 16px; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 20px; color: var(--color-primary); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: all 0.2s;">Mumbai</a>
+          <a href="#" style="padding: 8px 16px; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 20px; color: var(--color-primary); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: all 0.2s;">Nashik</a>
         </div>
       </div>
 
       <div id="csc-results-container" data-location="maharashtra">
         <!-- Dynamic Supabase Cards will load here -->
-        <p style="text-align: center; color: var(--color-text-muted); padding: 20px;">Connecting to secure database...</p>
       </div>
-
+      
       <!-- Services List (SEO Value) -->
       <h2 style="margin-top: 40px; border-bottom: 2px solid var(--color-primary); padding-bottom: 5px;">
         <span data-lang-show="en">📄 Top Services Available at CSC Maharashtra</span>
