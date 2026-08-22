@@ -16,6 +16,84 @@ LOGO_URL = f"{SITE_URL}/assets/img/favicon-32.png"
 # Each story has: slug, title, description, pages (list of slides)
 # Each slide: heading, text, bg_color, emoji
 STORIES = [
+    # ===== JAN AUSHADHI STORIES =====
+    {
+        "slug": "jan-aushadhi-sasti-dawai-2026",
+        "title": "Jan Aushadhi Kendra: 90% Sasti Dawai Kahan Milegi? 2026",
+        "titleHi": "जन औषधि केंद्र: 90% सस्ती दवा कहाँ मिलेगी? 2026",
+        "description": "Find Jan Aushadhi Kendra near you. Get medicines at 50-90% cheaper than branded. 15000+ stores across India.",
+        "descHi": "अपने पास जन औषधि केंद्र खोजें। ब्रांडेड से 50-90% सस्ती दवाइयां पाएं। पूरे भारत में 15000+ स्टोर।",
+        "category": "Health",
+        "cta_url": f"{SITE_URL}/service/jan-aushadhi-store-locator.html",
+        "cta_text": "Find Store Near Me →",
+        "pages": [
+            {"heading": "क्या आप जानते हैं?", "text": "भारत में 15,000+ सरकारी दवा की दुकानें हैं जहाँ दवा 90% तक सस्ती मिलती है!", "bg": "#0D7377", "emoji": "💊"},
+            {"heading": "जन औषधि केंद्र", "text": "प्रधानमंत्री भारतीय जन औषधि परियोजना (PMBJP) — सरकार की सबसे बड़ी सस्ती दवा योजना", "bg": "#14919B", "emoji": "🏥"},
+            {"heading": "कितनी सस्ती?", "text": "ब्रांडेड दवा ₹500 → जन औषधि में सिर्फ ₹50! वही दवा, वही असर, 90% कम दाम", "bg": "#0D7377", "emoji": "💰"},
+            {"heading": "क्या कोई भी ले सकता है?", "text": "हाँ! कोई ID नहीं चाहिए, कोई कार्ड नहीं चाहिए। बस जाओ और खरीदो।", "bg": "#146B3A", "emoji": "✅"},
+            {"heading": "कैसे खोजें?", "text": "Google पर 'Jan Aushadhi near me' सर्च करें या हमारी वेबसाइट पर राज्य चुनें", "bg": "#D97F2B", "emoji": "📍"},
+            {"heading": "2000+ दवाइयां उपलब्ध", "text": "दर्द, बुखार, BP, Sugar, विटामिन — सब कुछ मिलता है!", "bg": "#10243E", "emoji": "📋"},
+            {"heading": "अभी खोजें!", "text": "SarkariSewa India पर अपने राज्य का नजदीकी जन औषधि केंद्र खोजें", "bg": "#0D7377", "emoji": "🔍"},
+        ]
+    },
+    {
+        "slug": "jan-aushadhi-kendra-kaise-khole-2026",
+        "title": "Jan Aushadhi Kendra Kaise Khole 2026 — ₹5 Lakh Incentive",
+        "titleHi": "जन औषधि केंद्र कैसे खोलें 2026 — ₹5 लाख इन्सेंटिव",
+        "description": "Open your own Jan Aushadhi Kendra franchise. Government gives up to ₹5 Lakh incentive. Full process inside.",
+        "descHi": "अपना खुद का जन औषधि केंद्र खोलें। सरकार देती है ₹5 लाख तक इन्सेंटिव। पूरी प्रक्रिया अंदर।",
+        "category": "Business",
+        "cta_url": f"{SITE_URL}/service/jan-aushadhi-store-locator.html",
+        "cta_text": "Apply Now →",
+        "pages": [
+            {"heading": "खुद का बिज़नेस चाहिए?", "text": "सरकार दे रही है ₹5 लाख तक — जन औषधि केंद्र खोलें!", "bg": "#8B0000", "emoji": "🏪"},
+            {"heading": "कौन खोल सकता है?", "text": "कोई भी! फार्मासिस्ट, NGO, ट्रस्ट, व्यक्ति — बस एक शर्त: पंजीकृत फार्मासिस्ट रखना होगा", "bg": "#10243E", "emoji": "👨‍⚕️"},
+            {"heading": "कितनी जगह चाहिए?", "text": "सिर्फ 120 sq. ft. — एक छोटी दुकान भी काफी है!", "bg": "#146B3A", "emoji": "📐"},
+            {"heading": "सरकारी मदद", "text": "₹5 लाख तक इन्सेंटिव + महिलाओं, SC/ST, दिव्यांगों को अतिरिक्त छूट", "bg": "#D97F2B", "emoji": "💸"},
+            {"heading": "आवेदन शुल्क", "text": "सिर्फ ₹5,000 — ऑनलाइन अप्लाई करें janaushadhi.gov.in पर", "bg": "#1C3A5E", "emoji": "📝"},
+            {"heading": "कितनी कमाई?", "text": "20% मार्जिन + सरकारी इन्सेंटिव = महीने में ₹25,000-₹80,000 तक!", "bg": "#0D7377", "emoji": "📈"},
+            {"heading": "पूरी जानकारी यहाँ", "text": "SarkariSewa India पर पात्रता, दस्तावेज़ और प्रक्रिया सब पढ़ें", "bg": "#10243E", "emoji": "🏛️"},
+        ]
+    },
+    # ===== CSC LOCATOR STORIES =====
+    {
+        "slug": "nearest-csc-center-kaise-khoje-2026",
+        "title": "Nearest CSC Center Kaise Khoje 2026 — 5 Lakh+ Centers",
+        "titleHi": "नजदीकी CSC सेंटर कैसे खोजें 2026 — 5 लाख+ सेंटर",
+        "description": "Find your nearest Common Service Center (CSC) in 10 seconds. 5 Lakh+ centers across India. Free locator tool!",
+        "descHi": "अपना नजदीकी जन सेवा केंद्र (CSC) 10 सेकंड में खोजें। पूरे भारत में 5 लाख+ सेंटर। फ्री लोकेटर टूल!",
+        "category": "Utilities",
+        "cta_url": f"{SITE_URL}/tools/csc-locator.html",
+        "cta_text": "Find CSC Near Me →",
+        "pages": [
+            {"heading": "CSC सेंटर खोजें", "text": "सरकारी काम करवाना है? नजदीकी CSC सेंटर पर सब कुछ होता है!", "bg": "#10243E", "emoji": "📍"},
+            {"heading": "CSC क्या है?", "text": "Common Service Centre — गाँव-गाँव में सरकार की डिजिटल दुकान। आधार, PAN, पासपोर्ट, बीमा सब!", "bg": "#146B3A", "emoji": "🏛️"},
+            {"heading": "5 लाख+ सेंटर", "text": "भारत के हर जिले, हर तहसील, हर गाँव में CSC सेंटर हैं", "bg": "#D97F2B", "emoji": "🗺️"},
+            {"heading": "क्या-क्या होता है?", "text": "आधार अपडेट, PAN कार्ड, पासपोर्ट, बैंकिंग, बीमा, बिजली बिल — 300+ सेवाएं!", "bg": "#1C3A5E", "emoji": "📋"},
+            {"heading": "कैसे खोजें?", "text": "हमारी वेबसाइट पर राज्य और जिला चुनें — तुरंत पता, फोन नंबर मिलेगा", "bg": "#0D7377", "emoji": "🔍"},
+            {"heading": "हमारे पास पूरा डेटा है!", "text": "लाखों CSC सेंटर्स का पता + VLE नाम + मोबाइल नंबर — सबसे बड़ा डेटाबेस!", "bg": "#8B0000", "emoji": "📊"},
+            {"heading": "अभी खोजें — फ्री!", "text": "SarkariSewa India पर अपना नजदीकी CSC सेंटर 10 सेकंड में खोजें", "bg": "#10243E", "emoji": "⚡"},
+        ]
+    },
+    {
+        "slug": "csc-center-se-kya-kya-hota-hai-2026",
+        "title": "CSC Center Se Kya Kya Hota Hai? 300+ Services List 2026",
+        "titleHi": "CSC सेंटर से क्या-क्या होता है? 300+ सेवाएं 2026",
+        "description": "Complete list of 300+ services available at CSC Centers. Aadhaar, PAN, Passport, Insurance, Banking — all in one place!",
+        "descHi": "CSC सेंटर पर उपलब्ध 300+ सेवाओं की पूरी लिस्ट। आधार, PAN, पासपोर्ट, बीमा, बैंकिंग — सब एक जगह!",
+        "category": "Utilities",
+        "cta_url": f"{SITE_URL}/tools/csc-locator.html",
+        "cta_text": "Find CSC & Services →",
+        "pages": [
+            {"heading": "CSC = Mini सरकारी Office", "text": "क्या आप जानते हैं? CSC सेंटर पर 300+ सरकारी काम होते हैं!", "bg": "#10243E", "emoji": "🏢"},
+            {"heading": "1. पहचान पत्र", "text": "आधार कार्ड बनवाना/अपडेट, PAN कार्ड, वोटर ID, पासपोर्ट — सब CSC पर!", "bg": "#146B3A", "emoji": "🪪"},
+            {"heading": "2. बैंकिंग सेवाएं", "text": "बैंक खाता खोलना, पैसे जमा/निकासी, बीमा, पेंशन — बिना बैंक जाए!", "bg": "#D97F2B", "emoji": "🏦"},
+            {"heading": "3. सरकारी योजनाएं", "text": "PM Kisan, आयुष्मान भारत, PM आवास, श्रमिक कार्ड — सब का रजिस्ट्रेशन यहीं!", "bg": "#1C3A5E", "emoji": "📜"},
+            {"heading": "4. शिक्षा और परीक्षा", "text": "स्कॉलरशिप, एडमिशन फॉर्म, सर्टिफिकेट वेरिफिकेशन — छात्रों के लिए ज़रूरी!", "bg": "#0D7377", "emoji": "🎓"},
+            {"heading": "5. बिल और रिचार्ज", "text": "बिजली बिल, पानी बिल, गैस बुकिंग, मोबाइल रिचार्ज — रोज़मर्रा के काम!", "bg": "#8B0000", "emoji": "⚡"},
+            {"heading": "नजदीकी CSC खोजें!", "text": "SarkariSewa India पर लाखों CSC सेंटर का डेटा — अभी अपना नजदीकी खोजें", "bg": "#10243E", "emoji": "📍"},
+        ]
+    },
     {
         "slug": "pm-kisan-status-check-2026",
         "title": "PM Kisan Status Check 2026 — 5 Easy Steps",
