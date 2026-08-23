@@ -202,7 +202,61 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnSearch) {
       btnSearch.addEventListener('click', filterData);
   }
-  
+
+  // Hook up Use My Location button
+  const btnUseLocation = document.getElementById('btn-use-location');
+  if (btnUseLocation) {
+      btnUseLocation.addEventListener('click', () => {
+          if (!navigator.geolocation) {
+              alert("Geolocation is not supported by your browser.");
+              return;
+          }
+          
+          const originalText = btnUseLocation.innerHTML;
+          btnUseLocation.innerHTML = "⏳ Locating...";
+          btnUseLocation.disabled = true;
+
+          navigator.geolocation.getCurrentPosition(
+              async (position) => {
+                  const lat = position.coords.latitude;
+                  const lon = position.coords.longitude;
+                  
+                  try {
+                      // Free Nominatim reverse geocoding API
+                      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                      const data = await response.json();
+                      
+                      if (data && data.address && data.address.postcode) {
+                          // Clear state/district selections
+                          if(stateSelect) stateSelect.value = "";
+                          if(districtSelect) districtSelect.innerHTML = '<option value="">-- Select District --</option>';
+                          
+                          // Fill Pincode
+                          pincodeInput.value = data.address.postcode;
+                          
+                          // Trigger search
+                          filterData();
+                      } else {
+                          alert("Could not determine your PIN code. Please enter it manually.");
+                      }
+                  } catch (err) {
+                      console.error("Geocoding error:", err);
+                      alert("Error retrieving location details. Please try again.");
+                  } finally {
+                      btnUseLocation.innerHTML = originalText;
+                      btnUseLocation.disabled = false;
+                  }
+              },
+              (error) => {
+                  console.error("Geolocation error:", error);
+                  alert("Location access denied or unavailable. Please enter your PIN code manually.");
+                  btnUseLocation.innerHTML = originalText;
+                  btnUseLocation.disabled = false;
+              }
+          );
+      });
+  }
+
   // Also allow enter key on pincode
   if (pincodeInput) {
       pincodeInput.addEventListener('keypress', function (e) {
