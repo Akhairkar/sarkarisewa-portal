@@ -501,14 +501,14 @@
           <span data-lang-show="hi">Verified सेंटर्स और उनकी सर्विसेस देखें।</span>
         </p>
       </div>
-      <div style="background: var(--color-surface); padding: 24px; border-radius: 12px; border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; cursor: pointer;" id="btn-open-modal">
+      <a href="../claim-your-csc.html" style="background: var(--color-surface); padding: 24px; border-radius: 12px; border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; cursor: pointer; text-decoration: none; display: block; color: inherit;">
         <div style="font-size: 2rem; margin-bottom: 12px;">🏢</div>
         <h3 style="margin: 0 0 8px 0; font-size: 1.2rem; color: var(--color-primary);">Claim Your CSC</h3>
         <p style="margin: 0; color: var(--color-text-muted); font-size: 0.95rem;">
           <span data-lang-show="en">Are you a CSC owner? Claim & verify your centre.</span>
           <span data-lang-show="hi">CSC owner हैं? अपना सेंटर claim/verify करें।</span>
         </p>
-      </div>
+      </a>
     </div>
   </section>
 
@@ -558,9 +558,9 @@
       <span data-lang-show="hi">अपने CSC को SarkariSewaIndia पर claim और verify करें। Approved CSC profile में आपकी location, services और public contact information दिखाई जा सकती है।</span>
     </p>
     <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; justify-content: center;">
-      <button class="btn" style="background: white; color: #1e3a8a; font-weight: 700; padding: 12px 24px; border-radius: 8px; font-size: 1.1rem;" onclick="document.getElementById('operator-modal').classList.add('active')">
+      <a href="../claim-your-csc.html" class="btn" style="background: white; color: #1e3a8a; font-weight: 700; padding: 12px 24px; border-radius: 8px; font-size: 1.1rem; text-decoration: none; display: inline-block;">
         Claim Your CSC
-      </button>
+      </a>
       <a href="#" style="color: white; text-decoration: underline; font-size: 0.9rem; opacity: 0.9;">How verification works?</a>
     </div>
   </section>
@@ -624,35 +624,7 @@
     </div>
   </section>
 
-  <!-- OPERATOR MODAL (Hidden) -->
-  <div class="modal-overlay" id="operator-modal">
-    <div class="modal-content" style="max-width: 500px; border-radius: 12px; overflow: hidden; padding: 0;">
-      <div style="background: var(--color-bg-alt); padding: 20px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="margin: 0; font-size: 1.4rem;">🏢 Claim Your CSC</h3>
-        <button id="btn-close-modal" class="icon-btn" style="background: none; border: none; font-size: 1.5rem; color: var(--color-text);">&times;</button>
-      </div>
-      <form id="operator-form" style="padding: 24px;">
-        <p style="margin-bottom: 20px; color: var(--color-text-muted);">Enter your CSC details below. Our team will verify your CSC ID and publish your listing with a Verified badge.</p>
-        <div style="margin-bottom: 16px;">
-          <label class="input-label" for="op-name">Center Name (नाम)</label>
-          <input type="text" id="op-name" class="input-field" required>
-        </div>
-        <div style="margin-bottom: 16px;">
-          <label class="input-label" for="op-cscid">CSC ID (सीएससी आईडी)</label>
-          <input type="text" id="op-cscid" class="input-field" required>
-        </div>
-        <div style="margin-bottom: 16px;">
-          <label class="input-label" for="op-pincode">PIN Code (पिन कोड)</label>
-          <input type="text" id="op-pincode" class="input-field" required>
-        </div>
-        <div style="margin-bottom: 24px;">
-          <label class="input-label" for="op-contact">Contact Number (मोबाइल नंबर)</label>
-          <input type="text" id="op-contact" class="input-field" required>
-        </div>
-        <button type="submit" class="btn btn--primary" style="width: 100%; padding: 14px; font-size: 1.1rem;">Submit for Verification</button>
-      </form>
-    </div>
-  </div>
+
 
 </main>
 
@@ -758,8 +730,7 @@
 </div>
   
   <script src="../assets/js/main.js"></script>
-  <script src="../assets/js/csc-locator.js?v=5.0"></script>
-  <script src="../assets/js/csc-submit.js?v=2.0"></script>
+  <script src="../assets/js/csc-locator.js?v=6.0"></script>
 
 <script>
   const stateDistricts = {

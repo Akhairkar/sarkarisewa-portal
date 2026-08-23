@@ -1,5 +1,5 @@
 // admin-csc.js
-// Admin logic for fetching and managing CSC center verifications
+// Admin logic for fetching and managing CSC center verifications (Claims System)
 
 document.addEventListener("DOMContentLoaded", async () => {
   const pendingList = document.getElementById("csc-pending-list");
@@ -18,14 +18,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!client) throw new Error("Could not initialize Supabase.");
 
       const { data, error } = await client
-        .from("csc_centres")
+        .from("csc_claims")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("submitted_at", { ascending: false });
 
       if (error) throw error;
 
-      const pending = data.filter(c => !c.is_verified);
-      const approved = data.filter(c => c.is_verified);
+      const pending = data.filter(c => c.status === 'pending' || c.status === 'changes_requested');
+      const approved = data.filter(c => c.status === 'approved');
 
       renderPending(pending);
       renderApproved(approved);
@@ -39,17 +39,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function renderPending(centers) {
     if (centers.length === 0) {
-      pendingList.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--admin-text-muted);">No pending requests.</td></tr>';
+      pendingList.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--admin-text-muted);">No pending claims.</td></tr>';
       return;
     }
 
     pendingList.innerHTML = centers.map(c => `
       <tr>
-        <td>${new Date(c.created_at).toLocaleDateString()}</td>
-        <td style="font-weight:600;">${c.center_name}</td>
-        <td><code>${c.csc_id}</code></td>
-        <td>${c.pincode}</td>
-        <td>${c.contact}</td>
+        <td>${new Date(c.submitted_at).toLocaleDateString()}</td>
+        <td style="font-weight:600;">${c.centre_name}</td>
+        <td><code>${c.application_id}</code></td>
+        <td>${c.city}, ${c.district}</td>
+        <td>${c.owner_name} (${c.owner_mobile})</td>
         <td>
           <button class="theme-toggle-btn" style="background:#10b981; color:#fff; border:none;" onclick="approveCSC('${c.id}')">Approve</button>
           <button class="logout-btn" style="margin-left:8px;" onclick="rejectCSC('${c.id}')">Reject</button>
@@ -60,16 +60,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function renderApproved(centers) {
     if (centers.length === 0) {
-      approvedList.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--admin-text-muted);">No approved centres yet.</td></tr>';
+      approvedList.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--admin-text-muted);">No approved profiles yet.</td></tr>';
       return;
     }
 
     approvedList.innerHTML = centers.map(c => `
       <tr>
-        <td>${new Date(c.created_at).toLocaleDateString()}</td>
-        <td style="font-weight:600;">${c.center_name}</td>
-        <td><code>${c.csc_id}</code></td>
-        <td>${c.pincode}</td>
+        <td>${new Date(c.approved_at || c.submitted_at).toLocaleDateString()}</td>
+        <td style="font-weight:600;">${c.centre_name}</td>
+        <td><code>${c.application_id}</code></td>
+        <td>${c.city}, ${c.district}</td>
         <td>
           <button class="logout-btn" onclick="rejectCSC('${c.id}')">Revoke</button>
         </td>
@@ -78,12 +78,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   window.approveCSC = async (id) => {
-    if (!confirm("Approve this CSC Centre to be listed publicly?")) return;
+    if (!confirm("Approve this CSC Centre? This will queue it for Profile Generation.")) return;
     try {
       const client = await getSupabaseClient();
       const { error } = await client
-        .from("csc_centres")
-        .update({ is_verified: true })
+        .from("csc_claims")
+        .update({ status: 'approved', approved_at: new Date().toISOString() })
         .eq("id", id);
       
       if (error) throw error;
@@ -94,18 +94,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   window.rejectCSC = async (id) => {
-    if (!confirm("Are you sure you want to delete this listing?")) return;
+    const reason = prompt("Enter rejection/revocation reason:");
+    if (reason === null) return;
+    
     try {
       const client = await getSupabaseClient();
       const { error } = await client
-        .from("csc_centres")
-        .delete()
+        .from("csc_claims")
+        .update({ status: 'rejected', rejection_reason: reason })
         .eq("id", id);
       
       if (error) throw error;
       loadCSCData();
     } catch (err) {
-      alert("Error deleting: " + err.message);
+      alert("Error rejecting: " + err.message);
     }
   };
 

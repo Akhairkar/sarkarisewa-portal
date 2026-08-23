@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </p>
           <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
             <button class="btn btn--primary" onclick="document.getElementById('pincode-input').value=''; document.getElementById('pincode-input').focus();">Try Another PIN</button>
-            <button class="btn btn--outline" onclick="document.getElementById('operator-modal').classList.add('active')">Claim Your CSC</button>
+            <a href="../claim-your-csc.html" class="btn btn--outline" style="text-decoration:none;">Claim Your CSC</a>
           </div>
         </div>
       `;
@@ -266,24 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // Modal Logic
-  if (btnOpenModal && modalOverlay) {
-      btnOpenModal.addEventListener('click', () => {
-        modalOverlay.classList.add('active');
-      });
-  }
-  if (btnCloseModal && modalOverlay) {
-      btnCloseModal.addEventListener('click', () => {
-        modalOverlay.classList.remove('active');
-      });
-  }
-  if (modalOverlay) {
-      modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) {
-          modalOverlay.classList.remove('active');
-        }
-      });
-  }
+
   
   // Accordion Logic
   const faqItems = document.querySelectorAll('.faq-item');
