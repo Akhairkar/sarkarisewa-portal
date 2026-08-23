@@ -200,10 +200,7 @@ def main():
             urls.append((f"{BASE_URL}/service/service.html?id={sid}", "0.6", "monthly"))
 
     for slug in sorted(blog_slugs):
-        if slug in json_blog_slugs:
-            urls.append((f"{BASE_URL}/blog/{slug}.html", "0.6", "monthly"))
-        else:
-            urls.append((f"{BASE_URL}/blog/post.html?slug={slug}", "0.6", "monthly"))
+        urls.append((f"{BASE_URL}/blog/{slug}.html", "0.6", "monthly"))
 
     for slug in sorted(fetch_db_job_slugs()):
         urls.append((f"{BASE_URL}/jobs/{slug}.html", "0.8", "daily"))

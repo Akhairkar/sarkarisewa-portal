@@ -29,12 +29,14 @@ jobs:
           # Add AI API keys here as GitHub Secrets if available
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python automation/update_pipeline.py
+        run: |
+          python automation/update_pipeline.py
+          python automation/generate_wa_msg.py
         
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add data/latest-updates.json data/pending-updates.json sitemap.xml automation/run.log
+          git add data/latest-updates.json data/pending-updates.json updates/*.html sitemap.xml whatsapp_ready.txt automation/run.log
           git commit -m "Automated update of government data" || exit 0
           git push

@@ -1,502 +1,373 @@
 <!DOCTYPE html>
+
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
-  <link rel="icon" href="../favicon.ico">
-  <link rel="manifest" href="../manifest.json">
-  <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
-  <title>Savings Scheme Comparator Online | SarkariSewa India</title>
-
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <link rel="stylesheet" href="../assets/css/module2.css" />
-  <link rel="stylesheet" href="../assets/css/module15.css" />
-  <link rel="stylesheet" href="../assets/css/module16.css" />
-  
-  <style>
-    .comparator-container { margin: 32px 0; }
-    .scheme-filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; padding: 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; }
-    .filter-btn { padding: 8px 16px; border: 1px solid var(--color-border); background: var(--color-bg); border-radius: 20px; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease; color: var(--color-text); }
-    .filter-btn.active { background: var(--color-accent); color: white; border-color: var(--color-accent); font-weight: 600; }
-    
-    .comparison-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-    .scheme-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; }
-    .scheme-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: var(--color-primary-light); }
-    .scheme-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--color-accent); }
-    
-    .sc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-    .sc-title { margin: 0; font-size: 1.2rem; color: var(--color-primary); font-weight: 700; line-height: 1.2; }
-    .sc-subtitle { font-size: 0.85rem; color: var(--color-text-muted); margin-top: 4px; }
-    .sc-rate { background: var(--color-bg-alt); padding: 4px 8px; border-radius: 4px; font-weight: 700; color: var(--color-accent-green); font-size: 1.1rem; border: 1px solid var(--color-border); }
-    
-    .sc-body { margin-bottom: 20px; }
-    .sc-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--color-border-light); font-size: 0.95rem; }
-    .sc-row:last-child { border-bottom: none; }
-    .sc-label { color: var(--color-text-muted); }
-    .sc-value { font-weight: 600; text-align: right; color: var(--color-text); }
-    
-    .sc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-    .sc-tag { font-size: 0.75rem; padding: 3px 8px; border-radius: 12px; background: var(--color-bg-alt); border: 1px solid var(--color-border); color: var(--color-text); }
-    .sc-tag.tax-free { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
-    [data-theme="dark"] .sc-tag.tax-free { background: rgba(22, 101, 52, 0.3); color: #4ade80; border-color: rgba(74, 222, 128, 0.2); }
-    
-    .sc-footer { display: flex; gap: 10px; }
-    .sc-footer .btn { flex: 1; padding: 8px; font-size: 0.9rem; text-align: center; }
-    
-    .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px; background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: 8px; color: var(--color-text-muted); }
-  </style>
-  <link rel="stylesheet" href="../assets/css/hidden-tax-theme.css">
-<meta name="description" content="Compare PPF, NPS, SCSS, NSC, KVP and other savings schemes. Free bilingual tool for Indian users with helpful guidance and related government resources."><link rel="canonical" href="https://sarkarisewaindia.com/tools/savings-comparator.html"><meta property="og:type" content="website"><meta property="og:title" content="Savings Scheme Comparator Online | SarkariSewa India"><meta property="og:description" content="Compare PPF, NPS, SCSS, NSC, KVP and other savings schemes. Free bilingual tool for Indian users with helpful guidance and related government resources."><meta property="og:url" content="https://sarkarisewaindia.com/tools/savings-comparator.html"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Savings Scheme Comparator","url":"https://sarkarisewaindia.com/tools/savings-comparator.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","isAccessibleForFree":true}</script></head>
-<body data-slug="savings-comparator">
-  <script>window.SS_ROOT = "../";</script>
-
-  <div id="site-header">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../favicon.ico" rel="icon"/>
+<link href="../manifest.json" rel="manifest"/>
+<link href="https://sarkarisewaindia.com/service/jan-aushadhi-store-locator.html" rel="canonical"/>
+<meta content="Pradhan Mantri Jan Aushadhi Kendra (PMBJP) आपके घर के पास कहाँ है? 2026 की नई लिस्ट देखें। 50% से 90% सस्ती जेनेरिक दवाइयां प्राप्त करें। अभी लोकेश..." name="description"/>
+<meta content="Jan Aushadhi Kendra Near Me 2026: जन औषधि केंद्र खोजें (50-90% सस्ती दवा)" property="og:title"/>
+<meta content="Pradhan Mantri Jan Aushadhi Kendra (PMBJP) आपके घर के पास कहाँ है? 2026 की नई लिस्ट देखें। 50% से 90% सस्ती जेनेरिक दवाइयां प्राप्त करें। अभी लोकेशन चेक करें!" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://sarkarisewaindia.com/service/jan-aushadhi-store-locator.html" property="og:url"/>
+<meta content="https://sarkarisewaindia.com/assets/img/og-image.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Jan Aushadhi Kendra Near Me 2026: जन औषधि केंद्र खोजें (50-90% सस्ती दवा)" name="twitter:title"/>
+<meta content="Pradhan Mantri Jan Aushadhi Kendra (PMBJP) आपके घर के पास कहाँ है? 2026 की नई लिस्ट देखें। 50% से 90% सस्ती जेनेरिक दवाइयां प्राप्त करें। अभी लोकेशन चेक करें!" name="twitter:description"/>
+<title>Post Office vs Bank Savings | Compare Interest Rates</title>
+<link href="../assets/css/style.css" rel="stylesheet"/>
+<link href="../assets/css/module2.css" rel="stylesheet"/>
+<link href="../assets/css/module15.css" rel="stylesheet"/>
+<link href="../assets/css/module16.css" rel="stylesheet"/>
+<link href="../assets/css/share-widget.css" rel="stylesheet"/>
+<script id="service-schema" type="application/ld+json">{
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "GovernmentService",
+          "name": "प्रधानमंत्री जन औषधि केंद्र (PM Jan Aushadhi Kendra)",
+          "description": "50% से 90% सस्ती गुणवत्तापूर्ण जेनेरिक दवाइयां खरीदने हेतु नजदीकी जन औषधि स्टोर खोजें।",
+          "url": "https://sarkarisewaindia.com/service/jan-aushadhi-store-locator.html",
+          "serviceType": "प्रधानमंत्री जन औषधि केंद्र (PM Jan Aushadhi Kendra)",
+          "provider": { "@type": "GovernmentOrganization", "name": "Government of India" },
+          "sameAs": ["https://janaushadhi.gov.in/", "https://india.gov.in"]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://sarkarisewaindia.com/index.html"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "स्वास्थ्य",
+              "item": "https://sarkarisewaindia.com/category/health.html"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "प्रधानमंत्री जन औषधि केंद्र (PM Jan Aushadhi Kendra)",
+              "item": "https://sarkarisewaindia.com/service/jan-aushadhi-store-locator.html"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "जन औषधि केंद्र से दवा खरीदने के लिए क्या मुझे आधार कार्ड चाहिए?",
+              "acceptedAnswer": { "@type": "Answer", "text": "नहीं। दवा खरीदने के लिए किसी आईडी प्रूफ या आधार कार्ड की जरूरत नहीं है। केवल Schedule H/H1 दवाओं के लिए डॉक्टर का पर्चा चाहिए, बाकी दवाएं बिना पर्चे के भी मिल जाती हैं। आधार व दस्तावेज़ केवल तभी चाहिए जब आप खुद एक नया जन औषधि केंद्र खोलना चाहते हैं।" }
+            },
+            {
+              "@type": "Question",
+              "name": "जेनेरिक दवाएं ब्रांडेड दवाओं जितनी असरदार होती हैं क्या?",
+              "acceptedAnswer": { "@type": "Answer", "text": "हां। जेनेरिक दवाओं में वही सक्रिय तत्व (active ingredient), वही मात्रा (dosage) और वही असर होता है जो ब्रांडेड दवाओं में होता है — इन्हें NABL मान्यता प्राप्त प्रयोगशालाओं में परखा जाता है। फर्क सिर्फ नाम, पैकेजिंग व मार्केटिंग खर्च का होता है, जिसकी वजह से ब्रांडेड दवाएं महंगी होती हैं।" }
+            },
+            {
+              "@type": "Question",
+              "name": "नजदीकी जन औषधि केंद्र कैसे खोजें?",
+              "acceptedAnswer": { "@type": "Answer", "text": "आधिकारिक PMBJP पोर्टल (janaushadhi.gov.in) पर 'Locate Kendra' विकल्प से अपना राज्य व जिला चुनकर खोजें, या 'Jan Aushadhi Sugam' मोबाइल ऐप डाउनलोड करके GPS से नजदीकी केंद्र पता करें।" }
+            },
+            {
+              "@type": "Question",
+              "name": "जन औषधि दवाओं की कीमत कितनी सस्ती होती है?",
+              "acceptedAnswer": { "@type": "Answer", "text": "PMBJP के अनुसार जन औषधि केंद्रों की जेनेरिक दवाएं बाजार में उपलब्ध ब्रांडेड दवाओं की तुलना में औसतन 50% से 90% तक सस्ती होती हैं। सटीक कीमत दवा अनुसार अलग होती है — Jan Aushadhi Sugam ऐप पर हर दवा की सूचीबद्ध कीमत देखी जा सकती है।" }
+            },
+            {
+              "@type": "Question",
+              "name": "जन औषधि केंद्र कैसे खोलें?",
+              "acceptedAnswer": { "@type": "Answer", "text": "कोई भी व्यक्ति, फार्मासिस्ट, NGO, ट्रस्ट या सहकारी समिति PMBJP पोर्टल पर ऑनलाइन आवेदन करके जन औषधि केंद्र खोल सकते हैं। इसके लिए न्यूनतम 120 वर्ग फुट जगह व एक पंजीकृत फार्मासिस्ट होना जरूरी है।" }
+            }
+          ]
+        }
+      ]
+    }</script>
+</head>
+<body data-slug="jan-aushadhi-store-locator">
+<script>window.SS_ROOT = "../";</script>
+<div id="site-header">
 <div class="tricolor-rule"></div>
-<a class="skip-link" href="#main-content" data-i18n="skip_to_content">Skip to main content</a>
+<a class="skip-link" data-i18n="skip_to_content" href="#main-content">Skip to main content</a>
 <header class="site-header">
-  <div class="container header-inner">
-    <a href="../index.html" class="brand">
-      <span class="brand-mark">S</span>
-      <span class="brand-text">
-        <span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
-        <span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
-      </span>
-    </a>
-
-    <nav class="main-nav" aria-label="Primary">
-      <ul>
-        <li><a href="../index.html" data-i18n="nav_home">Home</a></li>
-        
-        <!-- Categories Dropdown -->
-        <li class="nav-dropdown">
-          <a href="#" class="nav-dropdown-toggle">Categories 📁 ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a></li>
-            <li><a href="../category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a></li>
-            <li><a href="../category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a></li>
-            <li><a href="../category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a></li>
-            <li><a href="../category/utilities.html" data-i18n="nav_utilities">Utilities</a></li>
-            <li><a href="../category/health.html" data-i18n="nav_health">Health</a></li>
-          </ul>
-        </li>
-
-        <!-- Updates & Support Dropdown -->
-        <li class="nav-dropdown">
-          <a href="#" class="nav-dropdown-toggle">Updates &amp; Support 📢 ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a></li>
-            <li><a href="../exams/index.html" data-i18n="nav_examcal">Exam Calendar</a></li>
-            <li><a href="../blog/index.html" data-i18n="nav_blog">Blog</a></li>
-            <li><a href="../support/index.html" data-i18n="nav_support">Support</a></li>
-          </ul>
-        </li>
-        
-        <!-- Image Tools Dropdown -->
-        <li class="nav-dropdown">
-          <a href="../tools/index.html" class="nav-highlight nav-dropdown-toggle" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../tools/photo-resizer.html">🖼️ Govt Exam Photo Resizer</a></li>
-            <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
-            <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
-          </ul>
-        </li>
-
-        <!-- State Services Dropdown -->
-        <li class="nav-dropdown">
-          <a href="../states/index.html" class="nav-dropdown-toggle" data-i18n="nav_state_services">State Services 🏛️ ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../states/index.html">🗺️ All States Hub</a></li>
-            <li><a href="../states/uttar-pradesh.html">📍 Uttar Pradesh</a></li>
-            <li><a href="../states/maharashtra.html">📍 Maharashtra</a></li>
-            <li><a href="../states/bihar.html">📍 Bihar</a></li>
-            <li><a href="../states/rajasthan.html">📍 Rajasthan</a></li>
-            <li><a href="../states/madhya-pradesh.html">📍 Madhya Pradesh</a></li>
-          </ul>
-        </li>
-
-        <!-- Citizen Utilities Dropdown Menu -->
-        <li class="nav-dropdown">
-          <a href="../tools/index.html" class="nav-dropdown-toggle">Citizen Utilities 🛠️ ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../tools/csc-locator.html" style="font-weight: 600; color: var(--color-primary);">📍 CSC / e-Seva Locator <span style="font-size: 0.75rem; background: var(--color-accent-green); color: white; padding: 2px 4px; border-radius: 4px; margin-left: 4px;">NEW</span></a></li>
-            <li><a href="../tools/eligibility-checker.html" style="font-weight: 600; color: var(--color-accent-green);" data-i18n="nav_eligibility_engine">🎯 Scheme Eligibility Engine</a></li>
-            <li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
-            <li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
-            <li><a href="../tools/typing-speed-test.html">⌨️ Typing Speed Test</a></li>
-            <li><a href="../tools/deadline-calendar.html">📅 Deadline Calendar</a></li>
-            <li><a href="../tools/pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
-            <li><a href="../tools/status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
-            <li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
-            <li><a href="../tools/age-calculator.html">⏳ Age & Retirement Calculator</a></li>
-          </ul>
-        </li>
-
-        <!-- Financial Calculators Dropdown Menu -->
-        <li class="nav-dropdown">
-          <a href="../tools/index.html" class="nav-highlight nav-dropdown-toggle" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;">Financial Calculators 💰 ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
-            <li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
-            <li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
-            <li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
-            <li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
-            <li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
-            <li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
-            <li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-
-    <div class="header-actions">
-      <a class="icon-btn" href="../search.html" aria-label="Search">
-        <span aria-hidden="true">🔍</span>
-        <span class="visually-hidden" data-i18n="search_title">Search Services</span>
-      </a>
-      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme">
-        <span id="theme-icon" aria-hidden="true">🌙</span>
-        <span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
-      </button>
-      <button class="icon-btn" id="lang-toggle" type="button">
-        <span data-i18n="lang_toggle">हिंदी</span>
-      </button>
-      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
-    </div>
-  </div>
-
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Primary mobile">
-    <a href="../search.html" data-i18n="search_title">Search Services</a>
-    <a href="../index.html" data-i18n="nav_home">Home</a>
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
-    <a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
-    <a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
-    <a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🛠️ Citizen Utilities</div>
-    <a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
-    <a href="../tools/eligibility-checker.html" style="padding-left: 32px;">🎯 Scheme Eligibility Engine</a>
-    <a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
-    <a href="../tools/self-declaration-builder.html" style="padding-left: 32px;">📝 Self-Declaration Builder</a>
-    <a href="../tools/typing-speed-test.html" style="padding-left: 32px;">⌨️ Typing Speed Test</a>
-    <a href="../tools/deadline-calendar.html" style="padding-left: 32px;">📅 Deadline Calendar</a>
-    <a href="../tools/pan-aadhaar-conflict-resolver.html" style="padding-left: 32px;">🔗 PAN-Aadhaar Resolver</a>
-    <a href="../tools/status-troubleshooter.html" style="padding-left: 32px;">🔍 Status Troubleshooter</a>
-    <a href="../tools/govt-card-clarifier.html" style="padding-left: 32px;">💳 Govt Card Clarifier</a>
-    <a href="../tools/age-calculator.html" style="padding-left: 32px;">⏳ Age & Retirement Calculator</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #fdf2f8; color: #db2777;">💰 Financial Calculators</div>
-    <a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
-    <a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
-    <a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
-    <a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
-    <a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
-    <a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
-    <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
-    <a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🏛️ State Services</div>
-    <a href="../states/index.html" style="padding-left: 32px;">🗺️ All States Hub</a>
-    <a href="../states/uttar-pradesh.html" style="padding-left: 32px;">📍 Uttar Pradesh</a>
-    <a href="../states/maharashtra.html" style="padding-left: 32px;">📍 Maharashtra</a>
-    <a href="../states/bihar.html" style="padding-left: 32px;">📍 Bihar</a>
-
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
-    <a href="../category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a>
-    <a href="../category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a>
-    <a href="../category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a>
-    <a href="../category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a>
-    <a href="../category/utilities.html" data-i18n="nav_utilities">Utilities</a>
-    <a href="../category/health.html" data-i18n="nav_health">Health</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
-    <a href="../support/index.html" data-i18n="nav_support">Support</a>
-    <a href="../blog/index.html" data-i18n="nav_blog">Blog</a>
-    <a href="../jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a>
-    <a href="../exams/index.html" data-i18n="nav_examcal">Exam Calendar</a>
-    <div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
-      <button class="btn btn--outline" id="mobile-theme-toggle" type="button" style="width:100%; justify-content:center; gap:8px;">
-        <span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
-      </button>
-    </div>
-  </nav>
+<div class="container header-inner">
+<a class="brand" href="../index.html">
+<span class="brand-mark">S</span>
+<span class="brand-text">
+<span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
+<span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
+</span>
+</a>
+<nav aria-label="Primary" class="main-nav">
+<ul>
+<li><a data-i18n="nav_home" href="../index.html">Home</a></li>
+<!-- Categories Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" href="#">Categories 📁 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a></li>
+<li><a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a></li>
+<li><a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a></li>
+<li><a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a></li>
+<li><a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a></li>
+<li><a data-i18n="nav_health" href="../category/health.html">Health</a></li>
+</ul>
+</li>
+<!-- Updates & Support Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" href="#">Updates &amp; Support 📢 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a></li>
+<li><a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a></li>
+<li><a data-i18n="nav_blog" href="../blog/index.html">Blog</a></li>
+<li><a data-i18n="nav_support" href="../support/index.html">Support</a></li>
+</ul>
+</li>
+<!-- Image Tools Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../tools/photo-resizer.html">🖼️ Govt Exam Photo Resizer</a></li>
+<li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+<li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+</ul>
+</li>
+<!-- State Services Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" data-i18n="nav_state_services" href="../states/index.html">State Services 🏛️ ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../states/index.html">🗺️ All States Hub</a></li>
+<li><a href="../states/index.html">📍 Uttar Pradesh</a></li>
+<li><a href="../states/index.html">📍 Maharashtra</a></li>
+<li><a href="../states/index.html">📍 Bihar</a></li>
+<li><a href="../states/index.html">📍 Rajasthan</a></li>
+<li><a href="../states/index.html">📍 Madhya Pradesh</a></li>
+</ul>
+</li>
+<!-- Citizen Utilities Dropdown Menu -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" href="../tools/index.html">Citizen Utilities 🛠️ ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../tools/csc-locator.html" style="font-weight: 600; color: var(--color-primary);">📍 CSC / e-Seva Locator <span style="font-size: 0.75rem; background: var(--color-accent-green); color: white; padding: 2px 4px; border-radius: 4px; margin-left: 4px;">NEW</span></a></li>
+<li><a data-i18n="nav_eligibility_engine" href="../tools/eligibility-checker.html" style="font-weight: 600; color: var(--color-accent-green);">🎯 Scheme Eligibility Engine</a></li>
+<li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
+<li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+<li><a href="../tools/typing-speed-test.html">⌨️ Typing Speed Test</a></li>
+<li><a href="../tools/deadline-calendar.html">📅 Deadline Calendar</a></li>
+<li><a href="../tools/pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
+<li><a href="../tools/status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
+<li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+<li><a href="../tools/age-calculator.html">⏳ Age &amp; Retirement Calculator</a></li>
+</ul>
+</li>
+<!-- Financial Calculators Dropdown Menu -->
+<li class="nav-dropdown">
+<a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;">Financial Calculators 💰 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+<li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
+<li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
+<li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
+<li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
+<li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
+<li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
+<li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+<div class="header-actions">
+<a aria-label="Search" class="icon-btn" href="../search.html">
+<span aria-hidden="true">🔍</span>
+<span class="visually-hidden" data-i18n="search_title">Search Services</span>
+</a>
+<button aria-label="Toggle theme" class="icon-btn" id="theme-toggle" type="button">
+<span aria-hidden="true" id="theme-icon">🌙</span>
+<span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
+</button>
+<button class="icon-btn" id="lang-toggle" type="button">
+<span data-i18n="lang_toggle">हिंदी</span>
+</button>
+<button aria-expanded="false" aria-label="Menu" class="nav-toggle" id="nav-toggle" type="button">☰</button>
+</div>
+</div>
+<nav aria-label="Primary mobile" class="mobile-nav" id="mobile-nav">
+<a data-i18n="search_title" href="../search.html">Search Services</a>
+<a data-i18n="nav_home" href="../index.html">Home</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
+<a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
+<a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
+<a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🛠️ Citizen Utilities</div>
+<a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
+<a href="../tools/eligibility-checker.html" style="padding-left: 32px;">🎯 Scheme Eligibility Engine</a>
+<a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
+<a href="../tools/self-declaration-builder.html" style="padding-left: 32px;">📝 Self-Declaration Builder</a>
+<a href="../tools/typing-speed-test.html" style="padding-left: 32px;">⌨️ Typing Speed Test</a>
+<a href="../tools/deadline-calendar.html" style="padding-left: 32px;">📅 Deadline Calendar</a>
+<a href="../tools/pan-aadhaar-conflict-resolver.html" style="padding-left: 32px;">🔗 PAN-Aadhaar Resolver</a>
+<a href="../tools/status-troubleshooter.html" style="padding-left: 32px;">🔍 Status Troubleshooter</a>
+<a href="../tools/govt-card-clarifier.html" style="padding-left: 32px;">💳 Govt Card Clarifier</a>
+<a href="../tools/age-calculator.html" style="padding-left: 32px;">⏳ Age &amp; Retirement Calculator</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #fdf2f8; color: #db2777;">💰 Financial Calculators</div>
+<a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
+<a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
+<a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
+<a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
+<a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
+<a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
+<a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
+<a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🏛️ State Services</div>
+<a href="../states/index.html" style="padding-left: 32px;">🗺️ All States Hub</a>
+<a href="../states/index.html" style="padding-left: 32px;">📍 Uttar Pradesh</a>
+<a href="../states/index.html" style="padding-left: 32px;">📍 Maharashtra</a>
+<a href="../states/index.html" style="padding-left: 32px;">📍 Bihar</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
+<a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a>
+<a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a>
+<a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a>
+<a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a>
+<a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a>
+<a data-i18n="nav_health" href="../category/health.html">Health</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
+<a data-i18n="nav_support" href="../support/index.html">Support</a>
+<a data-i18n="nav_blog" href="../blog/index.html">Blog</a>
+<a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a>
+<a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a>
+<div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
+<button class="btn btn--outline" id="mobile-theme-toggle" style="width:100%; justify-content:center; gap:8px;" type="button">
+<span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
+</button>
+</div>
+</nav>
 </header>
-
 </div>
 <main class="container">
-    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
-      <a href="../index.html">Home</a>
-      <span class="sep">/</span>
-      <a href="index.html">Tools & Calculators</a>
-      <span class="sep">/</span>
-      <span class="current">Savings Scheme Comparator</span>
-    </nav>
-
-    <div class="calculator-header text-center">
-      <h1 class="calculator-title">📊 सरकारी बचत योजना तुलनित्र (Govt Savings Comparator)</h1>
-      <p class="calculator-desc">PPF, Sukanya Samriddhi, NPS, और Post Office की सभी प्रमुख बचत योजनाओं की तुलना करें और अपने लिए बेस्ट चुनें।</p>
-    </div>
-
-    <div class="comparator-container">
-      <div class="scheme-filters">
-        <strong style="display: flex; align-items: center; color: var(--color-text);">फ़िल्टर करें (Filter by):</strong>
-        <button class="filter-btn active" data-filter="all">सभी (All)</button>
-        <button class="filter-btn" data-filter="tax">टैक्स छूट (80C Tax Saving)</button>
-        <button class="filter-btn" data-filter="child">बच्चों के लिए (For Children)</button>
-        <button class="filter-btn" data-filter="senior">सीनियर सिटीजन (Senior Citizens)</button>
-        <button class="filter-btn" data-filter="short">छोटी अवधि (Short Term < 5 Yrs)</button>
-      </div>
-
-      <div class="comparison-grid" id="scheme-grid">
-        <!-- JS will populate cards here -->
-      </div>
-    </div>
-
-    <div class="info-card">
-      <h3 style="margin-top:0;">💡 विशेषज्ञ सुझाव (Expert Tips)</h3>
-      <ul class="check-list">
-        <li><strong>टैक्स बचाने के लिए (For 80C Tax Savings):</strong> PPF, SSY, NSC और 5-Year FD में निवेश कर आप धारा 80C के तहत ₹1.5 लाख तक की छूट पा सकते हैं।</li>
-        <li><strong>बेटी के भविष्य के लिए:</strong> सुकन्या समृद्धि योजना (SSY) सबसे बेहतरीन विकल्प है क्योंकि इसमें सबसे अधिक ब्याज दर (8.2%) और टैक्स-फ्री रिटर्न मिलता है।</li>
-        <li><strong>रिटायरमेंट के लिए:</strong> NPS (National Pension System) एक बेहतरीन विकल्प है क्योंकि इसमें 80C (1.5 लाख) के अलावा 80CCD(1B) के तहत अतिरिक्त ₹50,000 की टैक्स छूट मिलती है।</li>
-        <li><strong>सीनियर सिटीजन के लिए:</strong> SCSS (Senior Citizen Savings Scheme) में सुरक्षित और नियमित आय के साथ उच्च ब्याज (8.2%) मिलता है।</li>
-      </ul>
-    </div>
-  
-<!-- TOOL SEO ENHANCEMENT --><section class="seo-upgrade"><style>.seo-upgrade{margin:42px 0 12px;padding:32px 0;border-top:1px solid var(--color-border);color:var(--color-text)}.seo-upgrade .wrap{max-width:920px;margin:auto}.seo-upgrade h2{font-size:1.55rem;color:var(--color-primary);margin:0 0 14px}.seo-upgrade h3{font-size:1.18rem;margin:25px 0 9px}.seo-upgrade p,.seo-upgrade li{line-height:1.78}.seo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.seo-card{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--color-border);background:var(--color-surface);border-radius:10px;color:var(--color-text);text-decoration:none}.seo-card:hover{border-color:var(--color-primary);transform:translateY(-2px)}.seo-card span{font-size:1.55rem}.seo-card b{display:block}@media(max-width:600px){.seo-grid{grid-template-columns:1fr}.seo-upgrade{padding:26px 0}}</style><div class="wrap"><div data-lang-show="en"><h2>Savings Scheme Comparator: a complete practical guide</h2><p>Use this free savings scheme comparator to compare ppf, nps, scss, nsc, kvp and other savings schemes. It is built to help Indian users prepare before an official online application, document upload or service-centre visit. The result is guidance only. Always use the current notification, portal instruction and department website as the final authority because criteria, dates, amounts and technical requirements can change.</p><h3>Why preparation matters</h3><p>Government and recruitment processes often have exact rules and short closing windows. A wrong date, unreadable document, old instruction or incomplete record can delay an otherwise valid request. This page explains a practical workflow so that students, employees, families and first-time internet users can move forward more confidently. It answers searches related to Compare PPF, NPS, SCSS, NSC, KVP and other savings schemes, while avoiding promises that only an authorised department can make.</p><h3>Recommended workflow</h3><ol><li>Open the latest official notification and identify the correct year, state, category and deadline.</li><li>Use accurate information from original records, certificates or official acknowledgements.</li><li>Review the output and compare any important value with the relevant official rule.</li><li>Submit early, then save the acknowledgement, application number and receipt.</li></ol><h3>Keep your information secure</h3><p>Never give an OTP, password, bank PIN or full identity number to an unofficial helper. If a government portal is slow, do not repeat payment or submit the same form many times. Wait for a confirmation screen, transaction reference or helpdesk instruction. Keep screenshots, source URLs and document versions together so that corrections or follow-up requests are easier.</p><h3>Useful long-tail questions</h3><p>People search for “Compare PPF, NPS, SCSS, NSC, KVP and other savings schemes online India”, “free savings scheme comparator”, “how to check Compare PPF, NPS, SCSS, NSC, KVP and other savings schemes” and “Savings Scheme Comparator Hindi English”. This page provides context, clear steps and connected resources to answer that real intent. It is not a substitute for legal, financial or department-specific advice.</p><h3>Final verification</h3><p>Before taking a final action, recheck the official source on the same day. Store a PDF or screenshot of the applicable instruction, confirm all document names and dates, and use an official helpline for a case-specific doubt. A careful record protects you from outdated advice and supports a smoother application journey.</p></div><div data-lang-show="hi"><h2>सेविंग्स स्कीम कंपेरेटर: भारतीय उपयोगकर्ताओं के लिए पूरी गाइड</h2><p>यह मुफ्त सेविंग्स स्कीम कंपेरेटर PPF, NPS, SCSS, NSC, KVP और अन्य बचत योजनाओं की तुलना करें में मदद करने के लिए बनाया गया है। आधिकारिक ऑनलाइन आवेदन, दस्तावेज़ अपलोड या सेवा केंद्र जाने से पहले इसका उपयोग करें। परिणाम केवल मार्गदर्शन है। शर्तें, तारीख, रकम और तकनीकी नियम बदल सकते हैं, इसलिए नई आधिकारिक सूचना, पोर्टल निर्देश और विभाग की वेबसाइट को अंतिम मानें।</p><h3>तैयारी क्यों जरूरी है?</h3><p>सरकारी और भर्ती प्रक्रियाओं में सटीक नियम और कम समय होता है। गलत तारीख, अस्पष्ट दस्तावेज़, पुराना निर्देश या अधूरा रिकॉर्ड सही आवेदन को भी रोक सकता है। यह पेज काम को आसान चरणों में बताता है ताकि विद्यार्थी, कर्मचारी, परिवार और पहली बार इंटरनेट इस्तेमाल करने वाले लोग अधिक भरोसे से आगे बढ़ें। यह PPF, NPS, SCSS, NSC, KVP और अन्य बचत योजनाओं की तुलना करें से जुड़ी खोजों का उपयोगी जवाब देता है, लेकिन ऐसी गारंटी नहीं देता जो केवल अधिकृत विभाग दे सकता है।</p><h3>सुझाया गया तरीका</h3><ol><li>नई आधिकारिक सूचना खोलकर सही वर्ष, राज्य, श्रेणी और अंतिम तारीख पहचानें।</li><li>मूल रिकॉर्ड, प्रमाणपत्र या आधिकारिक acknowledgement से सही जानकारी इस्तेमाल करें।</li><li>परिणाम देखकर महत्वपूर्ण शर्त को आधिकारिक नियम से मिलाएं।</li><li>अंतिम दिन से पहले जमा करें और acknowledgement, आवेदन नंबर व रसीद बचाएं।</li></ol><h3>जानकारी सुरक्षित रखें</h3><p>अनधिकृत मददगार को OTP, पासवर्ड, बैंक PIN या पूरा पहचान नंबर कभी न दें। सरकारी पोर्टल धीमा हो तो बार-बार भुगतान या एक ही फॉर्म जमा न करें। confirmation screen, transaction reference या हेल्पडेस्क निर्देश का इंतजार करें। स्क्रीनशॉट, स्रोत लिंक और दस्तावेज़ संस्करण साथ रखें ताकि सुधार या follow-up आसान हो।</p><h3>लंबी खोज का उपयोगी जवाब</h3><p>लोग “PPF, NPS, SCSS, NSC, KVP और अन्य बचत योजनाओं की तुलना करें ऑनलाइन”, “मुफ्त सेविंग्स स्कीम कंपेरेटर”, “PPF, NPS, SCSS, NSC, KVP और अन्य बचत योजनाओं की तुलना करें कैसे जांचें” और “सेविंग्स स्कीम कंपेरेटर हिंदी में” जैसी खोज करते हैं। यह पेज उस जरूरत के लिए संदर्भ, स्पष्ट चरण और जुड़े संसाधन देता है। यह कानूनी, वित्तीय या विभाग-विशेष सलाह का विकल्प नहीं है।</p><h3>अंतिम सत्यापन</h3><p>अंतिम कदम से पहले उसी दिन आधिकारिक स्रोत फिर जांचें। लागू निर्देश का PDF या स्क्रीनशॉट रखें, दस्तावेज़ के नाम और तारीख मिलाएं और किसी विशेष प्रश्न के लिए आधिकारिक हेल्पलाइन इस्तेमाल करें। सावधानी से रखा रिकॉर्ड पुरानी जानकारी के नुकसान से बचाता है और आवेदन प्रक्रिया को आसान बनाता है।</p></div><div data-lang-show="en"><h3>Make your next action reliable</h3><p>Use this page as one step in a careful application journey. Start by identifying the exact government department, scheme, examination or employer involved. Check whether you are reading the current year’s instruction, because names and basic rules may remain the same while dates, technical limits, fee amounts or eligibility conditions change. Read the official page in full, including notes, corrections and FAQs. If a requirement is unclear, do not guess from an old video or social media post; use the official helpline, helpdesk or authorised service centre.</p><p>Prepare a small folder before you submit anything: the relevant notification, original supporting documents, clear scans, a phone number and email that you can access, and a simple note of the date you checked the information. Compare spelling, date of birth, address and category across every document. Keep the form’s prescribed image format and file-size rule in mind. When a portal confirms an action, save the acknowledgement, transaction reference and receipt. These records reduce the risk of repeated payments and make later correction or grievance requests easier.</p><p>Do not share OTPs, passwords, bank PINs, card details or full identity numbers with an unofficial helper. A genuine process will give you a receipt and a clear explanation of the next step. Finish early rather than waiting for the deadline, and revisit the official source just before final submission. The related pages below are selected to support the same task with preparation, document, status and state-service information.</p></div><div data-lang-show="hi"><h3>अगला कदम भरोसेमंद बनाएं</h3><p>इस पेज को सावधानी से पूरी होने वाली आवेदन यात्रा का एक चरण मानें। पहले सही सरकारी विभाग, योजना, परीक्षा या नियोक्ता पहचानें। यह जरूर देखें कि आप वर्तमान वर्ष का निर्देश पढ़ रहे हैं, क्योंकि नाम और मूल नियम समान रह सकते हैं लेकिन तारीख, तकनीकी सीमा, फीस या पात्रता बदल सकती है। आधिकारिक पेज को नोट, सुधार और FAQ सहित पूरा पढ़ें। कोई शर्त स्पष्ट न हो तो पुराने वीडियो या सोशल मीडिया पोस्ट से अनुमान न लगाएं; आधिकारिक हेल्पलाइन, हेल्पडेस्क या अधिकृत सेवा केंद्र से जानकारी लें।</p><p>जमा करने से पहले एक छोटा फोल्डर बनाएं: संबंधित नोटिफिकेशन, मूल सहायक दस्तावेज़, साफ स्कैन, उपयोग में आने वाला मोबाइल व ईमेल और जानकारी जांचने की तारीख का नोट। हर दस्तावेज़ में नाम, जन्मतिथि, पता और श्रेणी मिलाएं। फॉर्म में दिया image format और file-size नियम ध्यान में रखें। पोर्टल किसी कार्रवाई की पुष्टि करे तो acknowledgement, transaction reference और रसीद संभालें। ये रिकॉर्ड डुप्लीकेट भुगतान से बचाते हैं और बाद में सुधार या शिकायत को आसान बनाते हैं।</p><p>अनधिकृत मददगार के साथ OTP, पासवर्ड, बैंक PIN, कार्ड विवरण या पूरा पहचान नंबर साझा न करें। सही प्रक्रिया में रसीद और अगला कदम स्पष्ट मिलता है। अंतिम तारीख के बजाय पहले काम पूरा करें और जमा करने से ठीक पहले आधिकारिक स्रोत फिर जांचें। नीचे के संबंधित पेज दस्तावेज़, स्टेटस और राज्य-सेवा जानकारी के साथ इसी काम को आगे बढ़ाने के लिए चुने गए हैं।</p></div><div data-lang-show="en"><h3>Use current official rules</h3><p>Requirements may change after this page is published. Recheck the latest official notification on the day you act, including revised dates, file specifications, fees and eligibility notes. Keep a copy of that instruction and use the department’s official help channel whenever your case involves an exception, a correction or a payment issue. This final check turns preparation into a safer, more accurate submission.</p></div><div data-lang-show="hi"><h3>नए आधिकारिक नियम जांचें</h3><p>इस पेज के प्रकाशित होने के बाद भी शर्तें बदल सकती हैं। जिस दिन काम करें उसी दिन नई आधिकारिक सूचना, बदली हुई तारीख, फाइल नियम, फीस और पात्रता नोट फिर जांचें। उस निर्देश की कॉपी रखें और किसी अपवाद, सुधार या भुगतान समस्या में विभाग के आधिकारिक सहायता माध्यम का उपयोग करें। अंतिम जांच आपकी तैयारी को सुरक्षित और सही आवेदन में बदलती है।</p></div><h2 data-lang-show="en">Related tools</h2><h2 data-lang-show="hi">संबंधित टूल्स</h2><div class="seo-grid"><a class="seo-card" href="epf-calculator.html"><span>📈</span><b data-lang-show="en">EPF Calculator</b><b data-lang-show="hi">EPF Calculator</b></a><a class="seo-card" href="income-tax-calculator.html"><span>⚖️</span><b data-lang-show="en">Income Tax Calculator</b><b data-lang-show="hi">Income Tax Calculator</b></a><a class="seo-card" href="hra-calculator.html"><span>🏠</span><b data-lang-show="en">HRA Calculator</b><b data-lang-show="hi">HRA Calculator</b></a><a class="seo-card" href="gratuity-calculator.html"><span>💰</span><b data-lang-show="en">Gratuity Calculator</b><b data-lang-show="hi">Gratuity Calculator</b></a></div><h2 data-lang-show="en">Related services</h2><h2 data-lang-show="hi">संबंधित सेवाएं</h2><div class="seo-grid"><a class="seo-card" href="../support/state-wise-services.html"><span>🏛️</span><b data-lang-show="en">State-wise Services</b><b data-lang-show="hi">राज्यवार सेवाएं</b></a><a class="seo-card" href="../category/identity-documents.html"><span>🪪</span><b data-lang-show="en">Identity Documents</b><b data-lang-show="hi">पहचान दस्तावेज़</b></a><a class="seo-card" href="../category/jobs-education.html"><span>🎓</span><b data-lang-show="en">Jobs & Education</b><b data-lang-show="hi">नौकरी और शिक्षा</b></a><a class="seo-card" href="../states/index.html"><span>🗺️</span><b data-lang-show="en">All States Hub</b><b data-lang-show="hi">सभी राज्य सेवाएं</b></a></div></div></section><!-- /TOOL SEO ENHANCEMENT -->
-</main>
-
-  <div id="site-footer">
+<div style="margin-bottom: 20px; font-size: 0.9rem; color: var(--color-text-muted);">
+<a href="../index.html" style="color: var(--color-primary); text-decoration: none;">Home</a> / 
+            <a href="../states/index.html" style="color: var(--color-primary); text-decoration: none;">State Services</a> / 
+            <strong>Post Office vs Bank Savings | Compare Interest Rates</strong>
+</div>
+<h1 style="color: var(--color-text); margin-bottom: 15px; font-size: 2.2rem;">
+<span data-lang-show="en">Post Office vs Bank Savings | Compare Interest Rates</span>
+<span data-lang-show="hi">पोस्ट ऑफिस बनाम बैंक बचत | ब्याज दर की तुलना</span>
+</h1>
+<div class="service-content" style="background: var(--color-surface); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); line-height: 1.8;">
+<div class="content-en" data-lang-show="en">
+<h2>Compare Savings: Post Office vs Banks</h2><p>Choosing the right avenue for your hard-earned money is crucial for financial growth. The Post Office vs Bank Savings Comparator helps you analyze and compare the benefits of small savings schemes offered by India Post against traditional Bank Fixed Deposits (FDs). Find out which option gives you the best returns, tax benefits, and liquidity.</p><h3>Post Office Savings Schemes</h3><p>Post Office schemes are backed by the Government of India, making them a highly secure investment option. Popular schemes include the Public Provident Fund (PPF), National Savings Certificate (NSC), Sukanya Samriddhi Yojana (SSY), and Post Office Time Deposits. These often provide slightly higher interest rates than regular bank FDs and come with attractive tax deductions under Section 80C.</p><h3>Bank Fixed Deposits (FDs)</h3><p>Bank FDs are offered by public and private sector banks. They provide flexibility in terms of tenure (ranging from 7 days to 10 years) and payout options (monthly, quarterly, or on maturity). While interest rates fluctuate based on RBI repo rates, FDs offer better liquidity as premature withdrawal is usually allowed with a small penalty.</p><h3>Key Factors to Compare</h3><ul><li><strong>Interest Rates:</strong> Post office schemes generally offer competitive and often superior rates reviewed quarterly by the government.</li><li><strong>Taxation:</strong> Check which investments offer tax-free interest versus those where interest is fully taxable.</li><li><strong>Safety:</strong> Post office deposits carry a sovereign guarantee, whereas bank deposits are insured up to ₹5 lakh by DICGC.</li></ul>
+</div>
+<div class="content-hi" data-lang-show="hi">
+<h2>बचत की तुलना: पोस्ट ऑफिस बनाम बैंक</h2><p>अपनी मेहनत की कमाई को सही जगह निवेश करना वित्तीय वृद्धि के लिए बहुत ज़रूरी है। हमारा पोस्ट ऑफिस बनाम बैंक बचत तुलना टूल आपको इंडिया पोस्ट की छोटी बचत योजनाओं और पारंपरिक बैंक फिक्स्ड डिपॉजिट (FD) के फायदों की तुलना करने में मदद करता है। जानें कि कौन सा विकल्प आपको सबसे अच्छे रिटर्न, टैक्स लाभ और सुविधा देता है।</p><h3>पोस्ट ऑफिस बचत योजनाएं</h3><p>पोस्ट ऑफिस की योजनाएं भारत सरकार द्वारा समर्थित हैं, जो इन्हें निवेश का एक बेहद सुरक्षित विकल्प बनाती हैं। लोकप्रिय योजनाओं में पीपीएफ (PPF), एनएससी (NSC), सुकन्या समृद्धि योजना (SSY) और पोस्ट ऑफिस टाइम डिपॉजिट शामिल हैं। ये अक्सर बैंक एफडी की तुलना में थोड़ी अधिक ब्याज दर देती हैं और धारा 80C के तहत आकर्षक टैक्स छूट प्रदान करती हैं।</p><h3>बैंक फिक्स्ड डिपॉजिट (FD)</h3><p>बैंक एफडी सार्वजनिक और निजी क्षेत्र के बैंकों द्वारा दी जाती है। ये अवधि (7 दिन से लेकर 10 साल तक) और भुगतान विकल्पों (मासिक, त्रैमासिक या परिपक्वता पर) के मामले में लचीलापन प्रदान करती हैं। हालाँकि ब्याज दरें आरबीआई की रेपो दर के आधार पर बदलती रहती हैं, लेकिन एफडी में पैसे निकालना आसान होता है क्योंकि मामूली पेनाल्टी के साथ समय से पहले निकासी की अनुमति होती है।</p><h3>तुलना करने के मुख्य कारक</h3><ul><li><strong>ब्याज दरें:</strong> पोस्ट ऑफिस की योजनाएं आम तौर पर अच्छी ब्याज दरें प्रदान करती हैं, जिनकी सरकार हर तिमाही समीक्षा करती है।</li><li><strong>टैक्स:</strong> जांचें कि कौन से निवेश कर-मुक्त (tax-free) ब्याज देते हैं और किन पर पूरा टैक्स लगता है।</li><li><strong>सुरक्षा:</strong> पोस्ट ऑफिस जमा पर सरकारी गारंटी होती है, जबकि बैंक जमा DICGC द्वारा ₹5 लाख तक सुरक्षित होते हैं।</li></ul>
+</div>
+</div>
+<div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--color-border);">
+<h3 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;"><span data-lang-show="en">Related Services &amp; Important Tools</span><span data-lang-show="hi">संबंधित सेवाएँ और महत्वपूर्ण टूल्स</span></h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; text-align: center;">
+<a href="../tools/eligibility-checker.html" style="text-decoration: none; padding: 20px; border-radius: 12px; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;">
+<div style="font-size: 2.5rem; margin-bottom: 10px;">✅</div>
+<strong style="color: var(--color-text);"><span data-lang-show="en">Check Eligibility</span><span data-lang-show="hi">पात्रता जांचें</span></strong>
+</a>
+<a href="../tools/document-checklist.html" style="text-decoration: none; padding: 20px; border-radius: 12px; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;">
+<div style="font-size: 2.5rem; margin-bottom: 10px;">📑</div>
+<strong style="color: var(--color-text);"><span data-lang-show="en">Document List</span><span data-lang-show="hi">दस्तावेज लिस्ट</span></strong>
+</a>
+<a href="../tools/csc-locator.html" style="text-decoration: none; padding: 20px; border-radius: 12px; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;">
+<div style="font-size: 2.5rem; margin-bottom: 10px;">📍</div>
+<strong style="color: var(--color-text);"><span data-lang-show="en">Nearest CSC</span><span data-lang-show="hi">नजदीकी CSC</span></strong>
+</a>
+<a href="../tools/status-troubleshooter.html" style="text-decoration: none; padding: 20px; border-radius: 12px; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;">
+<div style="font-size: 2.5rem; margin-bottom: 10px;">🔍</div>
+<strong style="color: var(--color-text);"><span data-lang-show="en">Check Status</span><span data-lang-show="hi">स्टेटस चेक करें</span></strong>
+</a>
+</div>
+</div>
+<div id="site-footer">
 <footer class="site-footer">
-  <div class="tricolor-rule"></div>
-  <div class="container" style="padding-top:36px;">
-    <div class="footer-disclaimer-banner" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
-      <h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
-      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
-    </div>
-    <div class="footer-grid">
-      <div>
-        <h4 data-i18n="site_name">SarkariSewa India</h4>
-        <p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
-      </div>
-      <div>
-        <h4 data-i18n="footer_tools_title">Tools & Apps</h4>
-        <ul>
-          <li><a href="../tools/index.html">🧮 Tools & Calculators</a></li>
-          <li><a href="../tools/eligibility-checker.html" data-i18n="nav_eligibility_engine">🎯 Scheme Eligibility Engine</a></li>
-          <li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
-          <li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
-          <li><a href="../tools/photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
-          <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
-          <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
-          <li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
-          <li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 data-i18n="footer_resources_title">Resources</h4>
-        <ul>
-          <li><a href="../project-report/index.html" data-i18n="nav_project_report">Project Report Generator</a></li>
-          <li><a href="../states/index.html" data-i18n="states_hub_title">State-wise Popular Services</a></li>
-          <li><a href="../about.html" data-i18n="footer_about_link">About</a></li>
-          <li><a href="../sitemap.html" data-i18n="footer_sitemap_link">Sitemap</a></li>
-          <li><a href="../faq.html" data-i18n="footer_faq_link">FAQ</a></li>
-          <li><a href="../contact.html" data-i18n="footer_contact_link">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 data-i18n="footer_support_title">Support</h4>
-        <ul>
-          <li><a href="../support/index.html" data-i18n="footer_support_home_link">Support Home</a></li>
-          <li><a href="../support/state-wise-services.html" data-i18n="footer_state_link">State-wise Services</a></li>
-          <li><a href="../support/helpline-directory.html" data-i18n="footer_helpline_link">Helpline Directory</a></li>
-          <li><a href="../support/rti-guide.html" data-i18n="footer_rti_link">RTI Guide</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 data-i18n="footer_legal_title">Legal</h4>
-        <ul>
-          <li><a href="../privacy-policy.html" data-i18n="privacy_title">Privacy Policy</a></li>
-          <li><a href="../disclaimer.html" data-i18n="disclaimer_title">Disclaimer</a></li>
-          <li><a href="../terms.html" data-i18n="terms_title">Terms &amp; Conditions</a></li>
-          <li><a href="../admin/login.html" data-i18n="admin_link">Staff Login</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
-    </div>
-  </div>
+<div class="tricolor-rule"></div>
+<div class="container" style="padding-top:36px;">
+<div class="footer-disclaimer-banner" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
+<h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
+</div>
+<div class="footer-grid">
+<div>
+<h4 data-i18n="site_name">SarkariSewa India</h4>
+<p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
+</div>
+<div>
+<h4 data-i18n="footer_tools_title">Tools &amp; Apps</h4>
+<ul>
+<li><a href="../tools/index.html">🧮 Tools &amp; Calculators</a></li>
+<li><a data-i18n="nav_eligibility_engine" href="../tools/eligibility-checker.html">🎯 Scheme Eligibility Engine</a></li>
+<li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
+<li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+<li><a href="../tools/photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
+<li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+<li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+<li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+<li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_resources_title">Resources</h4>
+<ul>
+<li><a data-i18n="nav_project_report" href="../project-report/index.html">Project Report Generator</a></li>
+<li><a data-i18n="states_hub_title" href="../states/index.html">State-wise Popular Services</a></li>
+<li><a data-i18n="footer_about_link" href="../about.html">About</a></li>
+<li><a data-i18n="footer_sitemap_link" href="../sitemap.html">Sitemap</a></li>
+<li><a data-i18n="footer_faq_link" href="../faq.html">FAQ</a></li>
+<li><a data-i18n="footer_contact_link" href="../contact.html">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_support_title">Support</h4>
+<ul>
+<li><a data-i18n="footer_support_home_link" href="../support/index.html">Support Home</a></li>
+<li><a data-i18n="footer_state_link" href="../support/state-wise-services.html">State-wise Services</a></li>
+<li><a data-i18n="footer_helpline_link" href="../support/helpline-directory.html">Helpline Directory</a></li>
+<li><a data-i18n="footer_rti_link" href="../support/rti-guide.html">RTI Guide</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_legal_title">Legal</h4>
+<ul>
+<li><a data-i18n="privacy_title" href="../privacy-policy.html">Privacy Policy</a></li>
+<li><a data-i18n="disclaimer_title" href="../disclaimer.html">Disclaimer</a></li>
+<li><a data-i18n="terms_title" href="../terms.html">Terms &amp; Conditions</a></li>
+<li><a data-i18n="admin_link" href="../admin/login.html">Staff Login</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
+</div>
+</div>
 </footer>
 <div class="ss-wa-wrapper" id="ss-wa-wrapper">
-  <button id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" aria-label="Close" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
-  <a href="https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g" target="_blank" rel="noopener noreferrer" class="ss-wa-floating-bar" aria-label="Join our WhatsApp Channel">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-    <span data-i18n="wa_join" style="font-weight: 600;">Join WhatsApp Channel</span>
-  </a>
+<button aria-label="Close" id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
+<a aria-label="Join our WhatsApp Channel" class="ss-wa-floating-bar" href="https://whatsapp.com/channel/0029VbDj7gCDp2Q8SYdFwj14" rel="noopener noreferrer" target="_blank">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+<span data-i18n="wa_join" style="font-weight: 600;">Join WhatsApp Channel</span>
+</a>
 </div>
 </div>
-
-  <script src="../assets/js/main.js" defer></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-
-      const schemes = [
-        {
-          id: "ssy",
-          title: "Sukanya Samriddhi Yojana",
-          subtitle: "बेटियों के भविष्य के लिए सर्वश्रेष्ठ",
-          rate: "8.2%",
-          lockin: "21 साल",
-          minMax: "₹250 - ₹1.5 लाख",
-          tax: "EEE (पूरी तरह टैक्स फ्री)",
-          tags: ["tax", "child", "tax-free"],
-          url: "../service/sukanya-samriddhi-yojana.html"
-        },
-        {
-          id: "ppf",
-          title: "Public Provident Fund (PPF)",
-          subtitle: "सुरक्षित और टैक्स फ्री रिटायरमेंट फंड",
-          rate: "7.1%",
-          lockin: "15 साल",
-          minMax: "₹500 - ₹1.5 लाख",
-          tax: "EEE (पूरी तरह टैक्स फ्री)",
-          tags: ["tax", "tax-free"],
-          url: "../service/public-provident-fund.html"
-        },
-        {
-          id: "nps",
-          title: "National Pension System (NPS)",
-          subtitle: "मार्केट लिंक्ड पेंशन योजना",
-          rate: "9-12% (अनुमानित)",
-          lockin: "60 वर्ष की आयु तक",
-          minMax: "न्यूनतम ₹1,000",
-          tax: "₹1.5L (80C) + ₹50k (80CCD)",
-          tags: ["tax"],
-          url: "../service/national-pension-system.html"
-        },
-        {
-          id: "scss",
-          title: "Senior Citizen Savings Scheme",
-          subtitle: "वरिष्ठ नागरिकों के लिए उच्च रिटर्न",
-          rate: "8.2%",
-          lockin: "5 साल",
-          minMax: "₹1000 - ₹30 लाख",
-          tax: "80C के तहत छूट (TDS लागू)",
-          tags: ["tax", "senior"],
-          url: "../category/finance-tax.html"
-        },
-        {
-          id: "mssm",
-          title: "Mahila Samman Savings",
-          subtitle: "महिलाओं के लिए छोटी अवधि का निवेश",
-          rate: "7.5%",
-          lockin: "2 साल",
-          minMax: "₹1000 - ₹2 लाख",
-          tax: "कोई टैक्स छूट नहीं",
-          tags: ["short"],
-          url: "../service/mahila-samman-bachat-patra.html"
-        },
-        {
-          id: "nsc",
-          title: "National Savings Certificate (NSC)",
-          subtitle: "गारंटीड रिटर्न और टैक्स बेनिफिट",
-          rate: "7.7%",
-          lockin: "5 साल",
-          minMax: "₹1000 - कोई सीमा नहीं",
-          tax: "80C के तहत छूट",
-          tags: ["tax"],
-          url: "../category/finance-tax.html"
-        },
-        {
-          id: "kvp",
-          title: "Kisan Vikas Patra (KVP)",
-          subtitle: "पैसा दोगुना करने वाली योजना",
-          rate: "7.5%",
-          lockin: "115 महीने (9.5 साल)",
-          minMax: "₹1000 - कोई सीमा नहीं",
-          tax: "कोई टैक्स छूट नहीं",
-          tags: [],
-          url: "../category/finance-tax.html"
-        },
-        {
-          id: "potd",
-          title: "Post Office Time Deposit (POTD)",
-          subtitle: "पोस्ट ऑफिस एफडी (Fixed Deposit)",
-          rate: "7.5% (5-Year)",
-          lockin: "1, 2, 3, या 5 साल",
-          minMax: "₹1000 - कोई सीमा नहीं",
-          tax: "5-Year FD पर 80C के तहत छूट",
-          tags: ["tax", "short"],
-          url: "../category/finance-tax.html"
-        }
-      ];
-
-      const grid = document.getElementById('scheme-grid');
-      const filters = document.querySelectorAll('.filter-btn');
-
-      function renderSchemes(filterType) {
-        grid.innerHTML = '';
-        const filtered = filterType === 'all' ? schemes : schemes.filter(s => s.tags.includes(filterType));
-        
-        if (filtered.length === 0) {
-          grid.innerHTML = '<div class="empty-state">इस फ़िल्टर के लिए कोई योजना नहीं मिली।</div>';
-          return;
-        }
-
-        filtered.forEach(s => {
-          const isTaxFree = s.tags.includes('tax-free');
-          const taxTagHtml = isTaxFree ? '<span class="sc-tag tax-free">✨ Tax Free Return</span>' : '';
-          const tagsHtml = s.tags.filter(t => t !== 'tax-free').map(t => {
-            const labels = { 'tax': '80C Benefit', 'child': 'Girl Child', 'senior': '60+ Years', 'short': 'Short Term' };
-            return `<span class="sc-tag">${labels[t] || t}</span>`;
-          }).join('');
-
-          const card = document.createElement('div');
-          card.className = 'scheme-card';
-          card.innerHTML = `
-            <div class="sc-header">
-              <div>
-                <h3 class="sc-title">${s.title}</h3>
-                <div class="sc-subtitle">${s.subtitle}</div>
-              </div>
-              <div class="sc-rate">${s.rate}</div>
-            </div>
-            <div class="sc-tags">${taxTagHtml}${tagsHtml}</div>
-            <div class="sc-body">
-              <div class="sc-row">
-                <span class="sc-label">लॉक-इन अवधि (Lock-in)</span>
-                <span class="sc-value">${s.lockin}</span>
-              </div>
-              <div class="sc-row">
-                <span class="sc-label">निवेश सीमा (Limit/Yr)</span>
-                <span class="sc-value">${s.minMax}</span>
-              </div>
-              <div class="sc-row">
-                <span class="sc-label">टैक्स नियम (Tax Rules)</span>
-                <span class="sc-value">${s.tax}</span>
-              </div>
-            </div>
-            <div class="sc-footer">
-              <a href="${s.url}" class="btn btn--primary">पूरी जानकारी पढ़ें →</a>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-      }
-
-      filters.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          filters.forEach(f => f.classList.remove('active'));
-          e.target.classList.add('active');
-          renderSchemes(e.target.getAttribute('data-filter'));
-        });
-      });
-
-      // Initial render
-      renderSchemes('all');
-    });
-  </script>
-</body>
+<script src="../assets/js/main.js?v=2.4"></script>
+<script src="../assets/js/consent.js"></script>
+<script src="../assets/js/i18n-helper.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/services-data.js"></script>
+<script src="../assets/js/service.js"></script>
+<script src="../assets/js/comments.js"></script>
+<script src="../assets/js/subscribe.js"></script>
+</main></body>
 </html>

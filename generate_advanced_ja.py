@@ -1,0 +1,159 @@
+import json
+import os
+
+filepath = "jan-aushadhi-advanced.json"
+
+content_en = """<h2>Jan Aushadhi Store Locator 2026: Find Generic Medicines Near You</h2>
+<h3>Quick Overview: What is PMBJP?</h3>
+<p>The <strong>Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP)</strong> was launched by the Department of Pharmaceuticals, Government of India, to provide quality generic medicines at affordable prices to the masses. The dedicated outlets, known as <strong>Jan Aushadhi Kendras</strong>, sell medicines that are 50% to 90% cheaper than their branded counterparts available in the open market.</p>
+<p>In a developing country like India, healthcare costs can often push middle-class and low-income families into financial hardship. A significant portion of these out-of-pocket expenses goes towards purchasing prescription medicines. Recognizing this critical issue, the Government of India launched PMBJP to revolutionize the pharmaceutical sector. With thousands of active stores across India in 2026, finding your nearest <strong>Jan Aushadhi Kendra</strong> is easier than ever using the official Store Locator tool or the mobile app.</p>
+
+<h3>Core Objectives of the Jan Aushadhi Scheme</h3>
+<p>The scheme was not just designed to sell medicines; it was built with a comprehensive vision to transform public health:</p>
+<ul>
+<li><strong>Making Healthcare Affordable:</strong> By completely bypassing the massive marketing and promotional costs associated with branded medicines, PMBJP brings down the retail price of life-saving drugs by up to 90%.</li>
+<li><strong>Ensuring Quality:</strong> A common myth is that cheap medicines are low quality. To counter this, every single batch of medicine procured for PMBJP is rigorously tested at NABL (National Accreditation Board for Testing and Calibration Laboratories) accredited laboratories.</li>
+<li><strong>Generating Employment:</strong> The scheme encourages individual entrepreneurs, pharmacists, doctors, and NGOs to open Jan Aushadhi Kendras, thereby creating thousands of direct and indirect jobs across the country.</li>
+<li><strong>Promoting Menstrual Hygiene:</strong> Through the introduction of the 'Suvidha' sanitary napkins at just Rs. 1 per pad, the scheme has made massive strides in promoting rural women's health and hygiene.</li>
+</ul>
+
+<h3>Benefits of Purchasing from a Jan Aushadhi Kendra</h3>
+<p>When you choose to buy your monthly prescription from a PMBJP store, you unlock several direct benefits:</p>
+<ul>
+<li><strong>Massive Financial Savings:</strong> Patients suffering from chronic diseases like Diabetes, Hypertension, Asthma, and Cardiovascular diseases can save thousands of rupees annually. Medicines cost 50% to 90% less than branded medicines.</li>
+<li><strong>High Quality Standards:</strong> All medicines comply with WHO-GMP (World Health Organization - Good Manufacturing Practices) guidelines, ensuring absolute safety and efficacy.</li>
+<li><strong>Wide Range of Products:</strong> The product basket is continuously expanding. As of 2026, it includes over 1,900+ generic medicines and 290+ surgical and consumable items covering almost all therapeutic categories.</li>
+<li><strong>Ayush Products:</strong> Recognizing the importance of traditional Indian medicine, stores also offer a specialized range of Ayurvedic products and immunity boosters.</li>
+<li><strong>Nutritional Supplements:</strong> Jan Aushadhi Kendras provide high-quality protein powders, vitamin supplements, and maternal health drinks at a fraction of the market price.</li>
+</ul>
+
+<h3>Eligibility to Buy Medicines</h3>
+<p><strong>Any citizen of India</strong> is completely eligible to purchase medicines from a Jan Aushadhi Kendra. There is absolutely no requirement to hold a BPL (Below Poverty Line) card, EWS certificate, or any specific income certificate. The stores are open to everyone, rich or poor.</p>
+<p>However, safety regulations still apply. For purchasing Schedule H and H1 drugs (such as strong antibiotics, anti-depressants, and specialized clinical medicines), presenting a valid prescription from a registered medical practitioner is mandatory.</p>
+
+<h3>Step-by-Step Online Process: How to Find a Store Near Me</h3>
+<p>With a rapidly expanding network, there is likely a PMBJP store very close to your location. To locate the nearest store using the official web portal, follow these exact steps:</p>
+<ol>
+<li>Open your web browser and visit the official PMBJP portal at <strong>janaushadhi.gov.in</strong>.</li>
+<li>On the homepage, navigate to the main menu and click on the <strong>'Kendra'</strong> tab.</li>
+<li>From the drop-down list, select <strong>'Locate Kendra'</strong>.</li>
+<li>A dedicated search page will open with an interactive map and a search form. Select your <strong>State</strong> and <strong>District</strong> from the drop-down menus.</li>
+<li>Click on the <strong>'Search'</strong> button.</li>
+<li>A complete table will appear displaying all active Jan Aushadhi Kendras in your district along with their full address, Kendra Code, and contact details.</li>
+<li><strong>Mobile App Method:</strong> Alternatively, you can download the <strong>'Jan Aushadhi Sugam'</strong> app from the Google Play Store (for Android) or Apple App Store (for iOS). The app uses your phone's GPS to instantly show stores near your current location and even provides navigation directions.</li>
+</ol>
+
+<h3>How to Open Your Own Jan Aushadhi Kendra (Franchise)</h3>
+<p>The government actively invites applications from citizens to expand the PMBJP network. If you are interested in opening a store, here is what you need to know:</p>
+<p><strong>Who can apply?</strong> Individual entrepreneurs (especially unemployed pharmacists/doctors), NGOs, Charitable Institutions, Private Hospitals, and State Government nominated agencies.</p>
+<p><strong>Basic Requirements:</strong></p>
+<ul>
+<li>You must own or have a leased commercial space of at least 120 sq. ft.</li>
+<li>You must employ a registered pharmacist (with a valid state pharmacy council registration) to dispense the medicines.</li>
+<li>Basic infrastructure like computers, printers, and internet connectivity must be arranged.</li>
+</ul>
+<p><strong>Incentives provided by Government:</strong> To support store owners, the government provides financial assistance and incentives up to Rs. 5 Lakhs (linked to monthly sales), along with additional special incentives for women entrepreneurs, Divyang (differently-abled), SC/ST candidates, and stores opened in aspirational districts or North-Eastern states.</p>
+
+<h3>Frequently Asked Questions (FAQs)</h3>
+<p><strong>1. Are PMBJP generic medicines as effective as branded ones?</strong><br>Absolutely. PMBJP generic medicines contain the exact same active pharmaceutical ingredients (API), strength, and efficacy as their branded equivalents. They strictly comply with WHO-GMP standards and undergo NABL lab testing.</p>
+<p><strong>2. Can I buy vitamins and supplements without a doctor's slip?</strong><br>Yes, over-the-counter (OTC) products like vitamins, health supplements, ORS, and basic first-aid items can be purchased without a prescription.</p>
+<p><strong>3. How do I complain if a store overcharges?</strong><br>Jan Aushadhi Kendras have strictly fixed MRPs printed on the packaging. If a store overcharges, you can register a complaint directly on the PMBJP official website, use the Sugam App, or call their toll-free national helpline.</p>
+<p><strong>4. Why are these medicines so cheap?</strong><br>Branded medicines include high costs for marketing, medical representatives, and premium packaging. Generic medicines skip these promotional costs and are directly procured in bulk by the government, passing the massive savings directly to the patient.</p>
+<p><strong>5. Is the Jan Aushadhi Sugam App free to use?</strong><br>Yes, the app is 100% free to download and use. It allows you to search for generic alternatives to your branded medicines and compare the exact price difference.</p>
+
+<h3>Useful Tools</h3>
+<ul>
+<li><a href="../tools/eligibility-checker.html">Govt Scheme Eligibility Checker</a></li>
+<li><a href="../tools/document-checklist.html">Document Checklist Tool</a></li>
+<li><a href="../tools/status-troubleshooter.html">Application Status Troubleshooter</a></li>
+</ul>
+<h3>Related Services</h3>
+<ul>
+<li><a href="ayushman-bharat.html">Ayushman Bharat Card</a></li>
+<li><a href="cghs-registration.html">CGHS Scheme Registration</a></li>
+<li><a href="senior-citizen-card.html">Senior Citizen Card Application</a></li>
+</ul>"""
+
+content_hi = """<h2>Jan Aushadhi Store Locator 2026: अपने नज़दीकी जन औषधि केंद्र को खोजें</h2>
+<h3>त्वरित अवलोकन: PMBJP क्या है?</h3>
+<p><strong>प्रधानमंत्री भारतीय जन औषधि परियोजना (PMBJP)</strong> भारत सरकार के फार्मास्युटिकल्स विभाग द्वारा शुरू की गई एक विशेष और बेहद महत्वपूर्ण पहल है। इसका मुख्य उद्देश्य देश के सभी नागरिकों (विशेषकर गरीब और मध्यम वर्ग) को सस्ती और उच्च गुणवत्ता वाली जेनेरिक दवाइयां उपलब्ध कराना है। <strong>जन औषधि केंद्रों</strong> पर मिलने वाली दवाइयां बाज़ार में मिलने वाली बड़ी कंपनियों की ब्रांडेड दवाइयों की तुलना में 50% से 90% तक सस्ती होती हैं।</p>
+<p>भारत जैसे विकासशील देश में, स्वास्थ्य देखभाल और दवाइयों का खर्च अक्सर परिवारों पर भारी आर्थिक बोझ डालता है। गंभीर बीमारियों के इलाज में होने वाले खर्च का एक बड़ा हिस्सा सिर्फ दवाइयों का होता है। इस समस्या को समझते हुए ही इस योजना का विस्तार किया गया है। 2026 में पूरे भारत में हज़ारों स्टोर सक्रिय हैं। आधिकारिक स्टोर लोकेटर टूल का उपयोग करके आप आसानी से अपने घर के पास का जन औषधि केंद्र खोज सकते हैं और अपनी मेहनत की कमाई बचा सकते हैं।</p>
+
+<h3>जन औषधि योजना के मुख्य उद्देश्य</h3>
+<p>इस योजना का लक्ष्य केवल दवा बेचना नहीं है, बल्कि देश के हेल्थकेयर सिस्टम में एक सकारात्मक बदलाव लाना है:</p>
+<ul>
+<li><strong>दवाइयों को सस्ता बनाना:</strong> ब्रांडेड दवाइयों पर होने वाले भारी मार्केटिंग और प्रचार खर्च को हटाकर, PMBJP जीवन रक्षक दवाओं की खुदरा कीमत को 90% तक कम कर देता है।</li>
+<li><strong>गुणवत्ता (Quality) सुनिश्चित करना:</strong> एक आम भ्रम यह है कि 'सस्ती दवा मतलब खराब दवा'। इस भ्रम को दूर करने के लिए, जन औषधि की हर एक दवा को NABL-मान्यता प्राप्त प्रयोगशालाओं (Labs) में कड़ी टेस्टिंग से गुज़रना पड़ता है।</li>
+<li><strong>रोजगार सृजन (Employment):</strong> यह योजना युवाओं, फार्मासिस्टों, डॉक्टरों और गैर-सरकारी संगठनों को अपना खुद का केंद्र खोलने के लिए प्रोत्साहित करती है, जिससे देश भर में प्रत्यक्ष और अप्रत्यक्ष रोजगार पैदा हो रहा है।</li>
+<li><strong>महिला स्वच्छता को बढ़ावा:</strong> मात्र 1 रुपये प्रति पैड की कीमत पर 'सुविधा' (Suvidha) सेनेटरी नैपकिन उपलब्ध कराकर, इस योजना ने ग्रामीण महिलाओं के स्वास्थ्य और स्वच्छता की दिशा में एक बड़ी क्रांति ला दी है।</li>
+</ul>
+
+<h3>जन औषधि केंद्र से दवाइयां खरीदने के मुख्य लाभ</h3>
+<p>जब आप अपनी दवाइयां PMBJP स्टोर से खरीदते हैं, तो आपको कई सीधे फायदे मिलते हैं:</p>
+<ul>
+<li><strong>भारी आर्थिक बचत:</strong> मधुमेह (Diabetes), रक्तचाप (Blood Pressure), अस्थमा, और हृदय रोगों जैसी पुरानी बीमारियों से पीड़ित मरीज़ सालाना हज़ारों रुपये बचा सकते हैं।</li>
+<li><strong>विश्वसनीय गुणवत्ता:</strong> सभी दवाइयां WHO-GMP (विश्व स्वास्थ्य संगठन) के दिशानिर्देशों का पालन करती हैं, जो उनकी पूर्ण सुरक्षा और प्रभावशीलता सुनिश्चित करता है।</li>
+<li><strong>व्यापक रेंज:</strong> इन स्टोर्स पर अब 1,900+ से अधिक जेनेरिक दवाइयां और 290+ सर्जिकल आइटम उपलब्ध हैं, जो लगभग सभी बीमारियों को कवर करते हैं।</li>
+<li><strong>आयुष उत्पाद:</strong> पारंपरिक भारतीय चिकित्सा के महत्व को पहचानते हुए, यहाँ आयुर्वेदिक उत्पादों और इम्युनिटी बूस्टर्स की एक अच्छी खासी रेंज भी मिलती है।</li>
+<li><strong>पोषण संबंधी सप्लीमेंट:</strong> यहाँ उच्च गुणवत्ता वाले प्रोटीन पाउडर, विटामिन सप्लीमेंट और महिलाओं के लिए हेल्थ ड्रिंक्स बाजार भाव से बहुत कम कीमत पर मिलते हैं।</li>
+</ul>
+
+<h3>दवाइयां खरीदने के लिए पात्रता (Eligibility)</h3>
+<p>भारत का <strong>कोई भी नागरिक</strong> जन औषधि केंद्र से दवाइयां खरीद सकता है। इसके लिए किसी बीपीएल (BPL) कार्ड, ईडब्ल्यूएस (EWS) प्रमाण पत्र, या किसी विशेष आय प्रमाण पत्र की आवश्यकता बिल्कुल नहीं है। ये स्टोर अमीर-गरीब सभी के लिए खुले हैं।</p>
+<p>हालाँकि, सुरक्षा नियम यहाँ भी लागू होते हैं। शेड्यूल H और H1 ड्रग्स (जैसे भारी एंटीबायोटिक्स, नींद की गोलियां आदि) खरीदने के लिए एक पंजीकृत डॉक्टर का वैध पर्चा (Prescription) होना अनिवार्य है।</p>
+
+<h3>ऑनलाइन प्रक्रिया: अपने नज़दीकी जन औषधि केंद्र का पता कैसे लगाएँ?</h3>
+<p>लगातार बढ़ते नेटवर्क के साथ, पूरी संभावना है कि आपके आस-पास कोई न कोई जन औषधि स्टोर ज़रूर होगा। आधिकारिक वेब पोर्टल का उपयोग करके निकटतम स्टोर का पता लगाने के लिए इन चरणों का पालन करें:</p>
+<ol>
+<li>अपने मोबाइल या कंप्यूटर के ब्राउज़र में PMBJP की आधिकारिक वेबसाइट <strong>janaushadhi.gov.in</strong> खोलें।</li>
+<li>होमपेज पर, मुख्य मेनू में <strong>'Kendra'</strong> टैब पर क्लिक करें।</li>
+<li>ड्रॉप-डाउन सूची से <strong>'Locate Kendra'</strong> विकल्प चुनें।</li>
+<li>एक नया सर्च पेज खुलेगा। यहाँ दिए गए विकल्पों में से अपना <strong>राज्य (State)</strong> और <strong>जिला (District)</strong> चुनें।</li>
+<li>अब <strong>'Search'</strong> (खोजें) बटन पर क्लिक करें।</li>
+<li>आपके जिले में मौजूद सभी सक्रिय जन औषधि केंद्रों की एक विस्तृत सूची (टेबल), उनके पूरे पते, केंद्र कोड और संपर्क नंबर के साथ स्क्रीन पर प्रदर्शित हो जाएगी।</li>
+<li><strong>सुगम ऐप (Sugam App) तरीका:</strong> आप Google Play Store (Android के लिए) या Apple App Store (iOS के लिए) से <strong>'Jan Aushadhi Sugam'</strong> मोबाइल ऐप भी डाउनलोड कर सकते हैं। यह ऐप आपके फोन के GPS का उपयोग करके तुरंत आपको आस-पास के स्टोर दिखा देता है और वहाँ तक पहुँचने का रास्ता भी बताता है।</li>
+</ol>
+
+<h3>अपना खुद का जन औषधि केंद्र कैसे खोलें (Franchise)</h3>
+<p>सरकार PMBJP नेटवर्क का विस्तार करने के लिए नागरिकों से सक्रिय रूप से आवेदन आमंत्रित करती है। यदि आप स्टोर खोलने में रुचि रखते हैं, तो यहाँ कुछ महत्वपूर्ण जानकारियाँ दी गई हैं:</p>
+<p><strong>कौन आवेदन कर सकता है?</strong> कोई भी व्यक्ति (विशेष रूप से बेरोजगार फार्मासिस्ट/डॉक्टर), NGO, धर्मार्थ संस्थाएं, निजी अस्पताल, और राज्य सरकार द्वारा नामित एजेंसियां।</p>
+<p><strong>मूल आवश्यकताएं (Requirements):</strong></p>
+<ul>
+<li>आपके पास अपना या लीज पर लिया हुआ कम से कम 120 वर्ग फुट (sq. ft.) का कमर्शियल स्पेस (दुकान) होना चाहिए।</li>
+<li>दवाइयां देने के लिए आपके पास एक पंजीकृत फार्मासिस्ट (स्टेट फार्मेसी काउंसिल के रजिस्ट्रेशन के साथ) का होना अनिवार्य है।</li>
+<li>कंप्यूटर, प्रिंटर और इंटरनेट कनेक्टिविटी जैसी बुनियादी सुविधाएँ होनी चाहिए।</li>
+</ul>
+<p><strong>सरकार द्वारा दी जाने वाली सहायता:</strong> स्टोर मालिकों का समर्थन करने के लिए, सरकार 5 लाख रुपये तक की वित्तीय सहायता (Financial Assistance) और प्रोत्साहन (मासिक बिक्री से जुड़ा हुआ) प्रदान करती है। इसके अलावा महिला उद्यमियों, दिव्यांगों, SC/ST उम्मीदवारों, और आकांक्षी जिलों या पूर्वोत्तर राज्यों में खोले गए स्टोर के लिए अतिरिक्त विशेष प्रोत्साहन (Special Incentives) दिए जाते हैं।</p>
+
+<h3>अक्सर पूछे जाने वाले प्रश्न (FAQs)</h3>
+<p><strong>1. क्या जेनेरिक दवाइयां महँगी ब्रांडेड दवाइयों जितनी ही असरदार होती हैं?</strong><br>जी हाँ, बिल्कुल। PMBJP की जेनेरिक दवाइयों में वही एक्टिव फार्मास्युटिकल सामग्री (API) और प्रभावशीलता होती है जो महँगी ब्रांडेड दवाइयों में होती है। वे WHO-GMP मानकों का सख्ती से पालन करती हैं।</p>
+<p><strong>2. क्या मैं बिना डॉक्टर के पर्चे के विटामिन और दर्द निवारक दवाइयां खरीद सकता हूँ?</strong><br>हाँ, सामान्य दवाइयां (OTC), विटामिन, हेल्थ सप्लीमेंट, ओआरएस (ORS) और फर्स्ट-एड का सामान बिना डॉक्टर के पर्चे के खरीदे जा सकते हैं।</p>
+<p><strong>3. यदि कोई जन औषधि स्टोर प्रिंट रेट से अधिक पैसे मांगे तो शिकायत कैसे करें?</strong><br>इन केंद्रों पर दवाइयों की कीमत पैकिंग पर MRP के रूप में स्पष्ट रूप से छपी होती है। यदि कोई स्टोर अधिक पैसे मांगता है, तो आप PMBJP वेबसाइट पर, सुगम ऐप के माध्यम से, या उनके टोल-फ्री राष्ट्रीय हेल्पलाइन पर सीधे शिकायत दर्ज करा सकते हैं।</p>
+<p><strong>4. ये दवाइयां इतनी सस्ती क्यों होती हैं?</strong><br>ब्रांडेड दवाइयों की कीमत में भारी मार्केटिंग, मेडिकल रिप्रेजेंटेटिव (MR) का कमीशन और आकर्षक पैकिंग का खर्च शामिल होता है। जेनेरिक दवाइयां इन प्रचार खर्चों से बचती हैं और सरकार द्वारा सीधे भारी मात्रा (Bulk) में खरीदी जाती हैं, जिससे मरीज़ों को सीधा फायदा मिलता है।</p>
+
+<h3>उपयोगी टूल्स (Useful Tools)</h3>
+<ul>
+<li><a href="../tools/eligibility-checker.html">सरकारी योजना पात्रता चेक टूल</a></li>
+<li><a href="../tools/document-checklist.html">दस्तावेज़ चेकलिस्ट</a></li>
+<li><a href="../tools/status-troubleshooter.html">आवेदन स्थिति समस्यानिवारक</a></li>
+</ul>
+<h3>सम्बंधित सेवाएँ</h3>
+<ul>
+<li><a href="ayushman-bharat.html">आयुष्मान भारत कार्ड (मुफ्त इलाज)</a></li>
+<li><a href="cghs-registration.html">CGHS योजना पंजीकरण</a></li>
+<li><a href="senior-citizen-card.html">सीनियर सिटीजन कार्ड आवेदन</a></li>
+</ul>"""
+
+data = {
+  "jan-aushadhi-store-locator.html": {
+    "titleEn": "【Free】 Find Jan Aushadhi Store Near Me 2026 | Kendra Locator",
+    "titleHi": "Jan Aushadhi Kendra Near Me 2026: जन औषधि केंद्र खोजें (50-90% सस्ती दवा)",
+    "descEn": "Easily find your nearest PM Jan Aushadhi Kendra in 2026. Get 50% to 90% discount on generic medicines. Check store timings, medicine list, and address instantly.",
+    "descHi": "Pradhan Mantri Jan Aushadhi Kendra (PMBJP) आपके घर के पास कहाँ है? 2026 की नई लिस्ट देखें। 50% से 90% सस्ती जेनेरिक दवाइयां प्राप्त करें। अभी लोकेशन चेक करें!",
+    "contentEn": content_en,
+    "contentHi": content_hi
+  }
+}
+
+with open(filepath, 'w', encoding='utf-8') as f:
+    json.dump(data, f, indent=2, ensure_ascii=False)

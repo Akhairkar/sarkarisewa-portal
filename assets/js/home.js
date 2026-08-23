@@ -170,21 +170,36 @@ async function renderHomeDailyUpdates() {
     if (!res.ok) throw new Error("Not found");
     const data = await res.json();
     if (!data || data.length === 0) { host.innerHTML = ""; return; }
-    // Only show top 8 on homepage
-    const topData = data.slice(0, 8);
+    const now = Date.now();
+    const DAY_MS = 24 * 60 * 60 * 1000;
+    // Only show top 6 on homepage
+    const topData = data.slice(0, 6);
     host.innerHTML = topData.map(update => {
       const title = lang === "hi" ? update.title_hi : update.title_en;
+      const summary = lang === "hi" ? (update.summary_hi || "") : (update.summary_en || "");
       const d = new Date(update.published_date);
-      const dateStr = isNaN(d.getTime()) ? update.published_date : d.toLocaleDateString(lang === "hi" ? "hi-IN" : "en-IN", { year: "numeric", month: "long", day: "numeric" });
+      const dateStr = isNaN(d.getTime()) ? update.published_date : d.toLocaleDateString(lang === "hi" ? "hi-IN" : "en-IN", { year: "numeric", month: "short", day: "numeric" });
+      const isNew = !isNaN(d.getTime()) && (now - d.getTime()) < (2 * DAY_MS);
+      const newBadge = isNew ? `<span style="display:inline-block; padding:2px 8px; background:#ef4444; color:#fff; font-size:0.7rem; font-weight:700; border-radius:10px; margin-left:6px; vertical-align:middle;">🔴 NEW</span>` : "";
+      // Category color
+      const catColors = {"Central Government":"#10243E","Employment & Labour":"#0369a1","Finance":"#065f46","Education":"#7c3aed"};
+      const catColor = catColors[update.category] || "#10243E";
+      // Link to static page if slug exists, fallback to dynamic
+      const href = update.slug ? `${ROOT}updates/${update.slug}.html` : `${ROOT}update.html?id=${update.id}`;
+      const truncSummary = summary.length > 100 ? summary.substring(0, 100) + "..." : summary;
       return `
-        <article class="service-card">
-          <div style="font-size: 0.8rem; color: var(--color-text-light); margin-bottom: 0.5rem;">
-            <strong>${update.source_name}</strong> • ${dateStr} • <span class="nav-badge">${update.category}</span>
+        <article class="service-card" style="position:relative;">
+          <div style="font-size:0.8rem; color:var(--color-text-light); margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span style="display:inline-block; padding:3px 10px; background:${catColor}; color:#fff; font-size:0.75rem; font-weight:600; border-radius:12px;">📢 ${update.category}</span>
+            <span>🏛️ ${update.source_name}</span>
+            <span>📅 ${dateStr}</span>
+            ${newBadge}
           </div>
-          <h3 style="font-size: 1.1rem; margin-top:0;">${title}</h3>
-          <div class="service-links" style="margin-top: 1rem;">
-            <a href="${ROOT}update.html?id=${update.id}" class="official">
-              ${lang === "hi" ? "पूरा पढ़ें →" : "Read Full →"}
+          <h3 style="font-size:1.05rem; margin-top:0; line-height:1.4;">${title}</h3>
+          <p style="font-size:0.9rem; color:var(--color-text-light); margin:8px 0 0 0; line-height:1.5;">${truncSummary}</p>
+          <div class="service-links" style="margin-top:12px;">
+            <a href="${href}" class="official">
+              ${lang === "hi" ? "पूरी जानकारी पढ़ें →" : "Read Full Details →"}
             </a>
           </div>
         </article>

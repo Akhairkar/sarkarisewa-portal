@@ -261,6 +261,28 @@ def build_page(post, category, services_by_slug):
 
 def main():
     posts = json.loads(POSTS_JSON.read_text(encoding="utf-8"))
+    import urllib.request
+    SUPABASE_URL = "https://yjxsgkqspmhxndvhnjcd.supabase.co"
+    SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqeHNna3FzcG1oeG5kdmhuamNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4NTMyMTIsImV4cCI6MjEwMDQyOTIxMn0.f9FDnaMGzIUalBCigoiOY8Nfl9rl5qewBXFy9AdLY4I"
+    
+    url = f"{SUPABASE_URL}/rest/v1/blog_posts?status=eq.published"
+    req = urllib.request.Request(url, headers={'apikey': SUPABASE_ANON_KEY, 'Authorization': f'Bearer {SUPABASE_ANON_KEY}'})
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            db_posts = json.loads(resp.read().decode("utf-8"))
+            for r in db_posts:
+                posts.append({
+                    "slug": r.get("slug"),
+                    "title": {"en": r.get("title_en") or r.get("title_hi"), "hi": r.get("title_hi") or r.get("title_en")},
+                    "excerpt": {"en": r.get("excerpt_en") or r.get("excerpt_hi"), "hi": r.get("excerpt_hi") or r.get("excerpt_en")},
+                    "body": {"en": r.get("body_en") or r.get("body_hi"), "hi": r.get("body_hi") or r.get("body_en")},
+                    "datePublished": r.get("date_published"),
+                    "category": r.get("category"),
+                    "relatedServiceId": r.get("related_service_id")
+                })
+    except Exception as e:
+        print(f"Warning: could not fetch Supabase posts: {e}")
+
     categories = json.loads(CATEGORIES_JSON.read_text(encoding="utf-8"))
     services = json.loads(SERVICES_JSON.read_text(encoding="utf-8"))
     categories_by_slug = {c["slug"]: c for c in categories}

@@ -1,594 +1,373 @@
 <!DOCTYPE html>
+
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
-  <link rel="icon" href="../favicon.ico">
-  <link rel="manifest" href="../manifest.json">
-  <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
-  <title>Government Document Checklist | Required Documents for Online Forms</title>
-
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <link rel="stylesheet" href="../assets/css/module2.css" />
-  <link rel="stylesheet" href="../assets/css/module15.css" />
-  <link rel="stylesheet" href="../assets/css/module16.css" />
-  
-  <style>
-    .checklist-container { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; margin-bottom: 32px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-    
-    .service-selector { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--color-border-light); }
-    .service-selector label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--color-text); font-size: 1.1rem; }
-    .service-selector select { width: 100%; padding: 12px; font-size: 1rem; border: 2px solid var(--color-border); border-radius: 8px; background: var(--color-bg); color: var(--color-text); }
-    .service-selector select:focus { border-color: var(--color-primary); outline: none; }
-    
-    .checklist-category { margin-bottom: 20px; }
-    .checklist-category h3 { color: var(--color-primary); margin-bottom: 12px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--color-border-light); padding-bottom: 6px; }
-    
-    .doc-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; padding: 10px; border-radius: 6px; background: var(--color-bg-alt); transition: background 0.2s; border: 1px solid transparent; }
-    .doc-item:hover { background: var(--color-bg); border-color: var(--color-border); }
-    .doc-item input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; cursor: pointer; accent-color: var(--color-accent); }
-    .doc-item label { cursor: pointer; flex: 1; }
-    .doc-title { font-weight: 600; color: var(--color-text); display: block; margin-bottom: 4px; }
-    .doc-desc { font-size: 0.85rem; color: var(--color-text-muted); display: block; }
-    
-    .or-divider { text-align: center; font-size: 0.8rem; font-weight: 700; color: var(--color-text-muted); margin: -4px 0 8px 32px; position: relative; }
-    .or-divider::before, .or-divider::after { content: ''; position: absolute; top: 50%; width: 20%; height: 1px; background: var(--color-border); }
-    .or-divider::before { left: 0; }
-    .or-divider::after { right: 0; }
-
-    .print-btn-container { text-align: center; margin-top: 24px; }
-    
-    #checklist-result { display: none; animation: fadeIn 0.4s ease-out; }
-    
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    @media print {
-      body * { visibility: hidden; }
-      #checklist-result, #checklist-result * { visibility: visible; }
-      #checklist-result { position: absolute; left: 0; top: 0; width: 100%; border: none; box-shadow: none; }
-      .print-btn-container { display: none; }
-      .service-selector { display: none; }
-      .doc-item { break-inside: avoid; border: 1px solid #ccc; background: #fff !important; }
-    }
-  </style>
-  <link rel="stylesheet" href="../assets/css/hidden-tax-theme.css">
-
-  <meta name="description" content="Get a clear document checklist for government services, certificates, exams and online applications. Verify ID, address, income, caste and supporting documents before applying.">
-  <link rel="canonical" href="https://sarkarisewaindia.com/tools/document-checklist.html">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Government Document Checklist | Required Documents for Online Forms">
-  <meta property="og:description" content="Get a clear document checklist for government services, certificates, exams and online applications. Verify ID, address, income, caste and supporting documents before applying.">
-  <meta property="og:url" content="https://sarkarisewaindia.com/tools/document-checklist.html">
-  <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Government Document Checklist","url":"https://sarkarisewaindia.com/tools/document-checklist.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","isAccessibleForFree":true}</script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../favicon.ico" rel="icon"/>
+<link href="../manifest.json" rel="manifest"/>
+<link href="https://sarkarisewaindia.com/service/jan-aushadhi-store-locator.html" rel="canonical"/>
+<meta content="Pradhan Mantri Jan Aushadhi Kendra (PMBJP) आपके घर के पास कहाँ है? 2026 की नई लिस्ट देखें। 50% से 90% सस्ती जेनेरिक दवाइयां प्राप्त करें। अभी लोकेश..." name="description"/>
+<meta content="Jan Aushadhi Kendra Near Me 2026: जन औषधि केंद्र खोजें (50-90% सस्ती दवा)" property="og:title"/>
+<meta content="Pradhan Mantri Jan Aushadhi Kendra (PMBJP) आपके घर के पास कहाँ है? 2026 की नई लिस्ट देखें। 50% से 90% सस्ती जेनेरिक दवाइयां प्राप्त करें। अभी लोकेशन चेक करें!" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://sarkarisewaindia.com/service/jan-aushadhi-store-locator.html" property="og:url"/>
+<meta content="https://sarkarisewaindia.com/assets/img/og-image.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Jan Aushadhi Kendra Near Me 2026: जन औषधि केंद्र खोजें (50-90% सस्ती दवा)" name="twitter:title"/>
+<meta content="Pradhan Mantri Jan Aushadhi Kendra (PMBJP) आपके घर के पास कहाँ है? 2026 की नई लिस्ट देखें। 50% से 90% सस्ती जेनेरिक दवाइयां प्राप्त करें। अभी लोकेशन चेक करें!" name="twitter:description"/>
+<title>Govt Job Document Verification Checklist</title>
+<link href="../assets/css/style.css" rel="stylesheet"/>
+<link href="../assets/css/module2.css" rel="stylesheet"/>
+<link href="../assets/css/module15.css" rel="stylesheet"/>
+<link href="../assets/css/module16.css" rel="stylesheet"/>
+<link href="../assets/css/share-widget.css" rel="stylesheet"/>
+<script id="service-schema" type="application/ld+json">{
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "GovernmentService",
+          "name": "प्रधानमंत्री जन औषधि केंद्र (PM Jan Aushadhi Kendra)",
+          "description": "50% से 90% सस्ती गुणवत्तापूर्ण जेनेरिक दवाइयां खरीदने हेतु नजदीकी जन औषधि स्टोर खोजें।",
+          "url": "https://sarkarisewaindia.com/service/jan-aushadhi-store-locator.html",
+          "serviceType": "प्रधानमंत्री जन औषधि केंद्र (PM Jan Aushadhi Kendra)",
+          "provider": { "@type": "GovernmentOrganization", "name": "Government of India" },
+          "sameAs": ["https://janaushadhi.gov.in/", "https://india.gov.in"]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://sarkarisewaindia.com/index.html"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "स्वास्थ्य",
+              "item": "https://sarkarisewaindia.com/category/health.html"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "प्रधानमंत्री जन औषधि केंद्र (PM Jan Aushadhi Kendra)",
+              "item": "https://sarkarisewaindia.com/service/jan-aushadhi-store-locator.html"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "जन औषधि केंद्र से दवा खरीदने के लिए क्या मुझे आधार कार्ड चाहिए?",
+              "acceptedAnswer": { "@type": "Answer", "text": "नहीं। दवा खरीदने के लिए किसी आईडी प्रूफ या आधार कार्ड की जरूरत नहीं है। केवल Schedule H/H1 दवाओं के लिए डॉक्टर का पर्चा चाहिए, बाकी दवाएं बिना पर्चे के भी मिल जाती हैं। आधार व दस्तावेज़ केवल तभी चाहिए जब आप खुद एक नया जन औषधि केंद्र खोलना चाहते हैं।" }
+            },
+            {
+              "@type": "Question",
+              "name": "जेनेरिक दवाएं ब्रांडेड दवाओं जितनी असरदार होती हैं क्या?",
+              "acceptedAnswer": { "@type": "Answer", "text": "हां। जेनेरिक दवाओं में वही सक्रिय तत्व (active ingredient), वही मात्रा (dosage) और वही असर होता है जो ब्रांडेड दवाओं में होता है — इन्हें NABL मान्यता प्राप्त प्रयोगशालाओं में परखा जाता है। फर्क सिर्फ नाम, पैकेजिंग व मार्केटिंग खर्च का होता है, जिसकी वजह से ब्रांडेड दवाएं महंगी होती हैं।" }
+            },
+            {
+              "@type": "Question",
+              "name": "नजदीकी जन औषधि केंद्र कैसे खोजें?",
+              "acceptedAnswer": { "@type": "Answer", "text": "आधिकारिक PMBJP पोर्टल (janaushadhi.gov.in) पर 'Locate Kendra' विकल्प से अपना राज्य व जिला चुनकर खोजें, या 'Jan Aushadhi Sugam' मोबाइल ऐप डाउनलोड करके GPS से नजदीकी केंद्र पता करें।" }
+            },
+            {
+              "@type": "Question",
+              "name": "जन औषधि दवाओं की कीमत कितनी सस्ती होती है?",
+              "acceptedAnswer": { "@type": "Answer", "text": "PMBJP के अनुसार जन औषधि केंद्रों की जेनेरिक दवाएं बाजार में उपलब्ध ब्रांडेड दवाओं की तुलना में औसतन 50% से 90% तक सस्ती होती हैं। सटीक कीमत दवा अनुसार अलग होती है — Jan Aushadhi Sugam ऐप पर हर दवा की सूचीबद्ध कीमत देखी जा सकती है।" }
+            },
+            {
+              "@type": "Question",
+              "name": "जन औषधि केंद्र कैसे खोलें?",
+              "acceptedAnswer": { "@type": "Answer", "text": "कोई भी व्यक्ति, फार्मासिस्ट, NGO, ट्रस्ट या सहकारी समिति PMBJP पोर्टल पर ऑनलाइन आवेदन करके जन औषधि केंद्र खोल सकते हैं। इसके लिए न्यूनतम 120 वर्ग फुट जगह व एक पंजीकृत फार्मासिस्ट होना जरूरी है।" }
+            }
+          ]
+        }
+      ]
+    }</script>
 </head>
-<body data-slug="document-checklist">
-  <script>window.SS_ROOT = "../";</script>
-
-  <div id="site-header">
+<body data-slug="jan-aushadhi-store-locator">
+<script>window.SS_ROOT = "../";</script>
+<div id="site-header">
 <div class="tricolor-rule"></div>
-<a class="skip-link" href="#main-content" data-i18n="skip_to_content">Skip to main content</a>
+<a class="skip-link" data-i18n="skip_to_content" href="#main-content">Skip to main content</a>
 <header class="site-header">
-  <div class="container header-inner">
-    <a href="../index.html" class="brand">
-      <span class="brand-mark">S</span>
-      <span class="brand-text">
-        <span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
-        <span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
-      </span>
-    </a>
-
-    <nav class="main-nav" aria-label="Primary">
-      <ul>
-        <li><a href="../index.html" data-i18n="nav_home">Home</a></li>
-        
-        <!-- Categories Dropdown -->
-        <li class="nav-dropdown">
-          <a href="#" class="nav-dropdown-toggle">Categories 📁 ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a></li>
-            <li><a href="../category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a></li>
-            <li><a href="../category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a></li>
-            <li><a href="../category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a></li>
-            <li><a href="../category/utilities.html" data-i18n="nav_utilities">Utilities</a></li>
-            <li><a href="../category/health.html" data-i18n="nav_health">Health</a></li>
-          </ul>
-        </li>
-
-        <!-- Updates & Support Dropdown -->
-        <li class="nav-dropdown">
-          <a href="#" class="nav-dropdown-toggle">Updates &amp; Support 📢 ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a></li>
-            <li><a href="../exams/index.html" data-i18n="nav_examcal">Exam Calendar</a></li>
-            <li><a href="../blog/index.html" data-i18n="nav_blog">Blog</a></li>
-            <li><a href="../support/index.html" data-i18n="nav_support">Support</a></li>
-          </ul>
-        </li>
-        
-        <!-- Image Tools Dropdown -->
-        <li class="nav-dropdown">
-          <a href="../tools/index.html" class="nav-highlight nav-dropdown-toggle" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../tools/photo-resizer.html">🖼️ Govt Exam Photo Resizer</a></li>
-            <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
-            <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
-          </ul>
-        </li>
-
-        <!-- State Services Dropdown -->
-        <li class="nav-dropdown">
-          <a href="../states/index.html" class="nav-dropdown-toggle" data-i18n="nav_state_services">State Services 🏛️ ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../states/index.html">🗺️ All States Hub</a></li>
-            <li><a href="../states/uttar-pradesh.html">📍 Uttar Pradesh</a></li>
-            <li><a href="../states/maharashtra.html">📍 Maharashtra</a></li>
-            <li><a href="../states/bihar.html">📍 Bihar</a></li>
-            <li><a href="../states/rajasthan.html">📍 Rajasthan</a></li>
-            <li><a href="../states/madhya-pradesh.html">📍 Madhya Pradesh</a></li>
-          </ul>
-        </li>
-
-        <!-- Citizen Utilities Dropdown Menu -->
-        <li class="nav-dropdown">
-          <a href="../tools/index.html" class="nav-dropdown-toggle">Citizen Utilities 🛠️ ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../tools/csc-locator.html" style="font-weight: 600; color: var(--color-primary);">📍 CSC / e-Seva Locator <span style="font-size: 0.75rem; background: var(--color-accent-green); color: white; padding: 2px 4px; border-radius: 4px; margin-left: 4px;">NEW</span></a></li>
-            <li><a href="../tools/eligibility-checker.html" style="font-weight: 600; color: var(--color-accent-green);" data-i18n="nav_eligibility_engine">🎯 Scheme Eligibility Engine</a></li>
-            <li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
-            <li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
-            <li><a href="../tools/typing-speed-test.html">⌨️ Typing Speed Test</a></li>
-            <li><a href="../tools/deadline-calendar.html">📅 Deadline Calendar</a></li>
-            <li><a href="../tools/pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
-            <li><a href="../tools/status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
-            <li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
-            <li><a href="../tools/age-calculator.html">⏳ Age & Retirement Calculator</a></li>
-          </ul>
-        </li>
-
-        <!-- Financial Calculators Dropdown Menu -->
-        <li class="nav-dropdown">
-          <a href="../tools/index.html" class="nav-highlight nav-dropdown-toggle" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;">Financial Calculators 💰 ▾</a>
-          <ul class="nav-dropdown-menu">
-            <li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
-            <li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
-            <li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
-            <li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
-            <li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
-            <li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
-            <li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
-            <li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-
-    <div class="header-actions">
-      <a class="icon-btn" href="../search.html" aria-label="Search">
-        <span aria-hidden="true">🔍</span>
-        <span class="visually-hidden" data-i18n="search_title">Search Services</span>
-      </a>
-      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme">
-        <span id="theme-icon" aria-hidden="true">🌙</span>
-        <span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
-      </button>
-      <button class="icon-btn" id="lang-toggle" type="button">
-        <span data-i18n="lang_toggle">हिंदी</span>
-      </button>
-      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
-    </div>
-  </div>
-
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Primary mobile">
-    <a href="../search.html" data-i18n="search_title">Search Services</a>
-    <a href="../index.html" data-i18n="nav_home">Home</a>
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
-    <a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
-    <a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
-    <a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🛠️ Citizen Utilities</div>
-    <a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
-    <a href="../tools/eligibility-checker.html" style="padding-left: 32px;">🎯 Scheme Eligibility Engine</a>
-    <a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
-    <a href="../tools/self-declaration-builder.html" style="padding-left: 32px;">📝 Self-Declaration Builder</a>
-    <a href="../tools/typing-speed-test.html" style="padding-left: 32px;">⌨️ Typing Speed Test</a>
-    <a href="../tools/deadline-calendar.html" style="padding-left: 32px;">📅 Deadline Calendar</a>
-    <a href="../tools/pan-aadhaar-conflict-resolver.html" style="padding-left: 32px;">🔗 PAN-Aadhaar Resolver</a>
-    <a href="../tools/status-troubleshooter.html" style="padding-left: 32px;">🔍 Status Troubleshooter</a>
-    <a href="../tools/govt-card-clarifier.html" style="padding-left: 32px;">💳 Govt Card Clarifier</a>
-    <a href="../tools/age-calculator.html" style="padding-left: 32px;">⏳ Age & Retirement Calculator</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #fdf2f8; color: #db2777;">💰 Financial Calculators</div>
-    <a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
-    <a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
-    <a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
-    <a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
-    <a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
-    <a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
-    <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
-    <a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🏛️ State Services</div>
-    <a href="../states/index.html" style="padding-left: 32px;">🗺️ All States Hub</a>
-    <a href="../states/uttar-pradesh.html" style="padding-left: 32px;">📍 Uttar Pradesh</a>
-    <a href="../states/maharashtra.html" style="padding-left: 32px;">📍 Maharashtra</a>
-    <a href="../states/bihar.html" style="padding-left: 32px;">📍 Bihar</a>
-
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
-    <a href="../category/identity-documents.html" data-i18n="nav_identity">Identity Documents</a>
-    <a href="../category/government-schemes.html" data-i18n="nav_schemes">Government Schemes</a>
-    <a href="../category/finance-tax.html" data-i18n="nav_finance">Finance &amp; Tax</a>
-    <a href="../category/jobs-education.html" data-i18n="nav_jobs">Jobs &amp; Education</a>
-    <a href="../category/utilities.html" data-i18n="nav_utilities">Utilities</a>
-    <a href="../category/health.html" data-i18n="nav_health">Health</a>
-    
-    <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
-    <a href="../support/index.html" data-i18n="nav_support">Support</a>
-    <a href="../blog/index.html" data-i18n="nav_blog">Blog</a>
-    <a href="../jobs/index.html" data-i18n="nav_jobalerts">Job Alerts</a>
-    <a href="../exams/index.html" data-i18n="nav_examcal">Exam Calendar</a>
-    <div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
-      <button class="btn btn--outline" id="mobile-theme-toggle" type="button" style="width:100%; justify-content:center; gap:8px;">
-        <span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
-      </button>
-    </div>
-  </nav>
+<div class="container header-inner">
+<a class="brand" href="../index.html">
+<span class="brand-mark">S</span>
+<span class="brand-text">
+<span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
+<span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
+</span>
+</a>
+<nav aria-label="Primary" class="main-nav">
+<ul>
+<li><a data-i18n="nav_home" href="../index.html">Home</a></li>
+<!-- Categories Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" href="#">Categories 📁 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a></li>
+<li><a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a></li>
+<li><a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a></li>
+<li><a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a></li>
+<li><a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a></li>
+<li><a data-i18n="nav_health" href="../category/health.html">Health</a></li>
+</ul>
+</li>
+<!-- Updates & Support Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" href="#">Updates &amp; Support 📢 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a></li>
+<li><a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a></li>
+<li><a data-i18n="nav_blog" href="../blog/index.html">Blog</a></li>
+<li><a data-i18n="nav_support" href="../support/index.html">Support</a></li>
+</ul>
+</li>
+<!-- Image Tools Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../tools/photo-resizer.html">🖼️ Govt Exam Photo Resizer</a></li>
+<li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+<li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+</ul>
+</li>
+<!-- State Services Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" data-i18n="nav_state_services" href="../states/index.html">State Services 🏛️ ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../states/index.html">🗺️ All States Hub</a></li>
+<li><a href="../states/index.html">📍 Uttar Pradesh</a></li>
+<li><a href="../states/index.html">📍 Maharashtra</a></li>
+<li><a href="../states/index.html">📍 Bihar</a></li>
+<li><a href="../states/index.html">📍 Rajasthan</a></li>
+<li><a href="../states/index.html">📍 Madhya Pradesh</a></li>
+</ul>
+</li>
+<!-- Citizen Utilities Dropdown Menu -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" href="../tools/index.html">Citizen Utilities 🛠️ ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../tools/csc-locator.html" style="font-weight: 600; color: var(--color-primary);">📍 CSC / e-Seva Locator <span style="font-size: 0.75rem; background: var(--color-accent-green); color: white; padding: 2px 4px; border-radius: 4px; margin-left: 4px;">NEW</span></a></li>
+<li><a data-i18n="nav_eligibility_engine" href="../tools/eligibility-checker.html" style="font-weight: 600; color: var(--color-accent-green);">🎯 Scheme Eligibility Engine</a></li>
+<li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
+<li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+<li><a href="../tools/typing-speed-test.html">⌨️ Typing Speed Test</a></li>
+<li><a href="../tools/deadline-calendar.html">📅 Deadline Calendar</a></li>
+<li><a href="../tools/pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
+<li><a href="../tools/status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
+<li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+<li><a href="../tools/age-calculator.html">⏳ Age &amp; Retirement Calculator</a></li>
+</ul>
+</li>
+<!-- Financial Calculators Dropdown Menu -->
+<li class="nav-dropdown">
+<a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;">Financial Calculators 💰 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+<li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
+<li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
+<li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
+<li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
+<li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
+<li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
+<li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+<div class="header-actions">
+<a aria-label="Search" class="icon-btn" href="../search.html">
+<span aria-hidden="true">🔍</span>
+<span class="visually-hidden" data-i18n="search_title">Search Services</span>
+</a>
+<button aria-label="Toggle theme" class="icon-btn" id="theme-toggle" type="button">
+<span aria-hidden="true" id="theme-icon">🌙</span>
+<span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
+</button>
+<button class="icon-btn" id="lang-toggle" type="button">
+<span data-i18n="lang_toggle">हिंदी</span>
+</button>
+<button aria-expanded="false" aria-label="Menu" class="nav-toggle" id="nav-toggle" type="button">☰</button>
+</div>
+</div>
+<nav aria-label="Primary mobile" class="mobile-nav" id="mobile-nav">
+<a data-i18n="search_title" href="../search.html">Search Services</a>
+<a data-i18n="nav_home" href="../index.html">Home</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
+<a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
+<a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
+<a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🛠️ Citizen Utilities</div>
+<a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
+<a href="../tools/eligibility-checker.html" style="padding-left: 32px;">🎯 Scheme Eligibility Engine</a>
+<a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
+<a href="../tools/self-declaration-builder.html" style="padding-left: 32px;">📝 Self-Declaration Builder</a>
+<a href="../tools/typing-speed-test.html" style="padding-left: 32px;">⌨️ Typing Speed Test</a>
+<a href="../tools/deadline-calendar.html" style="padding-left: 32px;">📅 Deadline Calendar</a>
+<a href="../tools/pan-aadhaar-conflict-resolver.html" style="padding-left: 32px;">🔗 PAN-Aadhaar Resolver</a>
+<a href="../tools/status-troubleshooter.html" style="padding-left: 32px;">🔍 Status Troubleshooter</a>
+<a href="../tools/govt-card-clarifier.html" style="padding-left: 32px;">💳 Govt Card Clarifier</a>
+<a href="../tools/age-calculator.html" style="padding-left: 32px;">⏳ Age &amp; Retirement Calculator</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #fdf2f8; color: #db2777;">💰 Financial Calculators</div>
+<a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
+<a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
+<a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
+<a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
+<a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
+<a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
+<a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
+<a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🏛️ State Services</div>
+<a href="../states/index.html" style="padding-left: 32px;">🗺️ All States Hub</a>
+<a href="../states/index.html" style="padding-left: 32px;">📍 Uttar Pradesh</a>
+<a href="../states/index.html" style="padding-left: 32px;">📍 Maharashtra</a>
+<a href="../states/index.html" style="padding-left: 32px;">📍 Bihar</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
+<a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a>
+<a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a>
+<a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a>
+<a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a>
+<a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a>
+<a data-i18n="nav_health" href="../category/health.html">Health</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
+<a data-i18n="nav_support" href="../support/index.html">Support</a>
+<a data-i18n="nav_blog" href="../blog/index.html">Blog</a>
+<a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a>
+<a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a>
+<div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
+<button class="btn btn--outline" id="mobile-theme-toggle" style="width:100%; justify-content:center; gap:8px;" type="button">
+<span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
+</button>
+</div>
+</nav>
 </header>
-
 </div>
 <main class="container">
-    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
-      <a href="../index.html">Home</a>
-      <span class="sep">/</span>
-      <a href="index.html">Tools & Calculators</a>
-      <span class="sep">/</span>
-      <span class="current">Document Checklist Generator</span>
-    </nav>
-
-    <div class="calculator-header text-center">
-      <h1 class="calculator-title">📄 सरकारी दस्तावेज़ चेकलिस्ट</h1>
-      <p class="calculator-desc">सरकारी दफ़्तर जाने से पहले अपनी चेकलिस्ट बनाएँ। जानें किस काम के लिए कौन-से दस्तावेज़ ज़रूरी हैं और प्रिंट निकालें।</p>
-    </div>
-
-    <div class="checklist-container">
-      <div class="service-selector">
-        <label for="service-select">आप कौन-सी सेवा/सर्टिफिकेट बनवाना चाहते हैं? (Select Service):</label>
-        <select id="service-select" onchange="generateChecklist()">
-          <option value="" disabled selected>-- सेवा चुनें (Select Service) --</option>
-          <optgroup label="प्रमाण पत्र (Certificates)">
-            <option value="income">आय प्रमाण पत्र (Income Certificate)</option>
-            <option value="caste">जाति प्रमाण पत्र (Caste Certificate)</option>
-            <option value="domicile">मूल निवास प्रमाण पत्र (Domicile Certificate)</option>
-            <option value="ewc">EWS प्रमाण पत्र (Economically Weaker Section)</option>
-          </optgroup>
-          <optgroup label="पहचान पत्र (Identity Cards)">
-            <option value="passport">नया पासपोर्ट (New Passport)</option>
-            <option value="pan">पैन कार्ड (PAN Card)</option>
-            <option value="voter">वोटर आईडी (Voter ID)</option>
-            <option value="dl">ड्राइविंग लाइसेंस (Driving License - Learner's)</option>
-            <option value="ration">राशन कार्ड (Ration Card)</option>
-          </optgroup>
-        </select>
-      </div>
-
-      <div id="checklist-result">
-        <h2 id="result-title" style="margin-top:0; color: var(--color-primary); text-align: center;"></h2>
-        <p style="text-align: center; color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 24px;">नीचे दिए गए दस्तावेज़ों को इकट्ठा करें और टिक (✓) लगाएं।</p>
-
-        <div id="checklist-content"></div>
-
-        <div class="print-btn-container">
-          <button class="btn btn--primary" onclick="window.print()">🖨️ चेकलिस्ट प्रिंट करें (Print Checklist)</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="info-card">
-      <h3 style="margin-top:0;">💡 ज़रूरी टिप्स (Pro Tips)</h3>
-      <ul class="check-list">
-        <li><strong>स्व-प्रमाणित (Self-Attested):</strong> सभी फोटोकॉपी पर अपने हस्ताक्षर (Sign) ज़रूर करें, इसे 'Self Attested' कहा जाता है।</li>
-        <li><strong>ओरिजिनल दस्तावेज़:</strong> दफ़्तर जाते समय हमेशा ओरिजिनल दस्तावेज़ साथ रखें, अफ़सर वेरिफ़िकेशन के लिए माँग सकते हैं।</li>
-        <li><strong>फोटो:</strong> हमेशा 3-4 नई पासपोर्ट साइज़ फोटो साथ रखें।</li>
-        <li><strong>डिजिलॉकर (DigiLocker):</strong> आज-कल कई दफ़्तर DigiLocker के डिजिटल दस्तावेज़ों को भी मान्यता देते हैं।</li>
-      </ul>
-    </div>
-  
-<!-- TOOL SEO ENHANCEMENT -->
-<section class="tool-seo-section" aria-label="Helpful information and related links">
-<style>
-.tool-seo-section{margin:42px 0 12px;padding:32px 0;border-top:1px solid var(--color-border);color:var(--color-text)}
-.tool-seo-section .tool-seo-wrap{max-width:920px;margin:auto}.tool-seo-section h2{font-size:1.55rem;margin:0 0 14px;color:var(--color-primary)}
-.tool-seo-section h3{font-size:1.18rem;margin:26px 0 10px;color:var(--color-text)}.tool-seo-section p,.tool-seo-section li{line-height:1.75}
-.tool-seo-section .tool-seo-note{padding:14px 16px;background:var(--color-bg-alt);border-left:4px solid var(--color-primary);border-radius:8px}
-.tool-seo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tool-seo-card{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--color-border);border-radius:10px;background:var(--color-surface);text-decoration:none;color:var(--color-text);transition:transform .15s ease,border-color .15s ease}
-.tool-seo-card:hover{transform:translateY(-2px);border-color:var(--color-primary)}.tool-seo-icon{font-size:1.6rem}.tool-seo-card strong,.tool-seo-card small{display:block}.tool-seo-card small{color:var(--color-text-muted);margin-top:3px}@media(max-width:600px){.tool-seo-grid{grid-template-columns:1fr}.tool-seo-section{padding:26px 0}}
-</style>
-<div class="tool-seo-wrap">
-<div data-lang-show="en">
-<h2>Government Document Checklist: a practical guide for Indian users</h2>
-<p>Use this free government document checklist when you need help with government document checklist, documents required for certificate, exam form and online application. It is designed to make a common online task easier before you visit an official portal, submit an application, or prepare your documents. The result is meant to help you organise information; always treat the latest notification, department website, or authorised service centre as the final source of rules, fees and eligibility.</p>
-<h3>Why this tool is useful</h3>
-<p>Government and recruitment websites often use exact requirements, short closing windows and strict upload conditions. A small error can lead to a rejected form, a failed upload or an unnecessary visit to a service centre. This page brings the key task into one simple workflow so you can check details at your own pace. It is especially useful for applicants looking for government document checklist, documents required for certificate, exam form and online application, as well as families helping students, senior citizens or first-time digital users.</p>
-<h3>How to use the Government Document Checklist</h3><ol><li><strong>Step 1:</strong> Choose the service or form category and read each item on the checklist.</li><li><strong>Step 2:</strong> Compare names, dates of birth and addresses across documents before upload or submission.</li><li><strong>Step 3:</strong> Keep readable scans and a copy of the acknowledgement after your application is submitted.</li></ol>
-<h3>Before you rely on the result</h3>
-<p>Keep the official notification, application number and original documents nearby. Names, dates, categories, state rules, fee amounts and submission requirements can change. Never share OTPs, passwords, bank PINs or full identity numbers on an unofficial website. If a result affects your application or money, verify it with the official department portal or an authorised centre. This careful final check improves accuracy and helps prevent avoidable rejection.</p>
-<h3>Helpful long-tail searches answered here</h3>
-<p>Users commonly search for phrases such as “government document checklist, documents required for certificate, exam form and online application online India”, “free government document checklist for government form”, “how to check government document checklist, documents required for certificate, exam form and online application”, and “Government Document Checklist Hindi English”. This guide is written to answer the intent behind those searches with clear steps, internal resources and safe next actions—not by replacing the official authority.</p>
-<h3>Frequently asked questions</h3>
-<p><strong>Is this tool free?</strong> Yes, you can use it without creating an account. <strong>Is the result official?</strong> No; use it as preparation and verify important details from the concerned department. <strong>Can I use it on a phone?</strong> Yes, the page works with the site’s responsive layout and light or dark theme. <strong>What should I do next?</strong> Open a related tool or service below to complete the next part of your task.</p>
+<div style="margin-bottom: 20px; font-size: 0.9rem; color: var(--color-text-muted);">
+<a href="../index.html" style="color: var(--color-primary); text-decoration: none;">Home</a> / 
+            <a href="../states/index.html" style="color: var(--color-primary); text-decoration: none;">State Services</a> / 
+            <strong>Govt Job Document Verification Checklist</strong>
 </div>
-<div data-lang-show="hi">
-<h2>सरकारी दस्तावेज़ चेकलिस्ट: भारतीय उपयोगकर्ताओं के लिए आसान गाइड</h2>
-<p>यह मुफ्त सरकारी दस्तावेज़ चेकलिस्ट सरकारी दस्तावेज़ चेकलिस्ट, प्रमाणपत्र, परीक्षा फॉर्म और ऑनलाइन आवेदन के लिए जरूरी कागजात से जुड़े काम को आसान बनाने के लिए बनाया गया है। किसी सरकारी पोर्टल पर जाने, आवेदन भरने या दस्तावेज़ तैयार करने से पहले आप जरूरी जानकारी एक जगह समझ सकते हैं। यह परिणाम आपकी तैयारी में मदद करता है; नियम, शुल्क, पात्रता और अंतिम तारीख के लिए हमेशा संबंधित विभाग की नई आधिकारिक सूचना को अंतिम मानें।</p>
-<h3>यह टूल क्यों उपयोगी है?</h3>
-<p>सरकारी और भर्ती वेबसाइटों पर अक्सर सटीक जानकारी, कम समय और सख्त अपलोड नियम होते हैं। छोटी गलती से फॉर्म रिजेक्ट, अपलोड फेल या सेवा केंद्र का अनावश्यक चक्कर लग सकता है। यह पेज काम को सरल चरणों में रखता है ताकि आप आराम से जानकारी जांच सकें। सरकारी दस्तावेज़ चेकलिस्ट, प्रमाणपत्र, परीक्षा फॉर्म और ऑनलाइन आवेदन के लिए जरूरी कागजात खोजने वाले विद्यार्थियों, नौकरी आवेदकों, परिवारों और पहली बार डिजिटल सेवा इस्तेमाल करने वाले लोगों के लिए यह खास तौर पर उपयोगी है।</p>
-<h3>सरकारी दस्तावेज़ चेकलिस्ट का उपयोग कैसे करें?</h3><ol><li><strong>चरण 1:</strong> सेवा या फॉर्म की श्रेणी चुनकर चेकलिस्ट का हर बिंदु पढ़ें।</li><li><strong>चरण 2:</strong> अपलोड या जमा करने से पहले सभी दस्तावेज़ों में नाम, जन्मतिथि और पता मिलाएँ।</li><li><strong>चरण 3:</strong> स्पष्ट स्कैन और आवेदन जमा होने के बाद acknowledgement की कॉपी सुरक्षित रखें।</li></ol>
-<h3>परिणाम इस्तेमाल करने से पहले</h3>
-<p>आधिकारिक नोटिफिकेशन, आवेदन संख्या और मूल दस्तावेज़ पास रखें। नाम, जन्मतिथि, श्रेणी, राज्य के नियम, फीस और जमा करने की शर्तें बदल सकती हैं। किसी अनधिकृत वेबसाइट पर OTP, पासवर्ड, बैंक PIN या पूरा पहचान नंबर कभी साझा न करें। अगर परिणाम आपके आवेदन या पैसे को प्रभावित करता है, तो संबंधित विभाग की वेबसाइट या अधिकृत केंद्र से उसे सत्यापित करें।</p>
-<h3>आपकी लंबी खोज का आसान जवाब</h3>
-<p>लोग अक्सर “सरकारी दस्तावेज़ चेकलिस्ट, प्रमाणपत्र, परीक्षा फॉर्म और ऑनलाइन आवेदन के लिए जरूरी कागजात ऑनलाइन”, “सरकारी फॉर्म के लिए सरकारी दस्तावेज़ चेकलिस्ट”, “सरकारी दस्तावेज़ चेकलिस्ट, प्रमाणपत्र, परीक्षा फॉर्म और ऑनलाइन आवेदन के लिए जरूरी कागजात कैसे चेक करें” और “सरकारी दस्तावेज़ चेकलिस्ट हिंदी में” जैसी खोज करते हैं। यह पेज उन्हीं सवालों के लिए उपयोगी जानकारी, सुरक्षित अगले कदम और आंतरिक लिंक देता है; यह किसी सरकारी विभाग का विकल्प नहीं है।</p>
-<h3>अक्सर पूछे जाने वाले सवाल</h3>
-<p><strong>क्या यह टूल मुफ्त है?</strong> हाँ, इसके लिए अकाउंट बनाना जरूरी नहीं है। <strong>क्या परिणाम आधिकारिक है?</strong> नहीं, जरूरी जानकारी को विभाग की वेबसाइट से जरूर मिलाएँ। <strong>क्या मोबाइल पर चलेगा?</strong> हाँ, यह मोबाइल और light/dark theme के साथ काम करता है। <strong>अब क्या करें?</strong> नीचे दिए गए संबंधित टूल या सेवा लिंक खोलें।</p>
+<h1 style="color: var(--color-text); margin-bottom: 15px; font-size: 2.2rem;">
+<span data-lang-show="en">Govt Job Document Verification Checklist</span>
+<span data-lang-show="hi">सरकारी नौकरी दस्तावेज़ सत्यापन चेकलिस्ट</span>
+</h1>
+<div class="service-content" style="background: var(--color-surface); padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); line-height: 1.8;">
+<div class="content-en" data-lang-show="en">
+<h2>Master the Govt Job Document Verification Process</h2><p>Congratulations on clearing the rigorous written exams and interviews for your desired government post! The final and most crucial hurdle is the Document Verification (DV) stage. The <strong>Govt Job Document Verification Checklist</strong> tool ensures you are fully prepared and organized, minimizing the risk of disqualification at the final step.</p><h3>The Importance of Document Verification</h3><p>Document verification is a strict process where authorities authenticate the claims made in your application regarding age, education, category, and identity. Even minor discrepancies or missing certificates can lead to immediate rejection, regardless of your exam score.</p><h3>Essential Documents Typically Required</h3><ul><li><strong>Identity Proof:</strong> Aadhar Card, PAN Card, Voter ID, or Passport.</li><li><strong>Educational Certificates:</strong> 10th and 12th mark sheets and passing certificates (crucial for Date of Birth verification), Graduation/Post-Graduation degrees as applicable.</li><li><strong>Category/Caste Certificates:</strong> SC/ST/OBC/EWS certificates in the prescribed central or state government format, issued by the competent authority.</li><li><strong>Domicile Certificate:</strong> Required for state-level jobs or specific quotas.</li><li><strong>Photographs:</strong> Recent passport-size photographs as specified in the call letter.</li></ul><h3>How to Prepare for DV</h3><p>Always carry the original documents along with at least two sets of self-attested photocopies. Arrange them in the order specified in the official DV call letter. Ensure all names and details match exactly across all documents. If there is a discrepancy, prepare an affidavit legally declaring the correction beforehand.</p>
 </div>
-<div data-lang-show="en"><h3>Plan your next step with confidence</h3><p>A good online application is not only about completing one calculation or upload. Use the result as part of a short pre-submission check: read the official notice, confirm the correct scheme or recruitment year, verify whether your state has different rules, and save the page or acknowledgement after submission. For searches around government document checklist, documents required for certificate, exam form and online application, people often need a practical sequence rather than a single answer. Start with the current official requirement, prepare clear documents, complete the required check, and submit well before the closing time. If an official portal is slow, do not repeatedly make payments or submit duplicate forms; wait for a confirmation screen, transaction reference or department guidance.</p><p>Keep a simple record of what you used: date checked, source URL, application reference, document version and any fee receipt. This helps if you later need to correct an application, visit a helpdesk or explain a discrepancy. Be careful with third-party agents who promise guaranteed approval. A trustworthy service will tell you what is required, provide a receipt where relevant, and will not ask for your bank PIN, password or OTP. The related resources below are deliberately linked to help you move from preparation to the next genuine task while staying within the SarkariSewa India site structure.</p></div><div data-lang-show="hi"><h3>अगले चरण की तैयारी सही तरीके से करें</h3><p>किसी ऑनलाइन आवेदन में सिर्फ एक गणना या एक अपलोड पूरा करना काफी नहीं होता। परिणाम को जमा करने से पहले की छोटी जांच का हिस्सा बनाएं: आधिकारिक नोटिस पढ़ें, सही योजना या भर्ती वर्ष मिलाएं, अपने राज्य के अलग नियम देखें और आवेदन के बाद acknowledgement या स्क्रीनशॉट सुरक्षित रखें। सरकारी दस्तावेज़ चेकलिस्ट, प्रमाणपत्र, परीक्षा फॉर्म और ऑनलाइन आवेदन के लिए जरूरी कागजात जैसी खोज करने वाले लोगों को अक्सर सिर्फ एक जवाब नहीं, बल्कि सही क्रम चाहिए। पहले नई आधिकारिक शर्त देखें, साफ दस्तावेज़ तैयार करें, जरूरी जांच पूरी करें और अंतिम समय से पहले फॉर्म जमा करें। यदि सरकारी पोर्टल धीमा हो तो बार-बार भुगतान या डुप्लीकेट सबमिट न करें; confirmation screen, transaction reference या विभागीय निर्देश का इंतजार करें।</p><p>आपने क्या इस्तेमाल किया इसका छोटा रिकॉर्ड रखें: जांच की तारीख, स्रोत लिंक, आवेदन संदर्भ, दस्तावेज़ का संस्करण और फीस की रसीद। बाद में सुधार, हेल्पडेस्क विजिट या जानकारी में अंतर समझाने में यह मदद करता है। ऐसे एजेंट से सावधान रहें जो निश्चित मंजूरी का दावा करे। भरोसेमंद सेवा जरूरी शर्तें बताएगी, जहां लागू हो वहां रसीद देगी और कभी बैंक PIN, पासवर्ड या OTP नहीं मांगेगी। नीचे दिए लिंक आपको SarkariSewa India की सही साइट संरचना में अगला उपयोगी काम करने तक पहुंचाते हैं।</p></div><div data-lang-show="en"><h3>Use current information</h3><p>Rules, dates and portal instructions can change without notice. Revisit the official source on the day you apply, keep your browser updated, and use a stable internet connection. This page helps you prepare, but it should never be used to bypass the official process or replace professional advice where it is needed.</p></div><div data-lang-show="hi"><h3>नई जानकारी जरूर जांचें</h3><p>नियम, तारीख और पोर्टल के निर्देश बिना सूचना बदल सकते हैं। आवेदन वाले दिन आधिकारिक स्रोत फिर देखें, ब्राउज़र अपडेट रखें और स्थिर इंटरनेट इस्तेमाल करें। यह पेज तैयारी में मदद करता है, लेकिन आधिकारिक प्रक्रिया या जरूरत पड़ने पर विशेषज्ञ सलाह का विकल्प नहीं है।</p></div><h2 data-lang-show="en">Related tools</h2><h2 data-lang-show="hi">संबंधित टूल्स</h2><div class="tool-seo-grid"><a class="tool-seo-card" href="document-compressor.html"><span class="tool-seo-icon" aria-hidden="true">📄</span><span><strong data-lang-show="en">Document Compressor</strong><strong data-lang-show="hi">Document Compressor</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="self-declaration-builder.html"><span class="tool-seo-icon" aria-hidden="true">📝</span><span><strong data-lang-show="en">Self-Declaration Builder</strong><strong data-lang-show="hi">Self-Declaration Builder</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="photo-resizer.html"><span class="tool-seo-icon" aria-hidden="true">🖼️</span><span><strong data-lang-show="en">Photo Resizer</strong><strong data-lang-show="hi">Photo Resizer</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="pan-aadhaar-conflict-resolver.html"><span class="tool-seo-icon" aria-hidden="true">🔗</span><span><strong data-lang-show="en">PAN-Aadhaar Resolver</strong><strong data-lang-show="hi">PAN-Aadhaar Resolver</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a></div>
-<h2 data-lang-show="en">Related services</h2><h2 data-lang-show="hi">संबंधित सेवाएं</h2><div class="tool-seo-grid"><a class="tool-seo-card" href="../support/state-wise-services.html"><span class="tool-seo-icon" aria-hidden="true">🏛️</span><span><strong data-lang-show="en">State-wise Services</strong><strong data-lang-show="hi">राज्यवार सेवाएं</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="../category/identity-documents.html"><span class="tool-seo-icon" aria-hidden="true">🪪</span><span><strong data-lang-show="en">Identity Documents</strong><strong data-lang-show="hi">पहचान दस्तावेज़</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="../category/jobs-education.html"><span class="tool-seo-icon" aria-hidden="true">🎓</span><span><strong data-lang-show="en">Jobs & Education</strong><strong data-lang-show="hi">नौकरी और शिक्षा</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="../states/index.html"><span class="tool-seo-icon" aria-hidden="true">🗺️</span><span><strong data-lang-show="en">All States Hub</strong><strong data-lang-show="hi">सभी राज्य सेवाएं</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a></div>
-</div></section>
-<!-- /TOOL SEO ENHANCEMENT -->
-</main>
-
-  <div id="site-footer">
+<div class="content-hi" data-lang-show="hi">
+<h2>सरकारी नौकरी दस्तावेज़ सत्यापन प्रक्रिया में महारत हासिल करें</h2><p>अपने वांछित सरकारी पद के लिए कठिन लिखित परीक्षाओं और साक्षात्कारों को पास करने पर बधाई! अंतिम और सबसे महत्वपूर्ण बाधा दस्तावेज़ सत्यापन (DV) चरण है। <strong>सरकारी नौकरी दस्तावेज़ सत्यापन चेकलिस्ट</strong> टूल यह सुनिश्चित करता है कि आप पूरी तरह से तैयार और व्यवस्थित हैं, जिससे अंतिम चरण में अयोग्यता का जोखिम कम हो जाता है।</p><h3>दस्तावेज़ सत्यापन का महत्व</h3><p>दस्तावेज़ सत्यापन एक सख्त प्रक्रिया है जहां अधिकारी उम्र, शिक्षा, श्रेणी और पहचान के संबंध में आपके आवेदन में किए गए दावों की पुष्टि करते हैं। यहां तक कि छोटी विसंगतियां या गायब प्रमाण पत्र भी तत्काल अस्वीकृति का कारण बन सकते हैं, चाहे आपका परीक्षा स्कोर कुछ भी हो।</p><h3>आमतौर पर आवश्यक महत्वपूर्ण दस्तावेज़</h3><ul><li><strong>पहचान प्रमाण:</strong> आधार कार्ड, पैन कार्ड, वोटर आईडी, या पासपोर्ट।</li><li><strong>शैक्षिक प्रमाण पत्र:</strong> 10वीं और 12वीं की मार्कशीट और पासिंग सर्टिफिकेट (जन्म तिथि सत्यापन के लिए महत्वपूर्ण), स्नातक/स्नातकोत्तर डिग्री जैसा कि लागू हो।</li><li><strong>श्रेणी/जाति प्रमाण पत्र:</strong> सक्षम प्राधिकारी द्वारा जारी निर्धारित केंद्र या राज्य सरकार के प्रारूप में SC/ST/OBC/EWS प्रमाण पत्र।</li><li><strong>मूल निवास प्रमाण पत्र:</strong> राज्य स्तरीय नौकरियों या विशिष्ट कोटा के लिए आवश्यक।</li><li><strong>तस्वीरें:</strong> कॉल लेटर में निर्दिष्ट अनुसार हालिया पासपोर्ट आकार की तस्वीरें।</li></ul><h3>DV के लिए कैसे तैयारी करें</h3><p>हमेशा मूल दस्तावेजों के साथ स्व-सत्यापित फोटोकॉपी के कम से कम दो सेट ले जाएं। उन्हें आधिकारिक DV कॉल लेटर में निर्दिष्ट क्रम में व्यवस्थित करें। सुनिश्चित करें कि सभी नाम और विवरण सभी दस्तावेजों में बिल्कुल मेल खाते हैं। यदि कोई विसंगति है, तो पहले से ही सुधार की कानूनी रूप से घोषणा करते हुए एक हलफनामा तैयार करें।</p>
+</div>
+</div>
+<div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--color-border);">
+<h3 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;"><span data-lang-show="en">Related Services &amp; Important Tools</span><span data-lang-show="hi">संबंधित सेवाएँ और महत्वपूर्ण टूल्स</span></h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; text-align: center;">
+<a href="../tools/eligibility-checker.html" style="text-decoration: none; padding: 20px; border-radius: 12px; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;">
+<div style="font-size: 2.5rem; margin-bottom: 10px;">✅</div>
+<strong style="color: var(--color-text);"><span data-lang-show="en">Check Eligibility</span><span data-lang-show="hi">पात्रता जांचें</span></strong>
+</a>
+<a href="../tools/document-checklist.html" style="text-decoration: none; padding: 20px; border-radius: 12px; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;">
+<div style="font-size: 2.5rem; margin-bottom: 10px;">📑</div>
+<strong style="color: var(--color-text);"><span data-lang-show="en">Document List</span><span data-lang-show="hi">दस्तावेज लिस्ट</span></strong>
+</a>
+<a href="../tools/csc-locator.html" style="text-decoration: none; padding: 20px; border-radius: 12px; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;">
+<div style="font-size: 2.5rem; margin-bottom: 10px;">📍</div>
+<strong style="color: var(--color-text);"><span data-lang-show="en">Nearest CSC</span><span data-lang-show="hi">नजदीकी CSC</span></strong>
+</a>
+<a href="../tools/status-troubleshooter.html" style="text-decoration: none; padding: 20px; border-radius: 12px; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;">
+<div style="font-size: 2.5rem; margin-bottom: 10px;">🔍</div>
+<strong style="color: var(--color-text);"><span data-lang-show="en">Check Status</span><span data-lang-show="hi">स्टेटस चेक करें</span></strong>
+</a>
+</div>
+</div>
+<div id="site-footer">
 <footer class="site-footer">
-  <div class="tricolor-rule"></div>
-  <div class="container" style="padding-top:36px;">
-    <div class="footer-disclaimer-banner" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
-      <h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
-      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
-    </div>
-    <div class="footer-grid">
-      <div>
-        <h4 data-i18n="site_name">SarkariSewa India</h4>
-        <p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
-      </div>
-      <div>
-        <h4 data-i18n="footer_tools_title">Tools & Apps</h4>
-        <ul>
-          <li><a href="../tools/index.html">🧮 Tools & Calculators</a></li>
-          <li><a href="../tools/eligibility-checker.html" data-i18n="nav_eligibility_engine">🎯 Scheme Eligibility Engine</a></li>
-          <li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
-          <li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
-          <li><a href="../tools/photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
-          <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
-          <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
-          <li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
-          <li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 data-i18n="footer_resources_title">Resources</h4>
-        <ul>
-          <li><a href="../project-report/index.html" data-i18n="nav_project_report">Project Report Generator</a></li>
-          <li><a href="../states/index.html" data-i18n="states_hub_title">State-wise Popular Services</a></li>
-          <li><a href="../about.html" data-i18n="footer_about_link">About</a></li>
-          <li><a href="../sitemap.html" data-i18n="footer_sitemap_link">Sitemap</a></li>
-          <li><a href="../faq.html" data-i18n="footer_faq_link">FAQ</a></li>
-          <li><a href="../contact.html" data-i18n="footer_contact_link">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 data-i18n="footer_support_title">Support</h4>
-        <ul>
-          <li><a href="../support/index.html" data-i18n="footer_support_home_link">Support Home</a></li>
-          <li><a href="../support/state-wise-services.html" data-i18n="footer_state_link">State-wise Services</a></li>
-          <li><a href="../support/helpline-directory.html" data-i18n="footer_helpline_link">Helpline Directory</a></li>
-          <li><a href="../support/rti-guide.html" data-i18n="footer_rti_link">RTI Guide</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 data-i18n="footer_legal_title">Legal</h4>
-        <ul>
-          <li><a href="../privacy-policy.html" data-i18n="privacy_title">Privacy Policy</a></li>
-          <li><a href="../disclaimer.html" data-i18n="disclaimer_title">Disclaimer</a></li>
-          <li><a href="../terms.html" data-i18n="terms_title">Terms &amp; Conditions</a></li>
-          <li><a href="../admin/login.html" data-i18n="admin_link">Staff Login</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
-    </div>
-  </div>
+<div class="tricolor-rule"></div>
+<div class="container" style="padding-top:36px;">
+<div class="footer-disclaimer-banner" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
+<h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
+</div>
+<div class="footer-grid">
+<div>
+<h4 data-i18n="site_name">SarkariSewa India</h4>
+<p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
+</div>
+<div>
+<h4 data-i18n="footer_tools_title">Tools &amp; Apps</h4>
+<ul>
+<li><a href="../tools/index.html">🧮 Tools &amp; Calculators</a></li>
+<li><a data-i18n="nav_eligibility_engine" href="../tools/eligibility-checker.html">🎯 Scheme Eligibility Engine</a></li>
+<li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
+<li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+<li><a href="../tools/photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
+<li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+<li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+<li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+<li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_resources_title">Resources</h4>
+<ul>
+<li><a data-i18n="nav_project_report" href="../project-report/index.html">Project Report Generator</a></li>
+<li><a data-i18n="states_hub_title" href="../states/index.html">State-wise Popular Services</a></li>
+<li><a data-i18n="footer_about_link" href="../about.html">About</a></li>
+<li><a data-i18n="footer_sitemap_link" href="../sitemap.html">Sitemap</a></li>
+<li><a data-i18n="footer_faq_link" href="../faq.html">FAQ</a></li>
+<li><a data-i18n="footer_contact_link" href="../contact.html">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_support_title">Support</h4>
+<ul>
+<li><a data-i18n="footer_support_home_link" href="../support/index.html">Support Home</a></li>
+<li><a data-i18n="footer_state_link" href="../support/state-wise-services.html">State-wise Services</a></li>
+<li><a data-i18n="footer_helpline_link" href="../support/helpline-directory.html">Helpline Directory</a></li>
+<li><a data-i18n="footer_rti_link" href="../support/rti-guide.html">RTI Guide</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_legal_title">Legal</h4>
+<ul>
+<li><a data-i18n="privacy_title" href="../privacy-policy.html">Privacy Policy</a></li>
+<li><a data-i18n="disclaimer_title" href="../disclaimer.html">Disclaimer</a></li>
+<li><a data-i18n="terms_title" href="../terms.html">Terms &amp; Conditions</a></li>
+<li><a data-i18n="admin_link" href="../admin/login.html">Staff Login</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
+</div>
+</div>
 </footer>
 <div class="ss-wa-wrapper" id="ss-wa-wrapper">
-  <button id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" aria-label="Close" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
-  <a href="https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g" target="_blank" rel="noopener noreferrer" class="ss-wa-floating-bar" aria-label="Join our WhatsApp Channel">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-    <span data-i18n="wa_join" style="font-weight: 600;">Join WhatsApp Channel</span>
-  </a>
+<button aria-label="Close" id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
+<a aria-label="Join our WhatsApp Channel" class="ss-wa-floating-bar" href="https://whatsapp.com/channel/0029VbDj7gCDp2Q8SYdFwj14" rel="noopener noreferrer" target="_blank">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+<span data-i18n="wa_join" style="font-weight: 600;">Join WhatsApp Channel</span>
+</a>
 </div>
 </div>
-
-  <script src="../assets/js/main.js" defer></script>
-  <script>
-
-    const checklists = {
-      'income': {
-        title: "आय प्रमाण पत्र (Income Certificate) चेकलिस्ट",
-        categories: [
-          {
-            title: "👤 पहचान प्रमाण (Identity Proof) - इनमें से कोई एक",
-            items: [
-              { id: "i_id_1", title: "आधार कार्ड (Aadhaar Card)", desc: "मोबाइल नंबर लिंक होना चाहिए।" },
-              { id: "i_id_2", title: "वोटर आईडी (Voter ID Card)", desc: "या पैन कार्ड / पासपोर्ट।" }
-            ]
-          },
-          {
-            title: "🏠 पता प्रमाण (Address Proof) - इनमें से कोई एक",
-            items: [
-              { id: "i_add_1", title: "राशन कार्ड (Ration Card)", desc: "आवेदक का नाम होना अनिवार्य है।" },
-              { id: "i_add_2", title: "बिजली का बिल (Electricity Bill)", desc: "पिछले 3 महीनों का।" }
-            ]
-          },
-          {
-            title: "💰 आय का प्रमाण (Proof of Income) - अनिवार्य",
-            items: [
-              { id: "i_inc_1", title: "वेतन पर्ची (Salary Slip)", desc: "अगर नौकरी करते हैं तो पिछले 3 महीने की सैलरी स्लिप।" },
-              { id: "i_inc_2", title: "ITR (Income Tax Return)", desc: "पिछले वर्ष का ITR (यदि भरते हैं)।" },
-              { id: "i_inc_3", title: "स्व-घोषणा पत्र (Self Declaration)", desc: "आय का शपथ पत्र (Affidavit) जो नोटरी से प्रमाणित हो।" }
-            ]
-          },
-          {
-            title: "📸 अन्य (Others)",
-            items: [
-              { id: "i_oth_1", title: "पासपोर्ट साइज़ फोटो", desc: "हाल ही में खींची गई 2 रंगीन फोटो।" }
-            ]
-          }
-        ]
-      },
-      'caste': {
-        title: "जाति प्रमाण पत्र (Caste Certificate) चेकलिस्ट",
-        categories: [
-          {
-            title: "👤 पहचान और पता प्रमाण",
-            items: [
-              { id: "c_id_1", title: "आधार कार्ड (Aadhaar Card)", desc: "आवेदक का आधार कार्ड।" },
-              { id: "c_add_1", title: "राशन कार्ड / बिजली बिल", desc: "पते के प्रमाण के लिए।" }
-            ]
-          },
-          {
-            title: "📜 जाति का प्रमाण (Proof of Caste) - अनिवार्य",
-            items: [
-              { id: "c_caste_1", title: "पिता/रिश्तेदार का जाति प्रमाण पत्र", desc: "खून के रिश्ते (पिता, चाचा, भाई) का पुराना जाति प्रमाण पत्र।" },
-              { id: "c_caste_2", title: "ज़मीन के कागज़ (खतौनी / Land Records)", desc: "अगर पुराना जाति प्रमाण पत्र नहीं है, तो 1950 (SC/ST) या 1984 (OBC) से पहले का ज़मीन का रिकॉर्ड।" },
-              { id: "c_caste_3", title: "स्कूल लीविंग सर्टिफिकेट (TC)", desc: "जिसमें जाति का उल्लेख हो।" }
-            ]
-          },
-          {
-            title: "📸 अन्य",
-            items: [
-              { id: "c_oth_1", title: "स्व-घोषणा पत्र (Self Declaration)", desc: "निर्धारित प्रारूप में एफिडेविट।" },
-              { id: "c_oth_2", title: "पासपोर्ट साइज़ फोटो", desc: "2 रंगीन फोटो।" }
-            ]
-          }
-        ]
-      },
-      'domicile': {
-        title: "मूल निवास प्रमाण पत्र (Domicile Certificate) चेकलिस्ट",
-        categories: [
-          {
-            title: "👤 पहचान प्रमाण",
-            items: [
-              { id: "d_id_1", title: "आधार कार्ड (Aadhaar Card)", desc: "अनिवार्य।" }
-            ]
-          },
-          {
-            title: "🏠 निवास का प्रमाण (Proof of Residence) - 10+ साल का प्रमाण",
-            items: [
-              { id: "d_res_1", title: "बिजली / पानी का बिल", desc: "पुराना बिल जो साबित करे आप यहाँ कई सालों से रह रहे हैं।" },
-              { id: "d_res_2", title: "राशन कार्ड / वोटर लिस्ट में नाम", desc: "स्थानीय पते का प्रमाण।" },
-              { id: "d_res_3", title: "स्कूल/कॉलेज का सर्टिफिकेट", desc: "उसी राज्य से की गई पढ़ाई का प्रमाण।" }
-            ]
-          },
-          {
-            title: "📸 अन्य",
-            items: [
-              { id: "d_oth_1", title: "स्व-घोषणा पत्र (Self Declaration)", desc: "निवास की घोषणा।" },
-              { id: "d_oth_2", title: "पासपोर्ट साइज़ फोटो", desc: "2 रंगीन फोटो।" }
-            ]
-          }
-        ]
-      },
-      'passport': {
-        title: "नया पासपोर्ट (New Passport) चेकलिस्ट",
-        categories: [
-          {
-            title: "📅 जन्म तिथि प्रमाण (DOB Proof) - कोई एक",
-            items: [
-              { id: "p_dob_1", title: "जन्म प्रमाण पत्र (Birth Certificate)", desc: "नगर निगम से जारी।" },
-              { id: "p_dob_2", title: "10वीं की मार्कशीट (10th Marksheet)", desc: "बोर्ड द्वारा जारी।" },
-              { id: "p_dob_3", title: "आधार कार्ड / पैन कार्ड", desc: "जिसमें पूरी जन्मतिथि (DD/MM/YYYY) लिखी हो।" }
-            ]
-          },
-          {
-            title: "🏠 पता प्रमाण (Address Proof) - कोई एक",
-            items: [
-              { id: "p_add_1", title: "आधार कार्ड (Aadhaar Card)", desc: "पासपोर्ट पते और आधार पते में अंतर नहीं होना चाहिए।" },
-              { id: "p_add_2", title: "बिजली बिल / बैंक पासबुक", desc: "वर्तमान पते के साथ।" }
-            ]
-          },
-          {
-            title: "🎓 शिक्षा प्रमाण (ECNR के लिए)",
-            items: [
-              { id: "p_edu_1", title: "10वीं या उच्च शिक्षा की डिग्री", desc: "ECNR (Non-ECR) कैटेगरी के लिए अनिवार्य।" }
-            ]
-          }
-        ]
-      },
-      'dl': {
-        title: "लर्निंग ड्राइविंग लाइसेंस (Learner's DL) चेकलिस्ट",
-        categories: [
-          {
-            title: "📅 आयु प्रमाण (Age Proof)",
-            items: [
-              { id: "dl_age_1", title: "10वीं की मार्कशीट या जन्म प्रमाण पत्र", desc: "जन्म तिथि के लिए।" },
-              { id: "dl_age_2", title: "पैन कार्ड / पासपोर्ट", desc: "विकल्प के रूप में।" }
-            ]
-          },
-          {
-            title: "🏠 पता प्रमाण",
-            items: [
-              { id: "dl_add_1", title: "आधार कार्ड (Aadhaar Card)", desc: "आधार OTP के ज़रिए बिना RTO गए लाइसेंस बन सकता है।" }
-            ]
-          },
-          {
-            title: "⚕️ मेडिकल",
-            items: [
-              { id: "dl_med_1", title: "मेडिकल सर्टिफिकेट (Form 1A)", desc: "40 वर्ष से अधिक आयु के लोगों के लिए MBBS डॉक्टर द्वारा प्रमाणित अनिवार्य।" }
-            ]
-          }
-        ]
-      }
-    };
-
-    function generateChecklist() {
-      const select = document.getElementById('service-select');
-      const serviceId = select.value;
-      const resultDiv = document.getElementById('checklist-result');
-      const titleEl = document.getElementById('result-title');
-      const contentEl = document.getElementById('checklist-content');
-
-      if (!serviceId || !checklists[serviceId]) {
-        resultDiv.style.display = 'none';
-        return;
-      }
-
-      const data = checklists[serviceId];
-      titleEl.innerText = data.title;
-      
-      let html = '';
-      data.categories.forEach(cat => {
-        html += `<div class="checklist-category">
-                  <h3>${cat.title}</h3>`;
-        
-        cat.items.forEach(item => {
-          html += `<div class="doc-item">
-                     <input type="checkbox" id="${item.id}">
-                     <label for="${item.id}">
-                       <span class="doc-title">${item.title}</span>
-                       <span class="doc-desc">${item.desc}</span>
-                     </label>
-                   </div>`;
-        });
-        
-        html += `</div>`;
-      });
-
-      contentEl.innerHTML = html;
-      resultDiv.style.display = 'block';
-    }
-  </script>
-</body>
+<script src="../assets/js/main.js?v=2.4"></script>
+<script src="../assets/js/consent.js"></script>
+<script src="../assets/js/i18n-helper.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/services-data.js"></script>
+<script src="../assets/js/service.js"></script>
+<script src="../assets/js/comments.js"></script>
+<script src="../assets/js/subscribe.js"></script>
+</main></body>
 </html>

@@ -1,104 +1,100 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
-  <link rel="icon" href="../favicon.ico">
-  <link rel="manifest" href="../manifest.json">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../favicon.ico" rel="icon"/>
+<link href="../manifest.json" rel="manifest"/>
 <title>CSC Approvals — SarkariSewa Admin</title>
-<meta name="robots" content="noindex, nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="../assets/css/admin-theme.css?v=3">
+<meta content="noindex, nofollow" name="robots"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/css/style.css" rel="stylesheet"/>
+<link href="../assets/css/admin-theme.css?v=3" rel="stylesheet"/>
 <script src="../assets/js/admin-theme-toggle.js"></script>
-</head>
+<link href="https://sarkarisewaindia.com/admin/csc.html" rel="canonical"/></head>
 <body>
-
-<div class="admin-layout" id="dash-wrap" hidden>
-  <aside class="admin-sidebar">
-    <div class="admin-sidebar-brand">
-      <div class="admin-sidebar-logo">S</div>
-      <div>
-        <div class="admin-sidebar-title">SarkariSewa</div>
-        <div class="admin-sidebar-subtitle">Admin Console</div>
-      </div>
-    </div>
-    <nav class="admin-nav">
-      <a href="dashboard.html" class="admin-nav-item">📊 Overview</a>
-      <a href="comments.html" class="admin-nav-item">💬 Comments</a>
-      <a href="subscribers.html" class="admin-nav-item">📬 Subscribers</a>
-      <a href="csc.html" class="admin-nav-item active">🏬 CSC Listings</a>
-      <a href="blog.html" class="admin-nav-item">📝 Blog Manager</a>
-      <a href="jobs.html" class="admin-nav-item">💼 Job Alerts</a>
-      <a href="exams.html" class="admin-nav-item">📅 Exam Calendar</a>
-      <a href="deadlines.html" class="admin-nav-item">🗓️ Deadlines</a>
-      <a href="services.html" class="admin-nav-item">⚙️ Services</a>
-      <a href="analytics.html" class="admin-nav-item">📈 Analytics</a>
-    </nav>
-    <div class="admin-sidebar-footer">
-      <button type="button" class="theme-toggle-btn">☀️ Light Mode</button>
-      <div style="font-size:0.78rem; color:var(--admin-text-muted);" id="whoami">Loading identity…</div>
-      <button class="logout-btn" id="logout" style="width:100%;">Log out</button>
-    </div>
-  </aside>
-
-    <main class="admin-main">
-    <div class="admin-topbar">
-      <div class="admin-page-title">
-        <h1>CSC / VLE Approvals</h1>
-        <p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Manage and verify incoming CSC centre listings submitted by operators.</p>
-      </div>
-    </div>
-
-    <div class="dash-card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <h3 style="margin:0;">Pending Verifications</h3>
-        <button id="csc-refresh-btn" class="theme-toggle-btn">↻ Refresh</button>
-      </div>
-      <div style="overflow-x:auto;">
-        <table class="admin-table" style="width:100%;">
-          <thead>
-            <tr>
-              <th>Submitted</th>
-              <th>Center Name</th>
-              <th>CSC ID</th>
-              <th>Pincode</th>
-              <th>Contact</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="csc-pending-list">
-            <tr><td colspan="6" style="text-align:center; color:var(--admin-text-muted);">Loading pending requests...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="dash-card">
-      <h3 style="margin-top:0;">Approved Centres</h3>
-      <div style="overflow-x:auto;">
-        <table class="admin-table" style="width:100%;">
-          <thead>
-            <tr>
-              <th>Approved On</th>
-              <th>Center Name</th>
-              <th>CSC ID</th>
-              <th>Pincode</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="csc-approved-list">
-            <tr><td colspan="5" style="text-align:center; color:var(--admin-text-muted);">Loading approved centres...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
+<div class="admin-layout" hidden="" id="dash-wrap">
+<aside class="admin-sidebar">
+<div class="admin-sidebar-brand">
+<div class="admin-sidebar-logo">S</div>
+<div>
+<div class="admin-sidebar-title">SarkariSewa</div>
+<div class="admin-sidebar-subtitle">Admin Console</div>
 </div>
-
+</div>
+<nav class="admin-nav">
+<a class="admin-nav-item" href="dashboard.html">📊 Overview</a>
+<a class="admin-nav-item" href="comments.html">💬 Comments</a>
+<a class="admin-nav-item" href="subscribers.html">📬 Subscribers</a>
+<a class="admin-nav-item active" href="csc.html">🏬 CSC Listings</a>
+<a class="admin-nav-item" href="blog.html">📝 Blog Manager</a>
+<a class="admin-nav-item" href="jobs.html">💼 Job Alerts</a>
+<a class="admin-nav-item" href="exams.html">📅 Exam Calendar</a>
+<a class="admin-nav-item" href="deadlines.html">🗓️ Deadlines</a>
+<a class="admin-nav-item" href="services.html">⚙️ Services</a>
+<a class="admin-nav-item" href="analytics.html">📈 Analytics</a>
+</nav>
+<div class="admin-sidebar-footer">
+<button class="theme-toggle-btn" type="button">☀️ Light Mode</button>
+<div id="whoami" style="font-size:0.78rem; color:var(--admin-text-muted);">Loading identity…</div>
+<button class="logout-btn" id="logout" style="width:100%;">Log out</button>
+</div>
+</aside>
+<main class="admin-main">
+<div class="admin-topbar">
+<div class="admin-page-title">
+<h1>CSC / VLE Approvals</h1>
+<p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Manage and verify incoming CSC centre listings submitted by operators.</p>
+</div>
+</div>
+<div class="dash-card">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+<h3 style="margin:0;">Pending Verifications</h3>
+<button class="theme-toggle-btn" id="csc-refresh-btn">↻ Refresh</button>
+</div>
+<div style="overflow-x:auto;">
+<table class="admin-table" style="width:100%;">
+<thead>
+<tr>
+<th>Submitted</th>
+<th>Center Name</th>
+<th>CSC ID</th>
+<th>Pincode</th>
+<th>Contact</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="csc-pending-list">
+<tr><td colspan="6" style="text-align:center; color:var(--admin-text-muted);">Loading pending requests...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="dash-card">
+<h3 style="margin-top:0;">Approved Centres</h3>
+<div style="overflow-x:auto;">
+<table class="admin-table" style="width:100%;">
+<thead>
+<tr>
+<th>Approved On</th>
+<th>Center Name</th>
+<th>CSC ID</th>
+<th>Pincode</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="csc-approved-list">
+<tr><td colspan="5" style="text-align:center; color:var(--admin-text-muted);">Loading approved centres...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
 <!-- Dependencies -->
 <script src="../assets/js/supabase-client.js"></script>
 <script src="../assets/js/admin-auth.js"></script>

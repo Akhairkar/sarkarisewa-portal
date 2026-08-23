@@ -58,8 +58,8 @@ jobs:
       - name: Generate CSC directory pages
         run: python3 tools/generate-csc-pages.py
 
-      - name: Regenerate sitemap.xml
-        run: python3 generate-sitemap.py
+      - name: Regenerate sitemaps
+        run: python3 generate_sitemap_html.py
 
       - name: Submit sitemap to IndexNow
         run: python3 tools/submit-indexnow.py
@@ -68,7 +68,7 @@ jobs:
         run: |
           git config user.name "sarkarisewa-bot"
           git config user.email "actions@github.com"
-          git add jobs/*.html blog/*.html category/*.html service/*.html states/*.html csc/*.html sitemap.xml
+          git add jobs/*.html blog/*.html category/*.html service/*.html states/*.html csc/*.html sitemap.xml sitemap.html
           if git diff --cached --quiet; then
             echo "Nothing changed — skipping commit."
           else

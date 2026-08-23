@@ -1,169 +1,160 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
-  <link rel="icon" href="../favicon.ico">
-  <link rel="manifest" href="../manifest.json">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../favicon.ico" rel="icon"/>
+<link href="../manifest.json" rel="manifest"/>
 <title>Blog Manager — SarkariSewa Admin</title>
-<meta name="robots" content="noindex, nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="../assets/css/admin-theme.css?v=3">
+<meta content="noindex, nofollow" name="robots"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/css/style.css" rel="stylesheet"/>
+<link href="../assets/css/admin-theme.css?v=3" rel="stylesheet"/>
 <script src="../assets/js/admin-theme-toggle.js"></script>
-</head>
+<link href="https://sarkarisewaindia.com/admin/blog.html" rel="canonical"/></head>
 <body>
-
-<div class="admin-layout" id="dash-wrap" hidden>
-  <aside class="admin-sidebar">
-    <div class="admin-sidebar-brand">
-      <div class="admin-sidebar-logo">S</div>
-      <div>
-        <div class="admin-sidebar-title">SarkariSewa</div>
-        <div class="admin-sidebar-subtitle">Admin Console</div>
-      </div>
-    </div>
-    <nav class="admin-nav">
-      <a href="dashboard.html" class="admin-nav-item">📊 Overview</a>
-      <a href="comments.html" class="admin-nav-item">💬 Comments</a>
-      <a href="subscribers.html" class="admin-nav-item">📬 Subscribers</a>
-      <a href="csc.html" class="admin-nav-item">🏬 CSC Listings</a>
-      <a href="blog.html" class="admin-nav-item active">📝 Blog Manager</a>
-      <a href="jobs.html" class="admin-nav-item">💼 Job Alerts</a>
-      <a href="exams.html" class="admin-nav-item">📅 Exam Calendar</a>
-      <a href="deadlines.html" class="admin-nav-item">🗓️ Deadlines</a>
-      <a href="services.html" class="admin-nav-item">⚙️ Services</a>
-      <a href="analytics.html" class="admin-nav-item">📈 Analytics</a>
-    </nav>
-    <div class="admin-sidebar-footer">
-      <button type="button" class="theme-toggle-btn">☀️ Light Mode</button>
-      <div style="font-size:0.78rem; color:var(--admin-text-muted);" id="whoami">Loading identity…</div>
-      <button class="logout-btn" id="logout" style="width:100%;">Log out</button>
-    </div>
-  </aside>
-
-  <main class="admin-main">
-    <div class="admin-topbar">
-      <div class="admin-page-title">
-        <h1>Blog Posts Manager</h1>
-        <p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Write, publish, and bulk-import blog posts directly to the live site.</p>
-      </div>
-    </div>
-
-    <div class="dash-card" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.3);">
-      <strong>ℹ How this works.</strong> Fill the form and click
+<div class="admin-layout" hidden="" id="dash-wrap">
+<aside class="admin-sidebar">
+<div class="admin-sidebar-brand">
+<div class="admin-sidebar-logo">S</div>
+<div>
+<div class="admin-sidebar-title">SarkariSewa</div>
+<div class="admin-sidebar-subtitle">Admin Console</div>
+</div>
+</div>
+<nav class="admin-nav">
+<a class="admin-nav-item" href="dashboard.html">📊 Overview</a>
+<a class="admin-nav-item" href="comments.html">💬 Comments</a>
+<a class="admin-nav-item" href="subscribers.html">📬 Subscribers</a>
+<a class="admin-nav-item" href="csc.html">🏬 CSC Listings</a>
+<a class="admin-nav-item active" href="blog.html">📝 Blog Manager</a>
+<a class="admin-nav-item" href="jobs.html">💼 Job Alerts</a>
+<a class="admin-nav-item" href="exams.html">📅 Exam Calendar</a>
+<a class="admin-nav-item" href="deadlines.html">🗓️ Deadlines</a>
+<a class="admin-nav-item" href="services.html">⚙️ Services</a>
+<a class="admin-nav-item" href="analytics.html">📈 Analytics</a>
+</nav>
+<div class="admin-sidebar-footer">
+<button class="theme-toggle-btn" type="button">☀️ Light Mode</button>
+<div id="whoami" style="font-size:0.78rem; color:var(--admin-text-muted);">Loading identity…</div>
+<button class="logout-btn" id="logout" style="width:100%;">Log out</button>
+</div>
+</aside>
+<main class="admin-main">
+<div class="admin-topbar">
+<div class="admin-page-title">
+<h1>Blog Posts Manager</h1>
+<p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Write, publish, and bulk-import blog posts directly to the live site.</p>
+</div>
+</div>
+<div class="dash-card" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.3);">
+<strong>ℹ How this works.</strong> Fill the form and click
       <strong>Publish</strong> — the post goes live on <code>/blog/</code>
       immediately, no coding or git push needed. Click <strong>Save draft</strong>
       to keep working on it without publishing yet.
     </div>
-
-    <div class="dash-card">
-      <h3 style="margin-top:0;">Bulk import</h3>
-      <p style="font-size:0.85rem; color:var(--admin-text-muted); margin-top:0;">
+<div class="dash-card">
+<h3 style="margin-top:0;">Bulk import</h3>
+<p style="font-size:0.85rem; color:var(--admin-text-muted); margin-top:0;">
         Paste a JSON list of posts here and click Import — all of them get added in one go as drafts or published posts.
       </p>
-      <textarea id="blog-bulk-json" rows="5" placeholder='[{"title_en": "...", "title_hi": "...", "category": "identity-documents", "excerpt_en": "...", "excerpt_hi": "...", "body_en": "<p>...</p>", "body_hi": "<p>...</p>", "date_published": "2026-08-01", "related_service_id": "aadhaar-card"}]' style="width:100%; font-family:var(--admin-font-mono); font-size:0.82rem;"></textarea>
-      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;">
-        <label style="font-size:0.85rem; display:flex; align-items:center; gap:6px; color:var(--admin-text-sub);">
-          <input type="checkbox" id="blog-bulk-publish"> Publish immediately (skip draft review)
+<textarea id="blog-bulk-json" placeholder='[{"title_en": "...", "title_hi": "...", "category": "identity-documents", "excerpt_en": "...", "excerpt_hi": "...", "body_en": "&lt;p&gt;...&lt;/p&gt;", "body_hi": "&lt;p&gt;...&lt;/p&gt;", "date_published": "2026-08-01", "related_service_id": "aadhaar-card"}]' rows="5" style="width:100%; font-family:var(--admin-font-mono); font-size:0.82rem;"></textarea>
+<div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px;">
+<label style="font-size:0.85rem; display:flex; align-items:center; gap:6px; color:var(--admin-text-sub);">
+<input id="blog-bulk-publish" type="checkbox"/> Publish immediately (skip draft review)
         </label>
-        <button id="blog-bulk-import-btn" class="logout-btn" type="button">Import</button>
-        <span id="blog-bulk-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
-      </div>
-    </div>
-
-    <div class="dash-card">
-      <h3 id="blog-form-heading" style="margin-top:0;">Write a new post</h3>
-      <input type="hidden" id="blog-edit-id" value="">
-      <div style="display:grid; gap:14px;">
-        <div>
-          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Title (English) *</label>
-          <input type="text" id="blog-title-en" style="width:100%;">
-        </div>
-        <div>
-          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Title (Hindi)</label>
-          <input type="text" id="blog-title-hi" style="width:100%;">
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
-          <div>
-            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Category</label>
-            <select id="blog-category" style="width:100%;">
-              <option value="">— None —</option>
-            </select>
-          </div>
-          <div>
-            <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Date published</label>
-            <input type="date" id="blog-date" style="width:100%;">
-          </div>
-        </div>
-        <div>
-          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Related official service</label>
-          <select id="blog-related-service" style="width:100%;">
-            <option value="">— None —</option>
-          </select>
-        </div>
-        <div>
-          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Excerpt (English)</label>
-          <textarea id="blog-excerpt-en" rows="2" style="width:100%;"></textarea>
-        </div>
-        <div>
-          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Excerpt (Hindi)</label>
-          <textarea id="blog-excerpt-hi" rows="2" style="width:100%;"></textarea>
-        </div>
-
-        <div>
-          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Body (English) *</label>
-          <div class="editor-toolbar" data-target="blog-body-en">
-            <button type="button" data-cmd="bold"><b>B</b></button>
-            <button type="button" data-cmd="italic"><i>I</i></button>
-            <button type="button" data-cmd="formatBlock" data-val="H2">H2</button>
-            <button type="button" data-cmd="insertUnorderedList">• List</button>
-            <button type="button" data-cmd="insertOrderedList">1. List</button>
-            <button type="button" data-cmd="createLink">Link</button>
-            <button type="button" data-cmd="removeFormat">Clear</button>
-          </div>
-          <div id="blog-body-en" class="rte" contenteditable="true" style="min-height:140px;"></div>
-        </div>
-        <div>
-          <label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Body (Hindi)</label>
-          <div class="editor-toolbar" data-target="blog-body-hi">
-            <button type="button" data-cmd="bold"><b>B</b></button>
-            <button type="button" data-cmd="italic"><i>I</i></button>
-            <button type="button" data-cmd="formatBlock" data-val="H2">H2</button>
-            <button type="button" data-cmd="insertUnorderedList">• List</button>
-            <button type="button" data-cmd="insertOrderedList">1. List</button>
-            <button type="button" data-cmd="createLink">Link</button>
-            <button type="button" data-cmd="removeFormat">Clear</button>
-          </div>
-          <div id="blog-body-hi" class="rte" contenteditable="true" style="min-height:140px;"></div>
-        </div>
-
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px;">
-          <button id="blog-save-draft" class="logout-btn" type="button">Save draft</button>
-          <button id="blog-publish" class="logout-btn logout-btn--primary" type="button">Publish</button>
-          <button id="blog-cancel-edit" class="logout-btn" type="button" style="display:none;">Cancel edit</button>
-          <span id="blog-form-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="dash-card">
-      <h3 style="margin-top:0;">Posts written here <span id="blog-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
-      <table class="cat-table" id="blog-table">
-        <thead><tr><th>Title</th><th>Category</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
-        <tbody><tr><td colspan="5" class="loading">Loading…</td></tr></tbody>
-      </table>
-    </div>
-  </main>
+<button class="logout-btn" id="blog-bulk-import-btn" type="button">Import</button>
+<span id="blog-bulk-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
 </div>
-
+</div>
+<div class="dash-card">
+<h3 id="blog-form-heading" style="margin-top:0;">Write a new post</h3>
+<input id="blog-edit-id" type="hidden" value=""/>
+<div style="display:grid; gap:14px;">
+<div>
+<label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Title (English) *</label>
+<input id="blog-title-en" style="width:100%;" type="text"/>
+</div>
+<div>
+<label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Title (Hindi)</label>
+<input id="blog-title-hi" style="width:100%;" type="text"/>
+</div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+<div>
+<label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Category</label>
+<select id="blog-category" style="width:100%;">
+<option value="">— None —</option>
+</select>
+</div>
+<div>
+<label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Date published</label>
+<input id="blog-date" style="width:100%;" type="date"/>
+</div>
+</div>
+<div>
+<label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Related official service</label>
+<select id="blog-related-service" style="width:100%;">
+<option value="">— None —</option>
+</select>
+</div>
+<div>
+<label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Excerpt (English)</label>
+<textarea id="blog-excerpt-en" rows="2" style="width:100%;"></textarea>
+</div>
+<div>
+<label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Excerpt (Hindi)</label>
+<textarea id="blog-excerpt-hi" rows="2" style="width:100%;"></textarea>
+</div>
+<div>
+<label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Body (English) *</label>
+<div class="editor-toolbar" data-target="blog-body-en">
+<button data-cmd="bold" type="button"><b>B</b></button>
+<button data-cmd="italic" type="button"><i>I</i></button>
+<button data-cmd="formatBlock" data-val="H2" type="button">H2</button>
+<button data-cmd="insertUnorderedList" type="button">• List</button>
+<button data-cmd="insertOrderedList" type="button">1. List</button>
+<button data-cmd="createLink" type="button">Link</button>
+<button data-cmd="removeFormat" type="button">Clear</button>
+</div>
+<div class="rte" contenteditable="true" id="blog-body-en" style="min-height:140px;"></div>
+</div>
+<div>
+<label style="display:block; font-size:0.82rem; font-weight:600; margin-bottom:4px;">Body (Hindi)</label>
+<div class="editor-toolbar" data-target="blog-body-hi">
+<button data-cmd="bold" type="button"><b>B</b></button>
+<button data-cmd="italic" type="button"><i>I</i></button>
+<button data-cmd="formatBlock" data-val="H2" type="button">H2</button>
+<button data-cmd="insertUnorderedList" type="button">• List</button>
+<button data-cmd="insertOrderedList" type="button">1. List</button>
+<button data-cmd="createLink" type="button">Link</button>
+<button data-cmd="removeFormat" type="button">Clear</button>
+</div>
+<div class="rte" contenteditable="true" id="blog-body-hi" style="min-height:140px;"></div>
+</div>
+<div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px;">
+<button class="logout-btn" id="blog-save-draft" type="button">Save draft</button>
+<button class="logout-btn logout-btn--primary" id="blog-publish" type="button">Publish</button>
+<button class="logout-btn" id="blog-cancel-edit" style="display:none;" type="button">Cancel edit</button>
+<span id="blog-form-msg" style="font-size:0.85rem; color:var(--admin-text-muted);"></span>
+</div>
+</div>
+</div>
+<div class="dash-card">
+<h3 style="margin-top:0;">Posts written here <span id="blog-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
+<table class="cat-table" id="blog-table">
+<thead><tr><th>Title</th><th>Category</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody><tr><td class="loading" colspan="5">Loading…</td></tr></tbody>
+</table>
+</div>
+</main>
+</div>
 <div class="admin-wrap-login" id="dash-loading">
-  <p class="loading" style="font-size:1.1rem; color:var(--admin-text-sub);">Connecting to Supabase Console…</p>
+<p class="loading" style="font-size:1.1rem; color:var(--admin-text-sub);">Connecting to Supabase Console…</p>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../assets/js/supabase-client.js"></script>
 <script>

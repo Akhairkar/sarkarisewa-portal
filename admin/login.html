@@ -1,58 +1,54 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
-  <link rel="icon" href="../favicon.ico">
-  <link rel="manifest" href="../manifest.json">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../favicon.ico" rel="icon"/>
+<link href="../manifest.json" rel="manifest"/>
 <title>Staff Login — SarkariSewa India</title>
-<meta name="robots" content="noindex, nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="../assets/css/admin-theme.css?v=3">
+<meta content="noindex, nofollow" name="robots"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/css/style.css" rel="stylesheet"/>
+<link href="../assets/css/admin-theme.css?v=3" rel="stylesheet"/>
 <script src="../assets/js/admin-theme-toggle.js"></script>
-<link rel="canonical" href="https://sarkarisewaindia.com/admin/login.html">
+<link href="https://sarkarisewaindia.com/admin/login.html" rel="canonical"/>
 </head>
-<body class="admin-wrap-login">
+<body class="admin-wrap-login"><h1 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Staff Login — SarkariSewa India</h1>
 <div class="admin-card-login">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <div style="display:flex; align-items:center; gap:12px;">
-      <div class="admin-sidebar-logo">S</div>
-      <div>
-        <h2 style="margin:0; font-size:1.35rem;">Staff Portal</h2>
-        <span class="admin-sidebar-subtitle">SarkariSewa Admin</span>
-      </div>
-    </div>
-    <button type="button" class="theme-toggle-btn" style="font-size:0.75rem; padding:5px 10px;">☀️ Light</button>
-  </div>
-  <p style="color:var(--admin-text-muted); font-size:0.88rem; margin-top:0; margin-bottom:24px;">Content &amp; admin management access.</p>
-
-  <form id="login-form">
-    <div style="margin-bottom:16px;">
-      <label for="email" style="display:block; margin-bottom:6px;">Email address</label>
-      <input type="email" id="email" name="email" autocomplete="username" placeholder="admin@sarkarisewaindia.com" style="width:100%;" required>
-    </div>
-
-    <div style="margin-bottom:20px;">
-      <label for="password" style="display:block; margin-bottom:6px;">Password</label>
-      <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••••••" style="width:100%;" required>
-    </div>
-
-    <button type="submit" id="login-submit" class="logout-btn logout-btn--primary" style="width:100%; justify-content:center; padding:12px 18px !important; font-size:0.92rem !important;">Log in</button>
-    <p id="login-error" class="admin-error">Incorrect email or password.</p>
-  </form>
-
-  <div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--admin-border);">
-    <p style="font-size:0.8rem; color:var(--admin-text-muted); margin:0; line-height:1.5;">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+<div style="display:flex; align-items:center; gap:12px;">
+<div class="admin-sidebar-logo">S</div>
+<div>
+<h2 style="margin:0; font-size:1.35rem;">Staff Portal</h2>
+<span class="admin-sidebar-subtitle">SarkariSewa Admin</span>
+</div>
+</div>
+<button class="theme-toggle-btn" style="font-size:0.75rem; padding:5px 10px;" type="button">☀️ Light</button>
+</div>
+<p style="color:var(--admin-text-muted); font-size:0.88rem; margin-top:0; margin-bottom:24px;">Content &amp; admin management access.</p>
+<form id="login-form">
+<div style="margin-bottom:16px;">
+<label for="email" style="display:block; margin-bottom:6px;">Email address</label>
+<input autocomplete="username" id="email" name="email" placeholder="admin@sarkarisewaindia.com" required="" style="width:100%;" type="email"/>
+</div>
+<div style="margin-bottom:20px;">
+<label for="password" style="display:block; margin-bottom:6px;">Password</label>
+<input autocomplete="current-password" id="password" name="password" placeholder="••••••••••••" required="" style="width:100%;" type="password"/>
+</div>
+<button class="logout-btn logout-btn--primary" id="login-submit" style="width:100%; justify-content:center; padding:12px 18px !important; font-size:0.92rem !important;" type="submit">Log in</button>
+<p class="admin-error" id="login-error">Incorrect email or password.</p>
+</form>
+<div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--admin-border);">
+<p style="font-size:0.8rem; color:var(--admin-text-muted); margin:0; line-height:1.5;">
       Authentication powered by Supabase Auth. Admin accounts are managed directly in the Supabase Dashboard.
     </p>
-    <p style="margin-top:14px; margin-bottom:0;"><a href="../index.html" style="font-size:0.85rem; color:var(--admin-primary); text-decoration:none; font-weight:600;">← Back to site</a></p>
-  </div>
+<p style="margin-top:14px; margin-bottom:0;"><a href="../index.html" style="font-size:0.85rem; color:var(--admin-primary); text-decoration:none; font-weight:600;">← Back to site</a></p>
 </div>
-
+</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../assets/js/supabase-client.js"></script>
 <script>
