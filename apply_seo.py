@@ -3,54 +3,54 @@ import os
 
 updates = [
     {
-        "file": "states/ladakh-ration-card.html",
-        "title": "Ladakh Ration Card List 2026: लद्दाख राशन कार्ड Apply Online",
-        "desc": "Ladakh Food & Civil Supplies राशन कार्ड नई लिस्ट (Smart Card) में अपना नाम कैसे चेक करें? नया राशन कार्ड ऑनलाइन अप्लाई प्रोसेस, documents और e-KYC।"
+        "file": "states/bihar-income-certificate.html",
+        "title": "Bihar Income Certificate Apply: आय प्रमाण पत्र (RTPS Bihar)",
+        "desc": "RTPS Bihar (ServicePlus) पोर्टल से आय प्रमाण पत्र (Income Certificate) ऑनलाइन कैसे बनवाएं? \u20b90 fee, required documents, फॉर्म और status चेक करने का तरीका।"
     },
     {
-        "file": "states/ladakh-income-certificate.html",
-        "title": "Ladakh Income Certificate Apply Online: आय प्रमाण पत्र",
-        "desc": "Ladakh e-Services पोर्टल से आय प्रमाण पत्र (Income Certificate) ऑनलाइन कैसे बनवाएं? Fees, required documents, फॉर्म फॉर्मेट और status चेक करने का तरीका।"
+        "file": "states/bihar-birth-certificate.html",
+        "title": "Bihar Birth Certificate Apply Online: जन्म प्रमाण पत्र PDF",
+        "desc": "बिहार (Bihar) में जन्म प्रमाण पत्र (Birth Certificate) ऑनलाइन कैसे अप्लाई करें? Registration process, late fees penalty और PDF सर्टिफिकेट डाउनलोड।"
     },
     {
-        "file": "states/ladakh-birth-certificate.html",
-        "title": "Ladakh Birth Certificate Apply Online: जन्म प्रमाण पत्र PDF",
-        "desc": "Ladakh में जन्म प्रमाण पत्र (Birth Certificate) ऑनलाइन कैसे अप्लाई करें? Registration process, late fee penalty और PDF सर्टिफिकेट डाउनलोड की जानकारी।"
+        "file": "states/bihar.html",
+        "title": "Bihar Sarkari Yojana List 2026: बिहार सरकारी योजनाएं & RTPS",
+        "desc": "बिहार (Bihar) सरकार की सभी नई योजनाएं, उद्यमी योजना, RTPS पोर्टल सेवाएं और ऑनलाइन फॉर्म यहाँ देखें। Bihar govt jobs और scholarship की पूरी जानकारी।"
     },
     {
-        "file": "states/kerala-ration-card.html",
-        "title": "Kerala Ration Card List 2026: Civil Supplies Apply Online",
-        "desc": "Kerala Civil Supplies (PDS) राशन कार्ड नई लिस्ट में नाम कैसे देखें? नया राशन कार्ड ऑनलाइन अप्लाई, documents और e-KYC (Aadhaar seeding) का official प्रोसेस।"
+        "file": "states/assam-ration-card.html",
+        "title": "Assam Ration Card List 2026: असम राशन कार्ड Apply Online",
+        "desc": "Assam Food & Civil Supplies राशन कार्ड (Smart Card) नई लिस्ट में अपना नाम कैसे चेक करें? नया राशन कार्ड ऑनलाइन अप्लाई प्रोसेस, documents और e-KYC।"
     },
     {
-        "file": "states/kerala-income-certificate.html",
-        "title": "Kerala Income Certificate Apply Online: e-District Kerala",
-        "desc": "e-District Kerala पोर्टल से Income Certificate (आय प्रमाण पत्र) ऑनलाइन कैसे बनवाएं? \u20b915 fees, required documents, फॉर्म और status चेक करने का आसान तरीका।"
+        "file": "states/assam-income-certificate.html",
+        "title": "Assam Income Certificate Apply Online: आय प्रमाण पत्र (e-District)",
+        "desc": "e-District Assam (Sewasetu) पोर्टल से आय प्रमाण पत्र (Income Certificate) ऑनलाइन कैसे बनवाएं? \u20b930 fee, required documents, फॉर्म और status चेक करें।"
     },
     {
-        "file": "states/kerala-birth-certificate.html",
-        "title": "Kerala Birth Certificate Apply Online: Sevana Portal PDF",
-        "desc": "Kerala (Sevana Portal) में जन्म प्रमाण पत्र (Birth Certificate) ऑनलाइन कैसे अप्लाई करें? Registration, late fees और PDF सर्टिफिकेट डाउनलोड।"
+        "file": "states/assam-birth-certificate.html",
+        "title": "Assam Birth Certificate Apply Online: जन्म प्रमाण पत्र PDF",
+        "desc": "Assam (Sewasetu) पोर्टल पर जन्म प्रमाण पत्र (Birth Certificate) ऑनलाइन कैसे अप्लाई करें? Registration process, late fees और सर्टिफिकेट डाउनलोड की जानकारी।"
     },
     {
-        "file": "states/kerala.html",
-        "title": "Kerala Sarkari Yojana List 2026: e-District Services & Schemes",
-        "desc": "Kerala सरकार की सभी नई सरकारी योजनाएं, LIFE Mission, e-District Kerala सेवाएं और ऑनलाइन फॉर्म यहाँ देखें। Kerala govt jobs और scholarship की पूरी जानकारी।"
+        "file": "states/assam.html",
+        "title": "Assam Sarkari Yojana List 2026: असम सरकारी योजनाएं (Sewasetu)",
+        "desc": "असम (Assam) सरकार की सभी नई सरकारी योजनाएं, Orunodoi Scheme, Sewasetu पोर्टल सेवाएं और ऑनलाइन फॉर्म यहाँ देखें। Govt jobs और scholarship की जानकारी।"
     },
     {
-        "file": "states/karnataka-ration-card.html",
-        "title": "Karnataka Ration Card List 2026: Ahara Karnataka Apply Online",
-        "desc": "Ahara Karnataka (ahara.kar.nic.in) राशन कार्ड नई लिस्ट में नाम कैसे देखें? नया BPL/APL राशन कार्ड ऑनलाइन अप्लाई, documents और e-KYC का official प्रोसेस।"
+        "file": "states/arunachal-pradesh-ration-card.html",
+        "title": "Arunachal Pradesh Ration Card List 2026: राशन कार्ड Apply",
+        "desc": "Arunachal Pradesh Food & Civil Supplies राशन कार्ड नई लिस्ट में नाम कैसे देखें? नया राशन कार्ड (APL/BPL) ऑनलाइन अप्लाई, documents और status।"
     },
     {
-        "file": "states/karnataka-income-certificate.html",
-        "title": "Karnataka Income Certificate Apply: Nadakacheri Portal",
-        "desc": "Nadakacheri Karnataka पोर्टल से Income Certificate ऑनलाइन कैसे बनवाएं? \u20b925 fee, required documents, application form और status चेक करने का तरीका।"
+        "file": "states/arunachal-pradesh-income-certificate.html",
+        "title": "Arunachal Pradesh Income Certificate Apply: आय प्रमाण पत्र",
+        "desc": "Arunachal e-Services पोर्टल से आय प्रमाण पत्र (Income Certificate) ऑनलाइन कैसे बनवाएं? Fees, required documents, फॉर्म फॉर्मेट और application status।"
     },
     {
-        "file": "states/karnataka-birth-certificate.html",
-        "title": "Karnataka Birth Certificate Apply Online: eJanMa Portal",
-        "desc": "Karnataka (eJanMa) पोर्टल पर जन्म प्रमाण पत्र (Birth Certificate) कैसे अप्लाई करें? Registration process, late fees और PDF सर्टिफिकेट डाउनलोड करने की जानकारी।"
+        "file": "states/arunachal-pradesh-birth-certificate.html",
+        "title": "Arunachal Pradesh Birth Certificate Apply: जन्म प्रमाण पत्र PDF",
+        "desc": "Arunachal Pradesh में जन्म प्रमाण पत्र (Birth Certificate) ऑनलाइन कैसे अप्लाई करें? Registration process, late fee penalty और PDF सर्टिफिकेट डाउनलोड।"
     }
 ]
 
@@ -71,4 +71,4 @@ for item in updates:
     with open(path, 'w', encoding='utf-8') as f:
         f.write(html)
 
-print("Applied 10 optimizations for Batch 11 (Hindi Included)")
+print("Applied 10 optimizations for Batch 16 (Hindi Included)")
