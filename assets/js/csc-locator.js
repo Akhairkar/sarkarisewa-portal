@@ -30,22 +30,22 @@ document.addEventListener('DOMContentLoaded', () => {
           const { data, error } = await client
             .from("csc_centres")
             .select("*")
-            .eq("is_verified", true);
+            .limit(1000); // Fetch up to 1000 records to show the uploaded ones
             
           if (!error && data) {
             // Map Supabase schema to match JSON schema
             supabaseData = data.map(row => ({
               id: row.id,
-              name: row.center_name,
+              name: row.name || row.center_name || "CSC Centre",
               state: row.state || "Unknown",
               district: row.district || "Unknown",
               pincode: row.pincode,
-              address: `${row.center_name}, ${row.pincode}`,
-              contact: row.contact,
+              address: row.address || `${row.name || row.center_name}, ${row.pincode}`,
+              contact: row.owner_phone || row.phone || row.contact || "N/A",
               services: ["Aadhar Update", "PAN Card", "Income Certificate"],
               timings: "9:00 AM - 6:00 PM (Mon-Sat)",
               rating: 4.8,
-              is_verified: true
+              is_verified: row.status === 'verified' || row.is_verified === true
             }));
           }
         }
