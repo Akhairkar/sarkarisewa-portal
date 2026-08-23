@@ -3,54 +3,54 @@ import os
 
 updates = [
     {
-        "file": "tools/deadline-detail.html",
-        "title": "Sarkari Form Last Date 2026: Apply Online & Check Deadline",
-        "desc": "Kisi bhi Sarkari Yojana ya Job form ki last date check karein. Ghar baithe online apply process, fees aur official deadline ki latest information yahan dekhein."
+        "file": "states/ladakh-ration-card.html",
+        "title": "Ladakh Ration Card List 2026: लद्दाख राशन कार्ड Apply Online",
+        "desc": "Ladakh Food & Civil Supplies राशन कार्ड नई लिस्ट (Smart Card) में अपना नाम कैसे चेक करें? नया राशन कार्ड ऑनलाइन अप्लाई प्रोसेस, documents और e-KYC।"
     },
     {
-        "file": "tools/deadline-calendar.html",
-        "title": "Govt Exam & Yojana Deadline Calendar 2026: Last Date Check",
-        "desc": "SSC, UPSC, Railway aur sabhi Sarkari Yojana forms ki last date miss na karein! Naye forms ki official deadlines aur online apply link ek hi calendar me."
+        "file": "states/ladakh-income-certificate.html",
+        "title": "Ladakh Income Certificate Apply Online: आय प्रमाण पत्र",
+        "desc": "Ladakh e-Services पोर्टल से आय प्रमाण पत्र (Income Certificate) ऑनलाइन कैसे बनवाएं? Fees, required documents, फॉर्म फॉर्मेट और status चेक करने का तरीका।"
     },
     {
-        "file": "tools/csc-locator.html",
-        "title": "Find Nearest CSC Center & Jan Seva Kendra Kaise Khoje 2026",
-        "desc": "Apne paas ka CSC Center (Jan Seva Kendra) online kaise khoje? State aur PIN code daal kar verified VLE details, contact number aur address ghar baithe dekhein."
+        "file": "states/ladakh-birth-certificate.html",
+        "title": "Ladakh Birth Certificate Apply Online: जन्म प्रमाण पत्र PDF",
+        "desc": "Ladakh में जन्म प्रमाण पत्र (Birth Certificate) ऑनलाइन कैसे अप्लाई करें? Registration process, late fee penalty और PDF सर्टिफिकेट डाउनलोड की जानकारी।"
     },
     {
-        "file": "tools/age-calculator.html",
-        "title": "Free Age Calculator for Govt Jobs 2026 (Age Limit Check)",
-        "desc": "Sarkari Naukri ke liye apni exact age calculate karein. SSC, UPSC form bharne ke liye age limit aur retirement date free me check karein."
+        "file": "states/kerala-ration-card.html",
+        "title": "Kerala Ration Card List 2026: Civil Supplies Apply Online",
+        "desc": "Kerala Civil Supplies (PDS) राशन कार्ड नई लिस्ट में नाम कैसे देखें? नया राशन कार्ड ऑनलाइन अप्लाई, documents और e-KYC (Aadhaar seeding) का official प्रोसेस।"
     },
     {
-        "file": "terms.html",
-        "title": "Terms & Conditions - SarkariSewaIndia.com Official Policy",
-        "desc": "SarkariSewaIndia ki terms and conditions padhein. Humari website par sarkari yojana, online form aur calculators use karne ke niyam yahan diye gaye hain."
+        "file": "states/kerala-income-certificate.html",
+        "title": "Kerala Income Certificate Apply Online: e-District Kerala",
+        "desc": "e-District Kerala पोर्टल से Income Certificate (आय प्रमाण पत्र) ऑनलाइन कैसे बनवाएं? \u20b915 fees, required documents, फॉर्म और status चेक करने का आसान तरीका।"
     },
     {
-        "file": "support/state-wise-services.html",
-        "title": "State Wise Sarkari Yojana 2026: Apne Rajya Ki Scheme Khojein",
-        "desc": "UP, Bihar, MP, Maharashtra aur sabhi rajyo ki nayi Sarkari Yojana list 2026. Apne state ki official schemes, documents aur apply online process yahan dekhein."
+        "file": "states/kerala-birth-certificate.html",
+        "title": "Kerala Birth Certificate Apply Online: Sevana Portal PDF",
+        "desc": "Kerala (Sevana Portal) में जन्म प्रमाण पत्र (Birth Certificate) ऑनलाइन कैसे अप्लाई करें? Registration, late fees और PDF सर्टिफिकेट डाउनलोड।"
     },
     {
-        "file": "support/rti-guide.html",
-        "title": "RTI Online Kaise File Kare 2026? \u20b910 Fees & Status Check",
-        "desc": "Central ya State govt me RTI application kaise lagaye? \u20b910 fee payment, format, required documents aur online appeal status check karne ka step-by-step tarika."
+        "file": "states/kerala.html",
+        "title": "Kerala Sarkari Yojana List 2026: e-District Services & Schemes",
+        "desc": "Kerala सरकार की सभी नई सरकारी योजनाएं, LIFE Mission, e-District Kerala सेवाएं और ऑनलाइन फॉर्म यहाँ देखें। Kerala govt jobs और scholarship की पूरी जानकारी।"
     },
     {
-        "file": "support/index.html",
-        "title": "SarkariSewa Help & Support: Yojana Form Queries & Solutions",
-        "desc": "Sarkari Yojana ya Job form bharne me problem aa rahi hai? Humare help center se contact karein aur document, status check ya errors ka solution paayein."
+        "file": "states/karnataka-ration-card.html",
+        "title": "Karnataka Ration Card List 2026: Ahara Karnataka Apply Online",
+        "desc": "Ahara Karnataka (ahara.kar.nic.in) राशन कार्ड नई लिस्ट में नाम कैसे देखें? नया BPL/APL राशन कार्ड ऑनलाइन अप्लाई, documents और e-KYC का official प्रोसेस।"
     },
     {
-        "file": "support/helpline-directory.html",
-        "title": "All Govt Helpline Numbers 2026: Official Customer Care List",
-        "desc": "Sabhi Sarkari Yojana, Bank, EPF, aur Police ke toll-free helpline numbers. Apni complaint darj karne ke liye official customer care directory yahan dekhein."
+        "file": "states/karnataka-income-certificate.html",
+        "title": "Karnataka Income Certificate Apply: Nadakacheri Portal",
+        "desc": "Nadakacheri Karnataka पोर्टल से Income Certificate ऑनलाइन कैसे बनवाएं? \u20b925 fee, required documents, application form और status चेक करने का तरीका।"
     },
     {
-        "file": "subscribers.html",
-        "title": "SarkariSewa Newsletter Subscribers Directory (Admin)",
-        "desc": "Admin dashboard for managing SarkariSewaIndia newsletter subscribers and alert settings."
+        "file": "states/karnataka-birth-certificate.html",
+        "title": "Karnataka Birth Certificate Apply Online: eJanMa Portal",
+        "desc": "Karnataka (eJanMa) पोर्टल पर जन्म प्रमाण पत्र (Birth Certificate) कैसे अप्लाई करें? Registration process, late fees और PDF सर्टिफिकेट डाउनलोड करने की जानकारी।"
     }
 ]
 
@@ -71,4 +71,4 @@ for item in updates:
     with open(path, 'w', encoding='utf-8') as f:
         f.write(html)
 
-print("Applied 10 optimizations for Batch 3")
+print("Applied 10 optimizations for Batch 11 (Hindi Included)")
