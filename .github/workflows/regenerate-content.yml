@@ -65,7 +65,7 @@ jobs:
         run: |
           git config user.name "sarkarisewa-bot"
           git config user.email "actions@github.com"
-          git add jobs/*.html blog/*.html category/*.html service/*.html states/*.html sitemap.xml sitemap.html || true
+          git add -A
           if git diff --cached --quiet; then
             echo "Nothing changed — skipping commit."
           else
