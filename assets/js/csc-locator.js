@@ -131,7 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const filtered = cscData.filter(center => {
       const matchState = !stateFilter || center.state.toLowerCase() === stateFilter;
-      const matchDist = !districtFilter || center.district.toLowerCase().includes(districtFilter);
+      let matchDist = true;
+      if (districtFilter && districtFilter !== "other" && districtFilter !== "capital") {
+          matchDist = center.district.toLowerCase().includes(districtFilter);
+      }
       const matchPin = !pincodeFilter || center.pincode.startsWith(pincodeFilter);
       return matchState && matchDist && matchPin;
     });
