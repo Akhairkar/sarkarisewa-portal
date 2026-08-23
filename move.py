@@ -1,22 +1,29 @@
-import os
+import re
 
-with open('service/jan-aushadhi-store-locator.html', 'r', encoding='utf-8') as f:
-    content = f.read()
+file_path = "service/jan-aushadhi-store-locator.html"
 
-start_tag = '<!-- JAN AUSHADHI STATE HUB GRID -->'
-end_tag = '<!-- /JAN AUSHADHI STATE HUB GRID -->'
-start_idx = content.find(start_tag)
-end_idx = content.find(end_tag) + len(end_tag)
+with open(file_path, "r", encoding="utf-8") as f:
+    html = f.read()
 
-grid_block = content[start_idx:end_idx]
-content = content[:start_idx] + content[end_idx:]
-
-kendra_section = 'id="kendra-near-me"'
-kendra_start = content.find(kendra_section)
-kendra_end = content.find('</section>', kendra_start) + len('</section>')
-
-new_content = content[:kendra_end] + '\n\n      ' + grid_block + content[kendra_end:]
-
-with open('service/jan-aushadhi-store-locator.html', 'w', encoding='utf-8') as f:
-    f.write(new_content)
-print('Moved!')
+# Extract the grid
+pattern = r'(<!-- JAN AUSHADHI STATE HUB GRID -->.*?<!-- /JAN AUSHADHI STATE HUB GRID -->)'
+match = re.search(pattern, html, flags=re.DOTALL)
+if match:
+    grid_html = match.group(1)
+    # Remove it from old location
+    html = html.replace(grid_html, '')
+    
+    # Insert it right after <div class="content-main prose">
+    target = '<div class="content-main prose">'
+    if target in html:
+        # To not put it exactly at the very top before the intro paragraph, 
+        # maybe put it after the first paragraph or after the first h2?
+        # The user said "directory bohot niche aa rahi hai page pe usko upar lo"
+        # Let's put it right after <div class="content-main prose">
+        html = html.replace(target, target + '\n' + grid_html + '\n')
+        
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(html)
+    print("Moved successfully.")
+else:
+    print("Grid not found.")
