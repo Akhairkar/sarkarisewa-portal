@@ -23,7 +23,7 @@ STORIES = [
         "description": "Maharashtra Scheduled Caste youth can get business loans up to 5 lakhs under MPBCDC Direct Loan Scheme.",
         "descHi": "महाराष्ट्र के अनुसूचित जाति के युवा MPBCDC डायरेक्ट लोन योजना के तहत ₹5 लाख तक का बिजनेस लोन प्राप्त कर सकते हैं।",
         "category": "Schemes",
-        "cta_url": f"{SITE_URL}/states/mpbcdc.html",
+        "cta_url": f"{SITE_URL}/mpbcdc-yojana.html",
         "cta_text": "Check Eligibility & Apply 👉",
         "pages": [
             {"heading": "महात्मा फुले निगम लोन योजना", "text": "क्या आप महाराष्ट्र के निवासी हैं और अपना खुद का बिजनेस शुरू करना चाहते हैं? MPBCDC आपके लिए शानदार लोन योजनाएं लाया है!", "bg": "#1A237E", "emoji": "🏢"},
