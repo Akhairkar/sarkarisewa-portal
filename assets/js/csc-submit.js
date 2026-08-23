@@ -36,10 +36,11 @@ document.addEventListener("DOMContentLoaded", () => {
         .from("csc_centres")
         .insert([
           {
-            center_name: centerName.value.trim(),
-            csc_id: cscId.value.trim(),
+            name: centerName.value.trim(),
+            description: "CSC ID: " + cscId.value.trim(),
             pincode: pincode.value.trim(),
-            contact: contact.value.trim()
+            owner_phone: contact.value.trim(),
+            status: "pending_verification"
           }
         ]);
 
