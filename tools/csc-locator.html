@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>मुफ्त CSC Locator 2026 | Find Nearest e-Seva Kendra Near Me — Free</title>
-  <meta name="description" content="अपने नजदीकी CSC / e-Seva / Maha e-Seva Kendra को मुफ्त में खोजें — कोई फीस नहीं, कोई लॉगिन नहीं। आधार, पैन और सरकारी सेवाओं के लिए अभी नजदीकी केंद्र खोजें। Free CSC Locator!">
+  <title>Find Nearest CSC & Jan Seva Kendra | Verified Locator</title>
+  <meta name="description" content="Find your nearest verified CSC (Common Service Centre) and Jan Seva Kendra by State, District, and PIN Code. View online and offline services, timings, and contact details.">
   
   <script type="application/ld+json">
   {
@@ -182,6 +182,40 @@
   <meta name="twitter:title" content="मुफ्त CSC Locator 2026 | Find Nearest e-Seva Kendra">
   <meta name="twitter:description" content="अपने नजदीकी CSC / e-Seva / Maha e-Seva Kendra को मुफ्त में खोजें — कोई फीस नहीं, कोई लॉगिन नहीं।">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"CSC &amp; e-Seva Kendra Locator","url":"https://sarkarisewaindia.com/tools/csc-locator.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","isAccessibleForFree":true}</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a CSC or Jan Seva Kendra?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Common Service Centres (CSC) or Jan Seva Kendras are physical facilities for delivering Government of India e-Services to rural and remote locations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What services are available at a CSC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CSCs offer services like Aadhaar enrollment/update, PAN card application, passport services, income/caste certificates, bill payments, and tele-medicine."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find a CSC near me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can use the CSC Locator tool on this page to search for verified centres by selecting your state, district, or entering your PIN code."
+      }
+    }
+  ]
+}
+</script>
+
 </head>
 <body class="site-body">
   <div id="site-header">
@@ -361,140 +395,267 @@
 </header>
 
 </div>
-<main class="container" style="padding-top: 32px; padding-bottom: 64px;">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <ol>
-        <li><a href="../index.html" data-i18n="nav_home">Home</a></li>
-        <li><a href="index.html" data-i18n="nav_tools">Tools</a></li>
-        <li aria-current="page" data-i18n="csc_breadcrumb">CSC Locator</li>
-      </ol>
-    </nav>
 
-    <div class="page-header" style="max-width: 800px; margin-bottom: 32px;">
-      <h1 class="page-title" data-i18n="csc_h1">Find Nearest CSC / e-Seva Kendra</h1>
-      <p class="page-desc" data-i18n="csc_desc">Search for verified Common Service Centers (CSC), Maha e-Seva, Jan Seva, or Vasudha Kendras near you. Save time and get your government work done faster.</p>
-    </div>
+<main class="container">
+  <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+    <a href="../index.html">Home</a>
+    <span class="sep">/</span>
+    <a href="index.html">Tools</a><span class="sep">/</span>
+    <span class="current">CSC Locator</span>
+  </nav>
 
-    <div class="operator-banner">
-      <div class="operator-text">
-        <h3 data-i18n="csc_op_title">Are you a CSC Operator or VLE?</h3>
-        <p data-i18n="csc_op_desc">Get a "Verified" badge and list your center here to attract more local citizens. 100% Free.</p>
-      </div>
-      <button class="btn btn-verify" id="btn-open-modal" data-i18n="csc_op_btn">Get Verified & List Center</button>
-    </div>
+  <!-- 1. HERO SECTION -->
+  <section class="service-hero" id="service-hero" style="text-align: center; margin-bottom: 40px; padding: 40px 20px; background: linear-gradient(135deg, var(--color-bg-alt) 0%, var(--color-surface) 100%); border-radius: 16px; border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+    <h1 class="service-hero__title" style="margin-bottom: 16px; font-size: 2.2rem; color: var(--color-primary);">
+      <span data-lang-show="en">Find a CSC / Jan Seva Kendra Near You</span>
+      <span data-lang-show="hi">अपने पास CSC / जन सेवा केंद्र खोजें</span>
+    </h1>
+    <p class="service-hero__desc" style="max-width: 800px; margin: 0 auto 30px auto; color: var(--color-text-muted); font-size: 1.1rem; line-height: 1.6;">
+      <span data-lang-show="en">Search for verified CSCs and Jan Seva Kendras by your city, district, or PIN code. View available online/offline services, timings, and get directions.</span>
+      <span data-lang-show="hi">अपने शहर, जिले या PIN code से verified CSC और Jan Seva Kendra खोजें। उपलब्ध online और offline services, समय, और संपर्क जानकारी देखें।</span>
+    </p>
 
-    <div class="search-panel">
-      <h3 style="margin-top: 0; margin-bottom: 16px;" data-i18n="csc_search_title">Search by Location</h3>
-      <div class="search-grid">
+    <!-- SEARCH UI -->
+    <div style="background: var(--color-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--color-border); max-width: 900px; margin: 0 auto; text-align: left; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
         <div>
-          <label for="state-select" class="input-label" data-i18n="csc_state">State</label>
-          <select id="state-select" class="input-field" onchange="updateDistricts()">
-              <option value="">-- Select State --</option>
-              <option value="ANDAMAN AND NICOBAR ISLANDS">Andaman And Nicobar Islands</option>
-              <option value="ANDHRA PRADESH">Andhra Pradesh</option>
-              <option value="ARUNACHAL PRADESH">Arunachal Pradesh</option>
-              <option value="ASSAM">Assam</option>
-              <option value="BIHAR">Bihar</option>
-              <option value="CHANDIGARH">Chandigarh</option>
-              <option value="CHHATTISGARH">Chhattisgarh</option>
-              <option value="DADRA AND NAGAR HAVELI AND DAMAN AND DIU">Dadra And Nagar Haveli</option>
-              <option value="DELHI">Delhi</option>
-              <option value="GOA">Goa</option>
-              <option value="GUJARAT">Gujarat</option>
-              <option value="HARYANA">Haryana</option>
-              <option value="HIMACHAL PRADESH">Himachal Pradesh</option>
-              <option value="JAMMU AND KASHMIR">Jammu And Kashmir</option>
-              <option value="JHARKHAND">Jharkhand</option>
-              <option value="KARNATAKA">Karnataka</option>
-              <option value="KERALA">Kerala</option>
-              <option value="LADAKH">Ladakh</option>
-              <option value="LAKSHADWEEP">Lakshadweep</option>
-              <option value="MADHYA PRADESH">Madhya Pradesh</option>
-              <option value="MAHARASHTRA">Maharashtra</option>
-              <option value="MANIPUR">Manipur</option>
-              <option value="MEGHALAYA">Meghalaya</option>
-              <option value="MIZORAM">Mizoram</option>
-              <option value="NAGALAND">Nagaland</option>
-              <option value="ODISHA">Odisha</option>
-              <option value="PUDUCHERRY">Puducherry</option>
-              <option value="PUNJAB">Punjab</option>
-              <option value="RAJASTHAN">Rajasthan</option>
-              <option value="SIKKIM">Sikkim</option>
-              <option value="TAMIL NADU">Tamil Nadu</option>
-              <option value="TELANGANA">Telangana</option>
-              <option value="TRIPURA">Tripura</option>
-              <option value="UTTAR PRADESH">Uttar Pradesh</option>
-              <option value="UTTARAKHAND">Uttarakhand</option>
-              <option value="WEST BENGAL">West Bengal</option>
-            </select>
+          <label for="state-select" class="input-label" style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem;">State (राज्य)</label>
+          <select id="state-select" class="input-field" onchange="updateDistricts()" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface);">
+            <option value="">-- Select State --</option>
+            <option value="ANDAMAN AND NICOBAR ISLANDS">Andaman And Nicobar Islands</option>
+            <option value="ANDHRA PRADESH">Andhra Pradesh</option>
+            <option value="ARUNACHAL PRADESH">Arunachal Pradesh</option>
+            <option value="ASSAM">Assam</option>
+            <option value="BIHAR">Bihar</option>
+            <option value="CHANDIGARH">Chandigarh</option>
+            <option value="CHHATTISGARH">Chhattisgarh</option>
+            <option value="DADRA AND NAGAR HAVELI AND DAMAN AND DIU">Dadra And Nagar Haveli</option>
+            <option value="DELHI">Delhi</option>
+            <option value="GOA">Goa</option>
+            <option value="GUJARAT">Gujarat</option>
+            <option value="HARYANA">Haryana</option>
+            <option value="HIMACHAL PRADESH">Himachal Pradesh</option>
+            <option value="JAMMU AND KASHMIR">Jammu And Kashmir</option>
+            <option value="JHARKHAND">Jharkhand</option>
+            <option value="KARNATAKA">Karnataka</option>
+            <option value="KERALA">Kerala</option>
+            <option value="LADAKH">Ladakh</option>
+            <option value="LAKSHADWEEP">Lakshadweep</option>
+            <option value="MADHYA PRADESH">Madhya Pradesh</option>
+            <option value="MAHARASHTRA">Maharashtra</option>
+            <option value="MANIPUR">Manipur</option>
+            <option value="MEGHALAYA">Meghalaya</option>
+            <option value="MIZORAM">Mizoram</option>
+            <option value="NAGALAND">Nagaland</option>
+            <option value="ODISHA">Odisha</option>
+            <option value="PUDUCHERRY">Puducherry</option>
+            <option value="PUNJAB">Punjab</option>
+            <option value="RAJASTHAN">Rajasthan</option>
+            <option value="SIKKIM">Sikkim</option>
+            <option value="TAMIL NADU">Tamil Nadu</option>
+            <option value="TELANGANA">Telangana</option>
+            <option value="TRIPURA">Tripura</option>
+            <option value="UTTAR PRADESH">Uttar Pradesh</option>
+            <option value="UTTARAKHAND">Uttarakhand</option>
+            <option value="WEST BENGAL">West Bengal</option>
+          </select>
         </div>
         <div>
-          <label for="district-select" class="input-label" data-i18n="csc_district">District</label>
-          <select id="district-select" class="input-field"><option value="">-- First Select State --</option></select>
+          <label for="district-select" class="input-label" style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem;">District (ज़िला)</label>
+          <select id="district-select" class="input-field" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface);">
+            <option value="">-- First Select State --</option>
+          </select>
         </div>
         <div>
-          <label for="pincode-input" class="input-label" data-i18n="csc_pincode">Pincode</label>
-          <input type="text" id="pincode-input" class="input-field" placeholder="e.g. 411001" maxlength="6" data-i18n-placeholder="csc_pincode_ph">
+          <label for="pincode-input" class="input-label" style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem;">PIN Code (पिन कोड)</label>
+          <input type="text" id="pincode-input" class="input-field" placeholder="e.g. 401702" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-surface);">
+        </div>
+      </div>
+      <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <button id="btn-search-csc" class="btn btn--primary" style="flex: 1; min-width: 200px; padding: 12px; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          🔍 <span data-lang-show="en">Search CSC</span><span data-lang-show="hi">CSC खोजें</span>
+        </button>
+        <button class="btn btn--outline" style="flex: 1; min-width: 200px; padding: 12px; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="alert('Location access requires HTTPS and browser permission. Ensure you are on a secure connection.')">
+          📍 <span data-lang-show="en">Use My Location</span><span data-lang-show="hi">मेरी लोकेशन इस्तेमाल करें</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. QUICK ACTION CARDS -->
+  <section style="margin-bottom: 48px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+      <div style="background: var(--color-surface); padding: 24px; border-radius: 12px; border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center;">
+        <div style="font-size: 2rem; margin-bottom: 12px;">📍</div>
+        <h3 style="margin: 0 0 8px 0; font-size: 1.2rem; color: var(--color-primary);">Nearest CSC</h3>
+        <p style="margin: 0; color: var(--color-text-muted); font-size: 0.95rem;">
+          <span data-lang-show="en">Find CSCs around your current location instantly.</span>
+          <span data-lang-show="hi">अपने लोकेशन के आसपास तुरंत CSC खोजें।</span>
+        </p>
+      </div>
+      <div style="background: var(--color-surface); padding: 24px; border-radius: 12px; border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center;">
+        <div style="font-size: 2rem; margin-bottom: 12px;">✅</div>
+        <h3 style="margin: 0 0 8px 0; font-size: 1.2rem; color: var(--color-primary);">Verified CSC</h3>
+        <p style="margin: 0; color: var(--color-text-muted); font-size: 0.95rem;">
+          <span data-lang-show="en">View trusted, verified centres and their services.</span>
+          <span data-lang-show="hi">Verified सेंटर्स और उनकी सर्विसेस देखें।</span>
+        </p>
+      </div>
+      <div style="background: var(--color-surface); padding: 24px; border-radius: 12px; border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; cursor: pointer;" id="btn-open-modal">
+        <div style="font-size: 2rem; margin-bottom: 12px;">🏢</div>
+        <h3 style="margin: 0 0 8px 0; font-size: 1.2rem; color: var(--color-primary);">Claim Your CSC</h3>
+        <p style="margin: 0; color: var(--color-text-muted); font-size: 0.95rem;">
+          <span data-lang-show="en">Are you a CSC owner? Claim & verify your centre.</span>
+          <span data-lang-show="hi">CSC owner हैं? अपना सेंटर claim/verify करें।</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. TRUST / VALUE SECTION -->
+  <section style="margin-bottom: 48px; background: var(--color-bg-alt); padding: 32px; border-radius: 12px; border: 1px solid var(--color-border);">
+    <h2 style="margin-top: 0; font-size: 1.5rem; text-align: center; margin-bottom: 24px; color: var(--color-primary);">
+      <span data-lang-show="en">What do you get on CSC Locator?</span>
+      <span data-lang-show="hi">CSC Locator पर आपको क्या मिलेगा?</span>
+    </h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; text-align: center;">
+      <div>
+        <div style="font-size: 1.5rem; margin-bottom: 8px;">🛡️</div>
+        <div style="font-weight: 600;">Verified Info</div>
+      </div>
+      <div>
+        <div style="font-size: 1.5rem; margin-bottom: 8px;">🗺️</div>
+        <div style="font-weight: 600;">Accurate Location</div>
+      </div>
+      <div>
+        <div style="font-size: 1.5rem; margin-bottom: 8px;">⚙️</div>
+        <div style="font-weight: 600;">Available Services</div>
+      </div>
+      <div>
+        <div style="font-size: 1.5rem; margin-bottom: 8px;">🕒</div>
+        <div style="font-weight: 600;">Opening Hours</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SEARCH RESULTS -->
+  <section id="csc-results-section" style="margin-bottom: 48px;">
+    <h2 style="font-size: 1.6rem; border-bottom: 2px solid var(--color-border); padding-bottom: 8px; margin-bottom: 24px;">Search Results (<span id="results-count">Loading...</span>)</h2>
+    <div id="results-container" class="results-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+      <!-- Populated by JS -->
+      <div style="text-align:center; padding: 40px; color: var(--color-text-muted); grid-column: 1 / -1;">Loading nearest centers...</div>
+    </div>
+  </section>
+
+  <!-- 6. CSC OWNER CTA -->
+  <section style="margin-bottom: 48px; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 32px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);">
+    <h2 style="margin-top: 0; color: white; font-size: 1.8rem; margin-bottom: 12px;">
+      <span data-lang-show="en">Are you a CSC Operator / VLE?</span>
+      <span data-lang-show="hi">क्या आप CSC Operator / VLE हैं?</span>
+    </h2>
+    <p style="max-width: 600px; margin-bottom: 24px; font-size: 1.1rem; opacity: 0.9;">
+      <span data-lang-show="en">Claim and verify your CSC on SarkariSewaIndia. An approved profile displays your location, services, and public contact information to thousands of citizens daily.</span>
+      <span data-lang-show="hi">अपने CSC को SarkariSewaIndia पर claim और verify करें। Approved CSC profile में आपकी location, services और public contact information दिखाई जा सकती है।</span>
+    </p>
+    <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; justify-content: center;">
+      <button class="btn" style="background: white; color: #1e3a8a; font-weight: 700; padding: 12px 24px; border-radius: 8px; font-size: 1.1rem;" onclick="document.getElementById('operator-modal').classList.add('active')">
+        Claim Your CSC
+      </button>
+      <a href="#" style="color: white; text-decoration: underline; font-size: 0.9rem; opacity: 0.9;">How verification works?</a>
+    </div>
+  </section>
+
+  <!-- 7. INFORMATIONAL SEO CONTENT -->
+  <section class="prose" style="margin-bottom: 48px; padding: 32px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px;">
+    <h2>
+      <span data-lang-show="en">About CSC and Jan Seva Kendras</span>
+      <span data-lang-show="hi">CSC और जन सेवा केंद्र के बारे में जानकारी</span>
+    </h2>
+    <p>
+      <span data-lang-show="en">Common Service Centres (CSC) or Jan Seva Kendras are multiple-services-single-point models for providing facilities for multiple transactions at a single geographical location. They are the access points for delivery of essential public utility services, social welfare schemes, healthcare, financial, education and agriculture services.</span>
+      <span data-lang-show="hi">कॉमन सर्विस सेंटर (CSC) या जन सेवा केंद्र एक ऐसा स्थान है जहाँ से नागरिकों को आवश्यक सार्वजनिक उपयोगिता सेवाएँ, सामाजिक कल्याण योजनाएँ, स्वास्थ्य देखभाल, वित्तीय, शिक्षा और कृषि सेवाएँ प्रदान की जाती हैं। यदि आप <strong>CSC center near me</strong> खोज रहे हैं, तो हमारा लोकेटर आपको सबसे सटीक जानकारी देगा।</span>
+    </p>
+
+    <h3>
+      <span data-lang-show="en">Services Available at CSC Centres</span>
+      <span data-lang-show="hi">CSC सेंटर पर मिलने वाली सेवाएँ</span>
+    </h3>
+    <ul>
+      <li><span data-lang-show="en">Aadhaar Services (Enrollment, Update, Print)</span><span data-lang-show="hi">आधार सेवाएँ (नया आधार, अपडेट, प्रिंट)</span></li>
+      <li><span data-lang-show="en">PAN Card Services (New Application, Corrections)</span><span data-lang-show="hi">पैन कार्ड सेवाएँ (नया आवेदन, सुधार)</span></li>
+      <li><span data-lang-show="en">Income, Caste, and Domicile Certificates</span><span data-lang-show="hi">आय, जाति और निवास प्रमाण पत्र</span></li>
+      <li><span data-lang-show="en">Banking and Financial Services</span><span data-lang-show="hi">बैंकिंग और वित्तीय सेवाएँ</span></li>
+      <li><span data-lang-show="en">Utility Bill Payments (Electricity, Water, Gas)</span><span data-lang-show="hi">यूटिलिटी बिल भुगतान (बिजली, पानी, गैस)</span></li>
+      <li><span data-lang-show="en">Passport and Voter ID Services</span><span data-lang-show="hi">पासपोर्ट और वोटर आईडी सेवाएँ</span></li>
+    </ul>
+
+    <h3>
+      <span data-lang-show="en">Difference Between Jan Seva Kendra and CSC</span>
+      <span data-lang-show="hi">जन सेवा केंद्र और CSC में क्या अंतर है?</span>
+    </h3>
+    <p>
+      <span data-lang-show="en">Functionally, there is no major difference. Both serve as digital delivery points for e-governance services. Some states refer to them locally as Maha E Seva Kendras, Atalji Janasnehi Kendras, or E-Mitra, but they operate under the overarching CSC 2.0 scheme of the Government of India.</span>
+      <span data-lang-show="hi">कार्यक्षमता के आधार पर इनमें कोई बड़ा अंतर नहीं है। दोनों ही ई-गवर्नेंस सेवाओं के डिजिटल डिलीवरी पॉइंट हैं। कुछ राज्यों में इन्हें महा ई-सेवा केंद्र, ई-मित्र या जन सेवा केंद्र कहा जाता है, लेकिन ये भारत सरकार की CSC 2.0 योजना के तहत ही काम करते हैं।</span>
+    </p>
+  </section>
+
+  <!-- 8. FAQ SECTION -->
+  <section class="faq-section" style="margin-bottom: 48px;">
+    <h2 class="faq-title" style="margin-bottom: 24px;">Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question">What is a CSC or Jan Seva Kendra?</button>
+        <div class="faq-answer">
+          <p>Common Service Centres (CSC) or Jan Seva Kendras are physical facilities for delivering Government of India e-Services to rural and remote locations.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">What services are available at a CSC?</button>
+        <div class="faq-answer">
+          <p>CSCs offer services like Aadhaar enrollment/update, PAN card application, passport services, income/caste certificates, bill payments, and tele-medicine.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">How do I find a CSC near me?</button>
+        <div class="faq-answer">
+          <p>You can use the CSC Locator tool on this page to search for verified centres by selecting your state, district, or entering your PIN code.</p>
         </div>
       </div>
     </div>
+  </section>
 
-    <div id="results-container">
-      <!-- Cards injected by JS -->
-      <div style="text-align:center; padding: 40px; color: var(--color-text-muted);">
-        Loading nearest centers...
+  <!-- OPERATOR MODAL (Hidden) -->
+  <div class="modal-overlay" id="operator-modal">
+    <div class="modal-content" style="max-width: 500px; border-radius: 12px; overflow: hidden; padding: 0;">
+      <div style="background: var(--color-bg-alt); padding: 20px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0; font-size: 1.4rem;">🏢 Claim Your CSC</h3>
+        <button id="btn-close-modal" class="icon-btn" style="background: none; border: none; font-size: 1.5rem; color: var(--color-text);">&times;</button>
       </div>
+      <form id="operator-form" style="padding: 24px;">
+        <p style="margin-bottom: 20px; color: var(--color-text-muted);">Enter your CSC details below. Our team will verify your CSC ID and publish your listing with a Verified badge.</p>
+        <div style="margin-bottom: 16px;">
+          <label class="input-label" for="op-name">Center Name (नाम)</label>
+          <input type="text" id="op-name" class="input-field" required>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label class="input-label" for="op-cscid">CSC ID (सीएससी आईडी)</label>
+          <input type="text" id="op-cscid" class="input-field" required>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label class="input-label" for="op-pincode">PIN Code (पिन कोड)</label>
+          <input type="text" id="op-pincode" class="input-field" required>
+        </div>
+        <div style="margin-bottom: 24px;">
+          <label class="input-label" for="op-contact">Contact Number (मोबाइल नंबर)</label>
+          <input type="text" id="op-contact" class="input-field" required>
+        </div>
+        <button type="submit" class="btn btn--primary" style="width: 100%; padding: 14px; font-size: 1.1rem;">Submit for Verification</button>
+      </form>
     </div>
-  
-<!-- TOOL SEO ENHANCEMENT -->
-<section class="tool-seo-section" aria-label="Helpful information and related links">
-<style>
-.tool-seo-section{margin:42px 0 12px;padding:32px 0;border-top:1px solid var(--color-border);color:var(--color-text)}
-.tool-seo-section .tool-seo-wrap{max-width:920px;margin:auto}.tool-seo-section h2{font-size:1.55rem;margin:0 0 14px;color:var(--color-primary)}
-.tool-seo-section h3{font-size:1.18rem;margin:26px 0 10px;color:var(--color-text)}.tool-seo-section p,.tool-seo-section li{line-height:1.75}
-.tool-seo-section .tool-seo-note{padding:14px 16px;background:var(--color-bg-alt);border-left:4px solid var(--color-primary);border-radius:8px}
-.tool-seo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tool-seo-card{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--color-border);border-radius:10px;background:var(--color-surface);text-decoration:none;color:var(--color-text);transition:transform .15s ease,border-color .15s ease}
-.tool-seo-card:hover{transform:translateY(-2px);border-color:var(--color-primary)}.tool-seo-icon{font-size:1.6rem}.tool-seo-card strong,.tool-seo-card small{display:block}.tool-seo-card small{color:var(--color-text-muted);margin-top:3px}@media(max-width:600px){.tool-seo-grid{grid-template-columns:1fr}.tool-seo-section{padding:26px 0}}
-</style>
-<div class="tool-seo-wrap">
-<div data-lang-show="en">
-<h2>CSC &amp; e-Seva Kendra Locator: a practical guide for Indian users</h2>
-<p>Use this free csc &amp; e-seva kendra locator when you need help with nearest CSC centre, Common Service Centre, e-Seva Kendra and government service centre in India. It is designed to make a common online task easier before you visit an official portal, submit an application, or prepare your documents. The result is meant to help you organise information; always treat the latest notification, department website, or authorised service centre as the final source of rules, fees and eligibility.</p>
-<h3>Why this tool is useful</h3>
-<p>Government and recruitment websites often use exact requirements, short closing windows and strict upload conditions. A small error can lead to a rejected form, a failed upload or an unnecessary visit to a service centre. This page brings the key task into one simple workflow so you can check details at your own pace. It is especially useful for applicants looking for nearest CSC centre, Common Service Centre, e-Seva Kendra and government service centre in India, as well as families helping students, senior citizens or first-time digital users.</p>
-<h3>How to use the CSC &amp; e-Seva Kendra Locator</h3><ol><li><strong>Step 1:</strong> Select your state and locality, then review the results before you travel.</li><li><strong>Step 2:</strong> Call the centre where possible to confirm working hours, service availability and document requirements.</li><li><strong>Step 3:</strong> Carry originals only when the official service requires verification; ask for a receipt for paid services.</li></ol>
-<h3>Before you rely on the result</h3>
-<p>Keep the official notification, application number and original documents nearby. Names, dates, categories, state rules, fee amounts and submission requirements can change. Never share OTPs, passwords, bank PINs or full identity numbers on an unofficial website. If a result affects your application or money, verify it with the official department portal or an authorised centre. This careful final check improves accuracy and helps prevent avoidable rejection.</p>
-<h3>Helpful long-tail searches answered here</h3>
-<p>Users commonly search for phrases such as “nearest CSC centre, Common Service Centre, e-Seva Kendra and government service centre in India online India”, “free csc &amp; e-seva kendra locator for government form”, “how to check nearest CSC centre, Common Service Centre, e-Seva Kendra and government service centre in India”, and “CSC &amp; e-Seva Kendra Locator Hindi English”. This guide is written to answer the intent behind those searches with clear steps, internal resources and safe next actions—not by replacing the official authority.</p>
-<h3>Frequently asked questions</h3>
-<details style="margin-bottom:10px;border:1px solid var(--color-border,#ddd);border-radius:8px;padding:12px;"><summary style="font-weight:bold;cursor:pointer;">Is this CSC / e-Seva Kendra locator free to use?</summary><p style="margin-top:10px;">Yes, completely free — no account or login is needed to search and view nearby centres.</p></details>
-<details style="margin-bottom:10px;border:1px solid var(--color-border,#ddd);border-radius:8px;padding:12px;"><summary style="font-weight:bold;cursor:pointer;">Are the listed centre results official?</summary><p style="margin-top:10px;">No, use the results as preparation only — always verify working hours, services offered and fees with the concerned centre or department before visiting.</p></details>
-<details style="margin-bottom:10px;border:1px solid var(--color-border,#ddd);border-radius:8px;padding:12px;"><summary style="font-weight:bold;cursor:pointer;">Can I use this locator on my mobile phone?</summary><p style="margin-top:10px;">Yes, the page is fully responsive and works with both light and dark theme on mobile, tablet and desktop.</p></details>
-<details style="margin-bottom:10px;border:1px solid var(--color-border,#ddd);border-radius:8px;padding:12px;"><summary style="font-weight:bold;cursor:pointer;">What should I carry when visiting a CSC/e-Seva Kendra?</summary><p style="margin-top:10px;">Carry your original documents for verification when the service requires it, and always ask for a receipt for any paid service.</p></details>
-</div>
-<div data-lang-show="hi">
+  </div>
 
-<h2>CSC और e-Seva केंद्र लोकेटर: भारतीय उपयोगकर्ताओं के लिए आसान गाइड</h2>
-<p>यह मुफ्त CSC और e-Seva केंद्र लोकेटर नजदीकी CSC सेंटर, कॉमन सर्विस सेंटर, e-Seva केंद्र और सरकारी सेवा केंद्र से जुड़े काम को आसान बनाने के लिए बनाया गया है। किसी सरकारी पोर्टल पर जाने, आवेदन भरने या दस्तावेज़ तैयार करने से पहले आप जरूरी जानकारी एक जगह समझ सकते हैं। यह परिणाम आपकी तैयारी में मदद करता है; नियम, शुल्क, पात्रता और अंतिम तारीख के लिए हमेशा संबंधित विभाग की नई आधिकारिक सूचना को अंतिम मानें।</p>
-<h3>यह टूल क्यों उपयोगी है?</h3>
-<p>सरकारी और भर्ती वेबसाइटों पर अक्सर सटीक जानकारी, कम समय और सख्त अपलोड नियम होते हैं। छोटी गलती से फॉर्म रिजेक्ट, अपलोड फेल या सेवा केंद्र का अनावश्यक चक्कर लग सकता है। यह पेज काम को सरल चरणों में रखता है ताकि आप आराम से जानकारी जांच सकें। नजदीकी CSC सेंटर, कॉमन सर्विस सेंटर, e-Seva केंद्र और सरकारी सेवा केंद्र खोजने वाले विद्यार्थियों, नौकरी आवेदकों, परिवारों और पहली बार डिजिटल सेवा इस्तेमाल करने वाले लोगों के लिए यह खास तौर पर उपयोगी है।</p>
-<h3>CSC और e-Seva केंद्र लोकेटर का उपयोग कैसे करें?</h3><ol><li><strong>चरण 1:</strong> अपना राज्य और क्षेत्र चुनें, फिर यात्रा से पहले परिणाम ध्यान से देखें।</li><li><strong>चरण 2:</strong> समय, उपलब्ध सेवा और दस्तावेज़ की जानकारी के लिए संभव हो तो केंद्र को कॉल करें।</li><li><strong>चरण 3:</strong> मूल दस्तावेज़ केवल आधिकारिक सत्यापन के लिए ले जाएँ और भुगतान की रसीद जरूर लें।</li></ol>
-<h3>परिणाम इस्तेमाल करने से पहले</h3>
-<p>आधिकारिक नोटिफिकेशन, आवेदन संख्या और मूल दस्तावेज़ पास रखें। नाम, जन्मतिथि, श्रेणी, राज्य के नियम, फीस और जमा करने की शर्तें बदल सकती हैं। किसी अनधिकृत वेबसाइट पर OTP, पासवर्ड, बैंक PIN या पूरा पहचान नंबर कभी साझा न करें। अगर परिणाम आपके आवेदन या पैसे को प्रभावित करता है, तो संबंधित विभाग की वेबसाइट या अधिकृत केंद्र से उसे सत्यापित करें।</p>
-<h3>आपकी लंबी खोज का आसान जवाब</h3>
-<p>लोग अक्सर “नजदीकी CSC सेंटर, कॉमन सर्विस सेंटर, e-Seva केंद्र और सरकारी सेवा केंद्र ऑनलाइन”, “सरकारी फॉर्म के लिए CSC और e-Seva केंद्र लोकेटर”, “नजदीकी CSC सेंटर, कॉमन सर्विस सेंटर, e-Seva केंद्र और सरकारी सेवा केंद्र कैसे चेक करें” और “CSC और e-Seva केंद्र लोकेटर हिंदी में” जैसी खोज करते हैं। यह पेज उन्हीं सवालों के लिए उपयोगी जानकारी, सुरक्षित अगले कदम और आंतरिक लिंक देता है; यह किसी सरकारी विभाग का विकल्प नहीं है।</p>
-<h3>अक्सर पूछे जाने वाले सवाल</h3>
-<details style="margin-bottom:10px;border:1px solid var(--color-border,#ddd);border-radius:8px;padding:12px;"><summary style="font-weight:bold;cursor:pointer;">क्या यह CSC / e-Seva केंद्र लोकेटर मुफ्त है?</summary><p style="margin-top:10px;">हाँ, पूरी तरह मुफ्त — नजदीकी केंद्र खोजने और देखने के लिए किसी अकाउंट या लॉगिन की जरूरत नहीं है।</p></details>
-<details style="margin-bottom:10px;border:1px solid var(--color-border,#ddd);border-radius:8px;padding:12px;"><summary style="font-weight:bold;cursor:pointer;">क्या सूचीबद्ध केंद्र परिणाम आधिकारिक हैं?</summary><p style="margin-top:10px;">नहीं, परिणामों को केवल तैयारी के लिए इस्तेमाल करें — जाने से पहले कार्य समय, सेवाएं और फीस संबंधित केंद्र/विभाग से जरूर जांच लें।</p></details>
-<details style="margin-bottom:10px;border:1px solid var(--color-border,#ddd);border-radius:8px;padding:12px;"><summary style="font-weight:bold;cursor:pointer;">क्या मैं इसे मोबाइल फोन पर इस्तेमाल कर सकता हूं?</summary><p style="margin-top:10px;">हाँ, पेज पूरी तरह responsive है और मोबाइल, टैबलेट व डेस्कटॉप पर light और dark दोनों theme में काम करता है।</p></details>
-<details style="margin-bottom:10px;border:1px solid var(--color-border,#ddd);border-radius:8px;padding:12px;"><summary style="font-weight:bold;cursor:pointer;">CSC/e-Seva केंद्र जाते समय क्या साथ ले जाना चाहिए?</summary><p style="margin-top:10px;">जहां सेवा के लिए सत्यापन जरूरी हो वहां मूल दस्तावेज़ साथ ले जाएं, और किसी भी पेड सेवा के लिए रसीद जरूर मांगें।</p></details>
-</div>
-<div data-lang-show="en"><h3>Plan your next step with confidence</h3><p>A good online application is not only about completing one calculation or upload. Use the result as part of a short pre-submission check: read the official notice, confirm the correct scheme or recruitment year, verify whether your state has different rules, and save the page or acknowledgement after submission. For searches around nearest CSC centre, Common Service Centre, e-Seva Kendra and government service centre in India, people often need a practical sequence rather than a single answer. Start with the current official requirement, prepare clear documents, complete the required check, and submit well before the closing time. If an official portal is slow, do not repeatedly make payments or submit duplicate forms; wait for a confirmation screen, transaction reference or department guidance.</p><p>Keep a simple record of what you used: date checked, source URL, application reference, document version and any fee receipt. This helps if you later need to correct an application, visit a helpdesk or explain a discrepancy. Be careful with third-party agents who promise guaranteed approval. A trustworthy service will tell you what is required, provide a receipt where relevant, and will not ask for your bank PIN, password or OTP. The related resources below are deliberately linked to help you move from preparation to the next genuine task while staying within the SarkariSewa India site structure.</p></div><div data-lang-show="hi"><h3>अगले चरण की तैयारी सही तरीके से करें</h3><p>किसी ऑनलाइन आवेदन में सिर्फ एक गणना या एक अपलोड पूरा करना काफी नहीं होता। परिणाम को जमा करने से पहले की छोटी जांच का हिस्सा बनाएं: आधिकारिक नोटिस पढ़ें, सही योजना या भर्ती वर्ष मिलाएं, अपने राज्य के अलग नियम देखें और आवेदन के बाद acknowledgement या स्क्रीनशॉट सुरक्षित रखें। नजदीकी CSC सेंटर, कॉमन सर्विस सेंटर, e-Seva केंद्र और सरकारी सेवा केंद्र जैसी खोज करने वाले लोगों को अक्सर सिर्फ एक जवाब नहीं, बल्कि सही क्रम चाहिए। पहले नई आधिकारिक शर्त देखें, साफ दस्तावेज़ तैयार करें, जरूरी जांच पूरी करें और अंतिम समय से पहले फॉर्म जमा करें। यदि सरकारी पोर्टल धीमा हो तो बार-बार भुगतान या डुप्लीकेट सबमिट न करें; confirmation screen, transaction reference या विभागीय निर्देश का इंतजार करें।</p><p>आपने क्या इस्तेमाल किया इसका छोटा रिकॉर्ड रखें: जांच की तारीख, स्रोत लिंक, आवेदन संदर्भ, दस्तावेज़ का संस्करण और फीस की रसीद। बाद में सुधार, हेल्पडेस्क विजिट या जानकारी में अंतर समझाने में यह मदद करता है। ऐसे एजेंट से सावधान रहें जो निश्चित मंजूरी का दावा करे। भरोसेमंद सेवा जरूरी शर्तें बताएगी, जहां लागू हो वहां रसीद देगी और कभी बैंक PIN, पासवर्ड या OTP नहीं मांगेगी। नीचे दिए लिंक आपको SarkariSewa India की सही साइट संरचना में अगला उपयोगी काम करने तक पहुंचाते हैं।</p></div><div data-lang-show="en"><h3>Use current information</h3><p>Rules, dates and portal instructions can change without notice. Revisit the official source on the day you apply, keep your browser updated, and use a stable internet connection. This page helps you prepare, but it should never be used to bypass the official process or replace professional advice where it is needed.</p></div><div data-lang-show="hi"><h3>नई जानकारी जरूर जांचें</h3><p>नियम, तारीख और पोर्टल के निर्देश बिना सूचना बदल सकते हैं। आवेदन वाले दिन आधिकारिक स्रोत फिर देखें, ब्राउज़र अपडेट रखें और स्थिर इंटरनेट इस्तेमाल करें। यह पेज तैयारी में मदद करता है, लेकिन आधिकारिक प्रक्रिया या जरूरत पड़ने पर विशेषज्ञ सलाह का विकल्प नहीं है।</p></div><h2 data-lang-show="en">Related tools</h2><h2 data-lang-show="hi">संबंधित टूल्स</h2><div class="tool-seo-grid"><a class="tool-seo-card" href="document-checklist.html"><span class="tool-seo-icon" aria-hidden="true">📋</span><span><strong data-lang-show="en">Document Checklist</strong><strong data-lang-show="hi">Document Checklist</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="eligibility-checker.html"><span class="tool-seo-icon" aria-hidden="true">🎯</span><span><strong data-lang-show="en">Eligibility Checker</strong><strong data-lang-show="hi">Eligibility Checker</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="status-troubleshooter.html"><span class="tool-seo-icon" aria-hidden="true">🔍</span><span><strong data-lang-show="en">Status Troubleshooter</strong><strong data-lang-show="hi">Status Troubleshooter</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="self-declaration-builder.html"><span class="tool-seo-icon" aria-hidden="true">📝</span><span><strong data-lang-show="en">Self-Declaration Builder</strong><strong data-lang-show="hi">Self-Declaration Builder</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a></div>
-<h2 data-lang-show="en">Related services</h2><h2 data-lang-show="hi">संबंधित सेवाएं</h2><div class="tool-seo-grid"><a class="tool-seo-card" href="../support/state-wise-services.html"><span class="tool-seo-icon" aria-hidden="true">🏛️</span><span><strong data-lang-show="en">State-wise Services</strong><strong data-lang-show="hi">राज्यवार सेवाएं</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="../category/identity-documents.html"><span class="tool-seo-icon" aria-hidden="true">🪪</span><span><strong data-lang-show="en">Identity Documents</strong><strong data-lang-show="hi">पहचान दस्तावेज़</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="../category/jobs-education.html"><span class="tool-seo-icon" aria-hidden="true">🎓</span><span><strong data-lang-show="en">Jobs & Education</strong><strong data-lang-show="hi">नौकरी और शिक्षा</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="../states/index.html"><span class="tool-seo-icon" aria-hidden="true">🗺️</span><span><strong data-lang-show="en">All States Hub</strong><strong data-lang-show="hi">सभी राज्य सेवाएं</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a></div>
-</div></section>
-<!-- /TOOL SEO ENHANCEMENT -->
 </main>
+
 
   <!-- Operator Modal -->
   <div class="modal-overlay" id="operator-modal">
@@ -597,7 +758,7 @@
 </div>
   
   <script src="../assets/js/main.js"></script>
-  <script src="../assets/js/csc-locator.js?v=3.1"></script>
+  <script src="../assets/js/csc-locator.js?v=4.0"></script>
   <script src="../assets/js/csc-submit.js?v=2.0"></script>
 
 <script>
