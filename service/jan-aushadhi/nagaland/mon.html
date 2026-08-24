@@ -60,32 +60,58 @@
 <h2 class="service-section__title">All 4 Jan Aushadhi Stores in Mon</h2>
 <p>Neeche Mon district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>District Hospital Mon — 798621</td>
-<td><a href="tel:8575844236">8575844236</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Community Health Centre, Aboi — 798603</td>
-<td><a href="tel:9615338832">9615338832</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Primary Health Centre, Wakching — 798621</td>
-<td><a href="tel:9612044912">9612044912</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Primary Health Centre, CHEN — 798621</td>
-<td><a href="tel:9612759483">9612759483</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>K.L Senethaikonyak</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 District Hospital Mon</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 798621</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8575844236">8575844236</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.72390365,95.02868813" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Dr. T. Hangsha Konyak</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Community Health Centre, Aboi</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 798603</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9615338832">9615338832</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.60455186,94.96632073" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Dr. Chingyen Konyak</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Primary Health Centre, Wakching</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 798621</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9612044912">9612044912</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.6990305,94.8789942" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Dr. Shokwang Konyak</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Primary Health Centre, CHEN</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 798621</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9612759483">9612759483</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.60449671,94.96628368" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

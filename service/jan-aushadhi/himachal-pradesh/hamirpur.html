@@ -60,57 +60,103 @@
 <h2 class="service-section__title">All 9 Jan Aushadhi Stores in Hamirpur</h2>
 <p>Neeche Hamirpur district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Jan Aushadhi Store Regional Hospital — 177001</td>
-<td><a href="tel:9418012055">9418012055</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Jolsappar, Tehsil Nadaum Distt. Hamirpur — 177048</td>
-<td><a href="tel:9736245909">9736245909</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near P.O. Kuthera VPO Kuthera — 177020</td>
-<td><a href="tel:9805844016">9805844016</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Opposite Govt. Hospital Barsar, PO & Tehsil Brasar — 174305</td>
-<td><a href="tel:9805353267">9805353267</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Ward No. 05, Near Radha Swami Satsang Bhawan, Lower Bazar — 177001</td>
-<td><a href="tel:7018298074">7018298074</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Vill. Rahjol, P.O. Tal — 177401</td>
-<td><a href="tel:9817428703">9817428703</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Situated Inside The Bijhari Co Operative Agricultural Service Society Limited at VPO Bijhari Teh. Dh — 176040</td>
-<td><a href="tel:8626804851">8626804851</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Vill Chahar Near Civil Hospital Tauni Devi — 177023</td>
-<td><a href="tel:9805443540">9805443540</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near ECHS Polyclinic Bhoranj Tehsil: BHO — 176045</td>
-<td><a href="tel:9459071249">9459071249</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ashwani Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Jan Aushadhi Store Regional Hospital</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 177001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9418012055">9418012055</a></div>
+</div>
+<a href="https://www.google.com/maps?q=31.67990734,76.52745463" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Jyoti Prakash Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Jolsappar, Tehsil Nadaum Distt. Hamirpur</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 177048</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9736245909">9736245909</a></div>
+</div>
+<a href="https://www.google.com/maps?q=31.7812,76.3424" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ashok Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near P.O. Kuthera VPO Kuthera</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 177020</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9805844016">9805844016</a></div>
+</div>
+<a href="https://www.google.com/maps?q=31.7266546,76.5042374" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Anuradha</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Opposite Govt. Hospital Barsar, PO & Tehsil Brasar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 174305</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9805353267">9805353267</a></div>
+</div>
+<a href="https://www.google.com/maps?q=31.52551176,76.4606468" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Anjna Kumari</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Ward No. 05, Near Radha Swami Satsang Bhawan, Lower Bazar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 177001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7018298074">7018298074</a></div>
+</div>
+<a href="https://www.google.com/maps?q=31.68025602,76.52793527" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Neeraj Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Vill. Rahjol, P.O. Tal</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 177401</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9817428703">9817428703</a></div>
+</div>
+<a href="https://www.google.com/maps?q=31.63094973,76.58782822" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Prince</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Situated Inside The Bijhari Co Operative Agricultural Service Society Limited at VPO Bijhari Teh. Dh</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 176040</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8626804851">8626804851</a></div>
+</div>
+<a href="https://www.google.com/maps?q=31.6864006,76.5213953" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sanjeev Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Vill Chahar Near Civil Hospital Tauni Devi</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 177023</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9805443540">9805443540</a></div>
+</div>
+<a href="https://www.google.com/maps?q=31.71366234,76.59756376" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Anuradha</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near ECHS Polyclinic Bhoranj Tehsil: BHO</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 176045</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9459071249">9459071249</a></div>
+</div>
+<a href="https://www.google.com/maps?q=31.59652,76.61872" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

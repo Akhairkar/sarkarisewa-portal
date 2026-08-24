@@ -60,47 +60,85 @@
 <h2 class="service-section__title">All 7 Jan Aushadhi Stores in Kamrup</h2>
 <p>Neeche Kamrup district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Girijananda Choudhary Institute of Pharmaceutical Science Azara — 781001</td>
-<td><a href="tel:9101612464">9101612464</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Saloi Market 1st Floor opp UBI Chhaygaon Branch — 781124</td>
-<td><a href="tel:9101275661">9101275661</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Santoli PHC, Santoli chamaria road, Po Mahtoli, — 781136</td>
-<td><a href="tel:9085585177">9085585177</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Bhagawatipara, Near Bhagawatipara L.P. School (In Front of Babu Hotel), N.H.-37 — 781132</td>
-<td><a href="tel:9854489743">9854489743</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>National Institute of Pharmaceutical Education And Research — 781101</td>
-<td><a href="tel:9806513106">9806513106</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>AIIMS Guwahati(Ayush), Sibharal, Changsari — 781101</td>
-<td><a href="tel:9365086305">9365086305</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Rangiya Railway Station — 781365</td>
-<td><a href="tel:9542312322">9542312322</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Principal, Gips</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Girijananda Choudhary Institute of Pharmaceutical Science Azara</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 781001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9101612464">9101612464</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.1756772,91.7417143" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Arati Kalita</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Saloi Market 1st Floor opp UBI Chhaygaon Branch</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 781124</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9101275661">9101275661</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.9642174,91.3469247" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mr.Ziaur Rahman</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Santoli PHC, Santoli chamaria road, Po Mahtoli,</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 781136</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9085585177">9085585177</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.06667235,91.16582364" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Gaurav Goswami</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Bhagawatipara, Near Bhagawatipara L.P. School (In Front of Babu Hotel), N.H.-37</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 781132</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9854489743">9854489743</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.08870767,91.48450692" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Nagumantri Kamlesh Dheerendra Patnaik</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 National Institute of Pharmaceutical Education And Research</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 781101</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9806513106">9806513106</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.240715,91.6956729" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Yogendra Sharma (Regional Manager)</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 AIIMS Guwahati(Ayush), Sibharal, Changsari</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 781101</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9365086305">9365086305</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.25250594,91.69733907" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ravi Kumar Phyavula</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Rangiya Railway Station</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 781365</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9542312322">9542312322</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.4415499,91.6119005" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

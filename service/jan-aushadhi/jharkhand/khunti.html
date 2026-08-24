@@ -60,27 +60,49 @@
 <h2 class="service-section__title">All 3 Jan Aushadhi Stores in Khunti</h2>
 <p>Neeche Khunti district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Kalyan Hospital, Beside Arki Police station — 835225</td>
-<td><a href="tel:7488311953">7488311953</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>1507, Near Torpa Reffral Hospital, P.o. &P.S.- Torpa, Khunti — 835227</td>
-<td><a href="tel:7004912153">7004912153</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Sadar Hospital, Campus, P.O. & P.S- Khunti, Khunti — 835210</td>
-<td><a href="tel:9354132641">9354132641</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mr. Pankaj Patel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Kalyan Hospital, Beside Arki Police station</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835225</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7488311953">7488311953</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.0767,85.2782" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ashish Soy</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 1507, Near Torpa Reffral Hospital, P.o. &P.S.- Torpa, Khunti</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835227</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7004912153">7004912153</a></div>
+</div>
+<a href="https://www.google.com/maps?q=22.93512,85.09699" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Priti Choubey</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Sadar Hospital, Campus, P.O. & P.S- Khunti, Khunti</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835210</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9354132641">9354132641</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.05874,85.28387" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

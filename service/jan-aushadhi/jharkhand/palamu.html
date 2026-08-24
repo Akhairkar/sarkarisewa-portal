@@ -60,47 +60,85 @@
 <h2 class="service-section__title">All 7 Jan Aushadhi Stores in Palamu</h2>
 <p>Neeche Palamu district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Sadar Hospital Chowk Dal Tong822101 — 822101</td>
-<td><a href="tel:7488412440">7488412440</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>At Ararua Khurd — 822131</td>
-<td><a href="tel:9523594435">9523594435</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Main Road, Old Bus Stand Hariharganj, P.O. & P.S — 822131</td>
-<td><a href="tel:8789743060">8789743060</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Japla Chatarpur Main Road Po, Ps Japla Palamau, Medninagar — 822116</td>
-<td><a href="tel:9113382195">9113382195</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Medninagar Medical College Hospital, Daltonganj Po- Daltonganj — 822101</td>
-<td><a href="tel:9006441284">9006441284</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Behind Noor Photo State — 822113</td>
-<td><a href="tel:8709521846">8709521846</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>At- CHC Hussainabad, PO+PS- Hussainabad — 822116</td>
-<td><a href="tel:9431970121">9431970121</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Md Imtiyaz Khan</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Sadar Hospital Chowk Dal Tong822101</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 822101</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7488412440">7488412440</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.0420334,84.09073533" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Gita Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 At Ararua Khurd</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 822131</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9523594435">9523594435</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.54321013,84.27991363" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Arti Kumari</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Main Road, Old Bus Stand Hariharganj, P.O. & P.S</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 822131</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8789743060">8789743060</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.54907098,84.2820515" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Arti Kumari</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Japla Chatarpur Main Road Po, Ps Japla Palamau, Medninagar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 822116</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9113382195">9113382195</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.54118672,83.99660599" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Suraj Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Medninagar Medical College Hospital, Daltonganj Po- Daltonganj</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 822101</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9006441284">9006441284</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.3305,83.9644" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Puspa Kunwar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Behind Noor Photo State</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 822113</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8709521846">8709521846</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.3727057,84.1894272" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajesh Prasad Gupta</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 At- CHC Hussainabad, PO+PS- Hussainabad</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 822116</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9431970121">9431970121</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.53272028,84.00507626" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

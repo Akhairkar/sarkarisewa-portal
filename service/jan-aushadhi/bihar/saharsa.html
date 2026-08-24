@@ -60,92 +60,166 @@
 <h2 class="service-section__title">All 16 Jan Aushadhi Stores in Saharsa</h2>
 <p>Neeche Saharsa district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Hanuman nagar chandour — 852221</td>
-<td><a href="tel:8969757086">8969757086</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>ISLAMIA CHOWK WARD NO 15 SAHARSA BIHAR — 852201</td>
-<td><a href="tel:7541009444">7541009444</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>House of Mahboob Alam , ward no. 2, Simari Bakhtiyarpur, Tal Simari Bakhtiyarpur, Saharsa , Bihar 85 — 852127</td>
-<td><a href="tel:9334867435">9334867435</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>26, Meer Tola, Ward No. 07 — 852201</td>
-<td><a href="tel:9934593876">9934593876</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Shiv Mandir, Baluha Bazar — 852216</td>
-<td><a href="tel:9262954922">9262954922</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Ward No.-02, Naya Bazar Near Aerodrome; Kahra;, Saharsa — 852201</td>
-<td><a href="tel:7488453899">7488453899</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Paharpur Main Bazar, Simri Bakhtiyarpur — 852127</td>
-<td><a href="tel:9939253639">9939253639</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Teliyahat Bazar, Banma Itahari — 852127</td>
-<td><a href="tel:8252717131">8252717131</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Ward No -05, At/Po- Mangwar Main Market — 852217</td>
-<td><a href="tel:7808607155">7808607155</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Khan Market Ward No.-28, Near Hatiya Gachhi Railway Crossing Opp Hero Motorcycle Show room — 852201</td>
-<td><a href="tel:7004667182">7004667182</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Mahalaxmi Enterprises, Lakhminia Chowk — 852201</td>
-<td><a href="tel:6203027133">6203027133</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Govt. Primary Health Care Center, Sonbarsa Raj — 852129</td>
-<td><a href="tel:8628922896">8628922896</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Vidya Market, Balawahat Chowk, Subdivision — 852106</td>
-<td><a href="tel:7004751525">7004751525</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Petrol Pump Patharghat Thana — 852107</td>
-<td><a href="tel:7004776354">7004776354</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Baijnathpur Chowk, NH-107, Ps-Baijnathpur — 852221</td>
-<td><a href="tel:6283109113">6283109113</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>167, Bhelwa Orali Po- Bhelwa — 852126</td>
-<td><a href="tel:7501050197">7501050197</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajesh Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Hanuman nagar chandour</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852221</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8969757086">8969757086</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.80309384,86.67048761" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Pawan Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 ISLAMIA CHOWK WARD NO 15 SAHARSA BIHAR</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852201</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7541009444">7541009444</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.88657224,86.60245221" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mohd. Shahid Akwal</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 House of Mahboob Alam , ward no. 2, Simari Bakhtiyarpur, Tal Simari Bakhtiyarpur, Saharsa , Bihar 85</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852127</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9334867435">9334867435</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.72515304,86.58635883" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Md Mahboob Alam</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 26, Meer Tola, Ward No. 07</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852201</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9934593876">9934593876</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.8751584,86.5874124" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Raja Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Shiv Mandir, Baluha Bazar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852216</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9262954922">9262954922</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.83960212,86.4558998" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ravindra Kumar Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Ward No.-02, Naya Bazar Near Aerodrome; Kahra;, Saharsa</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852201</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7488453899">7488453899</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.89052563,86.58487572" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sanam Jabi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Paharpur Main Bazar, Simri Bakhtiyarpur</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852127</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9939253639">9939253639</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.7241539,86.6291368" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Shahena Khatoon</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Teliyahat Bazar, Banma Itahari</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852127</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8252717131">8252717131</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.6935,86.6422" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Anamika Kumari</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Ward No -05, At/Po- Mangwar Main Market</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852217</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7808607155">7808607155</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.7455401,86.80239075" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ashiya Parveen</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Khan Market Ward No.-28, Near Hatiya Gachhi Railway Crossing Opp Hero Motorcycle Show room</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852201</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7004667182">7004667182</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.87679942,86.60485561" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Puja Kumari</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Mahalaxmi Enterprises, Lakhminia Chowk</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852201</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:6203027133">6203027133</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.8845636,86.6102411" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Zeba Perween</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Govt. Primary Health Care Center, Sonbarsa Raj</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852129</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8628922896">8628922896</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.7217225,86.6291473" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sanju</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Vidya Market, Balawahat Chowk, Subdivision</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852106</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7004751525">7004751525</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.7927,86.53232" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Shabnam Devi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Petrol Pump Patharghat Thana</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852107</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7004776354">7004776354</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.80648,86.78059" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Bhageshwar Mehta</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Baijnathpur Chowk, NH-107, Ps-Baijnathpur</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852221</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:6283109113">6283109113</a></div>
+</div>
+<a href="https://www.google.com/maps?q=27.0275779013223,85.3858984265295" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Arushi bharti</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 167, Bhelwa Orali Po- Bhelwa</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 852126</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7501050197">7501050197</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.68669,86.55062" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

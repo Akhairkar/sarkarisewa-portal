@@ -60,27 +60,49 @@
 <h2 class="service-section__title">All 3 Jan Aushadhi Stores in Nandurbar</h2>
 <p>Neeche Nandurbar district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>S.NO.2956K/3, HOUSE NO.1825, GALA NO.1 DONDAICHA ROAD, SHAHADA, TAL-SHAHADA, DISTNANDURBAR SHAHADA — 425409</td>
-<td><a href="tel:8208350714">8208350714</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No. 113, Malmatta No. 168, Girivihar Shopping Complex, First Floor, Near Girivihar Gate Taloda — 425412</td>
-<td><a href="tel:8000497749">8000497749</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Malmatta No.255, Shop No.3&4, Ground Floor Dhadgaon-Vadfalya-Roshmal. — 425414</td>
-<td><a href="tel:9404031219">9404031219</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Vinod Jagannath Patil</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 S.NO.2956K/3, HOUSE NO.1825, GALA NO.1 DONDAICHA ROAD, SHAHADA, TAL-SHAHADA, DISTNANDURBAR SHAHADA</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 425409</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8208350714">8208350714</a></div>
+</div>
+<a href="https://www.google.com/maps?q=21.531505,74.470442" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Chetana Rahulkumar Patil</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No. 113, Malmatta No. 168, Girivihar Shopping Complex, First Floor, Near Girivihar Gate Taloda</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 425412</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8000497749">8000497749</a></div>
+</div>
+<a href="https://www.google.com/maps?q=21.3805151,74.24118926" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Shiva Vikla Pawara</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Malmatta No.255, Shop No.3&4, Ground Floor Dhadgaon-Vadfalya-Roshmal.</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 425414</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9404031219">9404031219</a></div>
+</div>
+<a href="https://www.google.com/maps?q=21.82442569,74.21705811" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

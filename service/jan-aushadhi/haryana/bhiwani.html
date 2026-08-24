@@ -60,92 +60,166 @@
 <h2 class="service-section__title">All 16 Jan Aushadhi Stores in Bhiwani</h2>
 <p>Neeche Bhiwani district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>vpo Sohansara Tehsil — 127021</td>
-<td><a href="tel:7056440854">7056440854</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop no.1, Naya Bazar Road, Adjacent Civil line Police Station — 127021</td>
-<td><a href="tel:7357272427">7357272427</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Bus Stand, VPO Mundhal khurd — 127041</td>
-<td><a href="tel:9416505548">9416505548</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Civil Hospital, Ghanta Ghar — 127021</td>
-<td><a href="tel:9812022646">9812022646</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Opposite New Housing Board Colony, Dadri Gate — 127021</td>
-<td><a href="tel:8901191671">8901191671</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No 46, Municipal Committee Road, Near Arora Hospital, Bawani Khera — 127032</td>
-<td><a href="tel:9812127310">9812127310</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Opp. Bikaner Misthan Bhandar, Near Kaddam Hospital, Mini Bypass — 127021</td>
-<td><a href="tel:9053768081">9053768081</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>BTM Chowk, Tehsil-Bhiwani — 127021</td>
-<td><a href="tel:8607268046">8607268046</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Inside OPD Block, Civil Hospital — 127021</td>
-<td><a href="tel:9671590969">9671590969</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>1, Near Dakghar, Tosham — 127040</td>
-<td><a href="tel:8053639343">8053639343</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Ward No.10, Ashwani Colony, Loharu — 127201</td>
-<td><a href="tel:7027533327">7027533327</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Ram Mandir, Siwan-Loharu Road, Isharwal, Bhiwani — 127021</td>
-<td><a href="tel:9306475630">9306475630</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>At Siwani to Tosham Road, Tehsil-Siwani, Bhiwani — 127046</td>
-<td><a href="tel:9728570464">9728570464</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Bharat Petrol Pump, VPO Kaunt, Bhiwani — 127021</td>
-<td><a href="tel:9729170880">9729170880</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Rohtak Gate, Bhiwani — 127021</td>
-<td><a href="tel:7206090046">7206090046</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Indra Colony,Zoo Road,Near Bhagat Singh Chowk,Bhiwani — 127021</td>
-<td><a href="tel:7988851609">7988851609</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rinku</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 vpo Sohansara Tehsil</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7056440854">7056440854</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.7693181,76.15529389" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Lokesh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop no.1, Naya Bazar Road, Adjacent Civil line Police Station</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7357272427">7357272427</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.80026153,76.13943305" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sukhbir Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Bus Stand, VPO Mundhal khurd</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127041</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9416505548">9416505548</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.98699483,76.16720985" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sandeep Chahal (Secretary Of Darsh Education & Wel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Civil Hospital, Ghanta Ghar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9812022646">9812022646</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.7974024,76.1305335" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Manju</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Opposite New Housing Board Colony, Dadri Gate</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8901191671">8901191671</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.7847723,76.1440178" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Phool Kanwar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No 46, Municipal Committee Road, Near Arora Hospital, Bawani Khera</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127032</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9812127310">9812127310</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.94585122,76.03316477" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Priyanka</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Opp. Bikaner Misthan Bhandar, Near Kaddam Hospital, Mini Bypass</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9053768081">9053768081</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.79475892,76.15739018" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Kiran</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 BTM Chowk, Tehsil-Bhiwani</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8607268046">8607268046</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.76965666,76.1551866" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mr. Krishan Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Inside OPD Block, Civil Hospital</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9671590969">9671590969</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.79766095,76.1311665" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Vandana</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 1, Near Dakghar, Tosham</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127040</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8053639343">8053639343</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.86976,75.91567" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Krishna Devi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Ward No.10, Ashwani Colony, Loharu</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127201</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7027533327">7027533327</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.78807,76.1294" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Pooja</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Ram Mandir, Siwan-Loharu Road, Isharwal, Bhiwani</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9306475630">9306475630</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.77472796,75.52989319" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Anjali</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 At Siwani to Tosham Road, Tehsil-Siwani, Bhiwani</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127046</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9728570464">9728570464</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.90447,75.61437" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Pooja</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Bharat Petrol Pump, VPO Kaunt, Bhiwani</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9729170880">9729170880</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.7766511344599,76.1705330878491" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Virender</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Rohtak Gate, Bhiwani</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7206090046">7206090046</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.7861509465102,76.1512543705152" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Maya</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Indra Colony,Zoo Road,Near Bhagat Singh Chowk,Bhiwani</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 127021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7988851609">7988851609</a></div>
+</div>
+<a href="https://www.google.com/maps?q=28.8105165640342,76.143736142686" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

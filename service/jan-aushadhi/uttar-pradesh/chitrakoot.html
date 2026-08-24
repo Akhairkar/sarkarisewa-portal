@@ -60,92 +60,166 @@
 <h2 class="service-section__title">All 16 Jan Aushadhi Stores in Chitrakoot</h2>
 <p>Neeche Chitrakoot district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Arya Nagar Manikpur PO Manikpur Chitrakoot Uttar Pradesh 210208 — 210208</td>
-<td><a href="tel:9993265545">9993265545</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Sarvodaya Bhavan, Ashok Chauraha Bargarh Chitrakoot, Bargarh — 210208</td>
-<td><a href="tel:9711995322">9711995322</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>B PACS Raipura, NH 35 Vill Post Raipura — 210205</td>
-<td><a href="tel:6306664771">6306664771</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>B Pacs Pahari, Pahari Uttari — 210206</td>
-<td><a href="tel:8887989736">8887989736</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>DISTRICT COMBINED HOSPITAL — 210205</td>
-<td><a href="tel:7518400910">7518400910</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>CHC MAU CHITRAKOOT — 210209</td>
-<td><a href="tel:7518400910">7518400910</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>ACHC RAIPURA/MANIKPUR — 210205</td>
-<td><a href="tel:7518400910">7518400910</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>CHC MANIKPUR — 210208</td>
-<td><a href="tel:7518400910">7518400910</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>CHC RAJAPUR CHITRAKOOT — 210207</td>
-<td><a href="tel:7518400910">7518400910</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>CHC RAMNAGAR CHITRAKOOT — 210209</td>
-<td><a href="tel:7518400910">7518400910</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>CHC KARVI — 210205</td>
-<td><a href="tel:7518400910">7518400910</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>CHC PAHARI — 210206</td>
-<td><a href="tel:7518400910">7518400910</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No.02, Ground Floor, 545/290, Mohalla- Gandhinagar, Ward No.-19, Near Sumergiri Hotel, Prayagra — 210205</td>
-<td><a href="tel:6393483496">6393483496</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>B pacs Sardhua, Sardhua — 210207</td>
-<td><a href="tel:9984675738">9984675738</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>House No.-425/241, Ward No.-4, Gokul Puri Karwi Near Jan Sewa Inter College Karwi — 210205</td>
-<td><a href="tel:8881051230">8881051230</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Gata No.91 Kalla Shivrampur — 210205</td>
-<td><a href="tel:8115321670">8115321670</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Noorul Haque</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Arya Nagar Manikpur PO Manikpur Chitrakoot Uttar Pradesh 210208</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210208</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9993265545">9993265545</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.06444156,81.09850924" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Pallawi Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Sarvodaya Bhavan, Ashok Chauraha Bargarh Chitrakoot, Bargarh</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210208</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9711995322">9711995322</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.1465329,81.44925969" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Dhirendra Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 B PACS Raipura, NH 35 Vill Post Raipura</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210205</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:6306664771">6306664771</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.23203265,81.1404439" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Shiv Shankar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 B Pacs Pahari, Pahari Uttari</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210206</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8887989736">8887989736</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.33372449,80.96332019" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajesh Upadhyay</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 DISTRICT COMBINED HOSPITAL</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210205</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7518400910">7518400910</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.19641782852612,80.91358882883607" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajesh Upadhyay</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 CHC MAU CHITRAKOOT</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210209</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7518400910">7518400910</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.269605632852976,81.36348932883605" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajesh Upadhyay</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 ACHC RAIPURA/MANIKPUR</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210205</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7518400910">7518400910</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.2186248563323,81.12052544232786" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajesh Upadhyay</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 CHC MANIKPUR</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210208</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7518400910">7518400910</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.067743380007077,81.09813226672593" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajesh Upadhyay</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 CHC RAJAPUR CHITRAKOOT</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210207</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7518400910">7518400910</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.37892633,81.13108926" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajesh Upadhyay</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 CHC RAMNAGAR CHITRAKOOT</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210209</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7518400910">7518400910</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.2503003,81.24092203" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajesh Upadhyay</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 CHC KARVI</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210205</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7518400910">7518400910</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.21394,80.91788" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajesh Upadhyay</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 CHC PAHARI</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210206</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7518400910">7518400910</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.332875385462916,80.96357397672118" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Abhishek Singh Baghel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No.02, Ground Floor, 545/290, Mohalla- Gandhinagar, Ward No.-19, Near Sumergiri Hotel, Prayagra</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210205</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:6393483496">6393483496</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.21441213,80.92664668" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Anil Kumar Pandey</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 B pacs Sardhua, Sardhua</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210207</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9984675738">9984675738</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.43735,81.07325" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Krishna Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 House No.-425/241, Ward No.-4, Gokul Puri Karwi Near Jan Sewa Inter College Karwi</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210205</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8881051230">8881051230</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.2215354881438,81.0679879205172" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sanu Tripathi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Gata No.91 Kalla Shivrampur</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 210205</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8115321670">8115321670</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.3480503643586,81.0222501171875" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

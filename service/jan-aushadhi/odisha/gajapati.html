@@ -60,27 +60,49 @@
 <h2 class="service-section__title">All 3 Jan Aushadhi Stores in Gajapati</h2>
 <p>Neeche Gajapati district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Jan Aushadi StoreDistrict Headquarter Hospital(DHH) CampusAtPoParalakhemundiDisttGajapati — 761200</td>
-<td><a href="tel:8908115117">8908115117</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>At-Kumuti Sahi, Po/PS- Paralakhemundi, Plot No-1260/3237, Khata No-215/277 — 761200</td>
-<td><a href="tel:9692999277">9692999277</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>At Main Road, Chandragiri, Po- Chandragiri, Ps-Mohana, Mouza chandragiri Over Plot No 628, Khata No — 761017</td>
-<td><a href="tel:9178344608">9178344608</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>S. Usha Rani Mishra</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Jan Aushadi StoreDistrict Headquarter Hospital(DHH) CampusAtPoParalakhemundiDisttGajapati</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 761200</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8908115117">8908115117</a></div>
+</div>
+<a href="https://www.google.com/maps?q=18.76859343,84.09634892" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sunanda Patnaik</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 At-Kumuti Sahi, Po/PS- Paralakhemundi, Plot No-1260/3237, Khata No-215/277</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 761200</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9692999277">9692999277</a></div>
+</div>
+<a href="https://www.google.com/maps?q=18.7857,84.081703" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Anjana Padhy</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 At Main Road, Chandragiri, Po- Chandragiri, Ps-Mohana, Mouza chandragiri Over Plot No 628, Khata No</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 761017</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9178344608">9178344608</a></div>
+</div>
+<a href="https://www.google.com/maps?q=19.31855166,84.29567216" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

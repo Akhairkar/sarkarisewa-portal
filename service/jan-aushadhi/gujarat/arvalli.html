@@ -60,82 +60,148 @@
 <h2 class="service-section__title">All 14 Jan Aushadhi Stores in Arvalli</h2>
 <p>Neeche Arvalli district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Jan Aushadhi Medical Store 123 Riverside Business Park 1St Floor — 383315</td>
-<td><a href="tel:9512325855">9512325855</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Jan Aushadhi Medical Store 1110113 Near Sharda Cinema choila Road — 383325</td>
-<td><a href="tel:9427418998">9427418998</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Pmbjk milkat No 1306 Shop No a 4 Ist Floor Riverside Buissnes Parknear Sanjivani Hospital — 383315</td>
-<td><a href="tel:9408806649">9408806649</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>D-11, GROUND FLOOR, BALAJI COMPLEX, OPP TALUKA PANCHAYAT, MALPUR ROAD, MODASA, TAL- MODASA, DIST- AR — 383315</td>
-<td><a href="tel:9427751196">9427751196</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Milkat No-2248, Shop No- G-7, Divain Complex, Akrund Road, Opp. Tapovan School, Vadagam — 383307</td>
-<td><a href="tel:7057975801">7057975801</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Government Hospital,Bhiloda,Arvalli — 383245</td>
-<td><a href="tel:9428737428">9428737428</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Milkat No:2364, Ground Floor, The Sabalpur Group Seva Sahakari Mandali Ltd, Mahadevpura Kampa — 383315</td>
-<td><a href="tel:7984037206">7984037206</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Milkat No:2568, Shop No:1, Ground Floor, Sat Kaival Complex, Near IIFL Bank, Sathamba — 383340</td>
-<td><a href="tel:7990741282">7990741282</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Sarve No.553, Paki Block A/29, Ground Floor, Shreeji Square, Meghrej Road — 383315</td>
-<td><a href="tel:9426260344">9426260344</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Milkat No.3482, Block B, Shop No.26, Ground Floor, Tirupati Plaza, Ambedkar Road — 383245</td>
-<td><a href="tel:9316501485">9316501485</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Milkat No. 9710, Old Milkat Mo. 11A/36, Shop No. 11, Ground Floor, Raj City Plaza, Near Dholvani Cro — 383245</td>
-<td><a href="tel:7990871414">7990871414</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>At Bajar, Near Darwaja Vav, Opp. Khadi Bhandar — 383345</td>
-<td><a href="tel:9408306076">9408306076</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Milkat No. 1015781, Shop No. G2, GF, alkapuri Complex, Nr Sahyog Cross Road — 383315</td>
-<td><a href="tel:9714565337">9714565337</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No. G2, GF, Atlanta Business Hub, Milkat No. 10173805, Opp. Civil Hospital, Vill-Palanpur — 383315</td>
-<td><a href="tel:9979373742">9979373742</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Jan Aushadhi Kendra</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Jan Aushadhi Medical Store 123 Riverside Business Park 1St Floor</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383315</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9512325855">9512325855</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.4605448,73.29643274" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Manibhai Premjibhai Patel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Jan Aushadhi Medical Store 1110113 Near Sharda Cinema choila Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383325</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9427418998">9427418998</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.22610741,73.2133482" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Patel Ashishkumar Vasantbhai</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Pmbjk milkat No 1306 Shop No a 4 Ist Floor Riverside Buissnes Parknear Sanjivani Hospital</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383315</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9408806649">9408806649</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.46838366,73.29486901" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mr. Patel Dharmendra Vasantbhai</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 D-11, GROUND FLOOR, BALAJI COMPLEX, OPP TALUKA PANCHAYAT, MALPUR ROAD, MODASA, TAL- MODASA, DIST- AR</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383315</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9427751196">9427751196</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.27716291,73.4059101" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ram Jitubhai Patel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Milkat No-2248, Shop No- G-7, Divain Complex, Akrund Road, Opp. Tapovan School, Vadagam</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383307</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7057975801">7057975801</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.32546144,73.13704512" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Zaveri Prakeshbhai Hirabhai</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Government Hospital,Bhiloda,Arvalli</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383245</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9428737428">9428737428</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.76640484,73.24415211" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Patel Chandubhai Gopalbhai</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Milkat No:2364, Ground Floor, The Sabalpur Group Seva Sahakari Mandali Ltd, Mahadevpura Kampa</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383315</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7984037206">7984037206</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.4614368,73.3014225" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Patel Bhaichandbhai Mangalbhai</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Milkat No:2568, Shop No:1, Ground Floor, Sat Kaival Complex, Near IIFL Bank, Sathamba</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383340</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7990741282">7990741282</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.17228931,73.32559128" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ashishkumar Rasikbhai Patel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Sarve No.553, Paki Block A/29, Ground Floor, Shreeji Square, Meghrej Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383315</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9426260344">9426260344</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.44800066,73.3472901" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Patel Ritaben Keshabhai</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Milkat No.3482, Block B, Shop No.26, Ground Floor, Tirupati Plaza, Ambedkar Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383245</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9316501485">9316501485</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.76520988,73.2510749" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Panchal Bijalbahen Chiragkumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Milkat No. 9710, Old Milkat Mo. 11A/36, Shop No. 11, Ground Floor, Raj City Plaza, Near Dholvani Cro</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383245</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7990871414">7990871414</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.76189081,73.2686942" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Jigarkumar Jitubhai Patel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 At Bajar, Near Darwaja Vav, Opp. Khadi Bhandar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383345</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9408306076">9408306076</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.36438,73.46608" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Parmar Dvanshi Kishan</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Milkat No. 1015781, Shop No. G2, GF, alkapuri Complex, Nr Sahyog Cross Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383315</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9714565337">9714565337</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.452733207491,73.3150018858808" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Manishaben Rakeshbhai Patel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No. G2, GF, Atlanta Business Hub, Milkat No. 10173805, Opp. Civil Hospital, Vill-Palanpur</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 383315</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9979373742">9979373742</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.48999666,73.30168118" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

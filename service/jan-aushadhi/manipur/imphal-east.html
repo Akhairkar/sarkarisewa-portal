@@ -60,97 +60,175 @@
 <h2 class="service-section__title">All 17 Jan Aushadhi Stores in Imphal East</h2>
 <p>Neeche Imphal East district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Pradhan Mantri Bhartiya Janaushadhi Kendra CHCSagolmang Imphal East — 795114</td>
-<td><a href="tel:9436061631">9436061631</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>CHINGMEIRONG AH1 — 795001</td>
-<td><a href="tel:8974323208">8974323208</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Basement Of JNIMS OPD Block, Porompat — 795005</td>
-<td><a href="tel:9436026282">9436026282</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Heingang Makha Leikai — 795002</td>
-<td><a href="tel:9077712788">9077712788</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Plot No.12, Shree Shree Govindajee Road, Palace compound — 795004</td>
-<td><a href="tel:9615431853">9615431853</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Community Health Center, Moirangpurel — 795010</td>
-<td><a href="tel:9206120440">9206120440</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Lamlong Bazar Imphal East — 795001</td>
-<td><a href="tel:9612695501">9612695501</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Khongman Zone II Imphal East — 795008</td>
-<td><a href="tel:9856147991">9856147991</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Khabam Lamkhai near IGAR South, Heingang — 795002</td>
-<td><a href="tel:9366041723">9366041723</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Khurai Chingangbam Leikai Imphal — 795010</td>
-<td><a href="tel:7005139858">7005139858</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Yaiskul Moirangkhom Chingakham Leikai Imphal, — 795001</td>
-<td><a href="tel:9366702505">9366702505</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Pangei Lairam Mapal Near Forest Office Imphal — 795114</td>
-<td><a href="tel:7085802820">7085802820</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Sawombung Kabui Khunjao,Sawombung NG — 795010</td>
-<td><a href="tel:7308012151">7308012151</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Moirangkampu Khewa Bazar Near Iril Bridge Imphal — 795005</td>
-<td><a href="tel:9862080666">9862080666</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>169,Khomidok Gandhi, Primary School, Khomidok, Imphal — 795114</td>
-<td><a href="tel:9366485923">9366485923</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>56 Kitna Panung, Okram Chuthek — 795008</td>
-<td><a href="tel:8974844426">8974844426</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>WANGKHEI THANGJAM LEIKAI IMPHAL — 795005</td>
-<td><a href="tel:8731027853">8731027853</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Dr. Ajay Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Pradhan Mantri Bhartiya Janaushadhi Kendra CHCSagolmang Imphal East</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795114</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9436061631">9436061631</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.96106277,94.02260067" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sinam Pritam Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 CHINGMEIRONG AH1</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8974323208">8974323208</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.826635,93.94422255" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sinam Pritam Singh (Ceo Eastern Motors)</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Basement Of JNIMS OPD Block, Porompat</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795005</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9436026282">9436026282</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.81162528,93.9623637" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Pangambam Ranjit Singh (President)</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Heingang Makha Leikai</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795002</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9077712788">9077712788</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.9371438,93.844418" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Nameirakpam Pradeep Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Plot No.12, Shree Shree Govindajee Road, Palace compound</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795004</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9615431853">9615431853</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.7984922,93.94970898" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Moirangthem Henary Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Community Health Center, Moirangpurel</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795010</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9206120440">9206120440</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.78880966,94.12375642" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Island Maisnam</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Lamlong Bazar Imphal East</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9612695501">9612695501</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.82530307,93.96443446" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Khoisnam Brojendro Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Khongman Zone II Imphal East</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795008</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9856147991">9856147991</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.7772558,93.9487922" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Tourangbam Puinabati Devi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Khabam Lamkhai near IGAR South, Heingang</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795002</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9366041723">9366041723</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.8577412,93.9324246" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ningombam Dinesh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Khurai Chingangbam Leikai Imphal</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795010</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7005139858">7005139858</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.82037,93.96182" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Naorem Jayenta Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Yaiskul Moirangkhom Chingakham Leikai Imphal,</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9366702505">9366702505</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.79335441,93.94131255" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Wakabam Ibechaobi Devi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Pangei Lairam Mapal Near Forest Office Imphal</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795114</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7085802820">7085802820</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.81925,94.01925" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Soubam Meena Devi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Sawombung Kabui Khunjao,Sawombung NG</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795010</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7308012151">7308012151</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.87112,94.01132" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Moirangkampu GP Level Multipurpose Cooperative Soc</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Moirangkampu Khewa Bazar Near Iril Bridge Imphal</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795005</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9862080666">9862080666</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.819037896614766,93.98577019678955" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Izash Ahmed</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 169,Khomidok Gandhi, Primary School, Khomidok, Imphal</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795114</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9366485923">9366485923</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.84403,93.96974" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ningombam  Ranjit Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 56 Kitna Panung, Okram Chuthek</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795008</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8974844426">8974844426</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.7638332820769,93.9481054490149" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sukham Johnson Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 WANGKHEI THANGJAM LEIKAI IMPHAL</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795005</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8731027853">8731027853</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.80009,93.96506" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

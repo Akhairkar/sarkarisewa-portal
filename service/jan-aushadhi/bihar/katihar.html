@@ -60,92 +60,166 @@
 <h2 class="service-section__title">All 16 Jan Aushadhi Stores in Katihar</h2>
 <p>Neeche Katihar district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Sadar Hospital road Rajendra stadium — 854105</td>
-<td><a href="tel:9986625909">9986625909</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Subdivision Hospital Barsoi — 855102</td>
-<td><a href="tel:7488164211">7488164211</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Jan Lakshya Hospital, M/S Bajaj Workshop Mirchaibari Chowk, PS. Sahayak Thana — 854105</td>
-<td><a href="tel:9431285348">9431285348</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>H/O Sri Mukhlal Chaudhary Holding No. 149, Anathalay Road, Ward No. 21 — 854105</td>
-<td><a href="tel:9431814053">9431814053</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Kathihar Railway Station, Platform No.01 — 854105</td>
-<td><a href="tel:9542312322">9542312322</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Ward No-02, Gairea, Post-Chandpur Kadwa, Katihar — 855105</td>
-<td><a href="tel:9304314022">9304314022</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No.-1 & 2 Daheria, Near FCI Godown, Post- Katihar Jute Mill, PS- Town Thana — 854103</td>
-<td><a href="tel:8102320433">8102320433</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Hridayganj, Katihar, Post- Katihar, Ps- Sahayak Thana, — 854105</td>
-<td><a href="tel:9199752927">9199752927</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Kursela Ward No-12, Post A.G, Bazar, PS Kursela — 854101</td>
-<td><a href="tel:9123111725">9123111725</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Manihari Road, Sharifganj, Ward No- 42 — 854105</td>
-<td><a href="tel:9123294791">9123294791</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>In Front Of Katihar Medical College Main Gate, Sirsa — 854105</td>
-<td><a href="tel:7903212542">7903212542</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Semapur Bazar Po- Semapur, Ps- Barari — 854115</td>
-<td><a href="tel:6299636661">6299636661</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Aabid Colony Ward No 45, Near Homeopathic College — 854106</td>
-<td><a href="tel:7091272761">7091272761</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Mansahi Near P.H.C Po/Ps- Mansahi — 854103</td>
-<td><a href="tel:8340385741">8340385741</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Maa Tara Complex, Gerabari, Post- Gerabari — 854108</td>
-<td><a href="tel:9955009898">9955009898</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Chaudhary Mohalla — 854105</td>
-<td><a href="tel:9939557661">9939557661</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sachchidanand Mahto</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Sadar Hospital road Rajendra stadium</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854105</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9986625909">9986625909</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.53944503,87.56709361" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Amit Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Subdivision Hospital Barsoi</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 855102</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7488164211">7488164211</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.62410923,87.93122458" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Pratap Chandra Das</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Jan Lakshya Hospital, M/S Bajaj Workshop Mirchaibari Chowk, PS. Sahayak Thana</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854105</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9431285348">9431285348</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.55775954,87.55682913" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Richa Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 H/O Sri Mukhlal Chaudhary Holding No. 149, Anathalay Road, Ward No. 21</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854105</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9431814053">9431814053</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.54520401,87.57750203" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ravi Kumar Phyavula</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Kathihar Railway Station, Platform No.01</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854105</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9542312322">9542312322</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.5478634,87.5628937" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Faraha Deeba Fatima</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Ward No-02, Gairea, Post-Chandpur Kadwa, Katihar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 855105</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9304314022">9304314022</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.71214532,87.70201115" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Amarjeet Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No.-1 & 2 Daheria, Near FCI Godown, Post- Katihar Jute Mill, PS- Town Thana</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854103</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8102320433">8102320433</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.51664,87.58749" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Vivek Kumar, Rakesh Kumar Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Hridayganj, Katihar, Post- Katihar, Ps- Sahayak Thana,</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854105</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9199752927">9199752927</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.56583155,87.54401303" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Annu Kumari</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Kursela Ward No-12, Post A.G, Bazar, PS Kursela</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854101</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9123111725">9123111725</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.45151,87.25413" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Asheshwar Prasad Varnawal</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Manihari Road, Sharifganj, Ward No- 42</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854105</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9123294791">9123294791</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.51692717,87.56576397" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rakesh Ranjan</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 In Front Of Katihar Medical College Main Gate, Sirsa</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854105</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7903212542">7903212542</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.58037,87.556" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Lalita Kumari</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Semapur Bazar Po- Semapur, Ps- Barari</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854115</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:6299636661">6299636661</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.5242328700281,87.4655342030697" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rashma  Naheed</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Aabid Colony Ward No 45, Near Homeopathic College</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854106</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7091272761">7091272761</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.5316680776021,87.5874908488368" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Md. Sahil Raja</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Mansahi Near P.H.C Po/Ps- Mansahi</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854103</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8340385741">8340385741</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.51157,87.58" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Suraj Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Maa Tara Complex, Gerabari, Post- Gerabari</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854108</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9955009898">9955009898</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.6207929569465,87.4000388738855" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Roshni Rani</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Chaudhary Mohalla</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 854105</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9939557661">9939557661</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.55368,87.5714" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

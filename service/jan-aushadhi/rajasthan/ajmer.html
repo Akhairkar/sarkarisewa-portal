@@ -60,87 +60,157 @@
 <h2 class="service-section__title">All 15 Jan Aushadhi Stores in Ajmer</h2>
 <p>Neeche Ajmer district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Sumer City center shop no 1 YN Hospital road Main road Madanganj Kishangarh — 305801</td>
-<td><a href="tel:9166202883">9166202883</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Post office, J.L.N. Hospital, — 305001</td>
-<td><a href="tel:8233392849">8233392849</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>126, Out side Nehru Gate, Main road nehru gate, Opp Abhishek bhawan, Beawar, Ajmer , Rajasthan 30590 — 305901</td>
-<td><a href="tel:9351983520">9351983520</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Babaicha Gram Sewa Sahkari Samiti Limited, Babaicha, Babyacha — 305811</td>
-<td><a href="tel:9799023350">9799023350</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shri Ram Gram Sewa Sahkari Samiti Limited, Village Hingonia, Hingoniyan — 305406</td>
-<td><a href="tel:9766008354">9766008354</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Parbatpura Gram Sewa Sahkari Samiti, Mukhyawas, Makhupura — 305002</td>
-<td><a href="tel:8426812400">8426812400</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>15, Ground Floor, Samriddhi Florence G 3, Kotra — 305001</td>
-<td><a href="tel:9636015522">9636015522</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Inside Government Sub District Hospital, Bijainagar, Vijainagar — 305624</td>
-<td><a href="tel:8764473445">8764473445</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>14C, Near Government Hospital Nagaur Road, Salasar Balaji Market — 305022</td>
-<td><a href="tel:9649262604">9649262604</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>1, Opposite Govt Police Line Dispensery — 305001</td>
-<td><a href="tel:8949793412">8949793412</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>2, Yagya Narayan Hospital Road, Near BSNL Office, City Road, Maganganj Kishangarh — 305801</td>
-<td><a href="tel:8949793412">8949793412</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Camp Office of The DIGP GC 1, CRPF, CRPF, Golf Course Road — 305007</td>
-<td><a href="tel:8690448981">8690448981</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>130/12, Laxmi Bhawan, Near Nikki Collection Shop, Hathi Bhata — 305001</td>
-<td><a href="tel:9024748301">9024748301</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Purana RTO Office Ke Samne, Ajmer Road Kekri — 305404</td>
-<td><a href="tel:9269469248">9269469248</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>4,C 11, Near HDFC Bank, Panchsheel Nagar — 305001</td>
-<td><a href="tel:7568006659">7568006659</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>S. Ghishi Devi/Rajesh Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Sumer City center shop no 1 YN Hospital road Main road Madanganj Kishangarh</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305801</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9166202883">9166202883</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.58690052,74.86027417" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mr. Anil Kumar Jain</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Post office, J.L.N. Hospital,</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8233392849">8233392849</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.47021362,74.63645044" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mr. Gaurav Kumar Munot</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 126, Out side Nehru Gate, Main road nehru gate, Opp Abhishek bhawan, Beawar, Ajmer , Rajasthan 30590</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305901</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9351983520">9351983520</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.09536662,74.31455941" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Prakash Chand Sain</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Babaicha Gram Sewa Sahkari Samiti Limited, Babaicha, Babyacha</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305811</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9799023350">9799023350</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.645623,74.745962" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajendra Kumar Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shri Ram Gram Sewa Sahkari Samiti Limited, Village Hingonia, Hingoniyan</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305406</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9766008354">9766008354</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.0643694,75.1272179" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ramniwas</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Parbatpura Gram Sewa Sahkari Samiti, Mukhyawas, Makhupura</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305002</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8426812400">8426812400</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.396423,74.665891" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Bhanwari Devi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 15, Ground Floor, Samriddhi Florence G 3, Kotra</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9636015522">9636015522</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.47476498,74.60187462" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sangeeta Rajpurohit</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Inside Government Sub District Hospital, Bijainagar, Vijainagar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305624</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8764473445">8764473445</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.92869655,74.6443105" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Savitri Devi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 14C, Near Government Hospital Nagaur Road, Salasar Balaji Market</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305022</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9649262604">9649262604</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.48756,74.5643" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Jiroj Jajra</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 1, Opposite Govt Police Line Dispensery</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8949793412">8949793412</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.47701,74.6427" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Jiroj Jajra</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 2, Yagya Narayan Hospital Road, Near BSNL Office, City Road, Maganganj Kishangarh</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305801</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8949793412">8949793412</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.59039,74.85135" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Aman Chhaba</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Camp Office of The DIGP GC 1, CRPF, CRPF, Golf Course Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305007</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8690448981">8690448981</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.4537399832702,74.6544151332737" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Divya Dadhich</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 130/12, Laxmi Bhawan, Near Nikki Collection Shop, Hathi Bhata</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9024748301">9024748301</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.4600941426919,74.6356719145682" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Pooja Saini</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Purana RTO Office Ke Samne, Ajmer Road Kekri</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305404</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9269469248">9269469248</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.99163,75.17131" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Pavitra P Shivnani</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 4,C 11, Near HDFC Bank, Panchsheel Nagar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7568006659">7568006659</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.40153,74.65056" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

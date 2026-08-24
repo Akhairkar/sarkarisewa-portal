@@ -60,92 +60,166 @@
 <h2 class="service-section__title">All 16 Jan Aushadhi Stores in Dausa</h2>
 <p>Neeche Dausa district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Nama Bazar Paparda Tehsil Nagal Rajawavtan — 303505</td>
-<td><a href="tel:9950540351">9950540351</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>05, Shri Ramkaran Joshi Government Hospital, NH11A, Lalsot Road, Dausa — 303303</td>
-<td><a href="tel:9810806034">9810806034</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>0, Near Chaudhary Petrol Pump, Opp. First Tower, Agra Road — 303303</td>
-<td><a href="tel:9521300648">9521300648</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Opp. Nehru Garden, Subhash Colony — 303303</td>
-<td><a href="tel:9414035509">9414035509</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Government Hospital, Baswa — 303327</td>
-<td><a href="tel:9413651486">9413651486</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>New Sabzi Mandi, Vpo Sikandra, Brahman Bairada — 303326</td>
-<td><a href="tel:6376984389">6376984389</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Patan Road, Vpo Geejgarh — 303502</td>
-<td><a href="tel:8290192623">8290192623</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shanti Vila, 57/2, Janakpuri Colony, Near Arawali Sweets Home, Gupteshwar Road — 303303</td>
-<td><a href="tel:9799312344">9799312344</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>0, Near SBI Bank, Baswa Road — 303313</td>
-<td><a href="tel:6367682551">6367682551</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Kiran Physiotherapy Hospital, Gudha Road, Naya Bass Budh Vihar — 303313</td>
-<td><a href="tel:8104306002">8104306002</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>0, Main Bazar, Kadi ki kothi Road — 303508</td>
-<td><a href="tel:9982598819">9982598819</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>2, Kothun Road — 303503</td>
-<td><a href="tel:9116354402">9116354402</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Main Market, Ramgarh Pachwara — 303510</td>
-<td><a href="tel:7799040412">7799040412</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Opp. Power House, Mandawar Road — 321608</td>
-<td><a href="tel:9309303065">9309303065</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Hospital Road, Mandawar — 321609</td>
-<td><a href="tel:8385891074">8385891074</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>01, Opposite Khandelwal Misthan Bhandar, Sainthal Moad — 303303</td>
-<td><a href="tel:9309302627">9309302627</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Chandra Sekhar Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Nama Bazar Paparda Tehsil Nagal Rajawavtan</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303505</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9950540351">9950540351</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.75099058,76.33400317" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Santosh Bai</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 05, Shri Ramkaran Joshi Government Hospital, NH11A, Lalsot Road, Dausa</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303303</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9810806034">9810806034</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.883373,76.33510472" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Krishna Devi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 0, Near Chaudhary Petrol Pump, Opp. First Tower, Agra Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303303</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9521300648">9521300648</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.90059062,76.33949867" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ghanshyam Khandelwal</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Opp. Nehru Garden, Subhash Colony</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303303</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9414035509">9414035509</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.8963159,76.3339754" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Vandana Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Government Hospital, Baswa</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303327</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9413651486">9413651486</a></div>
+</div>
+<a href="https://www.google.com/maps?q=27.1485848,76.5809023" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Shailendra Kumar Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 New Sabzi Mandi, Vpo Sikandra, Brahman Bairada</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303326</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:6376984389">6376984389</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.96424,76.578651" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rajendra Kumar Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Patan Road, Vpo Geejgarh</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303502</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8290192623">8290192623</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.8523742,76.625897" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Maya Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shanti Vila, 57/2, Janakpuri Colony, Near Arawali Sweets Home, Gupteshwar Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303303</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9799312344">9799312344</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.8844134,76.3259518" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Neeraj Kumari Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 0, Near SBI Bank, Baswa Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303313</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:6367682551">6367682551</a></div>
+</div>
+<a href="https://www.google.com/maps?q=27.21445022,77.98911525" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Naresh Kumar Bairwa</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Kiran Physiotherapy Hospital, Gudha Road, Naya Bass Budh Vihar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303313</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8104306002">8104306002</a></div>
+</div>
+<a href="https://www.google.com/maps?q=27.0472751,76.5526501" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Suraj Kumar Vedwal</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 0, Main Bazar, Kadi ki kothi Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303508</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9982598819">9982598819</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.87456,76.66489" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Kavita Trivedi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 2, Kothun Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303503</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9116354402">9116354402</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.56146,76.32903" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Kavita Tirvedi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Main Market, Ramgarh Pachwara</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303510</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7799040412">7799040412</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.6222008682465,76.2604738854556" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Nisha Saini</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Opp. Power House, Mandawar Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 321608</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9309303065">9309303065</a></div>
+</div>
+<a href="https://www.google.com/maps?q=27.0442772518152,76.9369833744852" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Niri Saini</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Hospital Road, Mandawar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 321609</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8385891074">8385891074</a></div>
+</div>
+<a href="https://www.google.com/maps?q=27.15779147,76.85493137" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Girja Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 01, Opposite Khandelwal Misthan Bhandar, Sainthal Moad</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303303</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9309302627">9309302627</a></div>
+</div>
+<a href="https://www.google.com/maps?q=26.90539986,76.31829519" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

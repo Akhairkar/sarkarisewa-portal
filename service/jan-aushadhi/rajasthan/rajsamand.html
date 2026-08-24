@@ -60,47 +60,85 @@
 <h2 class="service-section__title">All 7 Jan Aushadhi Stores in Rajsamand</h2>
 <p>Neeche Rajsamand district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>RK Government Hospital Campus — 313324</td>
-<td><a href="tel:9783263105">9783263105</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>First Floor,Near Sbi Bank,Hospitalroad, Ward No. 0001 — 305921</td>
-<td><a href="tel:7877780004">7877780004</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Karni Mata Ground, Hospital Road, Bapu Nagar — 313331</td>
-<td><a href="tel:9610130902">9610130902</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>5, Ganesh Chowk, Sabji Mandi, Near Ramdwara — 313332</td>
-<td><a href="tel:9660401570">9660401570</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shri Govardhan Govt. District Hospital Premises — 313301</td>
-<td><a href="tel:9783263105">9783263105</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>N.H. 8, Kamlighat Chouraha Vijaipura (Rural) — 313331</td>
-<td><a href="tel:7014159099">7014159099</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>R.K. Hospital Premises, Bhilwara Bypass Road — 313342</td>
-<td><a href="tel:9414682131">9414682131</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Kuldeep Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 RK Government Hospital Campus</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 313324</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9783263105">9783263105</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.02448082,73.88269806" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Samta Jain</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 First Floor,Near Sbi Bank,Hospitalroad, Ward No. 0001</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 305921</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7877780004">7877780004</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.73673229,74.07954961" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Rameshwar Lal Suthar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Karni Mata Ground, Hospital Road, Bapu Nagar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 313331</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9610130902">9610130902</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.22356569,73.37356565" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Paras Mal Suthar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 5, Ganesh Chowk, Sabji Mandi, Near Ramdwara</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 313332</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9660401570">9660401570</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.30454067,73.92885884" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Bhavana Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shri Govardhan Govt. District Hospital Premises</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 313301</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9783263105">9783263105</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.94021157,73.81907432" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Kamla Gram Seva Sahkari Samiti Limited (Mr. Amit K</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 N.H. 8, Kamlighat Chouraha Vijaipura (Rural)</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 313331</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7014159099">7014159099</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.54907732,73.87186902" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Vinod Kumar Kothari</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 R.K. Hospital Premises, Bhilwara Bypass Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 313342</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9414682131">9414682131</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.03273,73.91374" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

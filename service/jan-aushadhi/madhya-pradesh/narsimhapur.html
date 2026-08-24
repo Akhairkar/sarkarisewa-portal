@@ -60,77 +60,139 @@
 <h2 class="service-section__title">All 13 Jan Aushadhi Stores in Narsimhapur</h2>
 <p>Neeche Narsimhapur district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Shop No. -Plot No. 5, Rani Laxmi Bai Ward, Gadarwara — 487551</td>
-<td><a href="tel:9977863141">9977863141</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop/ward no- 188, Laxmi Narayan ward — 487221</td>
-<td><a href="tel:9893147423">9893147423</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No. 06, Red Cross Complex Near District Hospital — 487001</td>
-<td><a href="tel:9424970608">9424970608</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop no, plot no-Infront of Jhulelal mandir,Sindhi colony, station road, Rudra ward — 487118</td>
-<td><a href="tel:8878845143">8878845143</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No/Plot No.:C/O Dayachand Vishwakarma, Opposite Bajaj Showroom Ward No 5 Nandlal Colony — 487770</td>
-<td><a href="tel:8109551459">8109551459</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>District Hospital, Civil Line Narsinghpur — 487001</td>
-<td><a href="tel:9425832344">9425832344</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No/Plot No.:C/O Mukesh Kumar Gupta, Ward No 8 pachama Road, Salichouka, Tehsil: Gadarwara — 487881</td>
-<td><a href="tel:9340534631">9340534631</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No./Plot No.- Shop of Manoj Pasari, Ward No.- 17, Behind Jain Mandir, Sabji Bajar, Aamgaon Bada — 487225</td>
-<td><a href="tel:9074149159">9074149159</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No./ Plot No.- station Road, Karakbel, Gotegaon, — 487118</td>
-<td><a href="tel:9644464799">9644464799</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No/Plot No-2, Rajmarg, Tehsil : Tendukheda — 487330</td>
-<td><a href="tel:7067644455">7067644455</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No/Plot No 191, Gadarwara, Tehsil — 487551</td>
-<td><a href="tel:9981741919">9981741919</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>247/6/1, Besides HDFC Bank, Poniya Kuklah, Main Road, Gotegaon — 487118</td>
-<td><a href="tel:9791912225">9791912225</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Shop No/Plot No Premises Of Salman Khan Shop No 01, Jyoteshwar Road Inf Of Manish Kirana — 487118</td>
-<td><a href="tel:8720878786">8720878786</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Surendra Kumar Vishwakrma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No. -Plot No. 5, Rani Laxmi Bai Ward, Gadarwara</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487551</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9977863141">9977863141</a></div>
+</div>
+<a href="https://www.google.com/maps?q=22.9177259,78.7813547" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sarika Soni</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop/ward no- 188, Laxmi Narayan ward</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487221</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9893147423">9893147423</a></div>
+</div>
+<a href="https://www.google.com/maps?q=22.93195767,79.06152363" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Shivendra Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No. 06, Red Cross Complex Near District Hospital</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9424970608">9424970608</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.4249,81.6647" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Anjulata Patel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop no, plot no-Infront of Jhulelal mandir,Sindhi colony, station road, Rudra ward</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487118</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8878845143">8878845143</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.03738299,79.48362784" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Pooja Vishwakarma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No/Plot No.:C/O Dayachand Vishwakarma, Opposite Bajaj Showroom Ward No 5 Nandlal Colony</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487770</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8109551459">8109551459</a></div>
+</div>
+<a href="https://www.google.com/maps?q=22.81996502,78.81541751" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ms.Sachi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 District Hospital, Civil Line Narsinghpur</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9425832344">9425832344</a></div>
+</div>
+<a href="https://www.google.com/maps?q=22.94957913,79.18561359" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Suraj Vishwakarma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No/Plot No.:C/O Mukesh Kumar Gupta, Ward No 8 pachama Road, Salichouka, Tehsil: Gadarwara</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487881</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9340534631">9340534631</a></div>
+</div>
+<a href="https://www.google.com/maps?q=22.83350751,78.67729538" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Vineeta Kumri</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No./Plot No.- Shop of Manoj Pasari, Ward No.- 17, Behind Jain Mandir, Sabji Bajar, Aamgaon Bada</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487225</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9074149159">9074149159</a></div>
+</div>
+<a href="https://www.google.com/maps?q=22.86329112,79.06486885" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Surendra Singh Vishwakarma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No./ Plot No.- station Road, Karakbel, Gotegaon,</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487118</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9644464799">9644464799</a></div>
+</div>
+<a href="https://www.google.com/maps?q=22.99309,79.34338" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Shakshi Patel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No/Plot No-2, Rajmarg, Tehsil : Tendukheda</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487330</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7067644455">7067644455</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.12232397,79.02200052" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Akshay Thakur</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No/Plot No 191, Gadarwara, Tehsil</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487551</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9981741919">9981741919</a></div>
+</div>
+<a href="https://www.google.com/maps?q=22.92620253,78.7844342" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ajay Pratap Singh Patel</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 247/6/1, Besides HDFC Bank, Poniya Kuklah, Main Road, Gotegaon</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487118</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9791912225">9791912225</a></div>
+</div>
+<a href="https://www.google.com/maps?q=23.04812,79.49015" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ahfaz Ahmad Khan</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop No/Plot No Premises Of Salman Khan Shop No 01, Jyoteshwar Road Inf Of Manish Kirana</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 487118</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8720878786">8720878786</a></div>
+</div>
+<a href="https://www.google.com/maps?q=22.95418,79.51987" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

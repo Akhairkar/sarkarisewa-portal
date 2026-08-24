@@ -60,77 +60,139 @@
 <h2 class="service-section__title">All 13 Jan Aushadhi Stores in Malda</h2>
 <p>Neeche Malda district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Bidhan Palli Gazole732124 — 732124</td>
-<td><a href="tel:7718591086">7718591086</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>chanchal bus stand, Plot no. 1608/2571, KH No. 4230, J.L. No. 68, Mouza singia , — 732123</td>
-<td><a href="tel:7076122529">7076122529</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Holding No.26/4/25, Gour Road, Ward No.4, Ground Floor, Mukdumpur S.O, English Bazar — 732103</td>
-<td><a href="tel:9051346881">9051346881</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Malda Town Railway Station, P.F. No.1 — 732101</td>
-<td><a href="tel:9542312322">9542312322</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Plot No. 1228, Kh. No.2572, J.L. No.73, Mouza-Bagbari, Vill- Rajnagar Bagbari, Para-School Para — 732102</td>
-<td><a href="tel:8600348812">8600348812</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Holding No- 14/12/13, Rathbari Station Road, Ward No-28, Malda, English Bazar — 732101</td>
-<td><a href="tel:9253093269">9253093269</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Dag No-4058/5502, Khatian No-5943, J.L No-47, Mouza-Bhado, Under Bhado Gram Panchayat, Vill & Para-B — 732139</td>
-<td><a href="tel:9593322220">9593322220</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Dag No. 495, Khatian No. 1974, J.L. No.66, Mouza-Samsi, Under Samsi Gram Panchayat, Vill & Para-Rata — 732139</td>
-<td><a href="tel:9647646044">9647646044</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Dag No. 844, Khatian No. 2773, J.L. No. 89, Mouza- Bishnuprasad, Under Mothabari Gram Panchayat, Mez — 732207</td>
-<td><a href="tel:9134770374">9134770374</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Dag No.- 85, Khatian No.-9808, JL No.-143, Mouza- Gobarjana, Ground Floor, Under Araidanga Gram Panc — 732204</td>
-<td><a href="tel:9609851915">9609851915</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Dag No-254, Khatian No-7724, J.Lno-125, Mouza- Nijga Paranpur Gram Panchayat, Vill-Paranpur, Para-Pa — 732204</td>
-<td><a href="tel:8509463171">8509463171</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Dag No.-109, Khatian No.-1060, J.L. No.-117, Mouza- Baharal, under Baharal Gram Panchayat, Vill& Par — 732205</td>
-<td><a href="tel:9734055334">9734055334</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Ward No.15, Holding No.37/21/29, Ground Floor, Under English Bazar Municipality — 732101</td>
-<td><a href="tel:9733181081">9733181081</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ms. Sunita Agrawal/ Raja Mishra</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Bidhan Palli Gazole732124</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732124</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7718591086">7718591086</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.21088774,88.19244783" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mr. Pranab Paul/ Mr. Nurul Islam</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 chanchal bus stand, Plot no. 1608/2571, KH No. 4230, J.L. No. 68, Mouza singia ,</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732123</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7076122529">7076122529</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.39131257,88.00924899" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Asit Ghosh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Holding No.26/4/25, Gour Road, Ward No.4, Ground Floor, Mukdumpur S.O, English Bazar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732103</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9051346881">9051346881</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.99074561,88.14176192" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ravi Kumar Phyavula</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Malda Town Railway Station, P.F. No.1</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732101</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9542312322">9542312322</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.01006298,88.14126836" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Selimara Khatun</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Plot No. 1228, Kh. No.2572, J.L. No.73, Mouza-Bagbari, Vill- Rajnagar Bagbari, Para-School Para</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732102</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8600348812">8600348812</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.0276,88.0569" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mahua Ghosh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Holding No- 14/12/13, Rathbari Station Road, Ward No-28, Malda, English Bazar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732101</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9253093269">9253093269</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.00404411,88.13536362" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Firoja Yasmin</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Dag No-4058/5502, Khatian No-5943, J.L No-47, Mouza-Bhado, Under Bhado Gram Panchayat, Vill & Para-B</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732139</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9593322220">9593322220</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.24227108,87.96130086" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sanchita Biswas</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Dag No. 495, Khatian No. 1974, J.L. No.66, Mouza-Samsi, Under Samsi Gram Panchayat, Vill & Para-Rata</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732139</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9647646044">9647646044</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.27669528,88.00605307" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Beli Chowdhury</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Dag No. 844, Khatian No. 2773, J.L. No. 89, Mouza- Bishnuprasad, Under Mothabari Gram Panchayat, Mez</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732207</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9134770374">9134770374</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.93064266,88.03666762" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Swaha Kumar</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Dag No.- 85, Khatian No.-9808, JL No.-143, Mouza- Gobarjana, Ground Floor, Under Araidanga Gram Panc</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732204</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9609851915">9609851915</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.11643688,88.0028169" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Sahin Sarwardi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Dag No-254, Khatian No-7724, J.Lno-125, Mouza- Nijga Paranpur Gram Panchayat, Vill-Paranpur, Para-Pa</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732204</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8509463171">8509463171</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.15644448,87.96969788" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ruksar Khatun</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Dag No.-109, Khatian No.-1060, J.L. No.-117, Mouza- Baharal, under Baharal Gram Panchayat, Vill& Par</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732205</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9734055334">9734055334</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.17347634,87.93678636" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Susmita  Pandit</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Ward No.15, Holding No.37/21/29, Ground Floor, Under English Bazar Municipality</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 732101</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9733181081">9733181081</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.01103,88.14056" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

@@ -60,22 +60,40 @@
 <h2 class="service-section__title">All 2 Jan Aushadhi Stores in Tengnoupal</h2>
 <p>Neeche Tengnoupal district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>JAN AUSHADHIMS Moreh SUBDISTRICT HOSPITAL MOREH — 795131</td>
-<td><a href="tel:7005462125">7005462125</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Theimungkung village Near Pallel Bazar. — 795135</td>
-<td><a href="tel:7085411505">7085411505</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Dr.Bikramjit Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 JAN AUSHADHIMS Moreh SUBDISTRICT HOSPITAL MOREH</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795131</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7005462125">7005462125</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.2520901,94.3018663" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>A Adani Mao (President)</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Theimungkung village Near Pallel Bazar.</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 795135</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7085411505">7085411505</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.4519056,94.0263177" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

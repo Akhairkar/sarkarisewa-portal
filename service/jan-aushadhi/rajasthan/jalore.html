@@ -60,92 +60,166 @@
 <h2 class="service-section__title">All 16 Jan Aushadhi Stores in Jalore</h2>
 <p>Neeche Jalore district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Shop no 3 Gayatri Plaza Near Jawahar nagar BhinmalTh Bhinmal — 343029</td>
-<td><a href="tel:9610195310">9610195310</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Vill Morseem Bagoda — 343032</td>
-<td><a href="tel:8875541001">8875541001</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>04, Outside Government Hospital, OppPatwar Bhawan — 343029</td>
-<td><a href="tel:9610195310">9610195310</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Ashapura mataji mandir, Morsim Road, Bagora — 343032</td>
-<td><a href="tel:9137212535">9137212535</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>03 Kamalpura Complex, LIC Office karda road — 343041</td>
-<td><a href="tel:8769524483">8769524483</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>02, Opp. Jalore Truck Union, Bhinmal Road — 343001</td>
-<td><a href="tel:9353483756">9353483756</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>01, Ummedabad Gram Seva Sehakari Samiti ltd, Ummedabad — 343021</td>
-<td><a href="tel:8003111185">8003111185</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>03, Opp. Vinayak Nagar, Bhinmal-Jaswantpura Main Road — 343029</td>
-<td><a href="tel:8073964294">8073964294</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>07, Near Rama Hotel, L.M.B. Circle — 343029</td>
-<td><a href="tel:9351710644">9351710644</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Police Station, Sayla-Sindhari Main Road — 343022</td>
-<td><a href="tel:7023974860">7023974860</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>02, Near S.R. Petrol Pump, Haridev Joshi Circle — 343001</td>
-<td><a href="tel:8529320461">8529320461</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>03, Shankar Complex, Near Shivwari Mandir, Serna-Borta Road, Modran, Modra — 343028</td>
-<td><a href="tel:9694192170">9694192170</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Near Pipleshwar Mandir, Ambika Vaas, Aapeshwarji Mandir Road, Ramseen — 307803</td>
-<td><a href="tel:7073406170">7073406170</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>02, Manak Complex, Near Police Station, Bus Stand, Malware — 343039</td>
-<td><a href="tel:7340382681">7340382681</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>01, Rajpurohit Complex, Near Govt. Hospital, Jaswantpura-Ramsin — 307515</td>
-<td><a href="tel:9653842018">9653842018</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>JSUWB, Inside Shantidevi Bhanwarlal Sanghvi Trauma Center, NH-68, Barmer Tharad Highway Road — 343041</td>
-<td><a href="tel:8890101048">8890101048</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Kana Ram</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Shop no 3 Gayatri Plaza Near Jawahar nagar BhinmalTh Bhinmal</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343029</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9610195310">9610195310</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.00805096,72.26289975" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Motiram</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Vill Morseem Bagoda</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343032</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8875541001">8875541001</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.21749641,72.01862248" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Baboo Lal</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 04, Outside Government Hospital, OppPatwar Bhawan</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343029</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9610195310">9610195310</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.01275837,72.26237293" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Prakash Kalabi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Ashapura mataji mandir, Morsim Road, Bagora</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343032</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9137212535">9137212535</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.16583011,71.90659216" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mangi Lal</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 03 Kamalpura Complex, LIC Office karda road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343041</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8769524483">8769524483</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.76197797,71.78095308" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Pata Ram</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 02, Opp. Jalore Truck Union, Bhinmal Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9353483756">9353483756</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.3386063,72.62895225" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Madhusudan Sharma</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 01, Ummedabad Gram Seva Sehakari Samiti ltd, Ummedabad</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343021</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8003111185">8003111185</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.37929419,72.4407368" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Hependra Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 03, Opp. Vinayak Nagar, Bhinmal-Jaswantpura Main Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343029</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8073964294">8073964294</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.99629456,72.279214" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Mohan Lal</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 07, Near Rama Hotel, L.M.B. Circle</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343029</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9351710644">9351710644</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.00148579,72.2741435" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Bhava Ram</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Police Station, Sayla-Sindhari Main Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343022</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7023974860">7023974860</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.32393391,72.35889406" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Ghanshyam</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 02, Near S.R. Petrol Pump, Haridev Joshi Circle</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343001</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8529320461">8529320461</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.34692151,72.62319105" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Jeeva Ram Dewasi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 03, Shankar Complex, Near Shivwari Mandir, Serna-Borta Road, Modran, Modra</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343028</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9694192170">9694192170</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.96586,72.32593" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Leelaram</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Near Pipleshwar Mandir, Ambika Vaas, Aapeshwarji Mandir Road, Ramseen</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 307803</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7073406170">7073406170</a></div>
+</div>
+<a href="https://www.google.com/maps?q=25.00861,72.54574" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Jabbar Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 02, Manak Complex, Near Police Station, Bus Stand, Malware</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343039</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7340382681">7340382681</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.7802798555605,72.2873002676615" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Padam Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 01, Rajpurohit Complex, Near Govt. Hospital, Jaswantpura-Ramsin</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 307515</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9653842018">9653842018</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.80067,72.45578" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Suresh Kumar Saraswat</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 JSUWB, Inside Shantidevi Bhanwarlal Sanghvi Trauma Center, NH-68, Barmer Tharad Highway Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 343041</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8890101048">8890101048</a></div>
+</div>
+<a href="https://www.google.com/maps?q=24.80366947,71.78168895" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 

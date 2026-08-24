@@ -66,86 +66,134 @@
   <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
 </div>
 <div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
-<tr>
-<td><strong>THANGMINLAL LENTHANG</strong></td>
-<td>Thangmin Lenthang Opposite to CRC Building — 797106</td>
-<td><a href="https://www.google.com/maps?q=25.7371117,93.83008" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>ASHIKHO</strong></td>
-<td>Ward 10 Near District Transport Office Chumoukedima — 797103</td>
-<td><a href="https://www.google.com/maps?q=25.8186025,93.7702941" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>ZEVITUOLIE</strong></td>
-<td>Ward -6 Chumoukedima Town Chumoukedima District Nagaland — 797103</td>
-<td><a href="https://www.google.com/maps?q=25.8070704,25.8070704" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>Thungchio Patton</strong></td>
-<td>4TH MILE OPPOSITE TO CENTRAL JAIL MV LODGE BUILDING LANE A — 797115</td>
-<td><a href="https://www.google.com/maps?q=25.8642604,93.7685356" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>INTWALUNGLE</strong></td>
-<td>Miya Bazaar No.7 — 797116</td>
-<td><a href="https://www.google.com/maps?q=25.9249302,93.7680622" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>Vikato K Awomi</strong></td>
-<td>, Panchayat/Village-Pimla Village , Sub District-Dhansiripar, District-Chumoukedima, State-Nagaland, Pin-797103 — 797103</td>
-<td><a href="https://www.google.com/maps?q=25.7361358,93.6634462" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>Samson Zeliang</strong></td>
-<td>Niuland Road — 797115</td>
-<td><a href="https://www.google.com/maps?q=25.8646450584409,93.78664076328279" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>Nighato Achumi</strong></td>
-<td>4th mile referral colony L-Khel diphupar village — 797115</td>
-<td><a href="https://www.google.com/maps?q=25.8641729,93.7720934" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>Metsisielie Seyie</strong></td>
-<td>, Panchayat/Village-, Sub District-Medziphema, District-Chumoukedima, State-Nagaland, Pin-797106 — 797106</td>
-<td><a href="https://www.google.com/maps?q=25.7600928,93.8838267" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>AMOS DOVI</strong></td>
-<td>Ward 9 Chumoukedima — 797103</td>
-<td><a href="https://www.google.com/maps?q=25.8054639,93.7757041" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>SERAMONG SANGTAM</strong></td>
-<td>opp. North Town Higher Secondary School Neisesa Khroitsu Road Chumukedima Nagaland — 797103</td>
-<td><a href="https://www.google.com/maps?q=25.815197,93.767477" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>Inushe Assumi</strong></td>
-<td>116 Diphupar A village — 797115</td>
-<td><a href="https://www.google.com/maps?q=25.8634114,93.7710384" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>Md Arsheaala</strong></td>
-<td>, Panchayat/Village-PadamPukhuri Village, Sub District-Chumukedima, District-Chumoukedima, State-Nagaland, Pin-797116 — 797116</td>
-<td><a href="https://www.google.com/maps?q=25.9015776,93.7516339" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>Lovely Sumi</strong></td>
-<td>House number Thirty-eight Ward Eight Lane One Chumoukedima — 797103</td>
-<td><a href="https://www.google.com/maps?q=25.7946713,93.782721" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>Kiviyeto H Aye</strong></td>
-<td>, Panchayat/Village-Toluvi VillagE, Sub District-Chumukedima, District-Chumoukedima, State-Nagaland, Pin-797116 — 797116</td>
-<td><a href="https://www.google.com/maps?q=25.9187612,93.7841843" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
-<tr>
-<td><strong>Zuluinba Longkumer</strong></td>
-<td>Kuba Khel Naga United Village — 797115</td>
-<td><a href="https://www.google.com/maps?q=25.8582619,93.7955673" target="_blank" rel="noopener">Get Directions</a></td>
-</tr>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>THANGMINLAL LENTHANG</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Thangmin Lenthang Opposite to CRC Building</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797106</div>
+</div>
+<a href="https://www.google.com/maps?q=25.7371117,93.83008" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>ASHIKHO</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Ward 10 Near District Transport Office Chumoukedima</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797103</div>
+</div>
+<a href="https://www.google.com/maps?q=25.8186025,93.7702941" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>ZEVITUOLIE</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Ward -6 Chumoukedima Town Chumoukedima District Nagaland</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797103</div>
+</div>
+<a href="https://www.google.com/maps?q=25.8070704,25.8070704" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Thungchio Patton</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 4TH MILE OPPOSITE TO CENTRAL JAIL MV LODGE BUILDING LANE A</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797115</div>
+</div>
+<a href="https://www.google.com/maps?q=25.8642604,93.7685356" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>INTWALUNGLE</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Miya Bazaar No.7</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797116</div>
+</div>
+<a href="https://www.google.com/maps?q=25.9249302,93.7680622" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Vikato K Awomi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 , Panchayat/Village-Pimla Village , Sub District-Dhansiripar, District-Chumoukedima, State-Nagaland, Pin-797103</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797103</div>
+</div>
+<a href="https://www.google.com/maps?q=25.7361358,93.6634462" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Samson Zeliang</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Niuland Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797115</div>
+</div>
+<a href="https://www.google.com/maps?q=25.8646450584409,93.78664076328279" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Nighato Achumi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 4th mile referral colony L-Khel diphupar village</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797115</div>
+</div>
+<a href="https://www.google.com/maps?q=25.8641729,93.7720934" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Metsisielie Seyie</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 , Panchayat/Village-, Sub District-Medziphema, District-Chumoukedima, State-Nagaland, Pin-797106</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797106</div>
+</div>
+<a href="https://www.google.com/maps?q=25.7600928,93.8838267" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>AMOS DOVI</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Ward 9 Chumoukedima</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797103</div>
+</div>
+<a href="https://www.google.com/maps?q=25.8054639,93.7757041" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>SERAMONG SANGTAM</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 opp. North Town Higher Secondary School Neisesa Khroitsu Road Chumukedima Nagaland</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797103</div>
+</div>
+<a href="https://www.google.com/maps?q=25.815197,93.767477" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Inushe Assumi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 116 Diphupar A village</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797115</div>
+</div>
+<a href="https://www.google.com/maps?q=25.8634114,93.7710384" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Md Arsheaala</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 , Panchayat/Village-PadamPukhuri Village, Sub District-Chumukedima, District-Chumoukedima, State-Nagaland, Pin-797116</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797116</div>
+</div>
+<a href="https://www.google.com/maps?q=25.9015776,93.7516339" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Lovely Sumi</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 House number Thirty-eight Ward Eight Lane One Chumoukedima</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797103</div>
+</div>
+<a href="https://www.google.com/maps?q=25.7946713,93.782721" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Kiviyeto H Aye</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 , Panchayat/Village-Toluvi VillagE, Sub District-Chumukedima, District-Chumoukedima, State-Nagaland, Pin-797116</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797116</div>
+</div>
+<a href="https://www.google.com/maps?q=25.9187612,93.7841843" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Zuluinba Longkumer</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Kuba Khel Naga United Village</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 797115</div>
+</div>
+<a href="https://www.google.com/maps?q=25.8582619,93.7955673" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
 </div>
 <script>
@@ -207,7 +255,77 @@ function filterCenters() {
 </aside>
 </div>
 </main>
-<div id="site-footer"><footer class="site-footer"><div class="container"><p style="text-align:center;">&copy; 2026 SarkariSewa India</p></div></footer></div>
+<div id="site-footer">
+<footer class="site-footer">
+<div class="tricolor-rule"></div>
+<div class="container" style="padding-top:36px;">
+<div class="footer-disclaimer-banner" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
+<h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
+</div>
+<div class="footer-grid">
+<div>
+<h4 data-i18n="site_name">SarkariSewa India</h4>
+<p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
+</div>
+<div>
+<h4 data-i18n="footer_tools_title">Tools &amp; Apps</h4>
+<ul>
+<li><a href="../../../index.html">🧮 Tools &amp; Calculators</a></li>
+<li><a data-i18n="nav_eligibility_engine" href="../../../index.html">🎯 Scheme Eligibility Engine</a></li>
+<li><a href="../../../index.html">📋 Document Checklist</a></li>
+<li><a href="../../../index.html">📝 Self-Declaration Builder</a></li>
+<li><a href="../../../index.html">📸 Govt Exam Photo Resizer</a></li>
+<li><a href="../../../index.html">✍️ Signature Resizer</a></li>
+<li><a href="../../../index.html">📄 Document Compressor</a></li>
+<li><a href="../../../index.html">📊 Savings Scheme Comparator</a></li>
+<li><a href="../../../index.html">💳 Govt Card Clarifier</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_resources_title">Resources</h4>
+<ul>
+<li><a data-i18n="nav_project_report" href="../../../index.html">Project Report Generator</a></li>
+<li><a data-i18n="states_hub_title" href="../../../states/index.html">State-wise Popular Services</a></li>
+<li><a data-i18n="footer_about_link" href="../../../index.html">About</a></li>
+<li><a data-i18n="footer_sitemap_link" href="../../../index.html">Sitemap</a></li>
+<li><a data-i18n="footer_faq_link" href="../../../index.html">FAQ</a></li>
+<li><a data-i18n="footer_contact_link" href="../../../index.html">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_support_title">Support</h4>
+<ul>
+<li><a data-i18n="footer_support_home_link" href="../../../index.html">Support Home</a></li>
+<li><a data-i18n="footer_state_link" href="../../../index.html">State-wise Services</a></li>
+<li><a data-i18n="footer_helpline_link" href="../../../index.html">Helpline Directory</a></li>
+<li><a data-i18n="footer_rti_link" href="../../../index.html">RTI Guide</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_legal_title">Legal</h4>
+<ul>
+<li><a data-i18n="privacy_title" href="../../../index.html">Privacy Policy</a></li>
+<li><a data-i18n="disclaimer_title" href="../../../index.html">Disclaimer</a></li>
+<li><a data-i18n="terms_title" href="../../../index.html">Terms &amp; Conditions</a></li>
+<li><a data-i18n="admin_link" href="../../../index.html">Staff Login</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
+</div>
+</div>
+</footer>
+<div class="ss-wa-wrapper" id="ss-wa-wrapper">
+<button aria-label="Close" id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
+<a aria-label="Join our WhatsApp Channel" class="ss-wa-floating-bar" href="https://whatsapp.com/channel/0029VbDj7gCDp2Q8SYdFwj14" rel="noopener noreferrer" target="_blank">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+<span data-i18n="wa_join" style="font-weight: 600;">Join WhatsApp Channel</span>
+</a>
+</div>
+
+</div>
 <script src="../../../assets/js/main.js" defer></script>
 </body>
 </html>

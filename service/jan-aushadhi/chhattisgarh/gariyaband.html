@@ -60,47 +60,85 @@
 <h2 class="service-section__title">All 7 Jan Aushadhi Stores in Gariyaband</h2>
 <p>Neeche Gariyaband district ke sabhi PMBJP Kendras ki complete list hai. Kisi bhi store ka phone number ya Google Maps direction dekhne ke liye table mein click karein.</p>
 <div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Owner / Store Name</th><th>Address</th><th>Phone</th><th>Map</th></tr></thead>
-<tbody>
-<tr>
-<td>Jan Aushadhi Store District Hospital — 493887</td>
-<td><a href="tel:9425253741">9425253741</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Jan Aushadhi Store Community Health Center — 493885</td>
-<td><a href="tel:9098149481">9098149481</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>KhasraNo-619/2,Ward No 04, Vill-Amlipadar, Block-Amlipadar,Amlipadar — 493889</td>
-<td><a href="tel:8144079795">8144079795</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Phno-10, Khno-1063, Ward 08, Deobhog Road — 493889</td>
-<td><a href="tel:9131241507">9131241507</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Khasra No 103/2, P H No. 14,Community Health CenterHospitalPremises, Main Road , Nh-130c — 493889</td>
-<td><a href="tel:9074352440">9074352440</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>Khno-294, InsideOf Community Health Center — 493889</td>
-<td><a href="tel:7000208077">7000208077</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
-<tr>
-<td>InsideCommunity Health Fingeshwar — 493992</td>
-<td><a href="tel:7067535022">7067535022</a></td>
-<td><a href="https://www.google.com/maps?q={lt},{lg}" target="_blank" rel="noopener">Map</a></td>
-</tr>
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>N. K. Yadu</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Jan Aushadhi Store District Hospital</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 493887</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9425253741">9425253741</a></div>
+</div>
+<a href="https://www.google.com/maps?q=20.84436072,81.94255937" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Deepak Kumar Sahu</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Jan Aushadhi Store Community Health Center</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 493885</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9098149481">9098149481</a></div>
+</div>
+<a href="https://www.google.com/maps?q=20.92460922,81.8879884" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Smriti Rekha Panda</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 KhasraNo-619/2,Ward No 04, Vill-Amlipadar, Block-Amlipadar,Amlipadar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 493889</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:8144079795">8144079795</a></div>
+</div>
+<a href="https://www.google.com/maps?q=20.3831,82.2289" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Surendra Kumar Sinha</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Phno-10, Khno-1063, Ward 08, Deobhog Road</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 493889</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9131241507">9131241507</a></div>
+</div>
+<a href="https://www.google.com/maps?q=20.62432246,82.06859645" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Dr.Prakash Sahu</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Khasra No 103/2, P H No. 14,Community Health CenterHospitalPremises, Main Road , Nh-130c</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 493889</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:9074352440">9074352440</a></div>
+</div>
+<a href="https://www.google.com/maps?q=20.6274193,82.1716591" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Dr.Domar Singh</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 Khno-294, InsideOf Community Health Center</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 493889</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7000208077">7000208077</a></div>
+</div>
+<a href="https://www.google.com/maps?q=20.809851,82.206658" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
+<div class='center-card' style='background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column;'>
+<h3 style='margin:0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;'>Dr. V.K.Hirondia  (Bmo)</h3>
+<div style='color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px; flex: 1;'>
+    <div>📍 InsideCommunity Health Fingeshwar</div>
+    <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 493992</div>
+    <div style='margin-top: 4px; font-size: 0.9rem;'>📞 <a href="tel:7067535022">7067535022</a></div>
+</div>
+<a href="https://www.google.com/maps?q=20.972333,82.040862" target="_blank" rel="noopener" class='btn btn--primary' style='text-align: center; width: 100%; padding: 8px;'>Get Directions ↗</a>
+</div>
 
-</tbody>
-</table>
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
 </div>
 </section>
 
