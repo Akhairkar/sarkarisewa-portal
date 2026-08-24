@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } catch(e) {
       console.error(e);
-      resultsContainer.innerHTML = '<div style="color:red; padding: 20px; grid-column: 1 / -1;">Error fetching live data.</div>';
+      resultsContainer.innerHTML = `<div style="color:red; padding: 20px; grid-column: 1 / -1;">Error fetching live data: <b>${e.message || JSON.stringify(e)}</b></div>`;
     }
   }
 
