@@ -102,7 +102,24 @@ def build_district_html(state_name, state_slug, dist_name, dist_slug, centers):
 <link rel="stylesheet" href="../../../assets/css/module2.css"/>
 </head>
 <body data-slug="csc-{state_slug}-{dist_slug}">
-<div id="site-header"><div class="tricolor-rule"></div><header class="site-header"><div class="container header-inner"><a href="../../../index.html" class="brand"><span class="brand-mark">S</span><span class="brand-text"><span class="brand-title">SarkariSewa India</span></span></a></div></header></div>
+<div id="site-header">
+    <div class="tricolor-rule"></div>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="../../../index.html" class="brand">
+                <span class="brand-mark">S</span>
+                <span class="brand-text">
+                    <span class="brand-title">SarkariSewa India</span>
+                </span>
+            </a>
+            <nav class="main-nav" style="display:flex; gap:16px;">
+                <a href="../../../index.html" style="color:var(--color-text); text-decoration:none; font-weight:600;">Home</a>
+                <a href="../../jan-aushadhi-store-locator.html" style="color:var(--color-text); text-decoration:none; font-weight:600;">Jan Aushadhi</a>
+                <a href="../../../tools/csc-locator.html" style="color:var(--color-text); text-decoration:none; font-weight:600;">CSC Locator</a>
+            </nav>
+        </div>
+    </header>
+</div>
 <main class="container">
 <div class="content-wrapper">
 <article class="service-article">
@@ -132,14 +149,24 @@ def build_district_html(state_name, state_slug, dist_name, dist_slug, centers):
 
 <section class="service-section">
 <h2 class="service-section__title">List of Centers in {dist_name}</h2>
-<div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Center / VLE Name</th><th>Full Address</th><th>Maps</th></tr></thead>
-<tbody>
-{rows}
-</tbody>
-</table>
+
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
 </div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+{rows}
+</div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
+            
 </section>
 
 <section class="service-section" id="faqs">
