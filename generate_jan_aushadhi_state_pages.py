@@ -244,6 +244,16 @@ def build_page(state):
           <h2 class="service-section__title" data-lang-show="en">List of Active Stores in {name_en}</h2>
           <h2 class="service-section__title" data-lang-show="hi">{name_hi} के मुख्य जन औषधि केंद्र</h2>
           
+          <!-- Supabase Live Search Box -->
+          <div style="background: var(--color-surface); padding: 20px; border-radius: 8px; border: 1px solid var(--color-border); margin-bottom: 25px;">
+            <label style="font-weight: bold; margin-bottom: 10px; display: block; color: var(--color-text);"><span data-lang-show="en">Live Search: Enter City or Pincode in {name_en}</span><span data-lang-show="hi">लाइव खोजें: {name_hi} में अपना शहर या पिनकोड डालें</span></label>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" id="store-search-input" placeholder="e.g. 400001 or City Name" style="flex: 1; padding: 10px; border: 1px solid var(--color-border); border-radius: 4px; background: var(--color-surface); color: var(--color-text);" />
+              <button class="btn btn-primary" id="store-search-btn">Search</button>
+            </div>
+            <div id="store-results" style="margin-top: 15px;"></div>
+          </div>
+          
           {store_table_html}
 
           <div class="alert alert--info">
@@ -354,6 +364,7 @@ def build_page(state):
   </div>
 
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/jan-aushadhi-locator.js" defer></script>
 </body>
 </html>
 """

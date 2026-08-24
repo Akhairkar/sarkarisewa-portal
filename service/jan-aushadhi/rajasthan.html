@@ -135,6 +135,16 @@
           <h2 class="service-section__title" data-lang-show="en">List of Active Stores in Rajasthan</h2>
           <h2 class="service-section__title" data-lang-show="hi">राजस्थान के मुख्य जन औषधि केंद्र</h2>
           
+          <!-- Supabase Live Search Box -->
+          <div style="background: var(--color-surface); padding: 20px; border-radius: 8px; border: 1px solid var(--color-border); margin-bottom: 25px;">
+            <label style="font-weight: bold; margin-bottom: 10px; display: block; color: var(--color-text);"><span data-lang-show="en">Live Search: Enter City or Pincode in Rajasthan</span><span data-lang-show="hi">लाइव खोजें: राजस्थान में अपना शहर या पिनकोड डालें</span></label>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" id="store-search-input" placeholder="e.g. 400001 or City Name" style="flex: 1; padding: 10px; border: 1px solid var(--color-border); border-radius: 4px; background: var(--color-surface); color: var(--color-text);" />
+              <button class="btn btn-primary" id="store-search-btn">Search</button>
+            </div>
+            <div id="store-results" style="margin-top: 15px;"></div>
+          </div>
+          
           <h3 style="margin-top:20px; font-size:1.3rem; color:var(--color-primary);">Main City - Rajasthan Jan Aushadhi Kendras</h3>
 <div style="overflow-x:auto; margin-top: 15px;"><table class="service-table" style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 20px;"><thead><tr style="background: var(--color-primary); color: #fff;"><th style="padding: 10px; border: 1px solid var(--color-border);">Store Name</th><th style="padding: 10px; border: 1px solid var(--color-border);">Address</th><th style="padding: 10px; border: 1px solid var(--color-border);">Contact</th></tr></thead><tbody style="color: var(--color-text);"><tr><td style="padding: 10px; border: 1px solid var(--color-border);"><strong>PMBJP General Hospital Rajasthan</strong></td><td style="padding: 10px; border: 1px solid var(--color-border);">Near District Hospital, Rajasthan - XXXXXX</td><td style="padding: 10px; border: 1px solid var(--color-border);">9999999999</td></tr><tr><td style="padding: 10px; border: 1px solid var(--color-border);"><strong>Jan Aushadhi Station Road</strong></td><td style="padding: 10px; border: 1px solid var(--color-border);">Station Road, Main Market, Rajasthan - XXXXXX</td><td style="padding: 10px; border: 1px solid var(--color-border);">8888888888</td></tr></tbody></table></div>
 
@@ -247,5 +257,6 @@
   </div>
 
   <script src="../../assets/js/main.js" defer></script>
+  <script src="../../assets/js/jan-aushadhi-locator.js" defer></script>
 </body>
 </html>
