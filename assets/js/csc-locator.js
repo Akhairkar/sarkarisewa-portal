@@ -13,16 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCloseModal = document.getElementById('btn-close-modal');
   const modalOverlay = document.getElementById('operator-modal');
 
-
-  // State elements
-  const resultsContainer = document.getElementById('results-container');
-  const resultsCount = document.getElementById('results-count');
-  
-  const stateSelect = document.getElementById('state-select');
-  const districtSelect = document.getElementById('district-select');
-  const pincodeInput = document.getElementById('pincode-input');
-  const btnSearch = document.getElementById('btn-search-csc');
-  
   // Default Render Function
   function getDirectionsUrl(lat, lng, address) {
       if(lat && lng) return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
@@ -66,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Future compatible pSEO URL
       let stateSlug = (center.state || '').toLowerCase().replace(/ /g, '-');
       let districtSlug = (center.district || '').toLowerCase().replace(/ /g, '-');
-      let nameSlug = (center.vle_name || 'csc').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       const detailsUrl = `../service/csc-locator/${stateSlug}/${districtSlug}.html`; 
 
       const card = document.createElement('div');
@@ -119,13 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  async function performServerSearch() {
+  async function performServerSearch(isInitial = false) {
+    if (!resultsContainer) return;
     const stateFilter = stateSelect ? stateSelect.value : "";
     const districtFilter = districtSelect ? districtSelect.value : "";
     const pincodeFilter = pincodeInput ? pincodeInput.value.trim() : "";
 
-    if (!stateFilter && !pincodeFilter) {
-      alert("Please enter a Pincode or select a State to search 1.3 Million records.");
+    if (!isInitial && !stateFilter && !pincodeFilter) {
+      alert("Please select a State or enter a Pincode to search.");
       return;
     }
 
@@ -140,16 +130,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (pincodeFilter) {
         query = query.eq("pincode", pincodeFilter);
-      } else {
+      } else if (!isInitial) {
         if (stateFilter) {
           query = query.ilike("state", `%${stateFilter}%`);
         }
-        if (districtFilter && districtFilter !== "other" && districtFilter !== "capital") {
+        if (districtFilter && districtFilter !== "other" && districtFilter !== "capital" && districtFilter !== "Other" && districtFilter !== "Capital") {
           query = query.ilike("district", `%${districtFilter}%`);
         }
       }
 
-      // Limit to 50 so we don't crash
+      // Limit to 50 so we don't crash the browser
       query = query.limit(50);
 
       const { data, error } = await query;
@@ -157,8 +147,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       renderCenters(data || []);
       
-      const resultsSection = document.getElementById('csc-results-section');
-      if(resultsSection) resultsSection.scrollIntoView({ behavior: 'smooth' });
+      if (!isInitial) {
+          const resultsSection = document.getElementById('csc-results-section');
+          if(resultsSection) resultsSection.scrollIntoView({ behavior: 'smooth' });
+      }
 
     } catch(e) {
       console.error(e);
@@ -166,8 +158,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Load initial random 50 centers on page load
+  performServerSearch(true);
+
   if (btnSearch) {
-      btnSearch.addEventListener('click', performServerSearch);
+      btnSearch.addEventListener('click', () => performServerSearch(false));
+  }
+  
+  if (pincodeInput) {
+      pincodeInput.addEventListener('keypress', function (e) {
+          if (e.key === 'Enter') {
+              e.preventDefault();
+              performServerSearch(false);
+          }
+      });
   }
 
   // Hook up Use My Location button
@@ -175,12 +179,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnUseLocation) {
       btnUseLocation.addEventListener('click', () => {
           if (!navigator.geolocation) {
-              alert("Geolocation is not supported by your browser.");
+              alert("Geolocation is not supported by your browser");
               return;
           }
           
           const originalText = btnUseLocation.innerHTML;
-          btnUseLocation.innerHTML = "⏳ Locating...";
+          btnUseLocation.innerHTML = "📍 Locating...";
           btnUseLocation.disabled = true;
 
           navigator.geolocation.getCurrentPosition(
@@ -194,15 +198,11 @@ document.addEventListener('DOMContentLoaded', () => {
                       const data = await response.json();
                       
                       if (data && data.address && data.address.postcode) {
-                          // Clear state/district selections
                           if(stateSelect) stateSelect.value = "";
                           if(districtSelect) districtSelect.innerHTML = '<option value="">-- Select District --</option>';
                           
-                          // Fill Pincode
                           pincodeInput.value = data.address.postcode;
-                          
-                          // Trigger search
-                          filterData();
+                          performServerSearch(false);
                       } else {
                           alert("Could not determine your PIN code. Please enter it manually.");
                       }
@@ -224,26 +224,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // Also allow enter key on pincode
-  if (pincodeInput) {
-      pincodeInput.addEventListener('keypress', function (e) {
-          if (e.key === 'Enter') {
-              filterData();
-          }
-      });
+  // Modals
+  if (btnOpenModal && modalOverlay) {
+    btnOpenModal.addEventListener('click', () => {
+      modalOverlay.classList.add('active');
+    });
   }
 
+  if (btnCloseModal && modalOverlay) {
+    btnCloseModal.addEventListener('click', () => {
+      modalOverlay.classList.remove('active');
+    });
+  }
 
-  
-  // Accordion Logic
-  const faqItems = document.querySelectorAll('.faq-item');
-  faqItems.forEach(item => {
-    const btn = item.querySelector('.faq-question');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        item.classList.toggle('active');
-      });
-    }
-  });
-
+  if (modalOverlay) {
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.remove('active');
+      }
+    });
+  }
 });
