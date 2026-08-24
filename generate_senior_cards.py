@@ -1,4 +1,74 @@
-<!DOCTYPE html>
+import os
+import json
+
+states = [
+    {"slug": "andhra-pradesh", "name": "Andhra Pradesh", "portal": "Meeseva", "portal_url": "https://meeseva.ap.gov.in/", "csc": "Meeseva Center"},
+    {"slug": "arunachal-pradesh", "name": "Arunachal Pradesh", "portal": "Service Plus", "portal_url": "https://serviceonline.gov.in/", "csc": "CSC Center"},
+    {"slug": "assam", "name": "Assam", "portal": "e-Pramaan / Sewa Setu", "portal_url": "https://sewasetu.assam.gov.in/", "csc": "PFC / CSC"},
+    {"slug": "bihar", "name": "Bihar", "portal": "RTPS Bihar / ServicePlus", "portal_url": "https://serviceonline.bihar.gov.in/", "csc": "Vasudha Kendra"},
+    {"slug": "chhattisgarh", "name": "Chhattisgarh", "portal": "e-District Chhattisgarh", "portal_url": "https://edistrict.cgstate.gov.in/", "csc": "Lok Seva Kendra"},
+    {"slug": "goa", "name": "Goa", "portal": "Goa Online", "portal_url": "https://goaonline.gov.in/", "csc": "CSC Center"},
+    {"slug": "gujarat", "name": "Gujarat", "portal": "Digital Gujarat", "portal_url": "https://www.digitalgujarat.gov.in/", "csc": "Jan Seva Kendra"},
+    {"slug": "haryana", "name": "Haryana", "portal": "Saral Haryana", "portal_url": "https://saralharyana.gov.in/", "csc": "Antyodaya Kendra / CSC"},
+    {"slug": "himachal-pradesh", "name": "Himachal Pradesh", "portal": "e-District HP", "portal_url": "https://edistrict.hp.gov.in/", "csc": "Lok Mitra Kendra"},
+    {"slug": "jharkhand", "name": "Jharkhand", "portal": "JharSewa", "portal_url": "https://jharsewa.jharkhand.gov.in/", "csc": "Pragya Kendra"},
+    {"slug": "karnataka", "name": "Karnataka", "portal": "Seva Sindhu", "portal_url": "https://sevasindhu.karnataka.gov.in/", "csc": "Bangalore One / CSC"},
+    {"slug": "kerala", "name": "Kerala", "portal": "e-District Kerala", "portal_url": "https://edistrict.kerala.gov.in/", "csc": "Akshaya Centre"},
+    {"slug": "madhya-pradesh", "name": "Madhya Pradesh", "portal": "MP e-District", "portal_url": "https://mpedistrict.gov.in/", "csc": "Lok Seva Kendra"},
+    {"slug": "maharashtra", "name": "Maharashtra", "portal": "Aaple Sarkar", "portal_url": "https://aaplesarkar.mahaonline.gov.in/", "csc": "Maha e-Seva Kendra"},
+    {"slug": "manipur", "name": "Manipur", "portal": "e-Pramaan", "portal_url": "https://manipur.gov.in/", "csc": "CSC Center"},
+    {"slug": "meghalaya", "name": "Meghalaya", "portal": "e-District Meghalaya", "portal_url": "https://megedistrict.gov.in/", "csc": "CSC Center"},
+    {"slug": "mizoram", "name": "Mizoram", "portal": "e-District Mizoram", "portal_url": "https://edistrict.mizoram.gov.in/", "csc": "CSC Center"},
+    {"slug": "nagaland", "name": "Nagaland", "portal": "e-District Nagaland", "portal_url": "https://edistrict.nagaland.gov.in/", "csc": "CSC Center"},
+    {"slug": "odisha", "name": "Odisha", "portal": "Odisha e-District", "portal_url": "https://edistrict.odisha.gov.in/", "csc": "Mo Seva Kendra"},
+    {"slug": "punjab", "name": "Punjab", "portal": "Connect Punjab", "portal_url": "https://connect.punjab.gov.in/", "csc": "Sewa Kendra"},
+    {"slug": "rajasthan", "name": "Rajasthan", "portal": "e-Mitra Rajasthan", "portal_url": "https://emitra.rajasthan.gov.in/", "csc": "e-Mitra Kendra"},
+    {"slug": "sikkim", "name": "Sikkim", "portal": "e-District Sikkim", "portal_url": "https://sikkim.gov.in/", "csc": "CSC Center"},
+    {"slug": "tamil-nadu", "name": "Tamil Nadu", "portal": "TNeGA", "portal_url": "https://tnega.tn.gov.in/", "csc": "e-Sevai Maiyam"},
+    {"slug": "telangana", "name": "Telangana", "portal": "Meeseva Telangana", "portal_url": "https://ts.meeseva.telangana.gov.in/", "csc": "Meeseva Center"},
+    {"slug": "tripura", "name": "Tripura", "portal": "e-District Tripura", "portal_url": "https://edistrict.tripura.gov.in/", "csc": "CSC Center"},
+    {"slug": "uttar-pradesh", "name": "Uttar Pradesh", "portal": "e-Sathi UP", "portal_url": "https://edistrict.up.gov.in/", "csc": "Jan Seva Kendra"},
+    {"slug": "uttarakhand", "name": "Uttarakhand", "portal": "e-District Uttarakhand", "portal_url": "https://edistrict.uk.gov.in/", "csc": "Devbhoomi Jan Seva Kendra"},
+    {"slug": "west-bengal", "name": "West Bengal", "portal": "e-District Bengal", "portal_url": "https://edistrict.wb.gov.in/", "csc": "Tathya Mitra Kendra"},
+    {"slug": "delhi", "name": "Delhi", "portal": "e-District Delhi", "portal_url": "https://edistrict.delhigovt.nic.in/", "csc": "CSC Center"},
+    {"slug": "jammu-kashmir", "name": "Jammu & Kashmir", "portal": "Jan Sugam", "portal_url": "https://jansugam.jk.gov.in/", "csc": "CSC Center"},
+    {"slug": "ladakh", "name": "Ladakh", "portal": "e-District Ladakh", "portal_url": "https://ladakh.gov.in/", "csc": "CSC Center"},
+    {"slug": "chandigarh", "name": "Chandigarh", "portal": "e-District Chandigarh", "portal_url": "https://chdservices.gov.in/", "csc": "Sampark Center"},
+    {"slug": "puducherry", "name": "Puducherry", "portal": "e-District Puducherry", "portal_url": "https://edistrict.py.gov.in/", "csc": "CSC Center"},
+    {"slug": "andaman-nicobar", "name": "Andaman & Nicobar", "portal": "e-District A&N", "portal_url": "https://edistrict.andaman.gov.in/", "csc": "CSC Center"},
+    {"slug": "lakshadweep", "name": "Lakshadweep", "portal": "e-District Lakshadweep", "portal_url": "https://lakshadweep.gov.in/", "csc": "CSC Center"},
+    {"slug": "dadra-nagar-haveli-daman-diu", "name": "Dadra & Nagar Haveli", "portal": "e-District DNH & DD", "portal_url": "https://dnh.gov.in/", "csc": "CSC Center"}
+]
+
+intros_en = [
+    "A Senior Citizen Card is an essential state-issued document providing various benefits to elderly citizens aged 60 and above.",
+    "The Senior Citizen Card is a specialized identity document created to offer healthcare, travel, and banking benefits to elderly residents.",
+    "Issued by the Social Welfare Department, the Senior Citizen Card grants special concessions and priority services to individuals over 60 years old."
+]
+
+intros_hi = [
+    "सीनियर सिटीजन कार्ड एक महत्वपूर्ण सरकारी दस्तावेज़ है जो 60 वर्ष या उससे अधिक आयु के बुजुर्ग नागरिकों को विभिन्न लाभ प्रदान करता है।",
+    "वरिष्ठ नागरिक प्रमाण पत्र एक विशेष पहचान दस्तावेज़ है जिसे बुजुर्ग निवासियों को स्वास्थ्य सेवा, यात्रा और बैंकिंग लाभ प्रदान करने के लिए बनाया गया है।",
+    "समाज कल्याण विभाग द्वारा जारी, सीनियर सिटीजन कार्ड 60 वर्ष से अधिक उम्र के व्यक्तियों को विशेष रियायतें और प्राथमिकता वाली सेवाएं प्रदान करता है।"
+]
+
+def build_html(s, idx):
+    name = s["name"]
+    slug = s["slug"]
+    portal = s["portal"]
+    portal_url = s["portal_url"]
+    csc = s["csc"]
+    
+    intro_en = intros_en[idx % 3]
+    intro_hi = intros_hi[idx % 3]
+    
+    title_en = f"{name} Senior Citizen Card Apply Online 2026: Form & Benefits"
+    title_hi = f"{name} सीनियर सिटीजन कार्ड (Senior Citizen Card) 2026: ऑनलाइन आवेदन"
+    
+    desc_hi = f"60 वर्ष से अधिक आयु के लिए {name} Senior Citizen Card ऑनलाइन कैसे बनाएं? {portal} पोर्टल से आवेदन, ज़रूरी दस्तावेज़ और फायदे (Benefits) की जानकारी।"
+    desc_en = f"How to apply for a Senior Citizen Card in {name} online? Step-by-step guide via {portal} portal, eligibility, required documents, and benefits for 60+ citizens."
+    
+    html = f"""<!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="utf-8"/>
@@ -8,32 +78,32 @@
     <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
     <link href="../favicon.ico" rel="icon"/>
     <link href="../manifest.json" rel="manifest"/>
-    <meta name="description" content="✅ झारखंड में सीनियर सिटीजन कार्ड (Senior Citizen Certificate) कैसे बनवाएं? Pragya Kendra (JharSewa) से ऑनलाइन आवेदन, ज़रूरी दस्तावेज़ और फायदे जानें।"/>
-    <meta property="og:title" content="Jharkhand Senior Citizen Card (2026): Apply Online & Get Certificate Fast"/>
-    <meta property="og:description" content="✅ झारखंड में सीनियर सिटीजन कार्ड (Senior Citizen Certificate) कैसे बनवाएं? Pragya Kendra (JharSewa) से ऑनलाइन आवेदन, ज़रूरी दस्तावेज़ और फायदे जानें।"/>
+    <meta content="{desc_hi}" name="description"/>
+    <meta content="{title_hi}" property="og:title"/>
+    <meta content="{desc_hi}" property="og:description"/>
     <meta content="article" property="og:type"/>
-    <meta content="https://sarkarisewaindia.com/states/jharkhand-senior-citizen-card.html" property="og:url"/>
+    <meta content="https://sarkarisewaindia.com/states/{slug}-senior-citizen-card.html" property="og:url"/>
     <meta content="https://sarkarisewaindia.com/assets/img/og-image.png" property="og:image"/>
     <meta content="summary_large_image" name="twitter:card"/>
-    <meta name="twitter:title" content="Jharkhand Senior Citizen Card (2026): Apply Online & Get Certificate Fast"/>
-    <meta name="twitter:description" content="✅ झारखंड में सीनियर सिटीजन कार्ड (Senior Citizen Certificate) कैसे बनवाएं? Pragya Kendra (JharSewa) से ऑनलाइन आवेदन, ज़रूरी दस्तावेज़ और फायदे जानें।"/>
-    <title>Jharkhand Senior Citizen Card (2026): Apply Online & Get Certificate Fast</title>
-    <link href="https://sarkarisewaindia.com/states/jharkhand-senior-citizen-card.html" rel="canonical"/>
+    <meta content="{title_en}" name="twitter:title"/>
+    <meta content="{desc_en}" name="twitter:description"/>
+    <title>{name} Senior Citizen Card (2026): Apply Online, Form &amp; Benefits</title>
+    <link href="https://sarkarisewaindia.com/states/{slug}-senior-citizen-card.html" rel="canonical"/>
     <link href="../assets/css/style.css" rel="stylesheet"/>
     <link href="../assets/css/module2.css" rel="stylesheet"/>
     <link href="../assets/css/module15.css" rel="stylesheet"/>
     <link href="../assets/css/share-widget.css" rel="stylesheet"/>
-    <script id="service-schema" type="application/ld+json">{
+    <script id="service-schema" type="application/ld+json">{{
       "@context": "https://schema.org",
       "@type": "GovernmentService",
-      "name": "Jharkhand Senior Citizen Card",
-      "description": "How to apply for a Senior Citizen Card in Jharkhand online? Step-by-step guide via JharSewa portal, eligibility, required documents, and benefits for 60+ citizens.",
-      "url": "https://sarkarisewaindia.com/states/jharkhand-senior-citizen-card.html",
-      "provider": { "@type": "GovernmentOrganization", "name": "JharSewa" },
+      "name": "{name} Senior Citizen Card",
+      "description": "{desc_en}",
+      "url": "https://sarkarisewaindia.com/states/{slug}-senior-citizen-card.html",
+      "provider": {{ "@type": "GovernmentOrganization", "name": "{portal}" }},
       "serviceType": "Certificate"
-    }</script>
+    }}</script>
 </head>
-<body data-slug="state-senior-citizen-jharkhand">
+<body data-slug="state-senior-citizen-{slug}">
 <div id="site-header">
     <div class="tricolor-rule"></div>
     <header class="site-header">
@@ -62,7 +132,7 @@
             <ol>
                 <li><a href="../index.html"><span data-lang-show="en">Home</span><span data-lang-show="hi">होम</span></a></li>
                 <li><a href="index.html"><span data-lang-show="en">State Services</span><span data-lang-show="hi">राज्य सेवाएं</span></a></li>
-                <li><a href="jharkhand.html"><span data-lang-show="en">Jharkhand</span><span data-lang-show="hi">Jharkhand</span></a></li>
+                <li><a href="{slug}.html"><span data-lang-show="en">{name}</span><span data-lang-show="hi">{name}</span></a></li>
                 <li aria-current="page"><span data-lang-show="en">Senior Citizen Card</span><span data-lang-show="hi">सीनियर सिटीजन कार्ड</span></li>
             </ol>
         </nav>
@@ -71,12 +141,12 @@
         <header class="service-hero">
             <div class="service-hero__icon">👴</div>
             <h1 class="service-hero__title">
-                <span data-lang-show="en">Jharkhand Senior Citizen Card Apply Online 2026: Form & Benefits</span>
-                <span data-lang-show="hi">Jharkhand सीनियर सिटीजन कार्ड (Senior Citizen Card) 2026: ऑनलाइन आवेदन</span>
+                <span data-lang-show="en">{title_en}</span>
+                <span data-lang-show="hi">{title_hi}</span>
             </h1>
             <p class="service-hero__desc">
-                <span data-lang-show="en">How to apply for a Senior Citizen Card in Jharkhand online? Step-by-step guide via JharSewa portal, eligibility, required documents, and benefits for 60+ citizens.</span>
-                <span data-lang-show="hi">60 वर्ष से अधिक आयु के लिए Jharkhand Senior Citizen Card ऑनलाइन कैसे बनाएं? JharSewa पोर्टल से आवेदन, ज़रूरी दस्तावेज़ और फायदे (Benefits) की जानकारी।</span>
+                <span data-lang-show="en">{desc_en}</span>
+                <span data-lang-show="hi">{desc_hi}</span>
             </p>
         </header>
 
@@ -86,15 +156,15 @@
                 
                 <section class="card mb-4" id="overview">
                     <h2><span data-lang-show="en">Quick Overview</span><span data-lang-show="hi">संक्षिप्त विवरण</span></h2>
-                    <p class="mb-4"><span data-lang-show="en">A Senior Citizen Card is an essential state-issued document providing various benefits to elderly citizens aged 60 and above.</span><span data-lang-show="hi">सीनियर सिटीजन कार्ड एक महत्वपूर्ण सरकारी दस्तावेज़ है जो 60 वर्ष या उससे अधिक आयु के बुजुर्ग नागरिकों को विभिन्न लाभ प्रदान करता है।</span></p>
+                    <p class="mb-4"><span data-lang-show="en">{intro_en}</span><span data-lang-show="hi">{intro_hi}</span></p>
                     <div class="quick-facts">
                         <div class="fact-item">
                             <span class="fact-label"><span data-lang-show="en">Department</span><span data-lang-show="hi">विभाग</span></span>
-                            <span class="fact-value"><span data-lang-show="en">Social Welfare Dept., Jharkhand</span><span data-lang-show="hi">समाज कल्याण विभाग, Jharkhand</span></span>
+                            <span class="fact-value"><span data-lang-show="en">Social Welfare Dept., {name}</span><span data-lang-show="hi">समाज कल्याण विभाग, {name}</span></span>
                         </div>
                         <div class="fact-item">
                             <span class="fact-label"><span data-lang-show="en">Application Portal</span><span data-lang-show="hi">आवेदन पोर्टल</span></span>
-                            <span class="fact-value">JharSewa</span>
+                            <span class="fact-value">{portal}</span>
                         </div>
                         <div class="fact-item">
                             <span class="fact-label"><span data-lang-show="en">Application Fee</span><span data-lang-show="hi">आवेदन शुल्क</span></span>
@@ -108,7 +178,7 @@
                 </section>
 
                 <section class="mb-4" id="benefits">
-                    <h2><span data-lang-show="en">Benefits of Senior Citizen Card in Jharkhand</span><span data-lang-show="hi">Jharkhand में सीनियर सिटीजन कार्ड के फायदे</span></h2>
+                    <h2><span data-lang-show="en">Benefits of Senior Citizen Card in {name}</span><span data-lang-show="hi">{name} में सीनियर सिटीजन कार्ड के फायदे</span></h2>
                     <div class="prose">
                         <ul>
                             <li><span data-lang-show="en"><strong>Travel Concession:</strong> Discount on State Transport (Roadways buses) and Railway ticket concessions (subject to current rules).</span><span data-lang-show="hi"><strong>यात्रा में छूट:</strong> राज्य परिवहन (बसों) और रेलवे टिकटों में वरिष्ठ नागरिकों के लिए छूट (वर्तमान नियमों के अधीन)।</span></li>
@@ -124,7 +194,7 @@
                     <div class="prose">
                         <ul>
                             <li><span data-lang-show="en"><strong>Age:</strong> Must be 60 years of age or older.</span><span data-lang-show="hi"><strong>आयु:</strong> आवेदक की आयु 60 वर्ष या उससे अधिक होनी चाहिए।</span></li>
-                            <li><span data-lang-show="en"><strong>Residence:</strong> Must be a permanent resident of Jharkhand.</span><span data-lang-show="hi"><strong>निवास:</strong> आवेदक Jharkhand का स्थायी निवासी होना चाहिए।</span></li>
+                            <li><span data-lang-show="en"><strong>Residence:</strong> Must be a permanent resident of {name}.</span><span data-lang-show="hi"><strong>निवास:</strong> आवेदक {name} का स्थायी निवासी होना चाहिए।</span></li>
                         </ul>
                     </div>
                 </section>
@@ -143,12 +213,12 @@
                 </section>
 
                 <section class="mb-4" id="apply">
-                    <h2><span data-lang-show="en">How to Apply Online in Jharkhand</span><span data-lang-show="hi">Jharkhand में ऑनलाइन आवेदन कैसे करें?</span></h2>
+                    <h2><span data-lang-show="en">How to Apply Online in {name}</span><span data-lang-show="hi">{name} में ऑनलाइन आवेदन कैसे करें?</span></h2>
                     <div class="prose">
                         <ol>
                             <li>
-                                <span data-lang-show="en"><strong>Visit the Portal:</strong> Go to the official JharSewa website (<a href="https://jharsewa.jharkhand.gov.in/" target="_blank" rel="nofollow noopener">https://jharsewa.jharkhand.gov.in/</a>).</span>
-                                <span data-lang-show="hi"><strong>पोर्टल पर जाएं:</strong> आधिकारिक JharSewa वेबसाइट (<a href="https://jharsewa.jharkhand.gov.in/" target="_blank" rel="nofollow noopener">https://jharsewa.jharkhand.gov.in/</a>) पर जाएं।</span>
+                                <span data-lang-show="en"><strong>Visit the Portal:</strong> Go to the official {portal} website (<a href="{portal_url}" target="_blank" rel="nofollow noopener">{portal_url}</a>).</span>
+                                <span data-lang-show="hi"><strong>पोर्टल पर जाएं:</strong> आधिकारिक {portal} वेबसाइट (<a href="{portal_url}" target="_blank" rel="nofollow noopener">{portal_url}</a>) पर जाएं।</span>
                             </li>
                             <li>
                                 <span data-lang-show="en"><strong>Register / Login:</strong> Create a new Citizen account using your mobile number/Aadhaar or log in if you already have an account.</span>
@@ -173,8 +243,8 @@
                         </ol>
                         <div class="alert alert-info">
                             <strong><span data-lang-show="en">Offline Method:</span><span data-lang-show="hi">ऑफ़लाइन तरीका:</span></strong>
-                            <span data-lang-show="en">If you prefer applying offline, visit your nearest <strong>Pragya Kendra</strong>. Carry all original documents; the operator will apply on your behalf and provide a printed receipt.</span>
-                            <span data-lang-show="hi">अगर आप ऑफलाइन आवेदन करना चाहते हैं, तो अपने नज़दीकी <strong>Pragya Kendra</strong> पर जाएं। वहां ऑपरेटर मामूली शुल्क लेकर आपका ऑनलाइन आवेदन कर देगा और आपको रसीद सौंप देगा।</span>
+                            <span data-lang-show="en">If you prefer applying offline, visit your nearest <strong>{csc}</strong>. Carry all original documents; the operator will apply on your behalf and provide a printed receipt.</span>
+                            <span data-lang-show="hi">अगर आप ऑफलाइन आवेदन करना चाहते हैं, तो अपने नज़दीकी <strong>{csc}</strong> पर जाएं। वहां ऑपरेटर मामूली शुल्क लेकर आपका ऑनलाइन आवेदन कर देगा और आपको रसीद सौंप देगा।</span>
                         </div>
                     </div>
                 </section>
@@ -183,24 +253,24 @@
                     <h2><span data-lang-show="en">Frequently Asked Questions (FAQs)</span><span data-lang-show="hi">अक्सर पूछे जाने वाले सवाल (FAQs)</span></h2>
                     <div class="accordion">
                         <details class="accordion-item">
-                            <summary class="accordion-header"><span data-lang-show="en">What is the minimum age for a Senior Citizen Card in Jharkhand?</span><span data-lang-show="hi">Jharkhand में सीनियर सिटीजन कार्ड के लिए न्यूनतम आयु क्या है?</span></summary>
+                            <summary class="accordion-header"><span data-lang-show="en">What is the minimum age for a Senior Citizen Card in {name}?</span><span data-lang-show="hi">{name} में सीनियर सिटीजन कार्ड के लिए न्यूनतम आयु क्या है?</span></summary>
                             <div class="accordion-body">
                                 <span data-lang-show="en">The applicant must have completed 60 years of age to be eligible for the card.</span>
                                 <span data-lang-show="hi">कार्ड के लिए पात्र होने के लिए आवेदक की आयु कम से कम 60 वर्ष पूरी होनी चाहिए।</span>
                             </div>
                         </details>
                         <details class="accordion-item">
-                            <summary class="accordion-header"><span data-lang-show="en">Can I use my Jharkhand Senior Citizen Card in other states?</span><span data-lang-show="hi">क्या मैं अपना Jharkhand सीनियर सिटीजन कार्ड दूसरे राज्यों में इस्तेमाल कर सकता हूँ?</span></summary>
+                            <summary class="accordion-header"><span data-lang-show="en">Can I use my {name} Senior Citizen Card in other states?</span><span data-lang-show="hi">क्या मैं अपना {name} सीनियर सिटीजन कार्ड दूसरे राज्यों में इस्तेमाल कर सकता हूँ?</span></summary>
                             <div class="accordion-body">
-                                <span data-lang-show="en">The card is primarily for benefits within Jharkhand (like state transport). However, it serves as a valid proof of age across India for central benefits like Railway concessions.</span>
-                                <span data-lang-show="hi">यह कार्ड मुख्य रूप से Jharkhand के भीतर राज्य सरकार की सुविधाओं (जैसे राज्य परिवहन) के लिए है। हालाँकि, यह रेलवे छूट जैसे केंद्रीय लाभों के लिए पूरे भारत में आयु के वैध प्रमाण के रूप में कार्य करता है।</span>
+                                <span data-lang-show="en">The card is primarily for benefits within {name} (like state transport). However, it serves as a valid proof of age across India for central benefits like Railway concessions.</span>
+                                <span data-lang-show="hi">यह कार्ड मुख्य रूप से {name} के भीतर राज्य सरकार की सुविधाओं (जैसे राज्य परिवहन) के लिए है। हालाँकि, यह रेलवे छूट जैसे केंद्रीय लाभों के लिए पूरे भारत में आयु के वैध प्रमाण के रूप में कार्य करता है।</span>
                             </div>
                         </details>
                         <details class="accordion-item">
                             <summary class="accordion-header"><span data-lang-show="en">How long does it take to get the card?</span><span data-lang-show="hi">कार्ड बनने में कितना समय लगता है?</span></summary>
                             <div class="accordion-body">
-                                <span data-lang-show="en">After submitting the application through JharSewa, it generally takes 15 to 30 working days for document verification and approval by the concerned Tehsildar or SDM office.</span>
-                                <span data-lang-show="hi">JharSewa के माध्यम से आवेदन जमा करने के बाद, दस्तावेज़ सत्यापन और संबंधित तहसीलदार या एसडीएम कार्यालय द्वारा अनुमोदन में आमतौर पर 15 से 30 कार्य दिवस लगते हैं।</span>
+                                <span data-lang-show="en">After submitting the application through {portal}, it generally takes 15 to 30 working days for document verification and approval by the concerned Tehsildar or SDM office.</span>
+                                <span data-lang-show="hi">{portal} के माध्यम से आवेदन जमा करने के बाद, दस्तावेज़ सत्यापन और संबंधित तहसीलदार या एसडीएम कार्यालय द्वारा अनुमोदन में आमतौर पर 15 से 30 कार्य दिवस लगते हैं।</span>
                             </div>
                         </details>
                     </div>
@@ -211,20 +281,12 @@
                 <div class="widget">
                     <h3 class="widget-title"><span data-lang-show="en">Important Links</span><span data-lang-show="hi">महत्वपूर्ण लिंक्स</span></h3>
                     <ul class="widget-links">
-                        <li><a href="https://jharsewa.jharkhand.gov.in/" target="_blank" rel="nofollow noopener">🌐 JharSewa Portal</a></li>
+                        <li><a href="{portal_url}" target="_blank" rel="nofollow noopener">🌐 {portal} Portal</a></li>
                         <li><a href="../tools/eligibility-checker.html">✅ <span data-lang-show="en">Check Your Eligibility</span><span data-lang-show="hi">अपनी पात्रता जांचें</span></a></li>
                         <li><a href="../tools/document-checklist.html">📄 <span data-lang-show="en">Required Documents</span><span data-lang-show="hi">ज़रूरी दस्तावेज़</span></a></li>
                         <li><a href="../tools/status-troubleshooter.html">🔍 <span data-lang-show="en">Track Application</span><span data-lang-show="hi">आवेदन ट्रैक करें</span></a></li>
-                        <li><a href="../tools/csc-locator.html">📍 <span data-lang-show="en">Find Pragya Kendra</span><span data-lang-show="hi">नज़दीकी Pragya Kendra खोजें</span></a></li>
-                    
-                        <h4 style="margin-top:20px; border-top:1px solid var(--color-border); padding-top:10px;"><span data-lang-show="en">Other Services in Jharkhand</span><span data-lang-show="hi">Jharkhand की अन्य सेवाएँ</span></h4>
-                        <li><a href="jharkhand-income-certificate.html">📄 Jharkhand Income Certificate</a></li>
-                        <li><a href="jharkhand-domicile-certificate.html">🏠 Jharkhand Domicile Certificate</a></li>
-                        <li><a href="jharkhand-caste-certificate.html">📜 Jharkhand Caste Certificate</a></li>
-                        <li><a href="jharkhand-voter-id-card.html">🗳️ Jharkhand Voter ID Card</a></li>
-                        <li><a href="jharkhand-ration-card.html">🍚 Jharkhand Ration Card</a></li>
-                        <li><a href="jharkhand-driving-licence.html">🚗 Jharkhand Driving Licence</a></li>
-</ul>
+                        <li><a href="../tools/csc-locator.html">📍 <span data-lang-show="en">Find {csc}</span><span data-lang-show="hi">नज़दीकी {csc} खोजें</span></a></li>
+                    </ul>
                 </div>
             </aside>
         </div>
@@ -243,4 +305,24 @@
 <script src="../assets/js/consent.js"></script>
 <script src="../assets/js/i18n-helper.js"></script>
 </body>
-</html>
+</html>"""
+    return html
+
+def main():
+    out_dir = "states"
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+        
+    count = 0
+    for idx, state in enumerate(states):
+        filepath = os.path.join(out_dir, f"{state['slug']}-senior-citizen-card.html")
+        content = build_html(state, idx)
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(content)
+        count += 1
+        print(f"Generated {filepath}")
+        
+    print(f"Total pages generated: {count}")
+
+if __name__ == "__main__":
+    main()

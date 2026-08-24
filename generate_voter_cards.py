@@ -1,4 +1,73 @@
-<!DOCTYPE html>
+import os
+import json
+
+states = [
+    {"slug": "andhra-pradesh", "name": "Andhra Pradesh", "ceo": "CEO Andhra Pradesh", "ceo_url": "https://ceoandhra.nic.in/"},
+    {"slug": "arunachal-pradesh", "name": "Arunachal Pradesh", "ceo": "CEO Arunachal Pradesh", "ceo_url": "https://ceoarunachal.nic.in/"},
+    {"slug": "assam", "name": "Assam", "ceo": "CEO Assam", "ceo_url": "https://ceoassam.nic.in/"},
+    {"slug": "bihar", "name": "Bihar", "ceo": "CEO Bihar", "ceo_url": "https://ceobihar.nic.in/"},
+    {"slug": "chhattisgarh", "name": "Chhattisgarh", "ceo": "CEO Chhattisgarh", "ceo_url": "https://ceochhattisgarh.nic.in/"},
+    {"slug": "goa", "name": "Goa", "ceo": "CEO Goa", "ceo_url": "https://ceogoa.nic.in/"},
+    {"slug": "gujarat", "name": "Gujarat", "ceo": "CEO Gujarat", "ceo_url": "https://ceo.gujarat.gov.in/"},
+    {"slug": "haryana", "name": "Haryana", "ceo": "CEO Haryana", "ceo_url": "https://ceoharyana.gov.in/"},
+    {"slug": "himachal-pradesh", "name": "Himachal Pradesh", "ceo": "CEO Himachal Pradesh", "ceo_url": "https://ceohimachal.nic.in/"},
+    {"slug": "jharkhand", "name": "Jharkhand", "ceo": "CEO Jharkhand", "ceo_url": "https://ceo.jharkhand.gov.in/"},
+    {"slug": "karnataka", "name": "Karnataka", "ceo": "CEO Karnataka", "ceo_url": "https://ceo.karnataka.gov.in/"},
+    {"slug": "kerala", "name": "Kerala", "ceo": "CEO Kerala", "ceo_url": "https://ceo.kerala.gov.in/"},
+    {"slug": "madhya-pradesh", "name": "Madhya Pradesh", "ceo": "CEO Madhya Pradesh", "ceo_url": "https://ceomadhyapradesh.nic.in/"},
+    {"slug": "maharashtra", "name": "Maharashtra", "ceo": "CEO Maharashtra", "ceo_url": "https://ceo.maharashtra.gov.in/"},
+    {"slug": "manipur", "name": "Manipur", "ceo": "CEO Manipur", "ceo_url": "https://ceomanipur.nic.in/"},
+    {"slug": "meghalaya", "name": "Meghalaya", "ceo": "CEO Meghalaya", "ceo_url": "https://ceomeghalaya.nic.in/"},
+    {"slug": "mizoram", "name": "Mizoram", "ceo": "CEO Mizoram", "ceo_url": "https://ceo.mizoram.gov.in/"},
+    {"slug": "nagaland", "name": "Nagaland", "ceo": "CEO Nagaland", "ceo_url": "https://ceonagaland.nic.in/"},
+    {"slug": "odisha", "name": "Odisha", "ceo": "CEO Odisha", "ceo_url": "https://ceoorissa.nic.in/"},
+    {"slug": "punjab", "name": "Punjab", "ceo": "CEO Punjab", "ceo_url": "https://ceopunjab.gov.in/"},
+    {"slug": "rajasthan", "name": "Rajasthan", "ceo": "CEO Rajasthan", "ceo_url": "https://ceorajasthan.nic.in/"},
+    {"slug": "sikkim", "name": "Sikkim", "ceo": "CEO Sikkim", "ceo_url": "https://ceosikkim.nic.in/"},
+    {"slug": "tamil-nadu", "name": "Tamil Nadu", "ceo": "CEO Tamil Nadu", "ceo_url": "https://www.elections.tn.gov.in/"},
+    {"slug": "telangana", "name": "Telangana", "ceo": "CEO Telangana", "ceo_url": "https://ceotelangana.nic.in/"},
+    {"slug": "tripura", "name": "Tripura", "ceo": "CEO Tripura", "ceo_url": "https://ceotripura.nic.in/"},
+    {"slug": "uttar-pradesh", "name": "Uttar Pradesh", "ceo": "CEO Uttar Pradesh", "ceo_url": "https://ceouttarpradesh.nic.in/"},
+    {"slug": "uttarakhand", "name": "Uttarakhand", "ceo": "CEO Uttarakhand", "ceo_url": "https://ceo.uk.gov.in/"},
+    {"slug": "west-bengal", "name": "West Bengal", "ceo": "CEO West Bengal", "ceo_url": "https://ceowestbengal.nic.in/"},
+    {"slug": "delhi", "name": "Delhi", "ceo": "CEO Delhi", "ceo_url": "https://ceodelhi.gov.in/"},
+    {"slug": "jammu-kashmir", "name": "Jammu & Kashmir", "ceo": "CEO J&K", "ceo_url": "https://ceojk.nic.in/"},
+    {"slug": "ladakh", "name": "Ladakh", "ceo": "CEO Ladakh", "ceo_url": "https://ceoladakh.nic.in/"},
+    {"slug": "chandigarh", "name": "Chandigarh", "ceo": "CEO Chandigarh", "ceo_url": "https://ceochandigarh.gov.in/"},
+    {"slug": "puducherry", "name": "Puducherry", "ceo": "CEO Puducherry", "ceo_url": "https://ceopuducherry.py.gov.in/"},
+    {"slug": "andaman-nicobar", "name": "Andaman & Nicobar", "ceo": "CEO A&N Islands", "ceo_url": "https://ceoandaman.nic.in/"},
+    {"slug": "lakshadweep", "name": "Lakshadweep", "ceo": "CEO Lakshadweep", "ceo_url": "https://ceolakshadweep.gov.in/"},
+    {"slug": "dadra-nagar-haveli-daman-diu", "name": "Dadra & Nagar Haveli", "ceo": "CEO DNH & DD", "ceo_url": "https://ceodaman.nic.in/"}
+]
+
+intros_en = [
+    "A Voter ID Card, also known as the Electors Photo Identity Card (EPIC), is a primary identity document issued by the Election Commission of India.",
+    "The Voter ID is a crucial democratic document that not only serves as proof of citizenship and age but also empowers you to cast your vote.",
+    "Issued by the ECI, the Electoral Photo ID Card ensures your participation in the democratic process and serves as an officially recognized ID proof nationwide."
+]
+
+intros_hi = [
+    "वोटर आईडी कार्ड (मतदाता पहचान पत्र) भारत निर्वाचन आयोग द्वारा जारी एक बहुत ही महत्वपूर्ण पहचान दस्तावेज़ है जो आपको वोट देने का अधिकार देता है।",
+    "यह एक ऐसा सरकारी दस्तावेज़ है जो न केवल आपकी नागरिकता और आयु का प्रमाण है, बल्कि लोकतंत्र में आपकी भागीदारी को भी सुनिश्चित करता है।",
+    "ईपीआईसी (EPIC) या वोटर कार्ड, चुनाव आयोग द्वारा जारी किया जाता है और इसका उपयोग पूरे देश में एक वैध पहचान प्रमाण के रूप में किया जाता है।"
+]
+
+def build_html(s, idx):
+    name = s["name"]
+    slug = s["slug"]
+    ceo = s["ceo"]
+    ceo_url = s["ceo_url"]
+    
+    intro_en = intros_en[idx % 3]
+    intro_hi = intros_hi[idx % 3]
+    
+    title_en = f"{name} Voter ID Card & Voter List (2026): Apply Online & Status"
+    title_hi = f"{name} वोटर आईडी कार्ड (Voter ID) 2026: ऑनलाइन आवेदन और वोटर लिस्ट"
+    
+    desc_hi = f"{name} में नया वोटर आईडी कार्ड कैसे बनाएं? ऑनलाइन आवेदन (Form 6), आधार लिंक, वोटर लिस्ट (Electoral Roll) डाउनलोड और स्टेटस चेक करने की पूरी जानकारी।"
+    desc_en = f"Apply for a new Voter ID Card in {name}. Track application status, download PDF voter list from {ceo}, and find polling booths easily."
+    
+    html = f"""<!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="utf-8"/>
@@ -8,32 +77,32 @@
     <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
     <link href="../favicon.ico" rel="icon"/>
     <link href="../manifest.json" rel="manifest"/>
-    <meta name="description" content="✅ पश्चिम बंगाल में नया वोटर आईडी (Voter ID) कैसे बनाएं? ECI पोर्टल से ऑनलाइन फॉर्म 6 भरें, वोटर लिस्ट में नाम चेक करें और एप्लीकेशन स्टेटस जानें।"/>
-    <meta property="og:title" content="West Bengal Voter ID Card 2026: Check Voter List & Apply Online (New Form 6)"/>
-    <meta property="og:description" content="✅ पश्चिम बंगाल में नया वोटर आईडी (Voter ID) कैसे बनाएं? ECI पोर्टल से ऑनलाइन फॉर्म 6 भरें, वोटर लिस्ट में नाम चेक करें और एप्लीकेशन स्टेटस जानें।"/>
+    <meta content="{desc_hi}" name="description"/>
+    <meta content="{title_hi}" property="og:title"/>
+    <meta content="{desc_hi}" property="og:description"/>
     <meta content="article" property="og:type"/>
-    <meta content="https://sarkarisewaindia.com/states/west-bengal-voter-id-card.html" property="og:url"/>
+    <meta content="https://sarkarisewaindia.com/states/{slug}-voter-id-card.html" property="og:url"/>
     <meta content="https://sarkarisewaindia.com/assets/img/og-image.png" property="og:image"/>
     <meta content="summary_large_image" name="twitter:card"/>
-    <meta name="twitter:title" content="West Bengal Voter ID Card 2026: Check Voter List & Apply Online (New Form 6)"/>
-    <meta name="twitter:description" content="✅ पश्चिम बंगाल में नया वोटर आईडी (Voter ID) कैसे बनाएं? ECI पोर्टल से ऑनलाइन फॉर्म 6 भरें, वोटर लिस्ट में नाम चेक करें और एप्लीकेशन स्टेटस जानें।"/>
-    <title>West Bengal Voter ID Card 2026: Check Voter List & Apply Online (New Form 6)</title>
-    <link href="https://sarkarisewaindia.com/states/west-bengal-voter-id-card.html" rel="canonical"/>
+    <meta content="{title_en}" name="twitter:title"/>
+    <meta content="{desc_en}" name="twitter:description"/>
+    <title>{name} Voter ID Card &amp; List (2026): Apply Online &amp; Status</title>
+    <link href="https://sarkarisewaindia.com/states/{slug}-voter-id-card.html" rel="canonical"/>
     <link href="../assets/css/style.css" rel="stylesheet"/>
     <link href="../assets/css/module2.css" rel="stylesheet"/>
     <link href="../assets/css/module15.css" rel="stylesheet"/>
     <link href="../assets/css/share-widget.css" rel="stylesheet"/>
-    <script id="service-schema" type="application/ld+json">{
+    <script id="service-schema" type="application/ld+json">{{
       "@context": "https://schema.org",
       "@type": "GovernmentService",
-      "name": "West Bengal Voter ID & Electoral Roll",
-      "description": "Apply for a new Voter ID Card in West Bengal. Track application status, download PDF voter list from CEO West Bengal, and find polling booths easily.",
-      "url": "https://sarkarisewaindia.com/states/west-bengal-voter-id-card.html",
-      "provider": { "@type": "GovernmentOrganization", "name": "Election Commission of India / CEO West Bengal" },
+      "name": "{name} Voter ID & Electoral Roll",
+      "description": "{desc_en}",
+      "url": "https://sarkarisewaindia.com/states/{slug}-voter-id-card.html",
+      "provider": {{ "@type": "GovernmentOrganization", "name": "Election Commission of India / {ceo}" }},
       "serviceType": "Identity Document"
-    }</script>
+    }}</script>
 </head>
-<body data-slug="state-voter-id-west-bengal">
+<body data-slug="state-voter-id-{slug}">
 <div id="site-header">
     <div class="tricolor-rule"></div>
     <header class="site-header">
@@ -61,7 +130,7 @@
             <ol>
                 <li><a href="../index.html"><span data-lang-show="en">Home</span><span data-lang-show="hi">होम</span></a></li>
                 <li><a href="index.html"><span data-lang-show="en">State Services</span><span data-lang-show="hi">राज्य सेवाएं</span></a></li>
-                <li><a href="west-bengal.html"><span data-lang-show="en">West Bengal</span><span data-lang-show="hi">West Bengal</span></a></li>
+                <li><a href="{slug}.html"><span data-lang-show="en">{name}</span><span data-lang-show="hi">{name}</span></a></li>
                 <li aria-current="page"><span data-lang-show="en">Voter ID Card</span><span data-lang-show="hi">वोटर आईडी कार्ड</span></li>
             </ol>
         </nav>
@@ -69,12 +138,12 @@
         <header class="service-hero">
             <div class="service-hero__icon">🗳️</div>
             <h1 class="service-hero__title">
-                <span data-lang-show="en">West Bengal Voter ID Card & Voter List (2026): Apply Online & Status</span>
-                <span data-lang-show="hi">West Bengal वोटर आईडी कार्ड (Voter ID) 2026: ऑनलाइन आवेदन और वोटर लिस्ट</span>
+                <span data-lang-show="en">{title_en}</span>
+                <span data-lang-show="hi">{title_hi}</span>
             </h1>
             <p class="service-hero__desc">
-                <span data-lang-show="en">Apply for a new Voter ID Card in West Bengal. Track application status, download PDF voter list from CEO West Bengal, and find polling booths easily.</span>
-                <span data-lang-show="hi">West Bengal में नया वोटर आईडी कार्ड कैसे बनाएं? ऑनलाइन आवेदन (Form 6), आधार लिंक, वोटर लिस्ट (Electoral Roll) डाउनलोड और स्टेटस चेक करने की पूरी जानकारी।</span>
+                <span data-lang-show="en">{desc_en}</span>
+                <span data-lang-show="hi">{desc_hi}</span>
             </p>
         </header>
 
@@ -82,7 +151,7 @@
             <div class="service-main">
                 
                 <section class="mb-4">
-                    <p><span data-lang-show="en">A Voter ID Card, also known as the Electors Photo Identity Card (EPIC), is a primary identity document issued by the Election Commission of India.</span><span data-lang-show="hi">वोटर आईडी कार्ड (मतदाता पहचान पत्र) भारत निर्वाचन आयोग द्वारा जारी एक बहुत ही महत्वपूर्ण पहचान दस्तावेज़ है जो आपको वोट देने का अधिकार देता है।</span></p>
+                    <p><span data-lang-show="en">{intro_en}</span><span data-lang-show="hi">{intro_hi}</span></p>
                 </section>
 
                 <section class="card mb-4" id="overview">
@@ -94,7 +163,7 @@
                         </div>
                         <div class="fact-item">
                             <span class="fact-label"><span data-lang-show="en">State Portal</span><span data-lang-show="hi">राज्य पोर्टल</span></span>
-                            <span class="fact-value">CEO West Bengal</span>
+                            <span class="fact-value">{ceo}</span>
                         </div>
                         <div class="fact-item">
                             <span class="fact-label"><span data-lang-show="en">Application Fee</span><span data-lang-show="hi">आवेदन शुल्क</span></span>
@@ -168,8 +237,8 @@
                                 <span data-lang-show="hi"><strong>फॉर्म 6 चुनें:</strong> नए वोटर रजिस्ट्रेशन के लिए "Form 6" पर क्लिक करें।</span>
                             </li>
                             <li>
-                                <span data-lang-show="en"><strong>Fill Details:</strong> Select your State (West Bengal), District, and Assembly Constituency. Enter your personal details, relatives' details, and contact info.</span>
-                                <span data-lang-show="hi"><strong>जानकारी भरें:</strong> अपना राज्य (West Bengal), जिला और विधानसभा क्षेत्र चुनें। अपना नाम, जन्मतिथि और पते की जानकारी भरें।</span>
+                                <span data-lang-show="en"><strong>Fill Details:</strong> Select your State ({name}), District, and Assembly Constituency. Enter your personal details, relatives' details, and contact info.</span>
+                                <span data-lang-show="hi"><strong>जानकारी भरें:</strong> अपना राज्य ({name}), जिला और विधानसभा क्षेत्र चुनें। अपना नाम, जन्मतिथि और पते की जानकारी भरें।</span>
                             </li>
                             <li>
                                 <span data-lang-show="en"><strong>Upload Documents:</strong> Upload your photograph, age proof, and address proof.</span>
@@ -184,11 +253,11 @@
                 </section>
                 
                 <section class="mb-4" id="voterlist">
-                    <h2><span data-lang-show="en">How to Download West Bengal Voter List PDF</span><span data-lang-show="hi">West Bengal की वोटर लिस्ट (Electoral Roll) कैसे डाउनलोड करें?</span></h2>
+                    <h2><span data-lang-show="en">How to Download {name} Voter List PDF</span><span data-lang-show="hi">{name} की वोटर लिस्ट (Electoral Roll) कैसे डाउनलोड करें?</span></h2>
                     <div class="prose">
-                        <p><span data-lang-show="en">To download the full PDF voter list for your polling booth in West Bengal, follow these steps:</span><span data-lang-show="hi">West Bengal के अपने मतदान केंद्र की पूरी वोटर लिस्ट PDF में डाउनलोड करने के लिए:</span></p>
+                        <p><span data-lang-show="en">To download the full PDF voter list for your polling booth in {name}, follow these steps:</span><span data-lang-show="hi">{name} के अपने मतदान केंद्र की पूरी वोटर लिस्ट PDF में डाउनलोड करने के लिए:</span></p>
                         <ol>
-                            <li><span data-lang-show="en">Visit the CEO West Bengal website at <a href="https://ceowestbengal.nic.in/" target="_blank" rel="nofollow noopener">https://ceowestbengal.nic.in/</a>.</span><span data-lang-show="hi">CEO West Bengal की वेबसाइट <a href="https://ceowestbengal.nic.in/" target="_blank" rel="nofollow noopener">https://ceowestbengal.nic.in/</a> पर जाएं।</span></li>
+                            <li><span data-lang-show="en">Visit the {ceo} website at <a href="{ceo_url}" target="_blank" rel="nofollow noopener">{ceo_url}</a>.</span><span data-lang-show="hi">{ceo} की वेबसाइट <a href="{ceo_url}" target="_blank" rel="nofollow noopener">{ceo_url}</a> पर जाएं।</span></li>
                             <li><span data-lang-show="en">Look for the link named <strong>"Electoral Roll"</strong> or <strong>"E-Roll PDF"</strong>.</span><span data-lang-show="hi">वेबसाइट पर <strong>"Electoral Roll PDF"</strong> या <strong>"मतदाता सूची"</strong> लिंक पर क्लिक करें।</span></li>
                             <li><span data-lang-show="en">Select your District and Assembly Constituency.</span><span data-lang-show="hi">अपना जिला और विधानसभा क्षेत्र (Constituency) चुनें।</span></li>
                             <li><span data-lang-show="en">Select your specific Polling Station/Part Number.</span><span data-lang-show="hi">अपने पोलिंग बूथ (मतदान केंद्र) का नाम चुनें।</span></li>
@@ -201,7 +270,7 @@
                     <h2><span data-lang-show="en">Frequently Asked Questions (FAQs)</span><span data-lang-show="hi">अक्सर पूछे जाने वाले सवाल (FAQs)</span></h2>
                     <div class="accordion">
                         <details class="accordion-item">
-                            <summary class="accordion-header"><span data-lang-show="en">How can I check my Voter ID status in West Bengal?</span><span data-lang-show="hi">West Bengal में वोटर आईडी का स्टेटस कैसे चेक करें?</span></summary>
+                            <summary class="accordion-header"><span data-lang-show="en">How can I check my Voter ID status in {name}?</span><span data-lang-show="hi">{name} में वोटर आईडी का स्टेटस कैसे चेक करें?</span></summary>
                             <div class="accordion-body">
                                 <span data-lang-show="en">Visit <code>voters.eci.gov.in</code> and click on "Track Application Status". Enter the Reference ID you received during registration to view the real-time status.</span>
                                 <span data-lang-show="hi"><code>voters.eci.gov.in</code> पर जाएं और "Track Application Status" पर क्लिक करें। आवेदन के समय मिला रेफरेंस नंबर (Reference ID) डालकर अपना स्टेटस चेक करें।</span>
@@ -230,19 +299,11 @@
                     <h3 class="widget-title"><span data-lang-show="en">Important Links</span><span data-lang-show="hi">महत्वपूर्ण लिंक्स</span></h3>
                     <ul class="widget-links">
                         <li><a href="https://voters.eci.gov.in/" target="_blank" rel="nofollow noopener">🌐 NVSP Portal (Apply)</a></li>
-                        <li><a href="https://ceowestbengal.nic.in/" target="_blank" rel="nofollow noopener">📄 CEO West Bengal (Voter List)</a></li>
+                        <li><a href="{ceo_url}" target="_blank" rel="nofollow noopener">📄 {ceo} (Voter List)</a></li>
                         <li><a href="https://electoralsearch.eci.gov.in/" target="_blank" rel="nofollow noopener">🔍 Search Name in Voter List</a></li>
                         <li><a href="../tools/eligibility-checker.html">✅ <span data-lang-show="en">Check Your Eligibility</span><span data-lang-show="hi">अपनी पात्रता जांचें</span></a></li>
                         <li><a href="../tools/status-troubleshooter.html">🛠️ <span data-lang-show="en">Status Troubleshooter</span><span data-lang-show="hi">स्टेटस गाइड</span></a></li>
-                    
-                        <h4 style="margin-top:20px; border-top:1px solid var(--color-border); padding-top:10px;"><span data-lang-show="en">Other Services in West Bengal</span><span data-lang-show="hi">West Bengal की अन्य सेवाएँ</span></h4>
-                        <li><a href="west-bengal-income-certificate.html">📄 West Bengal Income Certificate</a></li>
-                        <li><a href="west-bengal-domicile-certificate.html">🏠 West Bengal Domicile Certificate</a></li>
-                        <li><a href="west-bengal-caste-certificate.html">📜 West Bengal Caste Certificate</a></li>
-                        <li><a href="west-bengal-voter-id-card.html">🗳️ West Bengal Voter ID Card</a></li>
-                        <li><a href="west-bengal-ration-card.html">🍚 West Bengal Ration Card</a></li>
-                        <li><a href="west-bengal-driving-licence.html">🚗 West Bengal Driving Licence</a></li>
-</ul>
+                    </ul>
                 </div>
             </aside>
         </div>
@@ -261,4 +322,24 @@
 <script src="../assets/js/consent.js"></script>
 <script src="../assets/js/i18n-helper.js"></script>
 </body>
-</html>
+</html>"""
+    return html
+
+def main():
+    out_dir = "states"
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+        
+    count = 0
+    for idx, state in enumerate(states):
+        filepath = os.path.join(out_dir, f"{state['slug']}-voter-id-card.html")
+        content = build_html(state, idx)
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(content)
+        count += 1
+        print(f"Generated {filepath}")
+        
+    print(f"Total voter ID pages generated: {count}")
+
+if __name__ == "__main__":
+    main()
