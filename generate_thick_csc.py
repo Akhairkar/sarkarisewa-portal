@@ -157,14 +157,14 @@ def build_district_html(state_name, state_slug, dist_name, dist_slug, centers):
 {rows}
 </div>
 <script>
-function filterCenters() {
+function filterCenters() {{
     let input = document.getElementById('pincodeSearch').value.toLowerCase();
     let cards = document.querySelectorAll('.center-card');
-    cards.forEach(card => {
+    cards.forEach(card => {{
         let text = card.innerText.toLowerCase();
         card.style.display = text.includes(input) ? '' : 'none';
-    });
-}
+    }});
+}}
 </script>
             
 </section>

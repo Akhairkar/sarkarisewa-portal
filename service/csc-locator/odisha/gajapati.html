@@ -14,7 +14,24 @@
 <link rel="stylesheet" href="../../../assets/css/module2.css"/>
 </head>
 <body data-slug="csc-odisha-gajapati">
-<div id="site-header"><div class="tricolor-rule"></div><header class="site-header"><div class="container header-inner"><a href="../../../index.html" class="brand"><span class="brand-mark">S</span><span class="brand-text"><span class="brand-title">SarkariSewa India</span></span></a></div></header></div>
+<div id="site-header">
+    <div class="tricolor-rule"></div>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="../../../index.html" class="brand">
+                <span class="brand-mark">S</span>
+                <span class="brand-text">
+                    <span class="brand-title">SarkariSewa India</span>
+                </span>
+            </a>
+            <nav class="main-nav" style="display:flex; gap:16px;">
+                <a href="../../../index.html" style="color:var(--color-text); text-decoration:none; font-weight:600;">Home</a>
+                <a href="../../jan-aushadhi-store-locator.html" style="color:var(--color-text); text-decoration:none; font-weight:600;">Jan Aushadhi</a>
+                <a href="../../../tools/csc-locator.html" style="color:var(--color-text); text-decoration:none; font-weight:600;">CSC Locator</a>
+            </nav>
+        </div>
+    </header>
+</div>
 <main class="container">
 <div class="content-wrapper">
 <article class="service-article">
@@ -44,10 +61,11 @@
 
 <section class="service-section">
 <h2 class="service-section__title">List of Centers in Gajapati</h2>
-<div style="overflow-x:auto;">
-<table class="service-table">
-<thead><tr><th>Center / VLE Name</th><th>Full Address</th><th>Maps</th></tr></thead>
-<tbody>
+
+<div style="margin-bottom: 20px;">
+  <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 400px; padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
+</div>
+<div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
 <tr>
 <td><strong>Kolagana Sitaram</strong></td>
 <td> — </td>
@@ -1549,9 +1567,18 @@
 <td><a href="https://www.google.com/maps?q=19.1912221,84.18571150000002" target="_blank" rel="noopener">Get Directions</a></td>
 </tr>
 
-</tbody>
-</table>
 </div>
+<script>
+function filterCenters() {
+    let input = document.getElementById('pincodeSearch').value.toLowerCase();
+    let cards = document.querySelectorAll('.center-card');
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? '' : 'none';
+    });
+}
+</script>
+            
 </section>
 
 <section class="service-section" id="faqs">
@@ -1562,6 +1589,23 @@
 <div class="faq-item"><div class="faq-question"><h3>Kya main CSC me apna Naya Aadhaar Card banwa sakta hu?</h3></div><div class="faq-answer"><p>Naya Aadhaar enrollment sirf specific Aadhaar Seva Kendras par hota hai. Par Aadhaar mein mobile number update, naam change, ya print nikalne ka kaam lagbhag sabhi CSC centers karte hain.</p></div></div>
 </div>
 </section>
+
+
+    <!-- Cross-Linking Banner: CSC & Jan Aushadhi -->
+    <section class="service-section" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #86efac; border-radius: 12px; padding: 24px; margin-top: 30px; margin-bottom: 20px;">
+      <h2 style="color: #166534; font-size: 1.5rem; margin-top: 0; margin-bottom: 12px;">Need Help or Cheap Medicines? 🏥</h2>
+      <p style="color: #15803d; font-size: 1.05rem; margin-bottom: 16px; line-height: 1.5;">
+        Save time and money by using our officially integrated location tools:
+      </p>
+      <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+        <a href="../../tools/csc-locator.html" style="flex: 1; min-width: 200px; background: white; border: 2px solid #22c55e; color: #166534; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <span>📍 Find Nearest CSC Center</span>
+        </a>
+        <a href="../../service/jan-aushadhi-store-locator.html" style="flex: 1; min-width: 200px; background: white; border: 2px solid #22c55e; color: #166534; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <span>💊 Jan Aushadhi Store Locator</span>
+        </a>
+      </div>
+    </section>
 
 </article>
 

@@ -53,10 +53,9 @@ def build_store_rows(stores):
         pin = s.get("pin", "")
         lt = s.get("lt", "")
         lg = s.get("lg", "")
-        maps_link = f"https://www.google.com/maps?q={lt},{lg}" if lt and lg else "#"
+        maps_link = f"https://www.google.com/maps?q={{lt}},{{lg}}" if lt and lg else "#"
         
         rows += f"""<tr>
-<td><strong>{name}</strong></td>
 <td>{addr} — {pin}</td>
 <td><a href="tel:{phone}">{phone}</a></td>
 <td><a href="{maps_link}" target="_blank" rel="noopener">Map</a></td>
