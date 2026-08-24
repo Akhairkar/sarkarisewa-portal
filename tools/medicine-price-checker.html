@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../favicon.ico">
+    <title>Medicine Price Checker | Compare Generic vs Branded (Save 90%)</title>
+    <meta name="description" content="Search and compare medicine prices at Jan Aushadhi Kendra vs branded medicines. See how much you can save on Paracetamol, Amoxicillin, and daily meds.">
+    
+    <meta property="og:title" content="Jan Aushadhi Medicine Price List & Checker (Save 90%)">
+    <meta property="og:description" content="Compare the cost of branded medicines with Pradhan Mantri Jan Aushadhi Generic medicines. Search your medicine to see the 90% discount.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sarkarisewaindia.com/tools/medicine-price-checker.html">
+    
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/module2.css">
+    
+    <style>
+        .tool-hero {
+            background: linear-gradient(135deg, var(--color-primary), #003366);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        .tool-hero h1 { margin-bottom: 15px; font-size: 2.2rem; }
+        
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            gap: 10px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        .search-box button {
+            padding: 15px 30px;
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .search-box button:hover {
+            background: #d84315;
+        }
+        
+        #result-container {
+            margin-top: 30px;
+        }
+        
+        .med-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .med-info h3 { margin: 0 0 5px 0; color: var(--color-primary); font-size: 1.3rem; text-transform: capitalize; }
+        .med-info p { margin: 0; color: var(--color-text-muted); font-size: 0.95rem; }
+        
+        .med-price {
+            display: flex;
+            gap: 30px;
+            text-align: center;
+        }
+        .price-box { padding: 10px; border-radius: 8px; min-width: 120px; }
+        .price-branded { background: #fee2e2; border: 1px solid #fca5a5; }
+        .price-generic { background: #dcfce7; border: 1px solid #86efac; }
+        
+        .price-box .label { display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: #4b5563; margin-bottom: 4px; }
+        .price-branded .val { color: #dc2626; font-size: 1.25rem; font-weight: 700; text-decoration: line-through;}
+        .price-generic .val { color: #059669; font-size: 1.4rem; font-weight: 800; }
+        
+        .savings-badge {
+            background: var(--color-primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        @media (max-width: 768px) {
+            .search-box { flex-direction: column; }
+            .med-price { flex-direction: column; gap: 10px; width: 100%; }
+            .savings-badge { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body data-slug="tools-medicine-checker">
+
+<div id="site-header">
+    <div class="tricolor-rule"></div>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="../index.html" class="brand">
+                <span class="brand-mark">S</span>
+                <span class="brand-text">
+                    <span class="brand-title">SarkariSewa India</span>
+                </span>
+            </a>
+            <nav class="main-nav">
+                <a href="../index.html">Home</a>
+                <a href="../service/jan-aushadhi-store-locator.html">Jan Aushadhi</a>
+                <a href="csc-locator.html">CSC Locator</a>
+            </nav>
+        </div>
+    </header>
+</div>
+
+<main class="container" style="padding-top: 30px; padding-bottom: 60px;">
+    
+    <nav aria-label="Breadcrumbs" class="breadcrumbs">
+        <ol>
+            <li><a href="../index.html">Home</a></li>
+            <li>Tools</li>
+            <li aria-current="page">Medicine Price Checker</li>
+        </ol>
+    </nav>
+    
+    <div class="tool-hero">
+        <h1>Jan Aushadhi Medicine Price Checker</h1>
+        <p style="margin-bottom: 25px; font-size: 1.1rem; opacity: 0.9;">Compare generic vs branded medicine prices and see how much you save (Up to 90% Off).</p>
+        <div class="search-box">
+            <input type="text" id="medSearch" placeholder="Enter medicine name (e.g. Paracetamol, Pantoprazole)..." onkeypress="if(event.key === 'Enter') filterMeds()">
+            <button onclick="filterMeds()">Check Price</button>
+        </div>
+    </div>
+    
+    <div id="result-container">
+        <!-- Results will be injected here via JS -->
+    </div>
+    
+    <div class="content-wrapper" style="margin-top: 40px;">
+        <article class="service-article">
+            <section class="service-section">
+                <h2 class="service-section__title">Top 20 Jan Aushadhi Medicine Price List (2026)</h2>
+                <p>Neeche Bharat Sarkar ki Jan Aushadhi scheme ke tahat milne wali sabse common dawaiyo ki (Generic vs Branded) list hai. In dawaiyo par aapko lagbhag 50% se 90% tak ka bhari discount milta hai.</p>
+                
+                <div style="overflow-x:auto;">
+                    <table class="service-table" id="seo-table">
+                        <thead>
+                            <tr>
+                                <th>Medicine / Salt Name</th>
+                                <th>Category</th>
+                                <th>Avg. Branded Price</th>
+                                <th>Jan Aushadhi Price</th>
+                                <th>Your Savings</th>
+                            </tr>
+                        </thead>
+                        <tbody id="seo-table-body">
+                            <!-- Populated by JS for SEO indexing fallback -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <section class="service-section" id="faqs">
+                <h2 class="service-section__title">Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question"><h3>Are Generic Medicines as safe as Branded ones?</h3></div>
+                        <div class="faq-answer">
+                            <p><strong>Yes!</strong> Generic medicines sold at Jan Aushadhi Kendras have the exact same active ingredients, dosage, safety, and quality as expensive branded drugs. They are certified by WHO-GMP.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question"><h3>Why are Jan Aushadhi medicines so cheap?</h3></div>
+                        <div class="faq-answer">
+                            <p>Branded companies spend crores of rupees on marketing, medical representatives, and packaging. Jan Aushadhi removes all these marketing costs, providing the medicine directly from the manufacturer to the patient.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question"><h3>Where can I buy these cheap medicines?</h3></div>
+                        <div class="faq-answer">
+                            <p>You can buy them at any of the 10,000+ PMBJK (Pradhan Mantri Bhartiya Janaushadhi Pariyojana Kendra) across India. Use our <a href="../service/jan-aushadhi-store-locator.html">Jan Aushadhi Store Locator</a> to find the nearest medical store in your district.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
+        
+        <aside class="sidebar">
+            <div class="sidebar-widget">
+                <h3 class="sidebar-widget__title">Important Tools</h3>
+                <ul class="sidebar-list">
+                    <li><a href="../service/jan-aushadhi-store-locator.html">Search Jan Aushadhi Stores</a></li>
+                    <li><a href="csc-locator.html">Nearest CSC Center Finder</a></li>
+                    <li><a href="eligibility-checker.html">Govt Scheme Eligibility</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+    
+</main>
+
+<div id="site-footer">
+    <footer class="site-footer">
+        <div class="container">
+            <p style="text-align:center;">&copy; 2026 SarkariSewa India. Information for educational purposes.</p>
+        </div>
+    </footer>
+</div>
+
+<script>
+// Mock Database of Top Medicines for the tool
+const medicines = [
+    { name: "Paracetamol 500mg (10 tabs)", category: "Fever/Pain", branded: 25.00, generic: 5.00 },
+    { name: "Pantoprazole 40mg (10 tabs)", category: "Acidity/Gastric", branded: 95.00, generic: 15.00 },
+    { name: "Amoxicillin 500mg (10 caps)", category: "Antibiotic", branded: 110.00, generic: 36.00 },
+    { name: "Cetirizine 10mg (10 tabs)", category: "Allergy", branded: 20.00, generic: 3.50 },
+    { name: "Metformin 500mg (10 tabs)", category: "Diabetes", branded: 35.00, generic: 8.00 },
+    { name: "Atorvastatin 10mg (10 tabs)", category: "Cholesterol", branded: 70.00, generic: 12.00 },
+    { name: "Amlodipine 5mg (10 tabs)", category: "Blood Pressure", branded: 45.00, generic: 6.00 },
+    { name: "Diclofenac Gel (30g tube)", category: "Pain Relief", branded: 120.00, generic: 25.00 },
+    { name: "Losartan 50mg (10 tabs)", category: "Blood Pressure", branded: 65.00, generic: 12.00 },
+    { name: "Omeprazole 20mg (10 caps)", category: "Acidity", branded: 55.00, generic: 9.00 },
+    { name: "Ciprofloxacin 500mg (10 tabs)", category: "Antibiotic", branded: 90.00, generic: 28.00 },
+    { name: "Levocetirizine 5mg (10 tabs)", category: "Allergy", branded: 45.00, generic: 7.00 },
+    { name: "Ibuprofen 400mg (10 tabs)", category: "Pain Relief", branded: 18.00, generic: 6.00 },
+    { name: "Glimepiride 1mg (10 tabs)", category: "Diabetes", branded: 55.00, generic: 6.00 },
+    { name: "Telmisartan 40mg (10 tabs)", category: "Blood Pressure", branded: 85.00, generic: 14.00 },
+    { name: "Cough Syrup (100ml)", category: "Cold/Cough", branded: 110.00, generic: 25.00 },
+    { name: "Vitamin B Complex (10 caps)", category: "Vitamins", branded: 35.00, generic: 8.00 },
+    { name: "Calcium + D3 (10 tabs)", category: "Supplements", branded: 95.00, generic: 16.00 },
+    { name: "Azithromycin 500mg (3 tabs)", category: "Antibiotic", branded: 75.00, generic: 21.00 },
+    { name: "Rabeprazole 20mg (10 tabs)", category: "Acidity", branded: 110.00, generic: 18.00 }
+];
+
+function renderMedCard(med) {
+    const savings = med.branded - med.generic;
+    const percent = Math.round((savings / med.branded) * 100);
+    
+    return `
+    <div class="med-card">
+        <div class="med-info">
+            <h3>${med.name}</h3>
+            <p>Category: ${med.category}</p>
+        </div>
+        <div class="med-price">
+            <div class="price-box price-branded">
+                <span class="label">Branded Price</span>
+                <span class="val">₹${med.branded.toFixed(2)}</span>
+            </div>
+            <div class="price-box price-generic">
+                <span class="label">Jan Aushadhi</span>
+                <span class="val">₹${med.generic.toFixed(2)}</span>
+            </div>
+        </div>
+        <div class="savings-badge">
+            Save ₹${savings.toFixed(2)} (${percent}% OFF)
+        </div>
+    </div>`;
+}
+
+function filterMeds() {
+    const q = document.getElementById("medSearch").value.toLowerCase().trim();
+    const container = document.getElementById("result-container");
+    
+    if (!q) {
+        container.innerHTML = "";
+        return;
+    }
+    
+    const results = medicines.filter(m => m.name.toLowerCase().includes(q) || m.category.toLowerCase().includes(q));
+    
+    if (results.length === 0) {
+        container.innerHTML = `
+        <div style="text-align:center; padding:30px; background:var(--color-surface); border-radius:12px; border:1px solid var(--color-border);">
+            <h3>No Exact Match Found 😕</h3>
+            <p style="color:var(--color-text-muted);">We couldn't find "${q}" in our top database. Don't worry, Jan Aushadhi stores have 1800+ medicines. Please visit your nearest store to ask directly.</p>
+            <br>
+            <a href="../service/jan-aushadhi-store-locator.html" class="btn btn--primary" style="text-decoration:none;">Find Nearest Store</a>
+        </div>`;
+        return;
+    }
+    
+    container.innerHTML = `<h3 style="margin-bottom:15px; color:var(--color-text);">Search Results for "${q}":</h3>` + results.map(renderMedCard).join('');
+}
+
+// Populate SEO Table on Load
+document.addEventListener("DOMContentLoaded", () => {
+    const tbody = document.getElementById("seo-table-body");
+    let html = "";
+    medicines.forEach(med => {
+        const savings = med.branded - med.generic;
+        const percent = Math.round((savings / med.branded) * 100);
+        html += `
+        <tr>
+            <td><strong>${med.name}</strong></td>
+            <td>${med.category}</td>
+            <td><span style="text-decoration:line-through; color:#dc2626;">₹${med.branded.toFixed(2)}</span></td>
+            <td><strong>₹${med.generic.toFixed(2)}</strong></td>
+            <td><span style="color:#059669; font-weight:700;">${percent}% Off</span></td>
+        </tr>`;
+    });
+    tbody.innerHTML = html;
+});
+</script>
+
+<script src="../assets/js/main.js" defer></script>
+</body>
+</html>
