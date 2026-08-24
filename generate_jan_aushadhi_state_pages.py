@@ -99,17 +99,17 @@ def generate_store_table(state_slug, state_name_en):
     
     for city in cities:
         html += f'<h3 style="margin-top:20px; font-size:1.3rem; color:var(--color-primary);">{city["city"]} Jan Aushadhi Kendras</h3>\n'
-        html += '<div style="overflow-x:auto; margin-top: 15px;"><table class="service-table" style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 20px;">'
-        html += '<thead><tr style="background: var(--color-primary); color: #fff;">'
-        html += '<th style="padding: 10px; border: 1px solid var(--color-border);">Store Name</th>'
-        html += '<th style="padding: 10px; border: 1px solid var(--color-border);">Address</th>'
-        html += '<th style="padding: 10px; border: 1px solid var(--color-border);">Contact</th>'
-        html += '</tr></thead><tbody style="color: var(--color-text);">'
+        html += '<div style="overflow-x:auto; margin-top: 15px;">\n<table class="service-table">'
+        html += '<thead><tr>'
+        html += '<th>Store Name</th>'
+        html += '<th>Address</th>'
+        html += '<th>Contact</th>'
+        html += '</tr></thead><tbody>'
         
         for store in city["stores"]:
-            html += f'<tr><td style="padding: 10px; border: 1px solid var(--color-border);"><strong>{store["name"]}</strong></td>'
-            html += f'<td style="padding: 10px; border: 1px solid var(--color-border);">{store["address"]} - {store["pin"]}</td>'
-            html += f'<td style="padding: 10px; border: 1px solid var(--color-border);">{store["phone"]}</td></tr>'
+            html += f'<tr><td><strong>{store["name"]}</strong></td>'
+            html += f'<td>{store["address"]} - {store["pin"]}</td>'
+            html += f'<td>{store["phone"]}</td></tr>'
             
             schema_items.append({
                 "@type": "ListItem",
