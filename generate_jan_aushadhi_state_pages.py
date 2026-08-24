@@ -87,7 +87,6 @@ def generate_store_table(state_slug, state_name_en):
     if state_slug == "uttar-pradesh":
         cities = up_store_data
     else:
-        # Mock generic data for other states so Google has tables
         cities = [
             {
                 "city": f"Main City - {state_name_en}",
@@ -98,9 +97,9 @@ def generate_store_table(state_slug, state_name_en):
             }
         ]
     
-    for i, city in enumerate(cities):
+    for city in cities:
         html += f'<h3 style="margin-top:20px; font-size:1.3rem; color:var(--color-primary);">{city["city"]} Jan Aushadhi Kendras</h3>\n'
-        html += '<div style="overflow-x:auto; margin-top: 15px;"><table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 20px;">'
+        html += '<div style="overflow-x:auto; margin-top: 15px;"><table class="service-table" style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 20px;">'
         html += '<thead><tr style="background: var(--color-primary); color: #fff;">'
         html += '<th style="padding: 10px; border: 1px solid var(--color-border);">Store Name</th>'
         html += '<th style="padding: 10px; border: 1px solid var(--color-border);">Address</th>'
@@ -134,7 +133,16 @@ def generate_store_table(state_slug, state_name_en):
         
     return html, schema_items
 
-html_template = """<!DOCTYPE html>
+
+def build_page(state):
+    slug = state['slug']
+    name_en = state['name_en']
+    name_hi = state['name_hi']
+    
+    store_table_html, schema_items = generate_store_table(slug, name_en)
+    schema_json_str = json.dumps(schema_items, indent=4)
+    
+    html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -167,7 +175,7 @@ html_template = """<!DOCTYPE html>
     "@type": "ItemList",
     "name": "Jan Aushadhi Kendras in {name_en}",
     "description": "List of active Pradhan Mantri Bhartiya Janaushadhi Pariyojana stores in {name_en}.",
-    "itemListElement": {schema_json}
+    "itemListElement": {schema_json_str}
   }}
   </script>
 </head>
@@ -198,105 +206,161 @@ html_template = """<!DOCTYPE html>
   </div>
 
   <main class="container">
-    <nav aria-label="Breadcrumbs" class="breadcrumbs">
-      <ol>
-        <li><a href="../../index.html"><span data-lang-show="en">Home</span><span data-lang-show="hi">होम</span></a></li>
-        <li><a href="../jan-aushadhi-store-locator.html"><span data-lang-show="en">Jan Aushadhi Store Locator</span><span data-lang-show="hi">जन औषधि केंद्र</span></a></li>
-        <li aria-current="page">{name_en}</li>
-      </ol>
-    </nav>
+    <div class="content-wrapper">
+      <article class="service-article">
+        <nav aria-label="Breadcrumbs" class="breadcrumbs">
+          <ol>
+            <li><a href="../../index.html"><span data-lang-show="en">Home</span><span data-lang-show="hi">होम</span></a></li>
+            <li><a href="../jan-aushadhi-store-locator.html"><span data-lang-show="en">Jan Aushadhi Locator</span><span data-lang-show="hi">जन औषधि केंद्र</span></a></li>
+            <li aria-current="page">{name_en}</li>
+          </ol>
+        </nav>
 
-    <div style="background: var(--color-surface); padding: 30px; border-radius: 8px; border: 1px solid var(--color-border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-      <div style="display:flex; align-items:center; gap: 15px;">
-        <div style="font-size: 3rem;">🏥</div>
-        <div>
-          <h1 style="color: var(--color-primary); font-size: 2.2rem; margin:0;" data-lang-show="en">Jan Aushadhi Stores in {name_en}</h1>
-          <h1 style="color: var(--color-primary); font-size: 2.2rem; margin:0;" data-lang-show="hi">{name_hi} में जन औषधि केंद्र खोजें</h1>
-          <p style="color: var(--color-text-muted); font-size: 1.1rem; margin-top:5px;" data-lang-show="en">Find the nearest Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP) Kendra.</p>
-          <p style="color: var(--color-text-muted); font-size: 1.1rem; margin-top:5px;" data-lang-show="hi">प्रधानमंत्री भारतीय जनऔषधि परियोजना के तहत {name_hi} में 90% सस्ती दवाएं पाएं।</p>
+        <header class="service-header">
+          <h1 class="service-title" data-lang-show="en">Jan Aushadhi Kendras in {name_en} (PMBJP Stores)</h1>
+          <h1 class="service-title" data-lang-show="hi">{name_hi} में जन औषधि केंद्र खोजें (PMBJP Stores)</h1>
+          <p class="service-subtitle" data-lang-show="en">Find the nearest Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP) Kendra in {name_en} and get up to 90% discount on generic medicines.</p>
+          <p class="service-subtitle" data-lang-show="hi">प्रधानमंत्री भारतीय जनऔषधि परियोजना के तहत {name_hi} में 90% सस्ती दवाएं पाएं और निकटतम केंद्र खोजें।</p>
+        </header>
+
+        <div class="quick-info-grid">
+            <div class="info-card">
+                <div class="info-card__icon">💰</div>
+                <div class="info-card__content">
+                    <div class="info-card__label"><span data-lang-show="en">Maximum Discount</span><span data-lang-show="hi">अधिकतम छूट</span></div>
+                    <div class="info-card__value"><span data-lang-show="en">Up to 90%</span><span data-lang-show="hi">90% तक</span></div>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info-card__icon">💊</div>
+                <div class="info-card__content">
+                    <div class="info-card__label"><span data-lang-show="en">Medicines Available</span><span data-lang-show="hi">उपलब्ध दवाएं</span></div>
+                    <div class="info-card__value"><span data-lang-show="en">1900+ Generic</span><span data-lang-show="hi">1900+ जेनेरिक</span></div>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <hr style="border:0; border-top:1px solid var(--color-border); margin: 30px 0;">
+        <section class="service-section">
+          <h2 class="service-section__title" data-lang-show="en">List of Active Stores in {name_en}</h2>
+          <h2 class="service-section__title" data-lang-show="hi">{name_hi} के मुख्य जन औषधि केंद्र</h2>
+          
+          {store_table_html}
 
-      <!-- Separate H2 Tags as requested by User for SEO -->
-      <h2 id="store-list" style="margin-top:40px; border-bottom: 2px solid var(--color-primary); padding-bottom: 5px;" data-lang-show="en">List of Active Stores in {name_en}</h2>
-      <h2 style="margin-top:40px; border-bottom: 2px solid var(--color-primary); padding-bottom: 5px;" data-lang-show="hi">{name_hi} के मुख्य जन औषधि केंद्र</h2>
-      
-      <!-- Static Table Injection -->
-      {store_table_html}
+          <div class="alert alert--info">
+            <h4 class="alert__title"><span data-lang-show="en">Need more locations?</span><span data-lang-show="hi">अन्य स्थान खोजें</span></h4>
+            <p class="alert__text"><span data-lang-show="en">The tables above list popular locations. For a complete list of 10,000+ kendras, download the official Jan Aushadhi Sugam App.</span><span data-lang-show="hi">ऊपर दी गई सूची में मुख्य स्थान हैं। सभी 10,000+ केंद्रों के लिए आधिकारिक सुगम ऐप डाउनलोड करें।</span></p>
+            <a href="https://play.google.com/store/apps/details?id=com.janaushadhi.sugam" target="_blank" class="btn btn-primary" style="margin-top: 10px;">Download Android App</a>
+          </div>
+        </section>
 
-      <div style="background: var(--color-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--color-border); margin-top: 15px;">
-        <label style="font-weight: bold; margin-bottom: 10px; display: block; color: var(--color-text);">Search all stores via Official Sugam App:</label>
-        <p style="margin-top: 5px; font-size: 0.95rem; color: var(--color-text-muted);">The tables above list popular locations. For a complete list of 10,000+ kendras, download the official mobile app.</p>
-        <a href="https://play.google.com/store/apps/details?id=com.janaushadhi.sugam" target="_blank" class="btn btn-primary" style="margin-top: 10px;">Download Android App</a>
-      </div>
+        <section class="service-section">
+          <h2 class="service-section__title" data-lang-show="en">Generic vs Branded Medicine Prices</h2>
+          <h2 class="service-section__title" data-lang-show="hi">दवाओं की कीमत की तुलना</h2>
+          
+          <p><span data-lang-show="en">A comparison of common medicines for senior citizens:</span><span data-lang-show="hi">सामान्य बीमारियों की ब्रांडेड और जेनेरिक दवा का अंतर:</span></p>
+          <table class="service-table">
+            <thead>
+              <tr>
+                <th>Medicine / Use</th>
+                <th>Branded Price (Avg)</th>
+                <th>Jan Aushadhi Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Amlodipine 5mg (Blood Pressure)</td>
+                <td>₹25.00</td>
+                <td style="color: #16a34a; font-weight: bold;">₹4.50</td>
+              </tr>
+              <tr>
+                <td>Metformin 500mg (Diabetes)</td>
+                <td>₹22.00</td>
+                <td style="color: #16a34a; font-weight: bold;">₹6.50</td>
+              </tr>
+              <tr>
+                <td>Atorvastatin 10mg (Cholesterol)</td>
+                <td>₹65.00</td>
+                <td style="color: #16a34a; font-weight: bold;">₹12.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
 
-      <!-- Separate H2 Tags -->
-      <h2 id="medicine-prices" style="margin-top:40px; border-bottom: 2px solid var(--color-primary); padding-bottom: 5px;" data-lang-show="en">Generic vs Branded Medicine Prices</h2>
-      <h2 style="margin-top:40px; border-bottom: 2px solid var(--color-primary); padding-bottom: 5px;" data-lang-show="hi">दवाओं की कीमत की तुलना</h2>
-      
-      <p style="color: var(--color-text);"><span data-lang-show="en">A comparison of common medicines for senior citizens:</span><span data-lang-show="hi">सामान्य बीमारियों की ब्रांडेड और जेनेरिक दवा का अंतर:</span></p>
-      <div style="overflow-x:auto; margin-top: 15px;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left;">
-          <thead>
-            <tr style="background: var(--color-primary); color: #fff;">
-              <th style="padding: 10px; border: 1px solid var(--color-border);">Medicine / Use</th>
-              <th style="padding: 10px; border: 1px solid var(--color-border);">Branded Price (Avg)</th>
-              <th style="padding: 10px; border: 1px solid var(--color-border);">Jan Aushadhi Price</th>
-            </tr>
-          </thead>
-          <tbody style="color: var(--color-text);">
-            <tr>
-              <td style="padding: 10px; border: 1px solid var(--color-border);">Amlodipine 5mg (Blood Pressure)</td>
-              <td style="padding: 10px; border: 1px solid var(--color-border);">₹25.00</td>
-              <td style="padding: 10px; border: 1px solid var(--color-border); color: #16a34a; font-weight: bold;">₹4.50</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px; border: 1px solid var(--color-border);">Metformin 500mg (Diabetes)</td>
-              <td style="padding: 10px; border: 1px solid var(--color-border);">₹22.00</td>
-              <td style="padding: 10px; border: 1px solid var(--color-border); color: #16a34a; font-weight: bold;">₹6.50</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px; border: 1px solid var(--color-border);">Atorvastatin 10mg (Cholesterol)</td>
-              <td style="padding: 10px; border: 1px solid var(--color-border);">₹65.00</td>
-              <td style="padding: 10px; border: 1px solid var(--color-border); color: #16a34a; font-weight: bold;">₹12.00</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <section class="service-section">
+          <h2 class="service-section__title" data-lang-show="en">How to Open a Jan Aushadhi Store in {name_en}</h2>
+          <h2 class="service-section__title" data-lang-show="hi">{name_hi} में जन औषधि केंद्र कैसे खोलें?</h2>
+          
+          <p><span data-lang-show="en">Anyone with a pharmacist license (B.Pharma/D.Pharma) can open a PMBJP store. The government provides an incentive of up to ₹5.00 Lakhs, and special incentives up to ₹2.00 Lakhs for women/SC/ST entrepreneurs in {name_en}.</span><span data-lang-show="hi">कोई भी फार्मासिस्ट (B.Pharma/D.Pharma) यह स्टोर खोल सकता है। सरकार द्वारा ₹5 लाख तक का इन्सेंटिव और महिला/SC/ST को ₹2 लाख की अतिरिक्त सहायता दी जाती है।</span></p>
+          <a href="https://janaushadhi.gov.in/" target="_blank" class="btn btn-secondary">Visit Official PMBJP Portal</a>
+        </section>
+        
+        <section class="service-section" id="faqs">
+          <h2 class="service-section__title" data-lang-show="en">Frequently Asked Questions</h2>
+          <h2 class="service-section__title" data-lang-show="hi">अक्सर पूछे जाने वाले प्रश्न (FAQs)</h2>
+          <div class="faq-list">
+              <div class="faq-item">
+                  <div class="faq-question">
+                      <h3 data-lang-show="en">Are Jan Aushadhi medicines effective?</h3>
+                      <h3 data-lang-show="hi">क्या जन औषधि दवाएं असरदार होती हैं?</h3>
+                  </div>
+                  <div class="faq-answer">
+                      <p data-lang-show="en">Yes, all generic medicines sold at PMBJP kendras undergo rigorous quality checks by WHO-GMP certified laboratories before they are dispatched.</p>
+                      <p data-lang-show="hi">हाँ, PMBJP केंद्रों पर बेची जाने वाली सभी जेनेरिक दवाएं WHO-GMP प्रमाणित प्रयोगशालाओं द्वारा कड़े गुणवत्ता जांच से गुजरती हैं।</p>
+                  </div>
+              </div>
+              <div class="faq-item">
+                  <div class="faq-question">
+                      <h3 data-lang-show="en">Do I need a prescription to buy medicines here?</h3>
+                      <h3 data-lang-show="hi">क्या यहां से दवा खरीदने के लिए डॉक्टर की पर्ची जरूरी है?</h3>
+                  </div>
+                  <div class="faq-answer">
+                      <p data-lang-show="en">For Over-The-Counter (OTC) medicines, no prescription is required. However, for Schedule H/H1 drugs, a valid doctor's prescription is mandatory.</p>
+                      <p data-lang-show="hi">सामान्य (OTC) दवाओं के लिए पर्ची की आवश्यकता नहीं है। हालांकि, शेड्युल H/H1 दवाओं के लिए डॉक्टर की पर्ची अनिवार्य है।</p>
+                  </div>
+              </div>
+          </div>
+        </section>
+        
+      </article>
 
-      <!-- Separate H2 Tags -->
-      <h2 style="margin-top:40px; border-bottom: 2px solid var(--color-primary); padding-bottom: 5px;" data-lang-show="en">How to Open a Jan Aushadhi Store in {name_en}</h2>
-      <h2 style="margin-top:40px; border-bottom: 2px solid var(--color-primary); padding-bottom: 5px;" data-lang-show="hi">{name_hi} में जन औषधि केंद्र कैसे खोलें?</h2>
-      
-      <p style="color: var(--color-text);">
-        <span data-lang-show="en">Anyone with a pharmacist license (B.Pharma/D.Pharma) can open a PMBJP store. The government provides an incentive of up to ₹5.00 Lakhs, and special incentives up to ₹2.00 Lakhs for women/SC/ST entrepreneurs in {name_en}.</span>
-        <span data-lang-show="hi">कोई भी फार्मासिस्ट (B.Pharma/D.Pharma) यह स्टोर खोल सकता है। सरकार द्वारा ₹5 लाख तक का इन्सेंटिव और महिला/SC/ST को ₹2 लाख की अतिरिक्त सहायता दी जाती है।</span>
-      </p>
-
+      <aside class="sidebar">
+        <div class="sidebar-widget">
+          <h3 class="sidebar-widget__title" data-lang-show="en">Related Health Tools</h3>
+          <h3 class="sidebar-widget__title" data-lang-show="hi">संबंधित टूल्स</h3>
+          <ul class="sidebar-list">
+            <li><a href="../../tools/eligibility-checker.html">Ayushman Bharat Eligibility Checker</a></li>
+            <li><a href="../../tools/status-troubleshooter.html">Health Card Status Tracker</a></li>
+            <li><a href="../../category/health.html">State Health Schemes</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-widget">
+          <h3 class="sidebar-widget__title" data-lang-show="en">Other Stores in {name_en}</h3>
+          <h3 class="sidebar-widget__title" data-lang-show="hi">अन्य स्टोर</h3>
+          <ul class="sidebar-list">
+            <li><a href="../../service/csc-locator/{slug}/index.html">CSC Center Locator</a></li>
+            <li><a href="../../service/ration-card.html">Ration Dealer Locator</a></li>
+          </ul>
+        </div>
+      </aside>
     </div>
   </main>
+
+  <div id="site-footer">
+    <footer class="site-footer">
+      <div class="container">
+        <p style="text-align: center; color: var(--color-text-muted);">© 2026 SarkariSewa India. Information is for educational purposes only.</p>
+      </div>
+    </footer>
+  </div>
 
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
 """
-
-os.makedirs("service/jan-aushadhi", exist_ok=True)
+    with open(f"service/jan-aushadhi/{slug}.html", "w", encoding="utf-8") as f:
+        f.write(html)
 
 for state in states:
-    store_table_html, schema_items = generate_store_table(state["slug"], state["name_en"])
-    schema_json_str = json.dumps(schema_items, indent=4)
-    
-    html_content = html_template.format(
-        slug=state["slug"],
-        name_en=state["name_en"],
-        name_hi=state["name_hi"],
-        store_table_html=store_table_html,
-        schema_json=schema_json_str
-    )
-    with open(f"service/jan-aushadhi/{state['slug']}.html", "w", encoding="utf-8") as f:
-        f.write(html_content)
+    build_page(state)
 
-print(f"Generated {len(states)} state HTML files successfully with SEO fixes and Store Data.")
+print(f"Generated {len(states)} thick-content Jan Aushadhi pages successfully.")
