@@ -1,186 +1,155 @@
 import os
-import json
+import glob
+import csv
+import collections
+import shutil
+import urllib.parse
+from string import capwords
 
-cities_data = {
-    "uttar-pradesh": ["Lucknow", "Kanpur", "Ghaziabad", "Agra", "Varanasi", "Meerut", "Prayagraj", "Bareilly", "Aligarh", "Moradabad", "Saharanpur", "Gorakhpur", "Noida", "Firozabad", "Jhansi", "Muzaffarnagar", "Mathura", "Ayodhya", "Rampur", "Shahjahanpur", "Farrukhabad", "Hapur", "Etawah", "Mirzapur", "Bulandshahr"],
-    "bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia", "Darbhanga", "Bihar Sharif", "Arrah", "Begusarai", "Katihar", "Munger", "Chhapra", "Danapur", "Saharsa", "Hajipur", "Sasaram", "Dehri", "Siwan", "Motihari", "Nawada"],
-    "madhya-pradesh": ["Indore", "Bhopal", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas", "Satna", "Ratlam", "Rewa", "Murwara", "Singrauli", "Burhanpur", "Khandwa", "Bhind", "Chhindwara", "Guna", "Shivpuri", "Vidisha", "Chhatarpur"],
-    "rajasthan": ["Jaipur", "Jodhpur", "Kota", "Bikaner", "Ajmer", "Udaipur", "Bhilwara", "Alwar", "Bharatpur", "Sikar", "Pali", "Sri Ganganagar", "Kishangarh", "Baran", "Tonk"],
-    "jharkhand": ["Ranchi", "Dhanbad", "Jamshedpur", "Bokaro", "Deoghar", "Phusro", "Hazaribagh", "Giridih", "Ramgarh", "Medininagar"],
-    "uttarakhand": ["Dehradun", "Haridwar", "Roorkee", "Haldwani", "Rudrapur", "Kashipur", "Rishikesh", "Pithoragarh", "Ramnagar", "Nainital"]
+# Constants
+CSV_DIR = r"C:\Users\Lenovo\Desktop\chunks"
+OUTPUT_DIR = "service/csc-locator"
+MAX_CENTERS_PER_PAGE = 300 # Thick enough for SEO, small enough for performance
+
+def slugify(text):
+    return text.lower().replace(" ", "-").replace(".", "").replace("(", "").replace(")", "").replace("&", "and")
+
+# State normalization mapping
+STATE_MAP = {
+    "ANDAMAN AND NICOBAR ISLANDS": "Andaman & Nicobar",
+    "ANDHRA PRADESH": "Andhra Pradesh",
+    "ARUNACHAL PRADESH": "Arunachal Pradesh",
+    "ASSAM": "Assam", "BIHAR": "Bihar", "CHANDIGARH": "Chandigarh",
+    "CHHATTISGARH": "Chhattisgarh",
+    "THE DADRA AND NAGAR HAVELI AND DAMAN AND DIU": "Dadra & Nagar Haveli",
+    "DELHI": "Delhi", "GOA": "Goa", "GUJARAT": "Gujarat",
+    "HARYANA": "Haryana", "HIMACHAL PRADESH": "Himachal Pradesh",
+    "JAMMU AND KASHMIR": "Jammu & Kashmir", "JHARKHAND": "Jharkhand",
+    "KARNATAKA": "Karnataka", "KERALA": "Kerala", "LADAKH": "Ladakh",
+    "LAKSHADWEEP": "Lakshadweep", "MADHYA PRADESH": "Madhya Pradesh",
+    "MAHARASHTRA": "Maharashtra", "MANIPUR": "Manipur", "MEGHALAYA": "Meghalaya",
+    "MIZORAM": "Mizoram", "NAGALAND": "Nagaland", "ODISHA": "Odisha",
+    "PUDUCHERRY": "Puducherry", "PUNJAB": "Punjab", "RAJASTHAN": "Rajasthan",
+    "SIKKIM": "Sikkim", "TAMIL NADU": "Tamil Nadu", "TELANGANA": "Telangana",
+    "TRIPURA": "Tripura", "UTTAR PRADESH": "Uttar Pradesh",
+    "UTTARAKHAND": "Uttarakhand", "WEST BENGAL": "West Bengal"
 }
 
-state_display_names = {
-    "uttar-pradesh": "Uttar Pradesh",
-    "bihar": "Bihar",
-    "madhya-pradesh": "Madhya Pradesh",
-    "rajasthan": "Rajasthan",
-    "jharkhand": "Jharkhand",
-    "uttarakhand": "Uttarakhand"
-}
+def clean_old_pages():
+    print("Cleaning up old CSC pages...")
+    if os.path.exists(OUTPUT_DIR):
+        for item in os.listdir(OUTPUT_DIR):
+            item_path = os.path.join(OUTPUT_DIR, item)
+            if os.path.isdir(item_path):
+                shutil.rmtree(item_path)
 
-state_local_names = {
-    "uttar-pradesh": "Jan Seva Kendra (जन सेवा केंद्र)",
-    "bihar": "Vasudha Kendra (वसुधा केंद्र)",
-    "madhya-pradesh": "MP Online / Lok Seva Kendra",
-    "rajasthan": "e-Mitra (ई-मित्र)",
-    "jharkhand": "Pragya Kendra (प्रज्ञा केंद्र)",
-    "uttarakhand": "Devbhoomi Jan Seva Kendra"
-}
+def load_data():
+    print("Loading 5 Lakh+ CSC Data from CSVs (this may take a minute)...")
+    data = collections.defaultdict(lambda: collections.defaultdict(list))
+    total_processed = 0
+    csv_files = glob.glob(os.path.join(CSV_DIR, "*.csv"))
+    
+    for file in csv_files:
+        with open(file, 'r', encoding='utf-8', errors='ignore') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                state_raw = row.get("state", "").strip().upper()
+                dist_raw = capwords(row.get("district", "").strip())
+                if not state_raw or not dist_raw: continue
+                
+                state_clean = STATE_MAP.get(state_raw, capwords(state_raw))
+                
+                # Cap at MAX to prevent 10MB HTML pages
+                if len(data[state_clean][dist_raw]) < MAX_CENTERS_PER_PAGE:
+                    data[state_clean][dist_raw].append({
+                        "name": row.get("vle_name", "CSC Center").strip() or "CSC Center",
+                        "address": row.get("address", "").strip(),
+                        "pin": row.get("pincode", "").strip(),
+                        "lat": row.get("latitude", "").strip(),
+                        "lng": row.get("longitude", "").strip()
+                    })
+                total_processed += 1
+                
+    print(f"Processed {total_processed} rows.")
+    return data
 
-def generate_nearby_links(state_slug, current_city, all_cities):
-    links = []
-    # Pick 5 cities that are not the current city
-    for c in all_cities:
-        if c != current_city:
-            c_slug = c.lower().replace(" ", "-")
-            links.append(f'<a href="{c_slug}.html" style="text-decoration:none; padding:10px; border:1px solid var(--color-border); border-radius:8px; display:inline-block; margin:5px; background:var(--color-surface);">{c} CSC</a>')
-        if len(links) >= 5:
-            break
-    return "\n".join(links)
+def build_district_html(state_name, state_slug, dist_name, dist_slug, centers):
+    count = len(centers)
+    display_count = f"{count}+" if count == MAX_CENTERS_PER_PAGE else str(count)
+    
+    rows = ""
+    for c in centers:
+        map_link = f"https://www.google.com/maps?q={c['lat']},{c['lng']}" if c['lat'] and c['lng'] else "#"
+        rows += f"""<tr>
+<td><strong>{c['name']}</strong></td>
+<td>{c['address']} — {c['pin']}</td>
+<td><a href="{map_link}" target="_blank" rel="noopener">Get Directions</a></td>
+</tr>\n"""
 
-def build_html(state_slug, city):
-    city_slug = city.lower().replace(" ", "-")
-    state_display = state_display_names[state_slug]
-    local_name = state_local_names[state_slug]
-    
-    title = f"CSC Center in {city}, {state_display} 2026: {local_name} Near Me"
-    desc = f"Find the nearest CSC Center ({local_name}) in {city}, {state_display}. Check address, WhatsApp number, and available online services like Aadhaar, PAN, and certificates."
-    
-    nearby_html = generate_nearby_links(state_slug, city, cities_data[state_slug])
-    
     html = f"""<!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <link href="../../../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
-    <link href="../../../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
-    <link href="../../../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-    <link href="../../../favicon.ico" rel="icon"/>
-    <link href="../../../manifest.json" rel="manifest"/>
-    <link href="https://sarkarisewaindia.com/service/csc-locator/{state_slug}/{city_slug}.html" rel="canonical"/>
-    <meta content="{desc}" name="description"/>
-    <meta content="{title}" property="og:title"/>
-    <meta content="{desc}" property="og:description"/>
-    <meta content="article" property="og:type"/>
-    <meta content="https://sarkarisewaindia.com/service/csc-locator/{state_slug}/{city_slug}.html" property="og:url"/>
-    <meta content="https://sarkarisewaindia.com/assets/img/og-image.png" property="og:image"/>
-    <meta content="summary_large_image" name="twitter:card"/>
-    <meta content="{title}" name="twitter:title"/>
-    <meta content="{desc}" name="twitter:description"/>
-    <title>{title}</title>
-    <link href="../../../assets/css/style.css" rel="stylesheet"/>
-    <link href="../../../assets/css/module2.css" rel="stylesheet"/>
-    <link href="../../../assets/css/module15.css" rel="stylesheet"/>
-    <link href="../../../assets/css/module16.css" rel="stylesheet"/>
-    <link href="../../../assets/css/share-widget.css" rel="stylesheet"/>
-    <script id="service-schema" type="application/ld+json">{{
-      "@context": "https://schema.org",
-      "@graph": [
-        {{
-          "@type": "GovernmentService",
-          "name": "{local_name} in {city}, {state_display}",
-          "description": "{desc}",
-          "url": "https://sarkarisewaindia.com/service/csc-locator/{state_slug}/{city_slug}.html",
-          "serviceType": "Common Service Centre",
-          "provider": {{ "@type": "GovernmentOrganization", "name": "CSC e-Governance Services India Limited" }}
-        }},
-        {{
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sarkarisewaindia.com/index.html" }},
-            {{ "@type": "ListItem", "position": 2, "name": "CSC Locator", "item": "https://sarkarisewaindia.com/tools/csc-locator.html" }},
-            {{ "@type": "ListItem", "position": 3, "name": "{state_display}", "item": "https://sarkarisewaindia.com/service/csc-locator/{state_slug}/index.html" }},
-            {{ "@type": "ListItem", "position": 4, "name": "{city}", "item": "https://sarkarisewaindia.com/service/csc-locator/{state_slug}/{city_slug}.html" }}
-          ]
-        }}
-      ]
-    }}</script>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="icon" href="../../../favicon.ico">
+<link rel="canonical" href="https://sarkarisewaindia.com/service/csc-locator/{state_slug}/{dist_slug}.html"/>
+<title>{dist_name} CSC Center List 2026 | FREE Services ({display_count} Centers)</title>
+<meta name="description" content="{dist_name}, {state_name} ke sabhi CSC / Jan Seva Kendra ka address aur maps link. Aadhaar, PAN, Passport ₹0 mein apply karein. Abhi nearest center dekhein!"/>
+<meta property="og:title" content="{dist_name} CSC Center List 2026 | FREE Services ({display_count} Centers)"/>
+<meta property="og:description" content="{dist_name}, {state_name} ke sabhi CSC / Jan Seva Kendra ka address aur maps link. Aadhaar, PAN, Passport ₹0 mein apply karein."/>
+<meta property="og:url" content="https://sarkarisewaindia.com/service/csc-locator/{state_slug}/{dist_slug}.html"/>
+<meta property="og:type" content="article"/>
+<link rel="stylesheet" href="../../../assets/css/style.css"/>
+<link rel="stylesheet" href="../../../assets/css/module2.css"/>
 </head>
-<body data-slug="csc-locator-{city_slug}">
-<script>window.SS_ROOT = "../../../";</script>
-<!-- HEADER INJECT (Assuming standard SarkariSewa header) -->
-<div id="site-header">
-    <div class="tricolor-rule"></div>
-    <header class="site-header">
-        <div class="container header-inner">
-            <a class="brand" href="../../../index.html">
-                <span class="brand-mark">S</span>
-                <span class="brand-text">
-                    <span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
-                    <span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
-                </span>
-            </a>
-            <div class="header-actions">
-                <button aria-label="Toggle theme" class="icon-btn" id="theme-toggle" type="button">
-                    <span aria-hidden="true" id="theme-icon">🌙</span>
-                </button>
-                <button class="icon-btn" id="lang-toggle" type="button"><span data-i18n="lang_toggle">हिंदी</span></button>
-            </div>
-        </div>
-    </header>
+<body data-slug="csc-{state_slug}-{dist_slug}">
+<div id="site-header"><div class="tricolor-rule"></div><header class="site-header"><div class="container header-inner"><a href="../../../index.html" class="brand"><span class="brand-mark">S</span><span class="brand-text"><span class="brand-title">SarkariSewa India</span></span></a></div></header></div>
+<main class="container">
+<div class="content-wrapper">
+<article class="service-article">
+<nav aria-label="Breadcrumbs" class="breadcrumbs"><ol>
+<li><a href="../../../index.html">Home</a></li>
+<li><a href="../../csc-locator.html">CSC Locator</a></li>
+<li><a href="../{state_slug}.html">{state_name}</a></li>
+<li aria-current="page">{dist_name}</li>
+</ol></nav>
+
+<header class="service-header">
+<h1 class="service-title">{dist_name} CSC Center Near Me (List 2026)</h1>
+<p class="service-subtitle">Kya aap {dist_name}, {state_name} mein apne nazdeeki Common Service Center (CSC) / Jan Seva Kendra ki talash kar rahe hain? Yahan humne top {display_count} centers ki list di hai jahan aap Government certificates, Aadhaar updates, aur banking services ka labh utha sakte hain.</p>
+</header>
+
+<section class="service-section">
+<h2 class="service-section__title">Services Available at {dist_name} CSCs</h2>
+<div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom: 20px;">
+<span style="background:var(--color-surface); padding:8px 12px; border:1px solid var(--color-border); border-radius:4px;">Aadhaar Card Update</span>
+<span style="background:var(--color-surface); padding:8px 12px; border:1px solid var(--color-border); border-radius:4px;">PAN Card Registration</span>
+<span style="background:var(--color-surface); padding:8px 12px; border:1px solid var(--color-border); border-radius:4px;">Income / Caste Certificate</span>
+<span style="background:var(--color-surface); padding:8px 12px; border:1px solid var(--color-border); border-radius:4px;">Passport Sewa</span>
+<span style="background:var(--color-surface); padding:8px 12px; border:1px solid var(--color-border); border-radius:4px;">PM KISAN KYC</span>
 </div>
+<p style="color:var(--color-text-muted); font-size: 0.95rem;"><em>Note: Har center par alag-alag services uplabdh ho sakti hain. Kripya center par visit karne se pehle confirm kar lein.</em></p>
+</section>
 
-<main class="container" style="padding-top: 20px;">
-    <div style="margin-bottom: 20px; font-size: 0.9rem; color: var(--color-text-muted);">
-        <a href="../../../index.html" style="color: var(--color-primary); text-decoration: none;">Home</a> / 
-        <a href="../../../tools/csc-locator.html" style="color: var(--color-primary); text-decoration: none;">CSC Locator</a> / 
-        <a href="index.html" style="color: var(--color-primary); text-decoration: none;">{state_display}</a> / 
-        <strong>{city}</strong>
-    </div>
+<section class="service-section">
+<h2 class="service-section__title">List of Centers in {dist_name}</h2>
+<div style="overflow-x:auto;">
+<table class="service-table">
+<thead><tr><th>Center / VLE Name</th><th>Full Address</th><th>Maps</th></tr></thead>
+<tbody>
+{rows}
+</tbody>
+</table>
+</div>
+</section>
 
-    <h1 style="color: var(--color-text); margin-bottom: 15px; font-size: 2.2rem;">Nearest {local_name} in {city}, {state_display}</h1>
-    <p style="font-size: 1.1rem; line-height: 1.6; color: var(--color-text-muted); margin-bottom: 30px;">
-        Save time by finding the nearest <strong>Common Service Center (CSC) / {local_name} in {city}, {state_display}</strong> online. Our directory provides exact locations, WhatsApp contact details, and directions to help you access essential digital India services. Whether it's banking, insurance, PAN Card, Aadhaar updates, or income/caste certificates, locate your local e-Seva Kendra instantly.
-    </p>
-
-    <!-- The JS script csc-supabase-ui.js relies on this container and data-location -->
-    <div data-location="{city}" id="csc-results-container">
-        <p style="text-align: center; color: var(--color-text-muted); padding: 20px;">Fetching nearest centers securely...</p>
-    </div>
-    
-    <!-- Dynamic Map Embed -->
-    <div style="margin-top: 30px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-        <iframe width="100%" height="350" frameborder="0" style="border:0" 
-        src="https://www.google.com/maps?q=CSC+Center+{city}+{state_display}&output=embed" allowfullscreen></iframe>
-    </div>
-
-    <div style="margin-top: 40px;">
-        <h3 style="margin-bottom: 20px;">Top Services at {city} CSC Centers</h3>
-        <ul style="line-height: 1.8; color: var(--color-text-muted);">
-            <li>Aadhaar Card Update & Enrollment</li>
-            <li>PAN Card Application & Corrections</li>
-            <li>Voter ID / EPIC Card Services</li>
-            <li>State Certificates (Income, Caste, Domicile)</li>
-            <li>PM Kisan Samman Nidhi KYC</li>
-            <li>Banking, Money Transfer, and Insurance Premiums</li>
-        </ul>
-    </div>
-
-    <!-- INTERNAL LINKING: Nearby Cities -->
-    <div style="margin-top: 40px; padding: 20px; background: var(--color-surface); border-radius: 12px; border: 1px solid var(--color-border);">
-        <h3 style="margin-bottom: 15px;">Nearby Districts in {state_display}</h3>
-        <div>
-            {nearby_html}
-            <a href="index.html" style="text-decoration:none; padding:10px; border:1px solid var(--color-primary); color:var(--color-primary); border-radius:8px; display:inline-block; margin:5px;">View All in {state_display}</a>
-        </div>
-    </div>
-
-    <!-- Related Tools -->
-    <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--color-border);">
-        <h3 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;">Related Government Services &amp; Tools</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; text-align: center;">
-            <a href="../../../tools/eligibility-checker.html" style="text-decoration: none; padding: 15px; border-radius: 12px; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;">
-                <div style="font-size: 2rem; margin-bottom: 10px;">✅</div>
-                <strong style="color: var(--color-text);">Eligibility Checker</strong>
-            </a>
-            <a href="../../../tools/document-checklist.html" style="text-decoration: none; padding: 15px; border-radius: 12px; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;">
-                <div style="font-size: 2rem; margin-bottom: 10px;">📄</div>
-                <strong style="color: var(--color-text);">Document Checklist</strong>
-            </a>
-        </div>
-    </div>
+<section class="service-section" id="faqs">
+<h2 class="service-section__title">Frequently Asked Questions</h2>
+<div class="faq-list">
+<div class="faq-item"><div class="faq-question"><h3>{dist_name} mein CSC Center kaise khojein?</h3></div><div class="faq-answer"><p>Upar di gayi list se aap apne area ka Pincode ya Address dhundh sakte hain. "Get Directions" par click karke aap seedha Google Maps par center ka exact location dekh sakte hain.</p></div></div>
+<div class="faq-item"><div class="faq-question"><h3>Kya CSC services FREE hoti hain?</h3></div><div class="faq-answer"><p>Government ki taraf se fees fix hoti hai. Kuch services completely FREE hoti hain, jabki certificates aur printouts ka nominal charge (Jaise ₹20 se ₹50) liya jata hai. Extra paise maangne par aap complain kar sakte hain.</p></div></div>
+<div class="faq-item"><div class="faq-question"><h3>Kya main CSC me apna Naya Aadhaar Card banwa sakta hu?</h3></div><div class="faq-answer"><p>Naya Aadhaar enrollment sirf specific Aadhaar Seva Kendras par hota hai. Par Aadhaar mein mobile number update, naam change, ya print nikalne ka kaam lagbhag sabhi CSC centers karte hain.</p></div></div>
+</div>
+</section>
 
 
     <!-- Cross-Linking Banner: CSC & Jan Aushadhi -->
@@ -199,55 +168,82 @@ def build_html(state_slug, city):
       </div>
     </section>
 
-</main>
+</article>
 
-<div id="site-footer">
-    <footer class="site-footer">
-        <div class="footer-bottom">
-            <span>© <span id="footer-year"></span> SarkariSewa India · All content is for informational purposes only.</span>
-        </div>
-    </footer>
+<aside class="sidebar">
+<div class="sidebar-widget">
+<h3 class="sidebar-widget__title">Important Links</h3>
+<ul class="sidebar-list">
+<li><a href="../../../tools/eligibility-checker.html">Scheme Eligibility Checker</a></li>
+<li><a href="../../../tools/status-troubleshooter.html">Application Status Tracker</a></li>
+<li><a href="../../../service/jan-aushadhi/{state_slug}/{dist_slug}.html">{dist_name} Jan Aushadhi (Cheap Medicine)</a></li>
+</ul>
 </div>
-
-<script src="../../../assets/js/main.js?v=2.4"></script>
-<script src="../../../assets/js/consent.js"></script>
-<script src="../../../assets/js/i18n-helper.js"></script>
-<script src="../../../assets/js/supabase-client.js"></script>
-<script src="../../../assets/js/services-data.js"></script>
-<script src="../../../assets/js/csc-supabase-ui.js"></script>
+<div class="sidebar-widget">
+<h3 class="sidebar-widget__title">Nearby Districts</h3>
+<ul class="sidebar-list">
+<li><a href="../{state_slug}.html">All Districts in {state_name}</a></li>
+</ul>
+</div>
+</aside>
+</div>
+</main>
+<div id="site-footer"><footer class="site-footer"><div class="container"><p style="text-align:center;">&copy; 2026 SarkariSewa India</p></div></footer></div>
+<script src="../../../assets/js/main.js" defer></script>
 </body>
-</html>
-"""
+</html>"""
     return html
 
 def main():
-    base_dir = "service/csc-locator"
+    clean_old_pages()
+    data = load_data()
     
-    total_created = 0
+    total_pages = 0
     
-    for state_slug, cities in cities_data.items():
-        state_dir = os.path.join(base_dir, state_slug)
+    print("Generating HTML pages...")
+    for state, districts in data.items():
+        state_slug = slugify(state)
+        state_dir = os.path.join(OUTPUT_DIR, state_slug)
         os.makedirs(state_dir, exist_ok=True)
         
-        # Also create/update a simple index.html for the state hub
-        state_display = state_display_names[state_slug]
-        hub_html = f"<html><head><title>CSC Centers in {state_display}</title></head><body><h1>All Districts in {state_display}</h1><ul>"
+        dist_links = []
+        for dist, centers in districts.items():
+            dist_slug = slugify(dist)
+            html = build_district_html(state, state_slug, dist, dist_slug, centers)
+            
+            with open(os.path.join(state_dir, f"{dist_slug}.html"), "w", encoding="utf-8") as f:
+                f.write(html)
+            
+            dist_links.append({"name": dist, "slug": dist_slug, "count": len(centers)})
+            total_pages += 1
+            
+        # State Index Page
+        dist_links.sort(key=lambda x: x["name"])
+        links_html = "".join([f'<a href="{dl["slug"]}.html" style="display:block;padding:12px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;text-decoration:none;color:var(--color-primary);font-weight:500;">{dl["name"]} ({dl["count"]}+ stores) &rarr;</a>' for dl in dist_links])
         
-        for city in cities:
-            city_slug = city.lower().replace(" ", "-")
-            filepath = os.path.join(state_dir, f"{city_slug}.html")
-            
-            with open(filepath, "w", encoding="utf-8") as f:
-                f.write(build_html(state_slug, city))
-                
-            hub_html += f'<li><a href="{city_slug}.html">{city}</a></li>'
-            total_created += 1
-            
-        hub_html += "</ul></body></html>"
+        index_html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="icon" href="../../../favicon.ico">
+<title>{state} CSC Center Near Me (All Districts) | 2026 List</title>
+<link rel="stylesheet" href="../../../assets/css/style.css"/>
+</head>
+<body>
+<div id="site-header"><div class="tricolor-rule"></div><header class="site-header"><div class="container header-inner"><a href="../../../index.html" class="brand"><span class="brand-title">SarkariSewa India</span></a></div></header></div>
+<main class="container" style="padding-top:30px;min-height:60vh;">
+<nav aria-label="Breadcrumbs" class="breadcrumbs"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../csc-locator.html">CSC Locator</a></li><li aria-current="page">{state}</li></ol></nav>
+<h1 style="margin-bottom:20px;">{state} CSC Centers — All Districts ({len(dist_links)})</h1>
+<p style="margin-bottom:30px;color:var(--color-text-muted);">Apna district select karein aur apne area ke sabhi CSC/Jan Seva Kendra ka address dekhein.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;">{links_html}</div>
+</main>
+<script src="../../../assets/js/main.js" defer></script>
+</body></html>"""
         with open(os.path.join(state_dir, "index.html"), "w", encoding="utf-8") as f:
-            f.write(hub_html)
+            f.write(index_html)
+        total_pages += 1
 
-    print(f"Successfully generated {total_created} CSC city pages across {len(cities_data)} states.")
+    print(f"✅ Success! Generated {total_pages} high-SEO CSC pages.")
 
 if __name__ == "__main__":
     main()
