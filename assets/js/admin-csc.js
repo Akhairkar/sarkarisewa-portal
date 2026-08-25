@@ -69,13 +69,39 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${new Date(c.approved_at || c.submitted_at).toLocaleDateString()}</td>
         <td style="font-weight:600;">${c.centre_name}</td>
         <td><code>${c.application_id}</code></td>
-        <td>${c.city}, ${c.district}</td>
         <td>
+          ${c.city}, ${c.district}
+          ${c.profile_url ? `<br><a href="../${c.profile_url}" target="_blank" style="font-size:0.85rem; color:#10b981;">View Live Page</a>` : '<br><span style="font-size:0.85rem; color:#f59e0b;">Generation Pending</span>'}
+        </td>
+        <td>
+          ${c.profile_url ? `<button class="theme-toggle-btn" style="background:#3b82f6; color:#fff; border:none; margin-bottom:4px;" onclick="sendApprovalEmail('${c.owner_name.replace(/'/g, "\\'")}', '${c.owner_email || c.public_email || ''}', '${c.profile_url}')">📧 Email VLE</button><br>` : ''}
           <button class="logout-btn" onclick="rejectCSC('${c.id}')">Revoke</button>
         </td>
       </tr>
     `).join('');
   }
+
+  window.sendApprovalEmail = (name, email, url) => {
+    if (!email) {
+      alert("No email address provided by this CSC owner.");
+      return;
+    }
+    const fullUrl = "https://sarkarisewaindia.com/" + url;
+    const subject = encodeURIComponent("Your Verified CSC Profile is Live - SarkariSewa India");
+    const body = encodeURIComponent(`Dear / Namaste ${name},
+
+Congratulations! Your CSC / Jan Seva Kendra profile has been successfully approved and verified by SarkariSewa India.
+बधाई हो! आपकी CSC / जन सेवा केंद्र प्रोफाइल SarkariSewa India द्वारा सफलतापूर्वक सत्यापित और स्वीकृत कर ली गई है।
+
+You can view your personal verified page here / आप अपना व्यक्तिगत सत्यापित पेज यहाँ देख सकते हैं:
+${fullUrl}
+
+Thank you / धन्यवाद,
+Admin Team
+SarkariSewa India`);
+
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  };
 
   window.approveCSC = async (id) => {
     if (!confirm("Approve this CSC Centre? This will queue it for Profile Generation.")) return;
