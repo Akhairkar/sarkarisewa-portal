@@ -64,9 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
             ${servicesHtml}
           </div>
           
-          <div style="margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--color-border);">
+          <div style="margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--color-border); gap: 8px;">
             ${contactDisplay}
-            <a href="${mapUrl}" target="_blank" style="background: var(--color-primary); color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.9rem; font-weight: 600;">Directions</a>
+            <div style="display: flex; gap: 8px;">
+              ${!center.is_verified && center.id ? `<a href="${ROOT}claim-your-csc.html?id=${center.id}" style="background: var(--color-surface); color: var(--color-primary); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--color-primary); text-decoration: none; font-size: 0.9rem; font-weight: 600;">Claim</a>` : ''}
+              <a href="${mapUrl}" target="_blank" style="background: var(--color-primary); color: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-size: 0.9rem; font-weight: 600;">Map</a>
+            </div>
           </div>
         </div>
       `;
@@ -131,6 +134,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+
   // A small delay to ensure all dependent scripts (like supabase-client) are parsed
   setTimeout(loadAllData, 100);
+
+  const searchInput = document.getElementById('csc-local-search') || document.getElementById('csc-search-input');
+  const searchBtn = document.getElementById('csc-search-btn');
+
+  function applyLocalFilter() {
+      if (!searchInput) return;
+      const q = searchInput.value.toLowerCase().trim();
+      if (!q) {
+          renderCenters(cscData);
+          return;
+      }
+      const filtered = cscData.filter(c => {
+          const str = `${c.name || ''} ${c.address || ''} ${c.pincode || ''} ${c.district || ''}`.toLowerCase();
+          return str.includes(q);
+      });
+      renderCenters(filtered);
+  }
+
+  if (searchInput) {
+      searchInput.addEventListener('input', applyLocalFilter);
+      if (searchBtn) {
+          searchBtn.addEventListener('click', applyLocalFilter);
+      }
+  }
+
 });
