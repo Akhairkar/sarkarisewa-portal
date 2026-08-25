@@ -562,7 +562,7 @@ def build_death(state, idx):
     intro_en = death_en[idx % 3]
     intro_hi = death_hi[idx % 3]
     
-    title_en = f"{name} Death Certificate Apply Online 2026: Process & Status"
+    title_en = f"{name} Death Certificate Apply Online (2026) | CRS Portal & Download"
     title_hi = f"{name} मृत्यु प्रमाण पत्र 2026: ऑनलाइन आवेदन (Death Certificate)"
     desc_hi = f"{name} में मृत्यु प्रमाण पत्र (Death Certificate) कैसे बनवाएं? CRS पोर्टल या {portal} से ऑनलाइन आवेदन, ज़रूरी दस्तावेज़ और फीस की जानकारी।"
     desc_en = f"Apply for a Death Certificate in {name} online via {portal} or CRS portal. Check required documents, process, and application status easily."

@@ -156,7 +156,7 @@ def build_page(state):
   <link rel="icon" href="../../favicon.ico">
   <link rel="manifest" href="../../manifest.json">
   <link rel="canonical" href="https://sarkarisewaindia.com/service/jan-aushadhi/{slug}.html" />
-  <meta name="description" content="Find the exact address and contact details of Pradhan Mantri Jan Aushadhi Kendras in {name_en}. Check medicine prices and get generic medicines at up to 90 percent discount." />
+  <meta name="description" content="Looking for Jan Aushadhi Kendra near you in {name_en}? Get the complete 2026 list of PMBJP stores, contact numbers, and save up to 90% on generic medicines." />
   <meta property="og:title" content="Jan Aushadhi Kendra in {name_en} | Find Store Near Me" />
   <meta property="og:description" content="Find the exact address and contact details of Pradhan Mantri Jan Aushadhi Kendras in {name_en}. Check medicine prices and get generic medicines at up to 90 percent discount." />
   <meta property="og:type" content="article" />
@@ -164,8 +164,8 @@ def build_page(state):
   <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Jan Aushadhi Kendra in {name_en} | Find Store Near Me" />
-  <meta name="twitter:description" content="Find the exact address and contact details of Pradhan Mantri Jan Aushadhi Kendras in {name_en}. Check medicine prices and get generic medicines at up to 90 percent discount." />
-  <title>Jan Aushadhi Kendra in {name_en} | Find Store Near Me</title>
+  <meta name="twitter:description" content="Looking for Jan Aushadhi Kendra near you in {name_en}? Get the complete 2026 list of PMBJP stores, contact numbers, and save up to 90% on generic medicines." />
+  <title>{name_en} Jan Aushadhi Kendra Near Me (2026) | 15,000+ Stores Data</title>
 
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/module2.css" />
