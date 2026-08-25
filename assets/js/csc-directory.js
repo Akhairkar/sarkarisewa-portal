@@ -1,6 +1,6 @@
 /* ==========================================================================
    csc-directory.js — Module 17: CSC Public Directory (browse/list page)
-   Reads the "csc_centres" Supabase table (see supabase/csc-schema.sql) via
+   Reads the "csc_centers" Supabase table (see supabase/csc-schema.sql) via
    the shared getSupabaseClient() helper from supabase-client.js.
    Shows unclaimed centres (basic info only) and verified centres (full
    card with a "Verified" badge). Pending/rejected rows are never fetched
@@ -73,11 +73,11 @@
     }
     listEl.innerHTML = centres
       .map((c) => {
-        const verified = c.status === "verified";
+        const verified = c.is_claimed === true || c.status === "verified";
         return `
       <a class="csc-card ${verified ? "csc-card--verified" : ""}" href="${cscStaticUrl(c)}">
         <div class="csc-card__head">
-          <h3 class="csc-card__name">${escapeHtml(c.name)}</h3>
+          <h3 class="csc-card__name">${escapeHtml(c.vle_name || c.name || "CSC Centre")}</h3>
           ${verified ? `<span class="csc-badge">${tk("csc_verified_badge", "Verified ✅")}</span>` : ""}
         </div>
         <p class="csc-card__address">${escapeHtml(c.address)}</p>
@@ -93,7 +93,7 @@
 
   function matchesSearch(centre, query) {
     if (!query) return true;
-    const haystack = [centre.name, centre.address, centre.district, centre.pincode]
+    const haystack = [centre.vle_name, centre.name, centre.address, centre.district, centre.pincode]
       .map(normalize)
       .join(" | ");
     // Split on spaces so "Nitin Dombivli" matches even if the words are
@@ -133,11 +133,11 @@
     }
     try {
       const { data, error } = await client
-        .from("csc_centres")
-        .select("id, name, address, state, district, pincode, status")
-        .in("status", ["unclaimed", "verified"])
-        .order("status", { ascending: false }) // verified first
-        .order("name", { ascending: true });
+        .from("csc_centers")
+        .select("id, vle_name, address, state, district, pincode, is_claimed")
+        /* no status filter needed, fetch all */
+        .order("is_claimed", { ascending: false }) // verified first
+        .order("vle_name", { ascending: true });
       if (error) throw error;
       allCentres = data || [];
       applyFilter();

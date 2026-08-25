@@ -33,13 +33,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!client) throw new Error("Could not initialize Supabase.");
 
       const { data, error } = await client
-        .from("csc_centres")
+        .from("csc_centers")
         .insert([
           {
-            name: centerName.value.trim(),
+            vle_name: centerName.value.trim(),
+              name: centerName.value.trim(),
             description: "CSC ID: " + cscId.value.trim(),
             pincode: pincode.value.trim(),
-            owner_phone: contact.value.trim(),
+            phone_number: contact.value.trim(),
+              owner_phone: contact.value.trim(),
             status: "pending_verification"
           }
         ]);

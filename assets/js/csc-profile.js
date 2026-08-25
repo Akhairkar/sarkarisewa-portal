@@ -1,6 +1,6 @@
 /* ==========================================================================
    csc-profile.js — Module 17: CSC individual profile page
-   Reads one row from the "csc_centres" Supabase table by id.
+   Reads one row from the "csc_centers" Supabase table by id.
    - Always shown: name, address, state, district.
    - Only if status === "verified": Google Maps embed (no API key needed —
      uses the public maps.google.com/maps?output=embed URL format),
@@ -194,7 +194,7 @@
     }
     try {
       const { data, error } = await client
-        .from("csc_centres")
+        .from("csc_centers")
         .select("id, name, address, state, district, pincode, lat, lng, whatsapp, phone, description, services_offered, service_mode, status")
         .eq("id", centreId)
         .in("status", ["unclaimed", "verified"])

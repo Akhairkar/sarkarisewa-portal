@@ -1,6 +1,6 @@
 /* ==========================================================================
    csc-add.js — Module 17: "Add your CSC centre" flow, for centres that
-   aren't listed at all yet. Inserts a new row directly into csc_centres
+   aren't listed at all yet. Inserts a new row directly into csc_centers
    with status = 'pending' (RLS only allows inserting as 'pending' — see
    supabase/csc-schema.sql). You approve it later via the Table Editor.
    ========================================================================== */
@@ -115,7 +115,7 @@
     statusEl.textContent = "";
 
     try {
-      const { error } = await client.from("csc_centres").insert({
+      const { error } = await client.from("csc_centers").insert({
         name: name.slice(0, 120),
         address: address.slice(0, 300),
         state,

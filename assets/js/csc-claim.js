@@ -3,7 +3,7 @@
    centre. Loads the centre's name for confirmation, then inserts the
    submitted form into the "claims" table (see supabase/csc-schema.sql).
    The centre itself is not modified here — you (admin) manually copy the
-   claim's details onto the csc_centres row and set it to 'verified' after
+   claim's details onto the csc_centers row and set it to 'verified' after
    reviewing it in the Supabase Table Editor.
    ========================================================================== */
 
@@ -74,17 +74,17 @@
     }
     try {
       const { data, error } = await client
-        .from("csc_centres")
-        .select("name, status")
+        .from("csc_centers")
+        .select("vle_name, is_claimed, name, status")
         .eq("id", centreId)
         .single();
       if (error || !data) throw error || new Error("Not found");
-      if (data.status === "verified") {
+      if (data.is_claimed === true || data.status === "verified") {
         nameEl.textContent = tk("csc_already_verified", "This centre is already verified.");
         formEl.hidden = true;
         return;
       }
-      nameEl.textContent = data.name;
+      nameEl.textContent = data.vle_name || data.name || "CSC Centre";
     } catch (err) {
       console.error("Failed to load centre:", err);
       nameEl.textContent = tk("csc_not_found", "This CSC centre could not be found.");

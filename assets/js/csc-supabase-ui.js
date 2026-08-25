@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const client = await getSupabaseClient();
         if (client) {
           const { data, error } = await client
-            .from("csc_centres") // Note: using csc_centres as per main locator.js
+            .from("csc_centers") // Note: using csc_centers as per main locator.js
             .select("*")
             .or(`district.ilike.%${searchLocation}%,address.ilike.%${searchLocation}%`)
             .limit(100); 
@@ -108,16 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!error && data) {
             supabaseData = data.map(row => ({
               id: row.id,
-              name: row.name || row.center_name || "CSC Centre",
+              name: row.vle_name || row.name || row.center_name || "CSC Centre",
               state: row.state || "Unknown",
               district: row.district || searchLocation,
               pincode: row.pincode,
-              address: row.address || `${row.name || row.center_name}, ${row.pincode}`,
-              contact: row.owner_phone || row.phone || row.contact || "N/A",
+              address: row.address || `${row.vle_name || "CSC"}, ${row.pincode}`,
+              contact: row.whatsapp_number || row.phone_number || row.owner_phone || row.phone || row.contact || "N/A",
               services: ["Aadhar Update", "PAN Card", "Income Certificate"],
               timings: "9:00 AM - 6:00 PM (Mon-Sat)",
               rating: 4.8,
-              is_verified: row.status === 'verified' || row.is_verified === true
+              is_verified: row.is_claimed === true || row.status === 'verified' || row.is_verified === true
             }));
           }
         }
