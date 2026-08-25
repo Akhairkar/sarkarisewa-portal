@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Submit to Supabase
-  form.addEventListener('submit', async (e) => {
+  btnSubmit.addEventListener('click', async (e) => {
       e.preventDefault();
       
       const consent = document.getElementById('consent-check');
