@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ${contactDisplay}
             <div style="display: flex; gap: 8px;">
               ${!center.is_verified && center.id ? `<a href="${ROOT}claim-your-csc.html?id=${center.id}" style="background: var(--color-surface); color: var(--color-primary); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--color-primary); text-decoration: none; font-size: 0.9rem; font-weight: 600;">Claim</a>` : ''}
-              <a href="${mapUrl}" target="_blank" style="background: var(--color-primary); color: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-size: 0.9rem; font-weight: 600;">Map</a>
+              <a href="${mapUrl}" target="_blank" style="background: var(--color-brand); color: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-size: 0.9rem; font-weight: 600;">Map</a>
             </div>
           </div>
         </div>
