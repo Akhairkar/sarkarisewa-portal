@@ -311,10 +311,26 @@ document.addEventListener('DOMContentLoaded', () => {
               status: 'pending'
           };
 
-          const { error } = await supabase.from('csc_claims').insert([payload]);
+          const SUPABASE_API_URL = "https://yjxsgkqspmhxndvhnjcd.supabase.co/rest/v1/csc_claims";
+          
+          const response = await fetch(SUPABASE_API_URL, {
+              method: 'POST',
+              headers: {
+                  'apikey': SUPABASE_ANON_KEY,
+                  'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                  'Content-Type': 'application/json',
+                  'Prefer': 'return=minimal'
+              },
+              body: JSON.stringify(payload)
+          });
 
-          if (error) {
-              throw error;
+          if (!response.ok) {
+              let errMsg = "Failed to submit application.";
+              try {
+                  const errData = await response.json();
+                  errMsg = errData.message || errMsg;
+              } catch(e) {}
+              throw new Error(errMsg);
           }
 
           // Show Success
