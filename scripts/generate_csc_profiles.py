@@ -22,9 +22,9 @@ def build_profile_html(claim):
     # Constructing the HTML exactly as requested
     
     services_html = ""
-    for s in claim.get("online_services", []):
+    for s in (claim.get("online_services") or []):
         services_html += f"<li>✅ {s}</li>"
-    for s in claim.get("offline_services", []):
+    for s in (claim.get("offline_services") or []):
         services_html += f"<li>✅ {s}</li>"
         
     contact_html = ""
