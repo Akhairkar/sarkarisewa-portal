@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!centers || centers.length === 0) {
       resultsContainer.innerHTML = `
         <div style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; background: var(--color-surface); border: 1px dashed var(--color-border); border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-          <div style="font-size: 3rem; margin-bottom: 16px;">dY"?</div>
+          <div style="font-size: 3rem; margin-bottom: 16px;">🔍</div>
           <h3 style="margin-top:0; font-size: 1.5rem; color: var(--color-text);">No verified CSC found.</h3>
           <p style="color: var(--color-text-muted); margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto;">
             We could not find matching centers. If you own a center here, you can claim it for free!
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     centers.forEach(center => {
       const isVerifiedHtml = center.is_verified 
-          ? `<span style="background: #ecfdf5; color: #059669; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; margin-left: 8px; border: 1px solid #a7f3d0;">o" Verified</span>` 
+          ? `<span style="background: #ecfdf5; color: #059669; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; margin-left: 8px; border: 1px solid #a7f3d0;">✅ Verified</span>` 
           : `<span style="background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 8px;">Unclaimed</span>`;
       
       const services = center.services || ["Aadhar Update", "PAN Card", "Income Certificate"];
@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const mapUrl = getDirectionsUrl(addressString);
       
       const contactDisplay = center.is_verified && center.contact !== "N/A"
-        ? `<a href="tel:${center.contact}" style="color: var(--color-primary); font-weight: bold; text-decoration: none;">dY"z ${center.contact}</a>`
-        : `<span style="color: var(--color-text-muted);">dY"z +91 9** *** **22 dY"'</span>`;
+        ? `<a href="tel:${center.contact}" style="color: var(--color-primary); font-weight: bold; text-decoration: none;">📞 ${center.contact}</a>`
+        : `<span style="color: var(--color-text-muted);">📞 +91 9** *** **22 🔒</span>`;
 
       html += `
         <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; flex-direction: column;">
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </h3>
           </div>
           <div style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 8px;">
-            <span style="font-size: 1.1rem; line-height: 1.2;">dY"?</span>
+            <span style="font-size: 1.1rem; line-height: 1.2;">🔍</span>
             <span>${center.address}</span>
           </div>
           
@@ -152,7 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function performGlobalSearch() {
       if (!searchInput) return;
-      const q = searchInput.value.trim();
+      const rawQ = searchInput.value.trim();
+      // Remove characters that break PostgREST .or() syntax (commas, parentheses, quotes)
+      const q = rawQ.replace(/[,()"]/g, ' ').replace(/\s+/g, ' ').trim();
       
       if (!q) {
           // Revert to initial page load data
@@ -165,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
       }
 
-      resultsContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--color-primary); font-weight: 600;">dY"? Searching 5 Lakh+ entries across India...</div>';
+      resultsContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--color-primary); font-weight: 600;">🔍 Searching 5 Lakh+ entries across India...</div>';
       
       try {
           const client = await getSupabaseClient();
