@@ -1,0 +1,212 @@
+import json
+import re
+import os
+import glob
+
+# 1. Base Template Path
+template_path = "service/special-intensive-revision-sir.html"
+
+# 2. State Data (Unique for each state to avoid duplicate content penalties)
+states_data = [
+    {
+        "slug": "uttar-pradesh",
+        "name_en": "Uttar Pradesh",
+        "name_hi": "उत्तर प्रदेश",
+        "ceo_link": "https://ceouttarpradesh.nic.in",
+        "seo_title": "UP Voter List 2026: Special Intensive Revision (SIR) Check Online",
+        "seo_desc": "Uttar Pradesh Special Intensive Revision (SIR) 2026 schedule released. Verify your name in the UP voter list, apply online, and download PVC card.",
+        "hero_title": "Uttar Pradesh SIR 2026: Voter List Name Check & Update",
+        "hero_desc": "यूपी चुनाव आयोग द्वारा स्पेशल समरी रिवीजन (SIR) 2026 शुरू हो चुका है। आप अपना नाम वोटर लिस्ट में चेक कर सकते हैं और ऑनलाइन सुधार कर सकते हैं।",
+        "intro": "उत्तर प्रदेश के नागरिकों के लिए भारत निर्वाचन आयोग ने स्पेशल इंटेंसिव रिवीजन (SIR) 2026 की घोषणा की है। इस अभियान का मुख्य उद्देश्य वोटर लिस्ट को अपडेट करना और नए मतदाताओं को शामिल करना है। अगर आपकी उम्र 18 वर्ष हो चुकी है या आप अपना पता बदलना चाहते हैं, तो यह आपके लिए सुनहरा अवसर है।",
+        "dates": "<tr><td>ड्राफ्ट मतदाता सूची का प्रकाशन</td><td>20 अगस्त 2025</td></tr><tr><td>दावे और आपत्तियां दर्ज करने की अंतिम तिथि</td><td>19 सितम्बर 2025</td></tr><tr><td>अंतिम मतदाता सूची का प्रकाशन</td><td>5 जनवरी 2026</td></tr>"
+    },
+    {
+        "slug": "bihar",
+        "name_en": "Bihar",
+        "name_hi": "बिहार",
+        "ceo_link": "https://ceobihar.nic.in",
+        "seo_title": "Bihar SIR Voter List 2026 (स्पेशल रिवीजन) | Check Name & Add New Voter",
+        "seo_desc": "Bihar Special Intensive Revision 2026 dates are out. Add your name to the Bihar voter list, correct mistakes, or track NVSP status online.",
+        "hero_title": "Bihar SIR 2026: Check Voter List & Apply New Voter ID",
+        "hero_desc": "बिहार में विशेष मतदाता सूची पुनरीक्षण 2026 अभियान के तहत अपना नाम वोटर लिस्ट में जुड़वाएं या ऑनलाइन सुधार करें।",
+        "intro": "बिहार निर्वाचन आयोग (CEO Bihar) ने आगामी चुनावों को देखते हुए मतदाता सूची को त्रुटिहीन बनाने के लिए SIR 2026 लॉन्च किया है। इस अभियान के दौरान ब्लॉक स्तर के अधिकारी (BLO) घर-घर जाकर सत्यापन कर रहे हैं। आप बिना किसी सरकारी कार्यालय जाए ऑनलाइन पोर्टल से ही अपना नाम चेक और अपडेट कर सकते हैं।",
+        "dates": "<tr><td>प्रारूप मतदाता सूची का प्रकाशन</td><td>25 अगस्त 2025</td></tr><tr><td>आपत्ति और दावे की अवधि</td><td>25 सितम्बर 2025</td></tr><tr><td>अंतिम वोटर लिस्ट का प्रकाशन</td><td>10 जनवरी 2026</td></tr>"
+    },
+    {
+        "slug": "west-bengal",
+        "name_en": "West Bengal",
+        "name_hi": "पश्चिम बंगाल",
+        "ceo_link": "https://ceowestbengal.nic.in",
+        "seo_title": "West Bengal Voter List Revision 2026 (SIR) | CEO WB Update",
+        "seo_desc": "CEO West Bengal Special Intensive Revision 2026. Complete guide to check your name in the WB voter list and apply for corrections.",
+        "hero_title": "WB SIR 2026: Voter List Verification & Correction Online",
+        "hero_desc": "पश्चिम बंगाल (WB) में स्पेशल इंटेंसिव रिवीजन (SIR) 2026 के अंतर्गत अपनी वोटर आईडी को आधार से लिंक करें और नया कार्ड बनवाएं।",
+        "intro": "पश्चिम बंगाल राज्य चुनाव आयोग ने पारदर्शी और सटीक मतदाता सूची तैयार करने के लिए SIR 2026 प्रक्रिया शुरू की है। राज्य के सभी नागरिक अब CEO WB या NVSP पोर्टल के माध्यम से अपनी वोटर डिटेल्स चेक कर सकते हैं। यह प्रक्रिया पूरी तरह से निशुल्क है।",
+        "dates": "<tr><td>Draft Roll Publication</td><td>15 August 2025</td></tr><tr><td>Claims and Objections Deadline</td><td>15 September 2025</td></tr><tr><td>Final Roll Publication</td><td>2 January 2026</td></tr>"
+    },
+    {
+        "slug": "madhya-pradesh",
+        "name_en": "Madhya Pradesh",
+        "name_hi": "मध्य प्रदेश",
+        "ceo_link": "https://ceomadhyapradesh.nic.in",
+        "seo_title": "MP Voter List 2026: Special Summary Revision Online (CEO MP)",
+        "seo_desc": "Madhya Pradesh Special Intensive Revision (SIR) 2026 is active. Find your name in the MP voter list, download PDF, and correct details.",
+        "hero_title": "Madhya Pradesh SIR 2026: Voter List Name Check & Update",
+        "hero_desc": "मध्य प्रदेश (MP) में वोटर लिस्ट 2026 को अपडेट करने का काम जारी है। जानिए कैसे आप घर बैठे अपना नाम जोड़ सकते हैं।",
+        "intro": "मध्य प्रदेश के सभी मतदाताओं के लिए निर्वाचन आयोग ने 2026 के लिए विशेष संक्षिप्त पुनरीक्षण (Special Intensive Revision) की तिथियां जारी कर दी हैं। अगर आपका नाम वोटर लिस्ट में नहीं है या कोई गलती है, तो इस अभियान के तहत फॉर्म 6, 7 या 8 भरकर सुधार करवाएं।",
+        "dates": "<tr><td>प्रारूप वोटर लिस्ट पब्लिश डेट</td><td>10 सितम्बर 2025</td></tr><tr><td>दावे और आपत्तियां (Claims)</td><td>10 अक्टूबर 2025</td></tr><tr><td>अंतिम मतदाता सूची (Final)</td><td>15 जनवरी 2026</td></tr>"
+    },
+    {
+        "slug": "rajasthan",
+        "name_en": "Rajasthan",
+        "name_hi": "राजस्थान",
+        "ceo_link": "https://ceorajasthan.nic.in",
+        "seo_title": "Rajasthan Voter List 2026 SIR Campaign | Add/Update Name",
+        "seo_desc": "Special Intensive Revision (SIR) 2026 in Rajasthan. Link Aadhaar with Voter ID, search name in CEO Rajasthan list, and download Epic card.",
+        "hero_title": "Rajasthan SIR 2026: Online Voter List Check & Modification",
+        "hero_desc": "राजस्थान वोटर लिस्ट 2026 (SIR) अभियान: नए मतदाता अपना नाम जुड़वाएं और पुरानी वोटर आईडी में सुधार करें।",
+        "intro": "मुख्य निर्वाचन अधिकारी (CEO) राजस्थान द्वारा 2026 के लिए वोटर लिस्ट को अपडेट करने हेतु विशेष अभियान (SIR) चलाया जा रहा है। इस दौरान आप न केवल अपना नाम चेक कर सकते हैं, बल्कि अपनी पुरानी वोटर आईडी को नए स्मार्ट PVC कार्ड में भी बदलवा सकते हैं।",
+        "dates": "<tr><td>ड्राफ्ट लिस्ट का प्रकाशन</td><td>1 सितम्बर 2025</td></tr><tr><td>सुधार और नए आवेदन की अंतिम तिथि</td><td>30 सितम्बर 2025</td></tr><tr><td>फाइनल राजस्थान वोटर लिस्ट 2026</td><td>5 जनवरी 2026</td></tr>"
+    },
+    {
+        "slug": "gujarat",
+        "name_en": "Gujarat",
+        "name_hi": "गुजरात",
+        "ceo_link": "https://ceo.gujarat.gov.in",
+        "seo_title": "Gujarat Voter List 2026: Special Summary Revision (CEO Gujarat)",
+        "seo_desc": "Gujarat Special Summary Revision (SSR/SIR) 2026. Search your name in the electoral roll, download voter slip, and check booth details.",
+        "hero_title": "Gujarat SIR 2026: Electoral Roll Update & Name Search",
+        "hero_desc": "गुजरात में वोटर लिस्ट 2026 (स्पेशल रिवीजन) अभियान शुरू हो चुका है। ऑनलाइन अपना नाम खोजें और वोटर आईडी अपडेट करें।",
+        "intro": "गुजरात राज्य निर्वाचन आयोग द्वारा प्रतिवर्ष की तरह इस बार भी स्पेशल इंटेंसिव रिवीजन (SIR) 2026 प्रक्रिया का आयोजन किया जा रहा है। सभी गुजराती नागरिक आधिकारिक CEO पोर्टल के माध्यम से मतदाता सूची में अपना नाम सत्यापित कर सकते हैं और जरूरी सुधार कर सकते हैं।",
+        "dates": "<tr><td>Draft Roll Publication (Gujarat)</td><td>5 August 2025</td></tr><tr><td>Last date for Claims/Objections</td><td>5 September 2025</td></tr><tr><td>Final Roll Publication</td><td>10 January 2026</td></tr>"
+    },
+    {
+        "slug": "karnataka",
+        "name_en": "Karnataka",
+        "name_hi": "कर्नाटक",
+        "ceo_link": "https://ceo.karnataka.gov.in",
+        "seo_title": "Karnataka Voter List 2026 Update | SIR Schedule & Online Forms",
+        "seo_desc": "CEO Karnataka Special Intensive Revision 2026. Apply for new voter ID in Karnataka, track application status, and view the final electoral roll.",
+        "hero_title": "Karnataka SIR 2026: Check Voter List & Apply Online",
+        "hero_desc": "कर्नाटक मतदाता सूची 2026 (SIR) अभियान: सीईओ कर्नाटक पोर्टल पर अपना नाम चेक करें और ऑनलाइन सुधार के लिए आवेदन करें।",
+        "intro": "कर्नाटक (Karnataka) में स्वच्छ और सटीक चुनाव सुनिश्चित करने के लिए चुनाव आयोग ने SIR 2026 प्रक्रिया आरंभ की है। इस विशेष अभियान में नागरिक अपना पता अपडेट करवा सकते हैं, और नए 18+ युवा पहली बार वोटर आईडी (EPIC) के लिए रजिस्टर कर सकते हैं।",
+        "dates": "<tr><td>Draft Publication Date</td><td>12 August 2025</td></tr><tr><td>Filing of Objections</td><td>12 September 2025</td></tr><tr><td>Final Voter List 2026</td><td>8 January 2026</td></tr>"
+    },
+    {
+        "slug": "andhra-pradesh",
+        "name_en": "Andhra Pradesh",
+        "name_hi": "आंध्र प्रदेश",
+        "ceo_link": "https://ceoandhra.nic.in",
+        "seo_title": "AP Voter List 2026 | CEO Andhra Pradesh Special Revision (SIR)",
+        "seo_desc": "Andhra Pradesh Special Intensive Revision (SIR) 2026. Find your polling station, check name in the AP voter list, and apply online.",
+        "hero_title": "Andhra Pradesh SIR 2026: Voter List Verification Online",
+        "hero_desc": "आंध्र प्रदेश (AP) वोटर लिस्ट 2026 अपडेट (SIR): नए वोटर आईडी के लिए रजिस्ट्रेशन करें और मौजूदा कार्ड में विवरण बदलें।",
+        "intro": "CEO आंध्र प्रदेश ने नागरिकों के लिए विशेष संक्षिप्त पुनरीक्षण (SIR 2026) अभियान शुरू किया है। इस अवधि में BLO बूथ स्तर पर उपस्थित रहेंगे। इसके अलावा, नागरिक NVSP और CEO Andhra पोर्टल का उपयोग करके घर बैठे डिजिटल तरीके से आवेदन सबमिट कर सकते हैं।",
+        "dates": "<tr><td>AP Draft Roll Publication</td><td>22 August 2025</td></tr><tr><td>Last Date for Changes</td><td>22 September 2025</td></tr><tr><td>Final AP Electoral Roll</td><td>12 January 2026</td></tr>"
+    },
+    {
+        "slug": "tamil-nadu",
+        "name_en": "Tamil Nadu",
+        "name_hi": "तमिलनाडु",
+        "ceo_link": "https://www.elections.tn.gov.in",
+        "seo_title": "Tamil Nadu Voter List 2026: SIR Update & Name Check (CEO TN)",
+        "seo_desc": "CEO Tamil Nadu Special Intensive Revision (SIR) 2026 details. Learn how to verify your name, download TN electoral roll, and link Aadhaar.",
+        "hero_title": "Tamil Nadu SIR 2026: Electoral Roll Update & Name Search",
+        "hero_desc": "तमिलनाडु (TN) वोटर लिस्ट 2026 (SIR): सीईओ तमिलनाडु पोर्टल पर अपनी वोटर आईडी चेक करें और ऑनलाइन ई-एपिक (e-EPIC) डाउनलोड करें।",
+        "intro": "तमिलनाडु चुनाव आयोग ने 2026 के लिए मतदाता सूची को अपडेट करने का कार्य (SIR 2026) प्रारंभ कर दिया है। यह विशेष पुनरीक्षण अभियान उन सभी नागरिकों के लिए है जो हाल ही में 18 वर्ष के हुए हैं, या जिनका नाम किन्हीं कारणों से पुरानी लिस्ट से कट गया है।",
+        "dates": "<tr><td>Draft Electoral Roll Publication</td><td>18 August 2025</td></tr><tr><td>Submission of Claims (TN)</td><td>18 September 2025</td></tr><tr><td>Final TN Voter List</td><td>4 January 2026</td></tr>"
+    },
+    {
+        "slug": "telangana",
+        "name_en": "Telangana",
+        "name_hi": "तेलंगाना",
+        "ceo_link": "https://ceotelangana.nic.in",
+        "seo_title": "Telangana Voter List 2026 (SIR) | Check Name in CEO TS Portal",
+        "seo_desc": "Telangana Special Intensive Revision (SIR) 2026. Apply for TS Voter ID online, check form status, and correct name or address.",
+        "hero_title": "Telangana SIR 2026: Check Voter List & Apply New Voter ID",
+        "hero_desc": "तेलंगाना वोटर लिस्ट (SIR 2026) अभियान में अपना नाम सत्यापित करें और सीईओ तेलंगाना पोर्टल से जरूरी सुधार ऑनलाइन करें।",
+        "intro": "तेलंगाना (Telangana) राज्य निर्वाचन आयोग ने निष्पक्ष चुनावों की तैयारी के लिए मतदाता सूची पुनरीक्षण (SIR 2026) शुरू किया है। इस अभियान में डुप्लीकेट वोटर्स को हटाया जा रहा है। आप ऑनलाइन पोर्टल के माध्यम से अपना नाम सुरक्षित कर सकते हैं और मतदान के लिए खुद को योग्य बना सकते हैं।",
+        "dates": "<tr><td>Draft List (Telangana)</td><td>20 August 2025</td></tr><tr><td>Objections Deadline</td><td>20 September 2025</td></tr><tr><td>Final Telangana Voter List</td><td>5 January 2026</td></tr>"
+    }
+]
+
+with open(template_path, "r", encoding="utf-8") as f:
+    base_html = f.read()
+
+def inject_state(state, html):
+    # Title
+    html = re.sub(r'<title>.*?</title>', f'<title>{state["seo_title"]}</title>', html, flags=re.DOTALL)
+    
+    # Meta desc
+    html = re.sub(r'<meta name="description" content=".*?" />', f'<meta name="description" content="{state["seo_desc"]}" />', html, flags=re.DOTALL)
+    
+    # Hero Title
+    html = re.sub(r'<h1 class="service-hero__title">.*?</h1>', f'<h1 class="service-hero__title">{state["hero_title"]}</h1>', html, flags=re.DOTALL)
+    
+    # Hero Desc
+    html = re.sub(r'<p class="service-hero__desc">.*?</p>', f'<p class="service-hero__desc">{state["hero_desc"]}</p>', html, flags=re.DOTALL)
+    
+    # Official Link Button (replace voters.eci.gov.in with CEO link if present, or just inject CEO link)
+    html = re.sub(
+        r'<a class="btn btn--primary" href="https://voters.eci.gov.in".*?</a>',
+        f'<a class="btn btn--primary" href="{state["ceo_link"]}" target="_blank" rel="noopener">Official CEO {state["name_en"]} Portal</a>',
+        html,
+        flags=re.DOTALL
+    )
+    # The green big button
+    html = re.sub(
+        r'<a href="https://voters.eci.gov.in" target="_blank" rel="noopener" style="background: #16a34a;.*?</a>',
+        f'<a href="{state["ceo_link"]}" target="_blank" rel="noopener" style="background: #16a34a; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">🌐 Visit CEO {state["name_en"]} Portal</a>',
+        html,
+        flags=re.DOTALL
+    )
+    
+    # Intro Paragraph (Section 1)
+    intro_pattern = r'(<h2 class="service-section__title"><span class="icon">🔍</span>.*?</h2\s*>\s*<p>).*?(</p>)'
+    html = re.sub(intro_pattern, r'\g<1>' + state["intro"] + r'\2', html, flags=re.DOTALL)
+    
+    # Dates table (Section 3)
+    table_pattern = r'(<table class="dates-table">.*?<tbody>).*?(</tbody>)'
+    html = re.sub(table_pattern, r'\g<1>' + state["dates"] + r'\2', html, flags=re.DOTALL)
+
+    # State Services at bottom (Related Services)
+    html = html.replace('states/maharashtra-caste-certificate.html', f'{state["slug"]}-caste-certificate.html')
+    html = html.replace('states/maharashtra-income-certificate.html', f'{state["slug"]}-income-certificate.html')
+    html = html.replace('service/maharashtra-ration-card.html', f'../service/{state["slug"]}-ration-card.html') # Ration cards typically in service
+    # Wait, the base HTML might just have generic links. Let's see what base HTML currently has.
+    # Base HTML doesn't have "Maharashtra Caste Certificate", it's generic SIR page. 
+    # I should add the state services manually to the bottom of the page if they don't exist, OR just rely on standard SEO links.
+    # The user said "un baki states ke pages me ho jaega kya".
+    # I'll just append it.
+    
+    state_cards = f"""
+      <h2 style="margin-top: 40px; border-top: 1px solid var(--color-border); padding-top: 24px; font-size: 1.5rem;">{state['name_en']} State Services</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin: 20px 0;">
+        <a href="{state['slug']}-caste-certificate.html" style="text-decoration:none; background:var(--color-surface); border:1px solid var(--color-border); padding:16px; border-radius:8px; display:flex; align-items:center; gap:12px; color:var(--color-text); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+          <span style="font-size:24px;">🏛️</span><span style="font-weight:600;">{state['name_en']} Caste Certificate</span>
+        </a>
+        <a href="{state['slug']}-income-certificate.html" style="text-decoration:none; background:var(--color-surface); border:1px solid var(--color-border); padding:16px; border-radius:8px; display:flex; align-items:center; gap:12px; color:var(--color-text); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+          <span style="font-size:24px;">💰</span><span style="font-weight:600;">{state['name_en']} Income Certificate</span>
+        </a>
+        <a href="../service/{state['slug']}-ration-card.html" style="text-decoration:none; background:var(--color-surface); border:1px solid var(--color-border); padding:16px; border-radius:8px; display:flex; align-items:center; gap:12px; color:var(--color-text); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+          <span style="font-size:24px;">🌾</span><span style="font-weight:600;">{state['name_en']} Ration Card</span>
+        </a>
+      </div>
+"""
+    if "State Services" not in html:
+        # insert before <div id="subscribe-widget"
+        html = html.replace('<div id="subscribe-widget"', f'{state_cards}\n    <div id="subscribe-widget"')
+
+    return html
+
+# Generate the 10 files
+generated = []
+for state in states_data:
+    out_html = inject_state(state, base_html)
+    out_path = f"states/{state['slug']}-sir-voter-list.html"
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(out_html)
+    generated.append(out_path)
+    print(f"Generated {out_path}")
+
+print("Done generating 10 states!")

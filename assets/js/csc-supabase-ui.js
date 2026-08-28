@@ -116,13 +116,14 @@ document.addEventListener('DOMContentLoaded', () => {
           let query = client.from("csc_centers").select("*");
           
           // Fix for "Nagpur in UP" issue: Filter strictly by State if we are on a state/district page!
+          // Using eq-style filters on indexed columns only (ilike on address = full-table-scan = timeout)
           if (stateFromUrl) {
               query = query.ilike('state', `%${stateFromUrl}%`);
           }
           
-          // If we have a specific search location (like district name)
+          // If we have a specific district/city location, use district only (no address ilike - causes 500 timeout)
           if (searchLocation && searchLocation !== stateFromUrl.toLowerCase()) {
-              query = query.or(`district.ilike.%${searchLocation}%,address.ilike.%${searchLocation}%`);
+              query = query.ilike('district', `%${searchLocation}%`);
           }
           
           const { data, error } = await query.limit(100);
@@ -173,18 +174,35 @@ document.addEventListener('DOMContentLoaded', () => {
           const client = await getSupabaseClient();
           if (!client) throw new Error("Supabase client not loaded");
 
-          const { data, error } = await client
-              .from("csc_centers")
-              .select("*")
-              .or(`pincode.ilike.%${q}%,vle_name.ilike.%${q}%,address.ilike.%${q}%,district.ilike.%${q}%`)
-              .limit(100);
+          let query = client.from("csc_centers").select("*");
           
-          if (error) throw error;
+          if (/^\d+$/.test(q)) {
+              // Numbers only = Pincode search
+              if (q.length === 6) {
+                  // Exact 6-digit pincode: use eq (indexed, instant)
+                  query = query.eq('pincode', q);
+              } else {
+                  // Partial pincode: prefix match (still fast, uses index scan)
+                  query = query.ilike('pincode', `${q}%`);
+              }
+          } else {
+              // Text search: ONLY search vle_name (indexed text column).
+              // DO NOT add address/district ilike here — they cause full-table-scan timeouts on 5L+ rows.
+              query = query.ilike('vle_name', `%${q}%`);
+          }
+          
+          const { data, error } = await query.limit(100);
+          
+          if (error) {
+              console.error("Supabase search error:", error);
+              resultsContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--color-text-muted);">No results found. Try a different pincode or name.</div>';
+              return;
+          }
           const mapped = (data || []).map(mapSupabaseRow);
           renderCenters(mapped);
       } catch (err) {
           console.error("Global search failed:", err);
-          resultsContainer.innerHTML = '<div style="color:red; text-align:center; padding: 20px;">Search failed. Please try again.</div>';
+          resultsContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--color-text-muted);">Could not reach the database. Please check your connection and try again.</div>';
       }
   }
 
