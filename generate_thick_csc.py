@@ -1,4 +1,5 @@
 import os
+import re
 import glob
 import csv
 import collections
@@ -43,10 +44,21 @@ def clean_old_pages():
             if os.path.isdir(item_path):
                 shutil.rmtree(item_path)
 
+def normalize_district_key(name):
+    """Collapse formatting-only variants of the same district name into one
+    bucket, e.g. 'Kaimur (Bhabua)' / 'Kaimur Bhabua' / 'Kaimur(bhabua)' all
+    become the same key. Deliberately conservative: only strips
+    spaces/hyphens/periods/parentheses, never merges genuinely different
+    words (so 'Ashok Nagar' and 'Nagar' stay separate)."""
+    return re.sub(r'[^a-z0-9]', '', name.lower())
+
+
 def load_data():
     print("Loading 5 Lakh+ CSC Data from CSVs (this may take a minute)...")
-    data = collections.defaultdict(lambda: collections.defaultdict(list))
+    # data[state][norm_key] = {"display": <best display name>, "centers": [...]}
+    data = collections.defaultdict(lambda: collections.defaultdict(lambda: {"display": None, "centers": []}))
     total_processed = 0
+    skipped_numeric = 0
     csv_files = glob.glob(os.path.join(CSV_DIR, "*.csv"))
     
     for file in csv_files:
@@ -56,12 +68,28 @@ def load_data():
                 state_raw = row.get("state", "").strip().upper()
                 dist_raw = capwords(row.get("district", "").strip())
                 if not state_raw or not dist_raw: continue
+
+                # Skip rows where the "district" is just a number (pincode/ID
+                # leaked into the wrong column upstream) instead of a real
+                # district name - these produced junk pages like 190.html.
+                if dist_raw.replace(" ", "").isdigit():
+                    skipped_numeric += 1
+                    continue
                 
                 state_clean = STATE_MAP.get(state_raw, capwords(state_raw))
+                dist_key = normalize_district_key(dist_raw)
+                bucket = data[state_clean][dist_key]
+                # Prefer the display name WITHOUT a parenthetical suffix when
+                # we see multiple spellings (e.g. show "Kaimur Bhabua" rather
+                # than "Kaimur(bhabua)"), else keep the first one seen.
+                if bucket["display"] is None or (
+                    "(" in bucket["display"] and "(" not in dist_raw
+                ):
+                    bucket["display"] = dist_raw
                 
                 # Cap at MAX to prevent 10MB HTML pages
-                if len(data[state_clean][dist_raw]) < MAX_CENTERS_PER_PAGE:
-                    data[state_clean][dist_raw].append({
+                if len(bucket["centers"]) < MAX_CENTERS_PER_PAGE:
+                    bucket["centers"].append({
                         "name": row.get("vle_name", "CSC Center").strip() or "CSC Center",
                         "address": row.get("address", "").strip(),
                         "pin": row.get("pincode", "").strip(),
@@ -69,9 +97,16 @@ def load_data():
                         "lng": row.get("longitude", "").strip()
                     })
                 total_processed += 1
-                
-    print(f"Processed {total_processed} rows.")
-    return data
+
+    # Flatten back to {state: {display_name: [centers]}} so the rest of the
+    # script (which was written against that shape) doesn't need changing.
+    flat = collections.defaultdict(dict)
+    for state, buckets in data.items():
+        for dist_key, bucket in buckets.items():
+            flat[state][bucket["display"]] = bucket["centers"]
+
+    print(f"Processed {total_processed} rows. Skipped {skipped_numeric} rows with a numeric district name.")
+    return flat
 
 def build_district_html(state_name, state_slug, dist_name, dist_slug, centers):
     count = len(centers)
@@ -464,7 +499,7 @@ def main():
             
         # State Index Page
         dist_links.sort(key=lambda x: x["name"])
-        links_html = "".join([f'<a href="{dl["slug"]}.html" style="display:block;padding:12px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;text-decoration:none;color:var(--color-primary);font-weight:500;">{dl["name"]} ({dl["count"]}+ stores) &rarr;</a>' for dl in dist_links])
+        links_html = "".join([f'<a href="{dl["slug"]}.html" style="display:block;padding:12px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;text-decoration:none;color:var(--color-primary);font-weight:500;">{dl["name"]} ({dl["count"]}{"+" if dl["count"] == MAX_CENTERS_PER_PAGE else ""} stores) &rarr;</a>' for dl in dist_links])
         
         index_html = f"""<!DOCTYPE html>
 <html lang="en">
