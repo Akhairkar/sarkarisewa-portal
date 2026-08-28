@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    resultsContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--color-text-muted); grid-column: 1 / -1;">Searching live across 1.3 Million Centers...</div>';
+    resultsContainer.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--color-text-muted); grid-column: 1 / -1;">🔍 Searching live across 5 Lakh+ Centers...</div>';
     if(resultsCount) resultsCount.innerText = 'Searching...';
 
     try {
@@ -129,7 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
       let query = client.from("csc_centers").select("*");
 
       if (pincodeFilter) {
-        query = query.eq("pincode", pincodeFilter);
+        if (pincodeFilter.length === 6) {
+          query = query.eq("pincode", pincodeFilter);
+        } else {
+          query = query.ilike("pincode", `${pincodeFilter}%`);
+        }
       } else if (!isInitial) {
         if (stateFilter) {
           query = query.ilike("state", `%${stateFilter}%`);
