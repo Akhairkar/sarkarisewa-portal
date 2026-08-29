@@ -134,8 +134,16 @@ RELEVANT_KEYWORDS = [
     "योजना", "छात्रवृत्ति", "किसान", "पेंशन", "राशन", "आधार", "आयुष्मान", "भर्ती"
 ]
 
+EXCLUDE_KEYWORDS = [
+    "winner", "winners", "quiz", "essay", "competition", "contest", "hackathon",
+    "celebration", "pfc", "bhoomi pujan", "flag off", "subhash chandra", "haircut",
+    "विजेता", "प्रतियोगिता", "क्विज"
+]
+
 def is_relevant_notification(title, summary):
     combined = f"{title} {summary}".lower()
+    if any(ex in combined for ex in EXCLUDE_KEYWORDS):
+        return False
     return any(kw in combined for kw in RELEVANT_KEYWORDS)
 
 HEADERS = {
