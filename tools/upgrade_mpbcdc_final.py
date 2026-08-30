@@ -1,0 +1,1326 @@
+# -*- coding: utf-8 -*-
+import os
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SERVICE = os.path.join(ROOT, 'service')
+
+def get_header(rel):
+    return f'''<script>window.SS_ROOT = "{rel}";</script>
+<div id="site-header"></div>'''
+
+def get_footer(rel):
+    return f'''<div id="site-footer"></div>
+<script src="{rel}assets/js/main.js"></script>
+<script src="{rel}assets/js/consent.js"></script>
+<script src="{rel}assets/js/i18n-helper.js"></script>
+<script src="{rel}assets/js/mpbcdc-calculator.js"></script>
+<script src="{rel}assets/js/supabase-client.js"></script>
+<script src="{rel}assets/js/services-data.js"></script>
+<script src="{rel}assets/js/share-widget.js"></script>
+<script src="{rel}assets/js/service-template.js"></script>'''
+
+# 1. DIRECT LOAN
+def build_direct_loan(is_service=True):
+    rel = "../" if is_service else ""
+    canonical = f"https://sarkarisewaindia.com/{'service/' if is_service else ''}mpbcdc-direct-loan-yojana.html"
+    hub_link = f"{rel}service/mpbcdc-yojana.html" if is_service else "mpbcdc-yojana.html"
+    sub_link = f"{rel}service/mpbcdc-subsidy-yojana.html" if is_service else "mpbcdc-subsidy-yojana.html"
+    sc_link = f"{rel}service/mpbcdc-seed-capital-yojana.html" if is_service else "mpbcdc-seed-capital-yojana.html"
+
+    return f'''<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{rel}assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{rel}assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{rel}assets/img/apple-touch-icon.png">
+  <link rel="icon" href="{rel}favicon.ico">
+  <link rel="manifest" href="{rel}manifest.json">
+  <link rel="canonical" href="{canonical}" />
+  <meta name="description" content="MPBCDC Direct Loan Yojana 2026: SC/नव-बौद्ध समुदाय के लिए ₹1 लाख तक 50% मुफ़्त सरकारी सब्सिडी (₹50,000) + 4% ब्याज पर डायरेक्ट लोन। Free EMI Calculator, Documents, Project Report व MahOnline आवेदन गाइड।" />
+  <meta property="og:title" content="MPBCDC Direct Loan Yojana 2026: 50% सब्सिडी + 4% लोन | SarkariSewa" />
+  <meta property="og:description" content="MPBCDC Direct Loan Yojana 2026: SC/नव-बौद्ध समुदाय के लिए ₹1 लाख तक 50% मुफ़्त सरकारी सब्सिडी (₹50,000) + 4% ब्याज पर डायरेक्ट लोन। Free EMI Calculator & Apply Guide." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="{canonical}" />
+  <meta property="og:image" content="{rel}assets/img/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MPBCDC Direct Loan Yojana 2026 — ₹1 लाख तक 50% सब्सिडी + 4% लोन" />
+  <meta name="twitter:description" content="MPBCDC Direct Loan Yojana me ₹1,00,000 tak ke project par 50% subsidy aur 45% loan sirf 4% interest par milta hai. Free calculator & complete guide." />
+  <title>MPBCDC Direct Loan Yojana 2026: 50% Subsidy, 4% Interest Loan & Apply Online</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{rel}assets/css/style.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module2.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module15.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module16.css" />
+  <link rel="stylesheet" href="{rel}assets/css/share-widget.css" />
+
+  <script type="application/ld+json" id="service-schema">
+  {{
+    "@context": "https://schema.org",
+    "@graph": [
+      {{
+        "@type": "GovernmentService",
+        "name": "MPBCDC Direct Loan Yojana (थेट कर्ज योजना)",
+        "alternateName": "महात्मा फुले मागासवर्ग विकास महामंडळ थेट कर्ज योजना",
+        "description": "Subsidized direct business loan up to ₹1,00,000 with 50% government subsidy grant (₹50,000) and 45% direct loan at 4% interest rate for SC and Neo-Buddhist entrepreneurs in Maharashtra without bank guarantee.",
+        "url": "{canonical}",
+        "serviceType": "Government Subsidized Self-Employment Loan",
+        "provider": {{
+          "@type": "GovernmentOrganization",
+          "name": "Mahatma Phule Backward Class Development Corporation (MPBCDC), Government of Maharashtra",
+          "sameAs": ["https://mpbcdc.maharashtra.gov.in", "https://mahadisha.in"]
+        }},
+        "areaServed": {{
+          "@type": "AdministrativeArea",
+          "name": "Maharashtra, India"
+        }}
+      }},
+      {{
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://sarkarisewaindia.com/index.html"
+          }},
+          {{
+            "@type": "ListItem",
+            "position": 2,
+            "name": "MPBCDC Schemes",
+            "item": "https://sarkarisewaindia.com/category/mpbcdc-schemes.html"
+          }},
+          {{
+            "@type": "ListItem",
+            "position": 3,
+            "name": "MPBCDC Direct Loan Yojana",
+            "item": "{canonical}"
+          }}
+        ]
+      }},
+      {{
+        "@type": "FAQPage",
+        "mainEntity": [
+          {{
+            "@type": "Question",
+            "name": "MPBCDC Direct Loan Yojana me kitna loan aur subsidy milti hai?",
+            "acceptedAnswer": {{
+              "@type": "Answer",
+              "text": "MPBCDC Direct Loan Yojana (थेट कर्ज योजना) me maximum project cost ₹1,00,000 (एक लाख रुपये) tak hoti hai. Isme 50% (₹50,000) muft government grant (subsidy) milti hai jise wapas nahi karna hota, 45% (₹45,000) seedha Mahamandal dwara sirf 4% simple interest par direct loan milta hai, aur sirf 5% (₹5,000) aavedak ka apna anshdan hota hai."
+            }}
+          }},
+          {{
+            "@type": "Question",
+            "name": "Kya Direct Loan lene ke liye kisi bank ke chakkar kaatne padte hain?",
+            "acceptedAnswer": {{
+              "@type": "Answer",
+              "text": "Nahi! Direct Loan Scheme ki sabse badi khasiyat yahi hai ki isme loan aur subsidy seedha Mahatma Phule Corporation (MPBCDC) dwara sanction aur disburse kiya jata hai. Isme kisi commercial bank ki NOC ya approval ki zaroorat nahi hoti."
+            }}
+          }},
+          {{
+            "@type": "Question",
+            "name": "Direct Loan 4% Byaj par Monthly EMI kitni banti hai?",
+            "acceptedAnswer": {{
+              "@type": "Answer",
+              "text": "₹45,000 ke loan par 36 mahine (3 saal) ke liye lagbhag ₹1,330/mahina aur 60 mahine (5 saal) ke liye lagbhag ₹827/mahina ki aasan EMI banti hai."
+            }}
+          }},
+          {{
+            "@type": "Question",
+            "name": "MPBCDC Direct Loan ke liye kaun-kaun se documents zaroori hain?",
+            "acceptedAnswer": {{
+              "@type": "Answer",
+              "text": "Aadhaar Card, PAN Card, Maharashtra Domicile Certificate, SC/Neo-Buddhist Caste Certificate, Tahasildar Income Certificate (parivarik aay ₹2.5 lakh se kam), Project Quotation / Business Plan, aur 2 Guarantors (Jamin) ke documents zaroori hain."
+            }}
+          }}
+        ]
+      }}
+    ]
+  }}
+  </script>
+
+  <style>
+    .mpbcdc-calc-card {{
+      background: var(--color-surface);
+      border: 2px solid var(--color-primary);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 32px 0;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }}
+    .stat-badge-box {{
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      transition: transform 0.2s;
+    }}
+    .stat-badge-box:hover {{
+      transform: translateY(-2px);
+    }}
+    .prob-box {{
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }}
+  </style>
+</head>
+<body data-slug="mpbcdc-direct-loan-yojana">
+  {get_header(rel)}
+
+  <main class="container" style="padding-top: 20px; padding-bottom: 60px;">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+      <a href="{rel}index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="{rel}category/mpbcdc-schemes.html">💸 MPBCDC योजनाएं</a>
+      <span class="sep">/</span>
+      <span class="current">Direct Loan Yojana</span>
+    </nav>
+
+    <!-- HERO HEADER -->
+    <header class="service-hero" id="service-hero" style="text-align: left; padding: 24px 0 10px 0;">
+      <span class="service-hero__badge" style="background: #146B3A; color: #fff; padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">
+        💸 MPBCDC DIRECT LOAN SCHEME (थेट कर्ज योजना 2026)
+      </span>
+      <h1 style="font-size: 2.2rem; line-height: 1.3; color: var(--color-primary); margin: 14px 0 12px 0; font-weight: 800;">
+        <span data-lang-show="en">MPBCDC Direct Loan Yojana 2026: 50% Subsidy, 4% Interest Loan & Online Apply</span>
+        <span data-lang-show="hi">MPBCDC थेट कर्ज योजना 2026: ₹1 लाख तक 50% मुफ़्त सब्सिडी, 4% लोन व ऑनलाइन आवेदन</span>
+      </h1>
+      <p style="font-size: 1.08rem; line-height: 1.7; color: var(--color-text-muted); max-width: 950px; margin: 0 0 20px 0;">
+        <span data-lang-show="en">Mahatma Phule Backward Class Development Corporation (MPBCDC) flagship self-employment loan scheme in Maharashtra. Get up to <strong>₹1,00,000 project funding</strong> with <strong>50% Non-Refundable Govt Subsidy (₹50,000 Free Grant)</strong>, <strong>45% Direct Corporation Loan at just 4% Annual Simple Interest</strong>, and 5% own contribution for SC and Neo-Buddhist entrepreneurs without bank dependency.</span>
+        <span data-lang-show="hi">महाराष्ट्र शासन के महात्मा फुले मागासवर्गीय विकास महामंडळ (MPBCDC) की सबसे लोकप्रिय थेट कर्ज योजना। ₹1,00,000 तक के छोटे व्यवसाय पर <strong>50% सरकारी अनुदान (मुफ़्त ₹50,000 सब्सिडी)</strong>, <strong>45% डायरेक्ट लोन मात्र 4% वार्षिक ब्याज पर</strong>, और सिर्फ 5% अपना अंशदान। बिना किसी बैंक झंझट के सीधा महामंडळ से लोन और सब्सिडी का लाभ लें।</span>
+      </p>
+
+      <!-- 1-CLICK ACTION BUTTONS -->
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;">
+        <a href="https://mpbcdc.maharashtra.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="font-weight: 700; padding: 12px 20px; font-size: 0.95rem;">
+          📝 <span data-lang-show="en">Apply on MahOnline Portal ↗</span><span data-lang-show="hi">MahOnline पोर्टल पर ऑनलाइन आवेदन करें ↗</span>
+        </a>
+        <a href="{rel}project-report/index.html" class="btn" style="background: #146B3A; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          📄 <span data-lang-show="en">Generate Free Project Report ↗</span><span data-lang-show="hi">फ्री प्रोजेक्ट रिपोर्ट जनरेट करें ↗</span>
+        </a>
+        <a href="#mpbcdcCalculatorSection" class="btn" style="background: #2563eb; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          🧮 <span data-lang-show="en">Calculate 4% EMI & Subsidy</span><span data-lang-show="hi">4% EMI व सब्सिडी कैलकुलेटर</span>
+        </a>
+        <a href="{rel}tools/csc-locator.html" class="btn" style="background: #D97F2B; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          📍 <span data-lang-show="en">Nearest CSC / e-Seva Kendra</span><span data-lang-show="hi">नजदीकी सीएससी केंद्र खोजें</span>
+        </a>
+      </div>
+      <div id="svc-share-row"></div>
+    </header>
+
+    <div class="tricolor-rule" aria-hidden="true"></div>
+
+    <!-- KEY STATS 4-GRID -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 30px 0;">
+      <div class="stat-badge-box" style="border-left: 5px solid #146B3A;">
+        <div style="font-size: 1.8rem;">🎁</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">GOVT SUBSIDY (50%)</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #146B3A;">₹50,000 Free Grant</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">वापस नहीं करना होता (Non-Refundable)</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #2563eb;">
+        <div style="font-size: 1.8rem;">📉</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">MPBCDC DIRECT LOAN (45%)</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #2563eb;">₹45,000 @ 4% Byaj</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">बाजार से 3 गुना कम रियायती ब्याज दर</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #D97F2B;">
+        <div style="font-size: 1.8rem;">🪙</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">OWN CONTRIBUTION (5%)</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #D97F2B;">Only ₹5,000</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">सिर्फ 5% लाभार्थी का अपना हिस्सा</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #7c3aed;">
+        <div style="font-size: 1.8rem;">⚡</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">DIRECT DISBURSAL</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #7c3aed;">No Bank Intermediary</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">महामंडळ से सीधा डीलर को पेमेंट</div>
+      </div>
+    </div>
+
+    <!-- LIVE INTERACTIVE DIRECT LOAN CALCULATOR -->
+    <section id="mpbcdcCalculatorSection" class="mpbcdc-calc-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+        <div>
+          <span style="background: var(--color-primary); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">LIVE TOOL</span>
+          <h2 style="margin: 8px 0 4px 0; color: var(--color-primary); font-size: 1.6rem;">
+            🧮 MPBCDC Direct Loan Subsidy & 4% EMI Calculator
+          </h2>
+          <p style="margin: 0; color: var(--color-text-muted); font-size: 0.95rem;">
+            प्रोजेक्ट लागत दर्ज करें और तुरंत जानें: सरकारी अनुदान, कॉर्पोरेशन लोन और 4% ब्याज पर मासिक किश्त (EMI):
+          </p>
+        </div>
+      </div>
+
+      <form id="mpbcdc-dl-form" style="margin-bottom: 20px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px;">
+          <div>
+            <label for="mpbcdc-dl-cost" style="display: block; font-weight: 700; color: var(--color-text); margin-bottom: 6px;">
+              Project Cost (₹) — [₹10,000 से ₹1,00,000]
+            </label>
+            <input type="number" id="mpbcdc-dl-cost" min="10000" max="100000" step="1000" value="100000" style="width: 100%; padding: 12px 14px; border: 2px solid var(--color-border); border-radius: 8px; font-size: 1.1rem; font-weight: 700; background: var(--color-surface); color: var(--color-text);" required>
+          </div>
+          <div>
+            <label for="mpbcdc-dl-tenure" style="display: block; font-weight: 700; color: var(--color-text); margin-bottom: 6px;">
+              Loan Tenure (ऋण अवधि) — [12 से 60 महीने]
+            </label>
+            <select id="mpbcdc-dl-tenure" style="width: 100%; padding: 12px 14px; border: 2px solid var(--color-border); border-radius: 8px; font-size: 1.05rem; font-weight: 700; background: var(--color-surface); color: var(--color-text);">
+              <option value="36" selected>36 Months (3 Years) — ₹1,330/mo</option>
+              <option value="60">60 Months (5 Years) — ₹827/mo</option>
+              <option value="48">48 Months (4 Years) — ₹1,017/mo</option>
+              <option value="24">24 Months (2 Years) — ₹1,955/mo</option>
+              <option value="12">12 Months (1 Year) — ₹3,832/mo</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn--primary" style="width: 100%; padding: 14px; font-size: 1.1rem; font-weight: 800; border-radius: 8px; cursor: pointer;">
+          🚀 Calculate Subsidy & EMI Now
+        </button>
+      </form>
+
+      <!-- LIVE RESULTS DISPLAY -->
+      <div id="mpbcdc-dl-results" style="background: var(--color-bg); border: 2px dashed var(--color-border); border-radius: 12px; padding: 20px;">
+        <h3 style="margin: 0 0 16px 0; color: var(--color-primary); font-size: 1.25rem;">📊 वित्तीय गणना परिणाम (Calculation Breakdown)</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border); border-left: 4px solid var(--color-primary);">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">TOTAL PROJECT COST</div>
+            <div id="mpbcdc-dl-r-cost" style="font-size: 1.4rem; font-weight: 800; color: var(--color-primary);">₹1,00,000</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border); border-left: 4px solid #146B3A;">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">GOVT SUBSIDY (50%)</div>
+            <div id="mpbcdc-dl-r-subsidy" style="font-size: 1.4rem; font-weight: 800; color: #146B3A;">₹50,000</div>
+            <div style="font-size: 0.75rem; color: #146B3A; font-weight: 700;">मुफ़्त अनुदान (Non-Refundable)</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border); border-left: 4px solid #2563eb;">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">MPBCDC LOAN (45%)</div>
+            <div id="mpbcdc-dl-r-loan" style="font-size: 1.4rem; font-weight: 800; color: #2563eb;">₹45,000</div>
+            <div style="font-size: 0.75rem; color: #2563eb; font-weight: 700;">4% वार्षिक सरल ब्याज दर</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border); border-left: 4px solid #D97F2B;">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">OWN MARGIN (5%)</div>
+            <div id="mpbcdc-dl-r-own" style="font-size: 1.4rem; font-weight: 800; color: #D97F2B;">₹5,000</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 14px;">
+          <div style="background: #146B3A; color: #fff; padding: 16px; border-radius: 8px;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #dcfce7;">MONTHLY EMI (मासिक किश्त)</div>
+            <div id="mpbcdc-dl-r-emi" style="font-size: 1.6rem; font-weight: 900; color: #ffffff;">₹1,330/month</div>
+            <div style="font-size: 0.78rem; color: #dcfce7;">36 महीने (3 साल) के लिए</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border);">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">TOTAL 4% INTEREST</div>
+            <div id="mpbcdc-dl-r-interest" style="font-size: 1.3rem; font-weight: 800; color: var(--color-text);">₹2,880</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border);">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">TOTAL REPAYMENT</div>
+            <div id="mpbcdc-dl-r-total" style="font-size: 1.3rem; font-weight: 800; color: var(--color-text);">₹47,880</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ELIGIBILITY & DOCUMENT CHECKLIST -->
+    <section style="margin: 36px 0;">
+      <h2 style="color: var(--color-primary); font-size: 1.6rem; margin-bottom: 18px;">
+        📋 <span data-lang-show="en">Eligibility Criteria & Mandatory Documents Checklist</span>
+        <span data-lang-show="hi">पात्रता शर्तें एवं अनिवार्य दस्तावेज़ चेकलिस्ट</span>
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+        <!-- Eligibility Card -->
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+          <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.25rem;">✅ पात्रता शर्तें (Eligibility Norms)</h3>
+          <ul style="padding-left: 20px; line-height: 1.8; color: var(--color-text); font-size: 0.98rem;">
+            <li><strong>स्थान:</strong> आवेदक महाराष्ट्र राज्य का मूल निवासी (Domicile Holder) होना अनिवार्य है।</li>
+            <li><strong>जाति:</strong> आवेदक अनुसूचित जाति (SC) या नव-बौद्ध (Neo-Buddhist) समुदाय से होना चाहिए।</li>
+            <li><strong>आयु सीमा:</strong> आवेदन के समय उम्र 18 से 50 वर्ष के बीच होनी चाहिए।</li>
+            <li><strong>वार्षिक पारिवारिक आय:</strong> ग्रामीण एवं शहरी दोनों क्षेत्रों के लिए वार्षिक आय <strong>₹2,50,000 (ढाई लाख रुपये)</strong> से अधिक नहीं होनी चाहिए।</li>
+            <li><strong>डिफॉल्टर स्थिति:</strong> आवेदक या उसके परिवार का कोई सदस्य पहले MPBCDC या किसी सरकारी बैंक ऋण में डिफॉल्टर नहीं होना चाहिए।</li>
+          </ul>
+        </div>
+
+        <!-- Documents Card -->
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+          <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.25rem;">📑 ज़रूरी दस्तावेज़ (Required Documents)</h3>
+          <ul style="padding-left: 20px; line-height: 1.8; color: var(--color-text); font-size: 0.98rem;">
+            <li>आधार कार्ड एवं पैन कार्ड (Aadhaar & PAN Card)</li>
+            <li>सक्षम प्राधिकारी (SDO/Tahasildar) द्वारा जारी <strong>जाति प्रमाण पत्र (Caste Certificate)</strong></li>
+            <li>तहसीलदार द्वारा जारी चालू वित्तीय वर्ष का <strong>उत्पन्न प्रमाण पत्र (Income Certificate)</strong></li>
+            <li>डोमिसाइल सर्टिफिकेट / 15 वर्ष का महाराष्ट्र निवास प्रमाण</li>
+            <li>दुकान/व्यवसाय का किरायानामा या स्वामित्व प्रमाण (Rent Agreement / Light Bill)</li>
+            <li>खरीदे जाने वाले सामान/मशीनरी का अधिकृत <strong>GST Quotation</strong></li>
+            <li>2 जमानतदारों (Guarantors) का सहमति पत्र व पहचान पत्र</li>
+            <li>राष्ट्रीयकृत बैंक खाता पासबुक (Bank Passbook Copy)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 REAL-WORLD PROBLEMS & DEEP PROBLEM SOLVERS -->
+    <section class="blog-content" style="line-height: 1.85; font-size: 1.05rem; color: var(--color-text); margin: 40px 0;">
+      <h2 style="color: var(--color-primary); font-size: 1.75rem; margin-bottom: 24px;">
+        💡 <span data-lang-show="en">Top 6 MPBCDC Direct Loan Issues & 100% Practical Solutions</span>
+        <span data-lang-show="hi">MPBCDC थेट कर्ज योजना से जुड़ी 6 मुख्य समस्याएं व उनका पक्का समाधान</span>
+      </h2>
+
+      <!-- Problem 1 -->
+      <div class="prob-box" style="border-left: 6px solid #146B3A;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">1. Quotation और Project Report कैसे तैयार करें बिना एजेंट को पैसे दिए?</h3>
+        <p>
+          अक्सर आवेदक बिचौलियों के चक्कर में पड़कर 5,000 से 10,000 रुपये गवां देते हैं।
+        </p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> जिस भी दुकानदार या होलसेलर से आप सिलाई मशीन, कंप्यूटर, किराना सामग्री या टूल्स खरीदने वाले हैं, उनसे GSTIN नंबर वाला प्रोफ़ॉर्मा इनवॉइस (Quotation) लें। कोटेशन में कुल राशि ₹1,00,000 के अंदर होनी चाहिए।</li>
+          <li>हमारे <a href="{rel}project-report/index.html" style="font-weight:700; color:var(--color-primary);">Project Report Generator Tool</a> से मात्र 2 मिनट में अपने व्यवसाय का नाम, अनुमानित मासिक बिक्री और लाभ-हानि का पेशेवर विवरण डाउनलोड करके फॉर्म के साथ संलग्न करें।</li>
+        </ul>
+      </div>
+
+      <!-- Problem 2 -->
+      <div class="prob-box" style="border-left: 6px solid #D97F2B;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">2. 2 जमानतदार (Guarantors / Jamin) कौन हो सकते हैं? क्या सरकारी कर्मचारी ज़रूरी है?</h3>
+        <p>
+          थेट कर्ज योजना में कई लोगों को लगता है कि क्लास-1 या सरकारी कर्मचारी की ही गारंटी चाहिए।
+        </p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> थेट कर्ज योजना (₹1 लाख) में सरकारी कर्मचारी होना अनिवार्य नहीं है। कोई भी प्रतिष्ठित नागरिक, ग्राम पंचायत सदस्य, नगरसेवक, प्रतिष्ठित व्यापारी, या संपत्ति धारक (7/12 उतारा धारक) जमानतदार बन सकता है।</li>
+          <li>दोनों जमानतदारों का आधार कार्ड, पैन कार्ड, पासपोर्ट फोटो और सहमति पत्र (Guarantee Form) महामंडळ के ज़िला कार्यालय में जमा करना होता है।</li>
+        </ul>
+      </div>
+
+      <!-- Problem 3 -->
+      <div class="prob-box" style="border-left: 6px solid #2563eb;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">3. MahOnline पोर्टल पर फॉर्म भरने के बाद फाइल आगे कैसे बढ़ती है?</h3>
+        <p>
+          ऑनलाइन फॉर्म भरने के बाद कई आवेदकों को आगे की प्रक्रिया की जानकारी नहीं होती।
+        </p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> <code>mpbcdc.maharashtra.gov.in</code> पर फॉर्म सबमिट करने के बाद उत्पन्न 'Application Summary PDF' का प्रिंट निकालें।</li>
+          <li>सभी मूल दस्तावेज़ों की स्व-प्रमाणित (Self-Attested) छायाप्रतियां लगाकर अपने ज़िले के <strong>MPBCDC ज़िला कार्यालय (District Manager Office)</strong> में जमा करें। वहां टास्क फोर्स कमेटी (TFC) द्वारा दस्तावेजों की जांच और एक छोटा मौखिक साक्षात्कार (Interview) लिया जाता है।</li>
+        </ul>
+      </div>
+
+      <!-- Problem 4 -->
+      <div class="prob-box" style="border-left: 6px solid #7c3aed;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">4. ₹50,000 की सरकारी सब्सिडी और लोन का पैसा कैसे डिस्बर्स होता है?</h3>
+        <p>
+          ऋण राशि के दुरुपयोग को रोकने के लिए महामंडळ की एक पारदर्शी डिस्बर्सल व्यवस्था है।
+        </p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> ऋण व सब्सिडी की कुल राशि (₹95,000) का चेक या RTGS सीधे उस अधिकृत डीलर/विक्रेता के बैंक खाते में भेजा जाता है जिसका कोटेशन आपने लगाया था।</li>
+          <li>दुकानदार द्वारा सामान डिलीवर होने के बाद MPBCDC के क्षेत्रीय अधिकारी भौतिक निरीक्षण (Physical Verification) करते हैं।</li>
+        </ul>
+      </div>
+
+      <!-- Problem 5 -->
+      <div class="prob-box" style="border-left: 6px solid #059669;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">5. 4% ब्याज पर मासिक किश्त (EMI) कैसे और कहाँ भरनी होती है?</h3>
+        <p>
+          बैंक लोन की तरह इसमें कोई पेनल्टी या कंपाउंडिंग ब्याज नहीं लगता।
+        </p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> ₹45,000 के लोन पर 36 महीने के लिए ₹1,330/माह और 60 महीने के लिए ₹827/माह की EMI बनती है। यह किश्त महामंडळ के ज़िला कार्यालय के खाते में चालान, बैंक ड्राफ्ट, या ऑनलाइन पोर्टल के माध्यम से हर महीने जमा करनी होती है।</li>
+          <li>समय पर किश्तें चुकाने पर उद्यमी भविष्य में ₹5 लाख तक की <strong>Seed Capital Yojana</strong> के लिए पात्र हो जाता है।</li>
+        </ul>
+      </div>
+
+      <!-- Problem 6 -->
+      <div class="prob-box" style="border-left: 6px solid #db2777;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">6. क्या महिला स्वयं सहायता समूह (SHG) या एक परिवार से दो सदस्य अप्लाई कर सकते हैं?</h3>
+        <p>
+          पारिवारिक पात्रता के संबंध में शासन के स्पष्ट नियम हैं।
+        </p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> एक राशन कार्ड (Family Unit) पर एक समय में केवल एक ही सदस्य को MPBCDC योजना का लाभ मिल सकता है। जब पहला लोन पूर्णतः चुकता (No Dues) हो जाता है, तब दूसरा सदस्य आवेदन कर सकता है।</li>
+          <li>महिला उद्यमियों को चयन समिति (Task Force Committee) में 30% आरक्षण और विशेष प्राथमिकता दी जाती है।</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- STEP BY STEP APPLICATION ROADMAP -->
+    <section style="background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 16px; padding: 26px; margin: 36px 0;">
+      <h2 style="color: var(--color-primary); font-size: 1.55rem; margin-top: 0;">
+        🚀 MPBCDC Direct Loan: Step-by-Step Online Apply Roadmap
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 18px;">
+        <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
+          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">1</div>
+          <strong style="color: var(--color-primary);">पंजीकरण (Registration):</strong> <code>mpbcdc.maharashtra.gov.in</code> पर जाएं और 'New Applicant Registration' में आधार OTP से साइन-अप करें।
+        </div>
+
+        <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
+          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">2</div>
+          <strong style="color: var(--color-primary);">योजना चयन (Scheme Selection):</strong> डैशबोर्ड पर <strong>'Direct Loan Scheme (थेट कर्ज योजना - ₹1.00 Lakh)'</strong> का चयन करें।
+        </div>
+
+        <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
+          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">3</div>
+          <strong style="color: var(--color-primary);">दस्तावेज़ अपलोड (Upload Docs):</strong> जाति, आय, डोमिसाइल प्रमाण पत्र, आधार, पैन, और सामान का GST कोटेशन अपलोड करें।
+        </div>
+
+        <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
+          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">4</div>
+          <strong style="color: var(--color-primary);">ज़िला कार्यालय सत्यापन (Verification):</strong> आवेदन का प्रिंटआउट निकालकर अपने ज़िला कार्यालय में जमा करें और इंटरव्यू में शामिल हों।
+        </div>
+      </div>
+    </section>
+
+    <!-- OFFICIAL VERIFIED PORTAL LINKS -->
+    <section class="service-section" style="background: linear-gradient(135deg, #1e1e38, #2a2a52); color: #ffffff; border-radius: 16px; padding: 28px 24px; margin: 36px 0; box-shadow: 0 8px 24px rgba(0,0,0,0.12);">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 14px;">
+        <span style="font-size: 2.2rem;">🏛️</span>
+        <div>
+          <h2 style="margin: 0; font-size: 1.35rem; color: #ffffff; font-weight: 700;">MPBCDC आधिकारिक पोर्टल लिंक (Dedicated Official Links)</h2>
+          <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 0.92rem;">महात्मा फुले मागासवर्गीय विकास महामंडळ (MPBCDC) महाराष्ट्र शासन</p>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 20px;">
+        <a href="https://mpbcdc.maharashtra.gov.in/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: #2563eb; color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; font-size: 1rem; border: 1px solid #3b82f6;">
+          <span>🌐 MPBCDC Official Portal</span>
+          <span style="font-size: 1.1rem;">↗</span>
+        </a>
+        <a href="https://mpbcdc.maharashtra.gov.in/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: #059669; color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; font-size: 1rem; border: 1px solid #10b981;">
+          <span>📝 MahOnline Apply & Login</span>
+          <span style="font-size: 1.1rem;">↗</span>
+        </a>
+        <a href="https://www.maharashtra.gov.in/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.1); color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; font-size: 1rem; border: 1px solid rgba(255,255,255,0.2);">
+          <span>🏢 Maharashtra Govt Portal</span>
+          <span style="font-size: 1.1rem;">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- RELATED MPBCDC SCHEMES -->
+    <section class="service-section">
+      <h2 class="service-section__title"><span class="icon">🔗</span> अन्य MPBCDC योजनाएं व संबंधित सेवाएं</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 16px;">
+        <a href="{hub_link}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid var(--color-primary); border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">🏛️</div>
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">MPBCDC योजना गाइड (Hub)</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">तीनों योजनाओं की विस्तृत तुलना व ज़िला कार्यालय निर्देशिका।</p>
+        </a>
+
+        <a href="{sub_link}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #146B3A; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">📋</div>
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #146B3A;">50% Subsidy Yojana</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">₹50,000 तक के छोटे प्रोजेक्ट पर 50% मुफ़्त सरकारी अनुदान।</p>
+        </a>
+
+        <a href="{sc_link}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #2563eb; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">🏦</div>
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #2563eb;">Seed Capital Yojana</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">₹5 लाख तक Bank 75% + 20% Seed Capital Calculator।</p>
+        </a>
+
+        <a href="{rel}project-report/index.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #D97F2B; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">📄</div>
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #D97F2B;">Project Report Tool</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">बैंक व महामंडळ लोन के लिए 2 मिनट में प्रोजेक्ट रिपोर्ट बनाएं।</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- VIP TELEGRAM BANNER -->
+    <div style="background: linear-gradient(135deg, #0088cc 0%, #005f8f 100%); border-radius: 12px; padding: 24px; color: #fff; margin: 36px 0; text-align: center; box-shadow: 0 4px 12px rgba(0,136,204,0.25);">
+      <h3 style="margin: 0 0 8px 0; color: #fff; font-size: 1.4rem;">✈️ SarkariSewa VIP Telegram Community</h3>
+      <p style="margin: 0 0 16px 0; color: #e0f2fe; font-size: 0.95rem;">महाराष्ट्र की सभी सब्सिडी योजनाओं, मुद्रा लोन, PMEGP व सरकारी जॉब अलर्ट्स की सबसे तेज़ जानकारी पाएं।</p>
+      <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="btn" style="background: #fff; color: #0088cc; font-weight: 700; padding: 10px 24px; text-decoration: none; border-radius: 8px; display: inline-block;">Join Telegram Channel ↗</a>
+    </div>
+
+    <!-- COMMENTS SECTION -->
+    <section class="service-section" id="comments-section">
+      <h2 class="service-section__title"><span class="icon">💬</span> Questions &amp; Comments</h2>
+      <p class="comments-note">यह MPBCDC थेट कर्ज योजना से जुड़ी सार्वजनिक चर्चा है। आधिकारिक सहायता के लिए अपने ज़िला कार्यालय से संपर्क करें।</p>
+      <form id="comment-form" class="comment-form">
+        <div class="comment-form__row">
+          <input type="text" id="comment-name" maxlength="80" placeholder="आपका नाम (Your Name)" required />
+        </div>
+        <div class="comment-form__row">
+          <textarea id="comment-message" maxlength="2000" rows="3" placeholder="MPBCDC डायरेक्ट लोन या सब्सिडी से जुड़ा अपना सवाल पूछें..." required></textarea>
+        </div>
+        <div class="comment-form__actions">
+          <span class="comment-form__status" id="comment-form-status"></span>
+          <button type="submit" class="btn-primary" id="comment-submit">Post Question</button>
+        </div>
+      </form>
+      <div id="comments-list" class="comments-list">
+        <p class="loading">Loading comments…</p>
+      </div>
+    </section>
+  </main>
+
+  {get_footer(rel)}
+</body>
+</html>'''
+
+# Write Direct Loan files
+with open(os.path.join(SERVICE, 'mpbcdc-direct-loan-yojana.html'), 'w', encoding='utf-8') as f:
+    f.write(build_direct_loan(is_service=True))
+print('Written service/mpbcdc-direct-loan-yojana.html')
+
+with open(os.path.join(ROOT, 'mpbcdc-direct-loan-yojana.html'), 'w', encoding='utf-8') as f:
+    f.write(build_direct_loan(is_service=False))
+print('Written root mpbcdc-direct-loan-yojana.html')
+
+# 2. 50% SUBSIDY SCHEME
+def build_subsidy_yojana(is_service=True):
+    rel = "../" if is_service else ""
+    canonical = f"https://sarkarisewaindia.com/{'service/' if is_service else ''}mpbcdc-subsidy-yojana.html"
+    hub_link = f"{rel}service/mpbcdc-yojana.html" if is_service else "mpbcdc-yojana.html"
+    dl_link = f"{rel}service/mpbcdc-direct-loan-yojana.html" if is_service else "mpbcdc-direct-loan-yojana.html"
+    sc_link = f"{rel}service/mpbcdc-seed-capital-yojana.html" if is_service else "mpbcdc-seed-capital-yojana.html"
+
+    return f'''<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{rel}assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{rel}assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{rel}assets/img/apple-touch-icon.png">
+  <link rel="icon" href="{rel}favicon.ico">
+  <link rel="manifest" href="{rel}manifest.json">
+  <link rel="canonical" href="{canonical}" />
+  <meta name="description" content="MPBCDC 50% Subsidy Yojana 2026: महाराष्ट्र SC/नव-बौद्ध समुदाय के लिए ₹50,000 तक 50% मुफ़्त सरकारी अनुदान (₹25,000)। 0% अंशदान, Free Calculator, Documents व MahOnline Apply Guide।" />
+  <meta property="og:title" content="MPBCDC 50% विशेष अनुदान योजना 2026: ₹25,000 मुफ़्त सब्सिडी" />
+  <meta property="og:description" content="MPBCDC 50% Subsidy Yojana: ₹50,000 tak micro-business par 50% non-refundable grant + 50% bank loan. 0% promoter contribution." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="{canonical}" />
+  <meta property="og:image" content="{rel}assets/img/og-image.png">
+  <title>MPBCDC 50% Subsidy Yojana 2026: 50% विशेष अनुदान योजना व Online Apply</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{rel}assets/css/style.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module2.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module15.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module16.css" />
+  <link rel="stylesheet" href="{rel}assets/css/share-widget.css" />
+
+  <script type="application/ld+json" id="service-schema">
+  {{
+    "@context": "https://schema.org",
+    "@graph": [
+      {{
+        "@type": "GovernmentService",
+        "name": "MPBCDC 50% Subsidy Scheme (50% विशेष अनुदान योजना)",
+        "alternateName": "महात्मा फुले 50% विशेष अनुदान योजना",
+        "description": "50% government grant scheme for small business projects up to ₹50,000. Offers ₹25,000 non-refundable subsidy and ₹25,000 bank loan for SC and Neo-Buddhist beneficiaries in Maharashtra.",
+        "url": "{canonical}",
+        "serviceType": "Government Business Subsidy",
+        "provider": {{
+          "@type": "GovernmentOrganization",
+          "name": "Mahatma Phule Backward Class Development Corporation (MPBCDC), Maharashtra",
+          "sameAs": ["https://mpbcdc.maharashtra.gov.in"]
+        }}
+      }}
+    ]
+  }}
+  </script>
+
+  <style>
+    .mpbcdc-calc-card {{
+      background: var(--color-surface);
+      border: 2px solid var(--color-primary);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 32px 0;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }}
+    .stat-badge-box {{
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }}
+    .prob-box {{
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }}
+  </style>
+</head>
+<body data-slug="mpbcdc-subsidy-yojana">
+  {get_header(rel)}
+
+  <main class="container" style="padding-top: 20px; padding-bottom: 60px;">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+      <a href="{rel}index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="{rel}category/mpbcdc-schemes.html">💸 MPBCDC योजनाएं</a>
+      <span class="sep">/</span>
+      <span class="current">50% Subsidy Yojana</span>
+    </nav>
+
+    <!-- HERO HEADER -->
+    <header class="service-hero" id="service-hero" style="text-align: left; padding: 24px 0 10px 0;">
+      <span class="service-hero__badge" style="background: #146B3A; color: #fff; padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">
+        🎁 MPBCDC 50% SPECIAL SUBSIDY (50% विशेष अनुदान योजना)
+      </span>
+      <h1 style="font-size: 2.2rem; line-height: 1.3; color: var(--color-primary); margin: 14px 0 12px 0; font-weight: 800;">
+        <span data-lang-show="en">MPBCDC 50% Subsidy Yojana 2026: ₹25,000 Govt Grant & Apply Online</span>
+        <span data-lang-show="hi">MPBCDC 50% विशेष अनुदान योजना 2026: ₹25,000 मुफ़्त सब्सिडी व ऑनलाइन आवेदन</span>
+      </h1>
+      <p style="font-size: 1.08rem; line-height: 1.7; color: var(--color-text-muted); max-width: 950px; margin: 0 0 20px 0;">
+        <span data-lang-show="en">Special Central Assistance (SCA) 50% Special Subsidy Scheme for micro-enterprises up to ₹50,000 in Maharashtra. Get <strong>50% (₹25,000) Non-Refundable Govt Grant</strong> with <strong>0% promoter contribution</strong> and 50% term loan from nationalized banks.</span>
+        <span data-lang-show="hi">महाराष्ट्र के अनुसूचित जाति और नव-बौद्ध सूक्ष्म उद्यमियों के लिए 50% विशेष अनुदान योजना। ₹50,000 तक के छोटे व्यवसाय पर <strong>50% (अधिकतम ₹25,000) गैर-वापसी योग्य सरकारी अनुदान</strong>, <strong>0% अपना अंशदान</strong>, और 50% बैंक ऋण।</span>
+      </p>
+
+      <!-- ACTION BUTTONS -->
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;">
+        <a href="https://mpbcdc.maharashtra.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="font-weight: 700; padding: 12px 20px; font-size: 0.95rem;">
+          📝 <span data-lang-show="en">Apply on MahOnline Portal ↗</span><span data-lang-show="hi">MahOnline पोर्टल पर ऑनलाइन आवेदन ↗</span>
+        </a>
+        <a href="#subsidyCalcSection" class="btn" style="background: #146B3A; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          🧮 <span data-lang-show="en">Subsidy Calculator</span><span data-lang-show="hi">सब्सिडी कैलकुलेटर</span>
+        </a>
+        <a href="{rel}project-report/index.html" class="btn" style="background: #2563eb; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          📄 <span data-lang-show="en">Free Project Report ↗</span><span data-lang-show="hi">प्रोजेक्ट रिपोर्ट टूल ↗</span>
+        </a>
+      </div>
+      <div id="svc-share-row"></div>
+    </header>
+
+    <div class="tricolor-rule" aria-hidden="true"></div>
+
+    <!-- STATS -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 30px 0;">
+      <div class="stat-badge-box" style="border-left: 5px solid #146B3A;">
+        <div style="font-size: 1.8rem;">🎁</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">GOVT GRANT (50%)</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #146B3A;">Max ₹25,000</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">सीधा सरकारी मुफ़्त अनुदान</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #2563eb;">
+        <div style="font-size: 1.8rem;">🏦</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">BANK LOAN (50%)</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #2563eb;">Max ₹25,000</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">राष्ट्रीयकृत बैंक द्वारा रियायती ऋण</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #D97F2B;">
+        <div style="font-size: 1.8rem;">🪙</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">PROMOTER SHARE</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #D97F2B;">0% (Zero)</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">अपनी जेब से ₹0 लगाना होता है</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #7c3aed;">
+        <div style="font-size: 1.8rem;">💼</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">PROJECT CAP</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #7c3aed;">₹50,000 Total</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">छोटे व घरेलू व्यवसायों हेतु</div>
+      </div>
+    </div>
+
+    <!-- SUBSIDY CALCULATOR -->
+    <section id="subsidyCalcSection" class="mpbcdc-calc-card">
+      <h2 style="margin: 0 0 16px 0; color: var(--color-primary); font-size: 1.5rem;">
+        🧮 50% Subsidy Scheme Live Calculator
+      </h2>
+      <form id="mpbcdc-sub-form" style="margin-bottom: 20px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px;">
+          <div>
+            <label for="mpbcdc-sub-cost" style="display: block; font-weight: 700; margin-bottom: 6px;">
+              Project Cost (₹) — [Max ₹50,000]
+            </label>
+            <input type="number" id="mpbcdc-sub-cost" min="10000" max="50000" step="1000" value="50000" style="width: 100%; padding: 12px 14px; border: 2px solid var(--color-border); border-radius: 8px; font-size: 1.1rem; font-weight: 700; background: var(--color-surface); color: var(--color-text);" required>
+          </div>
+          <div>
+            <label for="mpbcdc-sub-rate" style="display: block; font-weight: 700; margin-bottom: 6px;">
+              Estimated Bank Interest Rate (%)
+            </label>
+            <input type="number" id="mpbcdc-sub-rate" min="7" max="15" step="0.5" value="10.5" style="width: 100%; padding: 12px 14px; border: 2px solid var(--color-border); border-radius: 8px; font-size: 1.1rem; font-weight: 700; background: var(--color-surface); color: var(--color-text);">
+          </div>
+        </div>
+        <button type="submit" class="btn btn--primary" style="width: 100%; padding: 14px; font-size: 1.1rem; font-weight: 800; border-radius: 8px; cursor: pointer;">
+          🚀 Calculate 50% Grant & Bank Loan Breakdown
+        </button>
+      </form>
+
+      <!-- RESULTS -->
+      <div id="mpbcdc-sub-results" style="background: var(--color-bg); border: 2px dashed var(--color-border); border-radius: 12px; padding: 20px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border);">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">TOTAL COST</div>
+            <div id="mpbcdc-sub-r-cost" style="font-size: 1.4rem; font-weight: 800; color: var(--color-primary);">₹50,000</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border); border-left: 4px solid #146B3A;">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">GOVT GRANT (50%)</div>
+            <div id="mpbcdc-sub-r-subsidy" style="font-size: 1.4rem; font-weight: 800; color: #146B3A;">₹25,000</div>
+            <div style="font-size: 0.75rem; color: #146B3A; font-weight: 700;">मुफ़्त अनुदान</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border); border-left: 4px solid #2563eb;">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">BANK LOAN (50%)</div>
+            <div id="mpbcdc-sub-r-loan" style="font-size: 1.4rem; font-weight: 800; color: #2563eb;">₹25,000</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border);">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">PROMOTER SHARE</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: #D97F2B;">₹0 (0%)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ELIGIBILITY & DOCS -->
+    <section style="margin: 36px 0;">
+      <h2 style="color: var(--color-primary); font-size: 1.6rem; margin-bottom: 18px;">
+        📋 पात्रता व आवश्यक दस्तावेज़ (50% Subsidy Scheme)
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 22px;">
+          <h3 style="margin-top: 0; color: var(--color-primary);">✅ पात्रता शर्तें</h3>
+          <ul style="padding-left: 20px; line-height: 1.8;">
+            <li>महाराष्ट्र का मूल निवासी होना अनिवार्य है।</li>
+            <li>अनुसूचित जाति (SC) या नव-बौद्ध समुदाय से संबंध होना चाहिए।</li>
+            <li>वार्षिक पारिवारिक आय ₹2,50,000 से अधिक न हो।</li>
+            <li>आयु 18 से 50 वर्ष के बीच होनी चाहिए।</li>
+          </ul>
+        </div>
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 22px;">
+          <h3 style="margin-top: 0; color: var(--color-primary);">📑 आवश्यक दस्तावेज़</h3>
+          <ul style="padding-left: 20px; line-height: 1.8;">
+            <li>आधार कार्ड, पैन कार्ड और 2 पासपोर्ट फोटो</li>
+            <li>जाति प्रमाण पत्र (Caste Certificate)</li>
+            <li>सक्षम अधिकारी का आय प्रमाण पत्र (Income Certificate)</li>
+            <li>बैंक पासबुक व सामान का कोटेशन (Quotation)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 PROBLEM SOLVERS -->
+    <section class="blog-content" style="line-height: 1.85; font-size: 1.05rem; margin: 40px 0;">
+      <h2 style="color: var(--color-primary); font-size: 1.75rem; margin-bottom: 24px;">
+        💡 50% विशेष अनुदान योजना: मुख्य समस्याएं व समाधान
+      </h2>
+      <div class="prob-box" style="border-left: 6px solid #146B3A;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">1. क्या ₹25,000 की सब्सिडी सरकार को वापस करनी होती है?</h3>
+        <p>नहीं! 50% सब्सिडी योजना में मिलने वाला अनुदान 'Non-Refundable Capital Subsidy' है। आपको केवल बैंक का 50% लोन हिस्सा मासिक किश्तों में चुकाना होता है।</p>
+      </div>
+      <div class="prob-box" style="border-left: 6px solid #2563eb;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">2. बैंक लोन रिजेक्ट न हो इसके लिए क्या करें?</h3>
+        <p>महामंडळ की टास्क फोर्स कमेटी (TFC) से अनुशंसा पत्र (Recommendation) मिलने के बाद बैंक शाखा प्रबंधक से व्यक्तिगत रूप से मिलें और अपनी प्रोजेक्ट रिपोर्ट जमा करें।</p>
+      </div>
+    </section>
+
+    <!-- OFFICIAL LINKS -->
+    <section class="service-section" style="background: linear-gradient(135deg, #1e1e38, #2a2a52); color: #ffffff; border-radius: 16px; padding: 28px 24px; margin: 36px 0;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
+        <span style="font-size: 2.2rem;">🏛️</span>
+        <h2 style="margin: 0; font-size: 1.35rem; color: #ffffff;">MPBCDC आधिकारिक पोर्टल लिंक</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+        <a href="https://mpbcdc.maharashtra.gov.in/" target="_blank" rel="noopener noreferrer" style="background: #2563eb; color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; display: flex; justify-content: space-between;">
+          <span>🌐 MPBCDC Portal</span><span>↗</span>
+        </a>
+        <a href="https://mpbcdc.maharashtra.gov.in/" target="_blank" rel="noopener noreferrer" style="background: #059669; color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; display: flex; justify-content: space-between;">
+          <span>📝 MahOnline Apply</span><span>↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- OTHER SCHEMES -->
+    <section class="service-section">
+      <h2 class="service-section__title"><span class="icon">🔗</span> अन्य MPBCDC योजनाएं</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 16px;">
+        <a href="{dl_link}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #146B3A; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #146B3A;">Direct Loan Yojana</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">₹1 लाख तक 50% सब्सिडी + 4% ब्याज पर लोन।</p>
+        </a>
+        <a href="{sc_link}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #2563eb; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #2563eb;">Seed Capital Yojana</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">₹5 लाख तक 20% Seed Capital सहायता।</p>
+        </a>
+        <a href="{hub_link}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid var(--color-primary); border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">MPBCDC Hub</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">तीनों योजनाओं की तुलना व पात्रता।</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  {get_footer(rel)}
+</body>
+</html>'''
+
+# Write 50% Subsidy files
+with open(os.path.join(SERVICE, 'mpbcdc-subsidy-yojana.html'), 'w', encoding='utf-8') as f:
+    f.write(build_subsidy_yojana(is_service=True))
+print('Written service/mpbcdc-subsidy-yojana.html')
+
+with open(os.path.join(ROOT, 'mpbcdc-subsidy-yojana.html'), 'w', encoding='utf-8') as f:
+    f.write(build_subsidy_yojana(is_service=False))
+print('Written root mpbcdc-subsidy-yojana.html')
+
+# 3. SEED CAPITAL SCHEME
+def build_seed_capital_yojana(is_service=True):
+    rel = "../" if is_service else ""
+    canonical = f"https://sarkarisewaindia.com/{'service/' if is_service else ''}mpbcdc-seed-capital-yojana.html"
+    hub_link = f"{rel}service/mpbcdc-yojana.html" if is_service else "mpbcdc-yojana.html"
+    dl_link = f"{rel}service/mpbcdc-direct-loan-yojana.html" if is_service else "mpbcdc-direct-loan-yojana.html"
+    sub_link = f"{rel}service/mpbcdc-subsidy-yojana.html" if is_service else "mpbcdc-subsidy-yojana.html"
+
+    return f'''<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{rel}assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{rel}assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{rel}assets/img/apple-touch-icon.png">
+  <link rel="icon" href="{rel}favicon.ico">
+  <link rel="manifest" href="{rel}manifest.json">
+  <link rel="canonical" href="{canonical}" />
+  <meta name="description" content="MPBCDC Seed Capital Yojana 2026: ₹1 लाख से ₹5 लाख के प्रोजेक्ट्स पर 20% सीड कैपिटल (Max ₹1 लाख @ 4% Byaj) + 75% Bank Loan। Free EMI Calculator, Eligibility व Online Apply।" />
+  <meta property="og:title" content="MPBCDC Seed Capital Yojana 2026: बीज भांडवल योजना" />
+  <meta property="og:description" content="MPBCDC Seed Capital Scheme for projects up to ₹5,00,000. 75% Bank Loan + 20% Seed Capital @ 4% interest." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="{canonical}" />
+  <meta property="og:image" content="{rel}assets/img/og-image.png">
+  <title>MPBCDC Seed Capital Yojana 2026: बीज भांडवल योजना व Calculator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{rel}assets/css/style.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module2.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module15.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module16.css" />
+  <link rel="stylesheet" href="{rel}assets/css/share-widget.css" />
+
+  <script type="application/ld+json" id="service-schema">
+  {{
+    "@context": "https://schema.org",
+    "@graph": [
+      {{
+        "@type": "GovernmentService",
+        "name": "MPBCDC Seed Capital Scheme (बीज भांडवल योजना)",
+        "alternateName": "महात्मा फुले बीज भांडवल योजना",
+        "description": "Seed Capital scheme for projects between ₹1 Lakh to ₹5 Lakh. 75% Bank Loan, 20% MPBCDC Seed Capital at 4% interest, and 5% promoter contribution.",
+        "url": "{canonical}",
+        "serviceType": "Government Business Loan Subsidy",
+        "provider": {{
+          "@type": "GovernmentOrganization",
+          "name": "Mahatma Phule Backward Class Development Corporation (MPBCDC), Maharashtra",
+          "sameAs": ["https://mpbcdc.maharashtra.gov.in"]
+        }}
+      }}
+    ]
+  }}
+  </script>
+
+  <style>
+    .mpbcdc-calc-card {{
+      background: var(--color-surface);
+      border: 2px solid var(--color-primary);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 32px 0;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }}
+    .stat-badge-box {{
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }}
+    .prob-box {{
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }}
+  </style>
+</head>
+<body data-slug="mpbcdc-seed-capital-yojana">
+  {get_header(rel)}
+
+  <main class="container" style="padding-top: 20px; padding-bottom: 60px;">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+      <a href="{rel}index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="{rel}category/mpbcdc-schemes.html">💸 MPBCDC योजनाएं</a>
+      <span class="sep">/</span>
+      <span class="current">Seed Capital Yojana</span>
+    </nav>
+
+    <!-- HERO HEADER -->
+    <header class="service-hero" id="service-hero" style="text-align: left; padding: 24px 0 10px 0;">
+      <span class="service-hero__badge" style="background: #2563eb; color: #fff; padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">
+        🏦 MPBCDC SEED CAPITAL SCHEME (बीज भांडवल योजना 2026)
+      </span>
+      <h1 style="font-size: 2.2rem; line-height: 1.3; color: var(--color-primary); margin: 14px 0 12px 0; font-weight: 800;">
+        <span data-lang-show="en">MPBCDC Seed Capital Yojana 2026: ₹5 Lakh Business Loan & Apply Online</span>
+        <span data-lang-show="hi">MPBCDC बीज भांडवल योजना 2026: ₹5 लाख तक व्यापार लोन व ऑनलाइन आवेदन</span>
+      </h1>
+      <p style="font-size: 1.08rem; line-height: 1.7; color: var(--color-text-muted); max-width: 950px; margin: 0 0 20px 0;">
+        <span data-lang-show="en">Mahatma Phule Corporation Seed Capital Scheme for business projects from ₹1,00,000 up to ₹5,00,000. Get <strong>75% Bank Loan</strong>, <strong>20% Seed Capital by MPBCDC at just 4% interest (Max ₹1 Lakh)</strong>, and 5% promoter margin in Maharashtra.</span>
+        <span data-lang-show="hi">महाराष्ट्र के SC/नव-बौद्ध उद्यमियों के लिए ₹1,00,000 से ₹5,00,000 तक के मध्यम व्यवसाय प्रोजेक्ट्स हेतु बीज भांडवल योजना। <strong>75% बैंक लोन</strong>, <strong>20% महामंडळ बीज पूंजी (अधिकतम ₹1,00,000 मात्र 4% ब्याज पर)</strong>, और सिर्फ 5% अपना अंशदान।</span>
+      </p>
+
+      <!-- ACTION BUTTONS -->
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;">
+        <a href="https://mpbcdc.maharashtra.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="font-weight: 700; padding: 12px 20px; font-size: 0.95rem;">
+          📝 <span data-lang-show="en">Apply on MahOnline Portal ↗</span><span data-lang-show="hi">MahOnline पोर्टल पर ऑनलाइन आवेदन ↗</span>
+        </a>
+        <a href="#seedCalcSection" class="btn" style="background: #2563eb; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          🧮 <span data-lang-show="en">Seed Capital Calculator</span><span data-lang-show="hi">बीज पूंजी कैलकुलेटर</span>
+        </a>
+        <a href="{rel}project-report/index.html" class="btn" style="background: #146B3A; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          📄 <span data-lang-show="en">Generate Bank Project Report ↗</span><span data-lang-show="hi">बैंक प्रोजेक्ट रिपोर्ट बनाएं ↗</span>
+        </a>
+      </div>
+      <div id="svc-share-row"></div>
+    </header>
+
+    <div class="tricolor-rule" aria-hidden="true"></div>
+
+    <!-- STATS -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 30px 0;">
+      <div class="stat-badge-box" style="border-left: 5px solid #2563eb;">
+        <div style="font-size: 1.8rem;">🏦</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">BANK LOAN (75%)</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #2563eb;">Up to ₹3,75,000</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">राष्ट्रीयकृत बैंक का मुख्य ऋण</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #146B3A;">
+        <div style="font-size: 1.8rem;">📉</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">MPBCDC SEED CAPITAL (20%)</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #146B3A;">Max ₹1,00,000 @ 4%</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">महामंडळ बीज पूंजी मात्र 4% ब्याज पर</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #D97F2B;">
+        <div style="font-size: 1.8rem;">🪙</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">OWN MARGIN (5%)</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #D97F2B;">5% Self Share</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">स्वयं का अंशदान</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #7c3aed;">
+        <div style="font-size: 1.8rem;">💼</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">MAX PROJECT COST</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #7c3aed;">₹5,00,000</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">मध्यम उद्यमों हेतु</div>
+      </div>
+    </div>
+
+    <!-- SEED CAPITAL CALCULATOR -->
+    <section id="seedCalcSection" class="mpbcdc-calc-card">
+      <h2 style="margin: 0 0 16px 0; color: var(--color-primary); font-size: 1.5rem;">
+        🧮 Seed Capital Scheme Live Calculator (₹1L to ₹5L)
+      </h2>
+      <form id="mpbcdc-sc-form" style="margin-bottom: 20px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px;">
+          <div>
+            <label for="mpbcdc-sc-cost" style="display: block; font-weight: 700; margin-bottom: 6px;">
+              Project Cost (₹) — [₹1,00,000 से ₹5,00,000]
+            </label>
+            <input type="number" id="mpbcdc-sc-cost" min="100000" max="500000" step="10000" value="300000" style="width: 100%; padding: 12px 14px; border: 2px solid var(--color-border); border-radius: 8px; font-size: 1.1rem; font-weight: 700; background: var(--color-surface); color: var(--color-text);" required>
+          </div>
+          <div>
+            <label for="mpbcdc-sc-bank-rate" style="display: block; font-weight: 700; margin-bottom: 6px;">
+              Bank Interest Rate (%) — [Default 10.5%]
+            </label>
+            <input type="number" id="mpbcdc-sc-bank-rate" min="7" max="15" step="0.5" value="10.5" style="width: 100%; padding: 12px 14px; border: 2px solid var(--color-border); border-radius: 8px; font-size: 1.1rem; font-weight: 700; background: var(--color-surface); color: var(--color-text);">
+          </div>
+        </div>
+        <button type="submit" class="btn btn--primary" style="width: 100%; padding: 14px; font-size: 1.1rem; font-weight: 800; border-radius: 8px; cursor: pointer;">
+          🚀 Calculate 75% Bank Loan + 20% Seed Capital Breakdown
+        </button>
+      </form>
+
+      <!-- RESULTS -->
+      <div id="mpbcdc-sc-results" style="background: var(--color-bg); border: 2px dashed var(--color-border); border-radius: 12px; padding: 20px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border);">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">TOTAL PROJECT COST</div>
+            <div id="mpbcdc-sc-r-cost" style="font-size: 1.4rem; font-weight: 800; color: var(--color-primary);">₹3,00,000</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border); border-left: 4px solid #2563eb;">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">BANK LOAN (75%)</div>
+            <div id="mpbcdc-sc-r-bank" style="font-size: 1.4rem; font-weight: 800; color: #2563eb;">₹2,25,000</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border); border-left: 4px solid #146B3A;">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">SEED CAPITAL (20% @ 4%)</div>
+            <div id="mpbcdc-sc-r-seed" style="font-size: 1.4rem; font-weight: 800; color: #146B3A;">₹60,000</div>
+          </div>
+          <div style="background: var(--color-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--color-border);">
+            <div style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 700;">OWN SHARE (5%)</div>
+            <div id="mpbcdc-sc-r-own" style="font-size: 1.4rem; font-weight: 800; color: #D97F2B;">₹15,000</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ELIGIBILITY & DOCS -->
+    <section style="margin: 36px 0;">
+      <h2 style="color: var(--color-primary); font-size: 1.6rem; margin-bottom: 18px;">
+        📋 पात्रता व आवश्यक दस्तावेज़ (Seed Capital Scheme)
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 22px;">
+          <h3 style="margin-top: 0; color: var(--color-primary);">✅ पात्रता शर्तें</h3>
+          <ul style="padding-left: 20px; line-height: 1.8;">
+            <li>महाराष्ट्र का मूल निवासी (Domicile Holder)।</li>
+            <li>अनुसूचित जाति (SC) या नव-बौद्ध समुदाय।</li>
+            <li>वार्षिक पारिवारिक आय ₹2,50,000 से कम।</li>
+            <li>आयु 18 से 50 वर्ष के बीच।</li>
+          </ul>
+        </div>
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 22px;">
+          <h3 style="margin-top: 0; color: var(--color-primary);">📑 आवश्यक दस्तावेज़</h3>
+          <ul style="padding-left: 20px; line-height: 1.8;">
+            <li>विस्तृत प्रोजेक्ट रिपोर्ट (DPR with Cash Flow & DSCR)</li>
+            <li>आधार कार्ड, पैन कार्ड, जाति व आय प्रमाण पत्र</li>
+            <li>दुकान/कारखाने की जगह का दस्तावेज</li>
+            <li>मशीनरी व उपकरणों का GST Quotation</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- OTHER SCHEMES -->
+    <section class="service-section">
+      <h2 class="service-section__title"><span class="icon">🔗</span> अन्य MPBCDC योजनाएं</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 16px;">
+        <a href="{dl_link}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #146B3A; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #146B3A;">Direct Loan Yojana</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">₹1 लाख तक 50% सब्सिडी + 4% ब्याज पर डायरेक्ट लोन।</p>
+        </a>
+        <a href="{sub_link}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #D97F2B; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #D97F2B;">50% Subsidy Yojana</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">₹50,000 तक 50% सरकारी अनुदान।</p>
+        </a>
+        <a href="{hub_link}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid var(--color-primary); border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">MPBCDC Hub</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">सभी योजनाओं की तुलना व मार्गदर्शिका।</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  {get_footer(rel)}
+</body>
+</html>'''
+
+# Write Seed Capital files
+with open(os.path.join(SERVICE, 'mpbcdc-seed-capital-yojana.html'), 'w', encoding='utf-8') as f:
+    f.write(build_seed_capital_yojana(is_service=True))
+print('Written service/mpbcdc-seed-capital-yojana.html')
+
+with open(os.path.join(ROOT, 'mpbcdc-seed-capital-yojana.html'), 'w', encoding='utf-8') as f:
+    f.write(build_seed_capital_yojana(is_service=False))
+print('Written root mpbcdc-seed-capital-yojana.html')
+
+# 4. MPBCDC CENTRAL HUB
+def build_mpbcdc_hub(is_service=True):
+    rel = "../" if is_service else ""
+    canonical = f"https://sarkarisewaindia.com/{'service/' if is_service else ''}mpbcdc-yojana.html"
+    dl_link = f"{rel}service/mpbcdc-direct-loan-yojana.html" if is_service else "mpbcdc-direct-loan-yojana.html"
+    sub_link = f"{rel}service/mpbcdc-subsidy-yojana.html" if is_service else "mpbcdc-subsidy-yojana.html"
+    sc_link = f"{rel}service/mpbcdc-seed-capital-yojana.html" if is_service else "mpbcdc-seed-capital-yojana.html"
+
+    return f'''<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{rel}assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{rel}assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{rel}assets/img/apple-touch-icon.png">
+  <link rel="icon" href="{rel}favicon.ico">
+  <link rel="manifest" href="{rel}manifest.json">
+  <link rel="canonical" href="{canonical}" />
+  <meta name="description" content="MPBCDC Yojana 2026: महात्मा फुले मागासवर्गीय विकास महामंडळ की सभी योजनाओं (Direct Loan, 50% Subsidy, Seed Capital) की संपूर्ण गाइड, तुलना, पात्रता व MahOnline Apply।" />
+  <meta property="og:title" content="MPBCDC Yojana 2026: महात्मा फुले महामंडळ संपूर्ण गाइड" />
+  <meta property="og:description" content="MPBCDC Schemes Master Guide: Compare Direct Loan, 50% Subsidy & Seed Capital. 36 District Offices directory." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="{canonical}" />
+  <meta property="og:image" content="{rel}assets/img/og-image.png">
+  <title>MPBCDC Yojana 2026: महात्मा फुले महामंडळ योजना गाइड व Schemes Comparison</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{rel}assets/css/style.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module2.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module15.css" />
+  <link rel="stylesheet" href="{rel}assets/css/module16.css" />
+  <link rel="stylesheet" href="{rel}assets/css/share-widget.css" />
+
+  <script type="application/ld+json" id="service-schema">
+  {{
+    "@context": "https://schema.org",
+    "@graph": [
+      {{
+        "@type": "GovernmentService",
+        "name": "MPBCDC Schemes Master Hub (महात्मा फुले महामंडळ योजना)",
+        "description": "Comprehensive portal and comparison guide for MPBCDC self-employment loan and subsidy schemes for SC and Neo-Buddhist communities in Maharashtra.",
+        "url": "{canonical}",
+        "serviceType": "Government Social Welfare & Business Finance",
+        "provider": {{
+          "@type": "GovernmentOrganization",
+          "name": "Mahatma Phule Backward Class Development Corporation (MPBCDC), Maharashtra",
+          "sameAs": ["https://mpbcdc.maharashtra.gov.in"]
+        }}
+      }}
+    ]
+  }}
+  </script>
+</head>
+<body data-slug="mpbcdc-yojana">
+  {get_header(rel)}
+
+  <main class="container" style="padding-top: 20px; padding-bottom: 60px;">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+      <a href="{rel}index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="{rel}category/mpbcdc-schemes.html">💸 MPBCDC योजनाएं</a>
+      <span class="sep">/</span>
+      <span class="current">MPBCDC Hub</span>
+    </nav>
+
+    <!-- HERO HEADER -->
+    <header class="service-hero" id="service-hero" style="text-align: left; padding: 24px 0 10px 0;">
+      <span class="service-hero__badge" style="background: var(--color-primary); color: #fff; padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">
+        🏛️ MAHATMA PHULE CORPORATION MASTER HUB 2026
+      </span>
+      <h1 style="font-size: 2.2rem; line-height: 1.3; color: var(--color-primary); margin: 14px 0 12px 0; font-weight: 800;">
+        <span data-lang-show="en">MPBCDC Yojana 2026: Complete Scheme Guide, Comparison & Apply Online</span>
+        <span data-lang-show="hi">महात्मा फुले मागासवर्गीय विकास महामंडळ (MPBCDC) योजना गाइड 2026</span>
+      </h1>
+      <p style="font-size: 1.08rem; line-height: 1.7; color: var(--color-text-muted); max-width: 950px; margin: 0 0 20px 0;">
+        <span data-lang-show="en">Official guide to all self-employment schemes by MPBCDC Maharashtra: Direct Loan Scheme (₹1 Lakh @ 4% + 50% Subsidy), 50% Special Subsidy Scheme (₹50k Grant), and Seed Capital Scheme (₹5 Lakh @ 20% Seed Capital).</span>
+        <span data-lang-show="hi">महाराष्ट्र शासन के महात्मा फुले मागासवर्गीय विकास महामंडळ की सभी स्वरोजगार योजनाओं की संपूर्ण मार्गदर्शिका। जानें कौन सी योजना आपके व्यवसाय के लिए सबसे उपयुक्त है और MahOnline पोर्टल पर ऑनलाइन आवेदन कैसे करें।</span>
+      </p>
+
+      <!-- 1-CLICK ACTION BUTTONS -->
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;">
+        <a href="{dl_link}" class="btn btn--primary" style="font-weight: 700; padding: 12px 20px; font-size: 0.95rem;">
+          💰 <span data-lang-show="en">Direct Loan Scheme (₹1L @ 4%) ↗</span><span data-lang-show="hi">डायरेक्ट लोन योजना (₹1 लाख @ 4%) ↗</span>
+        </a>
+        <a href="{sub_link}" class="btn" style="background: #146B3A; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          🎁 <span data-lang-show="en">50% Subsidy Scheme ↗</span><span data-lang-show="hi">50% विशेष अनुदान योजना ↗</span>
+        </a>
+        <a href="{sc_link}" class="btn" style="background: #2563eb; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          🏦 <span data-lang-show="en">Seed Capital Scheme (₹5L) ↗</span><span data-lang-show="hi">सीड कैपिटल योजना (₹5 लाख) ↗</span>
+        </a>
+      </div>
+      <div id="svc-share-row"></div>
+    </header>
+
+    <div class="tricolor-rule" aria-hidden="true"></div>
+
+    <!-- COMPARISON MATRIX -->
+    <section style="margin: 36px 0;">
+      <h2 style="color: var(--color-primary); font-size: 1.6rem; margin-bottom: 18px;">
+        📊 MPBCDC तीनों योजनाओं की तुलना (Comparison Matrix)
+      </h2>
+      <div style="overflow-x: auto;">
+        <table class="fees-table" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background: var(--color-primary); color: #fff;">
+              <th style="padding: 14px; text-align: left;">योजना का नाम</th>
+              <th style="padding: 14px; text-align: left;">अधिकतम प्रोजेक्ट लागत</th>
+              <th style="padding: 14px; text-align: left;">सरकारी सब्सिडी (Grant)</th>
+              <th style="padding: 14px; text-align: left;">लोन हिस्सा व ब्याज</th>
+              <th style="padding: 14px; text-align: left;">लाभार्थी अंशदान</th>
+              <th style="padding: 14px; text-align: left;">बैंक निर्भरता</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 14px;"><strong>1. Direct Loan (थेट कर्ज)</strong></td>
+              <td style="padding: 14px;">₹1,00,000</td>
+              <td style="padding: 14px; color: #146B3A; font-weight: 700;">50% (₹50,000)</td>
+              <td style="padding: 14px; color: #2563eb; font-weight: 700;">45% (₹45,000) @ 4%</td>
+              <td style="padding: 14px;">5% (₹5,000)</td>
+              <td style="padding: 14px; color: #146B3A; font-weight: 700;">❌ बैंक की ज़रूरत नहीं</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 14px;"><strong>2. 50% Subsidy (विशेष अनुदान)</strong></td>
+              <td style="padding: 14px;">₹50,000</td>
+              <td style="padding: 14px; color: #146B3A; font-weight: 700;">50% (₹25,000)</td>
+              <td style="padding: 14px;">50% Bank Loan</td>
+              <td style="padding: 14px; color: #146B3A; font-weight: 700;">0% (Zero)</td>
+              <td style="padding: 14px;">✔️ बैंक लोन</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 14px;"><strong>3. Seed Capital (बीज भांडवल)</strong></td>
+              <td style="padding: 14px;">₹1L से ₹5,00,000</td>
+              <td style="padding: 14px;">20% Seed Capital @ 4%</td>
+              <td style="padding: 14px;">75% Bank Loan</td>
+              <td style="padding: 14px;">5%</td>
+              <td style="padding: 14px;">✔️ बैंक लोन</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MAHARASHTRA 36 DISTRICTS DIRECTORY -->
+    <section class="service-section" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 24px; margin: 36px 0;">
+      <h2 style="color: var(--color-primary); margin-top: 0;">🏢 महाराष्ट्र के सभी 36 ज़िला MPBCDC कार्यालय</h2>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem;">अपने ज़िले के MPBCDC ज़िला प्रबंधक कार्यालय में संपर्क करें और भौतिक सत्यापन करवाएं:</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 16px;">
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Mumbai City</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Mumbai Suburban</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Pune</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Nagpur</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Nashik</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Thane</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Sambhajinagar</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Solapur</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Kolhapur</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Amravati</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Nanded</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Sangli</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Jalgaon</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Akola</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Latur</span>
+        <span style="background: var(--color-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--color-border); font-size: 0.9rem;">📍 Dhule</span>
+      </div>
+    </section>
+  </main>
+
+  {get_footer(rel)}
+</body>
+</html>'''
+
+# Write Hub files
+with open(os.path.join(SERVICE, 'mpbcdc-yojana.html'), 'w', encoding='utf-8') as f:
+    f.write(build_mpbcdc_hub(is_service=True))
+print('Written service/mpbcdc-yojana.html')
+
+with open(os.path.join(ROOT, 'mpbcdc-yojana.html'), 'w', encoding='utf-8') as f:
+    f.write(build_mpbcdc_hub(is_service=False))
+print('Written root mpbcdc-yojana.html')
+
+

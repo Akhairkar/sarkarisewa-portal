@@ -1,4 +1,50 @@
-<!DOCTYPE html>
+# -*- coding: utf-8 -*-
+import os
+import sys
+
+from sir_data_batch1 import BATCH_1
+from sir_data_batch2 import BATCH_2
+from sir_data_batch3 import BATCH_3
+from sir_data_batch4 import BATCH_4
+from sir_data_batch5 import BATCH_5
+
+ALL_STATES = {}
+ALL_STATES.update(BATCH_1)
+ALL_STATES.update(BATCH_2)
+ALL_STATES.update(BATCH_3)
+ALL_STATES.update(BATCH_4)
+ALL_STATES.update(BATCH_5)
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATES_DIR = os.path.join(ROOT, 'states')
+
+def render_state_page(info):
+    state_en = info['state_en']
+    state_hi = info['state_hi']
+    slug = info['slug']
+    title = info['title']
+    desc = info['desc']
+    ceo_url = info['ceo_url']
+    ceo_name = info['ceo_name']
+    ceo_name_hi = info['ceo_name_hi']
+    total_ac = info['total_ac']
+    total_districts = info['total_districts']
+    districts = info['districts']
+
+    canonical = f"https://sarkarisewaindia.com/states/{slug}.html"
+    first_district = districts[0] if districts else {'name': state_en, 'ac': 'All Constituencies'}
+
+    # Generate district chips
+    chips_html = []
+    for i, d in enumerate(districts):
+        active_cls = "dist-chip active-chip" if i == 0 else "dist-chip"
+        active_style = "text-align: left; padding: 10px 12px; background: #e0f2fe; border: 1.5px solid #0284c7; border-radius: 8px; cursor: pointer; font-weight: 700; color: #0369a1;" if i == 0 else "text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);"
+        escaped_ac = d['ac'].replace("'", "\\'")
+        escaped_name = d['name'].replace("'", "\\'")
+        chips_html.append(f'''        <button type="button" class="{active_cls}" onclick="showDistrict('{escaped_name}', '{escaped_ac}', this)" style="{active_style}">📍 {d['name']}</button>''')
+    chips_str = "\n".join(chips_html)
+
+    return f'''<!DOCTYPE html>
 <html lang="hi">
 <head>
   <meta charset="UTF-8" />
@@ -8,17 +54,17 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
   <link rel="icon" href="../favicon.ico">
   <link rel="manifest" href="../manifest.json">
-  <link rel="canonical" href="https://sarkarisewaindia.com/states/andhra-pradesh-sir-voter-list.html"/>
-  <meta name="description" content="Andhra Pradesh Sir Voter List 2026 online apply process, eligibility criteria, required documents, fee details aur direct official portal link."/>
-  <meta property="og:title" content="Andhra Pradesh Sir Voter List 2026: Online Apply, Eligibility & Documents"/>
-  <meta property="og:description" content="Andhra Pradesh Sir Voter List 2026 online apply process, eligibility criteria, required documents, fee details aur direct official portal link."/>
+  <link rel="canonical" href="{canonical}"/>
+  <meta name="description" content="{desc}"/>
+  <meta property="og:title" content="{title}"/>
+  <meta property="og:description" content="{desc}"/>
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://sarkarisewaindia.com/states/andhra-pradesh-sir-voter-list.html"/>
+  <meta property="og:url" content="{canonical}"/>
   <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Andhra Pradesh Sir Voter List 2026: Online Apply, Eligibility & Documents" />
-  <meta name="twitter:description" content="Andhra Pradesh Sir Voter List 2026 online apply process, eligibility criteria, required documents, fee details aur direct official portal link." />
-  <title>Andhra Pradesh Sir Voter List 2026: Online Apply, Eligibility & Documents</title>
+  <meta name="twitter:title" content="{title}" />
+  <meta name="twitter:description" content="{desc}" />
+  <title>{title}</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,84 +77,84 @@
   <link rel="stylesheet" href="../assets/css/share-widget.css" />
 
   <script type="application/ld+json" id="service-schema">
-  {
+  {{
     "@context": "https://schema.org",
     "@graph": [
-      {
+      {{
         "@type": "GovernmentService",
-        "name": "Andhra Pradesh SIR Voter List 2026",
-        "alternateName": "आंध्र प्रदेश विशेष सघन पुनरीक्षण (SIR) मतदाता सूची",
-        "description": "Election Commission of India (ECI) and Chief Electoral Officer (CEO) Andhra Pradesh Special Intensive Revision (SIR) 2026 for voter list verification, online name check, Form 6 new voter registration, and e-EPIC download across all 26 districts and 175 assembly constituencies.",
-        "url": "https://sarkarisewaindia.com/states/andhra-pradesh-sir-voter-list.html",
+        "name": "{state_en} SIR Voter List 2026",
+        "alternateName": "{state_hi} विशेष सघन पुनरीक्षण (SIR) मतदाता सूची",
+        "description": "Election Commission of India (ECI) and {ceo_name} Special Intensive Revision (SIR) 2026 for voter list verification, online name check, Form 6 new voter registration, and e-EPIC download across all {total_districts} districts and {total_ac} assembly constituencies.",
+        "url": "{canonical}",
         "serviceType": "Electoral Services / Voter List Verification",
-        "provider": {
+        "provider": {{
           "@type": "GovernmentOrganization",
-          "name": "Chief Electoral Officer (CEO) Andhra Pradesh & Election Commission of India",
-          "sameAs": ["https://ceoandhra.nic.in", "https://voters.eci.gov.in"]
-        },
-        "areaServed": {
+          "name": "{ceo_name} & Election Commission of India",
+          "sameAs": ["{ceo_url}", "https://voters.eci.gov.in"]
+        }},
+        "areaServed": {{
           "@type": "AdministrativeArea",
-          "name": "Andhra Pradesh"
-        }
-      },
-      {
+          "name": "{state_en}"
+        }}
+      }},
+      {{
         "@type": "BreadcrumbList",
         "itemListElement": [
-          {
+          {{
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
             "item": "https://sarkarisewaindia.com/index.html"
-          },
-          {
+          }},
+          {{
             "@type": "ListItem",
             "position": 2,
             "name": "Identity Documents",
             "item": "https://sarkarisewaindia.com/category/identity-documents.html"
-          },
-          {
+          }},
+          {{
             "@type": "ListItem",
             "position": 3,
-            "name": "Andhra Pradesh SIR Voter List",
-            "item": "https://sarkarisewaindia.com/states/andhra-pradesh-sir-voter-list.html"
-          }
+            "name": "{state_en} SIR Voter List",
+            "item": "{canonical}"
+          }}
         ]
-      },
-      {
+      }},
+      {{
         "@type": "FAQPage",
         "mainEntity": [
-          {
+          {{
             "@type": "Question",
-            "name": "Andhra Pradesh SIR Voter List 2026 mein apna naam kaise check karein?",
-            "acceptedAnswer": {
+            "name": "{state_en} SIR Voter List 2026 mein apna naam kaise check karein?",
+            "acceptedAnswer": {{
               "@type": "Answer",
-              "text": "Aap Chief Electoral Officer (CEO) Andhra Pradesh (ceoandhra.nic.in) ya ECI Voters Portal (voters.eci.gov.in) par jakar apne EPIC (Voter ID) Number, Mobile Number ya Naam aur District ke jariye instant apna naam, Polling Station aur Serial Number check kar sakte hain."
-            }
-          },
-          {
+              "text": "Aap {ceo_name} ({ceo_url.replace('https://', '')}) ya ECI Voters Portal (voters.eci.gov.in) par jakar apne EPIC (Voter ID) Number, Mobile Number ya Naam aur District ke jariye instant apna naam, Polling Station aur Serial Number check kar sakte hain."
+            }}
+          }},
+          {{
             "@type": "Question",
-            "name": "Andhra Pradesh mein naya Voter ID Card banane ke liye kaun sa form bharna hota hai?",
-            "acceptedAnswer": {
+            "name": "{state_en} mein naya Voter ID Card banane ke liye kaun sa form bharna hota hai?",
+            "acceptedAnswer": {{
               "@type": "Answer",
               "text": "18 varsh ki aayu puri kar chuke naye matdata Form 6 (Online New Voter Registration) bharkar free me apna naya Color e-EPIC Voter Card banwa sakte hain."
-            }
-          },
-          {
+            }}
+          }},
+          {{
             "@type": "Question",
-            "name": "Andhra Pradesh me apne Booth Level Officer (BLO) ka contact number kaise nikalein?",
-            "acceptedAnswer": {
+            "name": "{state_en} me apne Booth Level Officer (BLO) ka contact number kaise nikalein?",
+            "acceptedAnswer": {{
               "@type": "Answer",
               "text": "ECI Voter Helpline App ya voters.eci.gov.in par 'Know Your BLO & Electoral Officials' par click karke apna EPIC number dalein. Wahan aapke polling booth ke BLO ka naam aur direct mobile number dikhai dega."
-            }
-          }
+            }}
+          }}
         ]
-      }
+      }}
     ]
-  }
+  }}
   </script>
 
   <style>
-    .voter-action-card {
+    .voter-action-card {{
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: 12px;
@@ -118,12 +164,12 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-    }
-    .voter-action-card:hover {
+    }}
+    .voter-action-card:hover {{
       transform: translateY(-2px);
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    }
-    .form-pill {
+    }}
+    .form-pill {{
       display: inline-block;
       padding: 3px 8px;
       border-radius: 6px;
@@ -132,18 +178,18 @@
       background: #e0f2fe;
       color: #0369a1;
       margin-bottom: 6px;
-    }
-    .prob-box {
+    }}
+    .prob-box {{
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: 12px;
       padding: 22px;
       margin-bottom: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
+    }}
   </style>
 </head>
-<body data-slug="andhra-pradesh-sir-voter-list">
+<body data-slug="{slug}">
   <script>window.SS_ROOT = "../";</script>
 
   <div id="site-header"></div>
@@ -156,19 +202,19 @@
       <span class="sep">/</span>
       <a href="../states/index.html">🏛️ <span data-lang-show="en">States Hub</span><span data-lang-show="hi">राज्य सेवाएं</span></a>
       <span class="sep">/</span>
-      <span class="current">Andhra Pradesh SIR Voter List</span>
+      <span class="current">{state_en} SIR Voter List</span>
     </nav>
 
     <section class="service-hero" id="service-hero" style="margin-top: 16px;">
-      <span class="service-hero__badge">🆔 <span data-lang-show="en">Election Commission of India & Chief Electoral Officer (CEO) Andhra Pradesh</span><span data-lang-show="hi">भारत निर्वाचन आयोग व मुख्य निर्वाचन अधिकारी आंध्र प्रदेश</span></span>
+      <span class="service-hero__badge">🆔 <span data-lang-show="en">Election Commission of India & {ceo_name}</span><span data-lang-show="hi">भारत निर्वाचन आयोग व {ceo_name_hi}</span></span>
       <h1 class="service-hero__title">
-        <span data-lang-show="en">Andhra Pradesh SIR 2026: Voter List Name Check & Electoral Roll Update</span>
-        <span data-lang-show="hi">आंध्र प्रदेश वोटर लिस्ट 2026 (SIR): ऑनलाइन नाम चेक, e-EPIC डाउनलोड व सुधार</span>
+        <span data-lang-show="en">{state_en} SIR 2026: Voter List Name Check & Electoral Roll Update</span>
+        <span data-lang-show="hi">{state_hi} वोटर लिस्ट 2026 (SIR): ऑनलाइन नाम चेक, e-EPIC डाउनलोड व सुधार</span>
       </h1>
       
       <p class="service-hero__desc">
-        <span data-lang-show="en">Complete guide to Andhra Pradesh Special Intensive Revision (SIR) 2026. Check your name in the latest electoral roll across all 26 districts & 175 Assembly Constituencies, download official e-EPIC PDF, add new voters (Form 6), and correct voter details online.</span>
-        <span data-lang-show="hi">आंध्र प्रदेश विशेष सघन पुनरीक्षण (SIR) 2026 की संपूर्ण गाइड। सभी 26 जिलों व 175 विधानसभा क्षेत्रों की नवीनतम मतदाता सूची में अपना नाम खोजें, डिजिटल e-EPIC कार्ड डाउनलोड करें, नया नाम जोड़ें (Form 6) और ऑनलाइन सुधार (Form 8) करें।</span>
+        <span data-lang-show="en">Complete guide to {state_en} Special Intensive Revision (SIR) 2026. Check your name in the latest electoral roll across all {total_districts} districts & {total_ac} Assembly Constituencies, download official e-EPIC PDF, add new voters (Form 6), and correct voter details online.</span>
+        <span data-lang-show="hi">{state_hi} विशेष सघन पुनरीक्षण (SIR) 2026 की संपूर्ण गाइड। सभी {total_districts} जिलों व {total_ac} विधानसभा क्षेत्रों की नवीनतम मतदाता सूची में अपना नाम खोजें, डिजिटल e-EPIC कार्ड डाउनलोड करें, नया नाम जोड़ें (Form 6) और ऑनलाइन सुधार (Form 8) करें।</span>
       </p>
       
       <div class="service-hero__actions" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px;">
@@ -176,9 +222,9 @@
           <span data-lang-show="en">🔍 Search Name in Voter List (ECI) ↗</span>
           <span data-lang-show="hi">🔍 वोटर लिस्ट में नाम खोजें (ECI) ↗</span>
         </a>
-        <a class="btn" href="https://ceoandhra.nic.in" target="_blank" rel="noopener noreferrer" style="background: #146B3A; color: #fff; font-weight: 700;">
-          <span data-lang-show="en">🌐 Official Chief Electoral Officer (CEO) Andhra Pradesh Portal ↗</span>
-          <span data-lang-show="hi">🌐 मुख्य निर्वाचन अधिकारी आंध्र प्रदेश पोर्टल ↗</span>
+        <a class="btn" href="{ceo_url}" target="_blank" rel="noopener noreferrer" style="background: #146B3A; color: #fff; font-weight: 700;">
+          <span data-lang-show="en">🌐 Official {ceo_name} Portal ↗</span>
+          <span data-lang-show="hi">🌐 मुख्य निर्वाचन अधिकारी {state_hi} पोर्टल ↗</span>
         </a>
       </div>
       <div id="svc-share-row"></div>
@@ -189,13 +235,13 @@
       <div style="background: var(--color-surface); padding: 18px; border-radius: 12px; border: 1px solid var(--color-border); border-left: 5px solid #146B3A; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
         <div style="font-size: 1.8rem; margin-bottom: 4px;">🗳️</div>
         <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 600;"><span data-lang-show="en">Assembly Constituencies</span><span data-lang-show="hi">कुल विधानसभा क्षेत्र</span></div>
-        <div style="font-size: 1.4rem; font-weight: 800; color: var(--color-primary);">175 Constituencies</div>
+        <div style="font-size: 1.4rem; font-weight: 800; color: var(--color-primary);">{total_ac} Constituencies</div>
       </div>
 
       <div style="background: var(--color-surface); padding: 18px; border-radius: 12px; border: 1px solid var(--color-border); border-left: 5px solid #0284c7; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
         <div style="font-size: 1.8rem; margin-bottom: 4px;">📑</div>
-        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 600;"><span data-lang-show="en">Districts Covered</span><span data-lang-show="hi">आंध्र प्रदेश के कुल जिले</span></div>
-        <div style="font-size: 1.4rem; font-weight: 800; color: #0284c7;">26 Districts</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 600;"><span data-lang-show="en">Districts Covered</span><span data-lang-show="hi">{state_hi} के कुल जिले</span></div>
+        <div style="font-size: 1.4rem; font-weight: 800; color: #0284c7;">{total_districts} Districts</div>
       </div>
 
       <div style="background: var(--color-surface); padding: 18px; border-radius: 12px; border: 1px solid var(--color-border); border-left: 5px solid #16a34a; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
@@ -228,7 +274,7 @@
               <span data-lang-show="hi">नया वोटर आईडी कार्ड आवेदन (18+ वर्ष)</span>
             </h3>
             <p style="margin: 0; color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.5;">
-              <span data-lang-show="en">If you have completed 18 years of age or never registered before in Andhra Pradesh, submit Form 6 for free delivery of new PVC voter card.</span>
+              <span data-lang-show="en">If you have completed 18 years of age or never registered before in {state_en}, submit Form 6 for free delivery of new PVC voter card.</span>
               <span data-lang-show="hi">यदि आप 18 वर्ष के हो चुके हैं या पहली बार वोटर आईडी बनवा रहे हैं, तो Form 6 भरकर फ्री में नया कार्ड प्राप्त करें।</span>
             </p>
           </div>
@@ -248,7 +294,7 @@
               <span data-lang-show="hi">नाम, फोटो, जन्मतिथि व पता सुधार (स्थानांतरण)</span>
             </h3>
             <p style="margin: 0; color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.5;">
-              <span data-lang-show="en">Change your address within or outside assembly constituency in Andhra Pradesh, fix spelling mistakes in Name/DOB, or get replacement card.</span>
+              <span data-lang-show="en">Change your address within or outside assembly constituency in {state_en}, fix spelling mistakes in Name/DOB, or get replacement card.</span>
               <span data-lang-show="hi">शादी या मकान बदलने पर पता बदलें, नाम या उम्र की गलतियां ठीक करें अथवा नया कार्ड रिप्लेस करवाएं।</span>
             </p>
           </div>
@@ -306,8 +352,8 @@
       <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
         <div>
           <h2 style="color: var(--color-primary); font-size: 1.45rem; margin: 0;">
-            📍 <span data-lang-show="en">Andhra Pradesh District-Wise Electoral Roll Directory (26 Districts)</span>
-            <span data-lang-show="hi">आंध्र प्रदेश जिला-वार मतदाता सूची निर्देशिका (26 जिले)</span>
+            📍 <span data-lang-show="en">{state_en} District-Wise Electoral Roll Directory ({total_districts} Districts)</span>
+            <span data-lang-show="hi">{state_hi} जिला-वार मतदाता सूची निर्देशिका ({total_districts} जिले)</span>
           </h2>
           <p style="color: var(--color-text-muted); font-size: 0.95rem; margin: 4px 0 0 0;">
             <span data-lang-show="en">Click on any district to view its Assembly Constituencies & direct Electoral Roll PDF download links:</span>
@@ -325,18 +371,18 @@
           <div style="flex: 1; min-width: 280px;">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
               <span style="background: var(--color-primary); color: #ffffff; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;">SELECTED DISTRICT</span>
-              <span style="font-size: 0.85rem; color: var(--color-text-muted);">Andhra Pradesh SIR 2026</span>
+              <span style="font-size: 0.85rem; color: var(--color-text-muted);">{state_en} SIR 2026</span>
             </div>
-            <h3 id="selectedDistrictName" style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.5rem; font-weight: 800;">📍 Visakhapatnam</h3>
+            <h3 id="selectedDistrictName" style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.5rem; font-weight: 800;">📍 {first_district['name']}</h3>
             <div id="selectedDistrictAC" style="margin: 0; color: var(--color-text); font-size: 1rem; line-height: 1.6; background: var(--color-bg); padding: 12px 14px; border-radius: 8px; border: 1px solid var(--color-border);">
-              <strong style="color: var(--color-primary);">Vidhan Sabha Constituencies:</strong> <span id="acListText">Visakhapatnam East, Visakhapatnam South, Visakhapatnam North, Visakhapatnam West, Bheemili, Gajuwaka, Pendurthi</span>
+              <strong style="color: var(--color-primary);">Vidhan Sabha Constituencies:</strong> <span id="acListText">{first_district['ac']}</span>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; gap: 10px; min-width: 200px;">
             <a id="btnDistrictSearch" href="https://voters.eci.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="font-size: 0.92rem; padding: 12px 18px; font-weight: 700; text-align: center; text-decoration: none;">
               🔍 Search Voter Name ↗
             </a>
-            <a id="btnDistrictPDF" href="https://ceoandhra.nic.in" target="_blank" rel="noopener noreferrer" class="btn" style="background: #146B3A; color: #ffffff; font-size: 0.92rem; padding: 12px 18px; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px;">
+            <a id="btnDistrictPDF" href="{ceo_url}" target="_blank" rel="noopener noreferrer" class="btn" style="background: #146B3A; color: #ffffff; font-size: 0.92rem; padding: 12px 18px; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px;">
               📥 Download PDF Roll ↗
             </a>
             <a href="tel:1950" class="btn" style="background: #D97F2B; color: #ffffff; font-size: 0.92rem; padding: 10px 18px; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px;">
@@ -348,76 +394,51 @@
 
       <!-- DISTRICT CLICKABLE CHIPS -->
       <div id="districtChipsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; font-size: 0.92rem;">
-        <button type="button" class="dist-chip active-chip" onclick="showDistrict('Visakhapatnam', 'Visakhapatnam East, Visakhapatnam South, Visakhapatnam North, Visakhapatnam West, Bheemili, Gajuwaka, Pendurthi', this)" style="text-align: left; padding: 10px 12px; background: #e0f2fe; border: 1.5px solid #0284c7; border-radius: 8px; cursor: pointer; font-weight: 700; color: #0369a1;">📍 Visakhapatnam</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('NTR (Vijayawada)', 'Vijayawada Central, Vijayawada East, Vijayawada West, Mylavaram, Nandigama, Jaggayyapeta, Tiruvuru', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 NTR (Vijayawada)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Guntur', 'Guntur East, Guntur West, Ponnur, Tadikonda, Mangalagiri, Tenali, Prathipadu', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Guntur</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Tirupati', 'Tirupati, Chandragiri, Srikalahasti, Satyavedu, Nagari, Gudur, Sullurpeta, Venkatagiri', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Tirupati</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Kurnool', 'Kurnool, Kodumur, Yemmiganur, Mantralayam, Adoni, Alur, Pattikonda', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Kurnool</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Kakinada', 'Kakinada City, Kakinada Rural, Peddapuram, Pithapuram, Tuni, Prathipadu, Jaggampeta', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Kakinada</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('East Godavari (Rajahmundry)', 'Rajahmundry City, Rajahmundry Rural, Anaparthy, Rajanagaram, Kovvur, Nidadavole, Gopalapuram', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 East Godavari (Rajahmundry)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('West Godavari (Bhimavaram)', 'Bhimavaram, Narasapuram, Palakollu, Tadepalligudem, Tanuku, Achanta, Undi', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 West Godavari (Bhimavaram)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Krishna (Machilipatnam)', 'Machilipatnam, Gudivada, Pamarru, Penamaluru, Gannavaram, Pedana, Avanigadda', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Krishna (Machilipatnam)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Prakasam (Ongole)', 'Ongole, Chirala, Parchur, Addanki, Santhanuthalapadu, Kandukur, Darsi, Markapuram, Giddalur, Yerragondapalem, Kanigiri', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Prakasam (Ongole)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Nellore (SPSR Nellore)', 'Nellore City, Nellore Rural, Sarvepalli, Kovur, Atmakur, Udayagiri, Kavali', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Nellore (SPSR Nellore)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Anantapur', 'Anantapur Urban, Guntakal, Tadipatri, Singanamala, Rayadurg, Uravakonda, Kalyandurg', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Anantapur</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('YSR Kadapa', 'Kadapa, Kamalapuram, Proddatur, Jammalamadugu, Pulivendula, Mydukur, Badvel', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 YSR Kadapa</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Chittoor', 'Chittoor, Nagari, Gangadhara Nellore, Puthalapattu, Palamaner, Kuppam', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Chittoor</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Srikakulam', 'Srikakulam, Amadalavalasa, Narasannapeta, Tekkali, Palasa, Ichchapuram, Pathapatnam, Rajam', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Srikakulam</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Vizianagaram', 'Vizianagaram, Cheepurupalli, Gajapathinagaram, Nellimarla, Bobbili, Srungavarapukota, Kurupam, Parvathipuram, Salur', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Vizianagaram</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Eluru', 'Eluru, Denduluru, Unguturu, Chintalapudi, Polavaram, Kaikalur, Nuzvid', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Eluru</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Nandyal', 'Nandyal, Allagadda, Banaganapalle, Dhone, Nandikotkur, Srisailam', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Nandyal</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Sri Sathya Sai (Puttaparthi)', 'Puttaparthi, Dharmavaram, Kadiri, Penukonda, Hindupur, Madakasira', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Sri Sathya Sai (Puttaparthi)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Annamayya (Rayachoti)', 'Rayachoti, Rajampet, Kodur, Madanapalle, Thamballapalle, Pileru', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Annamayya (Rayachoti)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Bapatla', 'Bapatla, Chirala, Parchur, Addanki, Vemuru, Repalle', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Bapatla</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Palnadu (Narasaraopet)', 'Narasaraopet, Sattenapalle, Vinukonda, Gurazala, Macherla, Pedakurapadu, Chilakaluripet', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Palnadu (Narasaraopet)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Konaseema (Amalapuram)', 'Amalapuram, Razole, Gannavaram, Kothapeta, Mandapeta, Ramachandrapuram, Mummidivaram', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Konaseema (Amalapuram)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Anakapalli', 'Anakapalle, Chodavaram, Madugula, Elamanchili, Payakaraopet, Narsipatnam, Pendurthi', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Anakapalli</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Alluri Sitharama Raju (Paderu)', 'Paderu, Araku Valley, Rampachodavaram', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Alluri Sitharama Raju (Paderu)</button>
-        <button type="button" class="dist-chip" onclick="showDistrict('Parvathipuram Manyam', 'Parvathipuram, Kurupam, Salur, Palakonda', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Parvathipuram Manyam</button>
+{chips_str}
       </div>
     </section>
 
     <script>
-      function showDistrict(name, acList, btnEl) {
+      function showDistrict(name, acList, btnEl) {{
         document.getElementById('selectedDistrictName').innerText = '📍 ' + name;
         document.getElementById('acListText').innerText = acList;
         
         var chips = document.querySelectorAll('.dist-chip');
-        chips.forEach(function(c) {
+        chips.forEach(function(c) {{
           c.classList.remove('active-chip');
           c.style.background = 'var(--color-surface)';
           c.style.border = '1px solid var(--color-border)';
           c.style.fontWeight = '600';
           c.style.color = 'var(--color-text)';
-        });
-        if (btnEl) {
+        }});
+        if (btnEl) {{
           btnEl.classList.add('active-chip');
           btnEl.style.background = '#e0f2fe';
           btnEl.style.border = '1.5px solid #0284c7';
           btnEl.style.fontWeight = '700';
           btnEl.style.color = '#0369a1';
-        }
-      }
+        }}
+      }}
 
-      function filterDistricts() {
+      function filterDistricts() {{
         var input = document.getElementById('districtSearchInput').value.toLowerCase();
         var chips = document.querySelectorAll('#districtChipsContainer .dist-chip');
-        chips.forEach(function(chip) {
+        chips.forEach(function(chip) {{
           var txt = chip.textContent.toLowerCase();
-          if (txt.indexOf(input) > -1) {
+          if (txt.indexOf(input) > -1) {{
             chip.style.display = 'block';
-          } else {
+          }} else {{
             chip.style.display = 'none';
-          }
-        });
-      }
+          }}
+        }});
+      }}
     </script>
 
     <!-- 6 STATE-SPECIFIC REAL-WORLD PROBLEMS & STEP-BY-STEP SOLVERS -->
     <section class="blog-content" style="line-height: 1.85; font-size: 1.05rem; color: var(--color-text); margin: 40px 0;">
       <h2 style="color: var(--color-primary); font-size: 1.75rem; margin-bottom: 24px;">
-        💡 <span data-lang-show="en">Top 6 Andhra Pradesh Voter List Problems & Step-by-Step Practical Solutions</span>
-        <span data-lang-show="hi">आंध्र प्रदेश मतदाता सूची से जुड़ी 6 मुख्य समस्याएं व उनका पक्का समाधान</span>
+        💡 <span data-lang-show="en">Top 6 {state_en} Voter List Problems & Step-by-Step Practical Solutions</span>
+        <span data-lang-show="hi">{state_hi} मतदाता सूची से जुड़ी 6 मुख्य समस्याएं व उनका पक्का समाधान</span>
       </h2>
 
       <!-- Problem 1 -->
@@ -440,7 +461,7 @@
         </p>
         <ul style="padding-left: 20px; margin: 8px 0;">
           <li><strong>समाधान:</strong> फॉर्म सबमिट करते समय आपको 12-अंकों का <strong>Reference Number</strong> (जैसे <code>REC123456789</code>) SMS पर प्राप्त होता है।</li>
-          <li><code>voters.eci.gov.in/track-application</code> पर जाएं, अपना राज्य <strong>Andhra Pradesh</strong> चुनें और Reference ID दर्ज करें। वहां <em>Submitted → BLO Appointed → Field Verified → Accepted/Rejected</em> का लाइव स्टेटस दिखता है।</li>
+          <li><code>voters.eci.gov.in/track-application</code> पर जाएं, अपना राज्य <strong>{state_en}</strong> चुनें और Reference ID दर्ज करें। वहां <em>Submitted → BLO Appointed → Field Verified → Accepted/Rejected</em> का लाइव स्टेटस दिखता है।</li>
         </ul>
       </div>
 
@@ -470,7 +491,7 @@
 
       <!-- Problem 5 -->
       <div class="prob-box" style="border-left: 6px solid #059669;">
-        <h3 style="margin-top: 0; color: var(--color-primary);">5. Andhra Pradesh में अपने बूथ लेवल ऑफिसर (BLO) से सीधे कैसे संपर्क करें?</h3>
+        <h3 style="margin-top: 0; color: var(--color-primary);">5. {state_en} में अपने बूथ लेवल ऑफिसर (BLO) से सीधे कैसे संपर्क करें?</h3>
         <p>
           डोर-टू-डोर वेरिफिकेशन या हार्ड कॉपी जमा करने के लिए अपने स्थानीय BLO का संपर्क नंबर आवश्यक होता है।
         </p>
@@ -499,13 +520,13 @@
       <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 14px;">
         <span style="font-size: 2.2rem;">🏛️</span>
         <div>
-          <h2 style="margin: 0; font-size: 1.35rem; color: #ffffff; font-weight: 700;">Andhra Pradesh आधिकारिक वोटर पोर्टल लिंक (Dedicated Official Links)</h2>
-          <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 0.92rem;">Chief Electoral Officer (CEO) Andhra Pradesh व भारत निर्वाचन आयोग के सत्यापित वेब पोर्टल</p>
+          <h2 style="margin: 0; font-size: 1.35rem; color: #ffffff; font-weight: 700;">{state_en} आधिकारिक वोटर पोर्टल लिंक (Dedicated Official Links)</h2>
+          <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 0.92rem;">{ceo_name} व भारत निर्वाचन आयोग के सत्यापित वेब पोर्टल</p>
         </div>
       </div>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 20px;">
-        <a href="https://ceoandhra.nic.in" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: #2563eb; color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; font-size: 1rem; border: 1px solid #3b82f6;">
-          <span>🌐 Official Chief Electoral Officer (CEO) Andhra Pradesh Portal</span>
+        <a href="{ceo_url}" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: #2563eb; color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; font-size: 1rem; border: 1px solid #3b82f6;">
+          <span>🌐 Official {ceo_name} Portal</span>
           <span style="font-size: 1.1rem;">↗</span>
         </a>
         <a href="https://voters.eci.gov.in" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: #059669; color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; font-size: 1rem; border: 1px solid #10b981;">
@@ -519,7 +540,7 @@
       </div>
       <div style="margin-top: 18px; padding-top: 14px; border-top: 1px dashed rgba(255,255,255,0.15); font-size: 0.88rem; color: #94a3b8; display: flex; align-items: center; gap: 8px;">
         <span>ℹ️</span>
-        <span>आधिकारिक वेबसाइट: <strong>ceoandhra.nic.in</strong> — नाम खोजने, पीडीएफ डाउनलोड करने और ऑनलाइन वोटर फॉर्म भरने के लिए हमेशा आधिकारिक पोर्टल का प्रयोग करें।</span>
+        <span>आधिकारिक वेबसाइट: <strong>{ceo_url.replace('https://', '')}</strong> — नाम खोजने, पीडीएफ डाउनलोड करने और ऑनलाइन वोटर फॉर्म भरने के लिए हमेशा आधिकारिक पोर्टल का प्रयोग करें।</span>
       </div>
     </section>
 
@@ -556,20 +577,20 @@
     <!-- VIP TELEGRAM BANNER -->
     <div style="background: linear-gradient(135deg, #0088cc 0%, #005f8f 100%); border-radius: 12px; padding: 24px; color: #fff; margin: 36px 0; text-align: center; box-shadow: 0 4px 12px rgba(0,136,204,0.25);">
       <h3 style="margin: 0 0 8px 0; color: #fff; font-size: 1.4rem;">✈️ SarkariSewa VIP Telegram Community</h3>
-      <p style="margin: 0 0 16px 0; color: #e0f2fe; font-size: 0.95rem;">Andhra Pradesh की सभी सरकारी योजनाओं, वोटर लिस्ट अपडेट्स, राशन कार्ड व सरकारी भर्ती अलर्ट्स की सबसे तेज़ जानकारी पाएं।</p>
+      <p style="margin: 0 0 16px 0; color: #e0f2fe; font-size: 0.95rem;">{state_en} की सभी सरकारी योजनाओं, वोटर लिस्ट अपडेट्स, राशन कार्ड व सरकारी भर्ती अलर्ट्स की सबसे तेज़ जानकारी पाएं।</p>
       <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="btn" style="background: #fff; color: #0088cc; font-weight: 700; padding: 10px 24px; text-decoration: none; border-radius: 8px; display: inline-block;">Join Telegram Channel ↗</a>
     </div>
 
     <!-- COMMENTS SECTION -->
     <section class="service-section" id="comments-section">
       <h2 class="service-section__title"><span class="icon">💬</span> Questions &amp; Comments</h2>
-      <p class="comments-note">यह Andhra Pradesh मतदाता सूची से जुड़ी सार्वजनिक चर्चा है। आधिकारिक सहायता के लिए 1950 पर कॉल करें।</p>
+      <p class="comments-note">यह {state_en} मतदाता सूची से जुड़ी सार्वजनिक चर्चा है। आधिकारिक सहायता के लिए 1950 पर कॉल करें।</p>
       <form id="comment-form" class="comment-form">
         <div class="comment-form__row">
           <input type="text" id="comment-name" maxlength="80" placeholder="आपका नाम (Your Name)" required />
         </div>
         <div class="comment-form__row">
-          <textarea id="comment-message" maxlength="2000" rows="3" placeholder="Andhra Pradesh वोटर लिस्ट, Form 6 या सुधार से जुड़ा अपना सवाल पूछें..." required></textarea>
+          <textarea id="comment-message" maxlength="2000" rows="3" placeholder="{state_en} वोटर लिस्ट, Form 6 या सुधार से जुड़ा अपना सवाल पूछें..." required></textarea>
         </div>
         <div class="comment-form__actions">
           <span class="comment-form__status" id="comment-form-status"></span>
@@ -592,4 +613,17 @@
   <script src="../assets/js/share-widget.js"></script>
   <script src="../assets/js/service-template.js"></script>
 </body>
-</html>
+</html>'''
+
+# Execute build for all states
+count = 0
+for slug, info in ALL_STATES.items():
+    file_path = os.path.join(STATES_DIR, f"{slug}.html")
+    html_content = render_state_page(info)
+    with open(file_path, 'w', encoding='utf-8') as f:
+        f.write(html_content)
+    print(f"Generated: states/{slug}.html ({info['total_districts']} districts, {info['total_ac']} ACs)")
+    count += 1
+
+print(f"Successfully upgraded {count} state SIR pages!")
+

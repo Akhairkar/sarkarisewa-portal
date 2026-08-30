@@ -1,7 +1,9 @@
 # build_mpbcdc_pages.py
 import os
 
-ROOT = r"C:\Users\Lenovo\Desktop\SarkariSewaIndia\SarkariSewa_Merged_Production"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SERVICE_DIR = os.path.join(ROOT, "service")
+
 
 # 1. DIRECT LOAN YOJANA HTML
 dl_html = """<!DOCTYPE html>
