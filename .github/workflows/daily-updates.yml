@@ -35,19 +35,13 @@ jobs:
         run: |
           python automation/update_pipeline.py
 
-      - name: Generate RSS Feed & Broadcast to WhatsApp Channel
+      - name: Generate RSS Feed & Broadcast to Telegram Channel
         env:
-          WHATSAPP_WEBHOOK_URL: ${{ secrets.WHATSAPP_WEBHOOK_URL }}
-          WHATSAPP_API_URL: ${{ secrets.WHATSAPP_API_URL }}
-          WHATSAPP_API_TOKEN: ${{ secrets.WHATSAPP_API_TOKEN }}
-          WHATSAPP_CHANNEL_ID: ${{ secrets.WHATSAPP_CHANNEL_ID }}
-          GREEN_API_INSTANCE_ID: ${{ secrets.GREEN_API_INSTANCE_ID }}
-          GREEN_API_TOKEN: ${{ secrets.GREEN_API_TOKEN }}
-          GREEN_API_CHAT_ID: ${{ secrets.GREEN_API_CHAT_ID }}
-          GREEN_API_URL: ${{ secrets.GREEN_API_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
         run: |
           python automation/generate_rss_feed.py
-          python automation/whatsapp_broadcaster.py
+          python automation/telegram_broadcaster.py
 
       - name: Run Integrity Audit
         run: |

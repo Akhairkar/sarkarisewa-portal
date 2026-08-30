@@ -1,8 +1,8 @@
 import os
 import glob
 
-OLD_LINK = "https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g"
-NEW_LINK = "https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g"
+OLD_LINK = "https://t.me/sarkarisewaindia"
+NEW_LINK = "https://t.me/sarkarisewaindia"
 
 def fix_whatsapp_links():
     files = glob.glob('**/*.html', recursive=True)

@@ -36,7 +36,7 @@ def generate_whatsapp_broadcast():
             msg += f"👉 *Read Full Details:* {link}\n\n"
             
         msg += "🔔 *Follow our WhatsApp Channel for instant updates:*\n"
-        msg += "https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g\n"
+        msg += "https://t.me/sarkarisewaindia\n"
         
         with open('whatsapp_ready.txt', 'w', encoding='utf-8') as f:
             f.write(msg)
