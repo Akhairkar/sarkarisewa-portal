@@ -58,16 +58,46 @@ def format_whatsapp_message(title, summary, url):
     )
     return msg
 
-def normalize_chat_id(raw_id):
+def resolve_green_api_chat_id(base_url, inst, tok, raw_id):
     raw_id = (raw_id or "").strip()
     if not raw_id:
         return ""
     if "@" in raw_id:
         return raw_id
-    # If pure digits (phone number), append @c.us
+    
+    # 1. If pure phone number
     clean_num = raw_id.replace("+", "").replace("-", "").replace(" ", "")
-    if clean_num.isdigit():
+    if clean_num.isdigit() and len(clean_num) >= 10:
         return f"{clean_num}@c.us"
+        
+    # 2. If it's a channel invite code (e.g. 0029VbDjAqgEAKWFibyzWr0g), auto-resolve via Green-API
+    print(f"  [Green-API] Resolving channel invite code '{raw_id}' to newsletter JID...")
+    try:
+        info_endpoint = f"{base_url}/waInstance{inst}/getNewsletterInfo/{tok}"
+        resp = requests.post(info_endpoint, json={"inviteCode": raw_id}, timeout=10)
+        if resp.status_code == 200:
+            data = resp.json()
+            jid = data.get("id") or data.get("chatId") or data.get("newsletterJid")
+            if jid:
+                print(f"  [Green-API] Successfully resolved channel to: {jid}")
+                return jid
+    except Exception as e:
+        print(f"  [Green-API getNewsletterInfo Error] {e}")
+        
+    # 3. Fallback: Search all active chats for newsletter/channel
+    try:
+        chats_endpoint = f"{base_url}/waInstance{inst}/getChats/{tok}"
+        resp = requests.get(chats_endpoint, timeout=10)
+        if resp.status_code == 200:
+            chats = resp.json()
+            for chat in chats:
+                c_id = chat.get("id", "")
+                if "@newsletter" in c_id:
+                    print(f"  [Green-API] Found active newsletter channel in account: {c_id}")
+                    return c_id
+    except Exception as e:
+        print(f"  [Green-API getChats Error] {e}")
+
     return raw_id
 
 def send_message_to_whatsapp(msg_payload):
@@ -79,17 +109,19 @@ def send_message_to_whatsapp(msg_payload):
     # 1. Direct Green-API Integration
     inst = GREEN_API_INSTANCE_ID or "710722723423"
     tok = GREEN_API_TOKEN or WHATSAPP_API_TOKEN
-    chat_id = normalize_chat_id(GREEN_API_CHAT_ID or WHATSAPP_CHANNEL_ID)
+    raw_chat_id = GREEN_API_CHAT_ID or WHATSAPP_CHANNEL_ID
     
-    if tok and chat_id:
+    if tok and raw_chat_id:
         try:
             base_url = GREEN_API_URL.rstrip('/')
+            chat_id = resolve_green_api_chat_id(base_url, inst, tok, raw_chat_id)
+            
             endpoint = f"{base_url}/waInstance{inst}/sendMessage/{tok}"
             body = {
                 "chatId": chat_id,
                 "message": message_text
             }
-            print(f"  [Green-API] Sending to chatId: {chat_id} via instance: {inst}...")
+            print(f"  [Green-API] Sending message to chatId: {chat_id} via instance: {inst}...")
             resp = requests.post(endpoint, json=body, timeout=20)
             print(f"  [Green-API Response] Status: {resp.status_code} | Body: {resp.text}")
             return resp.status_code in [200, 201]
