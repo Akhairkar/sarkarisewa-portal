@@ -23,6 +23,12 @@ WHATSAPP_API_URL = os.environ.get("WHATSAPP_API_URL", "").strip()
 WHATSAPP_API_TOKEN = os.environ.get("WHATSAPP_API_TOKEN", "").strip()
 WHATSAPP_CHANNEL_ID = os.environ.get("WHATSAPP_CHANNEL_ID", "").strip()
 
+# Green-API specific environment variables
+GREEN_API_URL = os.environ.get("GREEN_API_URL", "https://7107.api.greenapi.com").strip()
+GREEN_API_INSTANCE_ID = os.environ.get("GREEN_API_INSTANCE_ID", "").strip()
+GREEN_API_TOKEN = os.environ.get("GREEN_API_TOKEN", "").strip()
+GREEN_API_CHAT_ID = os.environ.get("GREEN_API_CHAT_ID", "").strip()
+
 def load_history():
     if HISTORY_FILE.exists():
         try:
@@ -54,12 +60,32 @@ def format_whatsapp_message(title, summary, url):
 
 def send_message_to_whatsapp(msg_payload):
     """
-    Send to configured WhatsApp Gateway or Webhook.
+    Send to configured WhatsApp Gateway, Green-API, or Webhook.
     """
     message_text = msg_payload["message"]
     
-    # 1. Custom Webhook (Make.com, Pipedream, Zapier, Custom Server)
-    if WHATSAPP_WEBHOOK_URL:
+    # 1. Direct Green-API Integration
+    if (GREEN_API_INSTANCE_ID and GREEN_API_TOKEN) or (WHATSAPP_API_URL and "greenapi" in WHATSAPP_API_URL):
+        try:
+            inst = GREEN_API_INSTANCE_ID or "710722723423"
+            tok = GREEN_API_TOKEN or WHATSAPP_API_TOKEN
+            chat_id = GREEN_API_CHAT_ID or WHATSAPP_CHANNEL_ID
+            base_url = GREEN_API_URL.rstrip('/')
+            
+            endpoint = f"{base_url}/waInstance{inst}/sendMessage/{tok}"
+            body = {
+                "chatId": chat_id,
+                "message": message_text
+            }
+            resp = requests.post(endpoint, json=body, timeout=15)
+            print(f"  [Green-API] Dispatched to WhatsApp. Status: {resp.status_code}, Response: {resp.text[:120]}")
+            return resp.status_code in [200, 201]
+        except Exception as e:
+            print(f"  [Green-API Error] {e}")
+            return False
+
+    # 2. Custom Webhook (Make.com, Pipedream, Zapier)
+    elif WHATSAPP_WEBHOOK_URL:
         try:
             resp = requests.post(WHATSAPP_WEBHOOK_URL, json=msg_payload, timeout=15)
             print(f"  [Webhook] Dispatched to webhook. Status: {resp.status_code}")
@@ -68,7 +94,7 @@ def send_message_to_whatsapp(msg_payload):
             print(f"  [Webhook Error] {e}")
             return False
 
-    # 2. Direct WhatsApp API Gateway (Whapi, GreenAPI, UltraMsg, etc.)
+    # 3. Generic WhatsApp API Gateway (Whapi, UltraMsg, etc.)
     elif WHATSAPP_API_URL and WHATSAPP_API_TOKEN:
         try:
             headers = {
@@ -77,8 +103,7 @@ def send_message_to_whatsapp(msg_payload):
             }
             body = {
                 "to": WHATSAPP_CHANNEL_ID,
-                "body": message_text,
-                "typing_time": 0
+                "body": message_text
             }
             resp = requests.post(WHATSAPP_API_URL, json=body, headers=headers, timeout=15)
             print(f"  [API Gateway] Dispatched to WhatsApp API. Status: {resp.status_code}")
