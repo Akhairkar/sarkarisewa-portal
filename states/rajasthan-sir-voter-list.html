@@ -313,25 +313,28 @@
         </div>
       </div>
 
-      <!-- ACTIVE DISTRICT DETAIL DISPLAY BOX -->
-      <div id="districtDetailCard" style="background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); border: 2px solid #86efac; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
-          <div>
-            <span style="background: #146B3A; color: #fff; padding: 3px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">SELECTED DISTRICT</span>
-            <h3 id="selectedDistrictName" style="margin: 8px 0 4px 0; color: var(--color-primary); font-size: 1.4rem;">📍 Jaipur (Urban & Rural)</h3>
-            <p id="selectedDistrictAC" style="margin: 0; color: var(--color-text); font-size: 0.95rem; line-height: 1.6;">
-              <strong>Vidhan Sabha Constituencies:</strong> Hawa Mahal, Vidhyadhar Nagar, Civil Lines, Kishanpole, Adarsh Nagar, Malviya Nagar, Sanganer, Bagru, Jhotwara, Amber, Jamwa Ramgarh, Chaksu, Shahpura, Kotputli, Viratnagar
-            </p>
+      <!-- ACTIVE DISTRICT DETAIL DISPLAY BOX (HIGH-CONTRAST THEME AWARE) -->
+      <div id="districtDetailCard" style="background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: 14px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+          <div style="flex: 1; min-width: 280px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span style="background: var(--color-primary); color: #ffffff; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;">SELECTED DISTRICT</span>
+              <span style="font-size: 0.85rem; color: var(--color-text-muted);">Rajasthan SIR 2026</span>
+            </div>
+            <h3 id="selectedDistrictName" style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.5rem; font-weight: 800;">📍 Jaipur (Urban & Rural)</h3>
+            <div id="selectedDistrictAC" style="margin: 0; color: var(--color-text); font-size: 1rem; line-height: 1.6; background: var(--color-bg); padding: 12px 14px; border-radius: 8px; border: 1px solid var(--color-border);">
+              <strong style="color: var(--color-primary);">Vidhan Sabha Constituencies:</strong> <span id="acListText">Hawa Mahal, Vidhyadhar Nagar, Civil Lines, Kishanpole, Adarsh Nagar, Malviya Nagar, Sanganer, Bagru, Jhotwara, Amber, Jamwa Ramgarh, Chaksu, Shahpura, Kotputli, Viratnagar</span>
+            </div>
           </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <a id="btnDistrictSearch" href="https://voters.eci.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="font-size: 0.88rem; padding: 10px 16px; font-weight: 700;">
+          <div style="display: flex; flex-direction: column; gap: 10px; min-width: 200px;">
+            <a id="btnDistrictSearch" href="https://voters.eci.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="font-size: 0.92rem; padding: 12px 18px; font-weight: 700; text-align: center; text-decoration: none;">
               🔍 Search Voter Name ↗
             </a>
-            <a id="btnDistrictPDF" href="https://ceorajasthan.nic.in" target="_blank" rel="noopener noreferrer" class="btn" style="background: #146B3A; color: #fff; font-size: 0.88rem; padding: 10px 16px; font-weight: 700; text-decoration: none;">
+            <a id="btnDistrictPDF" href="https://ceorajasthan.nic.in" target="_blank" rel="noopener noreferrer" class="btn" style="background: #146B3A; color: #ffffff; font-size: 0.92rem; padding: 12px 18px; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px;">
               📥 Download PDF Roll ↗
             </a>
-            <a href="tel:1950" class="btn" style="background: #D97F2B; color: #fff; font-size: 0.88rem; padding: 10px 16px; font-weight: 700; text-decoration: none;">
-              📞 Call Helpline (1950)
+            <a href="tel:1950" class="btn" style="background: #D97F2B; color: #ffffff; font-size: 0.92rem; padding: 10px 18px; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px;">
+              📞 Call BLO/DEO (1950)
             </a>
           </div>
         </div>
@@ -393,7 +396,7 @@
     <script>
       function showDistrict(name, acList, btnEl) {
         document.getElementById('selectedDistrictName').innerText = '📍 ' + name;
-        document.getElementById('selectedDistrictAC').innerHTML = '<strong>Vidhan Sabha Constituencies:</strong> ' + acList;
+        document.getElementById('acListText').innerText = acList;
         
         const chips = document.querySelectorAll('.dist-chip');
         chips.forEach(chip => {
@@ -404,9 +407,9 @@
         });
         
         if (btnEl) {
-          btnEl.style.background = '#e0f2fe';
-          btnEl.style.border = '1.5px solid #0284c7';
-          btnEl.style.color = '#0369a1';
+          btnEl.style.background = 'var(--color-primary)';
+          btnEl.style.border = '1.5px solid var(--color-primary)';
+          btnEl.style.color = '#ffffff';
           btnEl.style.fontWeight = '700';
         }
         
