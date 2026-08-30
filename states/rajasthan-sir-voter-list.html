@@ -295,40 +295,133 @@
       </div>
     </section>
 
-    <!-- DISTRICT LISTING FOR RAJASTHAN -->
-    <section style="margin: 36px 0; padding: 24px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px;">
-      <h2 style="color: var(--color-primary); font-size: 1.45rem; margin-top: 0;">
-        📍 <span data-lang-show="en">Rajasthan District-Wise Electoral Roll Directory (50 Districts)</span>
-        <span data-lang-show="hi">राजस्थान जिला-वार मतदाता सूची निर्देशिका (50 जिले)</span>
-      </h2>
-      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 18px;">
-        <span data-lang-show="en">Select your district to check polling station booth lists, draft publication dates, and district election officer contacts:</span>
-        <span data-lang-show="hi">अपने जिले का चयन करके पोलिंग बूथ लिस्ट, प्रारूप मतदाता सूची व जिला निर्वाचन अधिकारी के संपर्क विवरण देखें:</span>
-      </p>
+    <!-- INTERACTIVE DISTRICT DIRECTORY FOR RAJASTHAN -->
+    <section style="margin: 36px 0; padding: 24px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.03);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+        <div>
+          <h2 style="color: var(--color-primary); font-size: 1.45rem; margin: 0;">
+            📍 <span data-lang-show="en">Rajasthan District-Wise Electoral Roll Directory (All 50 Districts)</span>
+            <span data-lang-show="hi">राजस्थान जिला-वार मतदाता सूची निर्देशिका (सभी 50 जिले)</span>
+          </h2>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; margin: 4px 0 0 0;">
+            <span data-lang-show="en">Click on any district to view its Assembly Constituencies & direct Electoral Roll PDF download links:</span>
+            <span data-lang-show="hi">किसी भी जिले पर क्लिक करें और उसकी विधानसभा सीटें व डायरेक्ट वोटर लिस्ट डाउनलोड लिंक देखें:</span>
+          </p>
+        </div>
+        <div>
+          <input type="text" id="districtSearchInput" placeholder="🔍 Search District (e.g. Jaipur, Kota)..." onkeyup="filterDistricts()" style="padding: 10px 16px; border: 2px solid var(--color-border); border-radius: 10px; font-size: 0.95rem; width: 280px; background: var(--color-surface); color: var(--color-text);" />
+        </div>
+      </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; font-size: 0.92rem;">
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Jaipur Urban / Rural</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Jodhpur Urban / Rural</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Kota</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Bikaner</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Ajmer</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Udaipur</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Alwar</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Sikar</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Bharatpur</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Bhilwara</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Pali</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Nagaur</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Sri Ganganagar</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Hanumangarh</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Jhunjhunu</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Chittorgarh</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Barmer</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Jaisalmer</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Dausa</span>
-        <span style="padding: 8px 12px; background: var(--color-surface-alt, #f8fafc); border-radius: 6px; border: 1px solid var(--color-border);">📍 Tonk & Other 30 Dist.</span>
+      <!-- ACTIVE DISTRICT DETAIL DISPLAY BOX -->
+      <div id="districtDetailCard" style="background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); border: 2px solid #86efac; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <span style="background: #146B3A; color: #fff; padding: 3px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">SELECTED DISTRICT</span>
+            <h3 id="selectedDistrictName" style="margin: 8px 0 4px 0; color: var(--color-primary); font-size: 1.4rem;">📍 Jaipur (Urban & Rural)</h3>
+            <p id="selectedDistrictAC" style="margin: 0; color: var(--color-text); font-size: 0.95rem; line-height: 1.6;">
+              <strong>Vidhan Sabha Constituencies:</strong> Hawa Mahal, Vidhyadhar Nagar, Civil Lines, Kishanpole, Adarsh Nagar, Malviya Nagar, Sanganer, Bagru, Jhotwara, Amber, Jamwa Ramgarh, Chaksu, Shahpura, Kotputli, Viratnagar
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <a id="btnDistrictSearch" href="https://voters.eci.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="font-size: 0.88rem; padding: 10px 16px; font-weight: 700;">
+              🔍 Search Voter Name ↗
+            </a>
+            <a id="btnDistrictPDF" href="https://ceorajasthan.nic.in" target="_blank" rel="noopener noreferrer" class="btn" style="background: #146B3A; color: #fff; font-size: 0.88rem; padding: 10px 16px; font-weight: 700; text-decoration: none;">
+              📥 Download PDF Roll ↗
+            </a>
+            <a href="tel:1950" class="btn" style="background: #D97F2B; color: #fff; font-size: 0.88rem; padding: 10px 16px; font-weight: 700; text-decoration: none;">
+              📞 Call Helpline (1950)
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 50 DISTRICT CLICKABLE CHIPS -->
+      <div id="districtChipsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; font-size: 0.92rem;">
+        <button type="button" class="dist-chip active-chip" onclick="showDistrict('Jaipur (Urban & Rural)', 'Hawa Mahal, Vidhyadhar Nagar, Civil Lines, Kishanpole, Adarsh Nagar, Malviya Nagar, Sanganer, Bagru, Jhotwara, Amber, Chaksu, Shahpura', this)" style="text-align: left; padding: 10px 12px; background: #e0f2fe; border: 1.5px solid #0284c7; border-radius: 8px; cursor: pointer; font-weight: 700; color: #0369a1;">📍 Jaipur</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Jodhpur (Urban & Rural)', 'Sardarpura, Soorsagar, Jodhpur City, Luni, Bilara, Osian, Shergarh, Phalodi, Lohawat', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Jodhpur</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Kota', 'Kota North, Kota South, Ladpura, Ramganj Mandi, Sangod, Pipalda', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Kota</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Bikaner', 'Bikaner West, Bikaner East, Kolayat, Lunkaransar, Dungargarh, Nokha, Khajuwala', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Bikaner</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Ajmer', 'Ajmer North, Ajmer South, Pushkar, Nasirabad, Kishangarh, Beawar, Kekri, Masuda', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Ajmer</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Udaipur', 'Udaipur City, Udaipur Rural, Mavli, Vallabhnagar, Salumber, Kherwara, Gogunda, Jhadol', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Udaipur</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Alwar', 'Alwar Urban, Alwar Rural, Tijara, Kishangarh Bas, Mundawar, Behror, Thanagazi, Rajgarh-Laxmangarh, Ramgarh, Kathumar', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Alwar</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Sikar', 'Sikar City, Dhod, Dantaramgarh, Khandela, Neem Ka Thana, Srimadhopur, Fatehpur, Lachhmangarh', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Sikar</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Bharatpur', 'Bharatpur City, Nadbai, Weir, Bayana, Kaman, Nagar, Deeg-Kumher', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Bharatpur</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Bhilwara', 'Bhilwara City, Mandal, Sahara, Asind, Banera, Shahpura, Jahazpur, Mandalgarh', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Bhilwara</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Pali', 'Pali City, Sojat, Jaitaran, Sumerpur, Bali, Marwar Junction', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Pali</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Nagaur', 'Nagaur City, Khinvsar, Jayal, Merta, Degana, Makrana, Parbatsar, Nawan, Didwana, Ladnun', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Nagaur</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Sri Ganganagar', 'Ganganagar City, Sadulshahar, Karanpur, Suratgarh, Raisinghnagar, Anupgarh', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Sri Ganganagar</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Hanumangarh', 'Hanumangarh City, Pilibanga, Nohar, Bhadra, Sangaria', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Hanumangarh</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Jhunjhunu', 'Jhunjhunu City, Mandawa, Nawalgarh, Udaipurwati, Khetri, Surajgarh, Pilani', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Jhunjhunu</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Chittorgarh', 'Chittorgarh City, Begun, Kapasan, Bari Sadri, Nimbahera', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Chittorgarh</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Barmer', 'Barmer City, Baytoo, Sheo, Chohtan, Pachpadra, Siwana, Gudamalani', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Barmer</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Jaisalmer', 'Jaisalmer City, Pokaran', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Jaisalmer</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Dausa', 'Dausa City, Lalsot, Bandikui, Sikrai, Mahwa', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Dausa</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Tonk', 'Tonk City, Niwai, Deoli-Uniara, Malpura', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Tonk</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Churu', 'Churu City, Ratangarh, Sardarshahar, Sujangarh, Sadulpur, Taranagar', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Churu</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Banswara', 'Banswara City, Garhi, Ghatol, Kushalgarh, Bagidora', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Banswara</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Dungarpur', 'Dungarpur City, Sagwara, Chorasi, Aspur', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Dungarpur</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Rajsamand', 'Rajsamand City, Nathdwara, Kumbhalgarh, Bhim', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Rajsamand</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Sirohi', 'Sirohi City, Pindwara-Abu, Reodar', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Sirohi</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Jalore', 'Jalore City, Ahore, Bhinmal, Sanchore, Raniwara', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Jalore</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Jhalawar', 'Jhalrapatan, Khanpur, Manohar Thana, Dag', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Jhalawar</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Baran', 'Baran-Atru, Chhabra, Kishanganj, Anta', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Baran</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Bundi', 'Bundi City, Keshoraipatan, Hindoli', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Bundi</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Karauli', 'Karauli City, Hindaun, Todabhim, Sapotra', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Karauli</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Sawai Madhopur', 'Sawai Madhopur City, Gangapur City, Bamanwas, Khandar', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Sawai Madhopur</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Dholpur', 'Dholpur City, Bari, Rajakhera, Baseri', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Dholpur</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Pratapgarh', 'Pratapgarh City, Dhariawad', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Pratapgarh</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Anupgarh', 'Anupgarh, Raisinghnagar, Suratgarh', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Anupgarh</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Balotra', 'Balotra, Pachpadra, Siwana, Asotra', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Balotra</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Beawar', 'Beawar, Masuda, Jaitaran, Raipur', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Beawar</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Deeg', 'Deeg, Kaman, Nagar, Kumher', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Deeg</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Didwana-Kuchaman', 'Didwana, Kuchaman, Nawan, Makrana, Parbatsar, Ladnun', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Didwana-Kuchaman</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Dudu', 'Dudu, Mozamabad, Phagi', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Dudu</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Gangapur City', 'Gangapur City, Bamanwas, Wazirpur', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Gangapur City</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Kekri', 'Kekri, Savar, Bhinay, Sarwar', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Kekri</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Kotputli-Behror', 'Kotputli, Behror, Bansur, Paota, Viratnagar', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Kotputli-Behror</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Khairthal-Tijara', 'Tijara, Kishangarh Bas, Mundawar, Khairthal', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Khairthal-Tijara</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Neem Ka Thana', 'Neem Ka Thana, Srimadhopur, Khetri, Udaipurwati', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Neem Ka Thana</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Phalodi', 'Phalodi, Lohawat, Bap, Bapini', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Phalodi</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Salumber', 'Salumber, Sarada, Semari, Lasadiya', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Salumber</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Sanchore', 'Sanchore, Chitalwana, Bagoda', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Sanchore</button>
+        <button type="button" class="dist-chip" onclick="showDistrict('Shahpura (Bhilwara)', 'Shahpura, Jahazpur, Kotri, Banera', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Shahpura</button>
       </div>
     </section>
+
+    <script>
+      function showDistrict(name, acList, btnEl) {
+        document.getElementById('selectedDistrictName').innerText = '📍 ' + name;
+        document.getElementById('selectedDistrictAC').innerHTML = '<strong>Vidhan Sabha Constituencies:</strong> ' + acList;
+        
+        const chips = document.querySelectorAll('.dist-chip');
+        chips.forEach(chip => {
+          chip.style.background = 'var(--color-surface)';
+          chip.style.border = '1px solid var(--color-border)';
+          chip.style.color = 'var(--color-text)';
+          chip.style.fontWeight = '600';
+        });
+        
+        if (btnEl) {
+          btnEl.style.background = '#e0f2fe';
+          btnEl.style.border = '1.5px solid #0284c7';
+          btnEl.style.color = '#0369a1';
+          btnEl.style.fontWeight = '700';
+        }
+        
+        document.getElementById('districtDetailCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      function filterDistricts() {
+        const input = (document.getElementById('districtSearchInput').value || '').trim().toLowerCase();
+        const chips = document.querySelectorAll('#districtChipsContainer .dist-chip');
+        chips.forEach(chip => {
+          const text = chip.innerText.toLowerCase();
+          chip.style.display = text.includes(input) ? 'inline-block' : 'none';
+        });
+      }
+    </script>
 
     <!-- 6 REAL-WORLD PROBLEMS & DEEP SOLUTIONS -->
     <section class="blog-content" style="line-height: 1.85; font-size: 1.05rem; color: var(--color-text); margin: 40px 0;">
