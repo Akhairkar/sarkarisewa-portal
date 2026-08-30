@@ -58,6 +58,18 @@ def format_whatsapp_message(title, summary, url):
     )
     return msg
 
+def normalize_chat_id(raw_id):
+    raw_id = (raw_id or "").strip()
+    if not raw_id:
+        return ""
+    if "@" in raw_id:
+        return raw_id
+    # If pure digits (phone number), append @c.us
+    clean_num = raw_id.replace("+", "").replace("-", "").replace(" ", "")
+    if clean_num.isdigit():
+        return f"{clean_num}@c.us"
+    return raw_id
+
 def send_message_to_whatsapp(msg_payload):
     """
     Send to configured WhatsApp Gateway, Green-API, or Webhook.
@@ -65,20 +77,21 @@ def send_message_to_whatsapp(msg_payload):
     message_text = msg_payload["message"]
     
     # 1. Direct Green-API Integration
-    if (GREEN_API_INSTANCE_ID and GREEN_API_TOKEN) or (WHATSAPP_API_URL and "greenapi" in WHATSAPP_API_URL):
+    inst = GREEN_API_INSTANCE_ID or "710722723423"
+    tok = GREEN_API_TOKEN or WHATSAPP_API_TOKEN
+    chat_id = normalize_chat_id(GREEN_API_CHAT_ID or WHATSAPP_CHANNEL_ID)
+    
+    if tok and chat_id:
         try:
-            inst = GREEN_API_INSTANCE_ID or "710722723423"
-            tok = GREEN_API_TOKEN or WHATSAPP_API_TOKEN
-            chat_id = GREEN_API_CHAT_ID or WHATSAPP_CHANNEL_ID
             base_url = GREEN_API_URL.rstrip('/')
-            
             endpoint = f"{base_url}/waInstance{inst}/sendMessage/{tok}"
             body = {
                 "chatId": chat_id,
                 "message": message_text
             }
-            resp = requests.post(endpoint, json=body, timeout=15)
-            print(f"  [Green-API] Dispatched to WhatsApp. Status: {resp.status_code}, Response: {resp.text[:120]}")
+            print(f"  [Green-API] Sending to chatId: {chat_id} via instance: {inst}...")
+            resp = requests.post(endpoint, json=body, timeout=20)
+            print(f"  [Green-API Response] Status: {resp.status_code} | Body: {resp.text}")
             return resp.status_code in [200, 201]
         except Exception as e:
             print(f"  [Green-API Error] {e}")
