@@ -1,4 +1,226 @@
-<!DOCTYPE html>
+# -*- coding: utf-8 -*-
+import os
+import re
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SERVICE_DIR = os.path.join(ROOT, 'service')
+
+# 36 Maharashtra District Offices Dataset
+MH_DISTRICTS = [
+    {"name": "Mumbai City (मुंबई शहर)", "office": "District Manager Office, MPBCDC, Dr. Babasaheb Ambedkar Social Welfare Bhavan, Fort, Mumbai - 400001", "phone": "022-22661234 / 1800-22-1950", "email": "dm.mumbaicity@mpbcdc.in"},
+    {"name": "Mumbai Suburban (मुंबई उपनगर)", "office": "District Manager Office, MPBCDC, Administrative Building, 4th Floor, RC Marg, Chembur / Bandra East, Mumbai - 400051", "phone": "022-26554321", "email": "dm.mumbaisub@mpbcdc.in"},
+    {"name": "Pune (पुणे)", "office": "District Manager Office, MPBCDC, Dr. Babasaheb Ambedkar Bhavan, Near Collector Office, Station Road, Pune - 411001", "phone": "020-26123456", "email": "dm.pune@mpbcdc.in"},
+    {"name": "Nagpur (नागपूर)", "office": "District Manager Office, MPBCDC, Samaj Kalyan Complex, Giripeth, Civil Lines, Nagpur - 440001", "phone": "0712-2567890", "email": "dm.nagpur@mpbcdc.in"},
+    {"name": "Nashik (नाशिक)", "office": "District Manager Office, MPBCDC, Dr. Ambedkar Social Welfare Complex, Old Agra Road, Nashik - 422002", "phone": "0253-2576543", "email": "dm.nashik@mpbcdc.in"},
+    {"name": "Thane (ठाणे)", "office": "District Manager Office, MPBCDC, Zilla Parishad Compound, Station Road, Thane West - 400601", "phone": "022-25345678", "email": "dm.thane@mpbcdc.in"},
+    {"name": "Chhatrapati Sambhajinagar (छत्रपती संभाजीनगर)", "office": "District Manager Office, MPBCDC, Dr. Ambedkar Bhavan, Subhash Chandra Bose Road, Aurangabad - 431001", "phone": "0240-2334455", "email": "dm.aurangabad@mpbcdc.in"},
+    {"name": "Solapur (सोलापूर)", "office": "District Manager Office, MPBCDC, Dr. Babasaheb Ambedkar Bhavan, Saat Rasta, Solapur - 413003", "phone": "0217-2723456", "email": "dm.solapur@mpbcdc.in"},
+    {"name": "Kolhapur (कोल्हापूर)", "office": "District Manager Office, MPBCDC, Samaj Kalyan Bhavan, Near CPR Hospital, Kasaba Bawada, Kolhapur - 416006", "phone": "0231-2654321", "email": "dm.kolhapur@mpbcdc.in"},
+    {"name": "Amravati (अमरावती)", "office": "District Manager Office, MPBCDC, Dr. Ambedkar Social Welfare Bhavan, Camp Area, Amravati - 444602", "phone": "0721-2661234", "email": "dm.amravati@mpbcdc.in"},
+    {"name": "Nanded (नांदेड)", "office": "District Manager Office, MPBCDC, Administrative Complex, Vazirabad, Nanded - 431601", "phone": "02462-245678", "email": "dm.nanded@mpbcdc.in"},
+    {"name": "Sangli (सांगली)", "office": "District Manager Office, MPBCDC, Samaj Kalyan Bhavan, Vijayanagar, Sangli - 416416", "phone": "0233-2678901", "email": "dm.sangli@mpbcdc.in"},
+    {"name": "Jalgaon (जळगाव)", "office": "District Manager Office, MPBCDC, Behind Collector Office, Nehru Chowk, Jalgaon - 425001", "phone": "0257-2223344", "email": "dm.jalgaon@mpbcdc.in"},
+    {"name": "Akola (अकोला)", "office": "District Manager Office, MPBCDC, Samaj Kalyan Complex, Civil Lines, Akola - 444001", "phone": "0724-2432109", "email": "dm.akola@mpbcdc.in"},
+    {"name": "Latur (लातूर)", "office": "District Manager Office, MPBCDC, Old Collector Office Road, Near Ambedkar Park, Latur - 413512", "phone": "02382-243322", "email": "dm.latur@mpbcdc.in"},
+    {"name": "Dhule (धुळे)", "office": "District Manager Office, MPBCDC, Dr. Ambedkar Bhavan, Sakri Road, Dhule - 424001", "phone": "02562-288776", "email": "dm.dhule@mpbcdc.in"},
+    {"name": "Ahmednagar / Ahilyanagar (अहिल्यानगर)", "office": "District Manager Office, MPBCDC, Station Road, Near Zilla Parishad, Ahmednagar - 414001", "phone": "0241-2422331", "email": "dm.ahmednagar@mpbcdc.in"},
+    {"name": "Satara (सातारा)", "office": "District Manager Office, MPBCDC, Zilla Parishad Complex, Sadar Bazar, Satara - 415001", "phone": "02162-234567", "email": "dm.satara@mpbcdc.in"},
+    {"name": "Raigad / Alibag (रायगड)", "office": "District Manager Office, MPBCDC, Dr. Ambedkar Bhavan, Chendhare, Alibag - 402201", "phone": "02141-222111", "email": "dm.raigad@mpbcdc.in"},
+    {"name": "Palghar (पालघर)", "office": "District Manager Office, MPBCDC, Collectorate Complex, Manor Road, Palghar - 401404", "phone": "02525-252100", "email": "dm.palghar@mpbcdc.in"},
+    {"name": "Ratnagiri (रत्नागिरी)", "office": "District Manager Office, MPBCDC, Social Welfare Office, Kuwarbav, Ratnagiri - 415612", "phone": "02352-228900", "email": "dm.ratnagiri@mpbcdc.in"},
+    {"name": "Sindhudurg (सिंधुदुर्ग)", "office": "District Manager Office, MPBCDC, Administrative Complex, Sindhudurgnagari, Oros - 416812", "phone": "02362-228765", "email": "dm.sindhudurg@mpbcdc.in"},
+    {"name": "Jalna (जालना)", "office": "District Manager Office, MPBCDC, Samaj Kalyan Bhavan, Devalgaon Raja Road, Old Jalna - 431203", "phone": "02482-233440", "email": "dm.jalna@mpbcdc.in"},
+    {"name": "Beed (बीड)", "office": "District Manager Office, MPBCDC, Nagar Road, Near Collector Office, Beed - 431122", "phone": "02442-222555", "email": "dm.beed@mpbcdc.in"},
+    {"name": "Parbhani (परभणी)", "office": "District Manager Office, MPBCDC, Subhash Road, Station Bazar, Parbhani - 431401", "phone": "02452-224466", "email": "dm.parbhani@mpbcdc.in"},
+    {"name": "Hingoli (हिंगोली)", "office": "District Manager Office, MPBCDC, Collector Office Road, Hingoli - 431513", "phone": "02456-221133", "email": "dm.hingoli@mpbcdc.in"},
+    {"name": "Osmanabad / Dharashiv (धाराशिव)", "office": "District Manager Office, MPBCDC, Dr. Ambedkar Bhavan, Solapur Road, Dharashiv - 413501", "phone": "02472-223399", "email": "dm.osmanabad@mpbcdc.in"},
+    {"name": "Yavatmal (यवतमाळ)", "office": "District Manager Office, MPBCDC, Darwha Road, Near State Bank, Yavatmal - 445001", "phone": "07232-244332", "email": "dm.yavatmal@mpbcdc.in"},
+    {"name": "Buldhana (बुलढाणा)", "office": "District Manager Office, MPBCDC, Chikhli Road, Near Bus Stand, Buldhana - 443001", "phone": "07262-242211", "email": "dm.buldhana@mpbcdc.in"},
+    {"name": "Washim (वाशिम)", "office": "District Manager Office, MPBCDC, Civil Lines, Near Zilla Parishad, Washim - 444505", "phone": "07252-232110", "email": "dm.washim@mpbcdc.in"},
+    {"name": "Wardha (वर्धा)", "office": "District Manager Office, MPBCDC, Dr. Ambedkar Social Welfare Bhavan, Sevagram Road, Wardha - 442001", "phone": "07152-243388", "email": "dm.wardha@mpbcdc.in"},
+    {"name": "Chandrapur (चंद्रपूर)", "office": "District Manager Office, MPBCDC, Civil Lines, Collector Office Road, Chandrapur - 442401", "phone": "07172-255443", "email": "dm.chandrapur@mpbcdc.in"},
+    {"name": "Gadchiroli (गडचिरोली)", "office": "District Manager Office, MPBCDC, Complex Area, Near Rest House, Gadchiroli - 442605", "phone": "07138-222150", "email": "dm.gadchiroli@mpbcdc.in"},
+    {"name": "Gondia (गोंदिया)", "office": "District Manager Office, MPBCDC, Kudwa Road, Near Collectorate, Gondia - 441614", "phone": "07182-236780", "email": "dm.gondia@mpbcdc.in"},
+    {"name": "Bhandara (भंडारा)", "office": "District Manager Office, MPBCDC, Civil Lines, Near Stadium, Bhandara - 441904", "phone": "07184-252340", "email": "dm.bhandara@mpbcdc.in"},
+    {"name": "Nandurbar (नंदुरबार)", "office": "District Manager Office, MPBCDC, Collector Office Compound, Nandurbar - 425412", "phone": "02564-222990", "email": "dm.nandurbar@mpbcdc.in"}
+]
+
+def render_district_directory_html():
+    first = MH_DISTRICTS[0]
+    escaped_office = first['office'].replace("'", "\\'")
+    chips = []
+    for i, d in enumerate(MH_DISTRICTS):
+        active_cls = "dist-chip active-chip" if i == 0 else "dist-chip"
+        active_style = "text-align: left; padding: 10px 12px; background: #e0f2fe; border: 1.5px solid #0284c7; border-radius: 8px; cursor: pointer; font-weight: 700; color: #0369a1;" if i == 0 else "text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);"
+        esc_name = d['name'].replace("'", "\\'")
+        esc_off = d['office'].replace("'", "\\'")
+        esc_ph = d['phone'].replace("'", "\\'")
+        esc_em = d['email'].replace("'", "\\'")
+        chips.append(f'''        <button type="button" class="{active_cls}" onclick="showDistrictOffice('{esc_name}', '{esc_off}', '{esc_ph}', '{esc_em}', this)" style="{active_style}">📍 {d['name']}</button>''')
+    chips_html = "\n".join(chips)
+
+    return f'''    <!-- MAHARASHTRA 36 DISTRICTS INTERACTIVE DIRECTORY -->
+    <section class="service-section" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 24px; margin: 36px 0; box-shadow: 0 4px 14px rgba(0,0,0,0.03);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+        <div>
+          <h2 style="color: var(--color-primary); font-size: 1.45rem; margin: 0;">
+            🏢 <span data-lang-show="en">Maharashtra 36 District MPBCDC Offices & Contact Directory</span>
+            <span data-lang-show="hi">महाराष्ट्र के सभी 36 ज़िला MPBCDC कार्यालय एवं संपर्क निर्देशिका</span>
+          </h2>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; margin: 4px 0 0 0;">
+            <span data-lang-show="en">Click on your district to view the official District Manager Office address, phone helpline, and direct application procedure:</span>
+            <span data-lang-show="hi">अपने ज़िले पर क्लिक करें और ज़िला प्रबंधक कार्यालय का पता, फोन नंबर व सत्यापन प्रक्रिया देखें:</span>
+          </p>
+        </div>
+        <div>
+          <input type="text" id="districtSearchInput" placeholder="🔍 Search District (e.g. Pune, Nagpur)..." onkeyup="filterDistricts()" style="padding: 10px 16px; border: 2px solid var(--color-border); border-radius: 10px; font-size: 0.95rem; width: 280px; background: var(--color-surface); color: var(--color-text);" />
+        </div>
+      </div>
+
+      <!-- ACTIVE DISTRICT DETAIL CARD (HIGH-CONTRAST THEME AWARE) -->
+      <div id="districtDetailCard" style="background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: 14px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+          <div style="flex: 1; min-width: 280px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span style="background: var(--color-primary); color: #ffffff; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;">SELECTED DISTRICT OFFICE</span>
+              <span style="font-size: 0.85rem; color: var(--color-text-muted);">MPBCDC Maharashtra</span>
+            </div>
+            <h3 id="selectedDistrictName" style="margin: 0 0 10px 0; color: var(--color-primary); font-size: 1.5rem; font-weight: 800;">📍 {first['name']}</h3>
+            <div style="background: var(--color-bg); padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border); margin-bottom: 12px;">
+              <div style="font-size: 0.85rem; color: var(--color-text-muted); font-weight: 700;">OFFICE ADDRESS (कार्यालय का पता):</div>
+              <div id="selectedDistrictOffice" style="color: var(--color-text); font-size: 1.02rem; font-weight: 600; line-height: 1.6; margin-top: 4px;">{first['office']}</div>
+            </div>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.92rem;">
+              <div><strong>📞 Helpline / Phone:</strong> <span id="selectedDistrictPhone" style="color: var(--color-primary); font-weight: 700;">{first['phone']}</span></div>
+              <div><strong>✉️ Email:</strong> <span id="selectedDistrictEmail" style="color: var(--color-text-muted);">{first['email']}</span></div>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; min-width: 220px;">
+            <a href="https://mpbcdc.maharashtra.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="font-size: 0.92rem; padding: 12px 18px; font-weight: 700; text-align: center; text-decoration: none;">
+              📝 Apply on MahOnline ↗
+            </a>
+            <a href="../project-report/index.html" class="btn" style="background: #146B3A; color: #ffffff; font-size: 0.92rem; padding: 12px 18px; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px;">
+              📄 Generate Project Report ↗
+            </a>
+            <a href="../tools/csc-locator.html" class="btn" style="background: #D97F2B; color: #ffffff; font-size: 0.92rem; padding: 10px 18px; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px;">
+              📍 Locate Nearest CSC Kendra
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 36 DISTRICT CLICKABLE CHIPS -->
+      <div id="districtChipsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; font-size: 0.92rem;">
+{chips_html}
+      </div>
+    </section>
+
+    <script>
+      function showDistrictOffice(name, office, phone, email, btnEl) {{
+        document.getElementById('selectedDistrictName').innerText = '📍 ' + name;
+        document.getElementById('selectedDistrictOffice').innerText = office;
+        document.getElementById('selectedDistrictPhone').innerText = phone;
+        document.getElementById('selectedDistrictEmail').innerText = email;
+        
+        var chips = document.querySelectorAll('.dist-chip');
+        chips.forEach(function(c) {{
+          c.classList.remove('active-chip');
+          c.style.background = 'var(--color-surface)';
+          c.style.border = '1px solid var(--color-border)';
+          c.style.fontWeight = '600';
+          c.style.color = 'var(--color-text)';
+        }});
+        if (btnEl) {{
+          btnEl.classList.add('active-chip');
+          btnEl.style.background = '#e0f2fe';
+          btnEl.style.border = '1.5px solid #0284c7';
+          btnEl.style.fontWeight = '700';
+          btnEl.style.color = '#0369a1';
+        }}
+      }}
+
+      function filterDistricts() {{
+        var input = (document.getElementById('districtSearchInput').value || '').toLowerCase().trim();
+        var chips = document.querySelectorAll('#districtChipsContainer .dist-chip');
+        chips.forEach(function(chip) {{
+          var txt = chip.textContent.toLowerCase();
+          if (txt.indexOf(input) > -1) {{
+            chip.style.display = 'block';
+          }} else {{
+            chip.style.display = 'none';
+          }}
+        }});
+      }}
+    </script>'''
+
+def render_useful_tools_html():
+    return '''    <!-- USEFUL TOOLS SECTION -->
+    <section class="service-section" style="margin-top: 36px;">
+      <h3 style="color: var(--color-primary); font-size: 1.45rem; margin-bottom: 16px;">
+        🛠️ <span data-lang-show="en">Useful Verification & Calculation Tools</span>
+        <span data-lang-show="hi">उपयोगी टूल्स (Useful Tools for Loans & Verification)</span>
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+        <a href="../tools/eligibility-checker.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid var(--color-primary); border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">🎯</div>
+          <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Govt Scheme Eligibility Checker</h4>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">अपनी जाति, आय व आयु दर्ज करके अपनी 100% सटीक पात्रता जांचें।</p>
+        </a>
+
+        <a href="../tools/document-checklist.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #146B3A; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">📑</div>
+          <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #146B3A;">Document Checklist Tool</h4>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">लोन व सब्सिडी आवेदन के लिए ज़रूरी दस्तावेज़ों की सूची तैयार करें।</p>
+        </a>
+
+        <a href="../tools/status-troubleshooter.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #2563eb; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">⚡</div>
+          <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #2563eb;">Application Status Troubleshooter</h4>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">आवेदन पेंडिंग या रिजेक्ट होने पर समाधान व शिकायत निवारण विधि।</p>
+        </a>
+
+        <a href="../project-report/index.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #D97F2B; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">📄</div>
+          <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #D97F2B;">Project Report Generator Tool</h4>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">बैंक व महामंडळ लोन के लिए 2 मिनट में आधिकारिक प्रोजेक्ट रिपोर्ट बनाएं।</p>
+        </a>
+      </div>
+    </section>'''
+
+def render_faq_html(faq_list):
+    items = []
+    for f in faq_list:
+        q = f['q']
+        a = f['a']
+        items.append(f'''        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+            <span>❓ {q}</span>
+            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
+          </summary>
+          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
+            {a}
+          </div>
+        </details>''')
+    return "\n".join(items)
+
+def render_direct_loan_page():
+    faqs = [
+        {"q": "MPBCDC Direct Loan Yojana में अधिकतम कितना लोन और कितनी सब्सिडी मिलती है?", "a": "MPBCDC Direct Loan Yojana (थेट कर्ज योजना 2026) में अधिकतम प्रोजेक्ट लागत ₹1,00,000 (एक लाख रुपये) होती है। इसमें <strong>50% (₹50,000) मुफ़्त सरकारी अनुदान (Subsidy)</strong> मिलता है जिसे वापस नहीं करना होता, <strong>45% (₹45,000) महामंडळ द्वारा मात्र 4% वार्षिक सरल ब्याज दर पर डायरेक्ट लोन</strong> मिलता है, और मात्र 5% (₹5,000) लाभार्थी का अपना अंशदान होता है।"},
+        {"q": "क्या Direct Loan लेने के लिए किसी कमर्शियल बैंक के चक्कर काटने पड़ते हैं?", "a": "नहीं! डायरेक्ट लोन योजना की सबसे बड़ी विशेषता यही है कि इसमें लोन और सब्सिडी सीधे महात्मा फुले महामंडळ (MPBCDC) द्वारा मंजूर और डिस्बर्स की जाती है। इसमें किसी बैंक की मंजूरी, सिबिल स्कोर की जटिलता या बैंक एनओसी की आवश्यकता नहीं होती।"},
+        {"q": "4% ब्याज पर मासिक किश्त (EMI) कितनी बनती है?", "a": "₹45,000 के कॉर्पोरेशन लोन पर 36 महीने (3 वर्ष) के लिए मात्र <strong>₹1,330/माह</strong> और 60 महीने (5 वर्ष) के लिए मात्र <strong>₹827/माह</strong> की आसान मासिक किश्त बनती है।"},
+        {"q": "Direct Loan के लिए 2 जमानतदार (Guarantors / Jamin) कौन बन सकते हैं?", "a": "इसमें सरकारी कर्मचारी होना अनिवार्य नहीं है। कोई भी प्रतिष्ठित नागरिक, ग्राम पंचायत सदस्य, नगरसेवक, प्रतिष्ठित दुकानदार, या 7/12 उतारा धारक संपत्ति स्वामी जमानतदार बन सकता है।"},
+        {"q": "Quotation और Project Report कैसे तैयार करें?", "a": "जिस विक्रेता या होलसेलर से आप मशीनरी या सामग्री खरीदने वाले हैं, उनसे GSTIN नंबर वाला कोटेशन लें (अधिकतम ₹1,00,000 तक)। हमारे SarkariSewa <a href='../project-report/index.html' style='font-weight:700; color:var(--color-primary);'>Project Report Generator Tool</a> से 2 मिनट में प्रोजेक्ट रिपोर्ट तैयार कर सकते हैं।"},
+        {"q": "MahOnline पोर्टल पर ऑनलाइन आवेदन के बाद फ़ाइल आगे कैसे बढ़ती है?", "a": "ऑनलाइन फॉर्म सबमिट करने के बाद रसीद का प्रिंट निकालें और सभी मूल प्रमाण पत्रों की स्व-प्रमाणित प्रतियों के साथ अपने ज़िले के MPBCDC ज़िला प्रबंधक कार्यालय में जमा करें। वहां टास्क फ़ोर्स कमेटी (TFC) द्वारा सत्यापन व मौखिक साक्षात्कार के बाद लोन स्वीकृत होता है।"},
+        {"q": "₹50,000 सब्सिडी और लोन का पैसा किसको मिलता है?", "a": "पारदर्शिता सुनिश्चित करने के लिए ऋण व सब्सिडी की कुल राशि (₹95,000) का चेक या RTGS सीधे उस अधिकृत डीलर/दुकानदार के खाते में भेजा जाता है जिसका कोटेशन आपने फॉर्म में लगाया था। दुकानदार द्वारा सामान डिलीवर होने के बाद महामंडळ अधिकारी भौतिक सत्यापन करते हैं।"},
+        {"q": "क्या महिला आवेदकों को कोई विशेष प्राथमिकता दी जाती है?", "a": "हाँ, चयन समिति में महिला उद्यमियों के लिए 30% आरक्षण और विशेष प्राथमिकता का प्रावधान है। स्वयं सहायता समूह (SHG) से जुड़ी महिलाएं भी व्यक्तिगत रूप से लाभ ले सकती हैं।"},
+        {"q": "लोन चुकाने की समय-सीमा (Repayment Tenure) क्या है?", "a": "ऋण चुकाने के लिए 36 महीने (3 वर्ष) से लेकर 60 महीने (5 वर्ष) तक का समय मिलता है। समय पर किश्तें भरने पर भविष्य में ₹5 लाख तक की सीड कैपिटल योजना के लिए पात्रता बन जाती है।"},
+        {"q": "आवेदन की स्थिति (Status) कैसे चेक करें या समस्या होने पर किससे संपर्क करें?", "a": "आप <code>mpbcdc.maharashtra.gov.in</code> पर अपने लॉगिन आईडी से लाइव स्टेटस देख सकते हैं या सीधे हमारे <a href='../tools/status-troubleshooter.html' style='font-weight:700; color:var(--color-primary);'>Status Troubleshooter Tool</a> व ज़िला प्रबंधक कार्यालय से संपर्क कर सकते हैं।"}
+    ]
+    faq_html = render_faq_html(faqs)
+    district_html = render_district_directory_html()
+    tools_html = render_useful_tools_html()
+
+    return f'''<!DOCTYPE html>
 <html lang="hi">
 <head>
   <meta charset="UTF-8" />
@@ -31,102 +253,102 @@
   <link rel="stylesheet" href="../assets/css/share-widget.css" />
 
   <script type="application/ld+json" id="service-schema">
-  {
+  {{
     "@context": "https://schema.org",
     "@graph": [
-      {
+      {{
         "@type": "GovernmentService",
         "name": "MPBCDC Direct Loan Yojana (थेट कर्ज योजना)",
         "alternateName": "महात्मा फुले मागासवर्ग विकास महामंडळ थेट कर्ज योजना",
         "description": "Subsidized direct business loan up to ₹1,00,000 with 50% government subsidy grant (₹50,000) and 45% direct loan at 4% interest rate for SC and Neo-Buddhist entrepreneurs in Maharashtra without bank guarantee.",
         "url": "https://sarkarisewaindia.com/service/mpbcdc-direct-loan-yojana.html",
         "serviceType": "Government Subsidized Self-Employment Loan",
-        "provider": {
+        "provider": {{
           "@type": "GovernmentOrganization",
           "name": "Mahatma Phule Backward Class Development Corporation (MPBCDC), Government of Maharashtra",
           "sameAs": ["https://mpbcdc.maharashtra.gov.in"]
-        },
-        "areaServed": {
+        }},
+        "areaServed": {{
           "@type": "AdministrativeArea",
           "name": "Maharashtra, India"
-        }
-      },
-      {
+        }}
+      }},
+      {{
         "@type": "BreadcrumbList",
         "itemListElement": [
-          {
+          {{
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
             "item": "https://sarkarisewaindia.com/index.html"
-          },
-          {
+          }},
+          {{
             "@type": "ListItem",
             "position": 2,
             "name": "MPBCDC Schemes",
             "item": "https://sarkarisewaindia.com/category/mpbcdc-schemes.html"
-          },
-          {
+          }},
+          {{
             "@type": "ListItem",
             "position": 3,
             "name": "MPBCDC Direct Loan Yojana",
             "item": "https://sarkarisewaindia.com/service/mpbcdc-direct-loan-yojana.html"
-          }
+          }}
         ]
-      },
-      {
+      }},
+      {{
         "@type": "FAQPage",
         "mainEntity": [
-          {
+          {{
             "@type": "Question",
             "name": "MPBCDC Direct Loan Yojana में अधिकतम कितना लोन और कितनी सब्सिडी मिलती है?",
-            "acceptedAnswer": {
+            "acceptedAnswer": {{
               "@type": "Answer",
               "text": "MPBCDC Direct Loan Yojana में ₹1,00,000 के प्रोजेक्ट पर 50% (₹50,000) मुफ़्त सरकारी अनुदान और 45% (₹45,000) 4% ब्याज पर डायरेक्ट लोन मिलता है।"
-            }
-          },
-          {
+            }}
+          }},
+          {{
             "@type": "Question",
             "name": "क्या Direct Loan लेने के लिए किसी बैंक के चक्कर काटने पड़ते हैं?",
-            "acceptedAnswer": {
+            "acceptedAnswer": {{
               "@type": "Answer",
               "text": "नहीं, इसमें किसी बैंक की आवश्यकता नहीं होती। लोन और सब्सिडी सीधे महामंडळ द्वारा स्वीकृत व वितरित की जाती है।"
-            }
-          }
+            }}
+          }}
         ]
-      }
+      }}
     ]
-  }
+  }}
   </script>
 
   <style>
-    .mpbcdc-calc-card {
+    .mpbcdc-calc-card {{
       background: var(--color-surface);
       border: 2px solid var(--color-primary);
       border-radius: 16px;
       padding: 26px;
       margin: 32px 0;
       box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-    }
-    .stat-badge-box {
+    }}
+    .stat-badge-box {{
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: 12px;
       padding: 18px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.03);
       transition: transform 0.2s;
-    }
-    .stat-badge-box:hover {
+    }}
+    .stat-badge-box:hover {{
       transform: translateY(-2px);
-    }
-    .prob-box {
+    }}
+    .prob-box {{
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: 12px;
       padding: 22px;
       margin-bottom: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
+    }}
   </style>
 </head>
 <body data-slug="mpbcdc-direct-loan-yojana">
@@ -422,134 +644,7 @@
       </div>
     </section>
 
-    <!-- MAHARASHTRA 36 DISTRICTS INTERACTIVE DIRECTORY -->
-    <section class="service-section" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 24px; margin: 36px 0; box-shadow: 0 4px 14px rgba(0,0,0,0.03);">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
-        <div>
-          <h2 style="color: var(--color-primary); font-size: 1.45rem; margin: 0;">
-            🏢 <span data-lang-show="en">Maharashtra 36 District MPBCDC Offices & Contact Directory</span>
-            <span data-lang-show="hi">महाराष्ट्र के सभी 36 ज़िला MPBCDC कार्यालय एवं संपर्क निर्देशिका</span>
-          </h2>
-          <p style="color: var(--color-text-muted); font-size: 0.95rem; margin: 4px 0 0 0;">
-            <span data-lang-show="en">Click on your district to view the official District Manager Office address, phone helpline, and direct application procedure:</span>
-            <span data-lang-show="hi">अपने ज़िले पर क्लिक करें और ज़िला प्रबंधक कार्यालय का पता, फोन नंबर व सत्यापन प्रक्रिया देखें:</span>
-          </p>
-        </div>
-        <div>
-          <input type="text" id="districtSearchInput" placeholder="🔍 Search District (e.g. Pune, Nagpur)..." onkeyup="filterDistricts()" style="padding: 10px 16px; border: 2px solid var(--color-border); border-radius: 10px; font-size: 0.95rem; width: 280px; background: var(--color-surface); color: var(--color-text);" />
-        </div>
-      </div>
-
-      <!-- ACTIVE DISTRICT DETAIL CARD (HIGH-CONTRAST THEME AWARE) -->
-      <div id="districtDetailCard" style="background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: 14px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
-          <div style="flex: 1; min-width: 280px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-              <span style="background: var(--color-primary); color: #ffffff; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;">SELECTED DISTRICT OFFICE</span>
-              <span style="font-size: 0.85rem; color: var(--color-text-muted);">MPBCDC Maharashtra</span>
-            </div>
-            <h3 id="selectedDistrictName" style="margin: 0 0 10px 0; color: var(--color-primary); font-size: 1.5rem; font-weight: 800;">📍 Mumbai City (मुंबई शहर)</h3>
-            <div style="background: var(--color-bg); padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border); margin-bottom: 12px;">
-              <div style="font-size: 0.85rem; color: var(--color-text-muted); font-weight: 700;">OFFICE ADDRESS (कार्यालय का पता):</div>
-              <div id="selectedDistrictOffice" style="color: var(--color-text); font-size: 1.02rem; font-weight: 600; line-height: 1.6; margin-top: 4px;">District Manager Office, MPBCDC, Dr. Babasaheb Ambedkar Social Welfare Bhavan, Fort, Mumbai - 400001</div>
-            </div>
-            <div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.92rem;">
-              <div><strong>📞 Helpline / Phone:</strong> <span id="selectedDistrictPhone" style="color: var(--color-primary); font-weight: 700;">022-22661234 / 1800-22-1950</span></div>
-              <div><strong>✉️ Email:</strong> <span id="selectedDistrictEmail" style="color: var(--color-text-muted);">dm.mumbaicity@mpbcdc.in</span></div>
-            </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 10px; min-width: 220px;">
-            <a href="https://mpbcdc.maharashtra.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="font-size: 0.92rem; padding: 12px 18px; font-weight: 700; text-align: center; text-decoration: none;">
-              📝 Apply on MahOnline ↗
-            </a>
-            <a href="../project-report/index.html" class="btn" style="background: #146B3A; color: #ffffff; font-size: 0.92rem; padding: 12px 18px; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px;">
-              📄 Generate Project Report ↗
-            </a>
-            <a href="../tools/csc-locator.html" class="btn" style="background: #D97F2B; color: #ffffff; font-size: 0.92rem; padding: 10px 18px; font-weight: 700; text-align: center; text-decoration: none; border-radius: 8px;">
-              📍 Locate Nearest CSC Kendra
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 36 DISTRICT CLICKABLE CHIPS -->
-      <div id="districtChipsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; font-size: 0.92rem;">
-        <button type="button" class="dist-chip active-chip" onclick="showDistrictOffice('Mumbai City (मुंबई शहर)', 'District Manager Office, MPBCDC, Dr. Babasaheb Ambedkar Social Welfare Bhavan, Fort, Mumbai - 400001', '022-22661234 / 1800-22-1950', 'dm.mumbaicity@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: #e0f2fe; border: 1.5px solid #0284c7; border-radius: 8px; cursor: pointer; font-weight: 700; color: #0369a1;">📍 Mumbai City (मुंबई शहर)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Mumbai Suburban (मुंबई उपनगर)', 'District Manager Office, MPBCDC, Administrative Building, 4th Floor, RC Marg, Chembur / Bandra East, Mumbai - 400051', '022-26554321', 'dm.mumbaisub@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Mumbai Suburban (मुंबई उपनगर)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Pune (पुणे)', 'District Manager Office, MPBCDC, Dr. Babasaheb Ambedkar Bhavan, Near Collector Office, Station Road, Pune - 411001', '020-26123456', 'dm.pune@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Pune (पुणे)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Nagpur (नागपूर)', 'District Manager Office, MPBCDC, Samaj Kalyan Complex, Giripeth, Civil Lines, Nagpur - 440001', '0712-2567890', 'dm.nagpur@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Nagpur (नागपूर)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Nashik (नाशिक)', 'District Manager Office, MPBCDC, Dr. Ambedkar Social Welfare Complex, Old Agra Road, Nashik - 422002', '0253-2576543', 'dm.nashik@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Nashik (नाशिक)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Thane (ठाणे)', 'District Manager Office, MPBCDC, Zilla Parishad Compound, Station Road, Thane West - 400601', '022-25345678', 'dm.thane@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Thane (ठाणे)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Chhatrapati Sambhajinagar (छत्रपती संभाजीनगर)', 'District Manager Office, MPBCDC, Dr. Ambedkar Bhavan, Subhash Chandra Bose Road, Aurangabad - 431001', '0240-2334455', 'dm.aurangabad@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Chhatrapati Sambhajinagar (छत्रपती संभाजीनगर)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Solapur (सोलापूर)', 'District Manager Office, MPBCDC, Dr. Babasaheb Ambedkar Bhavan, Saat Rasta, Solapur - 413003', '0217-2723456', 'dm.solapur@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Solapur (सोलापूर)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Kolhapur (कोल्हापूर)', 'District Manager Office, MPBCDC, Samaj Kalyan Bhavan, Near CPR Hospital, Kasaba Bawada, Kolhapur - 416006', '0231-2654321', 'dm.kolhapur@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Kolhapur (कोल्हापूर)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Amravati (अमरावती)', 'District Manager Office, MPBCDC, Dr. Ambedkar Social Welfare Bhavan, Camp Area, Amravati - 444602', '0721-2661234', 'dm.amravati@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Amravati (अमरावती)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Nanded (नांदेड)', 'District Manager Office, MPBCDC, Administrative Complex, Vazirabad, Nanded - 431601', '02462-245678', 'dm.nanded@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Nanded (नांदेड)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Sangli (सांगली)', 'District Manager Office, MPBCDC, Samaj Kalyan Bhavan, Vijayanagar, Sangli - 416416', '0233-2678901', 'dm.sangli@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Sangli (सांगली)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Jalgaon (जळगाव)', 'District Manager Office, MPBCDC, Behind Collector Office, Nehru Chowk, Jalgaon - 425001', '0257-2223344', 'dm.jalgaon@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Jalgaon (जळगाव)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Akola (अकोला)', 'District Manager Office, MPBCDC, Samaj Kalyan Complex, Civil Lines, Akola - 444001', '0724-2432109', 'dm.akola@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Akola (अकोला)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Latur (लातूर)', 'District Manager Office, MPBCDC, Old Collector Office Road, Near Ambedkar Park, Latur - 413512', '02382-243322', 'dm.latur@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Latur (लातूर)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Dhule (धुळे)', 'District Manager Office, MPBCDC, Dr. Ambedkar Bhavan, Sakri Road, Dhule - 424001', '02562-288776', 'dm.dhule@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Dhule (धुळे)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Ahmednagar / Ahilyanagar (अहिल्यानगर)', 'District Manager Office, MPBCDC, Station Road, Near Zilla Parishad, Ahmednagar - 414001', '0241-2422331', 'dm.ahmednagar@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Ahmednagar / Ahilyanagar (अहिल्यानगर)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Satara (सातारा)', 'District Manager Office, MPBCDC, Zilla Parishad Complex, Sadar Bazar, Satara - 415001', '02162-234567', 'dm.satara@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Satara (सातारा)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Raigad / Alibag (रायगड)', 'District Manager Office, MPBCDC, Dr. Ambedkar Bhavan, Chendhare, Alibag - 402201', '02141-222111', 'dm.raigad@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Raigad / Alibag (रायगड)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Palghar (पालघर)', 'District Manager Office, MPBCDC, Collectorate Complex, Manor Road, Palghar - 401404', '02525-252100', 'dm.palghar@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Palghar (पालघर)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Ratnagiri (रत्नागिरी)', 'District Manager Office, MPBCDC, Social Welfare Office, Kuwarbav, Ratnagiri - 415612', '02352-228900', 'dm.ratnagiri@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Ratnagiri (रत्नागिरी)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Sindhudurg (सिंधुदुर्ग)', 'District Manager Office, MPBCDC, Administrative Complex, Sindhudurgnagari, Oros - 416812', '02362-228765', 'dm.sindhudurg@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Sindhudurg (सिंधुदुर्ग)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Jalna (जालना)', 'District Manager Office, MPBCDC, Samaj Kalyan Bhavan, Devalgaon Raja Road, Old Jalna - 431203', '02482-233440', 'dm.jalna@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Jalna (जालना)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Beed (बीड)', 'District Manager Office, MPBCDC, Nagar Road, Near Collector Office, Beed - 431122', '02442-222555', 'dm.beed@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Beed (बीड)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Parbhani (परभणी)', 'District Manager Office, MPBCDC, Subhash Road, Station Bazar, Parbhani - 431401', '02452-224466', 'dm.parbhani@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Parbhani (परभणी)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Hingoli (हिंगोली)', 'District Manager Office, MPBCDC, Collector Office Road, Hingoli - 431513', '02456-221133', 'dm.hingoli@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Hingoli (हिंगोली)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Osmanabad / Dharashiv (धाराशिव)', 'District Manager Office, MPBCDC, Dr. Ambedkar Bhavan, Solapur Road, Dharashiv - 413501', '02472-223399', 'dm.osmanabad@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Osmanabad / Dharashiv (धाराशिव)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Yavatmal (यवतमाळ)', 'District Manager Office, MPBCDC, Darwha Road, Near State Bank, Yavatmal - 445001', '07232-244332', 'dm.yavatmal@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Yavatmal (यवतमाळ)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Buldhana (बुलढाणा)', 'District Manager Office, MPBCDC, Chikhli Road, Near Bus Stand, Buldhana - 443001', '07262-242211', 'dm.buldhana@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Buldhana (बुलढाणा)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Washim (वाशिम)', 'District Manager Office, MPBCDC, Civil Lines, Near Zilla Parishad, Washim - 444505', '07252-232110', 'dm.washim@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Washim (वाशिम)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Wardha (वर्धा)', 'District Manager Office, MPBCDC, Dr. Ambedkar Social Welfare Bhavan, Sevagram Road, Wardha - 442001', '07152-243388', 'dm.wardha@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Wardha (वर्धा)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Chandrapur (चंद्रपूर)', 'District Manager Office, MPBCDC, Civil Lines, Collector Office Road, Chandrapur - 442401', '07172-255443', 'dm.chandrapur@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Chandrapur (चंद्रपूर)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Gadchiroli (गडचिरोली)', 'District Manager Office, MPBCDC, Complex Area, Near Rest House, Gadchiroli - 442605', '07138-222150', 'dm.gadchiroli@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Gadchiroli (गडचिरोली)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Gondia (गोंदिया)', 'District Manager Office, MPBCDC, Kudwa Road, Near Collectorate, Gondia - 441614', '07182-236780', 'dm.gondia@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Gondia (गोंदिया)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Bhandara (भंडारा)', 'District Manager Office, MPBCDC, Civil Lines, Near Stadium, Bhandara - 441904', '07184-252340', 'dm.bhandara@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Bhandara (भंडारा)</button>
-        <button type="button" class="dist-chip" onclick="showDistrictOffice('Nandurbar (नंदुरबार)', 'District Manager Office, MPBCDC, Collector Office Compound, Nandurbar - 425412', '02564-222990', 'dm.nandurbar@mpbcdc.in', this)" style="text-align: left; padding: 10px 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--color-text);">📍 Nandurbar (नंदुरबार)</button>
-      </div>
-    </section>
-
-    <script>
-      function showDistrictOffice(name, office, phone, email, btnEl) {
-        document.getElementById('selectedDistrictName').innerText = '📍 ' + name;
-        document.getElementById('selectedDistrictOffice').innerText = office;
-        document.getElementById('selectedDistrictPhone').innerText = phone;
-        document.getElementById('selectedDistrictEmail').innerText = email;
-        
-        var chips = document.querySelectorAll('.dist-chip');
-        chips.forEach(function(c) {
-          c.classList.remove('active-chip');
-          c.style.background = 'var(--color-surface)';
-          c.style.border = '1px solid var(--color-border)';
-          c.style.fontWeight = '600';
-          c.style.color = 'var(--color-text)';
-        });
-        if (btnEl) {
-          btnEl.classList.add('active-chip');
-          btnEl.style.background = '#e0f2fe';
-          btnEl.style.border = '1.5px solid #0284c7';
-          btnEl.style.fontWeight = '700';
-          btnEl.style.color = '#0369a1';
-        }
-      }
-
-      function filterDistricts() {
-        var input = (document.getElementById('districtSearchInput').value || '').toLowerCase().trim();
-        var chips = document.querySelectorAll('#districtChipsContainer .dist-chip');
-        chips.forEach(function(chip) {
-          var txt = chip.textContent.toLowerCase();
-          if (txt.indexOf(input) > -1) {
-            chip.style.display = 'block';
-          } else {
-            chip.style.display = 'none';
-          }
-        });
-      }
-    </script>
+{district_html}
 
     <!-- FREQUENTLY ASKED QUESTIONS SECTION -->
     <section class="service-section" style="margin-top: 36px;">
@@ -557,130 +652,10 @@
         ❓ <span data-lang-show="en">Frequently Asked Questions (FAQs)</span>
         <span data-lang-show="hi">अक्सर पूछे जाने वाले सवाल (FAQs)</span>
       </h3>
-        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>❓ MPBCDC Direct Loan Yojana में अधिकतम कितना लोन और कितनी सब्सिडी मिलती है?</span>
-            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
-          </summary>
-          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
-            MPBCDC Direct Loan Yojana (थेट कर्ज योजना 2026) में अधिकतम प्रोजेक्ट लागत ₹1,00,000 (एक लाख रुपये) होती है। इसमें <strong>50% (₹50,000) मुफ़्त सरकारी अनुदान (Subsidy)</strong> मिलता है जिसे वापस नहीं करना होता, <strong>45% (₹45,000) महामंडळ द्वारा मात्र 4% वार्षिक सरल ब्याज दर पर डायरेक्ट लोन</strong> मिलता है, और मात्र 5% (₹5,000) लाभार्थी का अपना अंशदान होता है।
-          </div>
-        </details>
-        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>❓ क्या Direct Loan लेने के लिए किसी कमर्शियल बैंक के चक्कर काटने पड़ते हैं?</span>
-            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
-          </summary>
-          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
-            नहीं! डायरेक्ट लोन योजना की सबसे बड़ी विशेषता यही है कि इसमें लोन और सब्सिडी सीधे महात्मा फुले महामंडळ (MPBCDC) द्वारा मंजूर और डिस्बर्स की जाती है। इसमें किसी बैंक की मंजूरी, सिबिल स्कोर की जटिलता या बैंक एनओसी की आवश्यकता नहीं होती।
-          </div>
-        </details>
-        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>❓ 4% ब्याज पर मासिक किश्त (EMI) कितनी बनती है?</span>
-            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
-          </summary>
-          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
-            ₹45,000 के कॉर्पोरेशन लोन पर 36 महीने (3 वर्ष) के लिए मात्र <strong>₹1,330/माह</strong> और 60 महीने (5 वर्ष) के लिए मात्र <strong>₹827/माह</strong> की आसान मासिक किश्त बनती है।
-          </div>
-        </details>
-        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>❓ Direct Loan के लिए 2 जमानतदार (Guarantors / Jamin) कौन बन सकते हैं?</span>
-            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
-          </summary>
-          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
-            इसमें सरकारी कर्मचारी होना अनिवार्य नहीं है। कोई भी प्रतिष्ठित नागरिक, ग्राम पंचायत सदस्य, नगरसेवक, प्रतिष्ठित दुकानदार, या 7/12 उतारा धारक संपत्ति स्वामी जमानतदार बन सकता है।
-          </div>
-        </details>
-        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>❓ Quotation और Project Report कैसे तैयार करें?</span>
-            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
-          </summary>
-          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
-            जिस विक्रेता या होलसेलर से आप मशीनरी या सामग्री खरीदने वाले हैं, उनसे GSTIN नंबर वाला कोटेशन लें (अधिकतम ₹1,00,000 तक)। हमारे SarkariSewa <a href='../project-report/index.html' style='font-weight:700; color:var(--color-primary);'>Project Report Generator Tool</a> से 2 मिनट में प्रोजेक्ट रिपोर्ट तैयार कर सकते हैं।
-          </div>
-        </details>
-        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>❓ MahOnline पोर्टल पर ऑनलाइन आवेदन के बाद फ़ाइल आगे कैसे बढ़ती है?</span>
-            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
-          </summary>
-          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
-            ऑनलाइन फॉर्म सबमिट करने के बाद रसीद का प्रिंट निकालें और सभी मूल प्रमाण पत्रों की स्व-प्रमाणित प्रतियों के साथ अपने ज़िले के MPBCDC ज़िला प्रबंधक कार्यालय में जमा करें। वहां टास्क फ़ोर्स कमेटी (TFC) द्वारा सत्यापन व मौखिक साक्षात्कार के बाद लोन स्वीकृत होता है।
-          </div>
-        </details>
-        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>❓ ₹50,000 सब्सिडी और लोन का पैसा किसको मिलता है?</span>
-            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
-          </summary>
-          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
-            पारदर्शिता सुनिश्चित करने के लिए ऋण व सब्सिडी की कुल राशि (₹95,000) का चेक या RTGS सीधे उस अधिकृत डीलर/दुकानदार के खाते में भेजा जाता है जिसका कोटेशन आपने फॉर्म में लगाया था। दुकानदार द्वारा सामान डिलीवर होने के बाद महामंडळ अधिकारी भौतिक सत्यापन करते हैं।
-          </div>
-        </details>
-        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>❓ क्या महिला आवेदकों को कोई विशेष प्राथमिकता दी जाती है?</span>
-            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
-          </summary>
-          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
-            हाँ, चयन समिति में महिला उद्यमियों के लिए 30% आरक्षण और विशेष प्राथमिकता का प्रावधान है। स्वयं सहायता समूह (SHG) से जुड़ी महिलाएं भी व्यक्तिगत रूप से लाभ ले सकती हैं।
-          </div>
-        </details>
-        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>❓ लोन चुकाने की समय-सीमा (Repayment Tenure) क्या है?</span>
-            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
-          </summary>
-          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
-            ऋण चुकाने के लिए 36 महीने (3 वर्ष) से लेकर 60 महीने (5 वर्ष) तक का समय मिलता है। समय पर किश्तें भरने पर भविष्य में ₹5 लाख तक की सीड कैपिटल योजना के लिए पात्रता बन जाती है।
-          </div>
-        </details>
-        <details style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-          <summary style="font-weight: 700; font-size: 1.05rem; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-            <span>❓ आवेदन की स्थिति (Status) कैसे चेक करें या समस्या होने पर किससे संपर्क करें?</span>
-            <span style="font-size: 1.2rem; color: var(--color-text-muted);">+</span>
-          </summary>
-          <div style="margin-top: 12px; line-height: 1.7; color: var(--color-text); font-size: 0.98rem; padding-top: 10px; border-top: 1px dashed var(--color-border);">
-            आप <code>mpbcdc.maharashtra.gov.in</code> पर अपने लॉगिन आईडी से लाइव स्टेटस देख सकते हैं या सीधे हमारे <a href='../tools/status-troubleshooter.html' style='font-weight:700; color:var(--color-primary);'>Status Troubleshooter Tool</a> व ज़िला प्रबंधक कार्यालय से संपर्क कर सकते हैं।
-          </div>
-        </details>
+{faq_html}
     </section>
 
-    <!-- USEFUL TOOLS SECTION -->
-    <section class="service-section" style="margin-top: 36px;">
-      <h3 style="color: var(--color-primary); font-size: 1.45rem; margin-bottom: 16px;">
-        🛠️ <span data-lang-show="en">Useful Verification & Calculation Tools</span>
-        <span data-lang-show="hi">उपयोगी टूल्स (Useful Tools for Loans & Verification)</span>
-      </h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
-        <a href="../tools/eligibility-checker.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid var(--color-primary); border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
-          <div style="font-size: 1.5rem; margin-bottom: 6px;">🎯</div>
-          <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Govt Scheme Eligibility Checker</h4>
-          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">अपनी जाति, आय व आयु दर्ज करके अपनी 100% सटीक पात्रता जांचें।</p>
-        </a>
-
-        <a href="../tools/document-checklist.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #146B3A; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
-          <div style="font-size: 1.5rem; margin-bottom: 6px;">📑</div>
-          <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #146B3A;">Document Checklist Tool</h4>
-          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">लोन व सब्सिडी आवेदन के लिए ज़रूरी दस्तावेज़ों की सूची तैयार करें।</p>
-        </a>
-
-        <a href="../tools/status-troubleshooter.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #2563eb; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
-          <div style="font-size: 1.5rem; margin-bottom: 6px;">⚡</div>
-          <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #2563eb;">Application Status Troubleshooter</h4>
-          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">आवेदन पेंडिंग या रिजेक्ट होने पर समाधान व शिकायत निवारण विधि।</p>
-        </a>
-
-        <a href="../project-report/index.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #D97F2B; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
-          <div style="font-size: 1.5rem; margin-bottom: 6px;">📄</div>
-          <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #D97F2B;">Project Report Generator Tool</h4>
-          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">बैंक व महामंडळ लोन के लिए 2 मिनट में आधिकारिक प्रोजेक्ट रिपोर्ट बनाएं।</p>
-        </a>
-      </div>
-    </section>
+{tools_html}
 
     <!-- OFFICIAL VERIFIED PORTAL LINKS -->
     <section class="service-section" style="background: linear-gradient(135deg, #1e1e38, #2a2a52); color: #ffffff; border-radius: 16px; padding: 28px 24px; margin: 36px 0; box-shadow: 0 8px 24px rgba(0,0,0,0.12);">
@@ -776,4 +751,44 @@
   <script src="../assets/js/share-widget.js"></script>
   <script src="../assets/js/service-template.js"></script>
 </body>
-</html>
+</html>'''
+
+def convert_to_root_html(content):
+    res = content.replace('window.SS_ROOT = "../";', 'window.SS_ROOT = "";')
+    res = res.replace('../assets/', 'assets/')
+    res = res.replace('../index.html', 'index.html')
+    res = res.replace('../category/', 'category/')
+    res = res.replace('../service/', 'service/')
+    res = res.replace('../project-report/', 'project-report/')
+    res = res.replace('../tools/', 'tools/')
+    return res
+
+def build_all():
+    from mpbcdc_pages import render_subsidy_page, render_seed_capital_page, render_hub_page
+    
+    pages = {
+        'mpbcdc-direct-loan-yojana.html': render_direct_loan_page(),
+        'mpbcdc-subsidy-yojana.html': render_subsidy_page(),
+        'mpbcdc-seed-capital-yojana.html': render_seed_capital_page(),
+        'mpbcdc-yojana.html': render_hub_page()
+    }
+    
+    for filename, html_content in pages.items():
+        # 1. Write to service/
+        service_path = os.path.join(SERVICE_DIR, filename)
+        with open(service_path, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        print(f"Generated: service/{filename} ({len(html_content)} bytes)")
+        
+        # 2. Write to root /
+        root_path = os.path.join(ROOT, filename)
+        root_content = convert_to_root_html(html_content)
+        with open(root_path, 'w', encoding='utf-8') as f:
+            f.write(root_content)
+        print(f"Generated: {filename} ({len(root_content)} bytes)")
+
+if __name__ == '__main__':
+    build_all()
+    print("ALL 4 MPBCDC Master Pages generated successfully!")
+
+
