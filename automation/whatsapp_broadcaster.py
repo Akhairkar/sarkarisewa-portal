@@ -147,13 +147,27 @@ def broadcast_latest_updates():
         with open(LATEST_UPDATES_FILE, "r", encoding="utf-8") as f:
             updates = json.load(f)
             
-        for item in updates:
+        for item in updates[:5]: # Take top 5 latest updates
             item_id = item.get("id") or item.get("slug")
             if not item_id or item_id in posted_ids:
                 continue
                 
-            title = item.get("titleHi") or item.get("title") or item.get("titleEn", "")
-            summary = item.get("summaryHi") or item.get("summary") or item.get("description", "")
+            title = (
+                item.get("title_hi")
+                or item.get("titleHi")
+                or item.get("title")
+                or item.get("title_en")
+                or item.get("titleEn")
+                or "सख्त सरकारी अपडेट"
+            )
+            summary = (
+                item.get("summary_hi")
+                or item.get("summaryHi")
+                or item.get("summary")
+                or item.get("summary_en")
+                or item.get("description")
+                or "सरकारी योजना एवं नवीन भर्ती सूचना।"
+            )
             url = item.get("articleUrl") or f"{BASE_URL}/updates/{item.get('slug', '')}.html"
             if not url.startswith("http"):
                 url = f"{BASE_URL}/{url.lstrip('/')}"
