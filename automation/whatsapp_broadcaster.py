@@ -14,7 +14,7 @@ LATEST_UPDATES_FILE = DATA_DIR / "latest-updates.json"
 BLOG_POSTS_FILE = DATA_DIR / "blog-posts.json"
 HISTORY_FILE = DATA_DIR / "whatsapp_posted_history.json"
 
-CHANNEL_INVITE_URL = "https://whatsapp.com/channel/0029VbDj7gCDp2Q8SYdFwj14"
+CHANNEL_INVITE_URL = "https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g"
 BASE_URL = "https://sarkarisewaindia.com"
 
 # GitHub Secrets / Environment Variables
