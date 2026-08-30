@@ -220,10 +220,10 @@ function initTelegramBanner() {
     }
   } catch (e) {}
 
-  if (document.getElementById("tg-join-banner")) {
-    const existing = document.getElementById("tg-join-banner");
-    setTimeout(() => existing.classList.add("tg-visible"), 2000);
-    return;
+  // Remove any stale duplicate banners first
+  const existing = document.getElementById("tg-join-banner");
+  if (existing) {
+    existing.remove();
   }
 
   const banner = document.createElement("div");
@@ -241,9 +241,9 @@ function initTelegramBanner() {
         <div class="tg-channel-name">SarkariSewa India 🇮🇳</div>
         <div class="tg-tagline">📢 रोज़ाना FREE सरकारी अपडेट्स पायें!</div>
       </div>
-      <button class="tg-close-btn" id="tg-close-trigger" aria-label="Close">✕</button>
+      <button class="tg-close-btn" id="tg-close-trigger" onclick="closeTgBanner()" aria-label="Close">✕</button>
     </div>
-    <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="tg-join-btn" id="tg-join-trigger">
+    <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="tg-join-btn" id="tg-join-trigger" onclick="closeTgBanner(true)">
       <span class="tg-bell">🔔</span>
       Free Join करें — अभी!
       <span class="tg-arrow">→</span>
@@ -256,26 +256,37 @@ function initTelegramBanner() {
 
   document.body.appendChild(banner);
 
-  const closeFn = () => {
-    banner.style.transform = "translateX(-50%) translateY(140px)";
-    banner.style.opacity = "0";
-    try { sessionStorage.setItem(DISMISS_SESSION_KEY, "true"); } catch (e) {}
-    setTimeout(() => banner.remove(), 500);
+  window.closeTgBanner = function(isJoined) {
+    const el = document.getElementById("tg-join-banner");
+    if (el) {
+      el.style.transform = "translateX(-50%) translateY(140px)";
+      el.style.opacity = "0";
+      setTimeout(() => {
+        el.style.display = "none";
+        el.remove();
+      }, 300);
+    }
+    try {
+      if (isJoined) {
+        localStorage.setItem(JOINED_KEY, "true");
+      } else {
+        sessionStorage.setItem(DISMISS_SESSION_KEY, "true");
+      }
+    } catch (e) {}
   };
 
   const closeBtn = document.getElementById("tg-close-trigger");
-  if (closeBtn) closeBtn.addEventListener("click", closeFn);
-
-  const joinBtn = document.getElementById("tg-join-trigger");
-  if (joinBtn) joinBtn.addEventListener("click", () => {
-    try { localStorage.setItem(JOINED_KEY, "true"); } catch (e) {}
-    banner.style.transform = "translateX(-50%) translateY(140px)";
-    banner.style.opacity = "0";
-    setTimeout(() => banner.remove(), 500);
-  });
+  if (closeBtn) {
+    closeBtn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      window.closeTgBanner(false);
+    });
+  }
 
   setTimeout(() => {
-    banner.classList.add("tg-visible");
+    if (document.getElementById("tg-join-banner")) {
+      document.getElementById("tg-join-banner").classList.add("tg-visible");
+    }
   }, 2000);
 }
 
