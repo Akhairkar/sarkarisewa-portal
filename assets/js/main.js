@@ -202,10 +202,72 @@ async function initSite() {
 
   document.dispatchEvent(new CustomEvent("ss:ready"));
   loadAnalyticsTracking();
-  // loadAuthUI(); — TEMPORARILY DISABLED. Was causing a site-wide blocking
-  // bug (see assets/css/style.css and partials/header.html comments near
-  // .ss-auth-modal for the full explanation). Re-enable by uncommenting
-  // this line once the login feature is revisited.
+  initTelegramBanner();
+}
+
+function initTelegramBanner() {
+  if (document.getElementById("tg-join-banner")) {
+    const existing = document.getElementById("tg-join-banner");
+    setTimeout(() => existing.classList.add("tg-visible"), 2500);
+    return;
+  }
+
+  const KEY = "tg_banner_dismissed_v4";
+  try {
+    const dismissed = localStorage.getItem(KEY);
+    if (dismissed && (Date.now() - parseInt(dismissed)) < 2 * 24 * 60 * 60 * 1000) {
+      return;
+    }
+  } catch (e) {}
+
+  const banner = document.createElement("div");
+  banner.id = "tg-join-banner";
+  banner.setAttribute("role", "complementary");
+  banner.setAttribute("aria-label", "Telegram Channel Join Banner");
+  banner.innerHTML = `
+    <div class="tg-banner-top">
+      <div class="tg-icon-wrap">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+        </svg>
+      </div>
+      <div class="tg-text-wrap">
+        <div class="tg-channel-name">SarkariSewa India 🇮🇳</div>
+        <div class="tg-tagline">📢 रोज़ाना FREE सरकारी अपडेट्स पायें!</div>
+      </div>
+      <button class="tg-close-btn" id="tg-close-trigger" aria-label="Close">✕</button>
+    </div>
+    <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="tg-join-btn" id="tg-join-trigger">
+      <span class="tg-bell">🔔</span>
+      Free Join करें — अभी!
+      <span class="tg-arrow">→</span>
+    </a>
+    <div class="tg-stats">
+      <span class="tg-dot"></span>
+      Naukri Alerts &nbsp;•&nbsp; Sarkari Yojana &nbsp;•&nbsp; Exam Updates &nbsp;•&nbsp; 100% Free
+    </div>
+  `;
+
+  document.body.appendChild(banner);
+
+  const closeFn = () => {
+    banner.style.transform = "translateX(-50%) translateY(140px)";
+    banner.style.opacity = "0";
+    try { localStorage.setItem(KEY, Date.now().toString()); } catch (e) {}
+    setTimeout(() => banner.remove(), 500);
+  };
+
+  const closeBtn = document.getElementById("tg-close-trigger");
+  if (closeBtn) closeBtn.addEventListener("click", closeFn);
+
+  const joinBtn = document.getElementById("tg-join-trigger");
+  if (joinBtn) joinBtn.addEventListener("click", () => {
+    try { localStorage.setItem(KEY, Date.now().toString()); } catch (e) {}
+  });
+
+  setTimeout(() => {
+    banner.classList.add("tg-visible");
+  }, 2500);
 }
 
 // Module 18: Visitor Analytics — self-contained script, loaded once per
@@ -242,3 +304,4 @@ function loadAuthUI() {
 }
 
 document.addEventListener("DOMContentLoaded", initSite);
+
