@@ -875,7 +875,7 @@ def generate_service_html(s):
       </section>
 
       <div style="margin-top: 30px; text-align: center; padding: 20px; background: rgba(30, 58, 138, 0.05); border-radius: 8px; border: 1px solid var(--color-primary);">
-        <a href="{gov_link}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background: var(--color-primary); color: #fff; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 700; display: inline-block;">🔗 आधिकारिक पोर्टल पर आवेदन करें (Official Website) →</a>
+        <a href="{gov_link}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background: var(--color-brand); color: #fff; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 700; display: inline-block;">🔗 आधिकारिक पोर्टल पर आवेदन करें (Official Website) →</a>
       </div>
 
       <section style="margin-top: 40px;">

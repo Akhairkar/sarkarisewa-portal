@@ -82,7 +82,7 @@ def render_district_directory_html():
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
           <div style="flex: 1; min-width: 280px;">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-              <span style="background: var(--color-primary); color: #ffffff; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;">SELECTED DISTRICT OFFICE</span>
+              <span style="background: var(--color-brand); color: #ffffff; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;">SELECTED DISTRICT OFFICE</span>
               <span style="font-size: 0.85rem; color: var(--color-text-muted);">MPBCDC Maharashtra</span>
             </div>
             <h3 id="selectedDistrictName" style="margin: 0 0 10px 0; color: var(--color-primary); font-size: 1.5rem; font-weight: 800;">📍 {first['name']}</h3>
@@ -434,7 +434,7 @@ def render_direct_loan_page():
     <section id="mpbcdcCalculatorSection" class="mpbcdc-calc-card">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
         <div>
-          <span style="background: var(--color-primary); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">LIVE TOOL</span>
+          <span style="background: var(--color-brand); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">LIVE TOOL</span>
           <h2 style="margin: 8px 0 4px 0; color: var(--color-primary); font-size: 1.6rem;">
             🧮 MPBCDC Direct Loan Subsidy & 4% EMI Calculator
           </h2>
@@ -623,22 +623,22 @@ def render_direct_loan_page():
       </h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 18px;">
         <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
-          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">1</div>
+          <div style="background: var(--color-brand); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">1</div>
           <strong style="color: var(--color-primary);">पंजीकरण (Registration):</strong> <code>mpbcdc.maharashtra.gov.in</code> पर जाएं और 'New Applicant Registration' में आधार OTP से साइन-अप करें।
         </div>
 
         <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
-          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">2</div>
+          <div style="background: var(--color-brand); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">2</div>
           <strong style="color: var(--color-primary);">योजना चयन (Scheme Selection):</strong> डैशबोर्ड पर <strong>'Direct Loan Scheme (थेट कर्ज योजना - ₹1.00 Lakh)'</strong> का चयन करें।
         </div>
 
         <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
-          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">3</div>
+          <div style="background: var(--color-brand); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">3</div>
           <strong style="color: var(--color-primary);">दस्तावेज़ अपलोड (Upload Docs):</strong> जाति, आय, डोमिसाइल प्रमाण पत्र, आधार, पैन, और सामान का GST कोटेशन अपलोड करें।
         </div>
 
         <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
-          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">4</div>
+          <div style="background: var(--color-brand); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">4</div>
           <strong style="color: var(--color-primary);">ज़िला कार्यालय सत्यापन (Verification):</strong> आवेदन का प्रिंटआउट निकालकर अपने ज़िला कार्यालय में जमा करें और इंटरव्यू में शामिल हों।
         </div>
       </div>

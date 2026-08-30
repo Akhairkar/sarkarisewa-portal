@@ -1068,7 +1068,7 @@ def render_hub_page():
 
     <!-- HERO HEADER -->
     <header class="service-hero" id="service-hero" style="text-align: left; padding: 24px 0 10px 0;">
-      <span class="service-hero__badge" style="background: var(--color-primary); color: #fff; padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">
+      <span class="service-hero__badge" style="background: var(--color-brand); color: #fff; padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">
         🏛️ MAHATMA PHULE CORPORATION MASTER HUB 2026
       </span>
       <h1 style="font-size: 2.2rem; line-height: 1.3; color: var(--color-primary); margin: 14px 0 12px 0; font-weight: 800;">
@@ -1136,7 +1136,7 @@ def render_hub_page():
       <div style="overflow-x: auto; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.03);">
         <table class="fees-table" style="width: 100%; border-collapse: collapse; min-width: 650px;">
           <thead>
-            <tr style="background: var(--color-primary); color: #ffffff;">
+            <tr style="background: var(--color-brand); color: #ffffff;">
               <th style="padding: 16px; text-align: left;">योजना का नाम (Scheme)</th>
               <th style="padding: 16px; text-align: left;">अधिकतम प्रोजेक्ट लागत</th>
               <th style="padding: 16px; text-align: left;">सरकारी सब्सिडी (Grant)</th>

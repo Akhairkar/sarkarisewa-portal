@@ -255,7 +255,7 @@ def build_direct_loan(is_service=True):
     <section id="mpbcdcCalculatorSection" class="mpbcdc-calc-card">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
         <div>
-          <span style="background: var(--color-primary); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">LIVE TOOL</span>
+          <span style="background: var(--color-brand); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">LIVE TOOL</span>
           <h2 style="margin: 8px 0 4px 0; color: var(--color-primary); font-size: 1.6rem;">
             🧮 MPBCDC Direct Loan Subsidy & 4% EMI Calculator
           </h2>
@@ -456,22 +456,22 @@ def build_direct_loan(is_service=True):
       </h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 18px;">
         <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
-          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">1</div>
+          <div style="background: var(--color-brand); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">1</div>
           <strong style="color: var(--color-primary);">पंजीकरण (Registration):</strong> <code>mpbcdc.maharashtra.gov.in</code> पर जाएं और 'New Applicant Registration' में आधार OTP से साइन-अप करें।
         </div>
 
         <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
-          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">2</div>
+          <div style="background: var(--color-brand); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">2</div>
           <strong style="color: var(--color-primary);">योजना चयन (Scheme Selection):</strong> डैशबोर्ड पर <strong>'Direct Loan Scheme (थेट कर्ज योजना - ₹1.00 Lakh)'</strong> का चयन करें।
         </div>
 
         <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
-          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">3</div>
+          <div style="background: var(--color-brand); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">3</div>
           <strong style="color: var(--color-primary);">दस्तावेज़ अपलोड (Upload Docs):</strong> जाति, आय, डोमिसाइल प्रमाण पत्र, आधार, पैन, और सामान का GST कोटेशन अपलोड करें।
         </div>
 
         <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border);">
-          <div style="background: var(--color-primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">4</div>
+          <div style="background: var(--color-brand); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">4</div>
           <strong style="color: var(--color-primary);">ज़िला कार्यालय सत्यापन (Verification):</strong> आवेदन का प्रिंटआउट निकालकर अपने ज़िला कार्यालय में जमा करें और इंटरव्यू में शामिल हों।
         </div>
       </div>
@@ -1209,7 +1209,7 @@ def build_mpbcdc_hub(is_service=True):
 
     <!-- HERO HEADER -->
     <header class="service-hero" id="service-hero" style="text-align: left; padding: 24px 0 10px 0;">
-      <span class="service-hero__badge" style="background: var(--color-primary); color: #fff; padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">
+      <span class="service-hero__badge" style="background: var(--color-brand); color: #fff; padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">
         🏛️ MAHATMA PHULE CORPORATION MASTER HUB 2026
       </span>
       <h1 style="font-size: 2.2rem; line-height: 1.3; color: var(--color-primary); margin: 14px 0 12px 0; font-weight: 800;">
@@ -1246,7 +1246,7 @@ def build_mpbcdc_hub(is_service=True):
       <div style="overflow-x: auto;">
         <table class="fees-table" style="width: 100%; border-collapse: collapse;">
           <thead>
-            <tr style="background: var(--color-primary); color: #fff;">
+            <tr style="background: var(--color-brand); color: #fff;">
               <th style="padding: 14px; text-align: left;">योजना का नाम</th>
               <th style="padding: 14px; text-align: left;">अधिकतम प्रोजेक्ट लागत</th>
               <th style="padding: 14px; text-align: left;">सरकारी सब्सिडी (Grant)</th>
