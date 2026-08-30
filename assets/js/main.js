@@ -93,6 +93,35 @@ function applyLanguage(lang) {
   SITE.lang = lang;
   setStorage("ss_lang", lang);
   document.documentElement.setAttribute("lang", lang === "hi" ? "hi" : "en");
+  
+  // Toggle data-lang-show elements (e.g. data-lang-show="en" vs data-lang-show="hi")
+  document.querySelectorAll("[data-lang-show]").forEach((el) => {
+    const target = el.getAttribute("data-lang-show");
+    if (target === lang) {
+      el.style.display = "";
+      if (window.getComputedStyle(el).display === "none") {
+        el.style.display = el.tagName === "SPAN" ? "inline" : "block";
+      }
+    } else {
+      el.style.display = "none";
+    }
+  });
+
+  // Toggle .content-en and .content-hi
+  document.querySelectorAll(".content-en").forEach((el) => {
+    el.style.display = lang === "en" ? "block" : "none";
+  });
+  document.querySelectorAll(".content-hi").forEach((el) => {
+    el.style.display = lang === "hi" ? "block" : "none";
+  });
+
+  // Update button label
+  const langBtn = document.getElementById("lang-toggle");
+  if (langBtn) {
+    const span = langBtn.querySelector("span") || langBtn;
+    span.textContent = lang === "hi" ? "English" : "हिंदी";
+  }
+
   if (!SITE.langData) return;
   const dict = SITE.langData[lang] || {};
   document.querySelectorAll("[data-i18n]").forEach((el) => {
