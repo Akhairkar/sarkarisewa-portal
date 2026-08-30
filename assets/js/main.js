@@ -206,19 +206,25 @@ async function initSite() {
 }
 
 function initTelegramBanner() {
-  if (document.getElementById("tg-join-banner")) {
-    const existing = document.getElementById("tg-join-banner");
-    setTimeout(() => existing.classList.add("tg-visible"), 2500);
-    return;
-  }
+  const JOINED_KEY = "tg_user_joined_channel";
+  const DISMISS_SESSION_KEY = "tg_dismissed_session";
 
-  const KEY = "tg_banner_dismissed_v4";
   try {
-    const dismissed = localStorage.getItem(KEY);
-    if (dismissed && (Date.now() - parseInt(dismissed)) < 2 * 24 * 60 * 60 * 1000) {
+    // 1. If user already joined, NEVER show again (Lifetime)
+    if (localStorage.getItem(JOINED_KEY) === "true") {
+      return;
+    }
+    // 2. If user clicked cancel in this browsing session, don't show on immediate page jumps
+    if (sessionStorage.getItem(DISMISS_SESSION_KEY) === "true") {
       return;
     }
   } catch (e) {}
+
+  if (document.getElementById("tg-join-banner")) {
+    const existing = document.getElementById("tg-join-banner");
+    setTimeout(() => existing.classList.add("tg-visible"), 2000);
+    return;
+  }
 
   const banner = document.createElement("div");
   banner.id = "tg-join-banner";
@@ -253,7 +259,7 @@ function initTelegramBanner() {
   const closeFn = () => {
     banner.style.transform = "translateX(-50%) translateY(140px)";
     banner.style.opacity = "0";
-    try { localStorage.setItem(KEY, Date.now().toString()); } catch (e) {}
+    try { sessionStorage.setItem(DISMISS_SESSION_KEY, "true"); } catch (e) {}
     setTimeout(() => banner.remove(), 500);
   };
 
@@ -262,12 +268,15 @@ function initTelegramBanner() {
 
   const joinBtn = document.getElementById("tg-join-trigger");
   if (joinBtn) joinBtn.addEventListener("click", () => {
-    try { localStorage.setItem(KEY, Date.now().toString()); } catch (e) {}
+    try { localStorage.setItem(JOINED_KEY, "true"); } catch (e) {}
+    banner.style.transform = "translateX(-50%) translateY(140px)";
+    banner.style.opacity = "0";
+    setTimeout(() => banner.remove(), 500);
   });
 
   setTimeout(() => {
     banner.classList.add("tg-visible");
-  }, 2500);
+  }, 2000);
 }
 
 // Module 18: Visitor Analytics — self-contained script, loaded once per
