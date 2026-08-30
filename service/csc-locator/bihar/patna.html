@@ -299,27 +299,416 @@
             <button onclick="document.getElementById('csc-local-search').value=''; document.getElementById('csc-local-search').dispatchEvent(new Event('input'));" style="padding: 12px 16px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-bg-alt); color: var(--color-text); cursor: pointer;">Clear</button>
         </div>
 
-        <div id="csc-results-container" data-location="Patna">
-
-                <div style="grid-column: 1 / -1; padding: 32px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-            <div style="font-size: 2.5rem;">📍</div>
-            <div>
-              <h3 style="margin: 0; font-size: 1.4rem; color: var(--color-text);">Patna CSC / Jan Seva Kendra Directory</h3>
-              <p style="margin: 4px 0 0 0; color: var(--color-text-muted); font-size: 0.95rem;">Enter your 6-digit Pincode or Block name above to view nearest active centers with direct Google Maps navigation.</p>
-            </div>
-          </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border);">
-            <span style="font-size: 0.9rem; color: var(--color-text-muted);">Popular Services Available:</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">💳 Aadhaar Updates</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📄 PAN Card Apply</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🌾 PM Kisan eKYC</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🏥 Ayushman Card</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📜 Income/Caste Certificates</span>
+        
+        <div style="margin: 28px 0 20px 0;">
+          <h2 style="font-size: 1.4rem; color: var(--color-text); margin-bottom: 8px;">Patna CSC / Jan Seva Kendra — Top Verified Centers (35+ Active Centers)</h2>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 16px;">Browse verified Common Service Centers below or search by your 6-digit Pincode / Area:</p>
+          <div style="margin-bottom: 20px;">
+            <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 480px; padding: 12px 16px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
           </div>
         </div>
+
+        <div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px;">
+          
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Md Irfan Alam</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 missi  bakhtiyarpur,Panchayat/Village-MISSI,Sub District-Bakhtiarpur,District-PATNA,State-Bihar,Pin-803110</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803110</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.453503766899978,85.53121742966998" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
         
-        <div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What are the standard timings for CSCs in Patna?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Most centers in Patna operate from 9:00 AM to 6:00 PM, Monday to Saturday. However, some independent VLEs may have extended timings.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Is there any fee to check CSC locations in Patna?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">No, using our SarkariSewaIndia directory to find CSC centers in Patna is 100% free.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Are Maha e-Seva Kendras and CSCs the same in Bihar?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Yes, in Bihar, CSCs are often referred to as Maha e-Seva Kendras or Jan Seva Kendras, providing identical Digital India government services.</p></div></div>
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Abhishek Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 chandhos 801110</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 801110</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.296340287979746,84.86703121020658" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Ravi Ranjan Dayal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 sonu digital studio barh , near savera cinema barh sonu digital studio near savera cinema,Panchayat/Village-,Sub District-Barh,District-PATNA,State-Bihar,Pin-803213</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803213</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.4217746,85.67430820000004" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Abhay Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 GANJPAR, PALANGA, Panchayat/Village-Phulwari, Sub District-Phulwari, District-Patna, State-Bihar, Pin-804453</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 804453</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.4517168,25.4517168" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Raj Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Sablpur Vishnu Mandir Patna, Panchayat/Village-Patna Rural, Sub District-Patna Rural, District-Patna, State-Bihar, Pin-800009</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 800009</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.55930527364906,25.55930527364906" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Reshmee Rekha Kumari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 gannichak,mosimpur,Panchayat/Village-MOSIM PUR,Sub District-Khusrupur,District-PATNA,State-Bihar,Pin-803202</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803202</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=0.0034332275370086203,-0.00240325927734375" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Chandan Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Inside Om Communication, Near to Chura Mill, Kurthoul, Patna-804453</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 804453</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.56259408856345,85.12303592698994" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Chandrabhushan Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 malsalami main road , bharatpur simli patna city</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 800008</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.58758172387726,85.2379846572876" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Biteshver Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 RAGHOPUR ,NEAR PANCHAYAT BHAWAN,BIHTA,PATNA</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 801103</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.54859021719182,84.86466260003962" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Ashok Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 1st Floor , C/O- Singh Cements, Bhagawat nagar Chouraha, kumhrar, patna 800026 bhagwat nagar bhoot nath road, kumhrar</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 800026</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.5922549,85.17126600000006" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Akash Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 BELDARI CHAK,PATNA GAYA ROAD ,NEAR PNB BANK BELDARI CHAK PNB BANK</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 804451</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.5940947,85.13756450000005" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Manikant</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 galaxy computer  pawansut market Dakbangla road near Bakhtiyarpur railway station      ps- bakhtiyarpur   distt patna , bihar pincode- 803212 pawansut market dakbangla road bakhtiyatpur</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803212</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.456333675477218,85.53182601928711" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Harishankar Mishra</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 near  dr. shanti roy jogipur patna MG nagar kankarbagh</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 800026</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.59403585389887,85.17137881137864" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Md Mahtab Alam</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Karbala Road, Panchayat/Village-Phulwari, Sub District-Phulwari, District-Patna, State-Bihar, Pin-801505</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 801505</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.5940947,25.5940947" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Govind Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 darwe bhadaur</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803307</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.5940947,85.13756450000005" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Gyan Prakash</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Bichali Malahi, Panchayat/Village-Barh, Sub District-Barh, District-Patna, State-Bihar, Pin-803213</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803213</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.5940947,25.5940947" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rajesh Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 COMPUTER PARK, MAIN ROAD MASAURHI, PATNA MAIN ROAD MASAURHI OPPOSITE POLICE STATION</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 804452</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.5940947,85.13756450000005" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pushpendra Parthsarthi</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Abbupur Lodipur</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 801505</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.514258630180965,85.02537065526258" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Praduman Kumar Tiwari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 boring road patna  patna sadar boring road</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 800001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=-0.002059936522988861,0.00789642333984375" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Md Hannan</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 SHOP NO 31 FIRST FLOOR KHANQUH MARKET ISAPUR MORE, Panchayat/Village-, Sub District-Phulwari, District-null, State-Bihar, Pin-801505</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 801505</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.574972426552208,85.06950438022614" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Sumit Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 NH30 Forelane Jagmal Bigha Katauna Khushrupur</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803202</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.6093239,85.1235252" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Ravi Shankar Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Arap, Bikram,Patna</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 801104</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.55909037045488,84.87097263336183" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pankaj Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Near mahadev sthan gate shivnar</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803302</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.42392318539373,85.87006399770492" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pawan Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Usfa Patna Bihar, Panchayat/Village-USFA, Sub District-Fatwah, District-Patna, State-Bihar, Pin-803201</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803201</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.6093239,85.1235252" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Suresh Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 BUDHANICHAK BARH BARH RAILWAY STATION</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803214</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.46237834076746,85.70875733315678" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Balveer Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 BALVEER CSC , AT - BAKUAN ,P.O. - POAWAN, PS - NAUBATPUR PATNA BIHAR MOB. 9934568803</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 804452</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.38317693796882,84.93112162388451" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Harendra Mishra</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 MISHRA COMMUNICATION</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 801110</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.318827758858742,84.73379373550416" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Santosh Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.4217746,85.67430820000004" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Ranjan Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 VILL PO PS MARANCHI</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803301</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=0.14041886578161708,-0.21732330322265625" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pawan Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.5940947,85.13756450000005" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Suman Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 VILLPOST-ANDAULI</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 803213</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.349475186216477,85.72333574295044" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Ragani Kumari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 10A JAIRAM BAZAR KHAGAUL, Panchayat/Village-, Sub District-Dinapur-Cum-Khagaul, District-null, State-Bihar, Pin-801105</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 801105</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.579927198743068,85.04614232527301" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Anupam Lal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 h no 194 ramnagari sec 2 ashyana nagar patna ashina nagar ramnagari sec 2</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 800025</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.6185024,85.07269640000004" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Md Jahangir Ansari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.5940947,85.13756450000005" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Vicky Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 patna, Panchayat/Village-Phulwari, Sub District-Phulwari, District-Patna, State-Bihar, Pin-800020</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 800020</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.5940947,85.13756450000005" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        </div>
+
+        <script>
+        function filterCenters() {
+            let input = document.getElementById('pincodeSearch').value.toLowerCase();
+            let cards = document.querySelectorAll('.center-card');
+            cards.forEach(card => {
+                let text = card.innerText.toLowerCase();
+                card.style.display = text.includes(input) ? '' : 'none';
+            });
+        }
+        </script>
+    
+<div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What are the standard timings for CSCs in Patna?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Most centers in Patna operate from 9:00 AM to 6:00 PM, Monday to Saturday. However, some independent VLEs may have extended timings.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Is there any fee to check CSC locations in Patna?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">No, using our SarkariSewaIndia directory to find CSC centers in Patna is 100% free.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Are Maha e-Seva Kendras and CSCs the same in Bihar?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Yes, in Bihar, CSCs are often referred to as Maha e-Seva Kendras or Jan Seva Kendras, providing identical Digital India government services.</p></div></div>
         
 <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--color-border);">
     <h3 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;">Related Government Services & Tools</h3>

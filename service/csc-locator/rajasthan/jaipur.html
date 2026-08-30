@@ -299,27 +299,416 @@
             <button onclick="document.getElementById('csc-local-search').value=''; document.getElementById('csc-local-search').dispatchEvent(new Event('input'));" style="padding: 12px 16px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-bg-alt); color: var(--color-text); cursor: pointer;">Clear</button>
         </div>
 
-        <div id="csc-results-container" data-location="Jaipur">
-
-                <div style="grid-column: 1 / -1; padding: 32px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-            <div style="font-size: 2.5rem;">📍</div>
-            <div>
-              <h3 style="margin: 0; font-size: 1.4rem; color: var(--color-text);">Jaipur CSC / Jan Seva Kendra Directory</h3>
-              <p style="margin: 4px 0 0 0; color: var(--color-text-muted); font-size: 0.95rem;">Enter your 6-digit Pincode or Block name above to view nearest active centers with direct Google Maps navigation.</p>
-            </div>
-          </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border);">
-            <span style="font-size: 0.9rem; color: var(--color-text-muted);">Popular Services Available:</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">💳 Aadhaar Updates</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📄 PAN Card Apply</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🌾 PM Kisan eKYC</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🏥 Ayushman Card</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📜 Income/Caste Certificates</span>
+        
+        <div style="margin: 28px 0 20px 0;">
+          <h2 style="font-size: 1.4rem; color: var(--color-text); margin-bottom: 8px;">Jaipur CSC / Jan Seva Kendra — Top Verified Centers (35+ Active Centers)</h2>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 16px;">Browse verified Common Service Centers below or search by your 6-digit Pincode / Area:</p>
+          <div style="margin-bottom: 20px;">
+            <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 480px; padding: 12px 16px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
           </div>
         </div>
+
+        <div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px;">
+          
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Chandra Prakash Sharma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 SHOP NO 20 RAVI MARG JANTA COLONY JAIPUR RAVI MARG JANTA COLONY JAIPUR,Panchayat/Village-,Sub District-Jaipur,District-JAIPUR,State-Rajasthan,Pin-302004</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 302004</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9013363,75.82881900000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
         
-        <div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Are Maha e-Seva Kendras and CSCs the same in Rajasthan?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Yes, in Rajasthan, CSCs are often referred to as Maha e-Seva Kendras or Jan Seva Kendras, providing identical Digital India government services.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Can I update my Aadhaar mobile number at any Jaipur CSC?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Not all centers have Aadhaar update machines. It is best to WhatsApp or call the specific Jaipur center from our list to confirm before visiting.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What services are available at a CSC center in Jaipur?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Centers in Jaipur offer Aadhaar updates, PAN card applications, passport services, banking, e-Shram registration, and state-specific certificate (income/caste) applications.</p></div></div>
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Tejendra Kumar Sharma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 248, RAM NAGAR VISTAR, JHOTWARA, JAIPUR JHOTWARA RAM NAGAR VISTAR</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 302012</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=-0.004119873043318778,-0.09510040283203125" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Vikas Kumawat</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9124336,75.78727090000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Vitthal Khandelwal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.1613498,75.69062409999992" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mohammed Islam</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 171 painter colony nahari ka naka shastri nagar shastri nagar painter colony</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 302016</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.936685938541384,75.80330371856691" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Arjun Lal Prajapati</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 phagi mode maine bus stand patani road chaksu chaks chaksu</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303901</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9124336,75.78727090000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mani Rajvanshi</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9124336,75.78727090000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Indra Chaudhary</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 rajveen gandi seva kendr mahapura,Panchayat/Village-MAHAPURA,Sub District-Sanganer,District-JAIPUR,State-Rajasthan,Pin-302026</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 302026</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.8470852369007,75.67067750366279" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pankaj Kumar Swami</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.076826360188747,75.57811886072159" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Hemraj Kumawat</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9556924,75.68826960000001" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Kamlesh Verma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 SHASTRI NAGAR , Panchayat/Village-, Sub District-Jaipur, District-null, State-Rajasthan, Pin-302016</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 302016</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9344949,75.79425029999993" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Kailash Chandr Saini</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 KATARIYA EMITRA MADHANI PETROL PUMP KE PASS RINGUS ROAD TEH CHOMU CHOMU RINGUS ROAD</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303702</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.173682127705245,75.7279658317566" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mohan Lal Meena</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9124336,75.78727090000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pawan Saini</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 15 SHANKAR VIHAR VISTAR CHARAN NADI 2 MURLIPURA JAIPUR</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 302039</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.979901160709602,75.75428366661073" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rakesh Kumar Sharma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 VILLAGE POST BIRASANA TEHSIL JAMAAWARAMGARH</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.0750041,76.20155720000002" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Manmohan Meena</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 SHOP NO 03,JAIN MANDIR ROAD GRAM POST NEVTA TEHSIL SANGANER JAIPUR</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 302029</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.79705498632328,75.6797296168349" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Nitesh Kumawat</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 main bus stand Nice studio vpo hingonia teh ki renwal jaipur</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303124</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=0.10951989180269853,0.0006866455078125" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Amit Kumar Jat</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 ATAL SEWA KENDRA VEER TEJAJI NAGAR</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303106</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9124336,75.78727090000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Savitri Devi Jat</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 G-69 KARDHANI SCHEME GOVINDPURA JAIPUR-302012 KARDHANI  GOVINDPURA JHOTWARA</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 302012</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9124336,75.78727090000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Asha Devi</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.708220635578044,76.17932796478271" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pavan Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.791893451933912,75.20821107769552" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Sunil Kumar Kumawat</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.27942489052541,75.74315786361696" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Dinesh Sapera</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9124336,75.78727090000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rahul Goyal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 near bus stand paota</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303106</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.575604,76.02758589999996" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pinki Yadav</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Jaipur Road Govingarh</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303712</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.24418104609652,75.65132050876875" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Aditya Sharma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.91508749211338,75.80231666564941" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Abhishek Saini</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 MOOND MARKET MANGYAWAS ROAD MANSAROVAR JAIPUR 150 450</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 302020</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=20.46818922264095,80.24414062500001" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mahipal Singh Bajarniya</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Bharat Nirman Rajiv Gandhi Seva Kendra Bagwada, Tehsil- Amer, Jaipur, Raj.- 303805</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303805</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.086042163914737,75.83714783191681" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Balbeer Yadav</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 vijaypura road raithal,Panchayat/Village-RAITHAL,Sub District-Amber,District-JAIPUR,State-Rajasthan,Pin-303801</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303801</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.11359191583873,75.52743419136166" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mukesh Kumar Prajapat</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Bindayaka, Panchayat/Village-, Sub District-Jaipur, District-Jaipur, State-Rajasthan, Pin-302012</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 302012</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9556924,26.9556924" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">GURU CHARAN SHARMA</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=16.86237670846054,-143.63525390625" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">OMPRAKASH SHARMA</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 INFRONT OF JVVNL OFFICE, JAMWARAMGARH,Panchayat/Village-JAMWA RAMGARH,Sub District-Jamwa Ramgarh,District-JAIPUR,State-Rajasthan,Pin-303109</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303109</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps/search/OMPRAKASH SHARMA+Jaipur" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Arjun Lal Yadav</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 kalu ka bas tigariya</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303804</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.22059378040722,75.7482433319092" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Madan Lal Saini</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 men market amarsar</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 303601</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=25.65425437649771,75.75851640211533" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Surya Prakash Agrawal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=26.9556924,75.68826960000001" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        </div>
+
+        <script>
+        function filterCenters() {
+            let input = document.getElementById('pincodeSearch').value.toLowerCase();
+            let cards = document.querySelectorAll('.center-card');
+            cards.forEach(card => {
+                let text = card.innerText.toLowerCase();
+                card.style.display = text.includes(input) ? '' : 'none';
+            });
+        }
+        </script>
+    
+<div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Are Maha e-Seva Kendras and CSCs the same in Rajasthan?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Yes, in Rajasthan, CSCs are often referred to as Maha e-Seva Kendras or Jan Seva Kendras, providing identical Digital India government services.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Can I update my Aadhaar mobile number at any Jaipur CSC?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Not all centers have Aadhaar update machines. It is best to WhatsApp or call the specific Jaipur center from our list to confirm before visiting.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What services are available at a CSC center in Jaipur?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Centers in Jaipur offer Aadhaar updates, PAN card applications, passport services, banking, e-Shram registration, and state-specific certificate (income/caste) applications.</p></div></div>
         
 <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--color-border);">
     <h3 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;">Related Government Services & Tools</h3>

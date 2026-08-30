@@ -299,27 +299,416 @@
             <button onclick="document.getElementById('csc-local-search').value=''; document.getElementById('csc-local-search').dispatchEvent(new Event('input'));" style="padding: 12px 16px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-bg-alt); color: var(--color-text); cursor: pointer;">Clear</button>
         </div>
 
-        <div id="csc-results-container" data-location="Ujjain">
-
-                <div style="grid-column: 1 / -1; padding: 32px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-            <div style="font-size: 2.5rem;">📍</div>
-            <div>
-              <h3 style="margin: 0; font-size: 1.4rem; color: var(--color-text);">Ujjain CSC / Jan Seva Kendra Directory</h3>
-              <p style="margin: 4px 0 0 0; color: var(--color-text-muted); font-size: 0.95rem;">Enter your 6-digit Pincode or Block name above to view nearest active centers with direct Google Maps navigation.</p>
-            </div>
-          </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border);">
-            <span style="font-size: 0.9rem; color: var(--color-text-muted);">Popular Services Available:</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">💳 Aadhaar Updates</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📄 PAN Card Apply</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🌾 PM Kisan eKYC</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🏥 Ayushman Card</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📜 Income/Caste Certificates</span>
+        
+        <div style="margin: 28px 0 20px 0;">
+          <h2 style="font-size: 1.4rem; color: var(--color-text); margin-bottom: 8px;">Ujjain CSC / Jan Seva Kendra — Top Verified Centers (35+ Active Centers)</h2>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 16px;">Browse verified Common Service Centers below or search by your 6-digit Pincode / Area:</p>
+          <div style="margin-bottom: 20px;">
+            <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 480px; padding: 12px 16px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
           </div>
         </div>
+
+        <div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px;">
+          
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Akshay Solanki</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Agar Road, Panchayat/Village-JAITHAL, Sub District-Ghatiya, District-null, State-Madhya Pradesh, Pin-456006</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456006</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.28166381329226,75.8245460645503" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
         
-        <div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Can I update my Aadhaar mobile number at any Ujjain CSC?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Not all centers have Aadhaar update machines. It is best to WhatsApp or call the specific Ujjain center from our list to confirm before visiting.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Is there any fee to check CSC locations in Ujjain?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">No, using our SarkariSewaIndia directory to find CSC centers in Ujjain is 100% free.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What services are available at a CSC center in Ujjain?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Centers in Ujjain offer Aadhaar updates, PAN card applications, passport services, banking, e-Shram registration, and state-specific certificate (income/caste) applications.</p></div></div>
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Kailash Porwal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 vill.khamli th,makdone dist ujjain m.p.,Panchayat/Village-KHAMLI,Sub District-Makdon,District-UJJAIN,State-Madhya Pradesh,Pin-456668</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456668</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1793013,75.78490970000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Arjun Pachrangiya</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.067255374229433,75.90969085693361" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pankaj</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Guradiya gurjar</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456665</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.333674475334952,75.9794466457746" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mohammed Kamran Khan</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 139-B, ADARSH NAGAR, NAGJHIRI, DEWAS ROAD UJJAIN ADARSH NAGAR NAGJHIRI DEWAS ROAD UJJAIN</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456010</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1793013,75.78490970000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rajesh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Village Jaithal,Panchayat/Village-JAITHAL,Sub District-Ghatiya,District-UJJAIN,State-Madhya Pradesh,Pin-456006</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456006</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.28152699878514,75.82411816088073" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Jitendra</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=-0.0006866455077859351,-0.0020599365234375" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rakesh Sharma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=0.0034332275370086204,-0.04669189453125" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Ashish Mohite</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=1.4277315552241359,1.0557174682617188" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pushkar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 chintaman jawasiya ganesh mandir pujari parisar post chintaman jawasiya tehssil and dist ujjain 456006,Panchayat/Village-CHINTAMAN JAWASIYA,Sub District-Ujjain,District-UJJAIN,State-Madhya Pradesh,Pin-456006</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456006</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1793013,75.78490970000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Priti Arora</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 59 indra choke nagda 010 011</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456335</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.470084,75.49272780000001" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Krishnpal Singh Chouhan</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Jai ma bhawani digital seva</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456665</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.364118033535508,75.96585665048507" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Laxminarayan Jat</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Kharsod khurd</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456222</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1147895,75.55096019999996" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rajesh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Raj kiosks Barkheda Bujurg Mahidpur jila Ujjain Madhya Pradesh</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456443</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=-0.0006866455077859351,0.0116729736328125" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">NILESH PATHAK</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 village baledi</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456222</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1793013,75.78490970000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mayur N Thacker</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 185/1, Tirupati Avenue, Panchkroshi Marg, Undasa Road Near Nakshatra INN Marriage Garden,,Panchayat/Village-,Sub District-Ujjain,District-UJJAIN,State-Madhya Pradesh,Pin-456001</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.196227357162588,75.79982757568361" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Sandeep Ora</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 124 MAHATMA GANDHI MARG KHACHROD</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456224</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.42532668229569,75.27988339576432" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Kantilal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Kantilal jain</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456440</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.57854094298047,75.53877353668214" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Deepak</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 main road , Panchayat/Village-BALODAKORAN, Sub District-Badnagar, District-null, State-Madhya Pradesh, Pin-456771</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456771</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1793013,75.78490970000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Lalit Sharma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Vill.bhanwri</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456664</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.045774324744468,75.88035821914674" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Vishal Dubey</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1895324178962,75.7669081090203" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Narendra Malviya</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 C-18/18, B.K.Computer and Printers, Mahakal Vanijya Kendra, Ujjain  Mahakal Vanijiya Kendra Nanakheda Ujjain</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456010</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1793013,75.78490970000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Sohan Singh Makwana</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 villege chirdi post rupkhedi  block   tarana  dist   ujjain mp</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456668</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.487809001979617,75.97011566162111" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Jitendra Panwar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 VILL KHEDA MADDA, Panchayat/Village-KHEDAMADDA, Sub District-Mahidpur, District-null, State-Madhya Pradesh, Pin-456443</div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.553638546679128,75.82267520292976" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Roshan Kumawat</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1793013,75.78490970000007" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Gabbarsingh Badal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 gram baghera tarana ujjain</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456665</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.3480534,76.06239789999995" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Govardhan Lal Solanki</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 New Bus Staind Makdone</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456668</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.71117970542734,76.00212517613522" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Satish Chandra</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 csc upadi centar,Panchayat/Village-UPADI,Sub District-Tarana,District-UJJAIN,State-Madhya Pradesh,Pin-456665</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456665</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.082853146122975,76.10132930738509" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Govind Porwal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 138 NINORA</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456000</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.09110163967479,75.8168973681345" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Gopi Mali</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 A-122, Hatkeshwar Vihar Colony Ujjain Mp,Panchayat/Village-DAUDKHEDI,Sub District-Ujjain,District-UJJAIN,State-Madhya Pradesh,Pin-456006</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456006</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.15442371544199,75.76425930811197" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Nilesh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Gram Chhavani post samgi teh tarana dist ujjain</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456770</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.345534117481318,76.17141542684406" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Yogesh Sahu</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 177/2 Gandhi Nagar Agar Road ujjain 177/2 gandhi nagar agar road</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.20244970402332,75.79020438059547" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Anil Sharma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 VILL- HARNIYAKHEDI POST BADKUMMED, UJJAIN</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456661</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.157288368170207,75.79281091690065" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Chetan</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 azmabad mahidpur</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456443</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.6145154,75.66735599999993" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Manish Nagar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 nagar photocopy patni bazaar ujjain  Ujjain ujj</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 456006</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1319998,75.73714900000004" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        </div>
+
+        <script>
+        function filterCenters() {
+            let input = document.getElementById('pincodeSearch').value.toLowerCase();
+            let cards = document.querySelectorAll('.center-card');
+            cards.forEach(card => {
+                let text = card.innerText.toLowerCase();
+                card.style.display = text.includes(input) ? '' : 'none';
+            });
+        }
+        </script>
+    
+<div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Can I update my Aadhaar mobile number at any Ujjain CSC?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Not all centers have Aadhaar update machines. It is best to WhatsApp or call the specific Ujjain center from our list to confirm before visiting.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Is there any fee to check CSC locations in Ujjain?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">No, using our SarkariSewaIndia directory to find CSC centers in Ujjain is 100% free.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What services are available at a CSC center in Ujjain?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Centers in Ujjain offer Aadhaar updates, PAN card applications, passport services, banking, e-Shram registration, and state-specific certificate (income/caste) applications.</p></div></div>
         
 <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--color-border);">
     <h3 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;">Related Government Services & Tools</h3>

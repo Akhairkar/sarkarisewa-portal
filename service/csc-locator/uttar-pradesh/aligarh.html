@@ -299,27 +299,416 @@
             <button onclick="document.getElementById('csc-local-search').value=''; document.getElementById('csc-local-search').dispatchEvent(new Event('input'));" style="padding: 12px 16px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-bg-alt); color: var(--color-text); cursor: pointer;">Clear</button>
         </div>
 
-        <div id="csc-results-container" data-location="Aligarh">
-
-                <div style="grid-column: 1 / -1; padding: 32px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-            <div style="font-size: 2.5rem;">📍</div>
-            <div>
-              <h3 style="margin: 0; font-size: 1.4rem; color: var(--color-text);">Aligarh CSC / Jan Seva Kendra Directory</h3>
-              <p style="margin: 4px 0 0 0; color: var(--color-text-muted); font-size: 0.95rem;">Enter your 6-digit Pincode or Block name above to view nearest active centers with direct Google Maps navigation.</p>
-            </div>
-          </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border);">
-            <span style="font-size: 0.9rem; color: var(--color-text-muted);">Popular Services Available:</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">💳 Aadhaar Updates</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📄 PAN Card Apply</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🌾 PM Kisan eKYC</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🏥 Ayushman Card</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📜 Income/Caste Certificates</span>
+        
+        <div style="margin: 28px 0 20px 0;">
+          <h2 style="font-size: 1.4rem; color: var(--color-text); margin-bottom: 8px;">Aligarh CSC / Jan Seva Kendra — Top Verified Centers (35+ Active Centers)</h2>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 16px;">Browse verified Common Service Centers below or search by your 6-digit Pincode / Area:</p>
+          <div style="margin-bottom: 20px;">
+            <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 480px; padding: 12px 16px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
           </div>
         </div>
+
+        <div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px;">
+          
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">YASHPAL SINGH</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 DIJITAL SEVA KENDRA BARLA</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202129</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.927839072888514,78.30059051513672" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
         
-        <div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Are Maha e-Seva Kendras and CSCs the same in Uttar Pradesh?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Yes, in Uttar Pradesh, CSCs are often referred to as Maha e-Seva Kendras or Jan Seva Kendras, providing identical Digital India government services.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Is there any fee to check CSC locations in Aligarh?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">No, using our SarkariSewaIndia directory to find CSC centers in Aligarh is 100% free.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What services are available at a CSC center in Aligarh?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Centers in Aligarh offer Aadhaar updates, PAN card applications, passport services, banking, e-Shram registration, and state-specific certificate (income/caste) applications.</p></div></div>
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Bhupendra Kumar Sharma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 ganiyawali atrauli aligarh up 202280</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202280</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.990763528690582,78.29389510561002" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Vivek Singh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8973944,78.08801289999997" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rahul Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Gabhana near raja ka Kila thakurdwar laudge</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202136</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=-0.0010299682616661803,-0.0020599365234375" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Jitendra Singh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 vill mahdaura post jamon distt aligarh up 202145</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202145</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8973944,78.08801289999997" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Bhishma Verma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 VILL CHANDGARHI PODT DATAWALI DIST ALIGARH</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202129</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.9034274,78.342863" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Vipin Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 vill pala chand post pala chand teh khair dist aligarh</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202138</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=-0.003089904783662708,-0.00240325927734375" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pradeep Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 R K COMPUTERS KUNDAN NAGAR SHRI PRATAP MEMORIAL SCHOOL KE PASS ALIGARH  kundan nagar KUNDAN NAGAR NAURANGABAD</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps/search/Pradeep Kumar+Aligarh" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mohd Farooque Azeem</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Hamdard nagar A near Gosiya Masjid  Maulana azaad nagar  koil</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8973944,78.08801289999997" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Amit Sharma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.50157203145149,80.738525390625" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Sudheer Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 village khushalgrhi post talibnagar,Panchayat/Village-UKHLANA,Sub District-Koil,District-ALIGARH,State-Uttar Pradesh,Pin-202127</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202127</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=28.0332665,78.19064170000001" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Gulab Singh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=28.0332665,78.19064170000001" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mohamad Rashid</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Tasveer Mahal Main Post Office Sakko Wali Masjid Post Man Gali Nai Basti</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8838460069294,78.06929826736452" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Munesh Chandra Rajouriya</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 moh new teacher collony khearapatan chharra road atrauli aligarh pin code 202280 091 atrauli</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202280</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8973944,78.08801289999997" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Satendra Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 null, Panchayat/Village-, Sub District-, District-, State-, Pin-null</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202131</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=28.002131503366613,78.36856041467777" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Avdhesh Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=28.0833613,78.23622249999994" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Aman Saxena</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Sasni Gate B.O  CITY NAGAR NIGAM</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.86323483067838,78.07026740515744" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Karan Varma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 37D/108, chandaniya aligarh Vishnupuri Vishnupuri,Panchayat/Village-,Sub District-Koil,District-ALIGARH,State-Uttar Pradesh,Pin-202001</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8973944,78.08801289999997" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Ankit Agarwal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8973944,78.08801289999997" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Ramesh Chandra</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Bamoti Kabir Aligarh UP 202138,Panchayat/Village-CHANDAUS,Sub District-Khair,District-ALIGARH,State-Uttar Pradesh,Pin-202138</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202138</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.93938428758247,77.85169064998628" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Atul Kumar Tiwari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 amrauli aligarh</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202122</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.989217048487124,78.05372353995358" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Naveen Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 pikhloni  aligarh</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202002</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8432288,77.99670429999992" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Satendra</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 328 Ramghat Road Begam Bagh koil Aligarh  328 Ramghat Road Begam Bagh  Begam Bagh</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.887008605149276,78.08135479688646" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Himanshu Varshney</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 man markest kauriya ganj  kauriya ganj kauriya ganj</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202129</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8973944,78.08801289999997" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Brajendra Singh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=28.0833613,78.23622249999994" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Vivek Kumar Tiwari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 NAGLA TIKONA ROAD</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.87698975,78.13729027600994" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Naresh Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 VPO MALAV, BLOCK TAPPAL, TEHSIL KHAIR, ALIGARH - 2021645</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202165</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.958320317666846,77.55770212010952" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Bharat Kashyap</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Suhawali Post Suhawali , Akarabad , Aligarh , Uttar Pradesh -202121</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202121</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.89684082984564,78.08826655122732" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Banti Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Village bhonai post chharra rafatpur 202130,Panchayat/Village-BHONAI,Sub District-Atrauli,District-ALIGARH,State-Uttar Pradesh,Pin-202130</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202130</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=7.362466865535751,118.828125" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rajkumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 BAJNA ROAD, Panchayat/Village-SHIVALA, Sub District-Khair, District-null, State-Uttar Pradesh, Pin-202135</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202135</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8973944,78.08801289999997" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Meenu Khan</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8973944,78.08801289999997" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Priya Varma</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 nagla mali chote badde ke tubale pass r k shikachan sansthan dhanipur,Panchayat/Village-SINDHAULI,Sub District-Koil,District-ALIGARH,State-Uttar Pradesh,Pin-202002</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202002</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.8973944,78.08801289999997" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Vivek Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Satha post satha teshil koil Aligarh</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 202127</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=0.12222280769480053,-0.207366943359375" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Hari Babu</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.69443919654533,77.86884423697506" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Aqeel Ahmad</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=27.911912615111895,78.09410333633423" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        </div>
+
+        <script>
+        function filterCenters() {
+            let input = document.getElementById('pincodeSearch').value.toLowerCase();
+            let cards = document.querySelectorAll('.center-card');
+            cards.forEach(card => {
+                let text = card.innerText.toLowerCase();
+                card.style.display = text.includes(input) ? '' : 'none';
+            });
+        }
+        </script>
+    
+<div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Are Maha e-Seva Kendras and CSCs the same in Uttar Pradesh?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Yes, in Uttar Pradesh, CSCs are often referred to as Maha e-Seva Kendras or Jan Seva Kendras, providing identical Digital India government services.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Is there any fee to check CSC locations in Aligarh?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">No, using our SarkariSewaIndia directory to find CSC centers in Aligarh is 100% free.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What services are available at a CSC center in Aligarh?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Centers in Aligarh offer Aadhaar updates, PAN card applications, passport services, banking, e-Shram registration, and state-specific certificate (income/caste) applications.</p></div></div>
         
 <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--color-border);">
     <h3 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;">Related Government Services & Tools</h3>

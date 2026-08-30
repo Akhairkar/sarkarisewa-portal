@@ -299,27 +299,416 @@
             <button onclick="document.getElementById('csc-local-search').value=''; document.getElementById('csc-local-search').dispatchEvent(new Event('input'));" style="padding: 12px 16px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-bg-alt); color: var(--color-text); cursor: pointer;">Clear</button>
         </div>
 
-        <div id="csc-results-container" data-location="Ranchi">
-
-                <div style="grid-column: 1 / -1; padding: 32px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-            <div style="font-size: 2.5rem;">📍</div>
-            <div>
-              <h3 style="margin: 0; font-size: 1.4rem; color: var(--color-text);">Ranchi CSC / Jan Seva Kendra Directory</h3>
-              <p style="margin: 4px 0 0 0; color: var(--color-text-muted); font-size: 0.95rem;">Enter your 6-digit Pincode or Block name above to view nearest active centers with direct Google Maps navigation.</p>
-            </div>
-          </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border);">
-            <span style="font-size: 0.9rem; color: var(--color-text-muted);">Popular Services Available:</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">💳 Aadhaar Updates</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📄 PAN Card Apply</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🌾 PM Kisan eKYC</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🏥 Ayushman Card</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📜 Income/Caste Certificates</span>
+        
+        <div style="margin: 28px 0 20px 0;">
+          <h2 style="font-size: 1.4rem; color: var(--color-text); margin-bottom: 8px;">Ranchi CSC / Jan Seva Kendra — Top Verified Centers (35+ Active Centers)</h2>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 16px;">Browse verified Common Service Centers below or search by your 6-digit Pincode / Area:</p>
+          <div style="margin-bottom: 20px;">
+            <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 480px; padding: 12px 16px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
           </div>
         </div>
+
+        <div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px;">
+          
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Md Mustaque Alam</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 lem baragain ranchi</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834009</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.3917521,85.38078859999996" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
         
-        <div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What services are available at a CSC center in Ranchi?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Centers in Ranchi offer Aadhaar updates, PAN card applications, passport services, banking, e-Shram registration, and state-specific certificate (income/caste) applications.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Can I update my Aadhaar mobile number at any Ranchi CSC?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Not all centers have Aadhaar update machines. It is best to WhatsApp or call the specific Ranchi center from our list to confirm before visiting.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: How do I find the WhatsApp number of a CSC VLE in Ranchi?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Simply click on the 'WhatsApp' button on the verified center cards below. If a center in Ranchi is claimed by the owner, their direct contact is unlocked.</p></div></div>
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rina Kumari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 harmu housing colony, Panchayat/Village-, Sub District-Ratu, District-null, State-Jharkhand, Pin-834002</div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.3440997,85.30956200000003" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Aryan Raj</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 BIRSA CHOWK, KATHAR KOCHA, DORANDA RANCHI 834002 BIRSA CHOWK KATHAR KOCHA,Panchayat/Village-,Sub District-Namkum,District-RANCHI,State-Jharkhand,Pin-834002</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834002</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.32795359915356,85.30573180552676" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pramod Kumar Sahu</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 GUNGA TOLI , ORMANJHI</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835219</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=-0.006866455061689411,0.06900787353515625" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Dilip Kumar Saw</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 burmu ranchi  jharkhand,Panchayat/Village-HESALPIRI,Sub District-Burmu,District-RANCHI,State-Jharkhand,Pin-835205</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835205</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.3440997,85.30956200000003" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Ravindra Oraon</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 VILL-BALANDU PO-DEOGAON PS-LAPUNG DIST-RANCHI,Panchayat/Village-LATRATU,Sub District-Lapung,District-RANCHI,State-Jharkhand,Pin-835202</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835202</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.2547966,84.98175400000002" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Tasleem Arif</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 ARIFSTORE RING ROAD</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834004</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.334685334704552,85.25325179100037" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Shoib Ansari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 nayasarai jagarnathpur</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835303</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=-0.0009012222289563176,0.000171661376953125" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">SAJAL KUMAR</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Vikash Nagar, Panchayat/Village-LAPRA, Sub District-Khelari, District-null, State-Jharkhand, Pin-829208</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 829208</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.642715803775868,84.93993759155273" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Sunil Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 sukurhutu ,   sarnatoli, ps-kanke, dist-ranchi ,jharkhand,Panchayat/Village-SUKURHUTU (SOUTH),Sub District-Kanke,District-RANCHI,State-Jharkhand,Pin-834006</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834006</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.36936227070713,85.32634735107423" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Ajay Mahli</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 vill - sembo , po  - balalong , ps - nagri , dist - ranchi</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834004</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.2509663,85.24119580000001" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Sarita Singh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 null, Panchayat/Village-, Sub District-Namkum, District-null, State-Jharkhand, Pin-null</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: null</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.140359987886118,85.31982421875001" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Intaz Ansari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 lundri, ranchi,Panchayat/Village-LUNDRI,Sub District-Chanho,District-RANCHI,State-Jharkhand,Pin-835301</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835301</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.463755252789166,84.98700505869147" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Azad Ansari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Sukurhutoo Bari Masjid</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834006</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.468285200853252,85.28107277908667" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Shahzad Alam</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Nezam Nagar, Panchayat/Village-, Sub District-Ratu, District-null, State-Jharkhand, Pin-834001</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834001</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.363969989086787,85.3168523311615" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Saurabh Kumar Bhagat</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Gurugai, Panchayat/Village-Burmu, Sub District-Burmu, District-Ranchi, State-Jharkhand, Pin-835202</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835202</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.512484816888627,23.512484816888627" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Gautam Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Rana path, Friends Colony Pandra, Ranchi - 835222</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835222</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.3956788708326,85.2731543204125" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Aamir Sohail</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 S/O Md Ahad Ansari Village Rargaon Post Rargaon 835225</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835225</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=22.97735964332157,85.84579467773438" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Sanjit Singh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 kd khalari ranchi jharkhand 829205</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 829205</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.654206403603972,85.01121989080411" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Surendra Nath Sahu</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 vill basantpur  panchayat bhawan , po pogra ps silli</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835102</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps/search/Surendra Nath Sahu+Ranchi" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">SACHIN KUMAR SAHU</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 COLLEGE ROAD TAU BUNDU, Panchayat/Village-Bundu, Sub District-Bundu, District-Ranchi, State-Jharkhand, Pin-835204</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835204</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.176182797872762,23.176182797872762" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Lalit Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 VILL-LOWAHATU,PANCHAYAT-LOWAHATU,PO-LOWAHATU,PS-SONAHATU,DIST-RANCHI</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835204</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.1793981,85.64348700000005" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Bhawani Kumar Sahu</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Rarha Panchayat Bhawan, Panchayat/Village-Kanke, Sub District-Kanke, District-Ranchi, State-Jharkhand, Pin-834006</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834006</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=-0.09799177637815742,-0.09799177637815742" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Raju Anand</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 PO Hatia PS Jagannathpur Hatia Hatia Ward 52</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834003</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.2951815,85.32912910000005" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Amir Ansari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Nh 39 Murma Chowk, Panchayat/Village-null, Sub District-null, District-null, State-Jharkhand, Pin-835205</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835205</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.439871592731787,85.13348042964935" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Md Masood Ansari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 IRBA , Panchayat/Village-KARMA, Sub District-Ormanjhi, District-Ranchi, State-Jharkhand, Pin-835219</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835219</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.3440997,85.30956200000003" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Abhinay Kumar Singh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 PIPERTOLI ST. FRANCIS ROAD HARMU RANCHI PIPERTOLI HARMU</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834002</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.365812746029217,85.29807686805727" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Sartaj Ansari</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 10 Mile Chowk Hazam Road, Panchayat/Village-HARDAG, Sub District-Namkum, District-null, State-Jharkhand, Pin-835221</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835221</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.24534452566764,85.29820089777537" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Chandra Mohan Patel</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.3440997,85.30956200000003" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Gautam Kumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.67415254082966,85.05764892932132" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Dhiren Lohra</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 RANCHI, Panchayat/Village-BARENDA, Sub District-Sonahatu, District-Ranchi, State-Jharkhand, Pin-835102</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835102</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.3440997,85.30956200000003" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Seema Devi</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 </div>
+              
+            </div>
+          </div>
+          <a href="https://www.google.com/maps/search/Seema Devi+Ranchi" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Nagendra Kumar Singh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Kashyap Complex, Ashok Nagar, Opp. Road No.4, Ashok Nagar, Ranchi-834002. Ashok Nagar Ranchi</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 834002</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.3478733,85.30328110000005" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">PRAVEEN KUMAR MAHTO</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 VILL - ICHADIH P.S - ULIDIH P.S - TAMAR DIST - RANCHI STATE - JHARKHAND PIN - 835225 TAMAR ICHADIH</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835225</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.03958890686936,85.72039604187012" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rakesh Kumar Seth</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 HIGH SCHOOL TOLI TAMAR</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 835225</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.053229900408898,85.65857283483079" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        </div>
+
+        <script>
+        function filterCenters() {
+            let input = document.getElementById('pincodeSearch').value.toLowerCase();
+            let cards = document.querySelectorAll('.center-card');
+            cards.forEach(card => {
+                let text = card.innerText.toLowerCase();
+                card.style.display = text.includes(input) ? '' : 'none';
+            });
+        }
+        </script>
+    
+<div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What services are available at a CSC center in Ranchi?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Centers in Ranchi offer Aadhaar updates, PAN card applications, passport services, banking, e-Shram registration, and state-specific certificate (income/caste) applications.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Can I update my Aadhaar mobile number at any Ranchi CSC?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Not all centers have Aadhaar update machines. It is best to WhatsApp or call the specific Ranchi center from our list to confirm before visiting.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: How do I find the WhatsApp number of a CSC VLE in Ranchi?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Simply click on the 'WhatsApp' button on the verified center cards below. If a center in Ranchi is claimed by the owner, their direct contact is unlocked.</p></div></div>
         
 <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--color-border);">
     <h3 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;">Related Government Services & Tools</h3>

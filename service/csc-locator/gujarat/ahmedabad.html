@@ -299,27 +299,328 @@
             <button onclick="document.getElementById('csc-local-search').value=''; document.getElementById('csc-local-search').dispatchEvent(new Event('input'));" style="padding: 12px 16px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-bg-alt); color: var(--color-text); cursor: pointer;">Clear</button>
         </div>
 
-        <div id="csc-results-container" data-location="Ahmedabad">
-
-                <div style="grid-column: 1 / -1; padding: 32px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-            <div style="font-size: 2.5rem;">📍</div>
-            <div>
-              <h3 style="margin: 0; font-size: 1.4rem; color: var(--color-text);">Ahmedabad CSC / Jan Seva Kendra Directory</h3>
-              <p style="margin: 4px 0 0 0; color: var(--color-text-muted); font-size: 0.95rem;">Enter your 6-digit Pincode or Block name above to view nearest active centers with direct Google Maps navigation.</p>
-            </div>
-          </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border);">
-            <span style="font-size: 0.9rem; color: var(--color-text-muted);">Popular Services Available:</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">💳 Aadhaar Updates</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📄 PAN Card Apply</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🌾 PM Kisan eKYC</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">🏥 Ayushman Card</span>
-            <span style="background: var(--color-bg-alt); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">📜 Income/Caste Certificates</span>
+        
+        <div style="margin: 28px 0 20px 0;">
+          <h2 style="font-size: 1.4rem; color: var(--color-text); margin-bottom: 8px;">Ahmedabad CSC / Jan Seva Kendra — Top Verified Centers (27+ Active Centers)</h2>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 16px;">Browse verified Common Service Centers below or search by your 6-digit Pincode / Area:</p>
+          <div style="margin-bottom: 20px;">
+            <input type="text" id="pincodeSearch" placeholder="🔍 Search by Pincode or Area..." style="width: 100%; max-width: 480px; padding: 12px 16px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); border-radius: 8px; font-size: 1rem;" onkeyup="filterCenters()">
           </div>
         </div>
+
+        <div id="centersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px;">
+          
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Shahnawaz Yunusbhai Chhipa Bombaywala</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 DANILIMDA, Panchayat/Village-, Sub District-Maninagar, District-Ahmedabad, State-Gujarat, Pin-380028</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380028</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=22.996639345366127,72.583966255188" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
         
-        <div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What services are available at a CSC center in Ahmedabad?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Centers in Ahmedabad offer Aadhaar updates, PAN card applications, passport services, banking, e-Shram registration, and state-specific certificate (income/caste) applications.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Are Maha e-Seva Kendras and CSCs the same in Gujarat?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Yes, in Gujarat, CSCs are often referred to as Maha e-Seva Kendras or Jan Seva Kendras, providing identical Digital India government services.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What are the standard timings for CSCs in Ahmedabad?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Most centers in Ahmedabad operate from 9:00 AM to 6:00 PM, Monday to Saturday. However, some independent VLEs may have extended timings.</p></div></div>
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pandit Milind Rajeshbhai</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 A501 Shre Vishnudhara Cross Road Opp Setu Vertica New Gota, Panchayat/Village-, Sub District-Daskroi, District-Ahmedabad, State-Gujarat, Pin-382481</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382481</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.102253449328007,72.54432857036592" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Bharat Dewasi</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Bopal Ghuma Road Ghuma Ahmedabad, Panchayat/Village-, Sub District-Daskroi, District-Ahmedabad, State-Gujarat, Pin-380058</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380058</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.02823945776033,72.45277404785158" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Patel Namrata Snehal</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 20 CHANCHALBAG SOCIETY OPP RANNAPARK BUS STOP GHATLODIYA AHMEDABAD 380061, Panchayat/Village-, Sub District-Ghatlodiya, District-Ahmedabad, State-Gujarat, Pin-380061</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380061</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.075941589687034,72.54941940307619" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Karankumar Deepakbhai Bhatt</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 14 GURUKRUPA ROW HOUSE OPP HARIDARSHAN PARK JASHODANAGAR MANINAGAR, Panchayat/Village-, Sub District-Maninagar, District-Ahmedabad, State-Gujarat, Pin-380008</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380008</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=22.985617065750848,72.61942505836488" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Gauswami Mayurpuri Ghanshyampuri</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Jadav vas, Panchayat/Village-METAL, Sub District-Bavla, District-Ahmedabad, State-Gujarat, Pin-382220</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382220</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.0216238,72.5797068" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Patel Mitalben Laljibhai</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 38 450 darshan appartment sastrinagar  ahmedabad, Panchayat/Village-, Sub District-Ghatlodiya, District-Ahmedabad, State-Gujarat, Pin-380013</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380013</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.05619937981774,72.54890441894533" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mansuri Faizunnoor Mehmudhusen</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 KHAMARWADA  GHANCHI DHAL ROAD DHOLKA , Panchayat/Village-, Sub District-Dholka, District-Ahmedabad, State-Gujarat, Pin-382225</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382225</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.0216238,72.5797068" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Khatumbara Harunbhai Ikbalbhai</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Bharaval vali sheri, Panchayat/Village-PADANA, Sub District-Dhandhuka, District-Ahmedabad, State-Gujarat, Pin-382460</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382460</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=22.348806666270747,71.94523680216663" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Parekh Jaimin Vinodbhai</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 01 Changodar city center, Panchayat/Village-CHANGODAR, Sub District-Sanand, District-Ahmedabad, State-Gujarat, Pin-382213</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382213</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=22.929006428320083,72.44793241567096" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Vaghela Pankajsinh</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 7 KAILASH AVENUE OPP DESAI PETROL PUMP SARKHEJ  BAVLA HIGHWAY CHANGODAR, Panchayat/Village-, Sub District-Sanand, District-Ahmedabad, State-Gujarat, Pin-382213</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382213</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=22.93984918820487,72.45662569999696" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Rahulkumar Vijaykumar Jain</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 SWASTIK CHAR RASTA BEHIND METRO STAIRS AMRAIWADI, Panchayat/Village-, Sub District-Maninagar, District-Ahmedabad, State-Gujarat, Pin-380026</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380026</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.0216238,72.5797068" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Patel Darshnaben Dilipkumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 H 2 2 NEW SATTADHAR COMPLEX  NEAR HIRABAUG SOC GHATLODIA AHMEDABAD 380061, Panchayat/Village-, Sub District-Ghatlodiya, District-Ahmedabad, State-Gujarat, Pin-380061</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380061</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.073730606243817,72.54907608032228" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pathan Shahanvazkhan</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 Menaben tower cross road, Panchayat/Village-, Sub District-Dholka, District-Ahmedabad, State-Gujarat, Pin-387810</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 387810</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=22.734845444927497,72.43983507156373" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Patel Amitaben Mayurkumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 1 6 SAMBHAVNATHJI CO OP H SOC L VARDHMAN NAGAR VTC AHMEDABAD 380061, Panchayat/Village-, Sub District-Ghatlodiya, District-Ahmedabad, State-Gujarat, Pin-380061</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380061</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.073730606243817,72.54890441894533" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Sonalben Kiritbhai Patel</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 40 CHANCHAL BAG SOCIETY RANAPARK GHATLODIA 380061, Panchayat/Village-, Sub District-Ghatlodiya, District-Ahmedabad, State-Gujarat, Pin-380061</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380061</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.073414748499122,72.54684448242189" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Jadav Hardik Indrvadan</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 SHOP 25 TULSI AVENUE OPP RELINCE PETROL PUMP, Panchayat/Village-RAMPUR, Sub District-Dholka, District-Ahmedabad, State-Gujarat, Pin-382225</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382225</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.0216238,72.5797068" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Prajapati Sandip</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 B 3 Rajasthan Ni Chali Opp Murlidhar Apartment Hirawadi, Panchayat/Village-, Sub District-Asarva, District-Ahmedabad, State-Gujarat, Pin-382350</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382350</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.046991424899957,72.63906687498094" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Lilaben Ganpatbhai Thakor</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 251 SHERASIYA VAS BHAVANI NIVAS AHMEDABAD, Panchayat/Village-, Sub District-Daskroi, District-Ahmedabad, State-Gujarat, Pin-380061</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380061</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.074836102508872,72.54916191101076" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Chirag Bharatbhai Desai</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 E 202, Panchayat/Village-, Sub District-Daskroi, District-Ahmedabad, State-Gujarat, Pin-382350</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382350</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.050926419286558,72.66903559820544" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Panchal Sachin Vinodbhai</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 2 nd floor khodiyar place opp patel vadi near shakti sweet bhidbhanjan bapunagar, Panchayat/Village-, Sub District-Asarva, District-Ahmedabad, State-Gujarat, Pin-382350</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382350</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.034775806701468,72.62416720390321" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Panseriya Ritaben Hiteshkumar</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 DADUKA, Panchayat/Village-DADUKA, Sub District-Sanand, District-Ahmedabad, State-Gujarat, Pin-382170</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382170</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.0216238,72.5797068" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Mita Rajesh Tanna</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 ANANDNAGAR, Panchayat/Village-, Sub District-Vejalpur, District-Ahmedabad, State-Gujarat, Pin-380051</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380051</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.0216238,72.5797068" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Pansuriya Dilipbhai Ravjibhai</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 STREET NO, Panchayat/Village-DAHEGAMDA, Sub District-Bavla, District-Ahmedabad, State-Gujarat, Pin-382220</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382220</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=23.0216238,72.5797068" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Gaditvora Mazarbhai Mahemudbhai</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 31 FIRST FLOOR SUPER COMPLEX NR SHER ALI DARGAH OPP SARKHEJ POLICE STATION SARKHEJ AHMEDABAD, Panchayat/Village-, Sub District-Vejalpur, District-Ahmedabad, State-Gujarat, Pin-382210</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382210</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=22.98778011092553,72.50345170497896" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Malik Shaukathussain</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 SUNRISE ARCADE MAKTAMPURA AHMEDABAD, Panchayat/Village-, Sub District-Vejalpur, District-Ahmedabad, State-Gujarat, Pin-380055</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 380055</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=22.99505151384949,72.53350948486643" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        <div class="center-card" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="margin: 0 0 8px 0; color: var(--color-primary); font-size: 1.1rem;">Shyamjee Chaudhary</h3>
+            <div style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 12px;">
+              <div>📍 NAROL , Panchayat/Village-, Sub District-Maninagar, District-Ahmedabad, State-Gujarat, Pin-382405</div>
+              <div style='margin-top: 6px; font-weight: bold; color: var(--color-text);'>PIN: 382405</div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=22.945937319469607,72.59233474731447" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; width: 100%; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 6px;">Get Directions ↗</a>
+        </div>
+        
+        </div>
+
+        <script>
+        function filterCenters() {
+            let input = document.getElementById('pincodeSearch').value.toLowerCase();
+            let cards = document.querySelectorAll('.center-card');
+            cards.forEach(card => {
+                let text = card.innerText.toLowerCase();
+                card.style.display = text.includes(input) ? '' : 'none';
+            });
+        }
+        </script>
+    
+<div style="margin-top: 40px;"><h3 style="margin-bottom: 20px;">Frequently Asked Questions</h3><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What services are available at a CSC center in Ahmedabad?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Centers in Ahmedabad offer Aadhaar updates, PAN card applications, passport services, banking, e-Shram registration, and state-specific certificate (income/caste) applications.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: Are Maha e-Seva Kendras and CSCs the same in Gujarat?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Yes, in Gujarat, CSCs are often referred to as Maha e-Seva Kendras or Jan Seva Kendras, providing identical Digital India government services.</p></div><div style="margin-bottom: 15px; padding: 15px; background: var(--color-surface); border-radius: 8px; border: 1px solid var(--color-border);"><strong>Q: What are the standard timings for CSCs in Ahmedabad?</strong><p style="margin-top: 10px; color: var(--color-text-muted);">Most centers in Ahmedabad operate from 9:00 AM to 6:00 PM, Monday to Saturday. However, some independent VLEs may have extended timings.</p></div></div>
         
 <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--color-border);">
     <h3 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;">Related Government Services & Tools</h3>
