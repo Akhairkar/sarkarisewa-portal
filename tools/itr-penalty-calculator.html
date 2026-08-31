@@ -1,277 +1,233 @@
 <!DOCTYPE html>
-<html lang="hi">
+
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="max-image-preview:large, index, follow">
-  <title>ITR Late Filing Penalty Calculator 2026: Section 234F, 234A, 234B & 234C Interest | SarkariSewa India</title>
-  <meta name="description" content="आईटीआर देर से भरने पर धारा 234F के तहत लेट फीस और 234A, 234B व 234C ब्याज की सटीक गणना करें। ₹5 लाख से कम व अधिक आय पर पेनल्टी नियम।">
-  <link rel="canonical" href="https://sarkarisewaindia.com/tools/itr-penalty-calculator.html">
-  
-  <meta property="og:title" content="ITR Late Filing Penalty Calculator 2026: Section 234F, 234A, 234B & 234C Interest | SarkariSewa India">
-  <meta property="og:description" content="आईटीआर देर से भरने पर धारा 234F के तहत लेट फीस और 234A, 234B व 234C ब्याज की सटीक गणना करें। ₹5 लाख से कम व अधिक आय पर पेनल्टी नियम।">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://sarkarisewaindia.com/tools/itr-penalty-calculator.html">
-  <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ITR Late Filing Penalty Calculator 2026: Section 234F, 234A, 234B & 234C Interest">
-  <meta name="twitter:description" content="Calculate late filing fees under Section 234F and interest under Section 234A/B/C for delayed ITR filing. Check penalties for income below and above ₹5 Lakhs.">
-  
-  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
-  <link rel="icon" href="../favicon.ico">
-  <link rel="manifest" href="../manifest.json">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css">
-  <link rel="stylesheet" href="../assets/css/module2.css">
-  <link rel="stylesheet" href="../assets/css/module7.css">
-  <link rel="stylesheet" href="../assets/css/module9.css">
-  <link rel="stylesheet" href="../assets/css/module16.css">
-  <link rel="stylesheet" href="../assets/css/module18.css">
-  <link rel="stylesheet" href="../assets/css/share-widget.css">
-  
-  <style>
-    .calc-container, .tool-container-card, .engine-card, .calc-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 16px;
-      padding: 32px 24px;
-      box-shadow: 0 8px 30px rgba(16, 36, 62, 0.06);
-      margin-bottom: 36px;
-    }
-    .calc-title { font-size: 2rem; color: var(--color-primary); margin-bottom: 8px; text-align: center; }
-    .calc-desc { text-align: center; color: var(--color-text-muted); margin-bottom: 28px; font-size: 1.02rem; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; font-weight: 700; margin-bottom: 8px; color: var(--color-primary); font-size: 0.98rem; }
-    .form-control, .calc-input {
-      width: 100%;
-      padding: 12px 14px;
-      border: 2px solid var(--color-border);
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--color-text);
-      background: var(--color-surface);
-      box-sizing: border-box;
-      transition: border-color 0.2s;
-    }
-    .form-control:focus, .calc-input:focus { outline: none; border-color: #2563eb; }
-    .btn-calc, .btn-tool-primary {
-      display: block;
-      width: 100%;
-      background: #2563eb;
-      color: #ffffff !important;
-      padding: 15px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s;
-      box-shadow: 0 4px 14px rgba(37,99,235,0.25);
-      text-align: center;
-      text-decoration: none;
-    }
-    .btn-calc:hover, .btn-tool-primary:hover { background: #1d4ed8; }
-    .result-box, .calc-result-box {
-      display: none;
-      margin-top: 32px;
-      padding: 24px;
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 12px;
-    }
-    .result-val { font-size: 2.4rem; color: #10b981; font-weight: 700; text-align: center; margin-bottom: 16px; }
-    .breakdown { background: var(--color-surface); padding: 16px; border-radius: 8px; border: 1px solid var(--color-border); margin-bottom: 16px; }
-    .breakdown-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--color-text); }
-    .breakdown-row:last-child { margin-bottom: 0; }
-    .disclaimer { font-size: 0.88rem; color: var(--color-text-muted); margin-top: 16px; line-height: 1.6; }
-    .btn-print { background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border); padding: 10px 20px; border-radius: 8px; cursor: pointer; display: block; margin: 18px auto 0; font-weight: 600; }
-    .error { color: #ef4444; font-size: 0.9rem; margin-top: 6px; display: none; font-weight: 600; }
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+<title>ITR Late Filing Fee & Penalty Calculator 2026: Section 234F & 234A</title>
+<link href="../assets/css/style.css" rel="stylesheet"/>
+<link href="../assets/css/module9.css" rel="stylesheet"/>
+<style>
+    .wizard-container { max-width: 800px; margin: 40px auto; background: var(--color-surface); padding: 32px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .wizard-title { font-size: 2rem; color: var(--color-brand); margin-bottom: 8px; text-align: center; }
+    .wizard-desc { text-align: center; color: var(--color-text-muted); margin-bottom: 32px; font-size: 1.05rem; }
     
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media(max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
-    .fy-badge { display: inline-block; background: #e0e7ff; color: #3730a3; padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; margin-bottom: 10px; }
+    .wizard-step { display: none; animation: fadeIn 0.4s ease; }
+    .wizard-step.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     
-    .tax-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
-    @media(max-width: 768px) { .tax-comparison { grid-template-columns: 1fr; } }
-    .regime-card { background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 12px; padding: 20px; position: relative; }
-    .regime-card.winner { border-color: #10b981; background: rgba(16, 185, 129, 0.04); }
-    .winner-badge { display: none; position: absolute; top: -12px; right: 16px; background: #10b981; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
-    .regime-card.winner .winner-badge { display: block; }
-    .regime-title { font-size: 1.2rem; font-weight: 700; color: var(--color-primary); margin-bottom: 8px; }
-    .tax-amount { font-size: 1.8rem; font-weight: 700; color: var(--color-primary); margin-bottom: 16px; }
+    .question-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 20px; color: var(--color-text); }
     
-    [data-theme="dark"] .calc-container,
-    [data-theme="dark"] .result-box,
-    [data-theme="dark"] .regime-card,
-    [data-theme="dark"] .breakdown,
-    [data-theme="dark"] .prob-box {
-      background: #101D2C !important;
-      border-color: #223244 !important;
-      color: #E8EDF3 !important;
-    }
+    .options-grid { display: grid; gap: 16px; margin-bottom: 24px; }
+    .option-btn { background: var(--color-surface-alt); border: 2px solid var(--color-border); padding: 16px 20px; border-radius: 10px; font-size: 1.05rem; font-weight: 500; cursor: pointer; text-align: left; transition: all 0.2s; display: flex; align-items: center; gap: 12px; color: var(--color-text); }
+    .option-btn:hover { border-color: var(--color-primary); background: var(--color-bg); }
+    .option-btn.selected { border-color: var(--color-primary); background: var(--color-surface); }
+    .option-icon { font-size: 1.5rem; }
+    
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 32px; border-top: 1px solid var(--color-border); padding-top: 24px; }
+    .btn-next { background: var(--color-brand); color: var(--color-brand-text); padding: 12px 24px; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; margin-left: auto; }
+    .btn-next:hover { background: var(--color-brand-hover); }
+    .btn-prev { background: var(--color-surface-alt); color: var(--color-text); padding: 12px 24px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 1.05rem; font-weight: 600; cursor: pointer; }
+    .btn-prev:hover { background: var(--color-border); }
+
+    .result-box { background: var(--color-surface-alt); border: 2px solid var(--color-border); border-radius: 12px; padding: 32px; display: none; }
+    .result-box.active { display: block; }
+    .result-heading { font-size: 1.5rem; color: var(--color-text); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .result-step { background: var(--color-surface); padding: 20px; border-radius: 8px; border-left: 4px solid var(--color-primary); margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .result-step h4 { margin-top: 0; margin-bottom: 8px; color: var(--color-brand); }
+    .result-step p { margin: 0; color: var(--color-text-muted); font-size: 0.95rem; }
+    .official-link { display: inline-block; margin-top: 12px; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+    .official-link:hover { text-decoration: underline; }
+    
+    .penalty-warning { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.5); padding: 16px; border-radius: 8px; margin-top: 24px; display: flex; gap: 12px; align-items: flex-start; }
+    .penalty-warning p { margin: 0; font-size: 0.9rem; color: var(--color-text); }
+    
+    .btn-restart { display: block; width: 100%; text-align: center; margin-top: 24px; color: var(--color-text-muted); text-decoration: underline; cursor: pointer; background: none; border: none; font-size: 1rem; }
   </style>
-  
-  <script type="application/ld+json" id="tool-schema">
+
+<meta name="description" content="Check late filing penalty fee (₹1,000 / ₹5,000) under Section 234F and interest under 234A/B/C for delayed Income Tax Return filing."/><link rel="canonical" href="https://sarkarisewaindia.com/tools/itr-penalty-calculator.html"/><meta content="website" property="og:type"/><meta property="og:title" content="ITR Late Filing Fee & Penalty Calculator 2026: Section 234F & 234A"/><meta property="og:description" content="Check late filing penalty fee (₹1,000 / ₹5,000) under Section 234F and interest under 234A/B/C for delayed Income Tax Return filing."/><meta property="og:url" content="https://sarkarisewaindia.com/tools/itr-penalty-calculator.html"/><meta content="summary" name="twitter:card"/><script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebApplication",
-      "name": "ITR Late Filing Penalty Calculator 2026: Section 234F, 234A, 234B & 234C Interest",
-      "url": "https://sarkarisewaindia.com/tools/itr-penalty-calculator.html",
-      "applicationCategory": "FinanceApplication",
-      "operatingSystem": "All",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "INR"
-      }
-    },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://sarkarisewaindia.com/index.html"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Citizen Tools & Calculators",
-          "item": "https://sarkarisewaindia.com/tools/index.html"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "आईटीआर लेट फीस पेनल्टी कैलकुलेटर 2026: धारा 234F, 234A, 234B व 234C ब्याज",
-          "item": "https://sarkarisewaindia.com/tools/itr-penalty-calculator.html"
-        }
-      ]
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "धारा 234F के तहत लेट फाइलिंग पेनल्टी कितनी होती है?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "यदि कुल आय ₹5 लाख से अधिक है तो ₹5,000 और यदि आय ₹5 लाख से कम है तो अधिकतम ₹1,000 का जुर्माना लगता है।"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "धारा 234A के तहत ब्याज (Interest on Late Filing) कितना कटता है?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "देय टैक्स राशि पर 1% प्रति माह (या माह के भाग) की दर से ब्याज लगाया जाता है।"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "धारा 234B और 234C क्या हैं?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "234B एडवांस टैक्स का 90% न चुकाने पर और 234C एडवांस टैक्स की किस्तों में देरी होने पर 1% प्रति माह का ब्याज लगाता है।"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "यदि मेरी आय कर-योग्य सीमा से कम है तो क्या लेट फीस लगेगी?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "नहीं, यदि आपकी कुल सकल आय मूल छूट सीमा (₹2.5 लाख / ₹3 लाख) से कम है तो धारा 234F के तहत कोई लेट फीस नहीं लगती।"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "बिलेटेड आईटीआर (Belated ITR) फाइल करने की अंतिम तारीख क्या है?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "संबंधित असेसमेंट ईयर के 31 दिसंबर तक पेनाल्टी के साथ बिलेटेड रिटर्न दाखिल किया जा सकता है।"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "क्या बिलेटेड रिटर्न में शेयर मार्केट या व्यापार का घाटा (Loss) कैरी फॉरवर्ड हो सकता है?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "नहीं, धारा 139(3) के अनुसार समय सीमा (31 जुलाई) के बाद दाखिल किए गए रिटर्न में बिजनेस या कैपिटल गेन का घाटा अगले वर्षों में सेट-ऑफ नहीं किया जा सकता।"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "ITR-U (Updated Return) क्या है और इसमें कितना अतिरिक्त टैक्स लगता है?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "छूटे हुए रिटर्न को 2 वर्ष के भीतर दाखिल किया जा सकता है, जिसमें 12 महीने के भीतर 25% और 24 महीने के भीतर 50% अतिरिक्त टैक्स पेनल्टी देनी होती है।"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "पेनाल्टी चालान (Challan 280) कैसे भरें?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "eportal.incometax.gov.in पर e-Pay Tax में जाएं, Assessment Year चुनें और Self-Assessment Tax (300) या Other (500) हेड में पेनल्टी जमा करें।"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "क्या पेनल्टी माफ (Waiver) कराने का कोई प्रावधान है?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "असाधारण परिस्थितियों (जैसे गंभीर बीमारी या तकनीकी खराबी) में प्रधान मुख्य आयकर आयुक्त (CCIT) को धारा 119(2)(b) के तहत माफी आवेदन दिया जा सकता है।"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "गलत ITR भरने पर धारा 270A के तहत कितनी पेनल्टी लगती है?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "कम आय दर्शाने पर 50% और जानबूझकर गलत जानकारी (Misreporting) देने पर कर राशि का 200% तक जुर्माना हो सकता है।"
-          }
-        }
-      ]
-    }
-  ]
+  "@type": "WebApplication",
+  "name": "ITR Late Filing Penalty Calculator",
+  "url": "https://sarkarisewaindia.com/tools/itr-penalty-calculator.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  }
 }
-  </script>
+</script>
 </head>
-<body class="v2-template" data-slug="itr-penalty-calculator">
-  <script>window.SS_ROOT = "../";</script>
-  
-  <div id="site-header"></div>
+<body>
+<script>window.SS_ROOT = "../";</script>
+<div id="site-header">
+<div class="tricolor-rule"></div>
+<a class="skip-link" data-i18n="skip_to_content" href="#main-content">Skip to main content</a>
+<header class="site-header">
+<div class="container header-inner">
+<a class="brand" href="../index.html">
+<span class="brand-mark">S</span>
+<span class="brand-text">
+<span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
+<span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
+</span>
+</a>
+<nav aria-label="Primary" class="main-nav">
+<ul>
+<li><a data-i18n="nav_home" href="../index.html">Home</a></li>
+<!-- Categories Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" href="#">Categories 📁 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a></li>
+<li><a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a></li>
+<li><a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a></li>
+<li><a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a></li>
+<li><a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a></li>
+<li><a data-i18n="nav_health" href="../category/health.html">Health</a></li>
+</ul>
+</li>
+<!-- Updates & Support Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" href="#">Updates &amp; Support 📢 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a></li>
+<li><a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a></li>
+<li><a data-i18n="nav_blog" href="../blog/index.html">Blog</a></li>
+<li><a data-i18n="nav_support" href="../support/index.html">Support</a></li>
+</ul>
+</li>
+<!-- Image Tools Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../tools/photo-resizer.html">🖼️ Govt Exam Photo Resizer</a></li>
+<li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+<li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+</ul>
+</li>
+<!-- State Services Dropdown -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" data-i18n="nav_state_services" href="../states/index.html">State Services 🏛️ ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../states/index.html">🗺️ All States Hub</a></li>
+<li><a href="../states/index.html">📍 Uttar Pradesh</a></li>
+<li><a href="../states/index.html">📍 Maharashtra</a></li>
+<li><a href="../states/index.html">📍 Bihar</a></li>
+<li><a href="../states/index.html">📍 Rajasthan</a></li>
+<li><a href="../states/index.html">📍 Madhya Pradesh</a></li>
+</ul>
+</li>
+<!-- Citizen Utilities Dropdown Menu -->
+<li class="nav-dropdown">
+<a class="nav-dropdown-toggle" href="../tools/index.html">Citizen Utilities 🛠️ ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../tools/csc-locator.html" style="font-weight: 600; color: var(--color-primary);">📍 CSC / e-Seva Locator <span style="font-size: 0.75rem; background: var(--color-accent-green); color: white; padding: 2px 4px; border-radius: 4px; margin-left: 4px;">NEW</span></a></li>
+<li><a data-i18n="nav_eligibility_engine" href="../tools/eligibility-checker.html" style="font-weight: 600; color: var(--color-accent-green);">🎯 Scheme Eligibility Engine</a></li>
+<li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
+<li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+<li><a href="../tools/typing-speed-test.html">⌨️ Typing Speed Test</a></li>
+<li><a href="../tools/deadline-calendar.html">📅 Deadline Calendar</a></li>
+<li><a href="../tools/pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
+<li><a href="../tools/status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
+<li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+<li><a href="../tools/age-calculator.html">⏳ Age &amp; Retirement Calculator</a></li>
+</ul>
+</li>
+<!-- Financial Calculators Dropdown Menu -->
+<li class="nav-dropdown">
+<a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;">Financial Calculators 💰 ▾</a>
+<ul class="nav-dropdown-menu">
+<li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+<li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
+<li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
+<li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
+<li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
+<li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
+<li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
+<li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+<div class="header-actions">
+<a href="../tools/csc-locator.html" class="btn btn--primary header-csc-btn" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+<span data-lang-show="en">📍 Nearest CSC</span>
+<span data-lang-show="hi">📍 जन सेवा केंद्र</span>
+</a>
 
-  <main class="container" style="max-width: 1040px; margin: 32px auto; padding: 0 16px;">
-    
-    <!-- BREADCRUMB -->
-    <nav class="breadcrumb" aria-label="Breadcrumb" style="font-size: 0.9rem; margin-bottom: 20px; color: var(--color-text-muted);">
-      <a href="../index.html" style="color: var(--color-primary); text-decoration: none;">होम (Home)</a> &gt;
-      <a href="index.html" style="color: var(--color-primary); text-decoration: none;">नागरिक टूल्स व कैलकुलेटर</a> &gt;
-      <span style="color: var(--color-text);">आईटीआर लेट फीस पेनल्टी कैलकुलेटर 2026: धारा 234F, 234A, 234B व 234C ब्याज</span>
-    </nav>
-
-    <!-- INTERACTIVE CALCULATOR WIDGET -->
-<!-- BREADCRUMB -->
-    
-
-    <!-- INTERACTIVE CALCULATOR WIDGET -->
-<!-- BREADCRUMB -->
-    
-
-    <!-- INTERACTIVE CALCULATOR WIDGET -->
-<!-- BREADCRUMB -->
-    
-
-    <!-- INTERACTIVE CALCULATOR WIDGET -->
+<a aria-label="Search" class="icon-btn" href="../search.html">
+<span aria-hidden="true">🔍</span>
+<span class="visually-hidden" data-i18n="search_title">Search Services</span>
+</a>
+<button aria-label="Toggle theme" class="icon-btn" id="theme-toggle" type="button">
+<span aria-hidden="true" id="theme-icon">🌙</span>
+<span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
+</button>
+<button class="icon-btn" id="lang-toggle" type="button">
+<span data-i18n="lang_toggle">हिंदी</span>
+</button>
+<button aria-expanded="false" aria-label="Menu" class="nav-toggle" id="nav-toggle" type="button">☰</button>
+</div>
+</div>
+<nav aria-label="Primary mobile" class="mobile-nav" id="mobile-nav">
+<a data-i18n="search_title" href="../search.html">Search Services</a>
+<a data-i18n="nav_home" href="../index.html">Home</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
+<a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
+<a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
+<a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🛠️ Citizen Utilities</div>
+<a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
+<a href="../tools/eligibility-checker.html" style="padding-left: 32px;">🎯 Scheme Eligibility Engine</a>
+<a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
+<a href="../tools/self-declaration-builder.html" style="padding-left: 32px;">📝 Self-Declaration Builder</a>
+<a href="../tools/typing-speed-test.html" style="padding-left: 32px;">⌨️ Typing Speed Test</a>
+<a href="../tools/deadline-calendar.html" style="padding-left: 32px;">📅 Deadline Calendar</a>
+<a href="../tools/pan-aadhaar-conflict-resolver.html" style="padding-left: 32px;">🔗 PAN-Aadhaar Resolver</a>
+<a href="../tools/status-troubleshooter.html" style="padding-left: 32px;">🔍 Status Troubleshooter</a>
+<a href="../tools/govt-card-clarifier.html" style="padding-left: 32px;">💳 Govt Card Clarifier</a>
+<a href="../tools/age-calculator.html" style="padding-left: 32px;">⏳ Age &amp; Retirement Calculator</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #fdf2f8; color: #db2777;">💰 Financial Calculators</div>
+<a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
+<a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
+<a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
+<a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
+<a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
+<a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
+<a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
+<a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🏛️ State Services</div>
+<a href="../states/index.html" style="padding-left: 32px;">🗺️ All States Hub</a>
+<a href="../states/index.html" style="padding-left: 32px;">📍 Uttar Pradesh</a>
+<a href="../states/index.html" style="padding-left: 32px;">📍 Maharashtra</a>
+<a href="../states/index.html" style="padding-left: 32px;">📍 Bihar</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
+<a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a>
+<a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a>
+<a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a>
+<a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a>
+<a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a>
+<a data-i18n="nav_health" href="../category/health.html">Health</a>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
+<a data-i18n="nav_support" href="../support/index.html">Support</a>
+<a data-i18n="nav_blog" href="../blog/index.html">Blog</a>
+<a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a>
+<a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a>
+<div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
+<button class="btn btn--outline" id="mobile-theme-toggle" style="width:100%; justify-content:center; gap:8px;" type="button">
+<span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
+</button>
+</div>
+</nav>
+</header>
+</div>
+<main class="container" id="main-content">
 <nav aria-label="Breadcrumb" class="breadcrumb">
 <a href="../index.html">Home</a><span class="sep">/</span><a href="index.html">Tools</a><span class="sep">/</span><span class="current" data-i18n="tool_itr_title">ITR Penalty Calculator</span>
 </nav>
@@ -295,7 +251,7 @@
 <input id="itr-months" max="12" min="0" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font-size: 1rem; margin-bottom: 24px;" type="number" value="0"/>
 <button class="btn btn-primary" data-i18n="tool_itr_calc_btn" onclick="calculateITRPenalty()" style="width: 100%; justify-content: center; padding: 14px; font-size: 1.1rem;">Calculate Penalty</button>
 </div>
-<div id="itr-result" style="display: none; margin-top: 32px; padding: 24px; background: var(--color-surface); border-radius: 12px; border: 1px solid var(--color-border);">
+<div id="itr-result" style="display: none; margin-top: 32px; padding: 24px; background: var(--color-surface-alt); border-radius: 12px; border: 1px solid var(--color-border);">
 <h2 data-i18n="tool_itr_res_title" style="margin-top: 0; color: var(--color-brand); font-size: 1.4rem;">💰 Estimated Penalty Breakdown</h2>
 <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--color-border);">
 <span data-i18n="tool_itr_res_fee" style="font-weight: 500; color: var(--color-text);">Late Filing Fee (Sec 234F):</span>
@@ -359,521 +315,83 @@
         resDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     </script>
-
-
-    <!-- 10 VISIBLE FAQS ACCORDIONS -->
-    
-
-      <!-- CITIZEN TOOLS GRID -->
-    
-
-    <!-- 6 REAL WORLD PROBLEMS & PRACTICAL SOLUTIONS -->
-    
-
-    <!-- IN-DEPTH STATUTORY & MATHEMATICAL GUIDE -->
-    
-
-    <!-- 10 DETAILED FAQS ACCORDIONS -->
-    
-
-    <!-- CITIZEN TOOLS GRID -->
-    
-
-        <!-- EMAIL & WHATSAPP SCHEME ALERT SUBSCRIBE WIDGET -->
-    <div id="subscribe-widget" style="margin: 40px 0;"></div>
-
-    <!-- VIP TELEGRAM BANNER -->
-    <div style="background: linear-gradient(135deg, #0088cc 0%, #005f8f 100%); border-radius: 14px; padding: 26px; color: #fff; margin: 40px 0; text-align: center; box-shadow: 0 6px 20px rgba(0,136,204,0.25);">
-      <h3 style="margin: 0 0 8px 0; color: #fff; font-size: 1.45rem;">✈️ SarkariSewa VIP Telegram Community</h3>
-      <p style="margin: 0 0 18px 0; color: #e0f2fe; font-size: 0.95rem; line-height: 1.6;">
-        आयकर नियमों, 8वें वेतन आयोग, पेंशन अपडेट्स व सरकारी वित्तीय बचत योजनाओं की सबसे तेज़ सूचना सीधे अपने फोन पर पाएं।
-      </p>
-      <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="btn" style="background: #fff; color: #0088cc; font-weight: 700; padding: 12px 28px; text-decoration: none; border-radius: 8px; display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-        Join Telegram Channel ↗
-      </a>
-    </div>
-
-    <!-- 6 REAL WORLD PROBLEMS & PRACTICAL SOLUTIONS -->
-    
-
-    <!-- IN-DEPTH STATUTORY & MATHEMATICAL GUIDE -->
-    
-
-    <!-- 10 DETAILED FAQS ACCORDIONS -->
-    
-
-    <!-- CITIZEN TOOLS GRID -->
-    
-
-        <!-- EMAIL & WHATSAPP SCHEME ALERT SUBSCRIBE WIDGET -->
-    <div id="subscribe-widget" style="margin: 40px 0;"></div>
-
-    <!-- VIP TELEGRAM BANNER -->
-    <div style="background: linear-gradient(135deg, #0088cc 0%, #005f8f 100%); border-radius: 14px; padding: 26px; color: #fff; margin: 40px 0; text-align: center; box-shadow: 0 6px 20px rgba(0,136,204,0.25);">
-      <h3 style="margin: 0 0 8px 0; color: #fff; font-size: 1.45rem;">✈️ SarkariSewa VIP Telegram Community</h3>
-      <p style="margin: 0 0 18px 0; color: #e0f2fe; font-size: 0.95rem; line-height: 1.6;">
-        आयकर नियमों, 8वें वेतन आयोग, पेंशन अपडेट्स व सरकारी वित्तीय बचत योजनाओं की सबसे तेज़ सूचना सीधे अपने फोन पर पाएं।
-      </p>
-      <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="btn" style="background: #fff; color: #0088cc; font-weight: 700; padding: 12px 28px; text-decoration: none; border-radius: 8px; display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-        Join Telegram Channel ↗
-      </a>
-    </div>
-
-    <!-- 6 REAL WORLD PROBLEMS & PRACTICAL SOLUTIONS -->
-    
-
-    <!-- IN-DEPTH STATUTORY & MATHEMATICAL GUIDE -->
-    
-
-    <!-- 10 DETAILED FAQS ACCORDIONS -->
-    
-
-    <!-- CITIZEN TOOLS GRID -->
-    
-
-        <!-- EMAIL & WHATSAPP SCHEME ALERT SUBSCRIBE WIDGET -->
-    <div id="subscribe-widget" style="margin: 40px 0;"></div>
-
-    <!-- VIP TELEGRAM BANNER -->
-    <div style="background: linear-gradient(135deg, #0088cc 0%, #005f8f 100%); border-radius: 14px; padding: 26px; color: #fff; margin: 40px 0; text-align: center; box-shadow: 0 6px 20px rgba(0,136,204,0.25);">
-      <h3 style="margin: 0 0 8px 0; color: #fff; font-size: 1.45rem;">✈️ SarkariSewa VIP Telegram Community</h3>
-      <p style="margin: 0 0 18px 0; color: #e0f2fe; font-size: 0.95rem; line-height: 1.6;">
-        आयकर नियमों, 8वें वेतन आयोग, पेंशन अपडेट्स व सरकारी वित्तीय बचत योजनाओं की सबसे तेज़ सूचना सीधे अपने फोन पर पाएं।
-      </p>
-      <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="btn" style="background: #fff; color: #0088cc; font-weight: 700; padding: 12px 28px; text-decoration: none; border-radius: 8px; display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-        Join Telegram Channel ↗
-      </a>
-    </div>
-
-    <!-- 6 REAL WORLD PROBLEMS & PRACTICAL SOLUTIONS -->
-    <section class="service-section" style="margin-top: 48px;">
-      <h2 style="color: var(--color-primary); font-size: 1.6rem; margin-bottom: 20px; border-bottom: 2px solid var(--color-border); padding-bottom: 12px;">
-        ⚠️ <span data-lang-show="en">Common Calculation Issues &amp; Practical Solutions</span>
-        <span data-lang-show="hi">6 प्रमुख समस्याएं व व्यावहारिक समाधान (Real-World Solutions)</span>
-      </h2>
-      <div class="prob-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-left: 6px solid #2563eb; border-radius: 12px; padding: 22px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.2rem;">1. ₹5 लाख से कम कुल आय होने पर धारा 234F लेट फीस ₹1,000 की सीमा</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin: 0;">यदि वित्तीय वर्ष में आपकी कुल कर योग्य आय ₹5,00,000 से कम या बराबर है, तो 31 जुलाई के बाद बिलेटेड रिटर्न दाखिल करने पर अधिकतम लेट फीस **₹1,000** ही लगेगी। ₹5 लाख से अधिक आय होने पर यह ₹5,000 होती है।</p>
-      </div>
-      <div class="prob-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-left: 6px solid #059669; border-radius: 12px; padding: 22px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.2rem;">2. कर देयता शून्य (Zero Tax) होने पर क्या लेट फीस लगेगी?</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin: 0;">यदि आपकी कुल आय मूल छूट सीमा (₹2.5 लाख ओल्ड / ₹3 लाख न्यू) से कम है, तो कोई लेट फीस नहीं लगेगी। किंतु यदि आय छूट सीमा से अधिक है और धारा 87A रिबेट के कारण टैक्स शून्य हुआ है, तो 234F लेट फीस देय होगी।</p>
-      </div>
-      <div class="prob-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-left: 6px solid #d97706; border-radius: 12px; padding: 22px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.2rem;">3. धारा 234A के तहत बकाया टैक्स पर 1% प्रति माह ब्याज का नियम</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin: 0;">यदि नियत तारीख (31 जुलाई) तक कोई स्व-मूल्यांकन कर (Self-Assessment Tax) बकाया रह जाता है, तो देय तारीख से वास्तविक फाइलिंग की तारीख तक प्रति माह **1% साधारण ब्याज** (Simple Interest) देय होता है।</p>
-      </div>
-      <div class="prob-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-left: 6px solid #7c3aed; border-radius: 12px; padding: 22px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.2rem;">4. अग्रिम कर (Advance Tax) चूक पर धारा 234B व 234C ब्याज से बचाव</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin: 0;">यदि कुल वित्तीय वर्ष में देय टैक्स ₹10,000 से अधिक है और आपने 31 मार्च तक 90% एडवांस टैक्स जमा नहीं किया, तो धारा 234B (1% प्रति माह) और 234C (त्रैमासिक किस्त में कमी पर 1%) का ब्याज लगता है।</p>
-      </div>
-      <div class="prob-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-left: 6px solid #dc2626; border-radius: 12px; padding: 22px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.2rem;">5. गंभीर बीमारी या प्राकृतिक आपदा में धारा 119(2)(b) के तहत माफी (Condonation)</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin: 0;">यदि किसी वास्तविक मजबूरी या चिकित्सा आपातकाल के कारण रिटर्न दाखिल नहीं हो सका, तो आयकर आयुक्त (CIT/Pr.CIT) के पास धारा 119(2)(b) में लेट फीस व ब्याज माफी हेतु अपील की जा सकती है।</p>
-      </div>
-      <div class="prob-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-left: 6px solid #db2777; border-radius: 12px; padding: 22px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.2rem;">6. 31 दिसंबर की समय-सीमा छूट जाने पर अपडेटेड रिटर्न (ITR-U) का विकल्प</h3>
-        <p style="color: var(--color-text); font-size: 0.95rem; line-height: 1.7; margin: 0;">यदि 31 दिसंबर तक बिलेटेड रिटर्न भी नहीं भरा गया, तो धारा 139(8A) के तहत संबंधित असेसमेंट वर्ष के अंत से 24 महीनों के भीतर **25% से 50% अतिरिक्त कर** के साथ ITR-U दाखिल किया जा सकता है।</p>
-      </div>
-    </section>
-
-    <!-- IN-DEPTH STATUTORY & MATHEMATICAL GUIDE -->
-    <section class="service-section" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 32px 26px; margin-top: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-      <h2 style="color: var(--color-primary); font-size: 1.55rem; margin-bottom: 18px; border-bottom: 2px solid var(--color-border); padding-bottom: 12px;">
-        📖 <span data-lang-show="en">Statutory Provisions: Section 234F Fees & Sections 234A/B/C Interest Slabs</span>
-        <span data-lang-show="hi">आयकर धारा 234F लेट फीस एवं धारा 234A, 234B व 234C ब्याज के कानूनी प्रावधान</span>
-      </h2>
-      <div style="color: var(--color-text); line-height: 1.85; font-size: 1.02rem;">
-
-        <p>भारत में आयकर रिटर्न (ITR) दाखिल करने की अंतिम तिथि सामान्य करदाताओं के लिए <strong>31 जुलाई</strong> होती है। नियत तिथि के बाद रिटर्न भरने पर आयकर अधिनियम, 1961 के तहत लेट फाइलिंग फीस और ब्याज के सख्त प्रावधान लागू होते हैं।</p>
-        
-        <h3 style="color: var(--color-primary); margin-top: 24px;">1. धारा 234F लेट फीस की संरचना (Fee Matrix under Section 234F)</h3>
-        <div style="overflow-x: auto; margin: 16px 0;">
-          <table style="width: 100%; border-collapse: collapse; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.95rem;">
-            <thead>
-              <tr style="background: var(--color-surface); border-bottom: 2px solid var(--color-border); text-align: left;">
-                <th style="padding: 12px 16px; color: var(--color-primary);">कुल आय (Total Income)</th>
-                <th style="padding: 12px 16px; color: var(--color-primary);">31 जुलाई तक</th>
-                <th style="padding: 12px 16px; color: var(--color-primary);">1 अगस्त से 31 दिसंबर (Belated)</th>
-                <th style="padding: 12px 16px; color: var(--color-primary);">31 दिसंबर के बाद (ITR-U)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="border-bottom: 1px solid var(--color-border);"><td style="padding: 10px 16px;">मूल छूट सीमा तक (≤ ₹3 Lakh)</td><td style="padding: 10px 16px; color: #059669; font-weight: 700;">₹0</td><td style="padding: 10px 16px; color: #059669; font-weight: 700;">₹0</td><td style="padding: 10px 16px;">ITR-U Not Allowed for Nil</td></tr>
-              <tr style="border-bottom: 1px solid var(--color-border);"><td style="padding: 10px 16px;">₹3,00,001 से ₹5,00,000</td><td style="padding: 10px 16px; color: #059669; font-weight: 700;">₹0</td><td style="padding: 10px 16px; font-weight: 700; color: #d97706;">₹1,000</td><td style="padding: 10px 16px;">25% से 50% अतिरिक्त टैक्स</td></tr>
-              <tr><td style="padding: 10px 16px;">₹5,00,000 से अधिक</td><td style="padding: 10px 16px; color: #059669; font-weight: 700;">₹0</td><td style="padding: 10px 16px; font-weight: 700; color: #dc2626;">₹5,000</td><td style="padding: 10px 16px;">25% से 50% अतिरिक्त टैक्स</td></tr>
-            </tbody>
-          </table>
-        </div>
-        
-      </div>
-    </section>
-
-    <!-- 10 DETAILED FAQS ACCORDIONS -->
-    <section class="service-section" style="margin-top: 48px;">
-      <h2 style="color: var(--color-primary); font-size: 1.55rem; margin-bottom: 20px; border-bottom: 2px solid var(--color-border); padding-bottom: 12px;">
-        ❓ <span data-lang-show="en">Frequently Asked Questions (FAQs)</span>
-        <span data-lang-show="hi">अक्सर पूछे जाने वाले सवाल (10 FAQs)</span>
-      </h2>
-      <details class="faq-item" open style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
-        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
-          <span>1. धारा 234F के तहत लेट फाइलिंग पेनल्टी कितनी होती है?</span>
-          <span style="font-size: 1.2rem;">▾</span>
-        </summary>
-        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          यदि कुल आय ₹5 लाख से अधिक है तो ₹5,000 और यदि आय ₹5 लाख से कम है तो अधिकतम ₹1,000 का जुर्माना लगता है।
-        </div>
-      </details>
-      <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
-        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
-          <span>2. धारा 234A के तहत ब्याज (Interest on Late Filing) कितना कटता है?</span>
-          <span style="font-size: 1.2rem;">▾</span>
-        </summary>
-        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          देय टैक्स राशि पर 1% प्रति माह (या माह के भाग) की दर से ब्याज लगाया जाता है।
-        </div>
-      </details>
-      <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
-        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
-          <span>3. धारा 234B और 234C क्या हैं?</span>
-          <span style="font-size: 1.2rem;">▾</span>
-        </summary>
-        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          234B एडवांस टैक्स का 90% न चुकाने पर और 234C एडवांस टैक्स की किस्तों में देरी होने पर 1% प्रति माह का ब्याज लगाता है।
-        </div>
-      </details>
-      <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
-        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
-          <span>4. यदि मेरी आय कर-योग्य सीमा से कम है तो क्या लेट फीस लगेगी?</span>
-          <span style="font-size: 1.2rem;">▾</span>
-        </summary>
-        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          नहीं, यदि आपकी कुल सकल आय मूल छूट सीमा (₹2.5 लाख / ₹3 लाख) से कम है तो धारा 234F के तहत कोई लेट फीस नहीं लगती।
-        </div>
-      </details>
-      <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
-        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
-          <span>5. बिलेटेड आईटीआर (Belated ITR) फाइल करने की अंतिम तारीख क्या है?</span>
-          <span style="font-size: 1.2rem;">▾</span>
-        </summary>
-        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          संबंधित असेसमेंट ईयर के 31 दिसंबर तक पेनाल्टी के साथ बिलेटेड रिटर्न दाखिल किया जा सकता है।
-        </div>
-      </details>
-      <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
-        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
-          <span>6. क्या बिलेटेड रिटर्न में शेयर मार्केट या व्यापार का घाटा (Loss) कैरी फॉरवर्ड हो सकता है?</span>
-          <span style="font-size: 1.2rem;">▾</span>
-        </summary>
-        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          नहीं, धारा 139(3) के अनुसार समय सीमा (31 जुलाई) के बाद दाखिल किए गए रिटर्न में बिजनेस या कैपिटल गेन का घाटा अगले वर्षों में सेट-ऑफ नहीं किया जा सकता।
-        </div>
-      </details>
-      <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
-        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
-          <span>7. ITR-U (Updated Return) क्या है और इसमें कितना अतिरिक्त टैक्स लगता है?</span>
-          <span style="font-size: 1.2rem;">▾</span>
-        </summary>
-        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          छूटे हुए रिटर्न को 2 वर्ष के भीतर दाखिल किया जा सकता है, जिसमें 12 महीने के भीतर 25% और 24 महीने के भीतर 50% अतिरिक्त टैक्स पेनल्टी देनी होती है।
-        </div>
-      </details>
-      <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
-        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
-          <span>8. पेनाल्टी चालान (Challan 280) कैसे भरें?</span>
-          <span style="font-size: 1.2rem;">▾</span>
-        </summary>
-        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          eportal.incometax.gov.in पर e-Pay Tax में जाएं, Assessment Year चुनें और Self-Assessment Tax (300) या Other (500) हेड में पेनल्टी जमा करें।
-        </div>
-      </details>
-      <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
-        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
-          <span>9. क्या पेनल्टी माफ (Waiver) कराने का कोई प्रावधान है?</span>
-          <span style="font-size: 1.2rem;">▾</span>
-        </summary>
-        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          असाधारण परिस्थितियों (जैसे गंभीर बीमारी या तकनीकी खराबी) में प्रधान मुख्य आयकर आयुक्त (CCIT) को धारा 119(2)(b) के तहत माफी आवेदन दिया जा सकता है।
-        </div>
-      </details>
-      <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
-        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
-          <span>10. गलत ITR भरने पर धारा 270A के तहत कितनी पेनल्टी लगती है?</span>
-          <span style="font-size: 1.2rem;">▾</span>
-        </summary>
-        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          कम आय दर्शाने पर 50% और जानबूझकर गलत जानकारी (Misreporting) देने पर कर राशि का 200% तक जुर्माना हो सकता है।
-        </div>
-      </details>
-    </section>
-
-    <!-- CITIZEN TOOLS GRID -->
-    <section class="service-section" style="margin-top: 48px;">
-      <h3 style="color: var(--color-primary); font-size: 1.5rem; margin-bottom: 18px;">
-        🛠️ <span data-lang-show="en">Related Citizen Utilities &amp; Calculators</span>
-        <span data-lang-show="hi">संबंधित नागरिक टूल्स एवं कैलकुलेटर्स</span>
-      </h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
-        <a href="income-tax-calculator.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="font-size: 1.8rem; margin-bottom: 8px;">⚖️</div>
-            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Income Tax Calculator</h4>
-            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">न्यू बनाम ओल्ड टैक्स रिजीम तुलना व ₹75,000 स्टैंडर्ड डिडक्शन।</p>
-          </div>
-          <div style="font-weight: 700; color: #2563eb; font-size: 0.85rem; margin-top: 12px;">Calculate Tax ↗</div>
-        </a>
-
-        <a href="epf-calculator.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="font-size: 1.8rem; margin-bottom: 8px;">📈</div>
-            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">EPF &amp; Pension Calculator</h4>
-            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">8.25% ब्याज दर के अनुसार पीएफ बैलेंस व पेंशन फंड गणना।</p>
-          </div>
-          <div style="font-weight: 700; color: #059669; font-size: 0.85rem; margin-top: 12px;">Calculate EPF ↗</div>
-        </a>
-
-        <a href="hra-calculator.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="font-size: 1.8rem; margin-bottom: 8px;">🏠</div>
-            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">HRA Exemption Calculator</h4>
-            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">धारा 10(13A) के तहत मकान किराया भत्ता टैक्स छूट जांचें।</p>
-          </div>
-          <div style="font-weight: 700; color: #d97706; font-size: 0.85rem; margin-top: 12px;">Calculate HRA ↗</div>
-        </a>
-
-        <a href="savings-comparator.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="font-size: 1.8rem; margin-bottom: 8px;">📊</div>
-            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Savings Comparator</h4>
-            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">पोस्ट ऑफिस NSC, PPF, SCSS बनाम बैंक FD ब्याज दर तुलना।</p>
-          </div>
-          <div style="font-weight: 700; color: #7c3aed; font-size: 0.85rem; margin-top: 12px;">Compare Returns ↗</div>
-        </a>
-      </div>
-    </section>
-
-        <!-- EMAIL & WHATSAPP SCHEME ALERT SUBSCRIBE WIDGET -->
-    <div id="subscribe-widget" style="margin: 40px 0;"></div>
-
-    <!-- VIP TELEGRAM BANNER -->
-    <div style="background: linear-gradient(135deg, #0088cc 0%, #005f8f 100%); border-radius: 14px; padding: 26px; color: #fff; margin: 40px 0; text-align: center; box-shadow: 0 6px 20px rgba(0,136,204,0.25);">
-      <h3 style="margin: 0 0 8px 0; color: #fff; font-size: 1.45rem;">✈️ SarkariSewa VIP Telegram Community</h3>
-      <p style="margin: 0 0 18px 0; color: #e0f2fe; font-size: 0.95rem; line-height: 1.6;">
-        आयकर नियमों, 8वें वेतन आयोग, पेंशन अपडेट्स व सरकारी वित्तीय बचत योजनाओं की सबसे तेज़ सूचना सीधे अपने फोन पर पाएं।
-      </p>
-      <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="btn" style="background: #fff; color: #0088cc; font-weight: 700; padding: 12px 28px; text-decoration: none; border-radius: 8px; display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-        Join Telegram Channel ↗
-      </a>
-    </div>
-
-  </main>
-
-  <div id="site-footer"></div>
-
-  <script src="../assets/js/main.js"></script>
-  <script src="../assets/js/consent.js"></script>
-  <script src="../assets/js/i18n-helper.js"></script>
-  <script src="../assets/js/supabase-client.js"></script>
-  <script src="../assets/js/services-data.js"></script>
-  <script src="../assets/js/subscribe.js"></script>
-  <script src="../assets/js/share-widget.js"></script>
-  <script src="../assets/js/service-template.js"></script>
-  
-  <script>
-
-      function calculateITRPenalty() {
-        const slab = document.getElementById("itr-income").value;
-        const taxDue = parseFloat(document.getElementById("itr-tax").value) || 0;
-        const months = parseInt(document.getElementById("itr-months").value) || 0;
-        const resDiv = document.getElementById("itr-result");
-        
-        if (!slab) {
-          alert((window.SITE && window.SITE.lang === "hi") ? "कृपया अपना आय स्लैब चुनें।" : "Please select your income slab.");
-          return;
-        }
-
-        let lateFee = 0;
-        if (slab === "below25") lateFee = 0;
-        else if (slab === "upto50") lateFee = 1000;
-        else if (slab === "above50") lateFee = 5000;
-
-        let interest = 0;
-        if (taxDue > 0 && months > 0) {
-          interest = Math.ceil(taxDue * 0.01 * months);
-        }
-
-        document.getElementById("res-fee").textContent = "₹" + lateFee.toLocaleString("en-IN");
-        document.getElementById("res-int").textContent = "₹" + interest.toLocaleString("en-IN");
-        document.getElementById("res-total").textContent = "₹" + (lateFee + interest).toLocaleString("en-IN");
-        
-        let note = "";
-        if (slab === "below25") {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "आपकी आय ₹2.5 लाख से कम होने के कारण कोई विलंब शुल्क (234F) नहीं लगेगा।" : 
-            "No late fee (234F) is applicable since your income is below the basic exemption limit.";
-        } else if (slab === "upto50") {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "चूंकि आपकी आय ₹5 लाख से अधिक नहीं है, इसलिए विलंब शुल्क ₹1,000 तक सीमित है।" : 
-            "Since your income does not exceed ₹5 Lakh, the late fee is restricted to ₹1,000.";
-        } else {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "₹5 लाख से अधिक आय होने पर ₹5,000 का विलंब शुल्क लगता है।" : 
-            "A late fee of ₹5,000 is applicable for income exceeding ₹5 Lakh.";
-        }
-        document.getElementById("res-note").textContent = note;
-        
-        resDiv.style.display = "block";
-        resDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }
-    
-
-
-      function calculateITRPenalty() {
-        const slab = document.getElementById("itr-income").value;
-        const taxDue = parseFloat(document.getElementById("itr-tax").value) || 0;
-        const months = parseInt(document.getElementById("itr-months").value) || 0;
-        const resDiv = document.getElementById("itr-result");
-        
-        if (!slab) {
-          alert((window.SITE && window.SITE.lang === "hi") ? "कृपया अपना आय स्लैब चुनें।" : "Please select your income slab.");
-          return;
-        }
-
-        let lateFee = 0;
-        if (slab === "below25") lateFee = 0;
-        else if (slab === "upto50") lateFee = 1000;
-        else if (slab === "above50") lateFee = 5000;
-
-        let interest = 0;
-        if (taxDue > 0 && months > 0) {
-          interest = Math.ceil(taxDue * 0.01 * months);
-        }
-
-        document.getElementById("res-fee").textContent = "₹" + lateFee.toLocaleString("en-IN");
-        document.getElementById("res-int").textContent = "₹" + interest.toLocaleString("en-IN");
-        document.getElementById("res-total").textContent = "₹" + (lateFee + interest).toLocaleString("en-IN");
-        
-        let note = "";
-        if (slab === "below25") {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "आपकी आय ₹2.5 लाख से कम होने के कारण कोई विलंब शुल्क (234F) नहीं लगेगा।" : 
-            "No late fee (234F) is applicable since your income is below the basic exemption limit.";
-        } else if (slab === "upto50") {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "चूंकि आपकी आय ₹5 लाख से अधिक नहीं है, इसलिए विलंब शुल्क ₹1,000 तक सीमित है।" : 
-            "Since your income does not exceed ₹5 Lakh, the late fee is restricted to ₹1,000.";
-        } else {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "₹5 लाख से अधिक आय होने पर ₹5,000 का विलंब शुल्क लगता है।" : 
-            "A late fee of ₹5,000 is applicable for income exceeding ₹5 Lakh.";
-        }
-        document.getElementById("res-note").textContent = note;
-        
-        resDiv.style.display = "block";
-        resDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }
-    
-
-
-      function calculateITRPenalty() {
-        const slab = document.getElementById("itr-income").value;
-        const taxDue = parseFloat(document.getElementById("itr-tax").value) || 0;
-        const months = parseInt(document.getElementById("itr-months").value) || 0;
-        const resDiv = document.getElementById("itr-result");
-        
-        if (!slab) {
-          alert((window.SITE && window.SITE.lang === "hi") ? "कृपया अपना आय स्लैब चुनें।" : "Please select your income slab.");
-          return;
-        }
-
-        let lateFee = 0;
-        if (slab === "below25") lateFee = 0;
-        else if (slab === "upto50") lateFee = 1000;
-        else if (slab === "above50") lateFee = 5000;
-
-        let interest = 0;
-        if (taxDue > 0 && months > 0) {
-          interest = Math.ceil(taxDue * 0.01 * months);
-        }
-
-        document.getElementById("res-fee").textContent = "₹" + lateFee.toLocaleString("en-IN");
-        document.getElementById("res-int").textContent = "₹" + interest.toLocaleString("en-IN");
-        document.getElementById("res-total").textContent = "₹" + (lateFee + interest).toLocaleString("en-IN");
-        
-        let note = "";
-        if (slab === "below25") {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "आपकी आय ₹2.5 लाख से कम होने के कारण कोई विलंब शुल्क (234F) नहीं लगेगा।" : 
-            "No late fee (234F) is applicable since your income is below the basic exemption limit.";
-        } else if (slab === "upto50") {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "चूंकि आपकी आय ₹5 लाख से अधिक नहीं है, इसलिए विलंब शुल्क ₹1,000 तक सीमित है।" : 
-            "Since your income does not exceed ₹5 Lakh, the late fee is restricted to ₹1,000.";
-        } else {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "₹5 लाख से अधिक आय होने पर ₹5,000 का विलंब शुल्क लगता है।" : 
-            "A late fee of ₹5,000 is applicable for income exceeding ₹5 Lakh.";
-        }
-        document.getElementById("res-note").textContent = note;
-        
-        resDiv.style.display = "block";
-        resDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }
-    
-
-
-      function calculateITRPenalty() {
-        const slab = document.getElementById("itr-income").value;
-        const taxDue = parseFloat(document.getElementById("itr-tax").value) || 0;
-        const months = parseInt(document.getElementById("itr-months").value) || 0;
-        const resDiv = document.getElementById("itr-result");
-        
-        if (!slab) {
-          alert((window.SITE && window.SITE.lang === "hi") ? "कृपया अपना आय स्लैब चुनें।" : "Please select your income slab.");
-          return;
-        }
-
-        let lateFee = 0;
-        if (slab === "below25") lateFee = 0;
-        else if (slab === "upto50") lateFee = 1000;
-        else if (slab === "above50") lateFee = 5000;
-
-        let interest = 0;
-        if (taxDue > 0 && months > 0) {
-          interest = Math.ceil(taxDue * 0.01 * months);
-        }
-
-        document.getElementById("res-fee").textContent = "₹" + lateFee.toLocaleString("en-IN");
-        document.getElementById("res-int").textContent = "₹" + interest.toLocaleString("en-IN");
-        document.getElementById("res-total").textContent = "₹" + (lateFee + interest).toLocaleString("en-IN");
-        
-        let note = "";
-        if (slab === "below25") {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "आपकी आय ₹2.5 लाख से कम होने के कारण कोई विलंब शुल्क (234F) नहीं लगेगा।" : 
-            "No late fee (234F) is applicable since your income is below the basic exemption limit.";
-        } else if (slab === "upto50") {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "चूंकि आपकी आय ₹5 लाख से अधिक नहीं है, इसलिए विलंब शुल्क ₹1,000 तक सीमित है।" : 
-            "Since your income does not exceed ₹5 Lakh, the late fee is restricted to ₹1,000.";
-        } else {
-          note = (window.SITE && window.SITE.lang === "hi") ? 
-            "₹5 लाख से अधिक आय होने पर ₹5,000 का विलंब शुल्क लगता है।" : 
-            "A late fee of ₹5,000 is applicable for income exceeding ₹5 Lakh.";
-        }
-        document.getElementById("res-note").textContent = note;
-        
-        resDiv.style.display = "block";
-        resDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }
-    
-
-  
-
-  
-
-  
-
-  </script>
+<!-- TOOL SEO ENHANCEMENT --><section class="seo-upgrade"><style>.seo-upgrade{margin:42px 0 12px;padding:32px 0;border-top:1px solid var(--color-border);color:var(--color-text)}.seo-upgrade .wrap{max-width:920px;margin:auto}.seo-upgrade h2{font-size:1.55rem;color:var(--color-primary);margin:0 0 14px}.seo-upgrade h3{font-size:1.18rem;margin:25px 0 9px}.seo-upgrade p,.seo-upgrade li{line-height:1.78}.seo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.seo-card{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--color-border);background:var(--color-surface);border-radius:10px;color:var(--color-text);text-decoration:none}.seo-card:hover{border-color:var(--color-primary);transform:translateY(-2px)}.seo-card span{font-size:1.55rem}.seo-card b{display:block}@media(max-width:600px){.seo-grid{grid-template-columns:1fr}.seo-upgrade{padding:26px 0}}</style><div class="wrap">
+<div data-lang-show="en"><h2>ITR Late Fee &amp; Penalty Calculator: practical guide for Indian users</h2><p>Use this free tool to estimate itr late filing fee and interest before filing a delayed income tax return. It helps you prepare information before you apply on an official portal, compare options, or organise documents. Its result is for guidance and planning. Government rules, limits, dates, fees and eligibility can change, so the latest notification or department website remains the final authority.</p><h3>How this tool helps</h3><p>Indian citizens often face short application windows, strict document rules and unfamiliar online forms. A small mismatch in a name, figure, image or date can delay a submission. This page turns a common task into clear steps so that students, employees, families and first-time digital users can act with more confidence. It is useful for people searching for Estimate ITR late filing fee and interest before filing a delayed income tax return, but it does not replace an official decision, legal advice or financial advice.</p><h3>Use it carefully</h3><ol><li>Read the current official notification or portal instruction first.</li><li>Enter only correct information from your own records and keep supporting documents nearby.</li><li>Review the result, then verify any important value or condition from the concerned department.</li><li>Save your acknowledgement, application reference and fee receipt after the official submission.</li></ol><h3>Safe next steps</h3><p>Never share OTPs, passwords, bank PINs or complete identity numbers with an unofficial service. If a portal is slow, avoid duplicate payments or repeated form submissions; wait for a confirmation, transaction reference or official helpdesk guidance. Keep a short record of the date checked, source link and document version. This makes correction requests and service-centre visits much easier.</p><h3>Long-tail questions this page answers</h3><p>People search for “Estimate ITR late filing fee and interest before filing a delayed income tax return online India”, “free itr late fee &amp; penalty calculator”, “how to check Estimate ITR late filing fee and interest before filing a delayed income tax return” and “ITR Late Fee &amp; Penalty Calculator Hindi English”. The goal here is to answer that real need with useful context, internal resources and a clear next action—not to make a promise that only an authorised department can make.</p><h3>Frequently asked questions</h3><p><strong>Is it free?</strong> Yes. <strong>Is it official?</strong> No, verify important decisions from the department website. <strong>Does it work on mobile?</strong> Yes, the page follows the responsive layout and existing light/dark theme. <strong>What next?</strong> Use the related tools and services below.</p><h3>Prepare before submitting</h3><p>Check the year, state, category and applicable rules before you proceed. Official requirements can differ by employer, state or scheme. Keep clear scans, a working phone number and access to the email or mobile number used during registration. Submit early rather than at the last minute, and retain confirmation messages until the process is complete.</p></div>
+<div data-lang-show="hi"><h2>ITR लेट फीस और पेनल्टी कैलकुलेटर: भारतीय उपयोगकर्ताओं के लिए उपयोगी गाइड</h2><p>यह मुफ्त टूल देरी से आयकर रिटर्न भरने से पहले ITR लेट फीस और ब्याज का अनुमान में आपकी मदद करता है। आधिकारिक पोर्टल पर आवेदन करने, विकल्पों की तुलना करने या दस्तावेज़ तैयार करने से पहले जरूरी जानकारी समझने के लिए इसका उपयोग करें। परिणाम केवल मार्गदर्शन और तैयारी के लिए है। नियम, सीमा, तारीख, फीस और पात्रता बदल सकते हैं, इसलिए विभाग की नई सूचना को अंतिम मानें।</p><h3>यह टूल कैसे मदद करता है?</h3><p>भारत में कई नागरिकों को कम आवेदन समय, सख्त दस्तावेज़ नियम और नए ऑनलाइन फॉर्म का सामना करना पड़ता है। नाम, रकम, फोटो या तारीख की छोटी गलती से आवेदन रुक सकता है। यह पेज सामान्य काम को स्पष्ट चरणों में रखता है ताकि विद्यार्थी, कर्मचारी, परिवार और पहली बार डिजिटल सेवा इस्तेमाल करने वाले लोग अधिक भरोसे से आगे बढ़ सकें। देरी से आयकर रिटर्न भरने से पहले ITR लेट फीस और ब्याज का अनुमान खोजने वालों के लिए यह उपयोगी है, लेकिन यह आधिकारिक निर्णय, कानूनी सलाह या वित्तीय सलाह का विकल्प नहीं है।</p><h3>सावधानी से उपयोग करें</h3><ol><li>पहले नई आधिकारिक सूचना या पोर्टल निर्देश पढ़ें।</li><li>अपने रिकॉर्ड से सही जानकारी भरें और जरूरी दस्तावेज़ पास रखें।</li><li>परिणाम देखने के बाद महत्वपूर्ण शर्त को संबंधित विभाग से मिलाएं।</li><li>आधिकारिक जमा करने के बाद acknowledgement, आवेदन नंबर और फीस रसीद सुरक्षित रखें।</li></ol><h3>सुरक्षित अगला कदम</h3><p>अनधिकृत सेवा के साथ OTP, पासवर्ड, बैंक PIN या पूरा पहचान नंबर साझा न करें। पोर्टल धीमा होने पर डुप्लीकेट भुगतान या बार-बार फॉर्म जमा न करें; confirmation, transaction reference या हेल्पडेस्क निर्देश का इंतजार करें। जांच की तारीख, स्रोत लिंक और दस्तावेज़ का संस्करण लिखकर रखें। इससे बाद में सुधार या सेवा केंद्र पर मदद लेना आसान होगा।</p><h3>आपकी लंबी खोज का जवाब</h3><p>लोग “देरी से आयकर रिटर्न भरने से पहले ITR लेट फीस और ब्याज का अनुमान ऑनलाइन”, “मुफ्त ITR लेट फीस और पेनल्टी कैलकुलेटर”, “देरी से आयकर रिटर्न भरने से पहले ITR लेट फीस और ब्याज का अनुमान कैसे जांचें” और “ITR लेट फीस और पेनल्टी कैलकुलेटर हिंदी में” जैसी खोज करते हैं। इस पेज का उद्देश्य सही जानकारी, आंतरिक संसाधन और अगला उपयोगी कदम देना है; ऐसी गारंटी देना नहीं जो केवल अधिकृत विभाग दे सकता है।</p><h3>अक्सर पूछे जाने वाले सवाल</h3><p><strong>क्या यह मुफ्त है?</strong> हाँ। <strong>क्या यह आधिकारिक है?</strong> नहीं, जरूरी निर्णय विभाग की वेबसाइट से सत्यापित करें। <strong>क्या मोबाइल पर चलेगा?</strong> हाँ, पेज responsive layout और light/dark theme के साथ काम करता है। <strong>अब क्या करें?</strong> नीचे संबंधित टूल और सेवाएं खोलें।</p><h3>जमा करने से पहले तैयारी</h3><p>आगे बढ़ने से पहले वर्ष, राज्य, श्रेणी और लागू नियम जरूर मिलाएं। शर्तें राज्य, योजना या नियोक्ता के अनुसार अलग हो सकती हैं। साफ स्कैन, चालू मोबाइल नंबर और रजिस्ट्रेशन वाले ईमेल या मोबाइल तक पहुंच रखें। अंतिम समय के बजाय पहले जमा करें और प्रक्रिया पूरी होने तक confirmation messages संभालकर रखें।</p></div>
+<div data-lang-show="en"><h3>Detailed preparation checklist</h3><p>For late ITR filing, begin with information that you can support from an official document, payslip, notification, certificate or acknowledgement. Avoid relying on old screenshots, social media posts or verbal assurances. Read the date on the notice, the financial year or assessment year where relevant, and any state-specific instruction. When two sources appear different, use the most recent official page and contact the responsible department for a clarification. This habit is more valuable than any calculator result because it prevents an otherwise correct form from being submitted under an outdated rule.</p><p>Before you finish, make a simple checklist: confirm spelling and dates; confirm the acceptable format and size of every attachment; check whether an original is needed for verification; write down the application deadline in your own calendar; and save proof of the completed action. If a service requires payment, use the official portal or authorised centre, check the amount shown on screen and preserve the receipt. Do not allow urgency to make you share confidential information. A legitimate process gives you time to read the terms, inspect the acknowledgement and keep a record.</p><p>Use related links only when they serve the same task. For example, document preparation, eligibility, status checking and state-wise information often belong to one application journey. This internal path is intended to help you find the next reliable page quickly, while keeping the final decision with the official authority.</p></div><div data-lang-show="hi"><h3>विस्तृत तैयारी चेकलिस्ट</h3><p>late ITR filing से जुड़े काम में शुरुआत ऐसी जानकारी से करें जिसे आप आधिकारिक दस्तावेज़, वेतन पर्ची, नोटिफिकेशन, प्रमाणपत्र या acknowledgement से साबित कर सकें। पुराने स्क्रीनशॉट, सोशल मीडिया पोस्ट या केवल मौखिक जानकारी पर निर्भर न रहें। नोटिस की तारीख, जहां लागू हो वहां वित्तीय वर्ष या असेसमेंट वर्ष, और राज्य के विशेष निर्देश जरूर पढ़ें। दो स्रोत अलग दिखें तो सबसे नई आधिकारिक वेबसाइट को मानें और संबंधित विभाग से स्पष्टीकरण लें। यही आदत किसी भी कैलकुलेटर के परिणाम से ज्यादा महत्वपूर्ण है, क्योंकि इससे पुराना नियम लगाकर सही फॉर्म भी गलत जमा होने से बचता है।</p><p>काम पूरा करने से पहले एक छोटी चेकलिस्ट बनाएं: नाम और तारीख मिलाएं; हर attachment का स्वीकार्य format और size देखें; सत्यापन के लिए मूल दस्तावेज़ चाहिए या नहीं जांचें; अंतिम तारीख अपने कैलेंडर में लिखें; और पूरे हुए काम का प्रमाण सुरक्षित रखें। भुगतान जरूरी हो तो आधिकारिक पोर्टल या अधिकृत केंद्र इस्तेमाल करें, स्क्रीन पर दिख रही रकम जांचें और रसीद संभालें। जल्दी के कारण गोपनीय जानकारी साझा न करें। सही प्रक्रिया आपको शर्तें पढ़ने, acknowledgement देखने और रिकॉर्ड रखने का समय देती है।</p><p>संबंधित लिंक केवल तभी खोलें जब वे उसी काम को आगे बढ़ाते हों। दस्तावेज़ तैयारी, पात्रता, स्टेटस जांच और राज्यवार जानकारी एक आवेदन यात्रा के अलग चरण हो सकते हैं। यह आंतरिक लिंकिंग आपको अगले भरोसेमंद पेज तक ले जाने के लिए है, जबकि अंतिम निर्णय हमेशा आधिकारिक विभाग का रहेगा।</p></div><div data-lang-show="en"><h3>Official verification reminder</h3><p>Before taking any final action, compare the information on this page with the latest official notification and portal. Keep a screenshot or PDF of the relevant instruction, because requirements can be revised. Where a department offers an official helpline or helpdesk, use it for a case-specific question. This preparation saves time, supports accurate applications and gives you a clear record if you need to follow up later.</p></div><div data-lang-show="hi"><h3>आधिकारिक सत्यापन की याद</h3><p>अंतिम कदम लेने से पहले इस पेज की जानकारी को नई आधिकारिक सूचना और पोर्टल से जरूर मिलाएं। संबंधित निर्देश का स्क्रीनशॉट या PDF रखें, क्योंकि शर्तें बदल सकती हैं। किसी खास मामले के प्रश्न के लिए विभाग की आधिकारिक हेल्पलाइन या हेल्पडेस्क का उपयोग करें। यह तैयारी समय बचाती है, आवेदन को सही रखती है और बाद में follow-up के लिए स्पष्ट रिकॉर्ड देती है।</p></div><h2 data-lang-show="en">Related tools</h2><h2 data-lang-show="hi">संबंधित टूल्स</h2><div class="seo-grid"><a class="seo-card" href="income-tax-calculator.html"><span>⚖️</span><b data-lang-show="en">Income Tax Calculator</b><b data-lang-show="hi">Income Tax Calculator</b></a><a class="seo-card" href="hra-calculator.html"><span>🏠</span><b data-lang-show="en">HRA Calculator</b><b data-lang-show="hi">HRA Calculator</b></a><a class="seo-card" href="epf-calculator.html"><span>📈</span><b data-lang-show="en">EPF Calculator</b><b data-lang-show="hi">EPF Calculator</b></a><a class="seo-card" href="document-checklist.html"><span>📋</span><b data-lang-show="en">Document Checklist</b><b data-lang-show="hi">Document Checklist</b></a></div><h2 data-lang-show="en">Related services</h2><h2 data-lang-show="hi">संबंधित सेवाएं</h2><div class="seo-grid"><a class="seo-card" href="../support/state-wise-services.html"><span>🏛️</span><b data-lang-show="en">State-wise Services</b><b data-lang-show="hi">राज्यवार सेवाएं</b></a><a class="seo-card" href="../category/identity-documents.html"><span>🪪</span><b data-lang-show="en">Identity Documents</b><b data-lang-show="hi">पहचान दस्तावेज़</b></a><a class="seo-card" href="../category/jobs-education.html"><span>🎓</span><b data-lang-show="en">Jobs &amp; Education</b><b data-lang-show="hi">नौकरी और शिक्षा</b></a><a class="seo-card" href="../states/index.html"><span>🗺️</span><b data-lang-show="en">All States Hub</b><b data-lang-show="hi">सभी राज्य सेवाएं</b></a></div></div></section><!-- /TOOL SEO ENHANCEMENT -->
+</main>
+<div id="site-footer">
+<footer class="site-footer">
+<div class="tricolor-rule"></div>
+<div class="container" style="padding-top:36px;">
+<div class="footer-disclaimer-banner" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
+<h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
+</div>
+<div class="footer-grid">
+<div>
+<h4 data-i18n="site_name">SarkariSewa India</h4>
+<p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
+</div>
+<div>
+<h4 data-i18n="footer_tools_title">Tools &amp; Apps</h4>
+<ul>
+<li><a href="../tools/index.html">🧮 Tools &amp; Calculators</a></li>
+<li><a data-i18n="nav_eligibility_engine" href="../tools/eligibility-checker.html">🎯 Scheme Eligibility Engine</a></li>
+<li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
+<li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+<li><a href="../tools/photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
+<li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+<li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+<li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+<li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_resources_title">Resources</h4>
+<ul>
+<li><a data-i18n="nav_project_report" href="../project-report/index.html">Project Report Generator</a></li>
+<li><a data-i18n="states_hub_title" href="../states/index.html">State-wise Popular Services</a></li>
+<li><a data-i18n="footer_about_link" href="../about.html">About</a></li>
+<li><a data-i18n="footer_sitemap_link" href="../sitemap.html">Sitemap</a></li>
+<li><a data-i18n="footer_faq_link" href="../faq.html">FAQ</a></li>
+<li><a data-i18n="footer_contact_link" href="../contact.html">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_support_title">Support</h4>
+<ul>
+<li><a data-i18n="footer_support_home_link" href="../support/index.html">Support Home</a></li>
+<li><a data-i18n="footer_state_link" href="../support/state-wise-services.html">State-wise Services</a></li>
+<li><a data-i18n="footer_helpline_link" href="../support/helpline-directory.html">Helpline Directory</a></li>
+<li><a data-i18n="footer_rti_link" href="../support/rti-guide.html">RTI Guide</a></li>
+</ul>
+</div>
+<div>
+<h4 data-i18n="footer_legal_title">Legal</h4>
+<ul>
+<li><a data-i18n="privacy_title" href="../privacy-policy.html">Privacy Policy</a></li>
+<li><a data-i18n="disclaimer_title" href="../disclaimer.html">Disclaimer</a></li>
+<li><a data-i18n="terms_title" href="../terms.html">Terms &amp; Conditions</a></li>
+<li><a data-i18n="admin_link" href="../admin/login.html">Staff Login</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
+</div>
+</div>
+</footer>
+<div class="ss-wa-wrapper" id="ss-wa-wrapper">
+<button aria-label="Close" id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
+<a aria-label="Join our WhatsApp Channel" class="ss-wa-floating-bar" href="https://t.me/sarkarisewaindia" rel="noopener noreferrer" target="_blank">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+<span data-i18n="wa_join" style="font-weight: 600;">Join WhatsApp Channel</span>
+</a>
+</div>
+</div>
+<script defer="" src="../assets/js/main.js?v=2.6"></script>
+<script defer="" src="../assets/js/consent.js"></script>
+<script defer="" src="../assets/js/i18n-helper.js"></script>
 </body>
 </html>
