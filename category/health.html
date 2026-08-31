@@ -283,9 +283,15 @@
         <span class="stat-badge">🔒 सुरक्षित व निःशुल्क गाइड</span>
       </div>
 
-      <div class="search-filter-box">
-        <span style="position: absolute; left: 16px; top: 14px; font-size: 1.1rem; color: #64748b;">🔍</span>
-        <input type="text" id="serviceSearchInput" placeholder="इस श्रेणी में कोई भी सेवा खोजें (उदा. आयुष्मान भारत PM-JAY)..." onkeyup="filterCategoryServices()">
+      <!-- MASTER LIVE SEARCH BOX (1-Key Instant Search & Suggestions) -->
+      <div class="search-filter-box" style="position: relative; max-width: 680px; margin: 24px 0 0 0; text-align: left;">
+        <div style="position: relative; display: flex; align-items: center;">
+          <span style="position: absolute; left: 18px; font-size: 1.2rem; pointer-events: none; z-index: 2;">🔍</span>
+          <input type="search" id="catSearchInput" autocomplete="off" 
+            placeholder="इस श्रेणी या पूरे पोर्टल में सेवा खोजें (उदा. आयुष्मान भारत PM-JAY)..." 
+            style="width: 100%; padding: 15px 18px 15px 48px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.4); background: var(--color-surface); color: var(--color-text); font-size: 1rem; outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.1); box-sizing: border-box; transition: all 0.2s ease;">
+        </div>
+        <ul class="search-suggestions" id="catSearchSuggestions" style="display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.22); max-height: 400px; overflow-y: auto; z-index: 9999; list-style: none; padding: 6px 0; margin: 0;"></ul>
       </div>
     </div>
 
@@ -902,6 +908,9 @@
       </div>
     </section>
 
+    <!-- EMAIL & WHATSAPP SCHEME ALERT SUBSCRIBE WIDGET -->
+    <div id="subscribe-widget" data-service-id="health" style="margin: 40px 0;"></div>
+
     <!-- VIP TELEGRAM COMMUNITY BANNER -->
     <div style="background: linear-gradient(135deg, #0088cc 0%, #005580 100%); border-radius: 16px; padding: 32px 24px; color: #ffffff; text-align: center; margin: 40px 0; box-shadow: 0 8px 30px rgba(0, 136, 204, 0.2);">
       <span style="font-size: 2.5rem; display: block; margin-bottom: 8px;">✈️</span>
@@ -923,25 +932,133 @@
   <script src="../assets/js/i18n-helper.js"></script>
   <script src="../assets/js/supabase-client.js"></script>
   <script src="../assets/js/services-data.js"></script>
+  <script src="../assets/js/subscribe.js"></script>
   <script src="../assets/js/share-widget.js"></script>
   <script src="../assets/js/category.js"></script>
   
+  <!-- MASTER LIVE SEARCH SCRIPT (Instant Suggestions & On-Page Filter) -->
   <script>
-    function filterCategoryServices() {
-      var input = document.getElementById('serviceSearchInput');
-      var filter = input.value.toLowerCase();
-      var grid = document.getElementById('categoryServicesGrid');
-      var cards = grid.getElementsByClassName('service-card');
-      
-      for (var i = 0; i < cards.length; i++) {
-        var text = cards[i].innerText.toLowerCase();
-        if (text.indexOf(filter) > -1) {
-          cards[i].style.display = "";
-        } else {
-          cards[i].style.display = "none";
+    (function() {
+      let ALL_PORTAL_SERVICES = null;
+      const searchInput = document.getElementById('catSearchInput');
+      const suggestionsBox = document.getElementById('catSearchSuggestions');
+      const grid = document.getElementById('categoryServicesGrid');
+
+      async function fetchServicesList() {
+        if (ALL_PORTAL_SERVICES && ALL_PORTAL_SERVICES.length) return ALL_PORTAL_SERVICES;
+        try {
+          if (typeof fetchAllServices === 'function') {
+            ALL_PORTAL_SERVICES = await fetchAllServices();
+          } else {
+            const res = await fetch('../data/services.json');
+            ALL_PORTAL_SERVICES = await res.json();
+          }
+        } catch(e) {
+          console.warn('Could not load services data', e);
+          ALL_PORTAL_SERVICES = [];
         }
+        return ALL_PORTAL_SERVICES;
       }
-    }
+
+      function escapeHTML(str) {
+        return (str || '').replace(/[&<>'"]/g, tag => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+        }[tag]));
+      }
+
+      function getField(val, lang) {
+        if (!val) return '';
+        if (typeof val === 'string') return val;
+        return val[lang] || val.hi || val.en || '';
+      }
+
+      if (searchInput && suggestionsBox) {
+        fetchServicesList();
+
+        searchInput.addEventListener('input', async function(e) {
+          const query = (e.target.value || '').toLowerCase().trim();
+
+          // 1. Live Filter On-Page Cards
+          if (grid) {
+            const cards = grid.getElementsByClassName('service-card');
+            for (let i = 0; i < cards.length; i++) {
+              const text = cards[i].innerText.toLowerCase();
+              cards[i].style.display = (query === '' || text.indexOf(query) > -1) ? '' : 'none';
+            }
+          }
+
+          // 2. Instant Live Search Dropdown (Starts from 1 character)
+          if (!query) {
+            suggestionsBox.innerHTML = '';
+            suggestionsBox.style.display = 'none';
+            return;
+          }
+
+          const services = await fetchServicesList();
+          if (!services || !services.length) return;
+
+          const lang = (window.SITE && SITE.lang) || (typeof getLang === 'function' ? getLang() : 'hi');
+          const matches = services.filter(s => {
+            const nameEn = (getField(s.name, 'en') || s.title_en || s.title || '').toLowerCase();
+            const nameHi = (getField(s.name, 'hi') || s.title_hi || '').toLowerCase();
+            const descEn = (getField(s.shortDescription, 'en') || getField(s.description, 'en') || '').toLowerCase();
+            const descHi = (getField(s.shortDescription, 'hi') || getField(s.description, 'hi') || '').toLowerCase();
+            const tags = (s.tags || []).join(' ').toLowerCase();
+            const slug = (s.slug || s.id || '').toLowerCase();
+
+            return nameEn.includes(query) || nameHi.includes(query) || descEn.includes(query) || descHi.includes(query) || tags.includes(query) || slug.includes(query);
+          }).slice(0, 8);
+
+          if (matches.length === 0) {
+            suggestionsBox.innerHTML = `
+              <li style="padding: 14px 20px; color: var(--color-text-muted); font-size: 0.95rem;">
+                ${lang === 'hi' ? 'कोई परिणाम नहीं मिला। अन्य शब्द से खोजें...' : 'No services found. Try another search term...'}
+              </li>
+            `;
+            suggestionsBox.style.display = 'block';
+            return;
+          }
+
+          suggestionsBox.innerHTML = matches.map(s => {
+            const slug = s.slug || s.id;
+            const href = `../service/${slug}.html`;
+            const titleEn = getField(s.name, 'en') || s.title_en || s.title || slug;
+            const titleHi = getField(s.name, 'hi') || s.title_hi || titleEn;
+            const desc = getField(s.shortDescription, lang) || getField(s.description, lang) || '';
+            const cat = s.category || s.category_slug || '';
+            const displayTitle = lang === 'hi' ? titleHi : titleEn;
+
+            return `
+              <li class="search-suggestion-item" style="border-bottom: 1px solid var(--color-border);">
+                <a href="${href}" style="display: flex; flex-direction: column; padding: 12px 18px; text-decoration: none; color: var(--color-text); transition: background 0.15s;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <span style="font-weight: 700; color: var(--color-primary); font-size: 1rem;">${escapeHTML(displayTitle)}</span>
+                    ${cat ? `<span style="font-size: 0.72rem; padding: 2px 8px; background: rgba(0,0,0,0.06); border-radius: 12px; color: var(--color-text-muted); font-weight: 600;">${escapeHTML(cat)}</span>` : ''}
+                  </div>
+                  <span style="font-size: 0.84rem; color: var(--color-text-muted); line-height: 1.4;">${escapeHTML(desc.substring(0, 95))}${desc.length > 95 ? '...' : ''}</span>
+                </a>
+              </li>
+            `;
+          }).join('');
+
+          suggestionsBox.style.display = 'block';
+        });
+
+        // Close suggestions on outside click
+        document.addEventListener('click', function(e) {
+          if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+            suggestionsBox.style.display = 'none';
+          }
+        });
+
+        // Re-open on focus if query present
+        searchInput.addEventListener('focus', function() {
+          if (searchInput.value.trim() && suggestionsBox.innerHTML.trim() !== '') {
+            suggestionsBox.style.display = 'block';
+          }
+        });
+      }
+    })();
   </script>
 </body>
 </html>

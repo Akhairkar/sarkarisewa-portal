@@ -379,9 +379,41 @@ def upgrade_pan_aadhaar():
         fp.write(c)
     print('Upgraded: tools/pan-aadhaar-conflict-resolver.html')
 
+def inject_subscribe_widget_to_all_tools_and_flagships():
+    targets = glob.glob(os.path.join(TOOLS_DIR, '*.html')) + glob.glob(os.path.join(ROOT, 'service', '*.html')) + glob.glob(os.path.join(ROOT, 'states', '*.html'))
+    count = 0
+    for tf in targets:
+        with open(tf, 'r', encoding='utf-8') as f:
+            c = f.read()
+        if 'subscribe-widget' in c:
+            continue
+
+        # Insert subscribe widget before Telegram banner or before </main>
+        if '<!-- VIP TELEGRAM BANNER -->' in c:
+            sub_html = '    <!-- EMAIL & WHATSAPP SCHEME ALERT SUBSCRIBE WIDGET -->\n    <div id="subscribe-widget" style="margin: 40px 0;"></div>\n\n    <!-- VIP TELEGRAM BANNER -->'
+            c = c.replace('<!-- VIP TELEGRAM BANNER -->', sub_html)
+        elif '</main>' in c:
+            sub_html = '    <!-- EMAIL & WHATSAPP SCHEME ALERT SUBSCRIBE WIDGET -->\n    <div id="subscribe-widget" style="margin: 40px 0;"></div>\n  </main>'
+            c = c.replace('</main>', sub_html)
+
+        # Add subscribe.js script if not present
+        if 'assets/js/subscribe.js' not in c:
+            if 'assets/js/services-data.js' in c:
+                c = c.replace('assets/js/services-data.js"></script>', 'assets/js/services-data.js"></script>\n  <script src="../assets/js/subscribe.js"></script>')
+            elif 'assets/js/main.js' in c:
+                c = c.replace('assets/js/main.js"></script>', 'assets/js/main.js"></script>\n  <script src="../assets/js/subscribe.js"></script>')
+
+        with open(tf, 'w', encoding='utf-8') as f:
+            f.write(c)
+        count += 1
+        print(f'Injected subscribe widget into: {os.path.basename(tf)}')
+    print(f'Injected subscribe widget into {count} pages.')
+
 def upgrade_all_other_tools():
     upgrade_eligibility_checker()
     upgrade_pan_aadhaar()
+    inject_subscribe_widget_to_all_tools_and_flagships()
 
-upgrade_all_other_tools()
-print('All tools upgraded successfully!')
+if __name__ == '__main__':
+    upgrade_all_other_tools()
+    print('All tools upgraded and subscribe widgets injected successfully!')

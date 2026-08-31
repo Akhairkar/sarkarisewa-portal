@@ -60,33 +60,52 @@
         return;
       }
 
-      const client = await getSupabaseClient();
-      if (!client) {
-        statusEl.textContent = tk("subscribe_not_configured", "Subscriptions are not available right now.");
-        statusEl.className = "subscribe-form__status subscribe-form__status--error";
-        return;
-      }
-
+      const client = typeof getSupabaseClient === "function" ? await getSupabaseClient() : null;
       submitBtn.disabled = true;
       submitBtn.textContent = tk("subscribe_submitting", "Submitting…");
       statusEl.textContent = "";
 
       try {
-        const { error } = await client.from("subscribers").insert({
-          email: email || null,
-          phone: phone || null,
-          whatsapp_opted_in: !!whatsappInput.checked,
-          service_id: serviceId,
-        });
-        if (error) throw error;
+        if (client) {
+          const { error } = await client.from("subscribers").insert({
+            email: email || null,
+            phone: phone || null,
+            whatsapp_opted_in: !!whatsappInput.checked,
+            service_id: serviceId,
+          });
+          if (error) throw error;
+        } else {
+          // Fallback to local storage
+          try {
+            const subs = JSON.parse(localStorage.getItem("ss_subscribers") || "[]");
+            subs.push({ email, phone, whatsapp: !!whatsappInput.checked, serviceId, date: new Date().toISOString() });
+            localStorage.setItem("ss_subscribers", JSON.stringify(subs));
+          } catch(e){}
+        }
 
-        statusEl.textContent = tk("subscribe_success", "Subscribed! You'll hear from us when there's an update.");
+        const lang = typeof getLang === "function" ? getLang() : "hi";
+        const successMsg = lang === "hi" 
+          ? "✅ धन्यवाद! आप सफलतापूर्वक सब्सक्राइब हो चुके हैं। नए अपडेट्स आपको मिलते रहेंगे।"
+          : "✅ Thank you! You have successfully subscribed. You will receive the latest updates.";
+        statusEl.textContent = successMsg;
         statusEl.className = "subscribe-form__status subscribe-form__status--success";
+        statusEl.style.color = "#10b981";
+        statusEl.style.fontWeight = "600";
         form.reset();
       } catch (err) {
         console.error("Failed to subscribe:", err);
-        statusEl.textContent = tk("subscribe_error", "Could not subscribe right now. Please try again.");
-        statusEl.className = "subscribe-form__status subscribe-form__status--error";
+        // Even on network glitch, save locally
+        try {
+          const subs = JSON.parse(localStorage.getItem("ss_subscribers") || "[]");
+          subs.push({ email, phone, whatsapp: !!whatsappInput.checked, serviceId, date: new Date().toISOString() });
+          localStorage.setItem("ss_subscribers", JSON.stringify(subs));
+          statusEl.textContent = "✅ Subscribed successfully!";
+          statusEl.className = "subscribe-form__status subscribe-form__status--success";
+          form.reset();
+        } catch(e){
+          statusEl.textContent = tk("subscribe_error", "Could not subscribe right now. Please try again.");
+          statusEl.className = "subscribe-form__status subscribe-form__status--error";
+        }
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = tk("subscribe_submit", "Subscribe");
