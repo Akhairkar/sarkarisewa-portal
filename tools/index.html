@@ -25,6 +25,88 @@
 <link href="../assets/css/module9.css" rel="stylesheet"/>
 <link href="../assets/css/module16.css" rel="stylesheet"/>
 <style>
+    .engine-card, .trouble-card, .tool-container-card, .calc-card, .clarifier-card, .resizer-card, .builder-card, .check-card, .pan-card-box, .tool-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 8px 30px rgba(16, 36, 62, 0.08);
+      margin-bottom: 36px;
+    }
+    .field-group, .select-group, .calc-input-group, .input-row, .form-group { margin-bottom: 18px; }
+    .field-group label, .select-group label, .calc-input-group label, .input-row label, .form-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--color-primary);
+      font-size: 0.98rem;
+    }
+    .engine-input, .trouble-select, .calc-input, .tool-input, .tool-select, .decl-input, .pan-input, .form-control {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid var(--color-border);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-text);
+      background: var(--color-surface);
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    .engine-input:focus, .trouble-select:focus, .calc-input:focus, .tool-input:focus, .tool-select:focus, .decl-input:focus, .pan-input:focus, .form-control:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+    .scheme-match-card, .solution-box, .calc-result-box, .preview-container, .preview-box, .diag-alert, .res-card {
+      padding: 22px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    [data-theme="dark"] .scheme-match-card,
+    [data-theme="dark"] .solution-box,
+    [data-theme="dark"] .calc-result-box,
+    [data-theme="dark"] .preview-container,
+    [data-theme="dark"] .preview-box,
+    [data-theme="dark"] .diag-alert,
+    [data-theme="dark"] .res-card,
+    [data-theme="dark"] .doc-item-row {
+      background: #101D2C !important;
+      border-color: #223244 !important;
+      color: #E8EDF3 !important;
+    }
+    .btn-tool-primary {
+      background: #2563eb;
+      color: #ffffff !important;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.25);
+    }
+    .btn-tool-secondary {
+      background: var(--color-surface);
+      color: var(--color-text) !important;
+      font-weight: 700;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
     .tools-hero {
       background: var(--color-brand);
       color: var(--color-brand-text);
@@ -212,11 +294,11 @@
 <nav aria-label="Primary mobile" class="mobile-nav" id="mobile-nav">
 <a data-i18n="search_title" href="../search.html">Search Services</a>
 <a data-i18n="nav_home" href="../index.html">Home</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: var(--color-surface); color: var(--color-primary);">📸 Image Tools</div>
 <a href="../tools/photo-resizer.html" style="padding-left: 32px;" data-i18n="tool_photo_resizer">🖼️ Govt Exam Photo Resizer</a>
 <a href="../tools/signature-resizer.html" style="padding-left: 32px;" data-i18n="tool_signature_resizer">✍️ Signature Resizer</a>
 <a href="../tools/document-compressor.html" style="padding-left: 32px;" data-i18n="tool_doc_compressor">📄 Document Compressor</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🛠️ Citizen Utilities</div>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: var(--color-surface); color: var(--color-primary);">🛠️ Citizen Utilities</div>
 <a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
 <a href="../tools/eligibility-checker.html" style="padding-left: 32px;" data-i18n="nav_eligibility_engine">🎯 Scheme Eligibility Engine</a>
 <a href="../tools/document-checklist.html" style="padding-left: 32px;" data-i18n="tool_doc_checklist">📋 Document Checklist</a>
@@ -236,19 +318,19 @@
 <a href="../tools/hra-calculator.html" style="padding-left: 32px;" data-i18n="tool_hra_calc">🏠 HRA Exemption</a>
 <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;" data-i18n="tool_7th_pay">🧮 7th Pay Calculator</a>
 <a href="../8th-pay-calculator.html" style="padding-left: 32px;" data-i18n="tool_8th_pay">🚀 8th Pay Projection</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🏛️ State Services</div>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: var(--color-surface); color: var(--color-primary);">🏛️ State Services</div>
 <a href="../states/index.html" style="padding-left: 32px;" data-i18n="state_all_hub">🗺️ All States Hub</a>
 <a href="../states/index.html" style="padding-left: 32px;" data-i18n="state_up">📍 Uttar Pradesh</a>
 <a href="../states/index.html" style="padding-left: 32px;" data-i18n="state_mh">📍 Maharashtra</a>
 <a href="../states/index.html" style="padding-left: 32px;" data-i18n="state_br">📍 Bihar</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: var(--color-surface); color: var(--color-primary);">📁 Categories</div>
 <a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a>
 <a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a>
 <a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a>
 <a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a>
 <a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a>
 <a data-i18n="nav_health" href="../category/health.html">Health</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: var(--color-surface); color: var(--color-primary);">📌 Links</div>
 <a data-i18n="nav_support" href="../support/index.html">Support</a>
 <a data-i18n="nav_blog" href="../blog/index.html">Blog</a>
 <a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a>
@@ -369,7 +451,150 @@
 <div class="tool-card__arrow">Use Generator →</div>
 </a>
 </div>
-</main>
+    <!-- CITIZEN TOOLS GRID -->
+    <section class="service-section" style="margin-top: 40px;">
+      <h3 style="color: var(--color-primary); font-size: 1.5rem; margin-bottom: 18px;">
+        🛠️ <span data-lang-show="en">Popular Citizen Utilities &amp; Calculators</span>
+        <span data-lang-show="hi">लोकप्रिय नागरिक टूल्स एवं कैलकुलेटर्स</span>
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+        <a href="../tools/self-declaration-builder.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">📝</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Self-Declaration Builder</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">IBPS, लाडकी बहीण व सरकारी नौकरियों के लिए स्व-घोषणा पत्र व हमीपत्र बनाएं।</p>
+          </div>
+          <div style="font-weight: 700; color: #2563eb; font-size: 0.85rem; margin-top: 12px;">Generate Form ↗</div>
+        </a>
+
+        <a href="../tools/document-checklist.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">📋</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Document Checklist Tool</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">सरकारी नौकरी DV, पासपोर्ट, जाति व आय प्रमाण पत्र के आवश्यक दस्तावेज़ जांचें।</p>
+          </div>
+          <div style="font-weight: 700; color: #059669; font-size: 0.85rem; margin-top: 12px;">Check Documents ↗</div>
+        </a>
+
+        <a href="../tools/eligibility-checker.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">🎯</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Scheme Eligibility Engine</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">अपनी उम्र, आय और श्रेणी के आधार पर सभी सरकारी योजनाओं की पात्रता जांचें।</p>
+          </div>
+          <div style="font-weight: 700; color: #d97706; font-size: 0.85rem; margin-top: 12px;">Check Eligibility ↗</div>
+        </a>
+
+        <a href="../tools/status-troubleshooter.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">🔍</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Status Troubleshooter</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">पेंडिंग या रिजेक्ट हुए सरकारी आवेदनों का तुरंत समाधान और शिकायत निवारण।</p>
+          </div>
+          <div style="font-weight: 700; color: #7c3aed; font-size: 0.85rem; margin-top: 12px;">Fix Status ↗</div>
+        </a>
+      </div>
+    </section>
+  
+    <!-- 10 VISIBLE FAQS ACCORDIONS -->
+    <section class="service-section" style="margin-top: 40px;">
+      <h2 style="color: var(--color-primary); font-size: 1.55rem; margin-bottom: 20px; border-bottom: 2px solid var(--color-border); padding-bottom: 12px;">
+        ❓ <span data-lang-show="en">Frequently Asked Questions (FAQs)</span>
+        <span data-lang-show="hi">अक्सर पूछे जाने वाले सवाल (FAQs)</span>
+      </h2>
+      <details class="faq-item" open style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>1. सरकारी सेवा टूल्स और कैलकुलेटर पोर्टल पर कौन-कौन सी सुविधाएं मुफ्त हैं?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          SarkariSewa India पर उपलब्ध सभी 20+ टूल्स (जैसे वेतन कैलकुलेटर, फोटो/सिग्नेचर रिसाइज़र, पात्रता चेकर, EPF/ग्रेच्युटी टूल और स्टेटस ट्रबलशूटर) 100% मुफ्त और सुरक्षित हैं।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>2. क्या इन टूल्स के उपयोग हेतु किसी रजिस्ट्रेशन या लॉगिन की आवश्यकता है?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          नहीं, सभी टूल्स तुरंत उपयोग के लिए उपलब्ध हैं। किसी भी साइनअप या मोबाइल नंबर दर्ज करने की आवश्यकता नहीं है।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>3. क्या फोटो रिसाइज़र और डॉक्यूमेंट कंप्रेसर पर मेरा डेटा सुरक्षित है?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          हाँ, हमारे सभी टूल्स पूर्णतः क्लाइंट-साइड (Browser-based) प्रोसेसिंग करते हैं। आपकी कोई भी फोटो या पीडीएफ फाइल सर्वर पर अपलोड नहीं की जाती।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>4. सरकारी नौकरी परीक्षा फॉर्म भरने के लिए कौन से टूल्स सबसे उपयोगी हैं?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          Photo Resizer (20-50 KB), Signature Resizer (10-20 KB), Document Checklist Tool, Self-Declaration Builder और Age Calculator।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>5. टैक्स और वित्तीय बचत के लिए कौन से कैलकुलेटर उपलब्ध हैं?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          Income Tax Calculator (New vs Old Regime), EPF Calculator, Gratuity Calculator, HRA Exemption Calculator और Post Office vs Bank FD Comparator।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>6. क्या यह टूल्स मोबाइल फोन और टैबलेट पर काम करते हैं?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          हाँ, सभी टूल्स पूरी तरह रिस्पॉन्सिव हैं और एंड्रॉइड, आईफोन और डेस्कटॉप ब्राउज़र पर सुचारू रूप से कार्य करते हैं।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>7. सरकारी योजना की पात्रता कैसे पता करें?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          हमारे Scheme Eligibility Engine में अपनी आयु, आय, राज्य और श्रेणी दर्ज करें; आपको तत्काल योग्य योजनाओं की सूची मिल जाएगी।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>8. आधिकारिक सरकारी पोर्टल का लिंक कैसे प्राप्त करें?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          प्रत्येक टूल और योजना विवरण पृष्ठ पर भारत सरकार के आधिकारिक .gov.in या .nic.in पोर्टलों के सीधे लिंक दिए गए हैं।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>9. सीएससी या जन सेवा केंद्र अपने पास कैसे खोजें?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          हमारे CSC Locator टूल में अपना राज्य, ज़िला और पिनकोड डालकर अपने क्षेत्र के नजदीकी अधिकृत वीएलई खोजें।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>10. नए सरकारी टूल्स और योजना अपडेट्स के नोटिफिकेशन कैसे पाएं?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          हमारे आधिकारिक SarkariSewa VIP Telegram चैनल से जुड़कर दैनिक अपडेट्स और रियल-टाइम अलर्ट्स प्राप्त करें।
+        </div>
+      </details>
+    </section>
+
+  </main>
 <div id="site-footer">
 <footer class="site-footer">
 <div class="tricolor-rule"></div>

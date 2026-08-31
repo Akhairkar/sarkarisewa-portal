@@ -5,6 +5,7 @@ upgraded_files = (
     glob.glob('states/*-sir-voter-list.html') +
     glob.glob('service/mpbcdc-*.html') +
     glob.glob('mpbcdc-*.html') +
+    glob.glob('tools/*.html') +
     [
         'service/special-intensive-revision-sir.html', 'special-intensive-revision-sir.html',
         'service/ayushman-bharat.html',

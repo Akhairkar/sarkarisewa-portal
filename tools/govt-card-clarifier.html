@@ -34,6 +34,91 @@
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "सरकारी पहचान पत्रों (Aadhaar, PAN, Voter, Ration, e-Shram) में क्या अंतर है?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "आधार कार्ड 12 अंकों का बायोमेट्रिक निवास पहचान पत्र है, पैन कार्ड आयकर व वित्तीय लेनदेन का 10-अंकीय कार्ड है, वोटर आईडी मतदान का अधिकार देता है, राशन कार्ड खाद्य सुरक्षा प्रदान करता है और ई-श्रम असंगठित कामगारों का डेटाबेस है।"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "क्या आधार कार्ड नागरिकता (Citizenship) का प्रमाण है?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "नहीं, सर्वोच्च न्यायालय और UIDAI के स्पष्ट नियमों के अनुसार आधार कार्ड केवल भारत में निवास (Proof of Residence) का प्रमाण है, यह नागरिकता का प्रमाण नहीं है।"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "पासपोर्ट और ड्राइविंग लाइसेंस में कौन सा दस्तावेज़ पते के प्रमाण के लिए सर्वश्रेष्ठ है?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "पासपोर्ट और आधार कार्ड दोनों पूरे भारत और विदेश में सर्वोच्च पते का प्रमाण माने जाते हैं।"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "आयुष्मान कार्ड और ई-श्रम कार्ड में क्या अंतर है?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "आयुष्मान कार्ड प्रति परिवार ₹5 लाख का कैशलेस अस्पताल इलाज देता है, जबकि ई-श्रम कार्ड ₹2 लाख का दुर्घटना बीमा और सामाजिक सुरक्षा प्रदान करता है।"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "परिवार पहचान पत्र (Family ID / Samagra ID) क्यों अनिवार्य हो रहे हैं?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "हरियाणा (PPP), मध्य प्रदेश (Samagra), राजस्थान (Jan Aadhaar) और उत्तर प्रदेश (Family ID) में सभी सरकारी योजनाओं की पात्रता परिवार पहचान पत्र से लिंक कर दी गई है।"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "क्या पैन कार्ड पर दर्ज पिता का नाम शादी के बाद बदलता है?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "नहीं, आयकर नियमों के अनुसार पैन कार्ड पर हमेशा पिता का नाम (या स्वेच्छा से माता का नाम) ही मुद्रित होता है, शादी के बाद भी पति का नाम नहीं जोड़ा जाता।"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "वोटर आईडी में EPIC नंबर क्या होता है?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "EPIC (Elector Photo Identity Card) 10 अक्षरों/अंकों का विशिष्ट मतदाता पहचान क्रमांक होता है।"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "राशन कार्ड में BPL, AAY और APL कार्ड में क्या अंतर है?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AAY (अंत्योदय) अत्यंत निर्धन परिवारों को 35 किग्रा मुफ़्त अनाज देता है, BPL/PHH प्रति यूनिट 5 किग्रा मुफ़्त अनाज देता है और APL गैर-सब्सिडी कार्ड है।"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "सरकारी फॉर्म में कौन-कौन से 3 दस्तावेज़ सबसे अधिक मांगे जाते हैं?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "(1) 10वीं मार्कशीट (DOB हेतु), (2) आधार कार्ड (पहचान व पते हेतु), (3) मूल निवास व जाति प्रमाण पत्र।"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "यदि किसी दस्तावेज़ में नाम या पता पुराना हो तो तुरंत क्या करें?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "UIDAI पोर्टल पर आधार ऑनलाइन अपडेट करें और डिजिलॉकर से तत्काल डिजिटल प्रति प्राप्त करें।"
+            }
+          }
+        ]
+      },
+      {
         "@type": "WebApplication",
         "name": "Indian Government Identity & Welfare Card Clarifier",
         "url": "https://sarkarisewaindia.com/tools/govt-card-clarifier.html",
@@ -50,6 +135,88 @@
   </script>
 
   <style>
+    .engine-card, .trouble-card, .tool-container-card, .calc-card, .clarifier-card, .resizer-card, .builder-card, .check-card, .pan-card-box, .tool-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 8px 30px rgba(16, 36, 62, 0.08);
+      margin-bottom: 36px;
+    }
+    .field-group, .select-group, .calc-input-group, .input-row, .form-group { margin-bottom: 18px; }
+    .field-group label, .select-group label, .calc-input-group label, .input-row label, .form-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--color-primary);
+      font-size: 0.98rem;
+    }
+    .engine-input, .trouble-select, .calc-input, .tool-input, .tool-select, .decl-input, .pan-input, .form-control {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid var(--color-border);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-text);
+      background: var(--color-surface);
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    .engine-input:focus, .trouble-select:focus, .calc-input:focus, .tool-input:focus, .tool-select:focus, .decl-input:focus, .pan-input:focus, .form-control:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+    .scheme-match-card, .solution-box, .calc-result-box, .preview-container, .preview-box, .diag-alert, .res-card {
+      padding: 22px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    [data-theme="dark"] .scheme-match-card,
+    [data-theme="dark"] .solution-box,
+    [data-theme="dark"] .calc-result-box,
+    [data-theme="dark"] .preview-container,
+    [data-theme="dark"] .preview-box,
+    [data-theme="dark"] .diag-alert,
+    [data-theme="dark"] .res-card,
+    [data-theme="dark"] .doc-item-row {
+      background: #101D2C !important;
+      border-color: #223244 !important;
+      color: #E8EDF3 !important;
+    }
+    .btn-tool-primary {
+      background: #2563eb;
+      color: #ffffff !important;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.25);
+    }
+    .btn-tool-secondary {
+      background: var(--color-surface);
+      color: var(--color-text) !important;
+      font-weight: 700;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
     .clarifier-card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
@@ -67,7 +234,7 @@
     .card-tab-btn {
       padding: 10px 18px;
       border-radius: 20px;
-      background: var(--color-surface-alt, #f8fafc);
+      background: var(--color-surface);
       border: 1px solid var(--color-border);
       font-weight: 600;
       color: var(--color-text);
@@ -76,7 +243,7 @@
       transition: all 0.2s;
     }
     .card-tab-btn:hover, .card-tab-btn.active {
-      background: var(--color-primary);
+      background: var(--color-brand);
       color: #ffffff;
       border-color: var(--color-primary);
     }
@@ -215,11 +382,11 @@
 <nav aria-label="Primary mobile" class="mobile-nav" id="mobile-nav">
 <a data-i18n="search_title" href="../search.html">Search Services</a>
 <a data-i18n="nav_home" href="../index.html">Home</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: var(--color-surface); color: var(--color-primary);">📸 Image Tools</div>
 <a href="../tools/photo-resizer.html" style="padding-left: 32px;" data-i18n="tool_photo_resizer">🖼️ Govt Exam Photo Resizer</a>
 <a href="../tools/signature-resizer.html" style="padding-left: 32px;" data-i18n="tool_signature_resizer">✍️ Signature Resizer</a>
 <a href="../tools/document-compressor.html" style="padding-left: 32px;" data-i18n="tool_doc_compressor">📄 Document Compressor</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🛠️ Citizen Utilities</div>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: var(--color-surface); color: var(--color-primary);">🛠️ Citizen Utilities</div>
 <a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
 <a href="../tools/eligibility-checker.html" style="padding-left: 32px;" data-i18n="nav_eligibility_engine">🎯 Scheme Eligibility Engine</a>
 <a href="../tools/document-checklist.html" style="padding-left: 32px;" data-i18n="tool_doc_checklist">📋 Document Checklist</a>
@@ -239,19 +406,19 @@
 <a href="../tools/hra-calculator.html" style="padding-left: 32px;" data-i18n="tool_hra_calc">🏠 HRA Exemption</a>
 <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;" data-i18n="tool_7th_pay">🧮 7th Pay Calculator</a>
 <a href="../8th-pay-calculator.html" style="padding-left: 32px;" data-i18n="tool_8th_pay">🚀 8th Pay Projection</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🏛️ State Services</div>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: var(--color-surface); color: var(--color-primary);">🏛️ State Services</div>
 <a href="../states/index.html" style="padding-left: 32px;" data-i18n="state_all_hub">🗺️ All States Hub</a>
 <a href="../states/index.html" style="padding-left: 32px;" data-i18n="state_up">📍 Uttar Pradesh</a>
 <a href="../states/index.html" style="padding-left: 32px;" data-i18n="state_mh">📍 Maharashtra</a>
 <a href="../states/index.html" style="padding-left: 32px;" data-i18n="state_br">📍 Bihar</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: var(--color-surface); color: var(--color-primary);">📁 Categories</div>
 <a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a>
 <a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a>
 <a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a>
 <a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a>
 <a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a>
 <a data-i18n="nav_health" href="../category/health.html">Health</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
+<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: var(--color-surface); color: var(--color-primary);">📌 Links</div>
 <a data-i18n="nav_support" href="../support/index.html">Support</a>
 <a data-i18n="nav_blog" href="../blog/index.html">Blog</a>
 <a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a>
@@ -373,6 +540,149 @@
         </div>
       </div>
     </section>
+      <!-- CITIZEN TOOLS GRID -->
+    <section class="service-section" style="margin-top: 40px;">
+      <h3 style="color: var(--color-primary); font-size: 1.5rem; margin-bottom: 18px;">
+        🛠️ <span data-lang-show="en">Popular Citizen Utilities &amp; Calculators</span>
+        <span data-lang-show="hi">लोकप्रिय नागरिक टूल्स एवं कैलकुलेटर्स</span>
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+        <a href="../tools/self-declaration-builder.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">📝</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Self-Declaration Builder</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">IBPS, लाडकी बहीण व सरकारी नौकरियों के लिए स्व-घोषणा पत्र व हमीपत्र बनाएं।</p>
+          </div>
+          <div style="font-weight: 700; color: #2563eb; font-size: 0.85rem; margin-top: 12px;">Generate Form ↗</div>
+        </a>
+
+        <a href="../tools/document-checklist.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">📋</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Document Checklist Tool</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">सरकारी नौकरी DV, पासपोर्ट, जाति व आय प्रमाण पत्र के आवश्यक दस्तावेज़ जांचें।</p>
+          </div>
+          <div style="font-weight: 700; color: #059669; font-size: 0.85rem; margin-top: 12px;">Check Documents ↗</div>
+        </a>
+
+        <a href="../tools/eligibility-checker.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">🎯</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Scheme Eligibility Engine</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">अपनी उम्र, आय और श्रेणी के आधार पर सभी सरकारी योजनाओं की पात्रता जांचें।</p>
+          </div>
+          <div style="font-weight: 700; color: #d97706; font-size: 0.85rem; margin-top: 12px;">Check Eligibility ↗</div>
+        </a>
+
+        <a href="../tools/status-troubleshooter.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">🔍</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Status Troubleshooter</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">पेंडिंग या रिजेक्ट हुए सरकारी आवेदनों का तुरंत समाधान और शिकायत निवारण।</p>
+          </div>
+          <div style="font-weight: 700; color: #7c3aed; font-size: 0.85rem; margin-top: 12px;">Fix Status ↗</div>
+        </a>
+      </div>
+    </section>
+  
+    <!-- 10 VISIBLE FAQS ACCORDIONS -->
+    <section class="service-section" style="margin-top: 40px;">
+      <h2 style="color: var(--color-primary); font-size: 1.55rem; margin-bottom: 20px; border-bottom: 2px solid var(--color-border); padding-bottom: 12px;">
+        ❓ <span data-lang-show="en">Frequently Asked Questions (FAQs)</span>
+        <span data-lang-show="hi">अक्सर पूछे जाने वाले सवाल (FAQs)</span>
+      </h2>
+      <details class="faq-item" open style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>1. सरकारी पहचान पत्रों (Aadhaar, PAN, Voter, Ration, e-Shram) में क्या अंतर है?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          आधार कार्ड 12 अंकों का बायोमेट्रिक निवास पहचान पत्र है, पैन कार्ड आयकर व वित्तीय लेनदेन का 10-अंकीय कार्ड है, वोटर आईडी मतदान का अधिकार देता है, राशन कार्ड खाद्य सुरक्षा प्रदान करता है और ई-श्रम असंगठित कामगारों का डेटाबेस है।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>2. क्या आधार कार्ड नागरिकता (Citizenship) का प्रमाण है?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          नहीं, सर्वोच्च न्यायालय और UIDAI के स्पष्ट नियमों के अनुसार आधार कार्ड केवल भारत में निवास (Proof of Residence) का प्रमाण है, यह नागरिकता का प्रमाण नहीं है।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>3. पासपोर्ट और ड्राइविंग लाइसेंस में कौन सा दस्तावेज़ पते के प्रमाण के लिए सर्वश्रेष्ठ है?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          पासपोर्ट और आधार कार्ड दोनों पूरे भारत और विदेश में सर्वोच्च पते का प्रमाण माने जाते हैं।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>4. आयुष्मान कार्ड और ई-श्रम कार्ड में क्या अंतर है?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          आयुष्मान कार्ड प्रति परिवार ₹5 लाख का कैशलेस अस्पताल इलाज देता है, जबकि ई-श्रम कार्ड ₹2 लाख का दुर्घटना बीमा और सामाजिक सुरक्षा प्रदान करता है।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>5. परिवार पहचान पत्र (Family ID / Samagra ID) क्यों अनिवार्य हो रहे हैं?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          हरियाणा (PPP), मध्य प्रदेश (Samagra), राजस्थान (Jan Aadhaar) और उत्तर प्रदेश (Family ID) में सभी सरकारी योजनाओं की पात्रता परिवार पहचान पत्र से लिंक कर दी गई है।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>6. क्या पैन कार्ड पर दर्ज पिता का नाम शादी के बाद बदलता है?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          नहीं, आयकर नियमों के अनुसार पैन कार्ड पर हमेशा पिता का नाम (या स्वेच्छा से माता का नाम) ही मुद्रित होता है, शादी के बाद भी पति का नाम नहीं जोड़ा जाता।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>7. वोटर आईडी में EPIC नंबर क्या होता है?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          EPIC (Elector Photo Identity Card) 10 अक्षरों/अंकों का विशिष्ट मतदाता पहचान क्रमांक होता है।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>8. राशन कार्ड में BPL, AAY और APL कार्ड में क्या अंतर है?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          AAY (अंत्योदय) अत्यंत निर्धन परिवारों को 35 किग्रा मुफ़्त अनाज देता है, BPL/PHH प्रति यूनिट 5 किग्रा मुफ़्त अनाज देता है और APL गैर-सब्सिडी कार्ड है।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>9. सरकारी फॉर्म में कौन-कौन से 3 दस्तावेज़ सबसे अधिक मांगे जाते हैं?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          (1) 10वीं मार्कशीट (DOB हेतु), (2) आधार कार्ड (पहचान व पते हेतु), (3) मूल निवास व जाति प्रमाण पत्र।
+        </div>
+      </details>
+      <details class="faq-item" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>10. यदि किसी दस्तावेज़ में नाम या पता पुराना हो तो तुरंत क्या करें?</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          UIDAI पोर्टल पर आधार ऑनलाइन अपडेट करें और डिजिलॉकर से तत्काल डिजिटल प्रति प्राप्त करें।
+        </div>
+      </details>
+    </section>
+
   </main>
 
   <div id="site-footer"></div>
