@@ -21,6 +21,7 @@ upgraded_files = (
     glob.glob('service/mpbcdc-*.html') +
     glob.glob('mpbcdc-*.html') +
     glob.glob('tools/*.html') +
+    glob.glob('category/*.html') +
     [
         'service/special-intensive-revision-sir.html', 'special-intensive-revision-sir.html',
         'service/ayushman-bharat.html',

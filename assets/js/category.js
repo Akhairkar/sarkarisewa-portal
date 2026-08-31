@@ -22,6 +22,11 @@
   const heroEl = document.getElementById("category-hero");
   const gridEl = document.getElementById("service-grid");
 
+  // If this is a static master category page with pre-rendered content, don't overwrite
+  if (!gridEl && !heroEl) {
+    return;
+  }
+
   if (!catSlug) {
     renderMissingCategory();
   } else {
