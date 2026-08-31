@@ -61,6 +61,22 @@ for fpath in upgraded_files:
     if faq_count < 6:
         errors.append(f'Low FAQ count: {faq_count}')
         
+    # Boilerplate check
+    if 'practical guide for Indian users' in content or 'Detailed preparation checklist' in content:
+        errors.append('Contains boilerplate placeholder text')
+        
+    # Hardcoded Header check
+    if '<header class="site-header">' in content:
+        errors.append('Contains hardcoded static header')
+        
+    # Hardcoded Footer check
+    if '<footer class="site-footer">' in content:
+        errors.append('Contains hardcoded static footer')
+        
+    # Script check
+    if 'main.js' not in content:
+        errors.append('Missing main.js template script')
+        
     # Contrast bug 1: background: var(--color-primary) with white text
     for line in content.splitlines():
         if 'background: var(--color-primary)' in line and ('color: #ffffff' in line or 'color: #fff' in line or 'color: white' in line):
