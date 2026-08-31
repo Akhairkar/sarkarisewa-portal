@@ -403,9 +403,45 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 
 .header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
 
+/* Header CSC / Jan Seva Kendra Button */
+.header-csc-btn {
+  background: #D97F2B !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 6px 12px !important;
+  font-size: 0.85rem !important;
+  text-decoration: none !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+  transition: all 0.2s ease !important;
+}
+.header-csc-btn:hover {
+  background: #f59e0b !important;
+  color: #10243E !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35) !important;
+}
+.header-csc-btn span {
+  color: inherit !important;
+  font-weight: 700 !important;
+}
+.header-csc-btn:hover span {
+  color: inherit !important;
+}
+
+[data-theme="dark"] .header-csc-btn {
+  background: #ea580c !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
 .icon-btn {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: #fff;
   border-radius: 8px;
   padding: 7px 11px;
@@ -415,10 +451,10 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   display: inline-flex; align-items: center; gap: 6px;
   text-decoration: none;
 }
-.icon-btn:hover { background: rgba(255,255,255,0.18); }
+.icon-btn:hover { background: rgba(255, 255, 255, 0.18); }
 
 .nav-toggle {
-  background: transparent; border: 1px solid rgba(255,255,255,0.3);
+  background: transparent; border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff; border-radius: 8px; padding: 7px 10px; cursor: pointer;
 }
 
@@ -430,7 +466,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 }
 .mobile-nav.open { display: flex; }
 .mobile-nav a { color: #fff; text-decoration: none; padding: 10px 20px; opacity: 0.9; }
-.mobile-nav a:hover { background: rgba(255,255,255,0.08); }
+.mobile-nav a:hover { background: rgba(255, 255, 255, 0.08); }
 
 @media (min-width: 980px) { .mobile-nav { display: none !important; } .nav-toggle { display: none; } }
 
@@ -447,6 +483,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .brand-title { font-size: 0.95rem; }
   .brand-mark { width: 30px; height: 30px; }
 
+  .header-csc-btn { display: none !important; }
   .header-actions { gap: 4px; flex-shrink: 0; }
   .icon-btn { padding: 6px 8px; font-size: 0.8rem; }
   #lang-toggle span { display: none; }
@@ -538,14 +575,16 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 
 .hero-cta { margin-top: 18px; }
 .btn {
-  display: inline-block; padding: 11px 22px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 11px 22px; border-radius: 8px;
   font-weight: 600; text-decoration: none; font-size: 0.95rem;
-  border: 1px solid var(--color-primary);
+  border: 1px solid var(--color-primary); cursor: pointer;
+  transition: all 0.2s ease;
 }
-.btn-primary { background: var(--color-brand); color: var(--color-brand-text); }
-.btn-primary:hover { background: var(--color-brand-hover); }
-.btn-ghost { background: transparent; color: var(--color-primary); }
-[data-theme="dark"] .btn-ghost { color: var(--color-primary); border-color: var(--color-border); }
+.btn-primary, .btn--primary { background: var(--color-brand); color: var(--color-brand-text) !important; border-color: var(--color-brand); }
+.btn-primary:hover, .btn--primary:hover { background: var(--color-brand-hover); border-color: var(--color-brand-hover); }
+.btn-ghost, .btn--outline { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
+[data-theme="dark"] .btn-ghost, [data-theme="dark"] .btn--outline { color: var(--color-primary); border-color: var(--color-border); }
 
 /* ---------- Sections ---------- */
 .section { padding: 52px 0; }
