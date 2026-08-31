@@ -1,7 +1,22 @@
 # -*- coding: utf-8 -*-
 import os, glob, re
 
+STATE_MAIN_FILES = [
+    'states/index.html',
+    'states/andaman-nicobar.html', 'states/andhra-pradesh.html', 'states/arunachal-pradesh.html', 'states/arunachal.html',
+    'states/assam.html', 'states/bihar.html', 'states/chandigarh.html', 'states/chhattisgarh.html',
+    'states/dadra-nagar-haveli-daman-diu.html', 'states/delhi.html', 'states/goa.html', 'states/gujarat.html',
+    'states/haryana.html', 'states/himachal-pradesh.html', 'states/hp.html', 'states/jammu-kashmir.html',
+    'states/jharkhand.html', 'states/karnataka.html', 'states/kerala.html', 'states/ladakh.html',
+    'states/lakshadweep.html', 'states/madhya-pradesh.html', 'states/maharashtra.html', 'states/manipur.html',
+    'states/meghalaya.html', 'states/mizoram.html', 'states/nagaland.html', 'states/odisha.html',
+    'states/puducherry.html', 'states/punjab.html', 'states/rajasthan.html', 'states/sikkim.html',
+    'states/tamil-nadu.html', 'states/telangana.html', 'states/tripura.html', 'states/uttar-pradesh.html',
+    'states/uttarakhand.html', 'states/west-bengal.html'
+]
+
 upgraded_files = (
+    STATE_MAIN_FILES +
     glob.glob('states/*-sir-voter-list.html') +
     glob.glob('service/mpbcdc-*.html') +
     glob.glob('mpbcdc-*.html') +
@@ -15,6 +30,8 @@ upgraded_files = (
         'service/e-shram-card.html'
     ]
 )
+# Deduplicate list while preserving order
+upgraded_files = list(dict.fromkeys(upgraded_files))
 
 print('=====================================================================================')
 print(f'AUDITING {len(upgraded_files)} UPGRADED PAGES FOR QUALITY, SEO & VISIBILITY')
