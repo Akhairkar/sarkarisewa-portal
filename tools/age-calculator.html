@@ -1,465 +1,823 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
-<title>Age Calculator for Govt Exams 2026: Exact Age on Cut-off Date</title>
-<link href="../assets/css/style.css" rel="stylesheet"/>
-<link href="../assets/css/module9.css" rel="stylesheet"/>
-<link href="../assets/css/module16.css" rel="stylesheet"/>
-<style>
-    .calc-container { max-width: 800px; margin: 40px auto; background: var(--color-surface); padding: 32px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .calc-title { font-size: 2rem; color: var(--color-brand); margin-bottom: 8px; text-align: center; }
-    .calc-desc { text-align: center; color: var(--color-text-muted); margin-bottom: 32px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; }
-    .form-control { width: 100%; padding: 12px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 1rem; font-family: inherit; }
-    .btn-calc { display: block; width: 100%; background: var(--color-brand); color: var(--color-brand-text); padding: 16px; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top:20px; }
-    .btn-calc:hover { background: var(--color-brand-hover); }
-    .result-box { display: none; margin-top: 32px; }
-    
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+  <link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+  <link href="../favicon.ico" rel="icon"/>
+  <link href="../manifest.json" rel="manifest"/>
+  <link rel="canonical" href="https://sarkarisewaindia.com/tools/age-calculator.html"/>
+  <meta name="description" content="सरकारी नौकरी फॉर्म हेतु कट-ऑफ डेट पर सटीक आयु (वर्ष, माह, दिन) की गणना करें। SSC, UPSC, रेलवे, बैंक व पुलिस परीक्षा आयु सीमा व छूट 2026।" />
+  <meta property="og:title" content="Govt Exam Age Calculator 2026: Exact Age on Cut-off Date & Eligibility | SarkariSewa India"/>
+  <meta property="og:description" content="Calculate your exact age in years, months & days as of any exam cut-off date (e.g. 01/01/2026 or 01/08/2026) with category-wise age relaxation."/>
+  <meta content="website" property="og:type"/>
+  <meta property="og:url" content="https://sarkarisewaindia.com/tools/age-calculator.html"/>
+  <meta content="https://sarkarisewaindia.com/assets/img/og-image.png" property="og:image"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="मुफ्त Govt Exam Age Calculator 2026 | SarkariSewa India" name="twitter:title"/>
+  <meta content="सरकारी परीक्षा कट-ऑफ डेट पर सटीक उम्र और पात्रता जांचें।" name="twitter:description"/>
+  <title>Govt Exam Age Calculator 2026: कट-ऑफ डेट पर सटीक उम्र व पात्रता | SarkariSewa India</title>
+  
+  <link href="../assets/css/style.css" rel="stylesheet"/>
+  <link href="../assets/css/module2.css" rel="stylesheet"/>
+  <link href="../assets/css/module7.css" rel="stylesheet"/>
+  <link href="../assets/css/share-widget.css" rel="stylesheet"/>
 
-    .age-card { background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: 8px; padding: 24px; text-align: center; }
-    .age-card h3 { font-size: 1.1rem; color: var(--color-text-muted); margin-bottom: 12px; font-weight: 500; }
-    .age-val { font-size: 1.75rem; color: var(--color-brand); font-weight: 700; margin-bottom: 8px; }
-    .age-sub { font-size: 1rem; color: var(--color-text); }
-    
-    .retire-card { background: #ecfdf5; border: 1px solid #10b981; border-radius: 8px; padding: 24px; text-align: center; grid-column: 1 / -1; margin-top: 24px; }
-    .retire-date { font-size: 2.2rem; color: #10b981; font-weight: 700; margin: 12px 0; }
-    
-    .btn-print { background: var(--color-text); color: #fff; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; display: block; margin: 24px auto 0; }
-    .error { color: #ef4444; font-size: 0.9rem; margin-top: 4px; display: none; }
-    
-    @media print {
-      body * { visibility: hidden; }
-      .calc-container, .calc-container * { visibility: visible; }
-      .calc-container { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; padding: 0; }
-      .btn-calc, .btn-print, nav, #site-header, #site-footer { display: none !important; }
-      .result-box { display: block !important; }
+  <style>
+    .age-container {
+      max-width: 1060px;
+      margin: 24px auto 60px auto;
+      padding: 0 16px;
     }
+    .calc-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 6px 25px rgba(16, 36, 62, 0.06);
+      margin-bottom: 32px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .input-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--color-primary);
+      font-size: 0.95rem;
+    }
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--color-border);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: var(--color-surface);
+      color: var(--color-text);
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+    .cutoff-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .cutoff-pill {
+      padding: 6px 12px;
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      background: var(--color-surface-alt, #f8fafc);
+      color: var(--color-text);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cutoff-pill:hover, .cutoff-pill.active {
+      background: var(--color-primary);
+      color: #ffffff;
+      border-color: var(--color-primary);
+    }
+    .result-section {
+      display: none;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 2px solid var(--color-border);
+    }
+    .age-highlight-box {
+      background: linear-gradient(135deg, rgba(16, 36, 62, 0.05) 0%, rgba(16, 36, 62, 0.01) 100%);
+      border: 2px solid var(--color-primary);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .age-number-big {
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      margin: 10px 0;
+      line-height: 1.2;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-box {
+      padding: 16px;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      background: var(--color-surface);
+      text-align: center;
+    }
+    .stat-box .title {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .stat-box .val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    .exam-eligibility-card {
+      padding: 18px;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--color-surface);
+    }
+    .status-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .badge-eligible { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-overage { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+    .badge-underage { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
   </style>
 
-<meta name="description" content="Calculate your exact age in years, months, and days as of any exam cut-off date (e.g., 01/01/2026 or 01/08/2026) for UPSC, SSC, IBPS, and State PSC forms."/>
-<link rel="canonical" href="https://sarkarisewaindia.com/tools/age-calculator.html"/>
-<meta content="website" property="og:type"/>
-<meta property="og:title" content="Age Calculator for Govt Exams 2026: Exact Age on Cut-off Date"/>
-<meta property="og:description" content="Calculate your exact age in years, months, and days as of any exam cut-off date (e.g., 01/01/2026 or 01/08/2026) for UPSC, SSC, IBPS, and State PSC forms."/>
-<meta property="og:url" content="https://sarkarisewaindia.com/tools/age-calculator.html"/>
-<meta content="summary" name="twitter:card"/>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Government Exam Age Calculator",
-  "url": "https://sarkarisewaindia.com/tools/age-calculator.html",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "All",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "INR"
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Government Exam Age & Eligibility Calculator",
+    "url": "https://sarkarisewaindia.com/tools/age-calculator.html",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR"
+    }
   }
-}
-</script>
+  </script>
 </head>
-<body>
-<script>window.SS_ROOT = "../";</script>
-<div id="site-header">
-<div class="tricolor-rule"></div>
-<a class="skip-link" data-i18n="skip_to_content" href="#main-content">Skip to main content</a>
-<header class="site-header">
-<div class="container header-inner">
-<a class="brand" href="../index.html">
-<span class="brand-mark">S</span>
-<span class="brand-text">
-<span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
-<span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
-</span>
-</a>
-<nav aria-label="Primary" class="main-nav">
-<ul>
-<li><a data-i18n="nav_home" href="../index.html">Home</a></li>
-<!-- Categories Dropdown -->
-<li class="nav-dropdown">
-<a class="nav-dropdown-toggle" href="#">Categories 📁 ▾</a>
-<ul class="nav-dropdown-menu">
-<li><a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a></li>
-<li><a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a></li>
-<li><a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a></li>
-<li><a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a></li>
-<li><a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a></li>
-<li><a data-i18n="nav_health" href="../category/health.html">Health</a></li>
-</ul>
-</li>
-<!-- Updates & Support Dropdown -->
-<li class="nav-dropdown">
-<a class="nav-dropdown-toggle" href="#">Updates &amp; Support 📢 ▾</a>
-<ul class="nav-dropdown-menu">
-<li><a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a></li>
-<li><a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a></li>
-<li><a data-i18n="nav_blog" href="../blog/index.html">Blog</a></li>
-<li><a data-i18n="nav_support" href="../support/index.html">Support</a></li>
-</ul>
-</li>
-<!-- Image Tools Dropdown -->
-<li class="nav-dropdown">
-<a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
-<ul class="nav-dropdown-menu">
-<li><a href="../tools/photo-resizer.html">🖼️ Govt Exam Photo Resizer</a></li>
-<li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
-<li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
-</ul>
-</li>
-<!-- State Services Dropdown -->
-<li class="nav-dropdown">
-<a class="nav-dropdown-toggle" data-i18n="nav_state_services" href="../states/index.html">State Services 🏛️ ▾</a>
-<ul class="nav-dropdown-menu">
-<li><a href="../states/index.html">🗺️ All States Hub</a></li>
-<li><a href="../states/index.html">📍 Uttar Pradesh</a></li>
-<li><a href="../states/index.html">📍 Maharashtra</a></li>
-<li><a href="../states/index.html">📍 Bihar</a></li>
-<li><a href="../states/index.html">📍 Rajasthan</a></li>
-<li><a href="../states/index.html">📍 Madhya Pradesh</a></li>
-</ul>
-</li>
-<!-- Citizen Utilities Dropdown Menu -->
-<li class="nav-dropdown">
-<a class="nav-dropdown-toggle" href="../tools/index.html">Citizen Utilities 🛠️ ▾</a>
-<ul class="nav-dropdown-menu">
-<li><a href="../tools/csc-locator.html" style="font-weight: 600; color: var(--color-primary);">📍 CSC / e-Seva Locator <span style="font-size: 0.75rem; background: var(--color-accent-green); color: white; padding: 2px 4px; border-radius: 4px; margin-left: 4px;">NEW</span></a></li>
-<li><a data-i18n="nav_eligibility_engine" href="../tools/eligibility-checker.html" style="font-weight: 600; color: var(--color-accent-green);">🎯 Scheme Eligibility Engine</a></li>
-<li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
-<li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
-<li><a href="../tools/typing-speed-test.html">⌨️ Typing Speed Test</a></li>
-<li><a href="../tools/deadline-calendar.html">📅 Deadline Calendar</a></li>
-<li><a href="../tools/pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
-<li><a href="../tools/status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
-<li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
-<li><a href="../tools/age-calculator.html">⏳ Age &amp; Retirement Calculator</a></li>
-</ul>
-</li>
-<!-- Financial Calculators Dropdown Menu -->
-<li class="nav-dropdown">
-<a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;">Financial Calculators 💰 ▾</a>
-<ul class="nav-dropdown-menu">
-<li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
-<li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
-<li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
-<li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
-<li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
-<li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
-<li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
-<li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
-</ul>
-</li>
-</ul>
-</nav>
-<div class="header-actions">
-<a href="../tools/csc-locator.html" class="btn btn--primary header-csc-btn" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-<span data-lang-show="en">📍 Nearest CSC</span>
-<span data-lang-show="hi">📍 जन सेवा केंद्र</span>
-</a>
+<body data-slug="age-calculator">
+  <script>window.SS_ROOT = "../";</script>
+  
+  <div id="site-header">
+    <div class="tricolor-rule"></div>
+    <a class="skip-link" data-i18n="skip_to_content" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">S</span>
+          <span class="brand-text">
+            <span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
+            <span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
+          </span>
+        </a>
+        <nav aria-label="Primary" class="main-nav">
+          <ul>
+            <li><a data-i18n="nav_home" href="../index.html">Home</a></li>
+            <li class="nav-dropdown">
+              <a class="nav-dropdown-toggle" href="#" data-i18n="nav_categories">Categories 📁 ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a></li>
+                <li><a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a></li>
+                <li><a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a></li>
+                <li><a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a></li>
+                <li><a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a></li>
+                <li><a data-i18n="nav_health" href="../category/health.html">Health</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-dropdown-toggle" href="#">Updates &amp; Support 📢 ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a></li>
+                <li><a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a></li>
+                <li><a data-i18n="nav_blog" href="../blog/index.html">Blog</a></li>
+                <li><a data-i18n="nav_support" href="../support/index.html">Support</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a href="../tools/photo-resizer.html">🖼️ Govt Exam Photo Resizer</a></li>
+                <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+                <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-dropdown-toggle" data-i18n="nav_state_services" href="../states/index.html">State Services 🏛️ ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a href="../states/index.html">🗺️ All States Hub</a></li>
+                <li><a href="../states/uttar-pradesh.html">📍 Uttar Pradesh</a></li>
+                <li><a href="../states/maharashtra.html">📍 Maharashtra</a></li>
+                <li><a href="../states/bihar.html">📍 Bihar</a></li>
+                <li><a href="../states/rajasthan.html">📍 Rajasthan</a></li>
+                <li><a href="../states/madhya-pradesh.html">📍 Madhya Pradesh</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-dropdown-toggle" href="../tools/index.html" data-i18n="nav_citizen_utilities">Citizen Utilities 🛠️ ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a href="../tools/csc-locator.html" style="font-weight: 600; color: var(--color-primary);">📍 CSC / e-Seva Locator <span style="font-size: 0.75rem; background: var(--color-accent-green); color: white; padding: 2px 4px; border-radius: 4px; margin-left: 4px;">NEW</span></a></li>
+                <li><a data-i18n="nav_eligibility_engine" href="../tools/eligibility-checker.html" style="font-weight: 600; color: var(--color-accent-green);">🎯 Scheme Eligibility Engine</a></li>
+                <li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
+                <li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+                <li><a href="../tools/typing-speed-test.html">⌨️ Typing Speed Test</a></li>
+                <li><a href="../tools/deadline-calendar.html">📅 Deadline Calendar</a></li>
+                <li><a href="../tools/pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
+                <li><a href="../tools/status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
+                <li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+                <li><a href="../tools/age-calculator.html">⏳ Age &amp; Retirement Calculator</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;">Financial Calculators 💰 ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+                <li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
+                <li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
+                <li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
+                <li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
+                <li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
+                <li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
+                <li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="../tools/csc-locator.html" class="btn btn--primary header-csc-btn" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <span data-lang-show="en">📍 Nearest CSC</span>
+            <span data-lang-show="hi">📍 जन सेवा केंद्र</span>
+          </a>
+          <a aria-label="Search" class="icon-btn" href="../search.html">
+            <span aria-hidden="true">🔍</span>
+            <span class="visually-hidden" data-i18n="search_title">Search Services</span>
+          </a>
+          <button aria-label="Toggle theme" class="icon-btn" id="theme-toggle" type="button">
+            <span aria-hidden="true" id="theme-icon">🌙</span>
+            <span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
+          </button>
+          <button class="icon-btn" id="lang-toggle" type="button">
+            <span data-i18n="lang_toggle">हिंदी</span>
+          </button>
+          <button aria-expanded="false" aria-label="Menu" class="nav-toggle" id="nav-toggle" type="button">☰</button>
+        </div>
+      </div>
+      <nav aria-label="Primary mobile" class="mobile-nav" id="mobile-nav">
+        <a data-i18n="search_title" href="../search.html">Search Services</a>
+        <a data-i18n="nav_home" href="../index.html">Home</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">📸 Image Tools</div>
+        <a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
+        <a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
+        <a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">🛠️ Citizen Utilities</div>
+        <a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
+        <a href="../tools/eligibility-checker.html" style="padding-left: 32px;" data-i18n="nav_eligibility_engine">🎯 Scheme Eligibility Engine</a>
+        <a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
+        <a href="../tools/self-declaration-builder.html" style="padding-left: 32px;">📝 Self-Declaration Builder</a>
+        <a href="../tools/typing-speed-test.html" style="padding-left: 32px;">⌨️ Typing Speed Test</a>
+        <a href="../tools/deadline-calendar.html" style="padding-left: 32px;">📅 Deadline Calendar</a>
+        <a href="../tools/pan-aadhaar-conflict-resolver.html" style="padding-left: 32px;">🔗 PAN-Aadhaar Resolver</a>
+        <a href="../tools/status-troubleshooter.html" style="padding-left: 32px;">🔍 Status Troubleshooter</a>
+        <a href="../tools/govt-card-clarifier.html" style="padding-left: 32px;">💳 Govt Card Clarifier</a>
+        <a href="../tools/age-calculator.html" style="padding-left: 32px;">⏳ Age &amp; Retirement Calculator</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">💰 Financial Calculators</div>
+        <a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
+        <a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
+        <a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
+        <a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
+        <a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
+        <a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
+        <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
+        <a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">🏛️ State Services</div>
+        <a href="../states/index.html" style="padding-left: 32px;">🗺️ All States Hub</a>
+        <a href="../states/index.html" style="padding-left: 32px;">📍 Uttar Pradesh</a>
+        <a href="../states/index.html" style="padding-left: 32px;">📍 Maharashtra</a>
+        <a href="../states/index.html" style="padding-left: 32px;">📍 Bihar</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">📁 Categories</div>
+        <a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a>
+        <a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a>
+        <a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a>
+        <a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a>
+        <a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a>
+        <a data-i18n="nav_health" href="../category/health.html">Health</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">📌 Links</div>
+        <a data-i18n="nav_support" href="../support/index.html">Support</a>
+        <a data-i18n="nav_blog" href="../blog/index.html">Blog</a>
+        <a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a>
+        <a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a>
+        <div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
+          <button class="btn btn--outline" id="mobile-theme-toggle" style="width:100%; justify-content:center; gap:8px;" type="button">
+            <span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+  </div>
 
-<a aria-label="Search" class="icon-btn" href="../search.html">
-<span aria-hidden="true">🔍</span>
-<span class="visually-hidden" data-i18n="search_title">Search Services</span>
-</a>
-<button aria-label="Toggle theme" class="icon-btn" id="theme-toggle" type="button">
-<span aria-hidden="true" id="theme-icon">🌙</span>
-<span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
-</button>
-<button class="icon-btn" id="lang-toggle" type="button">
-<span data-i18n="lang_toggle">हिंदी</span>
-</button>
-<button aria-expanded="false" aria-label="Menu" class="nav-toggle" id="nav-toggle" type="button">☰</button>
-</div>
-</div>
-<nav aria-label="Primary mobile" class="mobile-nav" id="mobile-nav">
-<a data-i18n="search_title" href="../search.html">Search Services</a>
-<a data-i18n="nav_home" href="../index.html">Home</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📸 Image Tools</div>
-<a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
-<a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
-<a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🛠️ Citizen Utilities</div>
-<a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
-<a href="../tools/eligibility-checker.html" style="padding-left: 32px;">🎯 Scheme Eligibility Engine</a>
-<a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
-<a href="../tools/self-declaration-builder.html" style="padding-left: 32px;">📝 Self-Declaration Builder</a>
-<a href="../tools/typing-speed-test.html" style="padding-left: 32px;">⌨️ Typing Speed Test</a>
-<a href="../tools/deadline-calendar.html" style="padding-left: 32px;">📅 Deadline Calendar</a>
-<a href="../tools/pan-aadhaar-conflict-resolver.html" style="padding-left: 32px;">🔗 PAN-Aadhaar Resolver</a>
-<a href="../tools/status-troubleshooter.html" style="padding-left: 32px;">🔍 Status Troubleshooter</a>
-<a href="../tools/govt-card-clarifier.html" style="padding-left: 32px;">💳 Govt Card Clarifier</a>
-<a href="../tools/age-calculator.html" style="padding-left: 32px;">⏳ Age &amp; Retirement Calculator</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #fdf2f8; color: #db2777;">💰 Financial Calculators</div>
-<a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
-<a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
-<a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
-<a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
-<a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
-<a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
-<a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
-<a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">🏛️ State Services</div>
-<a href="../states/index.html" style="padding-left: 32px;">🗺️ All States Hub</a>
-<a href="../states/index.html" style="padding-left: 32px;">📍 Uttar Pradesh</a>
-<a href="../states/index.html" style="padding-left: 32px;">📍 Maharashtra</a>
-<a href="../states/index.html" style="padding-left: 32px;">📍 Bihar</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📁 Categories</div>
-<a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a>
-<a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a>
-<a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a>
-<a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a>
-<a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a>
-<a data-i18n="nav_health" href="../category/health.html">Health</a>
-<div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: #eef2f6; color: var(--color-primary);">📌 Links</div>
-<a data-i18n="nav_support" href="../support/index.html">Support</a>
-<a data-i18n="nav_blog" href="../blog/index.html">Blog</a>
-<a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a>
-<a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a>
-<div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
-<button class="btn btn--outline" id="mobile-theme-toggle" style="width:100%; justify-content:center; gap:8px;" type="button">
-<span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
-</button>
-</div>
-</nav>
-</header>
-</div>
-<main class="container">
-<nav class="breadcrumb" style="margin-top:20px;">
-<a href="../index.html">Home</a><span class="sep">/</span>
-<a href="index.html">Tools</a><span class="sep">/</span>
-<span class="current">Age Calculator</span>
-</nav>
-<div class="calc-container">
-<h1 class="calc-title">Age &amp; Retirement Calculator</h1>
-<p class="calc-desc">Calculate your exact age and find out your retirement date.</p>
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-<div class="form-group">
-<label for="dob">Date of Birth</label>
-<input class="form-control" id="dob" type="date"/>
-<div class="error" id="err-dob">Please select a valid date of birth in the past.</div>
-</div>
-<div class="form-group">
-<label for="retire-age">Retirement Age</label>
-<input class="form-control" id="retire-age" max="80" min="40" type="number" value="60"/>
-<small style="color:var(--color-text-muted); font-size:0.8rem;">Central Govt is usually 60.</small>
-</div>
-</div>
-<button class="btn-calc" onclick="calculateAge()">Calculate Age &amp; Retirement</button>
-<div class="result-box" id="result-box">
-<div class="grid-2">
-<div class="age-card">
-<h3>Current Exact Age</h3>
-<div class="age-val" id="res-age-ymd">0 Y, 0 M, 0 D</div>
-<div class="age-sub">or <strong id="res-age-days">0</strong> total days</div>
-</div>
-<div class="age-card">
-<h3>Time Remaining to Retire</h3>
-<div class="age-val" id="res-rem-ymd">0 Y, 0 M, 0 D</div>
-<div class="age-sub">or <strong id="res-rem-days">0</strong> total days</div>
-</div>
-<div class="retire-card">
-<h3>Your Expected Retirement Date</h3>
-<div class="retire-date" id="res-retire-date">-</div>
-<p style="color: #065f46; font-size: 0.9rem;">(Based on completing <span id="lbl-retire-age">60</span> years of age)</p>
-</div>
-</div>
-<button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
-</div>
-</div>
-<!-- TOOL SEO ENHANCEMENT -->
-<section aria-label="Helpful information and related links" class="tool-seo-section">
-<style>
-.tool-seo-section{margin:42px 0 12px;padding:32px 0;border-top:1px solid var(--color-border);color:var(--color-text)}
-.tool-seo-section .tool-seo-wrap{max-width:920px;margin:auto}.tool-seo-section h2{font-size:1.55rem;margin:0 0 14px;color:var(--color-primary)}
-.tool-seo-section h3{font-size:1.18rem;margin:26px 0 10px;color:var(--color-text)}.tool-seo-section p,.tool-seo-section li{line-height:1.75}
-.tool-seo-section .tool-seo-note{padding:14px 16px;background:var(--color-bg-alt);border-left:4px solid var(--color-primary);border-radius:8px}
-.tool-seo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tool-seo-card{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--color-border);border-radius:10px;background:var(--color-surface);text-decoration:none;color:var(--color-text);transition:transform .15s ease,border-color .15s ease}
-.tool-seo-card:hover{transform:translateY(-2px);border-color:var(--color-primary)}.tool-seo-icon{font-size:1.6rem}.tool-seo-card strong,.tool-seo-card small{display:block}.tool-seo-card small{color:var(--color-text-muted);margin-top:3px}@media(max-width:600px){.tool-seo-grid{grid-template-columns:1fr}.tool-seo-section{padding:26px 0}}
-</style>
-<div class="tool-seo-wrap">
-<div data-lang-show="en">
-<h2>Age &amp; Retirement Calculator: a practical guide for Indian users</h2>
-<p>Use this free age &amp; retirement calculator when you need help with government job age eligibility, SSC UPSC age limit, retirement date and date of birth calculation. It is designed to make a common online task easier before you visit an official portal, submit an application, or prepare your documents. The result is meant to help you organise information; always treat the latest notification, department website, or authorised service centre as the final source of rules, fees and eligibility.</p>
-<h3>Why this tool is useful</h3>
-<p>Government and recruitment websites often use exact requirements, short closing windows and strict upload conditions. A small error can lead to a rejected form, a failed upload or an unnecessary visit to a service centre. This page brings the key task into one simple workflow so you can check details at your own pace. It is especially useful for applicants looking for government job age eligibility, SSC UPSC age limit, retirement date and date of birth calculation, as well as families helping students, senior citizens or first-time digital users.</p>
-<h3>How to use the Age &amp; Retirement Calculator</h3><ol><li><strong>Step 1:</strong> Enter your date of birth exactly as printed on your certificate.</li><li><strong>Step 2:</strong> Use the applicable cut-off date from the official notification before comparing eligibility.</li><li><strong>Step 3:</strong> Choose the retirement age only as a planning estimate; service rules can differ by employer.</li></ol>
-<h3>Before you rely on the result</h3>
-<p>Keep the official notification, application number and original documents nearby. Names, dates, categories, state rules, fee amounts and submission requirements can change. Never share OTPs, passwords, bank PINs or full identity numbers on an unofficial website. If a result affects your application or money, verify it with the official department portal or an authorised centre. This careful final check improves accuracy and helps prevent avoidable rejection.</p>
-<h3>Helpful long-tail searches answered here</h3>
-<p>Users commonly search for phrases such as “government job age eligibility, SSC UPSC age limit, retirement date and date of birth calculation online India”, “free age &amp; retirement calculator for government form”, “how to check government job age eligibility, SSC UPSC age limit, retirement date and date of birth calculation”, and “Age &amp; Retirement Calculator Hindi English”. This guide is written to answer the intent behind those searches with clear steps, internal resources and safe next actions—not by replacing the official authority.</p>
-<h3>Frequently asked questions</h3>
-<p><strong>Is this tool free?</strong> Yes, you can use it without creating an account. <strong>Is the result official?</strong> No; use it as preparation and verify important details from the concerned department. <strong>Can I use it on a phone?</strong> Yes, the page works with the site’s responsive layout and light or dark theme. <strong>What should I do next?</strong> Open a related tool or service below to complete the next part of your task.</p>
-</div>
-<div data-lang-show="hi">
-<h2>आयु और रिटायरमेंट कैलकुलेटर: भारतीय उपयोगकर्ताओं के लिए आसान गाइड</h2>
-<p>यह मुफ्त आयु और रिटायरमेंट कैलकुलेटर सरकारी नौकरी की आयु सीमा, SSC UPSC उम्र, रिटायरमेंट डेट और जन्मतिथि की गणना से जुड़े काम को आसान बनाने के लिए बनाया गया है। किसी सरकारी पोर्टल पर जाने, आवेदन भरने या दस्तावेज़ तैयार करने से पहले आप जरूरी जानकारी एक जगह समझ सकते हैं। यह परिणाम आपकी तैयारी में मदद करता है; नियम, शुल्क, पात्रता और अंतिम तारीख के लिए हमेशा संबंधित विभाग की नई आधिकारिक सूचना को अंतिम मानें।</p>
-<h3>यह टूल क्यों उपयोगी है?</h3>
-<p>सरकारी और भर्ती वेबसाइटों पर अक्सर सटीक जानकारी, कम समय और सख्त अपलोड नियम होते हैं। छोटी गलती से फॉर्म रिजेक्ट, अपलोड फेल या सेवा केंद्र का अनावश्यक चक्कर लग सकता है। यह पेज काम को सरल चरणों में रखता है ताकि आप आराम से जानकारी जांच सकें। सरकारी नौकरी की आयु सीमा, SSC UPSC उम्र, रिटायरमेंट डेट और जन्मतिथि की गणना खोजने वाले विद्यार्थियों, नौकरी आवेदकों, परिवारों और पहली बार डिजिटल सेवा इस्तेमाल करने वाले लोगों के लिए यह खास तौर पर उपयोगी है।</p>
-<h3>आयु और रिटायरमेंट कैलकुलेटर का उपयोग कैसे करें?</h3><ol><li><strong>चरण 1:</strong> अपनी जन्मतिथि ठीक वैसे ही भरें जैसे प्रमाणपत्र में दर्ज है।</li><li><strong>चरण 2:</strong> पात्रता जांचने से पहले आधिकारिक नोटिफिकेशन में दी गई कट-ऑफ डेट देखें।</li><li><strong>चरण 3:</strong> रिटायरमेंट आयु को केवल अनुमान के लिए चुनें; विभागीय नियम अलग हो सकते हैं।</li></ol>
-<h3>परिणाम इस्तेमाल करने से पहले</h3>
-<p>आधिकारिक नोटिफिकेशन, आवेदन संख्या और मूल दस्तावेज़ पास रखें। नाम, जन्मतिथि, श्रेणी, राज्य के नियम, फीस और जमा करने की शर्तें बदल सकती हैं। किसी अनधिकृत वेबसाइट पर OTP, पासवर्ड, बैंक PIN या पूरा पहचान नंबर कभी साझा न करें। अगर परिणाम आपके आवेदन या पैसे को प्रभावित करता है, तो संबंधित विभाग की वेबसाइट या अधिकृत केंद्र से उसे सत्यापित करें।</p>
-<h3>आपकी लंबी खोज का आसान जवाब</h3>
-<p>लोग अक्सर “सरकारी नौकरी की आयु सीमा, SSC UPSC उम्र, रिटायरमेंट डेट और जन्मतिथि की गणना ऑनलाइन”, “सरकारी फॉर्म के लिए आयु और रिटायरमेंट कैलकुलेटर”, “सरकारी नौकरी की आयु सीमा, SSC UPSC उम्र, रिटायरमेंट डेट और जन्मतिथि की गणना कैसे चेक करें” और “आयु और रिटायरमेंट कैलकुलेटर हिंदी में” जैसी खोज करते हैं। यह पेज उन्हीं सवालों के लिए उपयोगी जानकारी, सुरक्षित अगले कदम और आंतरिक लिंक देता है; यह किसी सरकारी विभाग का विकल्प नहीं है।</p>
-<h3>अक्सर पूछे जाने वाले सवाल</h3>
-<p><strong>क्या यह टूल मुफ्त है?</strong> हाँ, इसके लिए अकाउंट बनाना जरूरी नहीं है। <strong>क्या परिणाम आधिकारिक है?</strong> नहीं, जरूरी जानकारी को विभाग की वेबसाइट से जरूर मिलाएँ। <strong>क्या मोबाइल पर चलेगा?</strong> हाँ, यह मोबाइल और light/dark theme के साथ काम करता है। <strong>अब क्या करें?</strong> नीचे दिए गए संबंधित टूल या सेवा लिंक खोलें।</p>
-</div>
-<div data-lang-show="en"><h3>Plan your next step with confidence</h3><p>A good online application is not only about completing one calculation or upload. Use the result as part of a short pre-submission check: read the official notice, confirm the correct scheme or recruitment year, verify whether your state has different rules, and save the page or acknowledgement after submission. For searches around government job age eligibility, SSC UPSC age limit, retirement date and date of birth calculation, people often need a practical sequence rather than a single answer. Start with the current official requirement, prepare clear documents, complete the required check, and submit well before the closing time. If an official portal is slow, do not repeatedly make payments or submit duplicate forms; wait for a confirmation screen, transaction reference or department guidance.</p><p>Keep a simple record of what you used: date checked, source URL, application reference, document version and any fee receipt. This helps if you later need to correct an application, visit a helpdesk or explain a discrepancy. Be careful with third-party agents who promise guaranteed approval. A trustworthy service will tell you what is required, provide a receipt where relevant, and will not ask for your bank PIN, password or OTP. The related resources below are deliberately linked to help you move from preparation to the next genuine task while staying within the SarkariSewa India site structure.</p></div><div data-lang-show="hi"><h3>अगले चरण की तैयारी सही तरीके से करें</h3><p>किसी ऑनलाइन आवेदन में सिर्फ एक गणना या एक अपलोड पूरा करना काफी नहीं होता। परिणाम को जमा करने से पहले की छोटी जांच का हिस्सा बनाएं: आधिकारिक नोटिस पढ़ें, सही योजना या भर्ती वर्ष मिलाएं, अपने राज्य के अलग नियम देखें और आवेदन के बाद acknowledgement या स्क्रीनशॉट सुरक्षित रखें। सरकारी नौकरी की आयु सीमा, SSC UPSC उम्र, रिटायरमेंट डेट और जन्मतिथि की गणना जैसी खोज करने वाले लोगों को अक्सर सिर्फ एक जवाब नहीं, बल्कि सही क्रम चाहिए। पहले नई आधिकारिक शर्त देखें, साफ दस्तावेज़ तैयार करें, जरूरी जांच पूरी करें और अंतिम समय से पहले फॉर्म जमा करें। यदि सरकारी पोर्टल धीमा हो तो बार-बार भुगतान या डुप्लीकेट सबमिट न करें; confirmation screen, transaction reference या विभागीय निर्देश का इंतजार करें।</p><p>आपने क्या इस्तेमाल किया इसका छोटा रिकॉर्ड रखें: जांच की तारीख, स्रोत लिंक, आवेदन संदर्भ, दस्तावेज़ का संस्करण और फीस की रसीद। बाद में सुधार, हेल्पडेस्क विजिट या जानकारी में अंतर समझाने में यह मदद करता है। ऐसे एजेंट से सावधान रहें जो निश्चित मंजूरी का दावा करे। भरोसेमंद सेवा जरूरी शर्तें बताएगी, जहां लागू हो वहां रसीद देगी और कभी बैंक PIN, पासवर्ड या OTP नहीं मांगेगी। नीचे दिए लिंक आपको SarkariSewa India की सही साइट संरचना में अगला उपयोगी काम करने तक पहुंचाते हैं।</p></div><div data-lang-show="en"><h3>Use current information</h3><p>Rules, dates and portal instructions can change without notice. Revisit the official source on the day you apply, keep your browser updated, and use a stable internet connection. This page helps you prepare, but it should never be used to bypass the official process or replace professional advice where it is needed.</p></div><div data-lang-show="hi"><h3>नई जानकारी जरूर जांचें</h3><p>नियम, तारीख और पोर्टल के निर्देश बिना सूचना बदल सकते हैं। आवेदन वाले दिन आधिकारिक स्रोत फिर देखें, ब्राउज़र अपडेट रखें और स्थिर इंटरनेट इस्तेमाल करें। यह पेज तैयारी में मदद करता है, लेकिन आधिकारिक प्रक्रिया या जरूरत पड़ने पर विशेषज्ञ सलाह का विकल्प नहीं है।</p></div><h2 data-lang-show="en">Related tools</h2><h2 data-lang-show="hi">संबंधित टूल्स</h2><div class="tool-seo-grid"><a class="tool-seo-card" href="document-checklist.html"><span aria-hidden="true" class="tool-seo-icon">📋</span><span><strong data-lang-show="en">Document Checklist</strong><strong data-lang-show="hi">Document Checklist</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="typing-speed-test.html"><span aria-hidden="true" class="tool-seo-icon">⌨️</span><span><strong data-lang-show="en">Typing Speed Test</strong><strong data-lang-show="hi">Typing Speed Test</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="photo-resizer.html"><span aria-hidden="true" class="tool-seo-icon">🖼️</span><span><strong data-lang-show="en">Govt Exam Photo Resizer</strong><strong data-lang-show="hi">Govt Exam Photo Resizer</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="gratuity-calculator.html"><span aria-hidden="true" class="tool-seo-icon">💰</span><span><strong data-lang-show="en">Gratuity Calculator</strong><strong data-lang-show="hi">Gratuity Calculator</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a></div>
-<h2 data-lang-show="en">Related services</h2><h2 data-lang-show="hi">संबंधित सेवाएं</h2><div class="tool-seo-grid"><a class="tool-seo-card" href="../support/state-wise-services.html"><span aria-hidden="true" class="tool-seo-icon">🏛️</span><span><strong data-lang-show="en">State-wise Services</strong><strong data-lang-show="hi">राज्यवार सेवाएं</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="../category/identity-documents.html"><span aria-hidden="true" class="tool-seo-icon">🪪</span><span><strong data-lang-show="en">Identity Documents</strong><strong data-lang-show="hi">पहचान दस्तावेज़</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="../category/jobs-education.html"><span aria-hidden="true" class="tool-seo-icon">🎓</span><span><strong data-lang-show="en">Jobs &amp; Education</strong><strong data-lang-show="hi">नौकरी और शिक्षा</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a><a class="tool-seo-card" href="../states/index.html"><span aria-hidden="true" class="tool-seo-icon">🗺️</span><span><strong data-lang-show="en">All States Hub</strong><strong data-lang-show="hi">सभी राज्य सेवाएं</strong><small data-lang-show="en">Open guide</small><small data-lang-show="hi">गाइड खोलें</small></span></a></div>
-</div></section>
-<!-- /TOOL SEO ENHANCEMENT -->
-</main>
-<div id="site-footer">
-<footer class="site-footer">
-<div class="tricolor-rule"></div>
-<div class="container" style="padding-top:36px;">
-<div class="footer-disclaimer-banner" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
-<h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
-<p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
-</div>
-<div class="footer-grid">
-<div>
-<h4 data-i18n="site_name">SarkariSewa India</h4>
-<p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
-</div>
-<div>
-<h4 data-i18n="footer_tools_title">Tools &amp; Apps</h4>
-<ul>
-<li><a href="../tools/index.html">🧮 Tools &amp; Calculators</a></li>
-<li><a data-i18n="nav_eligibility_engine" href="../tools/eligibility-checker.html">🎯 Scheme Eligibility Engine</a></li>
-<li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
-<li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
-<li><a href="../tools/photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
-<li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
-<li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
-<li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
-<li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
-</ul>
-</div>
-<div>
-<h4 data-i18n="footer_resources_title">Resources</h4>
-<ul>
-<li><a data-i18n="nav_project_report" href="../project-report/index.html">Project Report Generator</a></li>
-<li><a data-i18n="states_hub_title" href="../states/index.html">State-wise Popular Services</a></li>
-<li><a data-i18n="footer_about_link" href="../about.html">About</a></li>
-<li><a data-i18n="footer_sitemap_link" href="../sitemap.html">Sitemap</a></li>
-<li><a data-i18n="footer_faq_link" href="../faq.html">FAQ</a></li>
-<li><a data-i18n="footer_contact_link" href="../contact.html">Contact</a></li>
-</ul>
-</div>
-<div>
-<h4 data-i18n="footer_support_title">Support</h4>
-<ul>
-<li><a data-i18n="footer_support_home_link" href="../support/index.html">Support Home</a></li>
-<li><a data-i18n="footer_state_link" href="../support/state-wise-services.html">State-wise Services</a></li>
-<li><a data-i18n="footer_helpline_link" href="../support/helpline-directory.html">Helpline Directory</a></li>
-<li><a data-i18n="footer_rti_link" href="../support/rti-guide.html">RTI Guide</a></li>
-</ul>
-</div>
-<div>
-<h4 data-i18n="footer_legal_title">Legal</h4>
-<ul>
-<li><a data-i18n="privacy_title" href="../privacy-policy.html">Privacy Policy</a></li>
-<li><a data-i18n="disclaimer_title" href="../disclaimer.html">Disclaimer</a></li>
-<li><a data-i18n="terms_title" href="../terms.html">Terms &amp; Conditions</a></li>
-<li><a data-i18n="admin_link" href="../admin/login.html">Staff Login</a></li>
-</ul>
-</div>
-</div>
-<div class="footer-bottom">
-<span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
-</div>
-</div>
-</footer>
-<div class="ss-wa-wrapper" id="ss-wa-wrapper">
-<button aria-label="Close" id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
-<a aria-label="Join our WhatsApp Channel" class="ss-wa-floating-bar" href="https://t.me/sarkarisewaindia" rel="noopener noreferrer" target="_blank">
-<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
-<span data-i18n="wa_join" style="font-weight: 600;">Join WhatsApp Channel</span>
-</a>
-</div>
-</div>
-<script src="../assets/js/main.js?v=2.4"></script>
-<script>
-    function diffYMD(start, end) {
-      if (start > end) return { years: 0, months: 0, days: 0 };
-      
-      let years = end.getFullYear() - start.getFullYear();
-      let months = end.getMonth() - start.getMonth();
-      let days = end.getDate() - start.getDate();
-      
+  <main class="age-container" id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb" style="font-size: 0.9rem; margin-bottom: 20px; color: var(--color-text-muted);">
+      <a href="../index.html" style="color: var(--color-primary); text-decoration: none;">होम (Home)</a> &gt; 
+      <a href="index.html" style="color: var(--color-primary); text-decoration: none;">टूल्स (Tools)</a> &gt; 
+      <span style="color: var(--color-text);">सरकारी परीक्षा आयु एवं रिटायरमेंट कैलकुलेटर</span>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section style="background: linear-gradient(135deg, #10243E 0%, #173663 60%, #0c2650 100%); color: #ffffff; border-radius: 18px; padding: 32px 28px; box-shadow: 0 10px 35px rgba(16, 36, 62, 0.25); border: 1px solid rgba(255,255,255,0.15); margin-bottom: 32px;">
+      <span style="background: rgba(255,255,255,0.15); padding: 5px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px;">🇮🇳 100% सटीक कट-ऑफ डेट व आयु सीमा कैलकुलेटर 2026</span>
+      <h1 style="font-size: 2.2rem; line-height: 1.3; color: #ffffff; margin: 16px 0 10px 0;">
+        <span data-lang-show="hi">सरकारी परीक्षा आयु एवं पात्रता कैलकुलेटर 2026</span>
+        <span data-lang-show="en">Govt Exam Age &amp; Cut-Off Eligibility Calculator 2026</span>
+      </h1>
+      <p style="font-size: 1.02rem; line-height: 1.7; color: rgba(255,255,255,0.9); max-width: 860px; margin: 0 0 16px 0;">
+        <span data-lang-show="hi">SSC, UPSC, रेलवे, पुलिस, बैंकिंग व राज्य लोक सेवा आयोग के फॉर्म हेतु किसी भी कट-ऑफ तारीख (जैसे 01/01/2026 या 01/08/2026) पर अपनी सटीक उम्र (वर्ष, माह, दिन) निकालें और श्रेणीवार आयु छूट के साथ अपनी पात्रता जांचें।</span>
+        <span data-lang-show="en">Calculate your exact age in years, months, and days as of any specific exam cut-off date with official category relaxation (OBC +3 yrs, SC/ST +5 yrs, PwD +10 yrs).</span>
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.88rem;">
+        <span style="background: rgba(255,255,255,0.12); padding: 6px 14px; border-radius: 8px;">🎯 Exam Cut-Off Presets</span>
+        <span style="background: rgba(255,255,255,0.12); padding: 6px 14px; border-radius: 8px;">🛡️ Category Age Relaxation</span>
+        <span style="background: rgba(255,255,255,0.12); padding: 6px 14px; border-radius: 8px;">🏛️ Superannuation / Retirement Date</span>
+      </div>
+    </section>
+
+    <!-- CALCULATOR ENGINE CARD -->
+    <div class="calc-card">
+      <h2 style="color: var(--color-primary); font-size: 1.35rem; margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid var(--color-border); padding-bottom: 10px;">
+        ⚙️ लाइव आयु एवं पात्रता गणना फॉर्म (Calculator Input)
+      </h2>
+
+      <div class="form-row">
+        <!-- DOB -->
+        <div class="input-group">
+          <label for="dob">🎂 आपकी जन्म तिथि (Date of Birth):</label>
+          <input type="date" id="dob" required onchange="calculateAge()" />
+        </div>
+
+        <!-- Cut-Off Date -->
+        <div class="input-group">
+          <label for="cutoff-date">🎯 कट-ऑफ / गणना तिथि (Age as on Date):</label>
+          <input type="date" id="cutoff-date" onchange="calculateAge()" />
+          <div class="cutoff-pills">
+            <button type="button" class="cutoff-pill active" onclick="setCutoffPreset('today', this)">आज की तारीख (Today)</button>
+            <button type="button" class="cutoff-pill" onclick="setCutoffPreset('2026-01-01', this)">01/01/2026 (SSC / Bank)</button>
+            <button type="button" class="cutoff-pill" onclick="setCutoffPreset('2026-08-01', this)">01/08/2026 (UPSC / State)</button>
+            <button type="button" class="cutoff-pill" onclick="setCutoffPreset('2026-07-01', this)">01/07/2026 (RRB / Police)</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <!-- Category Selection -->
+        <div class="input-group">
+          <label for="category">🛡️ आरक्षण श्रेणी (Reservation Category):</label>
+          <select id="category" onchange="calculateAge()">
+            <option value="gen">सामान्य / ईडब्ल्यूएस (General / EWS) — No Extra Relaxation</option>
+            <option value="obc">ओबीसी - नॉन क्रीमी लेयर (OBC NCL) — +3 वर्ष छूट</option>
+            <option value="sc_st">अनुसूचित जाति / जनजाति (SC / ST) — +5 वर्ष छूट</option>
+            <option value="pwd_gen">दिव्यांगजन सामान्य (PwBD Gen/EWS) — +10 वर्ष छूट</option>
+            <option value="pwd_obc">दिव्यांगजन ओबीसी (PwBD OBC) — +13 वर्ष छूट</option>
+            <option value="pwd_sc_st">दिव्यांगजन एससी/एसटी (PwBD SC/ST) — +15 वर्ष छूट</option>
+            <option value="esm">भूतपूर्व सैनिक (Ex-Servicemen) — Service + 3 Yrs</option>
+          </select>
+        </div>
+
+        <!-- Retirement Age Preference -->
+        <div class="input-group">
+          <label for="retire-age">🏛️ सेवानिवृत्ति आयु (Retirement Age in Years):</label>
+          <input type="number" id="retire-age" value="60" min="50" max="70" onchange="calculateAge()" />
+          <small style="color: var(--color-text-muted); font-size: 0.82rem; margin-top: 4px; display: block;">केंद्रीय सरकार मानक नियम: 60 वर्ष</small>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn--primary" onclick="calculateAge()" style="width: 100%; justify-content: center; padding: 14px; font-size: 1.05rem; font-weight: 700; border-radius: 8px;">
+        🔍 सटीक आयु एवं पात्रता की गणना करें (Calculate Now)
+      </button>
+
+      <!-- RESULTS SECTION -->
+      <div class="result-section" id="result-section">
+        
+        <!-- Big Age Highlight Box -->
+        <div class="age-highlight-box">
+          <div style="font-size: 1rem; font-weight: 700; color: var(--color-text-muted);">
+            कट-ऑफ तिथि (<span id="res-target-date-display">--</span>) पर आपकी कुल आयु:
+          </div>
+          <div class="age-number-big" id="res-age-big">
+            0 वर्ष, 0 माह, 0 दिन
+          </div>
+          <div style="font-size: 0.95rem; color: var(--color-text); font-weight: 600;">
+            कुल दिन: <span id="res-total-days" style="color: var(--color-primary); font-weight: 800;">0</span> दिन | 
+            कुल सप्ताह: <span id="res-total-weeks" style="color: var(--color-primary); font-weight: 800;">0</span> सप्ताह
+          </div>
+        </div>
+
+        <!-- 4 Sub-Stats Grid -->
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="title">🎂 अगला जन्मदिन (Next Birthday)</div>
+            <div class="val" id="res-next-bday">-- दिन शेष</div>
+          </div>
+          <div class="stat-box">
+            <div class="title">🏛️ रिटायरमेंट तिथि (Superannuation)</div>
+            <div class="val" id="res-retire-date">--</div>
+          </div>
+          <div class="stat-box">
+            <div class="title">⏳ सेवा शेष (Service Remaining)</div>
+            <div class="val" id="res-service-left">-- वर्ष</div>
+          </div>
+          <div class="stat-box">
+            <div class="title">⏱️ कुल घंटे (Total Hours Lived)</div>
+            <div class="val" id="res-total-hours">--</div>
+          </div>
+        </div>
+
+        <!-- EXAM ELIGIBILITY CHECKER MATRIX -->
+        <h3 style="color: var(--color-primary); font-size: 1.25rem; margin-top: 32px; margin-bottom: 16px;">
+          🎓 प्रमुख भर्ती परीक्षाओं के लिए आपकी पात्रता स्थिति (Exam Eligibility Status):
+        </h3>
+
+        <div id="exam-matrix">
+          <!-- Populated dynamically by JS -->
+        </div>
+
+        <!-- Print & Share -->
+        <div style="margin-top: 24px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+          <button type="button" class="btn btn--outline" onclick="window.print()" style="padding: 10px 20px;">
+            🖨️ प्रिंट करें / Save as PDF
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- STANDARD GOVT AGE LIMITS & RELAXATION RULES -->
+    <div class="calc-card">
+      <h3 style="color: var(--color-primary); font-size: 1.3rem; margin-top: 0; margin-bottom: 16px;">
+        📋 केंद्रीय एवं राज्य भर्ती परीक्षाओं की मानक आयु सीमा व नियम 2026
+      </h3>
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+          <thead>
+            <tr style="background: rgba(16, 36, 62, 0.06); border-bottom: 2px solid var(--color-border);">
+              <th style="padding: 12px;">भर्ती परीक्षा (Exam Name)</th>
+              <th style="padding: 12px;">सामान्य आयु सीमा (Gen/EWS)</th>
+              <th style="padding: 12px;">ओबीसी सीमा (OBC Limit)</th>
+              <th style="padding: 12px;">एससी/एसटी सीमा (SC/ST Limit)</th>
+              <th style="padding: 12px;">मानक कट-ऑफ तिथि</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 12px; font-weight: 700;">SSC CGL (Inspector / ASO / Tax Asst)</td>
+              <td style="padding: 12px;">18 से 30 / 32 वर्ष</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">33 / 35 वर्ष तक</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">35 / 37 वर्ष तक</td>
+              <td style="padding: 12px;">1 अगस्त 2026</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 12px; font-weight: 700;">UPSC Civil Services (IAS / IPS / IFS)</td>
+              <td style="padding: 12px;">21 से 32 वर्ष (6 Attempts)</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">35 वर्ष (9 Attempts)</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">37 वर्ष (Unlimited)</td>
+              <td style="padding: 12px;">1 अगस्त 2026</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 12px; font-weight: 700;">SSC CHSL / MTS / GD Constable</td>
+              <td style="padding: 12px;">18 से 25 / 27 वर्ष</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">28 / 30 वर्ष तक</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">30 / 32 वर्ष तक</td>
+              <td style="padding: 12px;">1 जनवरी 2026</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 12px; font-weight: 700;">Railway RRB (NTPC / Group D / ALP)</td>
+              <td style="padding: 12px;">18 से 33 / 36 वर्ष</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">36 / 39 वर्ष तक</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">38 / 41 वर्ष तक</td>
+              <td style="padding: 12px;">1 जुलाई 2026</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 12px; font-weight: 700;">IBPS / SBI Bank PO &amp; Clerk</td>
+              <td style="padding: 12px;">20 से 28 / 30 वर्ष</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">31 / 33 वर्ष तक</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">33 / 35 वर्ष तक</td>
+              <td style="padding: 12px;">अधिसूचना माह की 1 तारीख</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; font-weight: 700;">State PSCs (UPPSC, BPSC, MPSC, RPSC)</td>
+              <td style="padding: 12px;">21 से 40 वर्ष</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">43 वर्ष तक</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">45 वर्ष तक</td>
+              <td style="padding: 12px;">1 जुलाई 2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 6 PROBLEM SOLVERS -->
+    <div class="calc-card">
+      <h3 style="color: var(--color-primary); font-size: 1.3rem; margin-top: 0; margin-bottom: 16px;">
+        🛠️ आयु गणना में 6 प्रमुख भ्रम व समाधान (Problem Solvers)
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">1. 'Crucial Cut-Off Date' का क्या अर्थ है?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">भर्ती आयोग फॉर्म भरने के दिन की नहीं, बल्कि एक निश्चित कट-ऑफ तिथि (उदा. 01/08/2026) पर उम्मीदवार की आयु की गणना करते हैं। उसी दिन आवेदक की उम्र 18 से कम या 30 से अधिक नहीं होनी चाहिए।</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">2. क्या 10वीं की मार्कशीट वाली जन्मतिथि ही मान्य होती है?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">हाँ! सभी सरकारी नौकरियों और प्रतियोगी परीक्षाओं में केवल 10वीं कक्षा (Matriculation Certificate) में दर्ज जन्मतिथि को ही कानूनी व वैध माना जाता है।</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">3. क्या EWS वर्ग को आयु में छूट मिलती है?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">केंद्रीय स्तर पर EWS वर्ग को आयु में कोई अतिरिक्त छूट नहीं है (General के समान 30/32 वर्ष)। हालांकि कुछ राज्यों (जैसे राजस्थान) में राज्य भर्तियों में EWS को आयु छूट दी जाती है।</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">4. सरकारी कर्मचारी की रिटायरमेंट तारीख कैसे तय होती है?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">केंद्रीय नियम (FR 56) के तहत कर्मचारी 60 वर्ष पूरे होने वाले माह के अंतिम दिन दोपहर बाद रिटायर होता है। यदि जन्म किसी माह की 1 तारीख को हुआ है, तो रिटायरमेंट पिछले माह के अंतिम दिन होती है।</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">5. OBC क्रीमी लेयर (Creamy Layer) को छूट क्यों नहीं मिलती?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">यदि परिवार की वार्षिक आय ₹8 लाख से अधिक है तो उम्मीदवार क्रीमी लेयर में आता है और उसे General श्रेणी के तहत माना जाता है, जिससे +3 वर्ष की छूट नहीं मिलती।</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">6. क्या कोविड-19 के कारण रेलवे व अन्य में एक्स्ट्रा छूट मिली है?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">हाँ, रेलवे (RRB ALP/Technician) और कई राज्य पुलिस भर्तियों ने महामारी के दौरान छूटे मौकों की भरपाई हेतु ऊपरी आयु सीमा में 3 वर्ष की एकमुश्त अतिरिक्त छूट (One-time age relaxation) दी है।</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- USEFUL TOOLS & RELATED SERVICES -->
+    <div style="margin-top: 36px; padding: 24px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px;">
+      <h3 style="margin-top: 0; color: var(--color-primary);">🛠️ उपयोगी टूल्स एवं संबंधित सुविधाएं</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
+        <a href="../tools/eligibility-checker.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: inherit; background: var(--color-surface-alt, #f8fafc); display: block;">
+          <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">🎯 Scheme Eligibility Checker</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">सरकारी योजना पात्रता जांचें</div>
+        </a>
+        <a href="../tools/photo-resizer.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: inherit; background: var(--color-surface-alt, #f8fafc); display: block;">
+          <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">📸 Photo Resizer (20-50 KB)</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">पासपोर्ट फोटो व डेट स्टैम्प टूल</div>
+        </a>
+        <a href="../tools/signature-resizer.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: inherit; background: var(--color-surface-alt, #f8fafc); display: block;">
+          <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">✍️ Signature Resizer (10-20 KB)</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">हस्ताक्षर क्रॉप व साइज रिसाइजर</div>
+        </a>
+        <a href="../tools/typing-speed-test.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: inherit; background: var(--color-surface-alt, #f8fafc); display: block;">
+          <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">⌨️ Typing Speed Test (DEST)</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">क्लर्क व स्टेनो टाइपिंग टेस्ट</div>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="site-footer">
+    <footer class="site-footer">
+      <div class="tricolor-rule"></div>
+      <div class="container" style="padding-top:36px;">
+        <div class="footer-disclaimer-banner" style="background-color: var(--color-surface-alt, #f8fafc); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
+          <h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
+          <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
+        </div>
+        <div class="footer-grid">
+          <div>
+            <h4 data-i18n="site_name">SarkariSewa India</h4>
+            <p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
+          </div>
+          <div>
+            <h4 data-i18n="footer_tools_title">Tools &amp; Apps</h4>
+            <ul>
+              <li><a href="index.html">🧮 Tools &amp; Calculators</a></li>
+              <li><a data-i18n="nav_eligibility_engine" href="eligibility-checker.html">🎯 Scheme Eligibility Engine</a></li>
+              <li><a href="document-checklist.html">📋 Document Checklist</a></li>
+              <li><a href="self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+              <li><a href="photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
+              <li><a href="signature-resizer.html">✍️ Signature Resizer</a></li>
+              <li><a href="document-compressor.html">📄 Document Compressor</a></li>
+              <li><a href="savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+              <li><a href="govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+              <li><a href="pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
+              <li><a href="status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="footer_resources_title">Resources</h4>
+            <ul>
+              <li><a data-i18n="nav_project_report" href="../project-report/index.html">Project Report Generator</a></li>
+              <li><a data-i18n="states_hub_title" href="../states/index.html">State-wise Popular Services</a></li>
+              <li><a data-i18n="footer_about_link" href="../about.html">About</a></li>
+              <li><a data-i18n="footer_sitemap_link" href="../sitemap.html">Sitemap</a></li>
+              <li><a data-i18n="footer_faq_link" href="../faq.html">FAQ</a></li>
+              <li><a data-i18n="footer_contact_link" href="../contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="footer_support_title">Support</h4>
+            <ul>
+              <li><a data-i18n="footer_support_home_link" href="../support/index.html">Support Home</a></li>
+              <li><a data-i18n="footer_state_link" href="../support/state-wise-services.html">State-wise Services</a></li>
+              <li><a data-i18n="footer_helpline_link" href="../support/helpline-directory.html">Helpline Directory</a></li>
+              <li><a data-i18n="footer_rti_link" href="../support/rti-guide.html">RTI Guide</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="footer_legal_title">Legal</h4>
+            <ul>
+              <li><a data-i18n="privacy_title" href="../privacy-policy.html">Privacy Policy</a></li>
+              <li><a data-i18n="disclaimer_title" href="../disclaimer.html">Disclaimer</a></li>
+              <li><a data-i18n="terms_title" href="../terms.html">Terms &amp; Conditions</a></li>
+              <li><a data-i18n="admin_link" href="../admin/login.html">Staff Login</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
+        </div>
+      </div>
+    </footer>
+    <div class="ss-wa-wrapper" id="ss-wa-wrapper">
+      <button aria-label="Close" id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
+      <a aria-label="Join our Telegram Channel" class="ss-wa-floating-bar" href="https://t.me/sarkarisewaindia" rel="noopener noreferrer" target="_blank">
+        <span style="font-size: 18px; margin-right: 4px;">✈️</span>
+        <span data-i18n="wa_join" style="font-weight: 600;">Join Telegram VIP</span>
+      </a>
+    </div>
+  </div>
+
+  <script defer="" src="../assets/js/main.js?v=2.4"></script>
+  <script defer="" src="../assets/js/consent.js"></script>
+  <script defer="" src="../assets/js/i18n-helper.js"></script>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    const examRules = [
+      { name: "SSC CGL (Group B & C Posts)", min: 18, max: 30, note: "ASO / Inspector / Tax Assistant" },
+      { name: "UPSC Civil Services (IAS, IPS, IFS)", min: 21, max: 32, note: "Max 6 attempts for Gen" },
+      { name: "SSC CHSL / MTS (10+2 / 10th Pass)", min: 18, max: 27, note: "LDC / DEO / Havaldar" },
+      { name: "Railway RRB NTPC (Graduate & 12th)", min: 18, max: 33, note: "Station Master / Clerk" },
+      { name: "Railway RRB Group D / Track Maintainer", min: 18, max: 33, note: "Level-1 Posts" },
+      { name: "IBPS / SBI Bank PO (Probationary Officer)", min: 20, max: 30, note: "Graduate Scale-I" },
+      { name: "IBPS / SBI Bank Clerk (Junior Associate)", min: 20, max: 28, note: "Customer Support" },
+      { name: "State PSCs (UPPSC, BPSC, MPSC, RPSC)", min: 21, max: 40, note: "State Civil Services" }
+    ];
+
+    // Default cutoff date to today
+    document.addEventListener('DOMContentLoaded', () => {
+      const todayStr = new Date().toISOString().split('T')[0];
+      document.getElementById('cutoff-date').value = todayStr;
+    });
+
+    function setCutoffPreset(preset, btn) {
+      document.querySelectorAll('.cutoff-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      if (preset === 'today') {
+        document.getElementById('cutoff-date').value = new Date().toISOString().split('T')[0];
+      } else {
+        document.getElementById('cutoff-date').value = preset;
+      }
+      calculateAge();
+    }
+
+    function calculateAge() {
+      const dobVal = document.getElementById('dob').value;
+      const cutoffVal = document.getElementById('cutoff-date').value;
+      if (!dobVal || !cutoffVal) return;
+
+      const dob = new Date(dobVal);
+      const cutoff = new Date(cutoffVal);
+
+      if (dob > cutoff) {
+        alert("जन्म तिथि कट-ऑफ तिथि से पूर्व की होनी चाहिए!");
+        return;
+      }
+
+      // Exact Y, M, D difference
+      let years = cutoff.getFullYear() - dob.getFullYear();
+      let months = cutoff.getMonth() - dob.getMonth();
+      let days = cutoff.getDate() - dob.getDate();
+
       if (days < 0) {
         months--;
-        // Get days in previous month
-        let prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
-        days += prevMonth.getDate();
+        const prevMonthDays = new Date(cutoff.getFullYear(), cutoff.getMonth(), 0).getDate();
+        days += prevMonthDays;
       }
       if (months < 0) {
         years--;
         months += 12;
       }
-      return { years, months, days };
-    }
 
-    function calculateAge() {
-      document.getElementById('err-dob').style.display = 'none';
-      document.getElementById('result-box').style.display = 'none';
+      // Display Big Number
+      document.getElementById('res-target-date-display').innerText = cutoff.toLocaleDateString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      document.getElementById('res-age-big').innerText = `${years} वर्ष, ${months} महीने, ${days} दिन`;
 
-      const dobStr = document.getElementById('dob').value;
-      if (!dobStr) {
-        document.getElementById('err-dob').style.display = 'block'; return;
-      }
-      
-      const dob = new Date(dobStr);
+      // Total Counts
+      const diffTime = Math.abs(cutoff - dob);
+      const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const totalWeeks = Math.floor(totalDays / 7);
+      const totalHours = totalDays * 24;
+
+      document.getElementById('res-total-days').innerText = totalDays.toLocaleString('hi-IN');
+      document.getElementById('res-total-weeks').innerText = totalWeeks.toLocaleString('hi-IN');
+      document.getElementById('res-total-hours').innerText = totalHours.toLocaleString('hi-IN') + ' घंटे';
+
+      // Next Birthday Countdown
       const today = new Date();
-      // Reset today to midnight for fair comparison
-      today.setHours(0,0,0,0);
-      dob.setHours(0,0,0,0);
-      
-      if (dob > today) {
-        document.getElementById('err-dob').style.display = 'block'; return;
+      let nextBday = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
+      if (today > nextBday) {
+        nextBday.setFullYear(today.getFullYear() + 1);
       }
-      
+      const bdayDaysLeft = Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
+      document.getElementById('res-next-bday').innerText = bdayDaysLeft === 0 ? "🎉 आज जन्मदिन है!" : `${bdayDaysLeft} दिन बाकी`;
+
+      // Retirement (Superannuation) Calculation
       const retireAge = parseInt(document.getElementById('retire-age').value) || 60;
+      let retireYear = dob.getFullYear() + retireAge;
+      let retireMonth = dob.getMonth();
       
-      // Current Age
-      const current = diffYMD(dob, today);
-      const totalDaysAge = Math.floor((today - dob) / (1000 * 60 * 60 * 24));
-      
-      document.getElementById('res-age-ymd').innerText = `${current.years} Y, ${current.months} M, ${current.days} D`;
-      document.getElementById('res-age-days').innerText = totalDaysAge.toLocaleString('en-IN');
-      
-      // Retirement Date
-      const retireDate = new Date(dob);
-      retireDate.setFullYear(dob.getFullYear() + retireAge);
-      // Commonly, retirement is end of the birth month, but for simplicity we show exact birthday
-      // Users can mentally adjust. We will just show the exact 60th birthday.
-      
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('res-retire-date').innerText = retireDate.toLocaleDateString('en-IN', options);
-      document.getElementById('lbl-retire-age').innerText = retireAge;
-      
-      // Remaining Time
-      if (today >= retireDate) {
-        document.getElementById('res-rem-ymd').innerText = "Already Retired";
-        document.getElementById('res-rem-days').innerText = "0";
+      // Central Govt FR 56 rule: Last day of birth month (or previous month if 1st born)
+      let retireDate;
+      if (dob.getDate() === 1) {
+        retireDate = new Date(retireYear, retireMonth, 0); // Last day of prev month
       } else {
-        const remaining = diffYMD(today, retireDate);
-        const totalDaysRem = Math.floor((retireDate - today) / (1000 * 60 * 60 * 24));
-        document.getElementById('res-rem-ymd').innerText = `${remaining.years} Y, ${remaining.months} M, ${remaining.days} D`;
-        document.getElementById('res-rem-days').innerText = totalDaysRem.toLocaleString('en-IN');
+        retireDate = new Date(retireYear, retireMonth + 1, 0); // Last day of current month
       }
 
-      document.getElementById('result-box').style.display = 'block';
-      document.getElementById('result-box').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      document.getElementById('res-retire-date').innerText = retireDate.toLocaleDateString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+      // Service Left
+      if (cutoff >= retireDate) {
+        document.getElementById('res-service-left').innerText = "सेवानिवृत्त";
+      } else {
+        let servYears = retireDate.getFullYear() - cutoff.getFullYear();
+        let servMonths = retireDate.getMonth() - cutoff.getMonth();
+        if (servMonths < 0) {
+          servYears--;
+          servMonths += 12;
+        }
+        document.getElementById('res-service-left').innerText = `${servYears} वर्ष, ${servMonths} माह`;
+      }
+
+      // Category Relaxation Calculation
+      const cat = document.getElementById('category').value;
+      let extraYears = 0;
+      if (cat === 'obc') extraYears = 3;
+      else if (cat === 'sc_st') extraYears = 5;
+      else if (cat === 'pwd_gen') extraYears = 10;
+      else if (cat === 'pwd_obc') extraYears = 13;
+      else if (cat === 'pwd_sc_st') extraYears = 15;
+      else if (cat === 'esm') extraYears = 3;
+
+      // Render Exam Eligibility Matrix
+      const matrixEl = document.getElementById('exam-matrix');
+      matrixEl.innerHTML = '';
+
+      examRules.forEach(exam => {
+        const relaxedMax = exam.max + extraYears;
+        const exactAgeFloat = years + (months / 12) + (days / 365);
+
+        let statusBadge = '';
+        if (exactAgeFloat < exam.min) {
+          statusBadge = `<span class="status-badge badge-underage">कम उम्र (Under-age, Min: ${exam.min})</span>`;
+        } else if (exactAgeFloat > relaxedMax) {
+          statusBadge = `<span class="status-badge badge-overage">अधिक उम्र (Over-age, Max: ${relaxedMax})</span>`;
+        } else {
+          statusBadge = `<span class="status-badge badge-eligible">✅ पात्र (Eligible: ${exam.min}-${relaxedMax} Yrs)</span>`;
+        }
+
+        const item = document.createElement('div');
+        item.className = 'exam-eligibility-card';
+        item.innerHTML = `
+          <div>
+            <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem;">${exam.name}</div>
+            <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 3px;">
+              मानक: ${exam.min}-${exam.max} वर्ष | आपकी श्रेणी सीमा: <strong>${exam.min} से ${relaxedMax} वर्ष</strong> (${exam.note})
+            </div>
+          </div>
+          <div>${statusBadge}</div>
+        `;
+        matrixEl.appendChild(item);
+      });
+
+      document.getElementById('result-section').style.display = 'block';
+      document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   </script>
 </body>
