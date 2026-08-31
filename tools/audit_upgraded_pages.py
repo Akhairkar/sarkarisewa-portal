@@ -23,6 +23,7 @@ upgraded_files = (
     glob.glob('tools/*.html') +
     glob.glob('category/*.html') +
     glob.glob('jobs/*.html') +
+    glob.glob('exams/*.html') +
     [
         'service/special-intensive-revision-sir.html', 'special-intensive-revision-sir.html',
         'service/ayushman-bharat.html',
