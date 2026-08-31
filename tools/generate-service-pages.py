@@ -48,7 +48,7 @@ HEADER_PARTIAL = REPO_ROOT / "partials" / "header.html"
 FOOTER_PARTIAL = REPO_ROOT / "partials" / "footer.html"
 OUT_DIR = REPO_ROOT / "service"
 BASE_URL = "https://sarkarisewaindia.com"
-BRAND_HI = "सरकारीसेवा पोर्टल"
+BRAND_NAME = "SarkariSewa India"
 ROOT = "../"  # service/<slug>.html is one level deep, same as service/service.html
 
 # Slugs that get a cross-link CTA to the free Project Report tool,
@@ -313,8 +313,10 @@ def build_page(service, category, services_by_slug):
     name = t(service.get("name"))
     summary = t(service.get("shortDescription"))
     meta_desc = build_meta_description(name, summary)
-    title_with_brand = f"{name} — {BRAND_HI}"
-    title = title_with_brand if len(title_with_brand) <= 60 else name
+    if BRAND_NAME.lower() in name.lower():
+        title = name
+    else:
+        title = f"{name} | {BRAND_NAME}"
     canonical_url = f"{BASE_URL}/service/{slug}.html"
 
     official_links = service.get("officialLinks") or []
@@ -679,6 +681,11 @@ def build_page_v2(service, category, services_by_slug):
   <script src="../assets/js/main.js"></script>
 </body>
 </html>'''
+MASTER_PROTECTED_SLUGS = {
+    "ayushman-bharat", "pm-kisan", "pm-surya-ghar-muft-bijli",
+    "pm-vishwakarma-yojana", "e-shram-card", "special-intensive-revision-sir"
+}
+
 def main():
     services = json.loads(SERVICES_JSON.read_text(encoding="utf-8"))
     categories = json.loads(CATEGORIES_JSON.read_text(encoding="utf-8"))
@@ -689,6 +696,8 @@ def main():
     written = []
     for service in services:
         slug = service.get("slug") or service.get("id")
+        if slug in MASTER_PROTECTED_SLUGS:
+            continue
         category = categories_by_slug.get(service.get("category"))
         if service.get("migrated_v2"):
             page_html = build_page_v2(service, category, services_by_slug)

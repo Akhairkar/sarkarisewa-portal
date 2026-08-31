@@ -36,7 +36,7 @@ HEADER_PARTIAL = REPO_ROOT / "partials" / "header.html"
 FOOTER_PARTIAL = REPO_ROOT / "partials" / "footer.html"
 OUT_DIR = REPO_ROOT / "service"
 BASE_URL = "https://sarkarisewaindia.com"
-BRAND_HI = "सरकारीसेवा पोर्टल"
+BRAND_NAME = "SarkariSewa India"
 ROOT = "../"  # service/<id>.html is one level deep, same as service/<slug>.html
 
 HREF_RE = re.compile(r'href="([^"]*)"')
@@ -89,10 +89,22 @@ def department_block(svc):
     return f'<p class="service-hero__dept mono">{esc(dept)}</p>'
 
 
-def official_link_block(svc):
+def official_link_block(svc, state=None):
     link = svc.get("officialLink")
     if not link or not link.get("url"):
-        return ""
+        if state and state.get("officialPortal") and state.get("officialPortal").get("url"):
+            link = state.get("officialPortal")
+        else:
+            slug = svc.get("id", "")
+            if "driving-licence" in slug:
+                link = {"url": "https://parivahan.gov.in/", "label": "परिवहन सेवा सारथी पोर्टल (Parivahan Sarathi)"}
+            elif "ration-card" in slug:
+                link = {"url": "https://nfsa.gov.in/", "label": "राष्ट्रीय खाद्य सुरक्षा पोर्टल (NFSA Portal)"}
+            elif "birth" in slug or "death" in slug:
+                link = {"url": "https://crsorgi.gov.in/", "label": "नागरिक पंजीकरण प्रणाली (Civil Registration System - CRS)"}
+            else:
+                link = {"url": "https://serviceonline.gov.in/", "label": "सर्विस प्लस / ई-डिस्ट्रिक्ट पोर्टल (ServicePlus)"}
+    
     label = t(link.get("label")) or "आधिकारिक पोर्टल"
     items = f'''
       <li class="link-list__item">
@@ -179,8 +191,10 @@ def build_page(svc, state):
     name = t(svc.get("name"))
     summary = t(svc.get("shortDescription"))
     meta_desc = build_meta_description(summary)
-    title_with_brand = f"{name} — {BRAND_HI}"
-    title = title_with_brand if len(title_with_brand) <= 60 else name
+    if BRAND_NAME.lower() in name.lower():
+        title = name
+    else:
+        title = f"{name} | {BRAND_NAME}"
     canonical_url = f"{BASE_URL}/service/{slug}.html"
     state_url = f"{BASE_URL}/states/{state['slug']}.html"
     state_name = t(state.get("name"))
@@ -193,7 +207,7 @@ def build_page(svc, state):
             None,
             [
                 long_description_block(svc),
-                official_link_block(svc),
+                official_link_block(svc, state),
                 apply_online_block(svc),
                 documents_block(svc),
                 eligibility_block(svc),

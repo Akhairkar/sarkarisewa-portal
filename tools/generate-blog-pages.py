@@ -49,7 +49,7 @@ HEADER_PARTIAL = REPO_ROOT / "partials" / "header.html"
 FOOTER_PARTIAL = REPO_ROOT / "partials" / "footer.html"
 OUT_DIR = REPO_ROOT / "blog"
 BASE_URL = "https://sarkarisewaindia.com"
-BRAND_HI = "सरकारीसेवा पोर्टल"
+BRAND_NAME = "SarkariSewa India"
 ROOT = "../"  # blog/<slug>.html is one level deep, same as blog/post.html
 
 # Reuse the same helpers Session 2 wrote, so both scripts stay in sync.
@@ -104,16 +104,16 @@ def related_service_block(post, services_by_slug):
 
 def build_page(post, category, services_by_slug):
     slug = post["slug"]
-    title = t(post.get("title"))
+    title = t(post.get("title")).strip()
     excerpt = t(post.get("excerpt")) or ""
     meta_desc = build_meta_description(excerpt)
-    title_with_brand = f"{title} — {BRAND_HI} ब्लॉग"
-    if len(title_with_brand) <= 60:
-        page_title = title_with_brand
-    elif len(title) <= 60:
+    
+    # Never truncate title with ellipsis (...). Clean, full, unchopped title.
+    if BRAND_NAME.lower() in title.lower():
         page_title = title
     else:
-        page_title = title[:57].rsplit(" ", 1)[0] + "..."
+        page_title = f"{title} | {BRAND_NAME}"
+        
     canonical_url = f"{BASE_URL}/blog/{slug}.html"
     body_html = t(post.get("body"))
     date_display = format_date_hi(post.get("datePublished", ""))
@@ -150,7 +150,7 @@ def build_page(post, category, services_by_slug):
           "description": {json.dumps(excerpt, ensure_ascii=False)},
           "datePublished": {json.dumps(post.get("datePublished", ""), ensure_ascii=False)},
           "url": {json.dumps(canonical_url, ensure_ascii=False)},
-          "author": {{ "@type": "Organization", "name": "SarkariSewa Portal" }}
+          "author": {{ "@type": "Organization", "name": "{BRAND_NAME}" }}
         }},
         {{
           "@type": "BreadcrumbList",
@@ -184,13 +184,13 @@ def build_page(post, category, services_by_slug):
   <link rel="manifest" href="../manifest.json">
   <link rel="canonical" href="{esc(canonical_url)}" />
   <meta name="description" content="{esc(meta_desc)}" />
-  <meta property="og:title" content="{esc(title)} — {BRAND_HI} ब्लॉग" />
+  <meta property="og:title" content="{esc(page_title)}" />
   <meta property="og:description" content="{esc(meta_desc)}" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="{esc(canonical_url)}" />
   <meta property="og:image" content="{BASE_URL}/assets/img/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{esc(title)} — {BRAND_HI} ब्लॉग" />
+  <meta name="twitter:title" content="{esc(page_title)}" />
   <meta name="twitter:description" content="{esc(meta_desc)}" />
   <title>{esc(page_title)}</title>
 

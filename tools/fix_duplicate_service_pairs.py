@@ -86,20 +86,14 @@ def create_redirect_pages():
         redirect_html = f'''<!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url={short_f}">
-  <link rel="canonical" href="{canonical_url}">
-  <title>Redirecting to Official Service Page...</title>
-  <script>window.location.replace("{short_f}");</script>
+<meta charset="utf-8">
+<title>Redirecting to Official Service Page...</title>
+<link rel="canonical" href="{canonical_url}" />
+<meta http-equiv="refresh" content="0; url=https://sarkarisewaindia.com/service/{short_f}" />
+<script>window.location.replace("https://sarkarisewaindia.com/service/{short_f}");</script>
 </head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #f8fafc; color: #1e293b; text-align: center; padding: 20px;">
-  <div style="background: #ffffff; padding: 36px 32px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); max-width: 480px; border: 1px solid #e2e8f0;">
-    <div style="font-size: 2.2rem; margin-bottom: 12px;">🔄</div>
-    <h2 style="margin: 0 0 10px 0; font-size: 1.3rem; color: #0f172a;">Redirecting to Official Service Page...</h2>
-    <p style="font-size: 0.95rem; color: #64748b; line-height: 1.5; margin: 0 0 20px 0;">You are being redirected to the canonical updated guide on SarkariSewa India.</p>
-    <a href="{short_f}" style="display: inline-block; background: #2563eb; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.92rem;">Click here if not redirected ↗</a>
-  </div>
+<body>
+<p>Ye page yahan move ho gaya hai: <a href="https://sarkarisewaindia.com/service/{short_f}">{short_f}</a></p>
 </body>
 </html>'''
         with open(full_path, 'w', encoding='utf-8') as fp:
@@ -248,6 +242,10 @@ def scan_thin_services():
     print('======================================================================')
 
 if __name__ == '__main__':
+    create_redirect_pages()
+    clean_sitemap()
+    update_internal_links()
+    fix_stale_mojibake()
     scan_thin_services()
 
 

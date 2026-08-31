@@ -767,7 +767,7 @@ def generate_service_html(s):
   <link rel="alternate" hreflang="hi" href="https://sarkarisewaindia.com/service/{slug}.html" />
   <link rel="alternate" hreflang="en" href="https://sarkarisewaindia.com/service/{slug}.html?lang=en" />
   <link rel="alternate" hreflang="x-default" href="https://sarkarisewaindia.com/service/{slug}.html" />
-  <meta property="og:title" content="{title_hi} — सरकारीसेवा पोर्टल" />
+  <meta property="og:title" content="{title_hi} — SarkariSewa India" />
   <meta property="og:description" content="{desc_hi}" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://sarkarisewaindia.com/service/{slug}.html" />

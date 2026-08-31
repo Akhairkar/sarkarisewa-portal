@@ -55,6 +55,12 @@ jobs:
       - name: Generate state pages
         run: python3 tools/generate-state-pages.py
 
+      - name: Enforce 65 duplicate redirect stubs
+        run: python3 tools/fix_duplicate_service_pairs.py
+
+      - name: Master CI Quality & Anti-Regression Guard
+        run: python3 tools/master_ci_guard.py
+
       - name: Regenerate sitemaps
         run: python3 generate_sitemap_html.py
 

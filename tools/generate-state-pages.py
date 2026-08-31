@@ -37,7 +37,7 @@ HEADER_PARTIAL = REPO_ROOT / "partials" / "header.html"
 FOOTER_PARTIAL = REPO_ROOT / "partials" / "footer.html"
 OUT_DIR = REPO_ROOT / "states"
 BASE_URL = "https://sarkarisewaindia.com"
-BRAND_HI = "सरकारीसेवा पोर्टल"
+BRAND_NAME = "SarkariSewa India"
 ROOT = "../"  # states/<slug>.html is one level deep, same as states/state.html
 
 HREF_RE = re.compile(r'href="([^"]*)"')
@@ -66,7 +66,9 @@ def esc(s: str) -> str:
 
 
 def build_meta_description(intro: str) -> str:
-    desc = intro.strip()
+    desc = (intro or "").strip()
+    if len(desc) < 100:
+        desc = (desc + " सभी सरकारी योजनाओं, प्रमाण पत्रों, आधिकारिक पोर्टल और आवेदन प्रक्रियाओं की पूरी जानकारी।").strip()
     if len(desc) > 158:
         desc = desc[:155].rsplit(" ", 1)[0] + "..."
     return desc
@@ -77,8 +79,7 @@ def build_page(state, all_states):
     name = t(state.get("name"))
     intro = t(state.get("intro"))
     meta_desc = build_meta_description(intro)
-    title_with_brand = f"{name} — राज्यवार लोकप्रिय सेवाएं — {BRAND_HI}"
-    title = title_with_brand if len(title_with_brand) <= 60 else f"{name} — {BRAND_HI}"
+    title = f"{name} — सरकारी सेवाएं व योजनाएं | {BRAND_NAME}"
     canonical_url = f"{BASE_URL}/states/{slug}.html"
     services = state.get("services", [])
 
@@ -208,23 +209,23 @@ def build_page(state, all_states):
 
 
 def main():
-    states_raw = json.loads(STATES_JSON.read_text(encoding="utf-8"))
-    states = states_raw if isinstance(states_raw, list) else states_raw.get("states", [])
+    import subprocess
+    script = REPO_ROOT / "tools" / "upgrade_all_state_hub_pages.py"
+    if script.exists():
+        subprocess.run(["python", str(script)], check=True)
+    else:
+        states_raw = json.loads(STATES_JSON.read_text(encoding="utf-8"))
+        states = states_raw if isinstance(states_raw, list) else states_raw.get("states", [])
 
-    OUT_DIR.mkdir(exist_ok=True)
-    written = []
-    for state in states:
-        page_html = build_page(state, states)
-        out_path = OUT_DIR / f"{state['slug']}.html"
-        out_path.write_text(page_html, encoding="utf-8")
-        written.append(str(out_path.relative_to(REPO_ROOT)))
+        OUT_DIR.mkdir(exist_ok=True)
+        written = []
+        for state in states:
+            page_html = build_page(state, states)
+            out_path = OUT_DIR / f"{state['slug']}.html"
+            out_path.write_text(page_html, encoding="utf-8")
+            written.append(str(out_path.relative_to(REPO_ROOT)))
 
-    print(f"Generated {len(written)} static state pages in states/")
-    for w in written[:5]:
-        print(f"  - {w}")
-    if len(written) > 5:
-        print(f"  ... and {len(written) - 5} more")
-
+        print(f"Generated {len(written)} static state pages in states/")
 
 if __name__ == "__main__":
     main()

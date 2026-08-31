@@ -44,7 +44,7 @@ HEADER_PARTIAL = REPO_ROOT / "partials" / "header.html"
 FOOTER_PARTIAL = REPO_ROOT / "partials" / "footer.html"
 OUT_DIR = REPO_ROOT / "category"
 BASE_URL = "https://sarkarisewaindia.com"
-BRAND_HI = "सरकारीसेवा पोर्टल"
+BRAND_NAME = "SarkariSewa India"
 ROOT = "../"  # category/<slug>.html is one level deep, same as category/category.html
 
 import importlib.util
@@ -88,11 +88,10 @@ def build_page(category, services_in_category):
     slug = category["slug"]
     name = t(category.get("name"))
     icon = category.get("icon", "")
-    desc = t(category.get("description")) or f"{name} government services on SarkariSewa Portal."
+    desc = t(category.get("description")) or f"{name} government services on SarkariSewa India."
     count = len(services_in_category)
     meta_desc = build_meta_description(desc, name, count)
-    title_with_brand = f"{name} — {BRAND_HI}"
-    page_title = title_with_brand if len(title_with_brand) <= 60 else name
+    page_title = f"{name} — सरकारी सेवाएं | {BRAND_NAME}"
     canonical_url = f"{BASE_URL}/category/{slug}.html"
 
     if services_in_category:
@@ -165,13 +164,13 @@ def build_page(category, services_in_category):
   <link rel="manifest" href="../manifest.json">
   <link rel="canonical" href="{esc(canonical_url)}" />
   <meta name="description" content="{esc(meta_desc)}" />
-  <meta property="og:title" content="{esc(name)} — {BRAND_HI}" />
+  <meta property="og:title" content="{esc(page_title)}" />
   <meta property="og:description" content="{esc(meta_desc)}" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="{esc(canonical_url)}" />
   <meta property="og:image" content="{BASE_URL}/assets/img/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{esc(name)} — {BRAND_HI}" />
+  <meta name="twitter:title" content="{esc(page_title)}" />
   <meta name="twitter:description" content="{esc(meta_desc)}" />
   <title>{esc(page_title)}</title>
 
@@ -226,23 +225,25 @@ def build_page(category, services_in_category):
 
 
 def main():
-    categories = json.loads(CATEGORIES_JSON.read_text(encoding="utf-8"))
-    services = json.loads(SERVICES_JSON.read_text(encoding="utf-8"))
-    services = [{**s, "source": "json"} for s in services]
+    import subprocess
+    script = REPO_ROOT / "tools" / "upgrade_all_category_pages.py"
+    if script.exists():
+        subprocess.run(["python", str(script)], check=True)
+    else:
+        categories = json.loads(CATEGORIES_JSON.read_text(encoding="utf-8"))
+        services = json.loads(SERVICES_JSON.read_text(encoding="utf-8"))
+        services = [{**s, "source": "json"} for s in services]
 
-    OUT_DIR.mkdir(exist_ok=True)
-    written = []
-    for category in categories:
-        services_in_category = [s for s in services if s.get("category") == category["slug"]]
-        page_html = build_page(category, services_in_category)
-        out_path = OUT_DIR / f"{category['slug']}.html"
-        out_path.write_text(page_html, encoding="utf-8")
-        written.append(str(out_path.relative_to(REPO_ROOT)))
+        OUT_DIR.mkdir(exist_ok=True)
+        written = []
+        for category in categories:
+            services_in_category = [s for s in services if s.get("category") == category["slug"]]
+            page_html = build_page(category, services_in_category)
+            out_path = OUT_DIR / f"{category['slug']}.html"
+            out_path.write_text(page_html, encoding="utf-8")
+            written.append(str(out_path.relative_to(REPO_ROOT)))
 
-    print(f"Generated {len(written)} static category pages in category/")
-    for w in written:
-        print(f"  - {w}")
-
+        print(f"Generated {len(written)} static category pages in category/")
 
 if __name__ == "__main__":
     main()
