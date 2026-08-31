@@ -5,7 +5,14 @@ upgraded_files = (
     glob.glob('states/*-sir-voter-list.html') +
     glob.glob('service/mpbcdc-*.html') +
     glob.glob('mpbcdc-*.html') +
-    ['service/special-intensive-revision-sir.html', 'special-intensive-revision-sir.html']
+    [
+        'service/special-intensive-revision-sir.html', 'special-intensive-revision-sir.html',
+        'service/ayushman-bharat.html',
+        'service/pm-kisan.html',
+        'service/pm-surya-ghar-muft-bijli.html',
+        'service/pm-vishwakarma-yojana.html',
+        'service/e-shram-card.html'
+    ]
 )
 
 print('=====================================================================================')

@@ -224,12 +224,31 @@ def fix_stale_mojibake():
             fp.writelines(cleaned_lines)
         print('  Cleaned sitemap.html')
 
+def scan_thin_services():
+    print('\n======================================================================')
+    print('HIGH PRIORITY CANDIDATES FOR NEXT UPGRADE')
+    print('======================================================================')
+    all_service_files = glob.glob(os.path.join(SERVICE_DIR, '*.html'))
+    service_stats = []
+    for fpath in all_service_files:
+        fn = os.path.basename(fpath)
+        if fn.startswith(('mpbcdc-', 'special-intensive-revision-sir')):
+            continue
+        with open(fpath, 'r', encoding='utf-8', errors='ignore') as fp:
+            cont = fp.read()
+        if 'http-equiv="refresh"' in cont:
+            continue
+        words = len(re.findall(r'\w+', cont))
+        size_kb = len(cont.encode('utf-8')) / 1024
+        service_stats.append((fn, words, size_kb))
+    
+    service_stats.sort(key=lambda x: x[1])
+    for fn, words, size_kb in service_stats[:30]:
+        print(f'  {fn:<48} | {words:5d} words | {size_kb:5.1f} KB')
+    print('======================================================================')
+
 if __name__ == '__main__':
-    create_redirect_pages()
-    generate_htaccess_rules()
-    clean_sitemap()
-    update_internal_links()
-    fix_stale_mojibake()
-    print('\nALL 65 DUPLICATE PAIRS & STALE TEXT SYSTEMATICALLY RESOLVED!')
+    scan_thin_services()
+
 
 
