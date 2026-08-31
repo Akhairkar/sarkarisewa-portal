@@ -33,6 +33,21 @@ with open(DATA_SERVICES, 'r', encoding='utf-8') as fp:
 with open(DATA_CATEGORIES, 'r', encoding='utf-8') as fp:
     ALL_CATS = json.load(fp)
 
+HEADER_PARTIAL = os.path.join(ROOT, 'partials', 'header.html')
+FOOTER_PARTIAL = os.path.join(ROOT, 'partials', 'footer.html')
+
+with open(HEADER_PARTIAL, 'r', encoding='utf-8') as f:
+    RAW_HEADER = f.read()
+
+with open(FOOTER_PARTIAL, 'r', encoding='utf-8') as f:
+    RAW_FOOTER = f.read()
+
+def get_baked_header(prefix="../"):
+    return re.sub(r'\b(href|src)="(?!(?:https?:|//|#|mailto:|tel:|javascript:))([^"]*)"', rf'\1="{prefix}\2"', RAW_HEADER)
+
+def get_baked_footer(prefix="../"):
+    return re.sub(r'\b(href|src)="(?!(?:https?:|//|#|mailto:|tel:|javascript:))([^"]*)"', rf'\1="{prefix}\2"', RAW_FOOTER)
+
 CATEGORY_CONFIGS = {
     "identity-documents.html": {
         "cat_slug": "identity-documents",
@@ -726,7 +741,9 @@ def generate_master_category_page(filename, config):
 <body class="v2-template" data-slug="{cat_slug}" data-category="{cat_slug}">
   <script>window.SS_ROOT = "../";</script>
   
-  <div id="site-header"></div>
+  <div id="site-header">
+{get_baked_header("../")}
+  </div>
 
   <main class="container" style="max-width: 1100px; margin: 32px auto; padding: 0 16px;">
     
@@ -880,7 +897,9 @@ def generate_master_category_page(filename, config):
 
   </main>
 
-  <div id="site-footer"></div>
+  <div id="site-footer">
+{get_baked_footer("../")}
+  </div>
 
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/consent.js"></script>

@@ -76,13 +76,13 @@ for fpath in upgraded_files:
     if "{'en':" in content or "{'hi':" in content:
         errors.append('Contains raw Python dictionary string in HTML')
         
-    # Hardcoded Header check
-    if '<header class="site-header">' in content:
-        errors.append('Contains hardcoded static header')
+    # Header check
+    if '<div id="site-header">' not in content:
+        errors.append('Missing site-header container')
         
-    # Hardcoded Footer check
-    if '<footer class="site-footer">' in content:
-        errors.append('Contains hardcoded static footer')
+    # Footer check
+    if '<div id="site-footer">' not in content:
+        errors.append('Missing site-footer container')
         
     # Subscribe widget check
     if 'subscribe-widget' not in content:

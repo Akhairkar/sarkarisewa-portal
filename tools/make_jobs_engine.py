@@ -28,6 +28,21 @@ import os, sys, json, re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JOBS_DIR = os.path.join(ROOT, 'jobs')
 
+HEADER_PARTIAL = os.path.join(ROOT, 'partials', 'header.html')
+FOOTER_PARTIAL = os.path.join(ROOT, 'partials', 'footer.html')
+
+with open(HEADER_PARTIAL, 'r', encoding='utf-8') as f:
+    RAW_HEADER = f.read()
+
+with open(FOOTER_PARTIAL, 'r', encoding='utf-8') as f:
+    RAW_FOOTER = f.read()
+
+def get_baked_header(prefix="../"):
+    return re.sub(r'\b(href|src)="(?!(?:https?:|//|#|mailto:|tel:|javascript:))([^"]*)"', rf'\1="{prefix}\2"', RAW_HEADER)
+
+def get_baked_footer(prefix="../"):
+    return re.sub(r'\b(href|src)="(?!(?:https?:|//|#|mailto:|tel:|javascript:))([^"]*)"', rf'\1="{prefix}\2"', RAW_FOOTER)
+
 JOBS_DATA = {
     "ssc-cgl-recruitment-2026.html": {
         "slug": "ssc-cgl-recruitment-2026",
@@ -1781,11 +1796,14 @@ def generate_job_page(filename, cfg):
   <meta name="twitter:image" content="https://sarkarisewaindia.com/assets/img/banner.png">
 
   <!-- Universal Stylesheets -->
-  <link rel="stylesheet" href="../assets/css/variables.css">
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
-  <link rel="stylesheet" href="../assets/css/layout.css">
-  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/module9.css">
+  <link rel="stylesheet" href="../assets/css/module16.css">
+  <link rel="stylesheet" href="../assets/css/module18.css">
+  <link rel="stylesheet" href="../assets/css/share-widget.css">
 
   <style>
     /* Clean Bilingual Language Isolation */
@@ -1897,9 +1915,12 @@ def generate_job_page(filename, cfg):
   {json.dumps(breadcrumbs_schema, ensure_ascii=False, indent=2)}
   </script>
 </head>
-<body>
+<body class="v2-template">
+  <script>window.SS_ROOT = "../";</script>
   <!-- Portal Header -->
-  <div id="site-header"></div>
+  <div id="site-header">
+{get_baked_header("../")}
+  </div>
 
   <main class="container" style="max-width: 1000px; margin: 0 auto; padding: 16px;">
     
@@ -2202,12 +2223,14 @@ def generate_job_page(filename, cfg):
   </main>
 
   <!-- Portal Footer -->
-  <div id="site-footer"></div>
+  <div id="site-footer">
+{get_baked_footer("../")}
+  </div>
 
   <!-- Universal Scripts -->
-  <script src="../assets/js/theme.js"></script>
-  <script src="../assets/js/i18n.js"></script>
-  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/consent.js"></script>
+  <script src="../assets/js/i18n-helper.js"></script>
   <script src="../assets/js/subscribe.js"></script>
 </body>
 </html>
@@ -2299,11 +2322,14 @@ def generate_jobs_index(jobs_data):
   <meta property="og:site_name" content="SarkariSewa India">
   <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/banner.png">
 
-  <link rel="stylesheet" href="../assets/css/variables.css">
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
-  <link rel="stylesheet" href="../assets/css/layout.css">
-  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/module9.css">
+  <link rel="stylesheet" href="../assets/css/module16.css">
+  <link rel="stylesheet" href="../assets/css/module18.css">
+  <link rel="stylesheet" href="../assets/css/share-widget.css">
 
   <style>
     /* Clean Bilingual Language Isolation */
@@ -2353,8 +2379,11 @@ def generate_jobs_index(jobs_data):
   {json.dumps(hub_faq_schema, ensure_ascii=False, indent=2)}
   </script>
 </head>
-<body>
-  <div id="site-header"></div>
+<body class="v2-template">
+  <script>window.SS_ROOT = "../";</script>
+  <div id="site-header">
+{get_baked_header("../")}
+  </div>
 
   <main class="container" style="max-width: 1100px; margin: 0 auto; padding: 16px;">
     
@@ -2455,11 +2484,13 @@ def generate_jobs_index(jobs_data):
 
   </main>
 
-  <div id="site-footer"></div>
+  <div id="site-footer">
+{get_baked_footer("../")}
+  </div>
 
-  <script src="../assets/js/theme.js"></script>
-  <script src="../assets/js/i18n.js"></script>
-  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/consent.js"></script>
+  <script src="../assets/js/i18n-helper.js"></script>
   <script src="../assets/js/subscribe.js"></script>
 
   <!-- Master Live Search & Filter Client Script -->
