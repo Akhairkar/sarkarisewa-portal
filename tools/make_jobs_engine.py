@@ -2244,7 +2244,7 @@ def generate_jobs_index(jobs_data):
     cards_html = ""
     for filename, cfg in jobs_data.items():
         cards_html += f"""
-        <div class="job-hub-card" data-sector="{cfg['sector']}" data-title="{cfg['title_hi']} {cfg['title_en']} {cfg['org_hi']} {cfg['org_en']}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; gap: 14px; transition: transform 0.2s ease;">
+        <div class="job-hub-card" data-sector="{cfg['sector']}" data-title="{cfg['title_hi']} {cfg['title_en']} {cfg['org_hi']} {cfg['org_en']}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; gap: 14px; transition: transform 0.2s ease; cursor: pointer;" onclick="window.location.href='{filename}'">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
               <span style="background: {cfg['sector_color']}; color: #ffffff; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 700;">{cfg['sector']}</span>
@@ -2260,8 +2260,9 @@ def generate_jobs_index(jobs_data):
             </div>
           </div>
           <div style="display: flex; gap: 8px; border-top: 1px solid var(--color-border); padding-top: 12px;">
-            <a href="{filename}" style="flex: 1; text-align: center; background: var(--color-primary); color: #ffffff; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 0.88rem; font-weight: 700;">विवरण देखें →</a>
-            <a href="{cfg['apply_link']}" target="_blank" rel="noopener" style="background: #059669; color: #ffffff; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 0.88rem; font-weight: 700;">अप्लाई ↗</a>
+            <a href="{filename}" style="flex: 1; text-align: center; background: var(--color-primary); color: #ffffff; padding: 10px 14px; border-radius: 8px; text-decoration: none; font-size: 0.92rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+              <span>विस्तृत विवरण व ऑनलाइन गाइड</span> <span>📋 →</span>
+            </a>
           </div>
         </div>
         """

@@ -108,9 +108,8 @@
           ${j.vacancies ? `<span><strong>${tk("jobalerts_vacancies_label", "Vacancies")}:</strong> ${escapeHtml(j.vacancies)}</span>` : ""}
           <span><strong>${tk("jobalerts_last_date_label", "Last Date to Apply")}:</strong> ${formatDate(j.last_date)}</span>
         </div>
-        <div class="job-card__actions">
-          <a class="btn btn-primary" href="${j.isLocal ? encodeURIComponent(j.slug) + '.html' : 'post.html?slug=' + encodeURIComponent(j.slug)}">${tk("jobalerts_apply_now", "Full Details & Apply →")}</a>
-          ${j.apply_link ? `<a class="job-card__notification-link" href="${j.apply_link}" target="_blank" rel="noopener noreferrer">${tk("jobalerts_notification", "Official Website")}</a>` : ""}
+        <div class="job-card__actions" style="margin-top: 12px;">
+          <a class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; display: inline-flex;" href="${encodeURIComponent(j.slug)}.html">${tk("jobalerts_apply_now", "विस्तृत विवरण व ऑनलाइन गाइड 📋 →")}</a>
         </div>
       </article>`;
       })
@@ -280,12 +279,7 @@
   listEl.addEventListener("click", (e) => {
     if (e.target.closest("a, button")) return;
     const card = e.target.closest(".job-card");
-    if (!card) return;
-    
-    if (card.dataset.isLocal === "true") {
-      window.location.href = `${encodeURIComponent(card.dataset.slug)}.html`;
-    } else {
-      window.location.href = `post.html?slug=${encodeURIComponent(card.dataset.slug)}`;
-    }
+    if (!card || !card.dataset.slug) return;
+    window.location.href = `${encodeURIComponent(card.dataset.slug)}.html`;
   });
 })();
