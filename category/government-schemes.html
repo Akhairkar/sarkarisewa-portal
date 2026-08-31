@@ -92,6 +92,41 @@
       border-color: #223244 !important;
       color: #E8EDF3 !important;
     }
+
+    /* Language Toggle Visibility Rules */
+    html[lang="hi"] [data-lang-show="en"],
+    html:not([lang="en"]) [data-lang-show="en"] {
+      display: none !important;
+    }
+    html[lang="en"] [data-lang-show="hi"] {
+      display: none !important;
+    }
+    html[lang="hi"] span[data-lang-show="hi"],
+    html:not([lang="en"]) span[data-lang-show="hi"] {
+      display: inline !important;
+    }
+    html[lang="en"] span[data-lang-show="en"] {
+      display: inline !important;
+    }
+    html[lang="hi"] div[data-lang-show="hi"],
+    html[lang="hi"] p[data-lang-show="hi"],
+    html[lang="hi"] h1[data-lang-show="hi"],
+    html[lang="hi"] h2[data-lang-show="hi"],
+    html[lang="hi"] h3[data-lang-show="hi"],
+    html:not([lang="en"]) div[data-lang-show="hi"],
+    html:not([lang="en"]) p[data-lang-show="hi"],
+    html:not([lang="en"]) h1[data-lang-show="hi"],
+    html:not([lang="en"]) h2[data-lang-show="hi"],
+    html:not([lang="en"]) h3[data-lang-show="hi"] {
+      display: block !important;
+    }
+    html[lang="en"] div[data-lang-show="en"],
+    html[lang="en"] p[data-lang-show="en"],
+    html[lang="en"] h1[data-lang-show="en"],
+    html[lang="en"] h2[data-lang-show="en"],
+    html[lang="en"] h3[data-lang-show="en"] {
+      display: block !important;
+    }
   </style>
 
   <script type="application/ld+json" id="category-schema">
@@ -268,8 +303,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">किसानों को प्रति वर्ष ₹6,000 (₹2,000 की 3 किस्तें) सीधे बैंक खाते में DBT अनुदान।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/pm-surya-ghar-muft-bijli.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -279,8 +314,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">रूफटॉप सोलर पैनल लगाने पर ₹78,000 की भारी सब्सिडी और हर महीने 300 यूनिट तक मुफ्त बिजली।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/mh-ladki-bahin-yojana.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -290,8 +325,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">पात्र महिलाओं को ₹1,500 प्रति माह (₹18,000 वार्षिक) की सीधी आर्थिक सहायता डीबीटी।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/pm-vishwakarma-yojana.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -301,8 +336,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">पारंपरिक कारीगरों व शिल्पकारों को ₹15,000 मुफ्त टूलकिट वाउचर व मात्र 5% ब्याज पर ₹3 लाख का लोन।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/pm-awas-yojana-urban.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -312,8 +347,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">पक्के मकान के निर्माण हेतु ग्रामीण व शहरी परिवारों को ₹1.20 लाख से ₹2.50 लाख तक का अनुदान।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/lakhpati-didi-yojana.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -323,8 +358,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">महिला स्वयं सहायता समूहों (SHG) को ₹1 लाख से ₹5 लाख तक आजीविका सहायता व ड्रोन पायलट ट्रेनिंग।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
       </div>
@@ -340,342 +375,546 @@
         <a class="service-card" href="../service/pm-kisan.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Kisan Samman Nidhi', 'hi': 'पीएम किसान सम्मान निधि'}</span>
-              <span data-lang-show="en">{'en': 'PM Kisan Samman Nidhi', 'hi': 'पीएम किसान सम्मान निधि'}</span>
+              <span data-lang-show="hi">पीएम किसान सम्मान निधि</span>
+              <span data-lang-show="en">PM Kisan Samman Nidhi</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">पात्र किसान परिवारों के लिए आय सहायता योजना।</span>
+              <span data-lang-show="en">Income support scheme for eligible farmer families.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/ayushman-bharat.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Ayushman Bharat (PM-JAY)', 'hi': 'आयुष्मान भारत (PM-JAY)'}</span>
-              <span data-lang-show="en">{'en': 'Ayushman Bharat (PM-JAY)', 'hi': 'आयुष्मान भारत (PM-JAY)'}</span>
+              <span data-lang-show="hi">आयुष्मान भारत (PM-JAY)</span>
+              <span data-lang-show="en">Ayushman Bharat (PM-JAY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">प्रति परिवार प्रति वर्ष ₹5 लाख तक का निःशुल्क इलाज देने वाली स्वास्थ्य बीमा योजना।</span>
+              <span data-lang-show="en">Health insurance scheme providing free treatment up to ₹5 lakh per family per year.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-awas-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Awas Yojana (Housing for All)', 'hi': 'पीएम आवास योजना (सभी के लिए आवास)'}</span>
-              <span data-lang-show="en">{'en': 'PM Awas Yojana (Housing for All)', 'hi': 'पीएम आवास योजना (सभी के लिए आवास)'}</span>
+              <span data-lang-show="hi">पीएम आवास योजना (सभी के लिए आवास)</span>
+              <span data-lang-show="en">PM Awas Yojana (Housing for All)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">पात्र ग्रामीण और शहरी परिवारों के लिए पक्का घर बनाने या खरीदने हेतु वित्तीय सहायता और ब्याज सब्सिडी देने वाली केंद्रीय योजना।</span>
+              <span data-lang-show="en">Central scheme providing financial assistance and interest subsidy to build or buy a pucca house for eligible rural and urban families.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-ujjwala-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Ujjwala Yojana', 'hi': 'पीएम उज्ज्वला योजना'}</span>
-              <span data-lang-show="en">{'en': 'PM Ujjwala Yojana', 'hi': 'पीएम उज्ज्वला योजना'}</span>
+              <span data-lang-show="hi">पीएम उज्ज्वला योजना</span>
+              <span data-lang-show="en">PM Ujjwala Yojana</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">गरीबी रेखा से नीचे के परिवारों की महिलाओं को असुरक्षित खाना पकाने के ईंधन के स्थान पर मुफ्त एलपीजी गैस कनेक्शन प्रदान करती है।</span>
+              <span data-lang-show="en">Provides free LPG gas connections to women from below-poverty-line households to replace unsafe cooking fuels.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-jan-dhan-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Jan Dhan Yojana (PMJDY)', 'hi': 'पीएम जन धन योजना (PMJDY)'}</span>
-              <span data-lang-show="en">{'en': 'PM Jan Dhan Yojana (PMJDY)', 'hi': 'पीएम जन धन योजना (PMJDY)'}</span>
+              <span data-lang-show="hi">पीएम जन धन योजना (PMJDY)</span>
+              <span data-lang-show="en">PM Jan Dhan Yojana (PMJDY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">रुपे डेबिट कार्ड, दुर्घटना बीमा और ओवरड्राफ्ट सुविधा के साथ शून्य-शेष बैंक खाते प्रदान करने वाली राष्ट्रीय वित्तीय समावेशन योजना।</span>
+              <span data-lang-show="en">National financial inclusion scheme providing zero-balance bank accounts with RuPay debit card, accident insurance and overdraft facility.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/atal-pension-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Atal Pension Yojana (APY)', 'hi': 'अटल पेंशन योजना (APY)'}</span>
-              <span data-lang-show="en">{'en': 'Atal Pension Yojana (APY)', 'hi': 'अटल पेंशन योजना (APY)'}</span>
+              <span data-lang-show="hi">अटल पेंशन योजना (APY)</span>
+              <span data-lang-show="en">Atal Pension Yojana (APY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">असंगठित क्षेत्र के श्रमिकों के लिए सरकार समर्थित पेंशन योजना, जो 60 वर्ष की आयु के बाद ₹1,000 से ₹5,000 तक की निश्चित मासिक पेंशन की गारंटी ...</span>
+              <span data-lang-show="en">Government-backed pension scheme for unorganised-sector workers, guaranteeing a fixed monthly pension of ₹1,000 to ₹5,000 after age 60.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-suraksha-bima-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Suraksha Bima Yojana (PMSBY)', 'hi': 'पीएम सुरक्षा बीमा योजना (PMSBY)'}</span>
-              <span data-lang-show="en">{'en': 'PM Suraksha Bima Yojana (PMSBY)', 'hi': 'पीएम सुरक्षा बीमा योजना (PMSBY)'}</span>
+              <span data-lang-show="hi">पीएम सुरक्षा बीमा योजना (PMSBY)</span>
+              <span data-lang-show="en">PM Suraksha Bima Yojana (PMSBY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">₹20 के वार्षिक प्रीमियम पर ₹2 लाख का कवर देने वाली कम लागत वाली दुर्घटना मृत्यु और विकलांगता बीमा योजना।</span>
+              <span data-lang-show="en">Low-cost accidental death and disability insurance scheme offering ₹2 lakh cover for an annual premium of ₹20.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-jeevan-jyoti-bima-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Jeevan Jyoti Bima Yojana (PMJJBY)', 'hi': 'पीएम जीवन ज्योति बीमा योजना (PMJJBY)'}</span>
-              <span data-lang-show="en">{'en': 'PM Jeevan Jyoti Bima Yojana (PMJJBY)', 'hi': 'पीएम जीवन ज्योति बीमा योजना (PMJJBY)'}</span>
+              <span data-lang-show="hi">पीएम जीवन ज्योति बीमा योजना (PMJJBY)</span>
+              <span data-lang-show="en">PM Jeevan Jyoti Bima Yojana (PMJJBY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">स्वाभाविक या दुर्घटना मृत्यु पर ₹436 के वार्षिक प्रीमियम पर ₹2 लाख का कवर देने वाली नवीकरणीय टर्म जीवन बीमा योजना।</span>
+              <span data-lang-show="en">Renewable term life insurance scheme offering ₹2 lakh cover on natural or accidental death for an annual premium of ₹436.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/sukanya-samriddhi-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Sukanya Samriddhi Yojana (SSY)', 'hi': 'सुकन्या समृद्धि योजना (SSY)'}</span>
-              <span data-lang-show="en">{'en': 'Sukanya Samriddhi Yojana (SSY)', 'hi': 'सुकन्या समृद्धि योजना (SSY)'}</span>
+              <span data-lang-show="hi">सुकन्या समृद्धि योजना (SSY)</span>
+              <span data-lang-show="en">Sukanya Samriddhi Yojana (SSY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">बालिका के लिए एक लघु बचत योजना जो उसकी शिक्षा और विवाह के लिए फंड बनाने हेतु उच्च, सरकार-गारंटीकृत ब्याज दर प्रदान करती है।</span>
+              <span data-lang-show="en">A small savings scheme for the girl child offering a high, government-guaranteed interest rate to build a fund for her education and marriag...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-mudra-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Mudra Yojana (PMMY)', 'hi': 'पीएम मुद्रा योजना (PMMY)'}</span>
-              <span data-lang-show="en">{'en': 'PM Mudra Yojana (PMMY)', 'hi': 'पीएम मुद्रा योजना (PMMY)'}</span>
+              <span data-lang-show="hi">पीएम मुद्रा योजना (PMMY)</span>
+              <span data-lang-show="en">PM Mudra Yojana (PMMY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आय-सृजन गतिविधियों के लिए गैर-कॉर्पोरेट, गैर-कृषि लघु और सूक्ष्म उद्यमों को ₹20 लाख तक का बिना जमानत ऋण प्रदान करती है।</span>
+              <span data-lang-show="en">Provides collateral-free loans up to ₹20 lakh to non-corporate, non-farm small and micro enterprises for income-generating activities.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-fasal-bima-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Fasal Bima Yojana (PMFBY)', 'hi': 'पीएम फसल बीमा योजना (PMFBY)'}</span>
-              <span data-lang-show="en">{'en': 'PM Fasal Bima Yojana (PMFBY)', 'hi': 'पीएम फसल बीमा योजना (PMFBY)'}</span>
+              <span data-lang-show="hi">पीएम फसल बीमा योजना (PMFBY)</span>
+              <span data-lang-show="en">PM Fasal Bima Yojana (PMFBY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">प्राकृतिक आपदाओं, कीटों और बीमारियों से फसल हानि के विरुद्ध किसानों की सुरक्षा करने वाली फसल बीमा योजना, कम, एकसमान प्रीमियम पर।</span>
+              <span data-lang-show="en">Crop insurance scheme protecting farmers against crop loss from natural calamities, pests, and diseases at a low, uniform premium.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-garib-kalyan-anna-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Garib Kalyan Anna Yojana (PMGKAY)', 'hi': 'पीएम गरीब कल्याण अन्न योजना (PMGKAY)'}</span>
-              <span data-lang-show="en">{'en': 'PM Garib Kalyan Anna Yojana (PMGKAY)', 'hi': 'पीएम गरीब कल्याण अन्न योजना (PMGKAY)'}</span>
+              <span data-lang-show="hi">पीएम गरीब कल्याण अन्न योजना (PMGKAY)</span>
+              <span data-lang-show="en">PM Garib Kalyan Anna Yojana (PMGKAY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">एनएफएसए राशन कार्ड धारकों को उनके नियमित पीडीएस कोटे के अतिरिक्त मुफ्त खाद्यान्न प्रदान करती है।</span>
+              <span data-lang-show="en">Provides free additional food grains to NFSA ration card holders on top of their regular PDS quota.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/stand-up-india.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Stand Up India Scheme', 'hi': 'स्टैंड अप इंडिया योजना'}</span>
-              <span data-lang-show="en">{'en': 'Stand Up India Scheme', 'hi': 'स्टैंड अप इंडिया योजना'}</span>
+              <span data-lang-show="hi">स्टैंड अप इंडिया योजना</span>
+              <span data-lang-show="en">Stand Up India Scheme</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">प्रति बैंक शाखा कम से कम एक एससी/एसटी और एक महिला उधारकर्ता को नया उद्यम स्थापित करने के लिए ₹10 लाख से ₹1 करोड़ के बीच बैंक ऋण की सुविधा दे...</span>
+              <span data-lang-show="en">Facilitates bank loans between ₹10 lakh and ₹1 crore to at least one SC/ST and one woman borrower per bank branch for setting up a new enter...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-vaya-vandana-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Vaya Vandana Yojana (PMVVY)', 'hi': 'पीएम वय वंदना योजना (PMVVY)'}</span>
-              <span data-lang-show="en">{'en': 'PM Vaya Vandana Yojana (PMVVY)', 'hi': 'पीएम वय वंदना योजना (PMVVY)'}</span>
+              <span data-lang-show="hi">पीएम वय वंदना योजना (PMVVY)</span>
+              <span data-lang-show="en">PM Vaya Vandana Yojana (PMVVY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">एलआईसी द्वारा संचालित वरिष्ठ नागरिकों के लिए एक पेंशन योजना, जो एकमुश्त खरीद मूल्य के बदले सुनिश्चित रिटर्न प्रदान करती है।</span>
+              <span data-lang-show="en">A pension scheme for senior citizens, run by LIC, offering an assured return in exchange for a lump-sum purchase price.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-svanidhi.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM SVANidhi (Street Vendor Loan Scheme)', 'hi': 'पीएम स्वनिधि (स्ट्रीट वेंडर ऋण योजना)'}</span>
-              <span data-lang-show="en">{'en': 'PM SVANidhi (Street Vendor Loan Scheme)', 'hi': 'पीएम स्वनिधि (स्ट्रीट वेंडर ऋण योजना)'}</span>
+              <span data-lang-show="hi">पीएम स्वनिधि (स्ट्रीट वेंडर ऋण योजना)</span>
+              <span data-lang-show="en">PM SVANidhi (Street Vendor Loan Scheme)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">शहरी स्ट्रीट वेंडरों को बिना जमानत कार्यशील पूंजी ऋण प्रदान करती है, समय पर पुनर्भुगतान पर क्रमिक रूप से उच्च ऋण सीमा के साथ।</span>
+              <span data-lang-show="en">Provides collateral-free working capital loans to urban street vendors, with progressively higher loan limits on timely repayment.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-matru-vandana-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Matru Vandana Yojana (PMMVY)', 'hi': 'पीएम मातृ वंदना योजना (PMMVY)'}</span>
-              <span data-lang-show="en">{'en': 'PM Matru Vandana Yojana (PMMVY)', 'hi': 'पीएम मातृ वंदना योजना (PMMVY)'}</span>
+              <span data-lang-show="hi">पीएम मातृ वंदना योजना (PMMVY)</span>
+              <span data-lang-show="en">PM Matru Vandana Yojana (PMMVY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">पोषण और संस्थागत प्रसव को बढ़ावा देने के लिए गर्भवती और स्तनपान कराने वाली माताओं को नकद प्रोत्साहन देने वाली मातृत्व लाभ योजना।</span>
+              <span data-lang-show="en">Maternity benefit scheme providing cash incentive to pregnant and lactating mothers to promote nutrition and institutional delivery.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/national-social-assistance-programme.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'National Social Assistance Programme (NSAP)', 'hi': 'राष्ट्रीय सामाजिक सहायता कार्यक्रम (NSAP)'}</span>
-              <span data-lang-show="en">{'en': 'National Social Assistance Programme (NSAP)', 'hi': 'राष्ट्रीय सामाजिक सहायता कार्यक्रम (NSAP)'}</span>
+              <span data-lang-show="hi">राष्ट्रीय सामाजिक सहायता कार्यक्रम (NSAP)</span>
+              <span data-lang-show="en">National Social Assistance Programme (NSAP)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">राज्य सामाजिक कल्याण विभागों के माध्यम से बीपीएल परिवारों के वृद्ध, विधवा, और दिव्यांग व्यक्तियों को मासिक पेंशन प्रदान करने वाली छत्र योजना...</span>
+              <span data-lang-show="en">Umbrella scheme providing monthly pensions to elderly, widowed, and disabled persons from BPL households through state social welfare depart...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-shram-yogi-maandhan.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Shram Yogi Maandhan (PM-SYM)', 'hi': 'पीएम श्रम योगी मानधन (PM-SYM)'}</span>
-              <span data-lang-show="en">{'en': 'PM Shram Yogi Maandhan (PM-SYM)', 'hi': 'पीएम श्रम योगी मानधन (PM-SYM)'}</span>
+              <span data-lang-show="hi">पीएम श्रम योगी मानधन (PM-SYM)</span>
+              <span data-lang-show="en">PM Shram Yogi Maandhan (PM-SYM)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">असंगठित क्षेत्र के श्रमिकों के लिए स्वैच्छिक पेंशन योजना, जो सरकार के समान योगदान के साथ 60 वर्ष की आयु के बाद ₹3,000 मासिक पेंशन की गारंटी ...</span>
+              <span data-lang-show="en">Voluntary pension scheme for unorganised-sector workers, offering a guaranteed ₹3,000 monthly pension after age 60 with matching government ...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/deendayal-antyodaya-yojana-nrlm.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Deendayal Antyodaya Yojana – NRLM', 'hi': 'दीनदयाल अंत्योदय योजना – एनआरएलएम'}</span>
-              <span data-lang-show="en">{'en': 'Deendayal Antyodaya Yojana – NRLM', 'hi': 'दीनदयाल अंत्योदय योजना – एनआरएलएम'}</span>
+              <span data-lang-show="hi">दीनदयाल अंत्योदय योजना – एनआरएलएम</span>
+              <span data-lang-show="en">Deendayal Antyodaya Yojana – NRLM</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">स्वयं सहायता समूहों (एसएचजी) के माध्यम से ग्रामीण स्वरोजगार को बढ़ावा देती है, ग्रामीण गरीब महिलाओं को कौशल प्रशिक्षण, बैंक ऋण जुड़ाव, और वि...</span>
+              <span data-lang-show="en">Promotes rural self-employment through Self Help Groups (SHGs), providing skill training, bank credit linkage, and financial support to rura...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-gram-sadak-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Gram Sadak Yojana (PMGSY)', 'hi': 'पीएम ग्राम सड़क योजना (PMGSY)'}</span>
-              <span data-lang-show="en">{'en': 'PM Gram Sadak Yojana (PMGSY)', 'hi': 'पीएम ग्राम सड़क योजना (PMGSY)'}</span>
+              <span data-lang-show="hi">पीएम ग्राम सड़क योजना (PMGSY)</span>
+              <span data-lang-show="en">PM Gram Sadak Yojana (PMGSY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">भारत भर में असंबद्ध ग्रामीण बस्तियों को सभी मौसम में सड़क संपर्क प्रदान करने वाली केंद्रीय बुनियादी ढांचा योजना।</span>
+              <span data-lang-show="en">Central infrastructure scheme providing all-weather road connectivity to unconnected rural habitations across India.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-vishwakarma-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Vishwakarma Yojana', 'hi': 'पीएम विश्वकर्मा योजना'}</span>
-              <span data-lang-show="en">{'en': 'PM Vishwakarma Yojana', 'hi': 'पीएम विश्वकर्मा योजना'}</span>
+              <span data-lang-show="hi">पीएम विश्वकर्मा योजना</span>
+              <span data-lang-show="en">PM Vishwakarma Yojana</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">18 पारंपरिक व्यवसायों के कारीगरों और शिल्पकारों को कौशल प्रशिक्षण, आधुनिक औज़ार, और बिना गारंटी के ऋण देने वाली केंद्रीय योजना।</span>
+              <span data-lang-show="en">A central scheme offering skill training, modern tools, and collateral-free credit to traditional artisans and craftspeople across 18 trades...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-vishwakarma-yojana-apply.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम विश्वकर्मा योजना 2026 (PM Vishwakarma Scheme)', 'en': 'PM Vishwakarma Toolkit and Credit Subsidy'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम विश्वकर्मा योजना 2026 (PM Vishwakarma Scheme)', 'en': 'PM Vishwakarma Toolkit and Credit Subsidy'}</span>
+              <span data-lang-show="hi">पीएम विश्वकर्मा योजना 2026 (PM Vishwakarma Scheme)</span>
+              <span data-lang-show="en">PM Vishwakarma Toolkit and Credit Subsidy</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">18 पारंपरिक कारीगरों के लिए ₹15,000 टूलकिट व ₹3 लाख 5% लोन।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">18 पारंपरिक कारीगरों के लिए ₹15,000 टूलकिट व ₹3 लाख 5% लोन।</span>
+              <span data-lang-show="en">₹15,000 toolkit incentive and ₹3 Lakh loan at 5% interest for 18 traditional artisan trades.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-surya-ghar-muft-bijli.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम सूर्य घर मुफ्त बिजली योजना (PM Surya Ghar)', 'en': 'PM Surya Ghar 300 Units Free Solar'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम सूर्य घर मुफ्त बिजली योजना (PM Surya Ghar)', 'en': 'PM Surya Ghar 300 Units Free Solar'}</span>
+              <span data-lang-show="hi">पीएम सूर्य घर मुफ्त बिजली योजना (PM Surya Ghar)</span>
+              <span data-lang-show="en">PM Surya Ghar 300 Units Free Solar</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">छत पर सोलर पैनल लगाने हेतु ₹78,000 तक की सब्सिडी और 300 यूनिट मुफ्त बिजली।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">छत पर सोलर पैनल लगाने हेतु ₹78,000 तक की सब्सिडी और 300 यूनिट मुफ्त बिजली।</span>
+              <span data-lang-show="en">Up to ₹78,000 subsidy and 300 units free monthly solar electricity for households.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-pranam-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम प्रणाम योजना (PM PRANAM Fertilizer Scheme)', 'en': 'PM PRANAM Organic Farming Subsidy'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम प्रणाम योजना (PM PRANAM Fertilizer Scheme)', 'en': 'PM PRANAM Organic Farming Subsidy'}</span>
+              <span data-lang-show="hi">पीएम प्रणाम योजना (PM PRANAM Fertilizer Scheme)</span>
+              <span data-lang-show="en">PM PRANAM Organic Farming Subsidy</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">रासायनिक उर्वरकों का उपयोग कम करने व जैविक खेती हेतु अनुदान।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">रासायनिक उर्वरकों का उपयोग कम करने व जैविक खेती हेतु अनुदान।</span>
+              <span data-lang-show="en">Government incentive scheme to promote bio-fertilizers and organic farming practices.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/standup-india-sc-st-women-loan.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'स्टैंड-अप इंडिया लोन योजना (Stand-Up India Scheme)', 'en': 'Stand-Up India SC/ST and Women Loan'}</span>
-              <span data-lang-show="en">{'hi': 'स्टैंड-अप इंडिया लोन योजना (Stand-Up India Scheme)', 'en': 'Stand-Up India SC/ST and Women Loan'}</span>
+              <span data-lang-show="hi">स्टैंड-अप इंडिया लोन योजना (Stand-Up India Scheme)</span>
+              <span data-lang-show="en">Stand-Up India SC/ST and Women Loan</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">SC/ST एवं महिला उद्यमियों को ₹10 लाख से ₹1 करोड़ तक का बिजनेस लोन।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">SC/ST एवं महिला उद्यमियों को ₹10 लाख से ₹1 करोड़ तक का बिजनेस लोन।</span>
+              <span data-lang-show="en">Bank loans between ₹10 Lakh to ₹1 Crore for SC/ST and Women entrepreneurs.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-kisan-maan-dhan-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम किसान मानधन योजना (PM-KMDY Pension)', 'en': 'PM Kisan Maandhan Farmers Pension'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम किसान मानधन योजना (PM-KMDY Pension)', 'en': 'PM Kisan Maandhan Farmers Pension'}</span>
+              <span data-lang-show="hi">पीएम किसान मानधन योजना (PM-KMDY Pension)</span>
+              <span data-lang-show="en">PM Kisan Maandhan Farmers Pension</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">छोटे और सीमांत किसानों के लिए 60 वर्ष की आयु के बाद ₹3,000 प्रति माह गारंटीकृत पेंशन।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">छोटे और सीमांत किसानों के लिए 60 वर्ष की आयु के बाद ₹3,000 प्रति माह गारंटीकृत पेंशन।</span>
+              <span data-lang-show="en">Guaranteed ₹3,000 monthly pension for small and marginal farmers after age 60.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/mahila-samman-bachat-patra.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'महिला सम्मान बचत पत्र योजना 2026 (MSSC Post Office)', 'en': 'Mahila Samman Savings Certificate'}</span>
-              <span data-lang-show="en">{'hi': 'महिला सम्मान बचत पत्र योजना 2026 (MSSC Post Office)', 'en': 'Mahila Samman Savings Certificate'}</span>
+              <span data-lang-show="hi">महिला सम्मान बचत पत्र योजना 2026 (MSSC Post Office)</span>
+              <span data-lang-show="en">Mahila Samman Savings Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">महिलाओं के लिए डाकघर में 7.5% उच्च ब्याज दर वाली 2 वर्षीय लघु बचत योजना।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">महिलाओं के लिए डाकघर में 7.5% उच्च ब्याज दर वाली 2 वर्षीय लघु बचत योजना।</span>
+              <span data-lang-show="en">Special 2-year post office deposit scheme for women with guaranteed 7.5% interest rate.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-ebus-sewa-scheme.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम-ईबस सेवा योजना (PM-eBus Sewa)', 'en': 'PM-eBus Sewa Electric City Bus'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम-ईबस सेवा योजना (PM-eBus Sewa)', 'en': 'PM-eBus Sewa Electric City Bus'}</span>
+              <span data-lang-show="hi">पीएम-ईबस सेवा योजना (PM-eBus Sewa)</span>
+              <span data-lang-show="en">PM-eBus Sewa Electric City Bus</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">शहरों में 10,000 ई-बसें चलाकर प्रदूषण मुक्त सार्वजनिक परिवहन योजना।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">शहरों में 10,000 ई-बसें चलाकर प्रदूषण मुक्त सार्वजनिक परिवहन योजना।</span>
+              <span data-lang-show="en">Central scheme deploying 10,000 electric buses in 169 cities for green urban transport.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-poshan-shakti-nirman.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम पोषण शक्ति निर्माण योजना (PM POSHAN Scheme)', 'en': 'PM POSHAN School Mid-Day Meal'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम पोषण शक्ति निर्माण योजना (PM POSHAN Scheme)', 'en': 'PM POSHAN School Mid-Day Meal'}</span>
+              <span data-lang-show="hi">पीएम पोषण शक्ति निर्माण योजना (PM POSHAN Scheme)</span>
+              <span data-lang-show="en">PM POSHAN School Mid-Day Meal</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">सरकारी व सहायता प्राप्त स्कूलों के बालकों के लिए पौष्टिक गर्म भोजन की राष्ट्रीय योजना।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सरकारी व सहायता प्राप्त स्कूलों के बालकों के लिए पौष्टिक गर्म भोजन की राष्ट्रीय योजना।</span>
+              <span data-lang-show="en">National flagship nutrition scheme providing hot cooked meals to school children.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/namaste-scheme-sewer-workers.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'नमस्ते योजना - सफाई मित्र सुरक्षा (NAMASTE Scheme)', 'en': 'NAMASTE Sanitation Worker Safety'}</span>
-              <span data-lang-show="en">{'hi': 'नमस्ते योजना - सफाई मित्र सुरक्षा (NAMASTE Scheme)', 'en': 'NAMASTE Sanitation Worker Safety'}</span>
+              <span data-lang-show="hi">नमस्ते योजना - सफाई मित्र सुरक्षा (NAMASTE Scheme)</span>
+              <span data-lang-show="en">NAMASTE Sanitation Worker Safety</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">सीवर एवं सेप्टिक टैंक की यांत्रिक सफाई व सफाई कर्मचारियों का ₹5 लाख स्वास्थ्य बीमा।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सीवर एवं सेप्टिक टैंक की यांत्रिक सफाई व सफाई कर्मचारियों का ₹5 लाख स्वास्थ्य बीमा।</span>
+              <span data-lang-show="en">Zero manual scavenging initiative with ₹5 Lakh health insurance and equipment.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-devine-scheme-northeast.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम-डिवाइन योजना उत्तर पूर्व (PM-DevINE Scheme)', 'en': 'PM-DevINE Infrastructure Scheme'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम-डिवाइन योजना उत्तर पूर्व (PM-DevINE Scheme)', 'en': 'PM-DevINE Infrastructure Scheme'}</span>
+              <span data-lang-show="hi">पीएम-डिवाइन योजना उत्तर पूर्व (PM-DevINE Scheme)</span>
+              <span data-lang-show="en">PM-DevINE Infrastructure Scheme</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">पूर्वोत्तर राज्यों में बुनियादी ढाँचे और आजीविका परियोजनाओं हेतु 100% केंद्रीय अनुदान।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">पूर्वोत्तर राज्यों में बुनियादी ढाँचे और आजीविका परियोजनाओं हेतु 100% केंद्रीय अनुदान।</span>
+              <span data-lang-show="en">100% central funding scheme for infrastructure and employment in North East states.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-vidyalaxmi-scheme.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Vidyalaxmi Scheme', 'hi': 'पीएम विद्यालक्ष्मी योजना'}</span>
-              <span data-lang-show="en">{'en': 'PM Vidyalaxmi Scheme', 'hi': 'पीएम विद्यालक्ष्मी योजना'}</span>
+              <span data-lang-show="hi">पीएम विद्यालक्ष्मी योजना</span>
+              <span data-lang-show="en">PM Vidyalaxmi Scheme</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">मेधावी छात्रों को बिना गारंटी उच्च शिक्षा के लिए ₹10 लाख तक का एजुकेशन लोन देने की नई सरकारी योजना।</span>
+              <span data-lang-show="en">Financial support for meritorious students providing education loans up to ₹10 lakh for higher education without collateral.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/lakhpati-didi-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Lakhpati Didi Yojana', 'hi': 'लखपति दीदी योजना'}</span>
-              <span data-lang-show="en">{'en': 'Lakhpati Didi Yojana', 'hi': 'लखपति दीदी योजना'}</span>
+              <span data-lang-show="hi">लखपति दीदी योजना</span>
+              <span data-lang-show="en">Lakhpati Didi Yojana</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">स्वयं सहायता समूहों (SHG) की महिलाओं को आर्थिक रूप से सशक्त बनाकर उनकी आय ₹1 लाख प्रति वर्ष करने की योजना।</span>
+              <span data-lang-show="en">A scheme to financially empower Women Self Help Groups (SHGs) to earn at least ₹1 Lakh per year.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/namo-drone-didi-scheme.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Namo Drone Didi Scheme', 'hi': 'नमो ड्रोन दीदी योजना'}</span>
-              <span data-lang-show="en">{'en': 'Namo Drone Didi Scheme', 'hi': 'नमो ड्रोन दीदी योजना'}</span>
+              <span data-lang-show="hi">नमो ड्रोन दीदी योजना</span>
+              <span data-lang-show="en">Namo Drone Didi Scheme</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">महिलाओं के स्वयं सहायता समूहों को कृषि उपयोग (कीटनाशक छिड़काव आदि) के लिए ड्रोन और प्रशिक्षण प्रदान करने की योजना।</span>
+              <span data-lang-show="en">Empowers women SHGs by providing drones and training for agricultural uses like pesticide spraying.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
       </div>
     </section>

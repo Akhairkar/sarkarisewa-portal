@@ -92,6 +92,41 @@
       border-color: #223244 !important;
       color: #E8EDF3 !important;
     }
+
+    /* Language Toggle Visibility Rules */
+    html[lang="hi"] [data-lang-show="en"],
+    html:not([lang="en"]) [data-lang-show="en"] {
+      display: none !important;
+    }
+    html[lang="en"] [data-lang-show="hi"] {
+      display: none !important;
+    }
+    html[lang="hi"] span[data-lang-show="hi"],
+    html:not([lang="en"]) span[data-lang-show="hi"] {
+      display: inline !important;
+    }
+    html[lang="en"] span[data-lang-show="en"] {
+      display: inline !important;
+    }
+    html[lang="hi"] div[data-lang-show="hi"],
+    html[lang="hi"] p[data-lang-show="hi"],
+    html[lang="hi"] h1[data-lang-show="hi"],
+    html[lang="hi"] h2[data-lang-show="hi"],
+    html[lang="hi"] h3[data-lang-show="hi"],
+    html:not([lang="en"]) div[data-lang-show="hi"],
+    html:not([lang="en"]) p[data-lang-show="hi"],
+    html:not([lang="en"]) h1[data-lang-show="hi"],
+    html:not([lang="en"]) h2[data-lang-show="hi"],
+    html:not([lang="en"]) h3[data-lang-show="hi"] {
+      display: block !important;
+    }
+    html[lang="en"] div[data-lang-show="en"],
+    html[lang="en"] p[data-lang-show="en"],
+    html[lang="en"] h1[data-lang-show="en"],
+    html[lang="en"] h2[data-lang-show="en"],
+    html[lang="en"] h3[data-lang-show="en"] {
+      display: block !important;
+    }
   </style>
 
   <script type="application/ld+json" id="category-schema">
@@ -268,8 +303,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">प्रति परिवार प्रति वर्ष ₹5 लाख का मुफ्त कैशलेस अस्पताल इलाज, 27,000+ पैनलबद्ध सरकारी व निजी अस्पताल।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/abha-health-card.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -279,8 +314,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">आयुष्मान भारत डिजिटल मिशन के तहत 14-अंकीय डिजिटल हेल्थ कार्ड, मेडिकल रिकॉर्ड्स व प्रिस्क्रिप्शन स्टोरेज।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/ayushman-bharat.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -290,8 +325,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">70 वर्ष और उससे अधिक आयु के सभी वरिष्ठ नागरिकों को बिना किसी आय सीमा के ₹5 लाख का मुफ़्त टॉप-अप कवर।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../tools/medicine-price-checker.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -301,8 +336,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">10,000+ केंद्रों पर 80% तक सस्ती जेनेरिक दवाएं, सर्जिकल उपकरण व NPPA सीलिंग रेट चेकर।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/national-blood-bank-eraktkosh.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -312,8 +347,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">पूरे भारत के 3,500+ ब्लड बैंकों में रियल-टाइम ब्लड यूनिट्स उपलब्धता व ऑनलाइन रक्तदान पंजीकरण।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/nikshay-poshan-yojana-tb.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -323,8 +358,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">टीबी मरीजों को पौष्टिक आहार हेतु उपचार अवधि के दौरान ₹500 प्रति माह की सीधी बैंक डीबीटी सहायता।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
       </div>
@@ -340,212 +375,338 @@
         <a class="service-card" href="../service/abha-health-id.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Ayushman Bharat Health Account (ABHA)', 'hi': 'आयुष्मान भारत स्वास्थ्य खाता (ABHA)'}</span>
-              <span data-lang-show="en">{'en': 'Ayushman Bharat Health Account (ABHA)', 'hi': 'आयुष्मान भारत स्वास्थ्य खाता (ABHA)'}</span>
+              <span data-lang-show="hi">आयुष्मान भारत स्वास्थ्य खाता (ABHA)</span>
+              <span data-lang-show="en">Ayushman Bharat Health Account (ABHA)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">एक अद्वितीय 14-अंकीय डिजिटल स्वास्थ्य आईडी जो आपको भारत भर के स्वास्थ्य सेवा प्रदाताओं के साथ अपने डिजिटल स्वास्थ्य रिकॉर्ड बनाने, एक्सेस कर...</span>
+              <span data-lang-show="en">A unique 14-digit digital health ID that lets you create, access, and share your digital health records with healthcare providers across Ind...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/cowin-vaccination-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'CoWIN Vaccination Certificate', 'hi': 'कोविन टीकाकरण प्रमाण पत्र'}</span>
-              <span data-lang-show="en">{'en': 'CoWIN Vaccination Certificate', 'hi': 'कोविन टीकाकरण प्रमाण पत्र'}</span>
+              <span data-lang-show="hi">कोविन टीकाकरण प्रमाण पत्र</span>
+              <span data-lang-show="en">CoWIN Vaccination Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">कोविन पोर्टल के माध्यम से अपना कोविड-19 (और अन्य कोविन-लिंक्ड) टीकाकरण प्रमाण पत्र डाउनलोड करें, या टीकाकरण अपॉइंटमेंट बुक करें।</span>
+              <span data-lang-show="en">Download your COVID-19 (and other CoWIN-linked) vaccination certificate, or book a vaccination appointment, through the CoWIN portal.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/e-sanjeevani-telemedicine.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'e-Sanjeevani (Telemedicine)', 'hi': 'ई-संजीवनी (टेलीमेडिसिन)'}</span>
-              <span data-lang-show="en">{'en': 'e-Sanjeevani (Telemedicine)', 'hi': 'ई-संजीवनी (टेलीमेडिसिन)'}</span>
+              <span data-lang-show="hi">ई-संजीवनी (टेलीमेडिसिन)</span>
+              <span data-lang-show="en">e-Sanjeevani (Telemedicine)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">घर से ऑनलाइन डॉक्टर परामर्श के लिए मुफ्त सरकारी टेलीमेडिसिन मंच, जिसमें विशेषज्ञों के साथ ओपीडी-शैली के परामर्श शामिल हैं।</span>
+              <span data-lang-show="en">Free government telemedicine platform for online doctor consultations from home, including OPD-style consultations with specialists.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/organ-donation-registration.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Organ Donation Registration (NOTTO)', 'hi': 'अंगदान पंजीकरण (NOTTO)'}</span>
-              <span data-lang-show="en">{'en': 'Organ Donation Registration (NOTTO)', 'hi': 'अंगदान पंजीकरण (NOTTO)'}</span>
+              <span data-lang-show="hi">अंगदान पंजीकरण (NOTTO)</span>
+              <span data-lang-show="en">Organ Donation Registration (NOTTO)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">प्रत्यारोपण के माध्यम से जीवन बचाने में मदद के लिए राष्ट्रीय अंग और ऊतक प्रत्यारोपण संगठन (NOTTO) के साथ पंजीकरण करके मृत्यु के बाद अंगदान क...</span>
+              <span data-lang-show="en">Pledge to donate organs after death by registering with the National Organ and Tissue Transplant Organisation (NOTTO), helping save lives th...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/e-raktkosh-blood-donation.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'e-RaktKosh (Blood Donation & Availability)', 'hi': 'ई-रक्तकोश (रक्तदान और उपलब्धता)'}</span>
-              <span data-lang-show="en">{'en': 'e-RaktKosh (Blood Donation & Availability)', 'hi': 'ई-रक्तकोश (रक्तदान और उपलब्धता)'}</span>
+              <span data-lang-show="hi">ई-रक्तकोश (रक्तदान और उपलब्धता)</span>
+              <span data-lang-show="en">e-RaktKosh (Blood Donation & Availability)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">रक्त बैंक खोजने, रक्त समूह उपलब्धता जांचने, रक्तदाता के रूप में पंजीकरण करने, या आगामी रक्तदान शिविर खोजने के लिए केंद्रीकृत पोर्टल।</span>
+              <span data-lang-show="en">Centralised portal to find blood banks, check blood group availability, register as a blood donor, or locate upcoming blood donation camps.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/central-govt-health-scheme.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Central Government Health Scheme (CGHS)', 'hi': 'केंद्र सरकार स्वास्थ्य योजना (CGHS)'}</span>
-              <span data-lang-show="en">{'en': 'Central Government Health Scheme (CGHS)', 'hi': 'केंद्र सरकार स्वास्थ्य योजना (CGHS)'}</span>
+              <span data-lang-show="hi">केंद्र सरकार स्वास्थ्य योजना (CGHS)</span>
+              <span data-lang-show="en">Central Government Health Scheme (CGHS)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सूचीबद्ध सुविधाओं के माध्यम से केंद्र सरकार के कर्मचारियों, पेंशनभोगियों, और उनके आश्रितों को व्यापक स्वास्थ्य सेवा (ओपीडी, अस्पताल में भर्त...</span>
+              <span data-lang-show="en">Provides comprehensive healthcare (OPD, hospitalisation, diagnostics) to central government employees, pensioners, and their dependents thro...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/janani-suraksha-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Janani Suraksha Yojana (JSY)', 'hi': 'जननी सुरक्षा योजना (JSY)'}</span>
-              <span data-lang-show="en">{'en': 'Janani Suraksha Yojana (JSY)', 'hi': 'जननी सुरक्षा योजना (JSY)'}</span>
+              <span data-lang-show="hi">जननी सुरक्षा योजना (JSY)</span>
+              <span data-lang-show="en">Janani Suraksha Yojana (JSY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">संस्थागत प्रसव के लिए गर्भवती महिलाओं को नकद सहायता प्रदान करने वाली सुरक्षित मातृत्व योजना, जो मातृ और शिशु मृत्यु दर को कम करती है।</span>
+              <span data-lang-show="en">Safe motherhood scheme providing cash assistance to pregnant women for institutional delivery, reducing maternal and infant mortality.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/rashtriya-bal-swasthya-karyakram.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Rashtriya Bal Swasthya Karyakram (RBSK)', 'hi': 'राष्ट्रीय बाल स्वास्थ्य कार्यक्रम (RBSK)'}</span>
-              <span data-lang-show="en">{'en': 'Rashtriya Bal Swasthya Karyakram (RBSK)', 'hi': 'राष्ट्रीय बाल स्वास्थ्य कार्यक्रम (RBSK)'}</span>
+              <span data-lang-show="hi">राष्ट्रीय बाल स्वास्थ्य कार्यक्रम (RBSK)</span>
+              <span data-lang-show="en">Rashtriya Bal Swasthya Karyakram (RBSK)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">जन्म दोष, बीमारियों, कमियों, और विकासात्मक देरी को कवर करने वाला मुफ्त बाल स्वास्थ्य जांच कार्यक्रम, फॉलो-अप उपचार सहायता के साथ।</span>
+              <span data-lang-show="en">Free child health screening program covering birth defects, diseases, deficiencies, and developmental delays, with follow-up treatment suppo...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/mission-indradhanush.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Mission Indradhanush (Immunization)', 'hi': 'मिशन इंद्रधनुष (टीकाकरण)'}</span>
-              <span data-lang-show="en">{'en': 'Mission Indradhanush (Immunization)', 'hi': 'मिशन इंद्रधनुष (टीकाकरण)'}</span>
+              <span data-lang-show="hi">मिशन इंद्रधनुष (टीकाकरण)</span>
+              <span data-lang-show="en">Mission Indradhanush (Immunization)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">टीके से रोकथाम योग्य बीमारियों के खिलाफ 2 वर्ष से कम आयु के बच्चों और गर्भवती महिलाओं के लिए पूर्ण टीकाकरण कवरेज सुनिश्चित करने के लिए राष्ट...</span>
+              <span data-lang-show="en">National immunization drive to ensure full vaccination coverage for children under 2 years and pregnant women against vaccine-preventable di...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pmsma-antenatal-checkup.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Pradhan Mantri Surakshit Matritva Abhiyan (PMSMA)', 'hi': 'प्रधानमंत्री सुरक्षित मातृत्व अभियान (PMSMA)'}</span>
-              <span data-lang-show="en">{'en': 'Pradhan Mantri Surakshit Matritva Abhiyan (PMSMA)', 'hi': 'प्रधानमंत्री सुरक्षित मातृत्व अभियान (PMSMA)'}</span>
+              <span data-lang-show="hi">प्रधानमंत्री सुरक्षित मातृत्व अभियान (PMSMA)</span>
+              <span data-lang-show="en">Pradhan Mantri Surakshit Matritva Abhiyan (PMSMA)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सरकारी स्वास्थ्य सुविधाओं में हर महीने की 9 तारीख को सभी गर्भवती महिलाओं को मुफ्त, निश्चित-दिवसीय व्यापक प्रसवपूर्व जांच (विशेषज्ञ परामर्श स...</span>
+              <span data-lang-show="en">Provides a free, fixed-day comprehensive antenatal checkup (including specialist consultation) to all pregnant women on the 9th of every mon...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/esic.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': "ESIC (Employees' State Insurance)", 'hi': 'ESIC (कर्मचारी राज्य बीमा)'}</span>
-              <span data-lang-show="en">{'en': "ESIC (Employees' State Insurance)", 'hi': 'ESIC (कर्मचारी राज्य बीमा)'}</span>
+              <span data-lang-show="hi">ESIC (कर्मचारी राज्य बीमा)</span>
+              <span data-lang-show="en">ESIC (Employees' State Insurance)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">संगठित क्षेत्र के श्रमिकों और उनके परिवारों को चिकित्सा, बीमारी, मातृत्व, और दिव्यांगता लाभ देने वाली स्व-वित्तपोषित सामाजिक सुरक्षा योजना।</span>
+              <span data-lang-show="en">A self-financing social security scheme providing medical, sickness, maternity, and disability benefits to organised-sector workers and thei...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/ayushman-bharat-vayo-vandana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'आयुष्मान वय वंदना कार्ड 70+ वरिष्ठ नागरिक (Vayo Vandana Card)', 'en': 'Ayushman Vayo Vandana Card 70+'}</span>
-              <span data-lang-show="en">{'hi': 'आयुष्मान वय वंदना कार्ड 70+ वरिष्ठ नागरिक (Vayo Vandana Card)', 'en': 'Ayushman Vayo Vandana Card 70+'}</span>
+              <span data-lang-show="hi">आयुष्मान वय वंदना कार्ड 70+ वरिष्ठ नागरिक (Vayo Vandana Card)</span>
+              <span data-lang-show="en">Ayushman Vayo Vandana Card 70+</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">70 वर्ष से अधिक आयु के सभी बुजुर्गों को बिना किसी आय सीमा के ₹5 लाख का मुफ्त इलाज कार्ड।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">70 वर्ष से अधिक आयु के सभी बुजुर्गों को बिना किसी आय सीमा के ₹5 लाख का मुफ्त इलाज कार्ड।</span>
+              <span data-lang-show="en">Universal ₹5 Lakh free health insurance card for all senior citizens aged 70+ regardless of income.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/nikshay-poshan-yojana-tb.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'निक्षय पोषण योजना टीबी सहायता (Ni-kshay Poshan Yojana)', 'en': 'Ni-kshay Poshan Monthly Support'}</span>
-              <span data-lang-show="en">{'hi': 'निक्षय पोषण योजना टीबी सहायता (Ni-kshay Poshan Yojana)', 'en': 'Ni-kshay Poshan Monthly Support'}</span>
+              <span data-lang-show="hi">निक्षय पोषण योजना टीबी सहायता (Ni-kshay Poshan Yojana)</span>
+              <span data-lang-show="en">Ni-kshay Poshan Monthly Support</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">टीबी मरीजों को इलाज के दौरान पौष्टिक आहार हेतु ₹500-₹1,000 प्रति माह प्रत्यक्ष डीबीटी सहायता।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">टीबी मरीजों को इलाज के दौरान पौष्टिक आहार हेतु ₹500-₹1,000 प्रति माह प्रत्यक्ष डीबीटी सहायता।</span>
+              <span data-lang-show="en">Direct Benefit Transfer (DBT) of ₹500-₹1,000 monthly nutrition support for TB patients.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/jan-aushadhi-store-locator.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'प्रधानमंत्री जन औषधि केंद्र (PM Jan Aushadhi Kendra)', 'en': 'PM Jan Aushadhi Store Locator'}</span>
-              <span data-lang-show="en">{'hi': 'प्रधानमंत्री जन औषधि केंद्र (PM Jan Aushadhi Kendra)', 'en': 'PM Jan Aushadhi Store Locator'}</span>
+              <span data-lang-show="hi">प्रधानमंत्री जन औषधि केंद्र (PM Jan Aushadhi Kendra)</span>
+              <span data-lang-show="en">PM Jan Aushadhi Store Locator</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">50% से 90% सस्ती गुणवत्तापूर्ण जेनेरिक दवाइयां खरीदने हेतु नजदीकी जन औषधि स्टोर खोजें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">50% से 90% सस्ती गुणवत्तापूर्ण जेनेरिक दवाइयां खरीदने हेतु नजदीकी जन औषधि स्टोर खोजें।</span>
+              <span data-lang-show="en">Locate nearest PM Bharatiya Janaushadhi Kendra to buy high-quality generic medicines at 50-90% discount.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/e-sanjeevani-teleconsultation.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'ई-संजीवनी फ्री डॉक्टर परामर्श (eSanjeevani Teleconsultation)', 'en': 'eSanjeevani Free Doctor Teleconsultation'}</span>
-              <span data-lang-show="en">{'hi': 'ई-संजीवनी फ्री डॉक्टर परामर्श (eSanjeevani Teleconsultation)', 'en': 'eSanjeevani Free Doctor Teleconsultation'}</span>
+              <span data-lang-show="hi">ई-संजीवनी फ्री डॉक्टर परामर्श (eSanjeevani Teleconsultation)</span>
+              <span data-lang-show="en">eSanjeevani Free Doctor Teleconsultation</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">स्वास्थ्य मंत्रालय का राष्ट्रीय पोर्टल, जहाँ घर बैठे एम्स व बड़े डॉक्टरों से मुफ्त वीडियो कॉल परामर्श लें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">स्वास्थ्य मंत्रालय का राष्ट्रीय पोर्टल, जहाँ घर बैठे एम्स व बड़े डॉक्टरों से मुफ्त वीडियो कॉल परामर्श लें।</span>
+              <span data-lang-show="en">Free National Telemedicine Service for video consultation with specialist doctors and e-prescription.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/udid-disability-card-download.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'यूडीआईडी स्वावलंबन दिव्यांग कार्ड (UDID Disability Card)', 'en': 'Unique Disability ID (UDID) Download'}</span>
-              <span data-lang-show="en">{'hi': 'यूडीआईडी स्वावलंबन दिव्यांग कार्ड (UDID Disability Card)', 'en': 'Unique Disability ID (UDID) Download'}</span>
+              <span data-lang-show="hi">यूडीआईडी स्वावलंबन दिव्यांग कार्ड (UDID Disability Card)</span>
+              <span data-lang-show="en">Unique Disability ID (UDID) Download</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">दिव्यांग व्यक्तियों के लिए राष्ट्रीय स्वावलंबन यूडीआईडी कार्ड ऑनलाइन आवेदन व डाउनलोड करें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">दिव्यांग व्यक्तियों के लिए राष्ट्रीय स्वावलंबन यूडीआईडी कार्ड ऑनलाइन आवेदन व डाउनलोड करें।</span>
+              <span data-lang-show="en">Apply and download official Unique Disability ID (UDID) Card valid across all Indian states.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/kilkari-mobile-health-audio.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'किलकारी मोबाइल स्वास्थ्य सेवा (Kilkari Maternal Audio)', 'en': 'Kilkari Weekly Maternal Health Audio'}</span>
-              <span data-lang-show="en">{'hi': 'किलकारी मोबाइल स्वास्थ्य सेवा (Kilkari Maternal Audio)', 'en': 'Kilkari Weekly Maternal Health Audio'}</span>
+              <span data-lang-show="hi">किलकारी मोबाइल स्वास्थ्य सेवा (Kilkari Maternal Audio)</span>
+              <span data-lang-show="en">Kilkari Weekly Maternal Health Audio</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">गर्भवती महिलाओं और नवजात शिशुओं की देखभाल हेतु 72 सप्ताह तक मुफ्त ऑडियो कॉल सलाह।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">गर्भवती महिलाओं और नवजात शिशुओं की देखभाल हेतु 72 सप्ताह तक मुफ्त ऑडियो कॉल सलाह।</span>
+              <span data-lang-show="en">Free weekly interactive voice response (IVR) audio messages on pregnancy and child care.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/national-blood-bank-eraktkosh.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'ई-रक्तकोश राष्ट्रीय ब्लड बैंक स्टॉक (eRaktKosh Live Stock)', 'en': 'eRaktKosh National Blood Bank Finder'}</span>
-              <span data-lang-show="en">{'hi': 'ई-रक्तकोश राष्ट्रीय ब्लड बैंक स्टॉक (eRaktKosh Live Stock)', 'en': 'eRaktKosh National Blood Bank Finder'}</span>
+              <span data-lang-show="hi">ई-रक्तकोश राष्ट्रीय ब्लड बैंक स्टॉक (eRaktKosh Live Stock)</span>
+              <span data-lang-show="en">eRaktKosh National Blood Bank Finder</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">इमरजेंसी में नजदीकी ब्लड बैंक में अपने ब्लड ग्रुप की उपलब्धता लाइव चेक करें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">इमरजेंसी में नजदीकी ब्लड बैंक में अपने ब्लड ग्रुप की उपलब्धता लाइव चेक करें।</span>
+              <span data-lang-show="en">Check real-time live blood stock availability and donate blood at nearby licensed blood banks.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pradhan-mantri-surakshit-matritva.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'प्रधानमंत्री सुरक्षित मातृत्व अभियान (PMSMA Antenatal Care)', 'en': 'PMSMA Free Maternal Health Checkup'}</span>
-              <span data-lang-show="en">{'hi': 'प्रधानमंत्री सुरक्षित मातृत्व अभियान (PMSMA Antenatal Care)', 'en': 'PMSMA Free Maternal Health Checkup'}</span>
+              <span data-lang-show="hi">प्रधानमंत्री सुरक्षित मातृत्व अभियान (PMSMA Antenatal Care)</span>
+              <span data-lang-show="en">PMSMA Free Maternal Health Checkup</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">हर महीने की 9 तारीख को गर्भवती महिलाओं की मुफ्त विशेषज्ञ डॉक्टर द्वारा प्रसव पूर्व जांच।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">हर महीने की 9 तारीख को गर्भवती महिलाओं की मुफ्त विशेषज्ञ डॉक्टर द्वारा प्रसव पूर्व जांच।</span>
+              <span data-lang-show="en">Free quality antenatal care checkups for pregnant women on 9th of every month at govt hospitals.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/cghs-pensioner-card-apply.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'सीजीएचएस केंद्र सरकार स्वास्थ्य कार्ड (CGHS Health Card)', 'en': 'Central Govt Health Scheme CGHS Card'}</span>
-              <span data-lang-show="en">{'hi': 'सीजीएचएस केंद्र सरकार स्वास्थ्य कार्ड (CGHS Health Card)', 'en': 'Central Govt Health Scheme CGHS Card'}</span>
+              <span data-lang-show="hi">सीजीएचएस केंद्र सरकार स्वास्थ्य कार्ड (CGHS Health Card)</span>
+              <span data-lang-show="en">Central Govt Health Scheme CGHS Card</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">केंद्र सरकार के कर्मचारियों व पेंशनभोगियों के लिए सीजीएचएस प्लास्टिक कार्ड व कैशलेस अस्पताल।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">केंद्र सरकार के कर्मचारियों व पेंशनभोगियों के लिए सीजीएचएस प्लास्टिक कार्ड व कैशलेस अस्पताल।</span>
+              <span data-lang-show="en">Plastic CGHS Health Card for Central Government employees and pensioners for cashless medical care.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/organ-donation-pledge-notto.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'राष्ट्रीय अंगदान ऑनलाइन प्रतिज्ञा (NOTTO Organ Donation)', 'en': 'NOTTO National Organ Donation Pledge'}</span>
-              <span data-lang-show="en">{'hi': 'राष्ट्रीय अंगदान ऑनलाइन प्रतिज्ञा (NOTTO Organ Donation)', 'en': 'NOTTO National Organ Donation Pledge'}</span>
+              <span data-lang-show="hi">राष्ट्रीय अंगदान ऑनलाइन प्रतिज्ञा (NOTTO Organ Donation)</span>
+              <span data-lang-show="en">NOTTO National Organ Donation Pledge</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">स्वास्थ्य मंत्रालय के नोटो पोर्टल पर ऑनलाइन अंगदान की प्रतिज्ञा लें व डोनर कार्ड डाउनलोड करें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">स्वास्थ्य मंत्रालय के नोटो पोर्टल पर ऑनलाइन अंगदान की प्रतिज्ञा लें व डोनर कार्ड डाउनलोड करें।</span>
+              <span data-lang-show="en">Pledge to donate organs online on National Organ and Tissue Transplant Organization (NOTTO) portal.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
       </div>
     </section>

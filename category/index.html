@@ -51,6 +51,41 @@
       border-color: #223244 !important;
       color: #E8EDF3 !important;
     }
+
+    /* Language Toggle Visibility Rules */
+    html[lang="hi"] [data-lang-show="en"],
+    html:not([lang="en"]) [data-lang-show="en"] {
+      display: none !important;
+    }
+    html[lang="en"] [data-lang-show="hi"] {
+      display: none !important;
+    }
+    html[lang="hi"] span[data-lang-show="hi"],
+    html:not([lang="en"]) span[data-lang-show="hi"] {
+      display: inline !important;
+    }
+    html[lang="en"] span[data-lang-show="en"] {
+      display: inline !important;
+    }
+    html[lang="hi"] div[data-lang-show="hi"],
+    html[lang="hi"] p[data-lang-show="hi"],
+    html[lang="hi"] h1[data-lang-show="hi"],
+    html[lang="hi"] h2[data-lang-show="hi"],
+    html[lang="hi"] h3[data-lang-show="hi"],
+    html:not([lang="en"]) div[data-lang-show="hi"],
+    html:not([lang="en"]) p[data-lang-show="hi"],
+    html:not([lang="en"]) h1[data-lang-show="hi"],
+    html:not([lang="en"]) h2[data-lang-show="hi"],
+    html:not([lang="en"]) h3[data-lang-show="hi"] {
+      display: block !important;
+    }
+    html[lang="en"] div[data-lang-show="en"],
+    html[lang="en"] p[data-lang-show="en"],
+    html[lang="en"] h1[data-lang-show="en"],
+    html[lang="en"] h2[data-lang-show="en"],
+    html[lang="en"] h3[data-lang-show="en"] {
+      display: block !important;
+    }
   </style>
 
   <script type="application/ld+json">

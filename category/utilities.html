@@ -92,6 +92,41 @@
       border-color: #223244 !important;
       color: #E8EDF3 !important;
     }
+
+    /* Language Toggle Visibility Rules */
+    html[lang="hi"] [data-lang-show="en"],
+    html:not([lang="en"]) [data-lang-show="en"] {
+      display: none !important;
+    }
+    html[lang="en"] [data-lang-show="hi"] {
+      display: none !important;
+    }
+    html[lang="hi"] span[data-lang-show="hi"],
+    html:not([lang="en"]) span[data-lang-show="hi"] {
+      display: inline !important;
+    }
+    html[lang="en"] span[data-lang-show="en"] {
+      display: inline !important;
+    }
+    html[lang="hi"] div[data-lang-show="hi"],
+    html[lang="hi"] p[data-lang-show="hi"],
+    html[lang="hi"] h1[data-lang-show="hi"],
+    html[lang="hi"] h2[data-lang-show="hi"],
+    html[lang="hi"] h3[data-lang-show="hi"],
+    html:not([lang="en"]) div[data-lang-show="hi"],
+    html:not([lang="en"]) p[data-lang-show="hi"],
+    html:not([lang="en"]) h1[data-lang-show="hi"],
+    html:not([lang="en"]) h2[data-lang-show="hi"],
+    html:not([lang="en"]) h3[data-lang-show="hi"] {
+      display: block !important;
+    }
+    html[lang="en"] div[data-lang-show="en"],
+    html[lang="en"] p[data-lang-show="en"],
+    html[lang="en"] h1[data-lang-show="en"],
+    html[lang="en"] h2[data-lang-show="en"],
+    html[lang="en"] h3[data-lang-show="en"] {
+      display: block !important;
+    }
   </style>
 
   <script type="application/ld+json" id="category-schema">
@@ -268,8 +303,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">डिजिटल वाहन आरसी, वर्चुअल ड्राइविंग लाइसेंस, पॉल्यूशन (PUCC) स्टेटस व ऑनलाइन ई-चालान भुगतान।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/lpg-cylinder-booking.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -279,8 +314,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">मुफ्त गैस कनेक्शन, 14.2 किग्रा सिलेंडर पर ₹300 सीधी बैंक सब्सिडी डीबीटी व 17-अंकीय एलपीजी आईडी।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/electricity-connection-and-bill.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -290,8 +325,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">नया घरेलू/वाणिज्यिक बिजली कनेक्शन, लोड वृद्धि, मीटर रीडिंग शिकायत व ऑनलाइन बिल भुगतान।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/municipal-property-tax.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -301,8 +336,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">हाउस टैक्स / संपत्ति कर स्व-मूल्यांकन, म्यूटेशन (दाखिल-खारिज), यूनिक प्रॉपर्टी आईडी व रसीद।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/national-water-grid-jal-jeevan.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -312,8 +347,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">हर घर नल से जल योजना, नया पेयजल पाइपलाइन कनेक्शन व सीवरेज बिल ऑनलाइन भुगतान।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/fastag-services.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -323,8 +358,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">एक वाहन - एक फास्टैग केवाईसी, टोल टैक्स मासिक पास (₹330 लोकल पास) व बैलेंस रिचार्ज।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
       </div>
@@ -340,222 +375,354 @@
         <a class="service-card" href="../service/pan-aadhaar-conflict-resolver.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PAN-Aadhaar Conflict Resolver', 'hi': 'पैन और आधार नाम/जन्म तिथि बेमेल समाधान'}</span>
-              <span data-lang-show="en">{'en': 'PAN-Aadhaar Conflict Resolver', 'hi': 'पैन और आधार नाम/जन्म तिथि बेमेल समाधान'}</span>
+              <span data-lang-show="hi">पैन और आधार नाम/जन्म तिथि बेमेल समाधान</span>
+              <span data-lang-show="en">PAN-Aadhaar Conflict Resolver</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">अपने पैन और आधार कार्ड के बीच नाम और जन्मतिथि के बेमेल को आसानी से ठीक करें।</span>
+              <span data-lang-show="en">Resolve name and DOB mismatches between your PAN and Aadhaar cards easily.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/electricity-connection-bill.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Electricity New Connection & Bill Payment', 'hi': 'बिजली नया कनेक्शन और बिल भुगतान'}</span>
-              <span data-lang-show="en">{'en': 'Electricity New Connection & Bill Payment', 'hi': 'बिजली नया कनेक्शन और बिल भुगतान'}</span>
+              <span data-lang-show="hi">बिजली नया कनेक्शन और बिल भुगतान</span>
+              <span data-lang-show="en">Electricity New Connection & Bill Payment</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">अपने राज्य के डिस्कॉम के ऑनलाइन पोर्टल के माध्यम से नया घरेलू/वाणिज्यिक बिजली कनेक्शन लेने या मासिक बिजली बिल भुगतान करने के लिए आवेदन करें।</span>
+              <span data-lang-show="en">Apply for a new domestic/commercial electricity connection or pay your monthly electricity bill through your state DISCOM's online portal.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/water-supply-connection-bill.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Water Supply Connection & Bill Payment', 'hi': 'जल आपूर्ति कनेक्शन और बिल भुगतान'}</span>
-              <span data-lang-show="en">{'en': 'Water Supply Connection & Bill Payment', 'hi': 'जल आपूर्ति कनेक्शन और बिल भुगतान'}</span>
+              <span data-lang-show="hi">जल आपूर्ति कनेक्शन और बिल भुगतान</span>
+              <span data-lang-show="en">Water Supply Connection & Bill Payment</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">अपने स्थानीय नगर निगम या जल बोर्ड के माध्यम से नया नगरपालिका जल कनेक्शन लेने या अपना जल बिल भुगतान करने के लिए आवेदन करें।</span>
+              <span data-lang-show="en">Apply for a new municipal water connection or pay your water bill through your local municipal corporation or water board.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/lpg-cylinder-booking.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'LPG Cylinder Booking & Refill', 'hi': 'एलपीजी सिलेंडर बुकिंग और रिफिल'}</span>
-              <span data-lang-show="en">{'en': 'LPG Cylinder Booking & Refill', 'hi': 'एलपीजी सिलेंडर बुकिंग और रिफिल'}</span>
+              <span data-lang-show="hi">एलपीजी सिलेंडर बुकिंग और रिफिल</span>
+              <span data-lang-show="en">LPG Cylinder Booking & Refill</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">अपने वितरक के ऐप, वेबसाइट, एसएमएस, या आईवीआर कॉल के माध्यम से अपने मौजूदा घरेलू एलपीजी गैस कनेक्शन के लिए रिफिल बुक करें।</span>
+              <span data-lang-show="en">Book a refill for your existing domestic LPG gas connection through your distributor's app, website, SMS, or IVR call.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/piped-natural-gas-connection.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Piped Natural Gas (PNG) Connection', 'hi': 'पाइप्ड नेचुरल गैस (PNG) कनेक्शन'}</span>
-              <span data-lang-show="en">{'en': 'Piped Natural Gas (PNG) Connection', 'hi': 'पाइप्ड नेचुरल गैस (PNG) कनेक्शन'}</span>
+              <span data-lang-show="hi">पाइप्ड नेचुरल गैस (PNG) कनेक्शन</span>
+              <span data-lang-show="en">Piped Natural Gas (PNG) Connection</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">अपने शहर गैस वितरण कंपनी द्वारा भूमिगत पाइपलाइनों के माध्यम से सीधे आपके घर तक आपूर्ति की जाने वाली घरेलू खाना पकाने के लिए पाइप्ड नेचुरल गै...</span>
+              <span data-lang-show="en">Apply for a piped natural gas connection for domestic cooking, supplied directly to your home through underground pipelines by your City Gas...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/municipal-property-tax.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Municipal Property Tax Payment', 'hi': 'नगरपालिका संपत्ति कर भुगतान'}</span>
-              <span data-lang-show="en">{'en': 'Municipal Property Tax Payment', 'hi': 'नगरपालिका संपत्ति कर भुगतान'}</span>
+              <span data-lang-show="hi">नगरपालिका संपत्ति कर भुगतान</span>
+              <span data-lang-show="en">Municipal Property Tax Payment</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">अपने स्थानीय नगर निगम को वार्षिक संपत्ति कर ऑनलाइन भुगतान करें और रिकॉर्ड के लिए भुगतान रसीद डाउनलोड करें।</span>
+              <span data-lang-show="en">Pay your annual property tax online to your local municipal corporation and download the payment receipt for records.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/mobile-number-portability.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Mobile Number Portability (MNP)', 'hi': 'मोबाइल नंबर पोर्टेबिलिटी (MNP)'}</span>
-              <span data-lang-show="en">{'en': 'Mobile Number Portability (MNP)', 'hi': 'मोबाइल नंबर पोर्टेबिलिटी (MNP)'}</span>
+              <span data-lang-show="hi">मोबाइल नंबर पोर्टेबिलिटी (MNP)</span>
+              <span data-lang-show="en">Mobile Number Portability (MNP)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">अपने मौजूदा फोन नंबर को बनाए रखते हुए अपने मोबाइल नेटवर्क ऑपरेटर को बदलें, जो पूरे भारत में TRAI द्वारा विनियमित है।</span>
+              <span data-lang-show="en">Switch your mobile network operator while keeping your existing phone number, regulated by TRAI across India.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/fastag-registration.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'FASTag Registration (Electronic Toll Collection)', 'hi': 'फास्टैग पंजीकरण (इलेक्ट्रॉनिक टोल संग्रहण)'}</span>
-              <span data-lang-show="en">{'en': 'FASTag Registration (Electronic Toll Collection)', 'hi': 'फास्टैग पंजीकरण (इलेक्ट्रॉनिक टोल संग्रहण)'}</span>
+              <span data-lang-show="hi">फास्टैग पंजीकरण (इलेक्ट्रॉनिक टोल संग्रहण)</span>
+              <span data-lang-show="en">FASTag Registration (Electronic Toll Collection)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सभी चार-पहिया वाहनों के लिए अनिवार्य RFID-आधारित टैग, जो राष्ट्रीय राजमार्ग टोल प्लाजा पर बिना रुके स्वचालित टोल कटौती सक्षम बनाता है।</span>
+              <span data-lang-show="en">Mandatory RFID-based tag for all four-wheelers, enabling automatic toll deduction at national highway toll plazas without stopping.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/vehicle-registration-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Vehicle Registration Certificate (RC)', 'hi': 'वाहन पंजीकरण प्रमाण पत्र (आरसी)'}</span>
-              <span data-lang-show="en">{'en': 'Vehicle Registration Certificate (RC)', 'hi': 'वाहन पंजीकरण प्रमाण पत्र (आरसी)'}</span>
+              <span data-lang-show="hi">वाहन पंजीकरण प्रमाण पत्र (आरसी)</span>
+              <span data-lang-show="en">Vehicle Registration Certificate (RC)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">RTO के साथ मोटर वाहन का अनिवार्य पंजीकरण, जो कानूनी स्वामित्व और सड़क योग्यता अनुपालन को साबित करता है, परिवहन पोर्टल के माध्यम से प्रबंधित।</span>
+              <span data-lang-show="en">Mandatory registration of a motor vehicle with the RTO, proving legal ownership and roadworthiness compliance, managed via the Parivahan por...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/consumer-grievance-redressal.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Consumer Grievance Redressal (National Consumer Helpline)', 'hi': 'उपभोक्ता शिकायत निवारण (राष्ट्रीय उपभोक्ता हेल्पलाइन)'}</span>
-              <span data-lang-show="en">{'en': 'Consumer Grievance Redressal (National Consumer Helpline)', 'hi': 'उपभोक्ता शिकायत निवारण (राष्ट्रीय उपभोक्ता हेल्पलाइन)'}</span>
+              <span data-lang-show="hi">उपभोक्ता शिकायत निवारण (राष्ट्रीय उपभोक्ता हेल्पलाइन)</span>
+              <span data-lang-show="en">Consumer Grievance Redressal (National Consumer Helpline)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सरकार की राष्ट्रीय उपभोक्ता हेल्पलाइन और ई-दाखिल पोर्टल के माध्यम से खराब उत्पादों, अपर्याप्त सेवाओं, या अनुचित व्यापार प्रथाओं के खिलाफ शिक...</span>
+              <span data-lang-show="en">File complaints against faulty products, deficient services, or unfair trade practices through the government's National Consumer Helpline a...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/swachh-bharat-sanitation-complaint.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Swachh Bharat Sanitation Complaint (Swachhata App)', 'hi': 'स्वच्छ भारत स्वच्छता शिकायत (स्वच्छता ऐप)'}</span>
-              <span data-lang-show="en">{'en': 'Swachh Bharat Sanitation Complaint (Swachhata App)', 'hi': 'स्वच्छ भारत स्वच्छता शिकायत (स्वच्छता ऐप)'}</span>
+              <span data-lang-show="hi">स्वच्छ भारत स्वच्छता शिकायत (स्वच्छता ऐप)</span>
+              <span data-lang-show="en">Swachh Bharat Sanitation Complaint (Swachhata App)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">स्वच्छता मोबाइल ऐप के माध्यम से सीधे अपने स्थानीय नगरपालिका निकाय को कचरा संग्रहण समस्याओं, सार्वजनिक शौचालय समस्याओं, या स्वच्छता शिकायतों ...</span>
+              <span data-lang-show="en">Report garbage collection issues, public toilet problems, or sanitation complaints directly to your local municipal body through the Swachha...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/lpg-subsidy-pahal.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'LPG Subsidy (PAHAL / DBTL)', 'hi': 'एलपीजी सब्सिडी (PAHAL / DBTL)'}</span>
-              <span data-lang-show="en">{'en': 'LPG Subsidy (PAHAL / DBTL)', 'hi': 'एलपीजी सब्सिडी (PAHAL / DBTL)'}</span>
+              <span data-lang-show="hi">एलपीजी सब्सिडी (PAHAL / DBTL)</span>
+              <span data-lang-show="en">LPG Subsidy (PAHAL / DBTL)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आपकी पात्र एलपीजी सिलेंडर सब्सिडी सीधे आपके बैंक खाते में जमा करने वाली प्रत्यक्ष लाभ हस्तांतरण योजना।</span>
+              <span data-lang-show="en">Direct Benefit Transfer scheme that credits your eligible LPG cylinder subsidy straight into your bank account.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/national-water-grid-jal-jeevan.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'जल जीवन मिशन नल कनेक्शन (Jal Jeevan Tap Water)', 'en': 'Jal Jeevan Mission Tap Connection'}</span>
-              <span data-lang-show="en">{'hi': 'जल जीवन मिशन नल कनेक्शन (Jal Jeevan Tap Water)', 'en': 'Jal Jeevan Mission Tap Connection'}</span>
+              <span data-lang-show="hi">जल जीवन मिशन नल कनेक्शन (Jal Jeevan Tap Water)</span>
+              <span data-lang-show="en">Jal Jeevan Mission Tap Connection</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">हर घर जल योजना के तहत ग्रामीण व शहरी घरों में नल से जल कनेक्शन हेतु आवेदन व स्टेटस।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">हर घर जल योजना के तहत ग्रामीण व शहरी घरों में नल से जल कनेक्शन हेतु आवेदन व स्टेटस।</span>
+              <span data-lang-show="en">Apply and track functional household tap water connection under Har Ghar Jal Jeevan Mission.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-kusam-solar-pump-apply.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम कुसुम सोलर पंप योजना (PM KUSUM Solar Pump)', 'en': 'PM KUSUM Solar Irrigation Pump'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम कुसुम सोलर पंप योजना (PM KUSUM Solar Pump)', 'en': 'PM KUSUM Solar Irrigation Pump'}</span>
+              <span data-lang-show="hi">पीएम कुसुम सोलर पंप योजना (PM KUSUM Solar Pump)</span>
+              <span data-lang-show="en">PM KUSUM Solar Irrigation Pump</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">खेती के लिए डीजल/बिजली पंप की जगह सोलर पंप लगाने पर 60% सरकारी सब्सिडी।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">खेती के लिए डीजल/बिजली पंप की जगह सोलर पंप लगाने पर 60% सरकारी सब्सिडी।</span>
+              <span data-lang-show="en">60% subsidy for farmers to install standalone off-grid Solar Agriculture Water Pumps.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/bharat-billpay-bbps-online.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'भारत बिलपे सेंट्रल पोर्टल (Bharat BillPay BBPS)', 'en': 'Bharat BillPay Central Portal'}</span>
-              <span data-lang-show="en">{'hi': 'भारत बिलपे सेंट्रल पोर्टल (Bharat BillPay BBPS)', 'en': 'Bharat BillPay Central Portal'}</span>
+              <span data-lang-show="hi">भारत बिलपे सेंट्रल पोर्टल (Bharat BillPay BBPS)</span>
+              <span data-lang-show="en">Bharat BillPay Central Portal</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">बिजली, पानी, गैस, फास्टैग, म्युनिसिपल टैक्स का एक ही सुरक्षित राष्ट्रीय पोर्टल से भुगतान।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">बिजली, पानी, गैस, फास्टैग, म्युनिसिपल टैक्स का एक ही सुरक्षित राष्ट्रीय पोर्टल से भुगतान।</span>
+              <span data-lang-show="en">NPCI Bharat BillPay one-stop interoperable bill payment ecosystem for all utility bills.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/sub-divisional-electricity-meter-shift.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'बिजली मीटर नाम परिवर्तन व स्थानांतरण (Electricity Meter Shift)', 'en': 'Electricity Meter Name and Location Shift'}</span>
-              <span data-lang-show="en">{'hi': 'बिजली मीटर नाम परिवर्तन व स्थानांतरण (Electricity Meter Shift)', 'en': 'Electricity Meter Name and Location Shift'}</span>
+              <span data-lang-show="hi">बिजली मीटर नाम परिवर्तन व स्थानांतरण (Electricity Meter Shift)</span>
+              <span data-lang-show="en">Electricity Meter Name and Location Shift</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">राज्य विद्युत बोर्ड से बिजली मीटर का नाम बदलने या मकान बदलने पर मीटर शिफ्टिंग ऑनलाइन।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">राज्य विद्युत बोर्ड से बिजली मीटर का नाम बदलने या मकान बदलने पर मीटर शिफ्टिंग ऑनलाइन।</span>
+              <span data-lang-show="en">Online application for power distribution meter name transfer, load enhancement and shifting.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/saubhagya-free-electricity-connection.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'प्रधानमंत्री सौभाग्य योजना (PM Saubhagya Free Power)', 'en': 'PM Saubhagya Free Household Electricity'}</span>
-              <span data-lang-show="en">{'hi': 'प्रधानमंत्री सौभाग्य योजना (PM Saubhagya Free Power)', 'en': 'PM Saubhagya Free Household Electricity'}</span>
+              <span data-lang-show="hi">प्रधानमंत्री सौभाग्य योजना (PM Saubhagya Free Power)</span>
+              <span data-lang-show="en">PM Saubhagya Free Household Electricity</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">गरीब व बीपीएल परिवारों के लिए मुफ्त बिजली कनेक्शन एवं एलईडी बल्ब योजना।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">गरीब व बीपीएल परिवारों के लिए मुफ्त बिजली कनेक्शन एवं एलईडी बल्ब योजना।</span>
+              <span data-lang-show="en">Free electricity connection for all willing un-electrified households in rural and urban areas.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/png-piped-gas-connection-apply.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएनजी पाइप रसोई गैस कनेक्शन (PNG Piped Natural Gas)', 'en': 'PNG Piped Domestic Natural Gas'}</span>
-              <span data-lang-show="en">{'hi': 'पीएनजी पाइप रसोई गैस कनेक्शन (PNG Piped Natural Gas)', 'en': 'PNG Piped Domestic Natural Gas'}</span>
+              <span data-lang-show="hi">पीएनजी पाइप रसोई गैस कनेक्शन (PNG Piped Natural Gas)</span>
+              <span data-lang-show="en">PNG Piped Domestic Natural Gas</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">सिलेंडर के झंझट से मुक्ति — घर में 24x7 पाइप वाली प्राकृतिक रसोई गैस (PNG) कनेक्शन।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सिलेंडर के झंझट से मुक्ति — घर में 24x7 पाइप वाली प्राकृतिक रसोई गैस (PNG) कनेक्शन।</span>
+              <span data-lang-show="en">Apply online for 24x7 Piped Domestic Natural Gas (PNG) connection for home kitchen.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/fastag-annual-kyc-update.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'फास्टैग अनिवार्य केवाईसी अपडेट (FASTag One Vehicle KYC)', 'en': 'NHAI FASTag Mandatory Online KYC'}</span>
-              <span data-lang-show="en">{'hi': 'फास्टैग अनिवार्य केवाईसी अपडेट (FASTag One Vehicle KYC)', 'en': 'NHAI FASTag Mandatory Online KYC'}</span>
+              <span data-lang-show="hi">फास्टैग अनिवार्य केवाईसी अपडेट (FASTag One Vehicle KYC)</span>
+              <span data-lang-show="en">NHAI FASTag Mandatory Online KYC</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">एनएचएआई के 'One Vehicle One FASTag' नियम के तहत फास्टैग का ऑनलाइन केवाईसी अपडेट करें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">एनएचएआई के 'One Vehicle One FASTag' नियम के तहत फास्टैग का ऑनलाइन केवाईसी अपडेट करें।</span>
+              <span data-lang-show="en">Update mandatory NPCI and NHAI KYC online for vehicle FASTag to avoid blacklist/deactivation.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/telecom-sanchar-saathi-tafcop.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'संचार साथी मोबाइल कनेक्शन जांच (Sanchar Saathi TAFCOP)', 'en': 'Sanchar Saathi Mobile Connections Check'}</span>
-              <span data-lang-show="en">{'hi': 'संचार साथी मोबाइल कनेक्शन जांच (Sanchar Saathi TAFCOP)', 'en': 'Sanchar Saathi Mobile Connections Check'}</span>
+              <span data-lang-show="hi">संचार साथी मोबाइल कनेक्शन जांच (Sanchar Saathi TAFCOP)</span>
+              <span data-lang-show="en">Sanchar Saathi Mobile Connections Check</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">दूरसंचार विभाग के पोर्टल से जानें आपके नाम पर कितने सिम कार्ड चालू हैं और फर्जी सिम ब्लॉक करें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">दूरसंचार विभाग के पोर्टल से जानें आपके नाम पर कितने सिम कार्ड चालू हैं और फर्जी सिम ब्लॉक करें।</span>
+              <span data-lang-show="en">Department of Telecommunications portal to check and block fake SIM cards registered on your Aadhaar.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/mparivahan-virtual-rc-dl.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'एम-परिवहन वर्चुअल आरसी व लाइसेंस (mParivahan Virtual RC/DL)', 'en': 'mParivahan Virtual Driving License and RC'}</span>
-              <span data-lang-show="en">{'hi': 'एम-परिवहन वर्चुअल आरसी व लाइसेंस (mParivahan Virtual RC/DL)', 'en': 'mParivahan Virtual Driving License and RC'}</span>
+              <span data-lang-show="hi">एम-परिवहन वर्चुअल आरसी व लाइसेंस (mParivahan Virtual RC/DL)</span>
+              <span data-lang-show="en">mParivahan Virtual Driving License and RC</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">ट्रैफिक पुलिस चैकिंग हेतु आधिकारिक डिजिटल ड्राइविंग लाइसेंस व आरसी अपने फोन में रखें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">ट्रैफिक पुलिस चैकिंग हेतु आधिकारिक डिजिटल ड्राइविंग लाइसेंस व आरसी अपने फोन में रखें।</span>
+              <span data-lang-show="en">Official Ministry of Road Transport digital Virtual DL and RC valid everywhere for traffic checking.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/city-municipal-property-tax-receipt.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'नगर निगम गृहकर व संपत्ति कर भुगतान (Municipal Property Tax)', 'en': 'Municipal Property and House Tax Online'}</span>
-              <span data-lang-show="en">{'hi': 'नगर निगम गृहकर व संपत्ति कर भुगतान (Municipal Property Tax)', 'en': 'Municipal Property and House Tax Online'}</span>
+              <span data-lang-show="hi">नगर निगम गृहकर व संपत्ति कर भुगतान (Municipal Property Tax)</span>
+              <span data-lang-show="en">Municipal Property and House Tax Online</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">नगर निगम/नगर पालिका के ऑनलाइन ई-पोर्टल से हाउस टैक्स जमा करें व आधिकारिक रसीद लें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">नगर निगम/नगर पालिका के ऑनलाइन ई-पोर्टल से हाउस टैक्स जमा करें व आधिकारिक रसीद लें।</span>
+              <span data-lang-show="en">Pay Municipal Property / House Tax online and download official tax assessment receipts.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
       </div>
     </section>

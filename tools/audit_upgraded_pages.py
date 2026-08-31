@@ -66,6 +66,10 @@ for fpath in upgraded_files:
     if 'practical guide for Indian users' in content or 'Detailed preparation checklist' in content:
         errors.append('Contains boilerplate placeholder text')
         
+    # Raw dict / python object artifact check
+    if "{'en':" in content or "{'hi':" in content:
+        errors.append('Contains raw Python dictionary string in HTML')
+        
     # Hardcoded Header check
     if '<header class="site-header">' in content:
         errors.append('Contains hardcoded static header')

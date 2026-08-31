@@ -92,6 +92,41 @@
       border-color: #223244 !important;
       color: #E8EDF3 !important;
     }
+
+    /* Language Toggle Visibility Rules */
+    html[lang="hi"] [data-lang-show="en"],
+    html:not([lang="en"]) [data-lang-show="en"] {
+      display: none !important;
+    }
+    html[lang="en"] [data-lang-show="hi"] {
+      display: none !important;
+    }
+    html[lang="hi"] span[data-lang-show="hi"],
+    html:not([lang="en"]) span[data-lang-show="hi"] {
+      display: inline !important;
+    }
+    html[lang="en"] span[data-lang-show="en"] {
+      display: inline !important;
+    }
+    html[lang="hi"] div[data-lang-show="hi"],
+    html[lang="hi"] p[data-lang-show="hi"],
+    html[lang="hi"] h1[data-lang-show="hi"],
+    html[lang="hi"] h2[data-lang-show="hi"],
+    html[lang="hi"] h3[data-lang-show="hi"],
+    html:not([lang="en"]) div[data-lang-show="hi"],
+    html:not([lang="en"]) p[data-lang-show="hi"],
+    html:not([lang="en"]) h1[data-lang-show="hi"],
+    html:not([lang="en"]) h2[data-lang-show="hi"],
+    html:not([lang="en"]) h3[data-lang-show="hi"] {
+      display: block !important;
+    }
+    html[lang="en"] div[data-lang-show="en"],
+    html[lang="en"] p[data-lang-show="en"],
+    html[lang="en"] h1[data-lang-show="en"],
+    html[lang="en"] h2[data-lang-show="en"],
+    html[lang="en"] h3[data-lang-show="en"] {
+      display: block !important;
+    }
   </style>
 
   <script type="application/ld+json" id="category-schema">
@@ -268,8 +303,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">12 अंकों का राष्ट्रीय बायोमेट्रिक पहचान पत्र, ई-केवाईसी, मोबाइल नंबर लिंकिंग व डिजिटल e-Aadhaar डाउनलोड।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/pan-card.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -279,8 +314,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">आयकर विभाग द्वारा जारी 10-अंकीय स्थायी खाता संख्या, तत्काल 10 मिनट में e-PAN व आधार से सुधार।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/voter-id-card.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -290,8 +325,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">भारत निर्वाचन आयोग का नया डिजिटल वोटर कार्ड, SIR मतदाता सूची सत्यापन व ऑनलाइन नाम जोड़ना।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/passport.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -301,8 +336,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">विदेश मंत्रालय द्वारा जारी अंतरराष्ट्रीय पहचान व यात्रा दस्तावेज़, सामान्य व तत्काल पासपोर्ट आवेदन।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/driving-licence.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -312,8 +347,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">सड़क परिवहन एवं राजमार्ग मंत्रालय से लर्निंग लाइसेंस टेस्ट, स्मार्ट कार्ड डीएल व रिन्यूअल।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/caste-certificate.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -323,8 +358,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">राज्य ई-डिस्ट्रिक्ट पोर्टल से SC/ST/OBC-NCL व स्थायी निवास प्रमाण पत्र (डिजिटल हस्ताक्षरित)।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
       </div>
@@ -340,292 +375,466 @@
         <a class="service-card" href="../service/aadhaar-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Aadhaar Card', 'hi': 'आधार कार्ड'}</span>
-              <span data-lang-show="en">{'en': 'Aadhaar Card', 'hi': 'आधार कार्ड'}</span>
+              <span data-lang-show="hi">आधार कार्ड</span>
+              <span data-lang-show="en">Aadhaar Card</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">UIDAI द्वारा भारत के निवासियों को जारी किया गया 12 अंकों का विशिष्ट पहचान नंबर, जो बायोमेट्रिक और जनसांख्यिकीय डेटा पर आधारित है।</span>
+              <span data-lang-show="en">A 12-digit unique identity number issued by UIDAI to residents of India, based on biometric and demographic data.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pan-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PAN Card', 'hi': 'पैन कार्ड'}</span>
-              <span data-lang-show="en">{'en': 'PAN Card', 'hi': 'पैन कार्ड'}</span>
+              <span data-lang-show="hi">पैन कार्ड</span>
+              <span data-lang-show="en">PAN Card</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">स्थायी खाता संख्या (PAN) आयकर विभाग द्वारा जारी 10 अंकों/अक्षरों का पहचानकर्ता है, जो वित्तीय लेनदेन और कर फाइलिंग के लिए अनिवार्य है।</span>
+              <span data-lang-show="en">Permanent Account Number (PAN) is a 10-character alphanumeric identifier issued by the Income Tax Department, mandatory for financial transa...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/voter-id-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Voter ID Card (EPIC)', 'hi': 'वोटर आईडी कार्ड (EPIC)'}</span>
-              <span data-lang-show="en">{'en': 'Voter ID Card (EPIC)', 'hi': 'वोटर आईडी कार्ड (EPIC)'}</span>
+              <span data-lang-show="hi">वोटर आईडी कार्ड (EPIC)</span>
+              <span data-lang-show="en">Voter ID Card (EPIC)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">इलेक्टर फोटो पहचान पत्र (EPIC) भारत निर्वाचन आयोग द्वारा पंजीकृत मतदाताओं को जारी किया जाता है, जो मतदान पात्रता और पहचान का प्रमाण है।</span>
+              <span data-lang-show="en">The Elector's Photo Identity Card (EPIC) is issued by the Election Commission of India to registered voters, serving as proof of voting elig...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/passport.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Passport', 'hi': 'पासपोर्ट'}</span>
-              <span data-lang-show="en">{'en': 'Passport', 'hi': 'पासपोर्ट'}</span>
+              <span data-lang-show="hi">पासपोर्ट</span>
+              <span data-lang-show="en">Passport</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">विदेश मंत्रालय (पासपोर्ट सेवा) द्वारा जारी एक आधिकारिक यात्रा दस्तावेज़ जो अंतरराष्ट्रीय यात्रा के लिए पहचान और राष्ट्रीयता प्रमाणित करता है...</span>
+              <span data-lang-show="en">An official travel document issued by the Ministry of External Affairs (Passport Seva) certifying identity and nationality for international...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/driving-licence.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Driving Licence (DL)', 'hi': 'ड्राइविंग लाइसेंस (DL)'}</span>
-              <span data-lang-show="en">{'en': 'Driving Licence (DL)', 'hi': 'ड्राइविंग लाइसेंस (DL)'}</span>
+              <span data-lang-show="hi">ड्राइविंग लाइसेंस (DL)</span>
+              <span data-lang-show="en">Driving Licence (DL)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">राज्य परिवहन विभाग (परिवहन सेवा के माध्यम से) द्वारा जारी एक आधिकारिक प्राधिकरण जो किसी व्यक्ति को मोटर वाहन चलाने की अनुमति देता है।</span>
+              <span data-lang-show="en">An official authorization issued by the state Transport Department (via Parivahan Sewa) permitting an individual to operate motor vehicles.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/birth-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Birth Certificate', 'hi': 'जन्म प्रमाण पत्र'}</span>
-              <span data-lang-show="en">{'en': 'Birth Certificate', 'hi': 'जन्म प्रमाण पत्र'}</span>
+              <span data-lang-show="hi">जन्म प्रमाण पत्र</span>
+              <span data-lang-show="en">Birth Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">स्थानीय नगर निकाय / जन्म-मृत्यु रजिस्ट्रार द्वारा जारी किसी व्यक्ति के जन्म का आधिकारिक रिकॉर्ड, जो आयु, पहचान और राष्ट्रीयता के मुख्य प्रमा...</span>
+              <span data-lang-show="en">An official record of a person's birth issued by the local municipal body / Registrar of Births and Deaths, used as core proof of age, ident...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/death-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Death Certificate', 'hi': 'मृत्यु प्रमाण पत्र'}</span>
-              <span data-lang-show="en">{'en': 'Death Certificate', 'hi': 'मृत्यु प्रमाण पत्र'}</span>
+              <span data-lang-show="hi">मृत्यु प्रमाण पत्र</span>
+              <span data-lang-show="en">Death Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">किसी व्यक्ति की मृत्यु की तारीख, स्थान और कारण प्रमाणित करने वाला आधिकारिक रिकॉर्ड, जो स्थानीय जन्म-मृत्यु रजिस्ट्रार द्वारा जारी किया जाता ...</span>
+              <span data-lang-show="en">An official record certifying the date, place and cause of a person's death, issued by the local Registrar of Births and Deaths — required f...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/ration-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Ration Card', 'hi': 'राशन कार्ड'}</span>
-              <span data-lang-show="en">{'en': 'Ration Card', 'hi': 'राशन कार्ड'}</span>
+              <span data-lang-show="hi">राशन कार्ड</span>
+              <span data-lang-show="en">Ration Card</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">राज्य सरकारों द्वारा जारी एक आधिकारिक दस्तावेज़ जो परिवारों को सार्वजनिक वितरण प्रणाली (PDS) के माध्यम से सब्सिडी वाला खाद्यान्न खरीदने में ...</span>
+              <span data-lang-show="en">An official document issued by state governments enabling households to purchase subsidised food grains through the Public Distribution Syst...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/domicile-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Domicile / Residence Certificate', 'hi': 'अधिवास / निवास प्रमाण पत्र'}</span>
-              <span data-lang-show="en">{'en': 'Domicile / Residence Certificate', 'hi': 'अधिवास / निवास प्रमाण पत्र'}</span>
+              <span data-lang-show="hi">अधिवास / निवास प्रमाण पत्र</span>
+              <span data-lang-show="en">Domicile / Residence Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">राज्य द्वारा जारी एक दस्तावेज़ जो प्रमाणित करता है कि व्यक्ति उस राज्य का स्थायी निवासी है, आमतौर पर शिक्षा प्रवेश, राज्य सरकार की नौकरियों ...</span>
+              <span data-lang-show="en">A state-issued document certifying that a person is a permanent resident of that state, commonly required for education admissions, state go...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/caste-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Caste Certificate', 'hi': 'जाति प्रमाण पत्र'}</span>
-              <span data-lang-show="en">{'en': 'Caste Certificate', 'hi': 'जाति प्रमाण पत्र'}</span>
+              <span data-lang-show="hi">जाति प्रमाण पत्र</span>
+              <span data-lang-show="en">Caste Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">किसी व्यक्ति की जाति (SC/ST/OBC/EWS आदि) प्रमाणित करने वाला आधिकारिक दस्तावेज़ जो राज्य राजस्व प्राधिकरण द्वारा जारी किया जाता है, शिक्षा, न...</span>
+              <span data-lang-show="en">An official document certifying a person's caste (SC/ST/OBC/EWS etc.) issued by the state revenue authority, required to claim reservation b...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/income-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Income Certificate', 'hi': 'आय प्रमाण पत्र'}</span>
-              <span data-lang-show="en">{'en': 'Income Certificate', 'hi': 'आय प्रमाण पत्र'}</span>
+              <span data-lang-show="hi">आय प्रमाण पत्र</span>
+              <span data-lang-show="en">Income Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">किसी व्यक्ति या परिवार की वार्षिक आय प्रमाणित करने वाला राज्य द्वारा जारी दस्तावेज़, जो छात्रवृत्ति, शुल्क रियायत, EWS आरक्षण और विभिन्न कल्...</span>
+              <span data-lang-show="en">A state-issued document certifying the annual income of an individual or family, used for scholarships, fee concessions, EWS reservation and...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/marriage-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Marriage Certificate', 'hi': 'विवाह प्रमाण पत्र'}</span>
-              <span data-lang-show="en">{'en': 'Marriage Certificate', 'hi': 'विवाह प्रमाण पत्र'}</span>
+              <span data-lang-show="hi">विवाह प्रमाण पत्र</span>
+              <span data-lang-show="en">Marriage Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">एक कानूनी दस्तावेज़ जो प्रमाणित करता है कि दो व्यक्ति विवाहित हैं, जो हिंदू विवाह अधिनियम, विशेष विवाह अधिनियम, या लागू व्यक्तिगत कानून के त...</span>
+              <span data-lang-show="en">A legal document certifying that two individuals are married, registered under the Hindu Marriage Act, Special Marriage Act, or applicable p...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/disability-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Disability Certificate (UDID)', 'hi': 'दिव्यांगता प्रमाण पत्र (UDID)'}</span>
-              <span data-lang-show="en">{'en': 'Disability Certificate (UDID)', 'hi': 'दिव्यांगता प्रमाण पत्र (UDID)'}</span>
+              <span data-lang-show="hi">दिव्यांगता प्रमाण पत्र (UDID)</span>
+              <span data-lang-show="en">Disability Certificate (UDID)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">यूनिक डिसेबिलिटी आईडी (UDID) दिव्यांगजनों के लिए एक राष्ट्रव्यापी पहचान पत्र और प्रमाण पत्र है, जो सामाजिक न्याय और अधिकारिता मंत्रालय द्वार...</span>
+              <span data-lang-show="en">The Unique Disability ID (UDID) is a nationwide identity card and certificate for persons with disabilities, issued by the Ministry of Socia...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/senior-citizen-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Senior Citizen Certificate / Card', 'hi': 'वरिष्ठ नागरिक प्रमाण पत्र / कार्ड'}</span>
-              <span data-lang-show="en">{'en': 'Senior Citizen Certificate / Card', 'hi': 'वरिष्ठ नागरिक प्रमाण पत्र / कार्ड'}</span>
+              <span data-lang-show="hi">वरिष्ठ नागरिक प्रमाण पत्र / कार्ड</span>
+              <span data-lang-show="en">Senior Citizen Certificate / Card</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">60 वर्ष और उससे अधिक आयु के नागरिकों को राज्य सामाजिक कल्याण विभागों द्वारा जारी एक आयु-प्रमाण पहचान पत्र, जो यात्रा रियायत, स्वास्थ्य सेवा ...</span>
+              <span data-lang-show="en">An age-proof identity card issued by state social welfare departments to citizens aged 60 and above, enabling access to travel concessions, ...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/legal-heir-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Legal Heir Certificate', 'hi': 'कानूनी वारिस प्रमाण पत्र'}</span>
-              <span data-lang-show="en">{'en': 'Legal Heir Certificate', 'hi': 'कानूनी वारिस प्रमाण पत्र'}</span>
+              <span data-lang-show="hi">कानूनी वारिस प्रमाण पत्र</span>
+              <span data-lang-show="en">Legal Heir Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">राजस्व/तहसीलदार कार्यालय द्वारा जारी एक दस्तावेज़ जो किसी मृत व्यक्ति के कानूनी वारिसों की पहचान करता है, जिसका उपयोग संपत्ति हस्तांतरण, पें...</span>
+              <span data-lang-show="en">A document issued by the Revenue/Tehsildar office identifying the legal heirs of a deceased person, used to transfer property, claim pension...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/aadhaar-mobile-update.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Aadhaar Mobile Number Update', 'hi': 'आधार मोबाइल नंबर अपडेट'}</span>
-              <span data-lang-show="en">{'en': 'Aadhaar Mobile Number Update', 'hi': 'आधार मोबाइल नंबर अपडेट'}</span>
+              <span data-lang-show="hi">आधार मोबाइल नंबर अपडेट</span>
+              <span data-lang-show="en">Aadhaar Mobile Number Update</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आधार से अपना मोबाइल नंबर अपडेट या लिंक करें — OTP-आधारित सेवाओं, e-KYC, और UIDAI अलर्ट पाने के लिए ज़रूरी।</span>
+              <span data-lang-show="en">Update or link your mobile number with Aadhaar — required for OTP-based services, e-KYC, and receiving UIDAI alerts.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/character-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Character Certificate', 'hi': 'चरित्र प्रमाण पत्र'}</span>
-              <span data-lang-show="en">{'en': 'Character Certificate', 'hi': 'चरित्र प्रमाण पत्र'}</span>
+              <span data-lang-show="hi">चरित्र प्रमाण पत्र</span>
+              <span data-lang-show="en">Character Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आमतौर पर स्थानीय पुलिस द्वारा जारी एक आधिकारिक दस्तावेज़, जो प्रमाणित करता है कि व्यक्ति का कोई आपराधिक रिकॉर्ड नहीं है — नौकरी, प्रवेश, और ...</span>
+              <span data-lang-show="en">An official document, usually issued by local police, certifying that a person has no criminal record — commonly required for jobs, admissio...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/police-clearance-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Police Clearance Certificate (PCC / NOC)', 'hi': 'पुलिस क्लीयरेंस सर्टिफिकेट (PCC / NOC)'}</span>
-              <span data-lang-show="en">{'en': 'Police Clearance Certificate (PCC / NOC)', 'hi': 'पुलिस क्लीयरेंस सर्टिफिकेट (PCC / NOC)'}</span>
+              <span data-lang-show="hi">पुलिस क्लीयरेंस सर्टिफिकेट (PCC / NOC)</span>
+              <span data-lang-show="en">Police Clearance Certificate (PCC / NOC)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आवेदक के खिलाफ कोई लंबित आपराधिक मामला न होने की पुष्टि करने वाला प्रमाण पत्र, मुख्यतः विदेशी वीज़ा, आप्रवासन, और विदेशी रोज़गार के लिए उपयो...</span>
+              <span data-lang-show="en">A certificate confirming no pending criminal cases against the applicant, mainly used for foreign visas, immigration, and overseas employmen...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/special-intensive-revision-sir.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Special Intensive Revision (SIR) — Voter List Verification', 'hi': 'विशेष सघन पुनरीक्षण (SIR) — मतदाता सूची सत्यापन'}</span>
-              <span data-lang-show="en">{'en': 'Special Intensive Revision (SIR) — Voter List Verification', 'hi': 'विशेष सघन पुनरीक्षण (SIR) — मतदाता सूची सत्यापन'}</span>
+              <span data-lang-show="hi">विशेष सघन पुनरीक्षण (SIR) — मतदाता सूची सत्यापन</span>
+              <span data-lang-show="en">Special Intensive Revision (SIR) — Voter List Verification</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">भारत निर्वाचन आयोग द्वारा मतदाता सूची को दोबारा सत्यापित और अपडेट करने के लिए घर-घर और ऑनलाइन चलाया जा रहा अभियान, जो फिलहाल महाराष्ट्र सहित...</span>
+              <span data-lang-show="en">A door-to-door and online drive by the Election Commission of India to re-verify and update the electoral roll, currently underway in Mahara...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/abha-health-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'आभा डिजिटल हेल्थ कार्ड (ABHA Health Card)', 'en': 'ABHA Digital Health Card'}</span>
-              <span data-lang-show="en">{'hi': 'आभा डिजिटल हेल्थ कार्ड (ABHA Health Card)', 'en': 'ABHA Digital Health Card'}</span>
+              <span data-lang-show="hi">आभा डिजिटल हेल्थ कार्ड (ABHA Health Card)</span>
+              <span data-lang-show="en">ABHA Digital Health Card</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">आयुष्मान भारत डिजिटल मिशन के तहत 14 अंकों का डिजिटल हेल्थ आईडी कार्ड बनाएं।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आयुष्मान भारत डिजिटल मिशन के तहत 14 अंकों का डिजिटल हेल्थ आईडी कार्ड बनाएं।</span>
+              <span data-lang-show="en">Create your 14-digit digital health ID under Ayushman Bharat Digital Mission.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/smart-card-driving-license.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'स्मार्ट कार्ड ड्राइविंग लाइसेंस (Smart Card DL)', 'en': 'Smart Card Driving License'}</span>
-              <span data-lang-show="en">{'hi': 'स्मार्ट कार्ड ड्राइविंग लाइसेंस (Smart Card DL)', 'en': 'Smart Card Driving License'}</span>
+              <span data-lang-show="hi">स्मार्ट कार्ड ड्राइविंग लाइसेंस (Smart Card DL)</span>
+              <span data-lang-show="en">Smart Card Driving License</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">परिवहन सेवा पोर्टल से पुराना कागजी लाइसेंस स्मार्ट कार्ड चिप DL में बदलें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">परिवहन सेवा पोर्टल से पुराना कागजी लाइसेंस स्मार्ट कार्ड चिप DL में बदलें।</span>
+              <span data-lang-show="en">Convert paper Driving License into a Microchip Smart Card DL via Parivahan.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/minority-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'अल्पसंख्यक समुदाय प्रमाण पत्र (Minority Certificate)', 'en': 'Minority Community Certificate'}</span>
-              <span data-lang-show="en">{'hi': 'अल्पसंख्यक समुदाय प्रमाण पत्र (Minority Certificate)', 'en': 'Minority Community Certificate'}</span>
+              <span data-lang-show="hi">अल्पसंख्यक समुदाय प्रमाण पत्र (Minority Certificate)</span>
+              <span data-lang-show="en">Minority Community Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">मुस्लिम, सिख, ईसाई, बौद्ध, जैन व पारसी नागरिकों के लिए अल्पसंख्यक प्रमाण पत्र।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">मुस्लिम, सिख, ईसाई, बौद्ध, जैन व पारसी नागरिकों के लिए अल्पसंख्यक प्रमाण पत्र।</span>
+              <span data-lang-show="en">Official Minority Community Certificate for Muslim, Sikh, Christian, Jain, Buddhist and Parsi citizens.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/migrant-worker-registration.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'ई-श्रम प्रवासी मजदूर पहचान पत्र (Migrant Worker ID)', 'en': 'e-Shram Migrant Worker Registration'}</span>
-              <span data-lang-show="en">{'hi': 'ई-श्रम प्रवासी मजदूर पहचान पत्र (Migrant Worker ID)', 'en': 'e-Shram Migrant Worker Registration'}</span>
+              <span data-lang-show="hi">ई-श्रम प्रवासी मजदूर पहचान पत्र (Migrant Worker ID)</span>
+              <span data-lang-show="en">e-Shram Migrant Worker Registration</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">प्रवासी और असंगठित क्षेत्र के श्रमिकों के लिए राष्ट्रीय पहचान पत्र व ₹2 लाख दुर्घटना बीमा।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">प्रवासी और असंगठित क्षेत्र के श्रमिकों के लिए राष्ट्रीय पहचान पत्र व ₹2 लाख दुर्घटना बीमा।</span>
+              <span data-lang-show="en">National ID card and ₹2 Lakh accident cover for unorganized and migrant workers.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/senior-citizen-identity-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'वरिष्ठ नागरिक पहचान पत्र (Senior Citizen ID Card)', 'en': 'National Senior Citizen Identity Card'}</span>
-              <span data-lang-show="en">{'hi': 'वरिष्ठ नागरिक पहचान पत्र (Senior Citizen ID Card)', 'en': 'National Senior Citizen Identity Card'}</span>
+              <span data-lang-show="hi">वरिष्ठ नागरिक पहचान पत्र (Senior Citizen ID Card)</span>
+              <span data-lang-show="en">National Senior Citizen Identity Card</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">60 वर्ष से अधिक आयु के बुजुर्गों के लिए यात्रा, अस्पताल और पेंशन में विशेष छूट हेतु कार्ड।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">60 वर्ष से अधिक आयु के बुजुर्गों के लिए यात्रा, अस्पताल और पेंशन में विशेष छूट हेतु कार्ड।</span>
+              <span data-lang-show="en">Official Senior Citizen ID for travel concessions, hospital priority, and welfare benefits.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/transgender-certificate-identity-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'ट्रांसजेंडर पहचान पत्र व प्रमाण पत्र (Transgender ID)', 'en': 'National Transgender Certificate and ID'}</span>
-              <span data-lang-show="en">{'hi': 'ट्रांसजेंडर पहचान पत्र व प्रमाण पत्र (Transgender ID)', 'en': 'National Transgender Certificate and ID'}</span>
+              <span data-lang-show="hi">ट्रांसजेंडर पहचान पत्र व प्रमाण पत्र (Transgender ID)</span>
+              <span data-lang-show="en">National Transgender Certificate and ID</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">सामाजिक न्याय मंत्रालय के राष्ट्रीय पोर्टल से आधिकारिक ट्रांसजेंडर पहचान पत्र आवेदन।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सामाजिक न्याय मंत्रालय के राष्ट्रीय पोर्टल से आधिकारिक ट्रांसजेंडर पहचान पत्र आवेदन।</span>
+              <span data-lang-show="en">Apply for official Transgender Identity Card and Certificate from Ministry of Social Justice.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/farmer-id-card-agristack.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'किसान पहचान पत्र (AgriStack Farmer ID Card)', 'en': 'Digital Farmer ID Card (AgriStack)'}</span>
-              <span data-lang-show="en">{'hi': 'किसान पहचान पत्र (AgriStack Farmer ID Card)', 'en': 'Digital Farmer ID Card (AgriStack)'}</span>
+              <span data-lang-show="hi">किसान पहचान पत्र (AgriStack Farmer ID Card)</span>
+              <span data-lang-show="en">Digital Farmer ID Card (AgriStack)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">डिजिटल कृषि मिशन के तहत किसान की जमीन और फसल रिकॉर्ड से लिंक 12 अंकों का डिजिटल कार्ड।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">डिजिटल कृषि मिशन के तहत किसान की जमीन और फसल रिकॉर्ड से लिंक 12 अंकों का डिजिटल कार्ड।</span>
+              <span data-lang-show="en">Unique 12-digit Digital Farmer ID linked to land records for direct fertilizer and crop subsidies.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/street-vendor-identity-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम स्वनिधि विक्रेता पहचान पत्र (Vendor QR Card)', 'en': 'PM SVANidhi Street Vendor ID Card'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम स्वनिधि विक्रेता पहचान पत्र (Vendor QR Card)', 'en': 'PM SVANidhi Street Vendor ID Card'}</span>
+              <span data-lang-show="hi">पीएम स्वनिधि विक्रेता पहचान पत्र (Vendor QR Card)</span>
+              <span data-lang-show="en">PM SVANidhi Street Vendor ID Card</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">रेहड़ी-पटरी और स्ट्रीट वेंडर्स के लिए नगर निगम स्वीकृत डिजिटल वेंडर कार्ड।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">रेहड़ी-पटरी और स्ट्रीट वेंडर्स के लिए नगर निगम स्वीकृत डिजिटल वेंडर कार्ड।</span>
+              <span data-lang-show="en">Municipal approved Digital Street Vendor ID Card and QR Code for PM SVANidhi micro-loans.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/state-domicile-praman-patra.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'मूल निवास प्रमाण पत्र (State Domicile Certificate)', 'en': 'Permanent Residence Domicile Certificate'}</span>
-              <span data-lang-show="en">{'hi': 'मूल निवास प्रमाण पत्र (State Domicile Certificate)', 'en': 'Permanent Residence Domicile Certificate'}</span>
+              <span data-lang-show="hi">मूल निवास प्रमाण पत्र (State Domicile Certificate)</span>
+              <span data-lang-show="en">Permanent Residence Domicile Certificate</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">राज्य में न्यूनतम 10-15 वर्ष से निवास का आधिकारिक सरकारी प्रमाण पत्र।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">राज्य में न्यूनतम 10-15 वर्ष से निवास का आधिकारिक सरकारी प्रमाण पत्र।</span>
+              <span data-lang-show="en">Official State Domicile Certificate required for state jobs, quota admissions and schemes.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/e-voter-epic-download.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'डिजिटल ई-एपिक वोटर कार्ड (e-EPIC Download)', 'en': 'Digital e-EPIC Voter ID Card Download'}</span>
-              <span data-lang-show="en">{'hi': 'डिजिटल ई-एपिक वोटर कार्ड (e-EPIC Download)', 'en': 'Digital e-EPIC Voter ID Card Download'}</span>
+              <span data-lang-show="hi">डिजिटल ई-एपिक वोटर कार्ड (e-EPIC Download)</span>
+              <span data-lang-show="en">Digital e-EPIC Voter ID Card Download</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">चुनाव आयोग के मतदाता सेवा पोर्टल से ओरिजिनल डिजिटल वोटर आईडी पीडीएफ़ डाउनलोड करें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">चुनाव आयोग के मतदाता सेवा पोर्टल से ओरिजिनल डिजिटल वोटर आईडी पीडीएफ़ डाउनलोड करें।</span>
+              <span data-lang-show="en">Download official PDF digital e-EPIC Voter Card directly from Election Commission of India.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
       </div>
     </section>

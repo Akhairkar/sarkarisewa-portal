@@ -92,6 +92,41 @@
       border-color: #223244 !important;
       color: #E8EDF3 !important;
     }
+
+    /* Language Toggle Visibility Rules */
+    html[lang="hi"] [data-lang-show="en"],
+    html:not([lang="en"]) [data-lang-show="en"] {
+      display: none !important;
+    }
+    html[lang="en"] [data-lang-show="hi"] {
+      display: none !important;
+    }
+    html[lang="hi"] span[data-lang-show="hi"],
+    html:not([lang="en"]) span[data-lang-show="hi"] {
+      display: inline !important;
+    }
+    html[lang="en"] span[data-lang-show="en"] {
+      display: inline !important;
+    }
+    html[lang="hi"] div[data-lang-show="hi"],
+    html[lang="hi"] p[data-lang-show="hi"],
+    html[lang="hi"] h1[data-lang-show="hi"],
+    html[lang="hi"] h2[data-lang-show="hi"],
+    html[lang="hi"] h3[data-lang-show="hi"],
+    html:not([lang="en"]) div[data-lang-show="hi"],
+    html:not([lang="en"]) p[data-lang-show="hi"],
+    html:not([lang="en"]) h1[data-lang-show="hi"],
+    html:not([lang="en"]) h2[data-lang-show="hi"],
+    html:not([lang="en"]) h3[data-lang-show="hi"] {
+      display: block !important;
+    }
+    html[lang="en"] div[data-lang-show="en"],
+    html[lang="en"] p[data-lang-show="en"],
+    html[lang="en"] h1[data-lang-show="en"],
+    html[lang="en"] h2[data-lang-show="en"],
+    html[lang="en"] h3[data-lang-show="en"] {
+      display: block !important;
+    }
   </style>
 
   <script type="application/ld+json" id="category-schema">
@@ -268,8 +303,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">इनकम टैक्स ई-फाइलिंग 2.0, न्यू vs ओल्ड टैक्स रिजीम तुलना, फॉर्म 16, 26AS व AIS/TIS रिपोर्ट।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/epfo-services.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -279,8 +314,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">UAN एक्टिवेशन, 8.25% ब्याज, ईपीएफ पासबुक डाउनलोड व Form 19/10C/31 ऑनलाइन क्लेम।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/gst-registration-return.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -290,8 +325,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">नया जीएसटी पंजीकरण (GSTIN), मासिक GSTR-1 व GSTR-3B रिटर्न, ई-वे बिल व इनपुट टैक्स क्रेडिट।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/national-pension-system.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -301,8 +336,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">PFRDA द्वारा विनियमित पेंशन खाता, PRAN कार्ड डाउनलोड, 80CCD(1B) में ₹50,000 अतिरिक्त टैक्स छूट।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../tools/savings-comparator.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -312,8 +347,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">पब्लिक प्रोविडेंट फंड (7.1%), सुकन्या समृद्धि (8.2%), सीनियर सिटीजन स्कीम (8.2%) व EEE टैक्स छूट।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/kisan-credit-card.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -323,8 +358,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">किसानों को मात्र 4% ब्याज पर ₹3 लाख तक का अल्पकालिक फसली ऋण व पशुपालन/मत्स्य पालन लिमिट।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
       </div>
@@ -340,262 +375,418 @@
         <a class="service-card" href="../service/itr-penalty-calculator.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Late Filing Penalty Calculator (ITR)', 'hi': 'ITR लेट फाइलिंग पेनल्टी कैलकुलेटर'}</span>
-              <span data-lang-show="en">{'en': 'Late Filing Penalty Calculator (ITR)', 'hi': 'ITR लेट फाइलिंग पेनल्टी कैलकुलेटर'}</span>
+              <span data-lang-show="hi">ITR लेट फाइलिंग पेनल्टी कैलकुलेटर</span>
+              <span data-lang-show="en">Late Filing Penalty Calculator (ITR)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आयकर रिटर्न (ITR) देरी से दाखिल करने पर लगने वाले जुर्माने (234F) और ब्याज (234A) की गणना करें।</span>
+              <span data-lang-show="en">Calculate your exact penalty and interest for filing your Income Tax Return after the deadline.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/gst.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'GST Registration', 'hi': 'जीएसटी पंजीकरण'}</span>
-              <span data-lang-show="en">{'en': 'GST Registration', 'hi': 'जीएसटी पंजीकरण'}</span>
+              <span data-lang-show="hi">जीएसटी पंजीकरण</span>
+              <span data-lang-show="en">GST Registration</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">वस्तु एवं सेवा कर पंजीकरण और फाइलिंग पोर्टल।</span>
+              <span data-lang-show="en">Goods and Services Tax registration and filing portal.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/epfo.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'EPFO / Provident Fund', 'hi': 'ईपीएफओ / भविष्य निधि'}</span>
-              <span data-lang-show="en">{'en': 'EPFO / Provident Fund', 'hi': 'ईपीएफओ / भविष्य निधि'}</span>
+              <span data-lang-show="hi">ईपीएफओ / भविष्य निधि</span>
+              <span data-lang-show="en">EPFO / Provident Fund</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">कर्मचारी भविष्य निधि संगठन सदस्य सेवाएँ।</span>
+              <span data-lang-show="en">Employees' Provident Fund Organisation member services.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/digilocker.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'DigiLocker', 'hi': 'डिजिलॉकर'}</span>
-              <span data-lang-show="en">{'en': 'DigiLocker', 'hi': 'डिजिलॉकर'}</span>
+              <span data-lang-show="hi">डिजिलॉकर</span>
+              <span data-lang-show="en">DigiLocker</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आधिकारिक दस्तावेज़ों को डिजिटल रूप से संग्रहीत और सत्यापित करने का क्लाउड प्लेटफॉर्म।</span>
+              <span data-lang-show="en">Cloud-based platform to store and verify official documents digitally.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/income-tax-return-filing.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Income Tax Return (ITR) Filing', 'hi': 'आयकर रिटर्न (ITR) फाइलिंग'}</span>
-              <span data-lang-show="en">{'en': 'Income Tax Return (ITR) Filing', 'hi': 'आयकर रिटर्न (ITR) फाइलिंग'}</span>
+              <span data-lang-show="hi">आयकर रिटर्न (ITR) फाइलिंग</span>
+              <span data-lang-show="en">Income Tax Return (ITR) Filing</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आय की घोषणा, कटौतियों का दावा, और कर का भुगतान/रिफंड का दावा करने के लिए आयकर विभाग के साथ आय विवरण की वार्षिक फाइलिंग।</span>
+              <span data-lang-show="en">Annual filing of income details with the Income Tax Department to declare income, claim deductions, and pay/claim refund of tax.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/aadhaar-pan-linking.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Aadhaar-PAN Linking', 'hi': 'आधार-पैन लिंकिंग'}</span>
-              <span data-lang-show="en">{'en': 'Aadhaar-PAN Linking', 'hi': 'आधार-पैन लिंकिंग'}</span>
+              <span data-lang-show="hi">आधार-पैन लिंकिंग</span>
+              <span data-lang-show="en">Aadhaar-PAN Linking</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">वित्तीय लेनदेन और कर फाइलिंग के लिए अपने पैन को सक्रिय रखने हेतु अपने आधार नंबर को पैन कार्ड से जोड़ना अनिवार्य है।</span>
+              <span data-lang-show="en">Mandatory linking of your Aadhaar number with your PAN card to keep your PAN operative for financial transactions and tax filing.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/national-pension-system.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'National Pension System (NPS)', 'hi': 'राष्ट्रीय पेंशन प्रणाली (NPS)'}</span>
-              <span data-lang-show="en">{'en': 'National Pension System (NPS)', 'hi': 'राष्ट्रीय पेंशन प्रणाली (NPS)'}</span>
+              <span data-lang-show="hi">राष्ट्रीय पेंशन प्रणाली (NPS)</span>
+              <span data-lang-show="en">National Pension System (NPS)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">PFRDA द्वारा विनियमित एक स्वैच्छिक, बाज़ार-लिंक्ड सेवानिवृत्ति बचत योजना, जो सरकारी और निजी-क्षेत्र के कर्मचारियों सहित सभी भारतीय नागरिकों ...</span>
+              <span data-lang-show="en">A voluntary, market-linked retirement savings scheme regulated by PFRDA, open to all Indian citizens including government and private-sector...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/public-provident-fund.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Public Provident Fund (PPF)', 'hi': 'सार्वजनिक भविष्य निधि (PPF)'}</span>
-              <span data-lang-show="en">{'en': 'Public Provident Fund (PPF)', 'hi': 'सार्वजनिक भविष्य निधि (PPF)'}</span>
+              <span data-lang-show="hi">सार्वजनिक भविष्य निधि (PPF)</span>
+              <span data-lang-show="en">Public Provident Fund (PPF)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">एक दीर्घकालिक, सरकार समर्थित बचत योजना जो कर-मुक्त, गारंटीकृत ब्याज प्रदान करती है, सेवानिवृत्ति और धारा 80C के तहत कर-बचत के लिए लोकप्रिय।</span>
+              <span data-lang-show="en">A long-term, government-backed savings scheme offering tax-free, guaranteed interest, popular for retirement and tax-saving under Section 80...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/credit-score-report.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Free Annual Credit Report & Score', 'hi': 'मुफ्त वार्षिक क्रेडिट रिपोर्ट और स्कोर'}</span>
-              <span data-lang-show="en">{'en': 'Free Annual Credit Report & Score', 'hi': 'मुफ्त वार्षिक क्रेडिट रिपोर्ट और स्कोर'}</span>
+              <span data-lang-show="hi">मुफ्त वार्षिक क्रेडिट रिपोर्ट और स्कोर</span>
+              <span data-lang-show="en">Free Annual Credit Report & Score</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">प्रत्येक व्यक्ति को RBI-अधिकृत प्रत्येक क्रेडिट ब्यूरो से प्रति वर्ष एक मुफ्त पूर्ण क्रेडिट रिपोर्ट मिलती है, जो आपका क्रेडिट स्कोर और ऋण इत...</span>
+              <span data-lang-show="en">Every individual is entitled to one free full credit report per year from each RBI-authorised credit bureau, showing your credit score and l...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/bank-locker-nomination.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Bank Locker Nomination & Rules', 'hi': 'बैंक लॉकर नामांकन और नियम'}</span>
-              <span data-lang-show="en">{'en': 'Bank Locker Nomination & Rules', 'hi': 'बैंक लॉकर नामांकन और नियम'}</span>
+              <span data-lang-show="hi">बैंक लॉकर नामांकन और नियम</span>
+              <span data-lang-show="en">Bank Locker Nomination & Rules</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">बैंक सुरक्षित जमा लॉकर किराए पर लेने के लिए RBI-अनिवार्य नियम, जिसमें नामांकन सुविधा और बैंकों के लिए अद्यतन दायित्व शर्तें शामिल हैं।</span>
+              <span data-lang-show="en">RBI-mandated rules for renting a bank safe deposit locker, including nomination facility and updated liability terms for banks.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/upi-payments.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'UPI (Unified Payments Interface) Registration', 'hi': 'यूपीआई (एकीकृत भुगतान इंटरफेस) पंजीकरण'}</span>
-              <span data-lang-show="en">{'en': 'UPI (Unified Payments Interface) Registration', 'hi': 'यूपीआई (एकीकृत भुगतान इंटरफेस) पंजीकरण'}</span>
+              <span data-lang-show="hi">यूपीआई (एकीकृत भुगतान इंटरफेस) पंजीकरण</span>
+              <span data-lang-show="en">UPI (Unified Payments Interface) Registration</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">NPCI की तत्काल, चौबीसों घंटे भुगतान प्रणाली जो मोबाइल ऐप और वर्चुअल भुगतान पते का उपयोग करके बैंक खातों के बीच धन हस्तांतरण की अनुमति देती ह...</span>
+              <span data-lang-show="en">NPCI's instant, round-the-clock payment system allowing money transfer between bank accounts using a mobile app and a virtual payment addres...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/tds-refund-status.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'TDS Refund Status', 'hi': 'TDS रिफंड स्टेटस'}</span>
-              <span data-lang-show="en">{'en': 'TDS Refund Status', 'hi': 'TDS रिफंड स्टेटस'}</span>
+              <span data-lang-show="hi">TDS रिफंड स्टेटस</span>
+              <span data-lang-show="en">TDS Refund Status</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">जब आपकी आय से अतिरिक्त TDS (स्रोत पर कर कटौती) काटा गया हो, तो अपने आयकर रिफंड की स्थिति जांचें।</span>
+              <span data-lang-show="en">Check the status of your income tax refund when excess TDS (Tax Deducted at Source) has been deducted from your income.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/form16-form26as.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Form 16 / Form 26AS', 'hi': 'फॉर्म 16 / फॉर्म 26AS'}</span>
-              <span data-lang-show="en">{'en': 'Form 16 / Form 26AS', 'hi': 'फॉर्म 16 / फॉर्म 26AS'}</span>
+              <span data-lang-show="hi">फॉर्म 16 / फॉर्म 26AS</span>
+              <span data-lang-show="en">Form 16 / Form 26AS</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">फॉर्म 16 आपके नियोक्ता का TDS प्रमाण पत्र है; फॉर्म 26AS आपका समेकित कर क्रेडिट विवरण है — सही इनकम टैक्स रिटर्न भरने के लिए दोनों ज़रूरी है...</span>
+              <span data-lang-show="en">Form 16 is your employer's TDS certificate; Form 26AS is your consolidated tax credit statement — both essential for filing an accurate inco...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/kisan-credit-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Kisan Credit Card (KCC)', 'hi': 'किसान क्रेडिट कार्ड (KCC)'}</span>
-              <span data-lang-show="en">{'en': 'Kisan Credit Card (KCC)', 'hi': 'किसान क्रेडिट कार्ड (KCC)'}</span>
+              <span data-lang-show="hi">किसान क्रेडिट कार्ड (KCC)</span>
+              <span data-lang-show="en">Kisan Credit Card (KCC)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">किसानों को अल्पकालिक खेती, कटाई-बाद, और संबद्ध कृषि खर्चों के लिए रियायती ब्याज दर पर ऋण सुविधा देने वाली योजना।</span>
+              <span data-lang-show="en">A credit facility for farmers to meet short-term cultivation, post-harvest, and allied agricultural expenses at concessional interest rates.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/sovereign-gold-bond.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Sovereign Gold Bond (SGB)', 'hi': 'सॉवरेन गोल्ड बॉन्ड (SGB)'}</span>
-              <span data-lang-show="en">{'en': 'Sovereign Gold Bond (SGB)', 'hi': 'सॉवरेन गोल्ड बॉन्ड (SGB)'}</span>
+              <span data-lang-show="hi">सॉवरेन गोल्ड बॉन्ड (SGB)</span>
+              <span data-lang-show="en">Sovereign Gold Bond (SGB)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सोने के ग्राम में मूल्यांकित सरकारी प्रतिभूतियां, जो फिजिकल सोना रखने का विकल्प देती हैं, आवधिक ब्याज के साथ और भंडारण के जोखिम के बिना।</span>
+              <span data-lang-show="en">Government securities denominated in grams of gold, offering an alternative to holding physical gold, with periodic interest and no storage ...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/udyam-registration.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Udyam Registration (MSME)', 'hi': 'उद्यम पंजीकरण (MSME)'}</span>
-              <span data-lang-show="en">{'en': 'Udyam Registration (MSME)', 'hi': 'उद्यम पंजीकरण (MSME)'}</span>
+              <span data-lang-show="hi">उद्यम पंजीकरण (MSME)</span>
+              <span data-lang-show="en">Udyam Registration (MSME)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सूक्ष्म, लघु, और मध्यम उद्यमों के लिए मुफ़्त ऑनलाइन पंजीकरण, जो प्राथमिकता-क्षेत्र ऋण, सब्सिडी, और निविदा वरीयता देता है।</span>
+              <span data-lang-show="en">Free online registration for Micro, Small, and Medium Enterprises, unlocking priority-sector lending, subsidies, and tender preferences.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/tms-advance-tax-payment.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'एडवांस टैक्स ऑनलाइन भुगतान (e-Pay Advance Tax)', 'en': 'Online Advance Tax Payment'}</span>
-              <span data-lang-show="en">{'hi': 'एडवांस टैक्स ऑनलाइन भुगतान (e-Pay Advance Tax)', 'en': 'Online Advance Tax Payment'}</span>
+              <span data-lang-show="hi">एडवांस टैक्स ऑनलाइन भुगतान (e-Pay Advance Tax)</span>
+              <span data-lang-show="en">Online Advance Tax Payment</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">आयकर पोर्टल से 15 जून, 15 सितंबर, 15 दिसंबर व 15 मार्च की किश्तों में एडवांस टैक्स भरें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आयकर पोर्टल से 15 जून, 15 सितंबर, 15 दिसंबर व 15 मार्च की किश्तों में एडवांस टैक्स भरें।</span>
+              <span data-lang-show="en">Pay quarterly advance income tax online via NSDL / Income Tax e-Pay Tax portal.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/eis-employee-insurance-claim.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'ईएससी कर्मचारी राज्य बीमा दावा (ESIC Claim Portal)', 'en': 'ESIC Medical and Cash Benefit Claim'}</span>
-              <span data-lang-show="en">{'hi': 'ईएससी कर्मचारी राज्य बीमा दावा (ESIC Claim Portal)', 'en': 'ESIC Medical and Cash Benefit Claim'}</span>
+              <span data-lang-show="hi">ईएससी कर्मचारी राज्य बीमा दावा (ESIC Claim Portal)</span>
+              <span data-lang-show="en">ESIC Medical and Cash Benefit Claim</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">ईएसआई कॉर्पोरेशन से मुफ्त इलाज, बीमारी भत्ता और दुर्घटना मुआबजा ऑनलाइन दावा करें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">ईएसआई कॉर्पोरेशन से मुफ्त इलाज, बीमारी भत्ता और दुर्घटना मुआबजा ऑनलाइन दावा करें।</span>
+              <span data-lang-show="en">File online ESIC medical reimbursement, sickness benefit, and maternity benefit claims.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/gst-lut-filing-export.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'जीएसटी एलयूटी लेटर ऑफ अंडरटेकिंग (GST LUT Filing)', 'en': 'GST LUT Online Filing for Exports'}</span>
-              <span data-lang-show="en">{'hi': 'जीएसटी एलयूटी लेटर ऑफ अंडरटेकिंग (GST LUT Filing)', 'en': 'GST LUT Online Filing for Exports'}</span>
+              <span data-lang-show="hi">जीएसटी एलयूटी लेटर ऑफ अंडरटेकिंग (GST LUT Filing)</span>
+              <span data-lang-show="en">GST LUT Online Filing for Exports</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">बिना जीएसटी चुकाए निर्यात और एसईजेड आपूर्ति हेतु वार्षिक Form GST RFD-11 ऑनलाइन भरें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">बिना जीएसटी चुकाए निर्यात और एसईजेड आपूर्ति हेतु वार्षिक Form GST RFD-11 ऑनलाइन भरें।</span>
+              <span data-lang-show="en">File Form GST RFD-11 online for exporting goods and services without IGST payment.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/sovereign-gold-bond-online.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'सोवरेन गोल्ड बॉन्ड आरबीआई (Sovereign Gold Bond SGB)', 'en': 'RBI Sovereign Gold Bond Online'}</span>
-              <span data-lang-show="en">{'hi': 'सोवरेन गोल्ड बॉन्ड आरबीआई (Sovereign Gold Bond SGB)', 'en': 'RBI Sovereign Gold Bond Online'}</span>
+              <span data-lang-show="hi">सोवरेन गोल्ड बॉन्ड आरबीआई (Sovereign Gold Bond SGB)</span>
+              <span data-lang-show="en">RBI Sovereign Gold Bond Online</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">आरबीआई द्वारा जारी 2.5% वार्षिक ब्याज व 100% टैक्स फ्री कैपिटल गेन वाली गोल्ड बॉन्ड योजना।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आरबीआई द्वारा जारी 2.5% वार्षिक ब्याज व 100% टैक्स फ्री कैपिटल गेन वाली गोल्ड बॉन्ड योजना।</span>
+              <span data-lang-show="en">RBI issued government gold bonds offering 2.5% fixed interest and tax-free maturity returns.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/udyam-msme-re-registration.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'उद्योग आधार / उद्यम एमएसएमई नवीनीकरण (Udyam Certificate)', 'en': 'Udyam MSME Certificate Download'}</span>
-              <span data-lang-show="en">{'hi': 'उद्योग आधार / उद्यम एमएसएमई नवीनीकरण (Udyam Certificate)', 'en': 'Udyam MSME Certificate Download'}</span>
+              <span data-lang-show="hi">उद्योग आधार / उद्यम एमएसएमई नवीनीकरण (Udyam Certificate)</span>
+              <span data-lang-show="en">Udyam MSME Certificate Download</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">एमएसएमई मंत्रालय के पोर्टल से उद्यम प्रमाण पत्र डाउनलोड व विवरण अपडेट करें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">एमएसएमई मंत्रालय के पोर्टल से उद्यम प्रमाण पत्र डाउनलोड व विवरण अपडेट करें।</span>
+              <span data-lang-show="en">Download, print and update official Ministry of MSME Udyam Registration Certificate.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/ais-annual-information-statement.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'वार्षिक सूचना विवरण (AIS / TIS Income Tax)', 'en': 'Annual Information Statement (AIS)'}</span>
-              <span data-lang-show="en">{'hi': 'वार्षिक सूचना विवरण (AIS / TIS Income Tax)', 'en': 'Annual Information Statement (AIS)'}</span>
+              <span data-lang-show="hi">वार्षिक सूचना विवरण (AIS / TIS Income Tax)</span>
+              <span data-lang-show="en">Annual Information Statement (AIS)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">आयकर पोर्टल से अपने सभी बैंक ब्याज, शेयर, म्यूचुअल फंड व टीडीएस लेनदेन का विवरण डाउनलोड करें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आयकर पोर्टल से अपने सभी बैंक ब्याज, शेयर, म्यूचुअल फंड व टीडीएस लेनदेन का विवरण डाउनलोड करें।</span>
+              <span data-lang-show="en">View and download Comprehensive Annual Information Statement (AIS) for ITR filing.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/nps-tier2-account-activation.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'एनपीएस टियर-2 खाता ऑनलाइन (NPS Tier-II Activation)', 'en': 'National Pension System Tier-II'}</span>
-              <span data-lang-show="en">{'hi': 'एनपीएस टियर-2 खाता ऑनलाइन (NPS Tier-II Activation)', 'en': 'National Pension System Tier-II'}</span>
+              <span data-lang-show="hi">एनपीएस टियर-2 खाता ऑनलाइन (NPS Tier-II Activation)</span>
+              <span data-lang-show="en">National Pension System Tier-II</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">एनपीएस टियर-1 खाताधारकों के लिए बिना किसी लॉक-इन के फ्लेक्सिबल निवेश टियर-2 खाता।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">एनपीएस टियर-1 खाताधारकों के लिए बिना किसी लॉक-इन के फ्लेक्सिबल निवेश टियर-2 खाता।</span>
+              <span data-lang-show="en">Activate voluntary withdrawable investment Tier-II account for existing PRAN holders.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/epfo-higher-pension-option.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'ईपीएफओ उच्च पेंशन संयुक्त विकल्प (EPFO Higher Pension)', 'en': 'EPFO EPS-95 Higher Pension Option'}</span>
-              <span data-lang-show="en">{'hi': 'ईपीएफओ उच्च पेंशन संयुक्त विकल्प (EPFO Higher Pension)', 'en': 'EPFO EPS-95 Higher Pension Option'}</span>
+              <span data-lang-show="hi">ईपीएफओ उच्च पेंशन संयुक्त विकल्प (EPFO Higher Pension)</span>
+              <span data-lang-show="en">EPFO EPS-95 Higher Pension Option</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">वास्तविक वेतन पर पेंशन पाने के लिए ईपीएफओ यूनिफाइड पोर्टल से ऑनलाइन आवेदन ट्रेस करें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">वास्तविक वेतन पर पेंशन पाने के लिए ईपीएफओ यूनिफाइड पोर्टल से ऑनलाइन आवेदन ट्रेस करें।</span>
+              <span data-lang-show="en">Submit and track EPS-95 Higher Pension joint option application on EPFO Portal.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/form-15g-15h-submission.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'फॉर्म 15G / 15H ऑनलाइन जमा (TDS Zero Deduction)', 'en': 'Form 15G / 15H Zero Tax Deduction'}</span>
-              <span data-lang-show="en">{'hi': 'फॉर्म 15G / 15H ऑनलाइन जमा (TDS Zero Deduction)', 'en': 'Form 15G / 15H Zero Tax Deduction'}</span>
+              <span data-lang-show="hi">फॉर्म 15G / 15H ऑनलाइन जमा (TDS Zero Deduction)</span>
+              <span data-lang-show="en">Form 15G / 15H Zero Tax Deduction</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">बैंक एफडी/ईपीएफ पर बिना टैक्स कटौती के ब्याज पाने हेतु फॉर्म 15G (वरिष्ठ नागरिक हेतु 15H) भरें।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">बैंक एफडी/ईपीएफ पर बिना टैक्स कटौती के ब्याज पाने हेतु फॉर्म 15G (वरिष्ठ नागरिक हेतु 15H) भरें।</span>
+              <span data-lang-show="en">Submit Form 15G / 15H online to banks and EPFO to prevent TDS deduction on interest.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/cgstmse-loan-guarantee.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'सीजीटीएमएसई बिना गारंटी बिजनेस लोन (CGTMSE Coverage)', 'en': 'CGTMSE Collateral-Free Guarantee'}</span>
-              <span data-lang-show="en">{'hi': 'सीजीटीएमएसई बिना गारंटी बिजनेस लोन (CGTMSE Coverage)', 'en': 'CGTMSE Collateral-Free Guarantee'}</span>
+              <span data-lang-show="hi">सीजीटीएमएसई बिना गारंटी बिजनेस लोन (CGTMSE Coverage)</span>
+              <span data-lang-show="en">CGTMSE Collateral-Free Guarantee</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">सूक्ष्म व लघु उद्योगों को बिना संपत्ति गिरवी रखे ₹5 करोड़ तक का बैंक लोन गारंटी कवर।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सूक्ष्म व लघु उद्योगों को बिना संपत्ति गिरवी रखे ₹5 करोड़ तक का बैंक लोन गारंटी कवर।</span>
+              <span data-lang-show="en">Government credit guarantee cover up to ₹5 Crore for MSME business loans without collateral.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
       </div>
     </section>

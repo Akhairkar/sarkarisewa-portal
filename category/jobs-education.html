@@ -92,6 +92,41 @@
       border-color: #223244 !important;
       color: #E8EDF3 !important;
     }
+
+    /* Language Toggle Visibility Rules */
+    html[lang="hi"] [data-lang-show="en"],
+    html:not([lang="en"]) [data-lang-show="en"] {
+      display: none !important;
+    }
+    html[lang="en"] [data-lang-show="hi"] {
+      display: none !important;
+    }
+    html[lang="hi"] span[data-lang-show="hi"],
+    html:not([lang="en"]) span[data-lang-show="hi"] {
+      display: inline !important;
+    }
+    html[lang="en"] span[data-lang-show="en"] {
+      display: inline !important;
+    }
+    html[lang="hi"] div[data-lang-show="hi"],
+    html[lang="hi"] p[data-lang-show="hi"],
+    html[lang="hi"] h1[data-lang-show="hi"],
+    html[lang="hi"] h2[data-lang-show="hi"],
+    html[lang="hi"] h3[data-lang-show="hi"],
+    html:not([lang="en"]) div[data-lang-show="hi"],
+    html:not([lang="en"]) p[data-lang-show="hi"],
+    html:not([lang="en"]) h1[data-lang-show="hi"],
+    html:not([lang="en"]) h2[data-lang-show="hi"],
+    html:not([lang="en"]) h3[data-lang-show="hi"] {
+      display: block !important;
+    }
+    html[lang="en"] div[data-lang-show="en"],
+    html[lang="en"] p[data-lang-show="en"],
+    html[lang="en"] h1[data-lang-show="en"],
+    html[lang="en"] h2[data-lang-show="en"],
+    html[lang="en"] h3[data-lang-show="en"] {
+      display: block !important;
+    }
   </style>
 
   <script type="application/ld+json" id="category-schema">
@@ -268,8 +303,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">SSC OTR पंजीकरण, CGL, CHSL, MTS, GD कांस्टेबल व स्टेनोग्राफर परीक्षा कैलेंडर व एडमिट कार्ड।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/national-scholarship-portal.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -279,8 +314,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">अल्पसंख्यक, एससी/एसटी, ओबीसी व दिव्यांग छात्रों के लिए प्री-मैट्रिक व पोस्ट-मैट्रिक छात्रवृत्तियां।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/national-apprenticeship-scheme.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -290,8 +325,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">ITI, डिप्लोमा व ग्रेजुएट्स हेतु उद्योगों में ऑन-जॉब ट्रेनिंग और ₹1,500 प्रति माह सरकारी स्टाइपेंड डीबीटी।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/ncs-national-career-service.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -301,8 +336,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">श्रम मंत्रालय का रोजगार एक्सचेंज पोर्टल, 35 लाख+ एक्टिव जॉब्स, करियर काउंसलिंग व रोजगार मेले।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/education-loan-vidyalakshmi.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -312,8 +347,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">शीर्ष 860 उच्च शिक्षण संस्थानों में प्रवेश लेने वाले मेधावी छात्रों को 7.5% तक ब्याज-सब्सिडी लोन।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
         <a href="../service/academic-bank-of-credits-abc-id.html" style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: 22px; text-decoration: none; color: var(--color-text); box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease;">
@@ -323,8 +358,8 @@
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">सीबीएसई, आईसीएसई, राज्य बोर्डों व विश्वविद्यालयों की डिजिटल 10वीं/12वीं/डिग्री मार्कशीट का सत्यापन।</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>
       </div>
@@ -340,312 +375,498 @@
         <a class="service-card" href="../service/indian-navy-agniveer-ssr-recruitment-2026.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Indian Navy Agniveer SSR Recruitment 2026', 'hi': 'Indian Navy Agniveer SSR Recruitment 2026'}</span>
-              <span data-lang-show="en">{'en': 'Indian Navy Agniveer SSR Recruitment 2026', 'hi': 'Indian Navy Agniveer SSR Recruitment 2026'}</span>
+              <span data-lang-show="hi">Indian Navy Agniveer SSR Recruitment 2026</span>
+              <span data-lang-show="en">Indian Navy Agniveer SSR Recruitment 2026</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">Indian Navy (Defence) · All India | 2,500+ posts | Eligibility: 12th Pass with PCM | Last Date: 10 November 2026</span>
+              <span data-lang-show="en">Indian Navy (Defence) · All India | 2,500+ posts | Eligibility: 12th Pass with PCM | Last Date: 10 November 2026</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/india-post-gds-recruitment-2026.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'India Post GDS (Gramin Dak Sevak) 2026', 'hi': 'India Post GDS (Gramin Dak Sevak) 2026'}</span>
-              <span data-lang-show="en">{'en': 'India Post GDS (Gramin Dak Sevak) 2026', 'hi': 'India Post GDS (Gramin Dak Sevak) 2026'}</span>
+              <span data-lang-show="hi">India Post GDS (Gramin Dak Sevak) 2026</span>
+              <span data-lang-show="en">India Post GDS (Gramin Dak Sevak) 2026</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">Department of Posts, Ministry of Communications | 40,000+ posts | Eligibility: 10th Pass (Matriculation) | Last Date: 20 August 2026</span>
+              <span data-lang-show="en">Department of Posts, Ministry of Communications | 40,000+ posts | Eligibility: 10th Pass (Matriculation) | Last Date: 20 August 2026</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/rbi-grade-b-officer-recruitment-2026.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'RBI Grade B Officer Recruitment 2026', 'hi': 'RBI Grade B Officer Recruitment 2026'}</span>
-              <span data-lang-show="en">{'en': 'RBI Grade B Officer Recruitment 2026', 'hi': 'RBI Grade B Officer Recruitment 2026'}</span>
+              <span data-lang-show="hi">RBI Grade B Officer Recruitment 2026</span>
+              <span data-lang-show="en">RBI Grade B Officer Recruitment 2026</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">Reserve Bank of India (RBI) · All India | 250+ posts | Eligibility: Graduation / Post Graduation | Last Date: 15 July 2026</span>
+              <span data-lang-show="en">Reserve Bank of India (RBI) · All India | 250+ posts | Eligibility: Graduation / Post Graduation | Last Date: 15 July 2026</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/upsc-cse-recruitment-2027.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'UPSC Civil Services Examination (CSE) 2027 Notification', 'hi': 'UPSC Civil Services Examination (CSE) 2027 Notification'}</span>
-              <span data-lang-show="en">{'en': 'UPSC Civil Services Examination (CSE) 2027 Notification', 'hi': 'UPSC Civil Services Examination (CSE) 2027 Notification'}</span>
+              <span data-lang-show="hi">UPSC Civil Services Examination (CSE) 2027 Notification</span>
+              <span data-lang-show="en">UPSC Civil Services Examination (CSE) 2027 Notification</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">Union Public Service Commission (UPSC) · All India | 1,100+ tentative posts | Eligibility: Graduation in Any Discipline | Last Date: 05 Marc...</span>
+              <span data-lang-show="en">Union Public Service Commission (UPSC) · All India | 1,100+ tentative posts | Eligibility: Graduation in Any Discipline | Last Date: 05 Marc...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/ssc-cgl-recruitment-2026.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'SSC CGL 2026-27 Recruitment - Combined Graduate Level', 'hi': 'SSC CGL 2026-27 Recruitment - Combined Graduate Level'}</span>
-              <span data-lang-show="en">{'en': 'SSC CGL 2026-27 Recruitment - Combined Graduate Level', 'hi': 'SSC CGL 2026-27 Recruitment - Combined Graduate Level'}</span>
+              <span data-lang-show="hi">SSC CGL 2026-27 Recruitment - Combined Graduate Level</span>
+              <span data-lang-show="en">SSC CGL 2026-27 Recruitment - Combined Graduate Level</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">Staff Selection Commission (SSC) · All India | 15,000+ posts | Eligibility: Graduation Degree | Last Date: 25 September 2026</span>
+              <span data-lang-show="en">Staff Selection Commission (SSC) · All India | 15,000+ posts | Eligibility: Graduation Degree | Last Date: 25 September 2026</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/national-scholarship-portal.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'National Scholarship Portal (NSP)', 'hi': 'राष्ट्रीय छात्रवृत्ति पोर्टल (NSP)'}</span>
-              <span data-lang-show="en">{'en': 'National Scholarship Portal (NSP)', 'hi': 'राष्ट्रीय छात्रवृत्ति पोर्टल (NSP)'}</span>
+              <span data-lang-show="hi">राष्ट्रीय छात्रवृत्ति पोर्टल (NSP)</span>
+              <span data-lang-show="en">National Scholarship Portal (NSP)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">योग्यता, आय, और श्रेणी के आधार पर केंद्र और राज्य सरकार की छात्रवृत्तियों के लिए आवेदन करने हेतु छात्रों के लिए एक एकल-खिड़की मंच।</span>
+              <span data-lang-show="en">A single-window platform for students to apply for central and state government scholarships based on merit, income, and category.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/ssc-recruitment.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'SSC (Staff Selection Commission) Recruitment', 'hi': 'एसएससी (कर्मचारी चयन आयोग) भर्ती'}</span>
-              <span data-lang-show="en">{'en': 'SSC (Staff Selection Commission) Recruitment', 'hi': 'एसएससी (कर्मचारी चयन आयोग) भर्ती'}</span>
+              <span data-lang-show="hi">एसएससी (कर्मचारी चयन आयोग) भर्ती</span>
+              <span data-lang-show="en">SSC (Staff Selection Commission) Recruitment</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">केंद्र सरकार के मंत्रालयों, विभागों, और अधीनस्थ कार्यालयों में समूह बी और सी पदों के लिए भर्ती परीक्षाएं आयोजित करता है।</span>
+              <span data-lang-show="en">Conducts recruitment examinations for Group B and C posts in central government ministries, departments, and subordinate offices.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/upsc-civil-services.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'UPSC Civil Services Examination', 'hi': 'यूपीएससी सिविल सेवा परीक्षा'}</span>
-              <span data-lang-show="en">{'en': 'UPSC Civil Services Examination', 'hi': 'यूपीएससी सिविल सेवा परीक्षा'}</span>
+              <span data-lang-show="hi">यूपीएससी सिविल सेवा परीक्षा</span>
+              <span data-lang-show="en">UPSC Civil Services Examination</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आईएएस, आईपीएस, आईएफएस और अन्य केंद्रीय सिविल सेवाओं में भर्ती के लिए यूपीएससी द्वारा आयोजित प्रमुख राष्ट्रीय परीक्षा।</span>
+              <span data-lang-show="en">The premier national examination conducted by UPSC for recruitment to IAS, IPS, IFS and other central civil services.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/ibps-bank-recruitment.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'IBPS Bank Recruitment (PO/Clerk)', 'hi': 'आईबीपीएस बैंक भर्ती (पीओ/क्लर्क)'}</span>
-              <span data-lang-show="en">{'en': 'IBPS Bank Recruitment (PO/Clerk)', 'hi': 'आईबीपीएस बैंक भर्ती (पीओ/क्लर्क)'}</span>
+              <span data-lang-show="hi">आईबीपीएस बैंक भर्ती (पीओ/क्लर्क)</span>
+              <span data-lang-show="en">IBPS Bank Recruitment (PO/Clerk)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">सार्वजनिक क्षेत्र के बैंकों में प्रोबेशनरी ऑफिसर और क्लर्क पदों के लिए आईबीपीएस द्वारा आयोजित सामान्य भर्ती प्रक्रिया।</span>
+              <span data-lang-show="en">Common Recruitment Process conducted by IBPS for Probationary Officer and Clerk posts across public sector banks.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/employment-exchange-registration.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Employment Exchange / NCS Registration', 'hi': 'रोजगार कार्यालय / एनसीएस पंजीकरण'}</span>
-              <span data-lang-show="en">{'en': 'Employment Exchange / NCS Registration', 'hi': 'रोजगार कार्यालय / एनसीएस पंजीकरण'}</span>
+              <span data-lang-show="hi">रोजगार कार्यालय / एनसीएस पंजीकरण</span>
+              <span data-lang-show="en">Employment Exchange / NCS Registration</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">नौकरी सूचियों, करियर परामर्श, और कौशल-प्रशिक्षण अवसरों तक पहुंचने के लिए राष्ट्रीय करियर सेवा (एनसीएस) पोर्टल पर पंजीकरण।</span>
+              <span data-lang-show="en">Registration on the National Career Service (NCS) portal to access job listings, career counselling, and skill-training opportunities.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-kaushal-vikas-yojana.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM Kaushal Vikas Yojana (PMKVY)', 'hi': 'पीएम कौशल विकास योजना (PMKVY)'}</span>
-              <span data-lang-show="en">{'en': 'PM Kaushal Vikas Yojana (PMKVY)', 'hi': 'पीएम कौशल विकास योजना (PMKVY)'}</span>
+              <span data-lang-show="hi">पीएम कौशल विकास योजना (PMKVY)</span>
+              <span data-lang-show="en">PM Kaushal Vikas Yojana (PMKVY)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">युवाओं को रोजगार योग्य कौशल प्राप्त करने में मदद के लिए मुफ्त अल्पकालिक प्रशिक्षण और प्रमाणन प्रदान करने वाली प्रमुख कौशल-प्रशिक्षण योजना।</span>
+              <span data-lang-show="en">Flagship skill-training scheme offering free short-term training and certification to help youth gain employable skills.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/school-admission-rte.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'RTE School Admission (Right to Education)', 'hi': 'आरटीई स्कूल प्रवेश (शिक्षा का अधिकार)'}</span>
-              <span data-lang-show="en">{'en': 'RTE School Admission (Right to Education)', 'hi': 'आरटीई स्कूल प्रवेश (शिक्षा का अधिकार)'}</span>
+              <span data-lang-show="hi">आरटीई स्कूल प्रवेश (शिक्षा का अधिकार)</span>
+              <span data-lang-show="en">RTE School Admission (Right to Education)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">6-14 वर्ष के बच्चों के लिए मुफ्त और अनिवार्य शिक्षा की गारंटी देता है, जिसमें निजी स्कूलों में वंचित समूहों के लिए 25% आरक्षण कोटा शामिल है।</span>
+              <span data-lang-show="en">Guarantees free and compulsory education for children aged 6–14, including a 25% reservation quota for disadvantaged groups in private schoo...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/jee-neet-registration.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'JEE / NEET Registration', 'hi': 'जेईई / नीट पंजीकरण'}</span>
-              <span data-lang-show="en">{'en': 'JEE / NEET Registration', 'hi': 'जेईई / नीट पंजीकरण'}</span>
+              <span data-lang-show="hi">जेईई / नीट पंजीकरण</span>
+              <span data-lang-show="en">JEE / NEET Registration</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">इंजीनियरिंग (जेईई मेन/एडवांस्ड) और मेडिकल (नीट) पाठ्यक्रमों में प्रवेश के लिए एनटीए द्वारा आयोजित राष्ट्रीय स्तर की प्रवेश परीक्षाएं।</span>
+              <span data-lang-show="en">National-level entrance examinations conducted by NTA for admission to engineering (JEE Main/Advanced) and medical (NEET) courses.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/national-apprenticeship-scheme.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'National Apprenticeship Promotion Scheme (NAPS)', 'hi': 'राष्ट्रीय शिक्षुता प्रोत्साहन योजना (NAPS)'}</span>
-              <span data-lang-show="en">{'en': 'National Apprenticeship Promotion Scheme (NAPS)', 'hi': 'राष्ट्रीय शिक्षुता प्रोत्साहन योजना (NAPS)'}</span>
+              <span data-lang-show="hi">राष्ट्रीय शिक्षुता प्रोत्साहन योजना (NAPS)</span>
+              <span data-lang-show="en">National Apprenticeship Promotion Scheme (NAPS)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">उद्योग में नौकरी-पर-प्रशिक्षण शिक्षुता को प्रोत्साहित करती है, सरकार शिक्षुओं को नियुक्त करने वाले नियोक्ताओं को वजीफे का एक हिस्सा प्रतिपूर...</span>
+              <span data-lang-show="en">Encourages on-the-job apprenticeship training in industry, with the government reimbursing part of the stipend to employers who engage appre...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/academic-bank-of-credits.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Academic Bank of Credits (ABC)', 'hi': 'शैक्षणिक क्रेडिट बैंक (ABC)'}</span>
-              <span data-lang-show="en">{'en': 'Academic Bank of Credits (ABC)', 'hi': 'शैक्षणिक क्रेडिट बैंक (ABC)'}</span>
+              <span data-lang-show="hi">शैक्षणिक क्रेडिट बैंक (ABC)</span>
+              <span data-lang-show="en">Academic Bank of Credits (ABC)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">एनईपी 2020 के तहत एक डिजिटल रिपॉजिटरी जो संस्थानों में छात्रों के शैक्षणिक क्रेडिट संग्रहीत करती है, उच्च शिक्षा में कई प्रवेश/निकास और क्रे...</span>
+              <span data-lang-show="en">A digital repository under NEP 2020 that stores students' academic credits across institutions, enabling multiple entry/exit and credit tran...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/e-shram-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'e-Shram Card (Unorganised Workers Registration)', 'hi': 'ई-श्रम कार्ड (असंगठित श्रमिक पंजीकरण)'}</span>
-              <span data-lang-show="en">{'en': 'e-Shram Card (Unorganised Workers Registration)', 'hi': 'ई-श्रम कार्ड (असंगठित श्रमिक पंजीकरण)'}</span>
+              <span data-lang-show="hi">ई-श्रम कार्ड (असंगठित श्रमिक पंजीकरण)</span>
+              <span data-lang-show="en">e-Shram Card (Unorganised Workers Registration)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">असंगठित क्षेत्र के श्रमिकों के लिए राष्ट्रीय डेटाबेस और पहचान पत्र, उन्हें सामाजिक सुरक्षा योजनाओं से जोड़ता है और दुर्घटना बीमा कवर प्रदान ...</span>
+              <span data-lang-show="en">National database and ID card for unorganised sector workers, linking them to social security schemes and providing accident insurance cover...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/diksha-online-learning.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'DIKSHA — National Digital Learning Platform', 'hi': 'दीक्षा — राष्ट्रीय डिजिटल शिक्षण मंच'}</span>
-              <span data-lang-show="en">{'en': 'DIKSHA — National Digital Learning Platform', 'hi': 'दीक्षा — राष्ट्रीय डिजिटल शिक्षण मंच'}</span>
+              <span data-lang-show="hi">दीक्षा — राष्ट्रीय डिजिटल शिक्षण मंच</span>
+              <span data-lang-show="en">DIKSHA — National Digital Learning Platform</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">स्कूली छात्रों और शिक्षकों के लिए मुफ्त ई-लर्निंग मंच, जो कई भाषाओं में एनसीईआरटी-संरेखित सामग्री, पाठ्यपुस्तकें, और शिक्षक प्रशिक्षण मॉड्यू...</span>
+              <span data-lang-show="en">Free e-learning platform for school students and teachers, offering NCERT-aligned content, textbooks, and teacher training modules in multip...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-internship-scheme.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम इंटर्नशिप योजना 2026 (PM Internship Scheme)', 'en': 'PM Internship Scheme Top 500'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम इंटर्नशिप योजना 2026 (PM Internship Scheme)', 'en': 'PM Internship Scheme Top 500'}</span>
+              <span data-lang-show="hi">पीएम इंटर्नशिप योजना 2026 (PM Internship Scheme)</span>
+              <span data-lang-show="en">PM Internship Scheme Top 500</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">भारत की शीर्ष 500 कंपनियों में 12 महीने की इंटर्नशिप, ₹5,000 प्रति माह स्टाइपेंड।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">भारत की शीर्ष 500 कंपनियों में 12 महीने की इंटर्नशिप, ₹5,000 प्रति माह स्टाइपेंड।</span>
+              <span data-lang-show="en">12-month paid internship in India's top 500 companies with ₹5,000 monthly stipend.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/midday-meal-scheme.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'PM POSHAN (Mid-Day Meal Scheme)', 'hi': 'पीएम पोषण (मध्याह्न भोजन योजना)'}</span>
-              <span data-lang-show="en">{'en': 'PM POSHAN (Mid-Day Meal Scheme)', 'hi': 'पीएम पोषण (मध्याह्न भोजन योजना)'}</span>
+              <span data-lang-show="hi">पीएम पोषण (मध्याह्न भोजन योजना)</span>
+              <span data-lang-show="en">PM POSHAN (Mid-Day Meal Scheme)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">पोषण और स्कूल उपस्थिति में सुधार के लिए सरकारी और सरकारी-सहायता प्राप्त स्कूलों में बच्चों को मुफ्त, पौष्टिक पका हुआ भोजन प्रदान करती है।</span>
+              <span data-lang-show="en">Provides free, nutritious cooked meals to children in government and government-aided schools to improve nutrition and school attendance.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/swayam-online-courses.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'SWAYAM Online Courses', 'hi': 'स्वयं ऑनलाइन पाठ्यक्रम'}</span>
-              <span data-lang-show="en">{'en': 'SWAYAM Online Courses', 'hi': 'स्वयं ऑनलाइन पाठ्यक्रम'}</span>
+              <span data-lang-show="hi">स्वयं ऑनलाइन पाठ्यक्रम</span>
+              <span data-lang-show="en">SWAYAM Online Courses</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">स्कूल से स्नातकोत्तर स्तर तक मुफ्त ऑनलाइन पाठ्यक्रम प्रदान करने वाला सरकारी MOOC मंच, सशुल्क, क्रेडिट-मान्यता प्राप्त प्रमाणन के विकल्प के स...</span>
+              <span data-lang-show="en">Government MOOC platform offering free online courses from school to post-graduate level, with the option of paid, credit-recognised certifi...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/labour-card-construction-workers.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'en': 'Labour Card (Building & Construction Workers)', 'hi': 'श्रमिक कार्ड (भवन एवं निर्माण श्रमिक)'}</span>
-              <span data-lang-show="en">{'en': 'Labour Card (Building & Construction Workers)', 'hi': 'श्रमिक कार्ड (भवन एवं निर्माण श्रमिक)'}</span>
+              <span data-lang-show="hi">श्रमिक कार्ड (भवन एवं निर्माण श्रमिक)</span>
+              <span data-lang-show="en">Labour Card (Building & Construction Workers)</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आपके राज्य के भवन एवं निर्माण श्रमिक कल्याण बोर्ड में पंजीकरण, जो दुर्घटना कवर, पेंशन, और शिक्षा सहायता जैसे कल्याणकारी लाभ देता है।</span>
+              <span data-lang-show="en">Registration with your state's Building & Construction Workers Welfare Board, unlocking welfare benefits like accident cover, pension, and e...</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/vidya-lakshmi-education-loan.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'विद्या लक्ष्मी पोर्टल शिक्षा ऋण (Vidya Lakshmi Loan)', 'en': 'Vidya Lakshmi Portal Education Loan'}</span>
-              <span data-lang-show="en">{'hi': 'विद्या लक्ष्मी पोर्टल शिक्षा ऋण (Vidya Lakshmi Loan)', 'en': 'Vidya Lakshmi Portal Education Loan'}</span>
+              <span data-lang-show="hi">विद्या लक्ष्मी पोर्टल शिक्षा ऋण (Vidya Lakshmi Loan)</span>
+              <span data-lang-show="en">Vidya Lakshmi Portal Education Loan</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">भारत व विदेश में उच्च शिक्षा हेतु 40+ बैंकों से लोन के लिए एक ही एकल आवेदन पोर्टल।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">भारत व विदेश में उच्च शिक्षा हेतु 40+ बैंकों से लोन के लिए एक ही एकल आवेदन पोर्टल।</span>
+              <span data-lang-show="en">Single window portal to apply for education loans across 40+ nationalized banks.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-shri-schools-portal.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम श्री स्कूल योजना (PM SHRI Schools Portal)', 'en': 'PM SHRI Schools Development'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम श्री स्कूल योजना (PM SHRI Schools Portal)', 'en': 'PM SHRI Schools Development'}</span>
+              <span data-lang-show="hi">पीएम श्री स्कूल योजना (PM SHRI Schools Portal)</span>
+              <span data-lang-show="en">PM SHRI Schools Development</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">राष्ट्रीय शिक्षा नीति NEP 2020 के तहत देश के 14,500 मॉडल पीएम श्री स्कूलों की सूची।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">राष्ट्रीय शिक्षा नीति NEP 2020 के तहत देश के 14,500 मॉडल पीएम श्री स्कूलों की सूची।</span>
+              <span data-lang-show="en">14,500 PM SHRI exemplar schools developed under NEP 2020 with modern smart labs and sports.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/swayam-nptel-free-courses.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'स्वयं एनपीटीईएल मुफ्त ऑनलाइन कोर्स (SWAYAM NPTEL)', 'en': 'SWAYAM Free Online Certification'}</span>
-              <span data-lang-show="en">{'hi': 'स्वयं एनपीटीईएल मुफ्त ऑनलाइन कोर्स (SWAYAM NPTEL)', 'en': 'SWAYAM Free Online Certification'}</span>
+              <span data-lang-show="hi">स्वयं एनपीटीईएल मुफ्त ऑनलाइन कोर्स (SWAYAM NPTEL)</span>
+              <span data-lang-show="en">SWAYAM Free Online Certification</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">आईआईटी व आईआईएम के प्रोफेसरों द्वारा मुफ्त ऑनलाइन कोर्स व यूजीसी क्रेडिट ट्रांसफर।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">आईआईटी व आईआईएम के प्रोफेसरों द्वारा मुफ्त ऑनलाइन कोर्स व यूजीसी क्रेडिट ट्रांसफर।</span>
+              <span data-lang-show="en">Free online courses by IIT and IIM faculty with UGC academic credit transfer.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/ncs-national-career-service.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'राष्ट्रीय करियर सेवा पोर्टल (National Career Service NCS)', 'en': 'National Career Service Job Fair'}</span>
-              <span data-lang-show="en">{'hi': 'राष्ट्रीय करियर सेवा पोर्टल (National Career Service NCS)', 'en': 'National Career Service Job Fair'}</span>
+              <span data-lang-show="hi">राष्ट्रीय करियर सेवा पोर्टल (National Career Service NCS)</span>
+              <span data-lang-show="en">National Career Service Job Fair</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">श्रम मंत्रालय का सरकारी जॉब पोर्टल, जहाँ देश भर के रोजगार मेले व करियर काउंसलिंग मिलती है।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">श्रम मंत्रालय का सरकारी जॉब पोर्टल, जहाँ देश भर के रोजगार मेले व करियर काउंसलिंग मिलती है।</span>
+              <span data-lang-show="en">Ministry of Labour job portal providing employment exchanges, job fairs and career counseling.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/post-matric-scholarship-obc-ebc.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'उत्तर-मैट्रिक छात्रवृत्ति ओबीसी/ईबीसी (Post-Matric Scholarship)', 'en': 'Post-Matric Scholarship OBC / EBC'}</span>
-              <span data-lang-show="en">{'hi': 'उत्तर-मैट्रिक छात्रवृत्ति ओबीसी/ईबीसी (Post-Matric Scholarship)', 'en': 'Post-Matric Scholarship OBC / EBC'}</span>
+              <span data-lang-show="hi">उत्तर-मैट्रिक छात्रवृत्ति ओबीसी/ईबीसी (Post-Matric Scholarship)</span>
+              <span data-lang-show="en">Post-Matric Scholarship OBC / EBC</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">11वीं, 12वीं, आईटीआई, ग्रेजुएशन व पोस्ट ग्रेजुएशन करने वाले पिछड़ा वर्ग के छात्रों को छात्रवृत्ति।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">11वीं, 12वीं, आईटीआई, ग्रेजुएशन व पोस्ट ग्रेजुएशन करने वाले पिछड़ा वर्ग के छात्रों को छात्रवृत्ति।</span>
+              <span data-lang-show="en">Fee reimbursement and maintenance allowance for OBC, EBC and DNT students pursuing higher studies.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/manodarpan-student-mental-wellness.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'मनोदर्पण छात्र मानसिक स्वास्थ्य सहायता (Manodarpan Portal)', 'en': 'Manodarpan Student Counseling'}</span>
-              <span data-lang-show="en">{'hi': 'मनोदर्पण छात्र मानसिक स्वास्थ्य सहायता (Manodarpan Portal)', 'en': 'Manodarpan Student Counseling'}</span>
+              <span data-lang-show="hi">मनोदर्पण छात्र मानसिक स्वास्थ्य सहायता (Manodarpan Portal)</span>
+              <span data-lang-show="en">Manodarpan Student Counseling</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">शिक्षा मंत्रालय का छात्रों, शिक्षकों व अभिभावकों के लिए 24x7 मुफ्त टेली-काउंसलिंग हेल्पलाइन पोर्टल।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">शिक्षा मंत्रालय का छात्रों, शिक्षकों व अभिभावकों के लिए 24x7 मुफ्त टेली-काउंसलिंग हेल्पलाइन पोर्टल।</span>
+              <span data-lang-show="en">Ministry of Education 24x7 toll-free national tele-counseling support for exam stress.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pragati-scholarship-girl-students.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'एआईसीटीई प्रगति छात्रा छात्रवृत्ति (AICTE Pragati Scholarship)', 'en': 'AICTE Pragati Girl Scholarship'}</span>
-              <span data-lang-show="en">{'hi': 'एआईसीटीई प्रगति छात्रा छात्रवृत्ति (AICTE Pragati Scholarship)', 'en': 'AICTE Pragati Girl Scholarship'}</span>
+              <span data-lang-show="hi">एआईसीटीई प्रगति छात्रा छात्रवृत्ति (AICTE Pragati Scholarship)</span>
+              <span data-lang-show="en">AICTE Pragati Girl Scholarship</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">डिप्लोमा या बीटेक डिग्री करने वाली प्रतिभावान छात्राओं को प्रति वर्ष ₹50,000 की छात्रवृत्ति।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">डिप्लोमा या बीटेक डिग्री करने वाली प्रतिभावान छात्राओं को प्रति वर्ष ₹50,000 की छात्रवृत्ति।</span>
+              <span data-lang-show="en">₹50,000 per annum scholarship for girl students admitted in AICTE approved technical colleges.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/saksham-scholarship-specially-abled.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'एआईसीटीई सक्षम दिव्यांग छात्रवृत्ति (AICTE Saksham Scholarship)', 'en': 'AICTE Saksham Disability Scholarship'}</span>
-              <span data-lang-show="en">{'hi': 'एआईसीटीई सक्षम दिव्यांग छात्रवृत्ति (AICTE Saksham Scholarship)', 'en': 'AICTE Saksham Disability Scholarship'}</span>
+              <span data-lang-show="hi">एआईसीटीई सक्षम दिव्यांग छात्रवृत्ति (AICTE Saksham Scholarship)</span>
+              <span data-lang-show="en">AICTE Saksham Disability Scholarship</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">तकनीकी शिक्षा प्राप्त कर रहे 40% से अधिक दिव्यांग छात्रों हेतु ₹50,000 वार्षिक सहायता।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">तकनीकी शिक्षा प्राप्त कर रहे 40% से अधिक दिव्यांग छात्रों हेतु ₹50,000 वार्षिक सहायता।</span>
+              <span data-lang-show="en">₹50,000 per year scholarship for specially-abled students (40%+ disability) in technical studies.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/tarun-skill-development-pmkvy.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'पीएम कौशल विकास योजना 4.0 (PMKVY 4.0 Training)', 'en': 'PMKVY 4.0 Skill Training'}</span>
-              <span data-lang-show="en">{'hi': 'पीएम कौशल विकास योजना 4.0 (PMKVY 4.0 Training)', 'en': 'PMKVY 4.0 Skill Training'}</span>
+              <span data-lang-show="hi">पीएम कौशल विकास योजना 4.0 (PMKVY 4.0 Training)</span>
+              <span data-lang-show="en">PMKVY 4.0 Skill Training</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">उद्योगों के अनुकूल एआई, ड्रोन, रोबोटिक्स, कोडिंग में मुफ्त सरकारी प्रशिक्षण व प्रमाणपत्र।...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">उद्योगों के अनुकूल एआई, ड्रोन, रोबोटिक्स, कोडिंग में मुफ्त सरकारी प्रशिक्षण व प्रमाणपत्र।</span>
+              <span data-lang-show="en">Free skill training, Assessment and NCVET Certification in AI, Robotics, Drone tech under PMKVY 4.0.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
         <a class="service-card" href="../service/pm-usp-college-scholarship.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
-              <span data-lang-show="hi">{'hi': 'à¤ªà¥€à¤\x8fà¤® à¤‰à¤šà¥\x8dà¤š à¤¶à¤¿à¤•à¥\x8dà¤·à¤¾ à¤›à¤¾à¤¤à¥\x8dà¤°à¤µà¥ƒà¤¤à¥\x8dà¤¤à¤¿ à¤¯à¥‹à¤œà¤¨à¤¾ (PM-USP College Scholarship)', 'en': 'PM-USP Central Sector Scheme of Scholarship for College Students'}</span>
-              <span data-lang-show="en">{'hi': 'à¤ªà¥€à¤\x8fà¤® à¤‰à¤šà¥\x8dà¤š à¤¶à¤¿à¤•à¥\x8dà¤·à¤¾ à¤›à¤¾à¤¤à¥\x8dà¤°à¤µà¥ƒà¤¤à¥\x8dà¤¤à¤¿ à¤¯à¥‹à¤œà¤¨à¤¾ (PM-USP College Scholarship)', 'en': 'PM-USP Central Sector Scheme of Scholarship for College Students'}</span>
+              <span data-lang-show="hi">à¤ªà¥€à¤à¤® à¤‰à¤šà¥à¤š à¤¶à¤¿à¤•à¥à¤·à¤¾ à¤›à¤¾à¤¤à¥à¤°à¤µà¥ƒà¤¤à¥à¤¤à¤¿ à¤¯à¥‹à¤œà¤¨à¤¾ (PM-USP College Scholarship)</span>
+              <span data-lang-show="en">PM-USP Central Sector Scheme of Scholarship for College Students</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">à¤•à¥‰à¤²à¥‡à¤œ à¤µ à¤µà¤¿à¤¶à¥à¤µà¤µà¤¿à¤¦à¥à¤¯à¤¾à¤²à¤¯ à¤›à¤¾à¤¤à¥à¤°à¥‹à¤‚ à¤¹à¥‡à¤¤à¥ à¤ªà¥à¤°à¤¤à¤¿ à¤µà¤°à¥à¤· â‚¹12,000 à¤¸à¥‡...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">à¤•à¥‰à¤²à¥‡à¤œ à¤µ à¤µà¤¿à¤¶à¥à¤µà¤µà¤¿à¤¦à¥à¤¯à¤¾à¤²à¤¯ à¤›à¤¾à¤¤à¥à¤°à¥‹à¤‚ à¤¹à¥‡à¤¤à¥ à¤ªà¥à¤°à¤¤à¤¿ à¤µà¤°à¥à¤· â‚¹12,000 à¤¸à¥‡...</span>
+              <span data-lang-show="en">Central scholarship scheme providing â‚¹12,000 to â‚¹20,000 per year for college students.</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>
       </div>
     </section>

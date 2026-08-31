@@ -396,6 +396,31 @@ CATEGORY_CONFIGS = {
     }
 }
 
+def get_field_lang(val, lang="hi"):
+    if isinstance(val, dict):
+        return val.get(lang) or val.get("hi" if lang == "en" else "en") or (next(iter(val.values())) if val else "")
+    if isinstance(val, str):
+        return val
+    return ""
+
+def get_service_title(s, lang="hi"):
+    for k in ["title", "name", "service_name"]:
+        v = s.get(k)
+        if v:
+            res = get_field_lang(v, lang)
+            if res and isinstance(res, str):
+                return res
+    return s.get(f"title_{lang}") or s.get("slug", "")
+
+def get_service_desc(s, lang="hi"):
+    for k in ["shortDescription", "description", "desc", "longDescription"]:
+        v = s.get(k)
+        if v:
+            res = get_field_lang(v, lang)
+            if res and isinstance(res, str):
+                return res
+    return s.get(f"desc_{lang}") or ""
+
 def generate_master_category_page(filename, config):
     cat_slug = config["cat_slug"]
     icon = config["icon"]
@@ -451,17 +476,18 @@ def generate_master_category_page(filename, config):
             <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">{fs['desc']}</p>
           </div>
           <div style="margin-top: 16px; font-weight: 700; color: #2563eb; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>ऑनलाइन आवेदन व संपूर्ण विवरण</span>
-            <span>&rarr;</span>
+            <span data-lang-show="hi">ऑनलाइन आवेदन व संपूर्ण विवरण &rarr;</span>
+            <span data-lang-show="en">Apply Online & Full Details &rarr;</span>
           </div>
         </a>''')
 
     # All Category Services Grid HTML
     service_cards_html = []
     for s in unique_services:
-        s_title_en = s.get("title", {}).get("en") if isinstance(s.get("title"), dict) else (s.get("title_en") or s.get("title") or s.get("name") or "")
-        s_title_hi = s.get("title", {}).get("hi") if isinstance(s.get("title"), dict) else (s.get("title_hi") or s_title_en)
-        s_desc_hi = s.get("description", {}).get("hi") if isinstance(s.get("description"), dict) else (s.get("description_hi") or s.get("description") or "")
+        s_title_en = get_service_title(s, "en")
+        s_title_hi = get_service_title(s, "hi")
+        s_desc_en = get_service_desc(s, "en")
+        s_desc_hi = get_service_desc(s, "hi")
         s_slug = s.get("slug") or s.get("id")
         
         target_url = f"../service/{s_slug}.html"
@@ -470,15 +496,24 @@ def generate_master_category_page(filename, config):
         elif not os.path.exists(os.path.join(ROOT, "service", f"{s_slug}.html")):
             target_url = f"../service/service.html?id={s_slug}"
 
+        s_desc_hi_short = (s_desc_hi[:140] + "...") if len(s_desc_hi) > 140 else s_desc_hi
+        s_desc_en_short = (s_desc_en[:140] + "...") if len(s_desc_en) > 140 else s_desc_en
+
         service_cards_html.append(f'''        <a class="service-card" href="{target_url}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
               <span data-lang-show="hi">{s_title_hi}</span>
               <span data-lang-show="en">{s_title_en}</span>
             </div>
-            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">{s_desc_hi[:140]}...</p>
+            <p style="margin: 0; font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5;">
+              <span data-lang-show="hi">{s_desc_hi_short}</span>
+              <span data-lang-show="en">{s_desc_en_short}</span>
+            </p>
           </div>
-          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">विवरण देखें &rarr;</div>
+          <div style="margin-top: 14px; font-weight: 600; color: #2563eb; font-size: 0.85rem;">
+            <span data-lang-show="hi">विवरण देखें &rarr;</span>
+            <span data-lang-show="en">View Details &rarr;</span>
+          </div>
         </a>''')
 
     # Problem Solvers HTML
@@ -646,6 +681,41 @@ def generate_master_category_page(filename, config):
       background: #101D2C !important;
       border-color: #223244 !important;
       color: #E8EDF3 !important;
+    }}
+
+    /* Language Toggle Visibility Rules */
+    html[lang="hi"] [data-lang-show="en"],
+    html:not([lang="en"]) [data-lang-show="en"] {{
+      display: none !important;
+    }}
+    html[lang="en"] [data-lang-show="hi"] {{
+      display: none !important;
+    }}
+    html[lang="hi"] span[data-lang-show="hi"],
+    html:not([lang="en"]) span[data-lang-show="hi"] {{
+      display: inline !important;
+    }}
+    html[lang="en"] span[data-lang-show="en"] {{
+      display: inline !important;
+    }}
+    html[lang="hi"] div[data-lang-show="hi"],
+    html[lang="hi"] p[data-lang-show="hi"],
+    html[lang="hi"] h1[data-lang-show="hi"],
+    html[lang="hi"] h2[data-lang-show="hi"],
+    html[lang="hi"] h3[data-lang-show="hi"],
+    html:not([lang="en"]) div[data-lang-show="hi"],
+    html:not([lang="en"]) p[data-lang-show="hi"],
+    html:not([lang="en"]) h1[data-lang-show="hi"],
+    html:not([lang="en"]) h2[data-lang-show="hi"],
+    html:not([lang="en"]) h3[data-lang-show="hi"] {{
+      display: block !important;
+    }}
+    html[lang="en"] div[data-lang-show="en"],
+    html[lang="en"] p[data-lang-show="en"],
+    html[lang="en"] h1[data-lang-show="en"],
+    html[lang="en"] h2[data-lang-show="en"],
+    html[lang="en"] h3[data-lang-show="en"] {{
+      display: block !important;
     }}
   </style>
 
@@ -999,6 +1069,41 @@ def generate_category_index():
       background: #101D2C !important;
       border-color: #223244 !important;
       color: #E8EDF3 !important;
+    }}
+
+    /* Language Toggle Visibility Rules */
+    html[lang="hi"] [data-lang-show="en"],
+    html:not([lang="en"]) [data-lang-show="en"] {{
+      display: none !important;
+    }}
+    html[lang="en"] [data-lang-show="hi"] {{
+      display: none !important;
+    }}
+    html[lang="hi"] span[data-lang-show="hi"],
+    html:not([lang="en"]) span[data-lang-show="hi"] {{
+      display: inline !important;
+    }}
+    html[lang="en"] span[data-lang-show="en"] {{
+      display: inline !important;
+    }}
+    html[lang="hi"] div[data-lang-show="hi"],
+    html[lang="hi"] p[data-lang-show="hi"],
+    html[lang="hi"] h1[data-lang-show="hi"],
+    html[lang="hi"] h2[data-lang-show="hi"],
+    html[lang="hi"] h3[data-lang-show="hi"],
+    html:not([lang="en"]) div[data-lang-show="hi"],
+    html:not([lang="en"]) p[data-lang-show="hi"],
+    html:not([lang="en"]) h1[data-lang-show="hi"],
+    html:not([lang="en"]) h2[data-lang-show="hi"],
+    html:not([lang="en"]) h3[data-lang-show="hi"] {{
+      display: block !important;
+    }}
+    html[lang="en"] div[data-lang-show="en"],
+    html[lang="en"] p[data-lang-show="en"],
+    html[lang="en"] h1[data-lang-show="en"],
+    html[lang="en"] h2[data-lang-show="en"],
+    html[lang="en"] h3[data-lang-show="en"] {{
+      display: block !important;
     }}
   </style>
 
