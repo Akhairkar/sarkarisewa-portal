@@ -12,13 +12,14 @@
   --color-bg: #F5F3ED;
   --color-surface: #FFFFFF;
   --color-surface-alt: #EFECE3;
+  --color-bg-alt: #EFECE3;
   --color-primary: #10243E;
   --color-primary-light: #1C3A5E;
   --color-accent-saffron: #D97F2B;
   --color-accent-green: #146B3A;
   --color-text: #1A1D22;
   --color-text-muted: #5B6472;
-  --color-border: #E2DFD3;
+  --color-border: #DCD8CB;
   --color-link: #10243E;
   --shadow-card: 0 1px 2px rgba(16,36,62,0.06), 0 4px 14px rgba(16,36,62,0.06);
 
@@ -30,24 +31,12 @@
   --tricolor: linear-gradient(90deg, var(--color-accent-saffron) 0 33%, #ffffff 33% 66%, var(--color-accent-green) 66% 100%);
   color-scheme: light;
 
-  /* Short aliases — module2.css, module7.css and their JS (category.js,
-     service.js, support.js) reference --primary/--saffron/--green/--surface
-     directly instead of the --color-* names above. Pre-existing bug found
-     while building Module 7: these aliases never existed, so every card,
-     hero and link on category.html / service.html was rendering with
-     unset (transparent/black) colors. Fixing here once, for all modules,
-     instead of rewriting every var() call in module2.css. */
+  /* Short aliases */
   --primary: var(--color-primary);
   --saffron: var(--color-accent-saffron);
   --green: var(--color-accent-green);
   --surface: var(--color-surface);
 
-  /* Module 11 fix: --color-primary is also reused as heading/text color
-     and intentionally flips to near-white in dark mode. Anything that
-     needs a solid navy BUTTON background (paired with white text) must
-     use --color-brand instead, which never flips. Using --color-primary
-     for a button background was the root cause of 5 separate
-     invisible-white-text-on-near-white-button instances in dark mode. */
   --color-brand: #10243E;
   --color-brand-text: #FFFFFF;
   --color-brand-hover: #1C3A5E;
@@ -57,13 +46,14 @@
   --color-bg: #0B1420;
   --color-surface: #101D2C;
   --color-surface-alt: #0E1826;
+  --color-bg-alt: #162638;
   --color-primary: #E8EDF3;
   --color-primary-light: #C7D3E0;
   --color-accent-saffron: #F2A65A;
   --color-accent-green: #35B172;
   --color-text: #E8EDF3;
   --color-text-muted: #93A1B2;
-  --color-border: #223244;
+  --color-border: #2A3C52;
   --color-link: #9FC0E8;
   --shadow-card: 0 1px 2px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.35);
   --tricolor: linear-gradient(90deg, var(--color-accent-saffron) 0 33%, #1a2635 33% 66%, var(--color-accent-green) 66% 100%);
@@ -154,6 +144,83 @@
   background-color: var(--color-surface) !important;
   color: var(--color-text) !important;
   border-color: var(--color-border) !important;
+}
+
+/* Master Hub & Service Card Tokens */
+.service-hero-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 16px;
+  padding: 32px 24px;
+  margin: 24px 0;
+  border-left: 6px solid var(--color-accent-saffron) !important;
+  box-shadow: 0 4px 16px rgba(16, 36, 62, 0.06);
+}
+.stat-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(16, 36, 62, 0.04);
+}
+.content-box {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 8px rgba(16, 36, 62, 0.04);
+}
+.callout-box {
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent-saffron) !important;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+.faq-box {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(16, 36, 62, 0.03);
+}
+.tool-link-card {
+  padding: 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(16, 36, 62, 0.04);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.tool-link-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent-saffron);
+}
+.service-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  background: var(--color-surface);
+  box-shadow: 0 2px 8px rgba(16, 36, 62, 0.04);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.service-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent-saffron);
 }
 
 * { box-sizing: border-box; }

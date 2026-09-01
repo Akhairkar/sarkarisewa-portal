@@ -9,7 +9,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 # Import state metadata from test_state_metadata
 from test_state_metadata import STATE_METADATA
 
-print("Starting Master Upgrade for All State-wise Income Certificate Pages...")
+print("Upgrading All State-wise Income Certificate Pages with robust theme-adaptive CSS classes...")
 
 # Read base header and footer partials
 with open('partials/header.html', 'r', encoding='utf-8', errors='ignore') as fp:
@@ -212,7 +212,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
     <div class="tricolor-rule" aria-hidden="true"></div>
 
     <!-- Hero Card -->
-    <header style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 32px 24px; margin: 24px 0; border-left: 6px solid var(--color-primary); box-shadow: 0 4px 16px rgba(0,0,0,0.04);">
+    <header class="service-hero-card">
       <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px;">
         <span style="background: var(--color-primary); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 700;">📍 {state_en} ({state_hi})</span>
         <span style="background: var(--color-accent-green, #15803d); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 700;">✓ 2026 Updated Guide</span>
@@ -226,22 +226,22 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
 
     <!-- Quick Stats Grid -->
     <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
-      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; text-align: center;">
+      <div class="stat-card">
         <div style="font-size: 1.6rem; margin-bottom: 4px;">💰</div>
         <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 4px;">सरकारी शुल्क (Govt Fee)</div>
         <strong style="font-size: 1.15rem; color: var(--color-primary);">{fee}</strong>
       </div>
-      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; text-align: center;">
+      <div class="stat-card">
         <div style="font-size: 1.6rem; margin-bottom: 4px;">⏱️</div>
         <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 4px;">जारी होने का समय (Timeline)</div>
         <strong style="font-size: 1.05rem; color: var(--color-primary);">{timeline}</strong>
       </div>
-      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; text-align: center;">
+      <div class="stat-card">
         <div style="font-size: 1.6rem; margin-bottom: 4px;">📅</div>
         <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 4px;">आधिकारिक मान्यता (Validity)</div>
         <strong style="font-size: 1.05rem; color: var(--color-primary);">{validity}</strong>
       </div>
-      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; text-align: center;">
+      <div class="stat-card">
         <div style="font-size: 1.6rem; margin-bottom: 4px;">📞</div>
         <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 4px;">हेल्पलाइन नंबर (Helpdesk)</div>
         <strong style="font-size: 0.95rem; color: var(--color-primary);">{helpline}</strong>
@@ -249,16 +249,16 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
     </section>
 
     <!-- Overview Section -->
-    <section style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 28px; margin-bottom: 32px; line-height: 1.8;">
+    <section class="content-box">
       <h2 style="font-size: 1.4rem; color: var(--color-primary); margin-top: 0; display: flex; align-items: center; gap: 8px;">
         <span>📝</span> {state_en} आय प्रमाण पत्र क्या है और इसकी आवश्यकता कहाँ होती है?
       </h2>
-      <p style="color: var(--color-text); margin-bottom: 16px;">
+      <p style="color: var(--color-text); margin-bottom: 16px; line-height: 1.8;">
         <strong>{state_en} Income Certificate (आय प्रमाण पत्र)</strong> राज्य सरकार के {dept} द्वारा जारी किया जाने वाला एक अनिवार्य कानूनी दस्तावेज है। यह प्रमाण पत्र किसी व्यक्ति अथवा उसके पूरे परिवार की सभी स्रोतों (कृषि, व्यापार, वेतन, पेंशन, मजदूरी) से होने वाली वास्तविक वार्षिक आय को प्रमाणित करता है।
       </p>
-      <div style="background: var(--color-bg-alt, #f8fafc); border-left: 4px solid var(--color-accent-saffron, #D97F2B); padding: 16px; border-radius: 8px; margin: 16px 0;">
+      <div class="callout-box">
         <strong style="color: var(--color-text); display: block; margin-bottom: 6px;">🎯 प्रमुख उपयोग (Key Use Cases in {state_en}):</strong>
-        <ul style="margin: 0; padding-left: 20px; color: var(--color-text);">
+        <ul style="margin: 0; padding-left: 20px; color: var(--color-text); line-height: 1.8;">
           <li>केंद्र व राज्य सरकार की छात्रवृत्ति (NSP & State Scholarships) और फीस प्रतिपूर्ति।</li>
           <li>EWS (आर्थिक रूप से कमजोर वर्ग) आरक्षण प्रमाण पत्र बनवाने हेतु।</li>
           <li>राशन कार्ड (BPL / AAY) और खाद्य सुरक्षा योजना में पात्रता निर्धारण।</li>
@@ -269,7 +269,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
     </section>
 
     <!-- Step-by-Step Online Process -->
-    <section style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 28px; margin-bottom: 32px;">
+    <section class="content-box">
       <h2 style="font-size: 1.4rem; color: var(--color-primary); margin-top: 0; display: flex; align-items: center; gap: 8px;">
         <span>💻</span> {state_en} में घर बैठे ऑनलाइन आय प्रमाण पत्र कैसे बनाएं (Step-by-Step)?
       </h2>
@@ -292,7 +292,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
 
     <!-- Documents & Eligibility Checklist -->
     <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 32px;">
-      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px;">
+      <div class="content-box" style="margin-bottom: 0;">
         <h3 style="color: var(--color-primary); margin-top: 0; font-size: 1.2rem;">📋 आवश्यक दस्तावेज़ (Documents Required)</h3>
         <ul style="padding-left: 20px; line-height: 1.8; color: var(--color-text);">
           <li>आवेदक का नवीनतम पासपोर्ट साइज रंगीन फोटो।</li>
@@ -302,7 +302,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
           <li>निर्धारित प्रारूप में स्वप्रमाणित घोषणा पत्र (Self-Declaration)।</li>
         </ul>
       </div>
-      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px;">
+      <div class="content-box" style="margin-bottom: 0;">
         <h3 style="color: var(--color-primary); margin-top: 0; font-size: 1.2rem;">✅ पात्रता मानदंड (Eligibility Criteria)</h3>
         <ul style="padding-left: 20px; line-height: 1.8; color: var(--color-text);">
           <li>आवेदक {state_en} का स्थायी या मूल निवासी होना चाहिए।</li>
@@ -314,7 +314,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
     </section>
 
     <!-- 6 Real Life Practical Problems & Solutions Section -->
-    <section style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 28px; margin-bottom: 36px;">
+    <section class="content-box" style="margin-bottom: 36px;">
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
         <span style="font-size: 1.8rem;">🛠️</span>
         <div>
@@ -327,7 +327,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
 
     for i, item in enumerate(faqs_data, 1):
         html_content += f"""
-        <details class="faq-item" style="margin-bottom: 16px; background: var(--color-bg-alt, #f8fafc); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px;" {"open" if i <= 2 else ""}>
+        <details class="faq-box" {"open" if i <= 2 else ""}>
           <summary style="font-weight: 700; font-size: 1.05rem; cursor: pointer; color: var(--color-text); line-height: 1.5;">
             Problem #{i}: {item["q_hi"]}
           </summary>
@@ -342,7 +342,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
     </section>
 
     <!-- Useful Citizen Tools Integration -->
-    <section style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 28px; margin-bottom: 36px;">
+    <section class="content-box" style="margin-bottom: 36px;">
       <h3 style="font-size: 1.3rem; color: var(--color-primary); margin-top: 0; display: flex; align-items: center; gap: 8px;">
         <span>🧰</span> आवेदन के लिए उपयोगी सरकारी टूल्स (Free Citizen Tools)
       </h3>
@@ -350,28 +350,28 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
         आय प्रमाण पत्र आवेदन करते समय इन निःशुल्क टूल्स का उपयोग करके रिजेक्शन से बचें:
       </p>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
-        <a href="{root_rel}tools/document-compressor.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; text-decoration: none; color: inherit; background: var(--color-bg-alt); display: flex; align-items: center; gap: 10px;">
+        <a href="{root_rel}tools/document-compressor.html" class="tool-link-card">
           <span style="font-size: 1.5rem;">📄</span>
           <div>
             <strong style="color: var(--color-primary); display: block; font-size: 0.95rem;">दस्तावेज़ कंप्रेसर (PDF/Img)</strong>
             <span style="font-size: 0.8rem; color: var(--color-text-muted);">100KB साइज में कन्वर्ट करें</span>
           </div>
         </a>
-        <a href="{root_rel}tools/photo-resizer.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; text-decoration: none; color: inherit; background: var(--color-bg-alt); display: flex; align-items: center; gap: 10px;">
+        <a href="{root_rel}tools/photo-resizer.html" class="tool-link-card">
           <span style="font-size: 1.5rem;">🖼️</span>
           <div>
             <strong style="color: var(--color-primary); display: block; font-size: 0.95rem;">फोटो रिसाइज़र (Passport)</strong>
             <span style="font-size: 0.8rem; color: var(--color-text-muted);">20KB-50KB सटीक आयाम</span>
           </div>
         </a>
-        <a href="{root_rel}tools/self-declaration-builder.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; text-decoration: none; color: inherit; background: var(--color-bg-alt); display: flex; align-items: center; gap: 10px;">
+        <a href="{root_rel}tools/self-declaration-builder.html" class="tool-link-card">
           <span style="font-size: 1.5rem;">✍️</span>
           <div>
             <strong style="color: var(--color-primary); display: block; font-size: 0.95rem;">घोषणा पत्र जनरेटर</strong>
             <span style="font-size: 0.8rem; color: var(--color-text-muted);">1-क्लिक में शपथ पत्र बनाएं</span>
           </div>
         </a>
-        <a href="{root_rel}tools/csc-locator.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; text-decoration: none; color: inherit; background: var(--color-bg-alt); display: flex; align-items: center; gap: 10px;">
+        <a href="{root_rel}tools/csc-locator.html" class="tool-link-card">
           <span style="font-size: 1.5rem;">📍</span>
           <div>
             <strong style="color: var(--color-primary); display: block; font-size: 0.95rem;">नजदीकी CSC केंद्र खोजें</strong>
@@ -387,7 +387,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
         <span class="icon">📍</span> {state_en} की अन्य महत्वपूर्ण सेवाएं (Related State Services)
       </h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-        <a href="{related_caste}" class="service-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--color-border); border-radius: 12px; text-decoration: none; color: inherit; background: var(--color-surface); box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+        <a href="{related_caste}" class="service-card">
           <div>
             <div style="font-size: 1.5rem; margin-bottom: 8px;">📜</div>
             <strong style="color: var(--color-primary); font-size: 1.05rem; display: block; margin-bottom: 6px;">{state_en} Caste Certificate</strong>
@@ -396,7 +396,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
           <span style="color: var(--color-accent-saffron, #D97F2B); font-weight: 700; font-size: 0.88rem; margin-top: 14px;">आवेदन करें &rarr;</span>
         </a>
 
-        <a href="{related_domicile}" class="service-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--color-border); border-radius: 12px; text-decoration: none; color: inherit; background: var(--color-surface); box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+        <a href="{related_domicile}" class="service-card">
           <div>
             <div style="font-size: 1.5rem; margin-bottom: 8px;">🏠</div>
             <strong style="color: var(--color-primary); font-size: 1.05rem; display: block; margin-bottom: 6px;">{state_en} Domicile Certificate</strong>
@@ -405,7 +405,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
           <span style="color: var(--color-accent-saffron, #D97F2B); font-weight: 700; font-size: 0.88rem; margin-top: 14px;">आवेदन करें &rarr;</span>
         </a>
 
-        <a href="{related_ration}" class="service-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--color-border); border-radius: 12px; text-decoration: none; color: inherit; background: var(--color-surface); box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+        <a href="{related_ration}" class="service-card">
           <div>
             <div style="font-size: 1.5rem; margin-bottom: 8px;">🌾</div>
             <strong style="color: var(--color-primary); font-size: 1.05rem; display: block; margin-bottom: 6px;">{state_en} Ration Card</strong>
@@ -414,7 +414,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
           <span style="color: var(--color-accent-saffron, #D97F2B); font-weight: 700; font-size: 0.88rem; margin-top: 14px;">आवेदन करें &rarr;</span>
         </a>
 
-        <a href="{related_csc}" class="service-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--color-border); border-radius: 12px; text-decoration: none; color: inherit; background: var(--color-surface); box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+        <a href="{related_csc}" class="service-card">
           <div>
             <div style="font-size: 1.5rem; margin-bottom: 8px;">📍</div>
             <strong style="color: var(--color-primary); font-size: 1.05rem; display: block; margin-bottom: 6px;">{state_en} CSC Directory</strong>
@@ -426,7 +426,7 @@ def generate_income_page_content(state_key, meta, is_states_folder=False):
     </section>
 
     <!-- Disclaimer & Fact Check -->
-    <section style="background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px; margin: 32px 0;">
+    <section class="callout-box" style="margin: 32px 0;">
       <p style="margin: 0 0 6px 0; font-size: 0.9rem; color: var(--color-text);">
         <strong>🛡️ आधिकारिक स्रोत व डिस्क्लेमर:</strong> सूचना का मुख्य स्रोत <a href="{portal_url}" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600;">{portal_name} ({portal_url})</a> है। SarkariSewa India एक स्वतंत्र नागरिक सहायता पोर्टल है और किसी भी सरकारी विभाग से संबद्ध नहीं है।
       </p>
@@ -459,15 +459,13 @@ for state_key, meta in STATE_METADATA.items():
         fp.write(content_states)
     upgraded_count += 1
     
-    # 2. Canonical Page in service/ folder
-    # Canonical files can be code-based (up-income-certificate.html) or state-name based (uttar-pradesh-income-certificate.html)
+    # 2. Canonical Pages in service/ folder
     cand_service_files = [
         f"service/{code}-income-certificate.html",
         f"service/{state_key}-income-certificate.html"
     ]
     for s_file in cand_service_files:
         if os.path.exists(s_file):
-            # Check if this file is a redirect stub
             with open(s_file, 'r', encoding='utf-8', errors='ignore') as fp:
                 c_prev = fp.read()
             if 'window.location.replace' not in c_prev and 'http-equiv="refresh"' not in c_prev:
@@ -476,4 +474,4 @@ for state_key, meta in STATE_METADATA.items():
                     fp.write(content_service)
                 upgraded_count += 1
 
-print(f"🎉 Master upgrade complete! Successfully generated & upgraded {upgraded_count} state-wise income certificate pages!")
+print(f"🎉 Successfully re-generated {upgraded_count} state-wise income certificate pages with crisp contrast classes!")

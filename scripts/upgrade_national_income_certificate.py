@@ -31,7 +31,7 @@ for state_key, meta in sorted(STATE_METADATA.items(), key=lambda x: x[1]['nameEn
         target_link = f"{state_key}-income-certificate.html"
         
     state_cards_html += f"""
-    <a href="{target_link}" class="service-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--color-border); border-radius: 12px; text-decoration: none; color: inherit; background: var(--color-surface); box-shadow: 0 2px 6px rgba(0,0,0,0.03); transition: transform 0.2s ease, border-color 0.2s ease;">
+    <a href="{target_link}" class="service-card">
       <div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <span style="font-size: 1.3rem;">📍</span>
@@ -176,7 +176,7 @@ full_national_html = f"""<!DOCTYPE html>
     <div class="tricolor-rule" aria-hidden="true"></div>
 
     <!-- Hero Card -->
-    <header style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 32px 24px; margin: 24px 0; border-left: 6px solid var(--color-primary); box-shadow: 0 4px 16px rgba(0,0,0,0.04);">
+    <header class="service-hero-card">
       <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px;">
         <span style="background: var(--color-primary); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 700;">🇮🇳 All-India Portal</span>
         <span style="background: var(--color-accent-green, #15803d); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 700;">✓ 36 States &amp; UTs</span>
@@ -209,22 +209,22 @@ full_national_html = f"""<!DOCTYPE html>
     </section>
 
     <!-- General Guide Section -->
-    <section style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 28px; margin-bottom: 36px; line-height: 1.8;">
+    <section class="content-box">
       <h2 style="font-size: 1.4rem; color: var(--color-primary); margin-top: 0; display: flex; align-items: center; gap: 8px;">
         <span>📋</span> आय प्रमाण पत्र के लिए आवश्यक सामान्य दस्तावेज़ (Common Checklist)
       </h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 16px;">
-        <div style="background: var(--color-bg-alt); padding: 18px; border-radius: 10px;">
+        <div class="callout-box" style="margin: 0;">
           <strong style="color: var(--color-primary); display: block; margin-bottom: 8px;">1. पहचान व निवास प्रमाण:</strong>
-          <ul style="margin: 0; padding-left: 18px; font-size: 0.95rem; color: var(--color-text);">
+          <ul style="margin: 0; padding-left: 18px; font-size: 0.95rem; color: var(--color-text); line-height: 1.8;">
             <li>आधार कार्ड (अनिवार्य)</li>
             <li>राशन कार्ड / वोटर आईडी कार्ड</li>
             <li>बिजली बिल / पानी बिल / निवास प्रमाण पत्र</li>
           </ul>
         </div>
-        <div style="background: var(--color-bg-alt); padding: 18px; border-radius: 10px;">
+        <div class="callout-box" style="margin: 0;">
           <strong style="color: var(--color-primary); display: block; margin-bottom: 8px;">2. आय व स्वप्रमाणन दस्तावेज:</strong>
-          <ul style="margin: 0; padding-left: 18px; font-size: 0.95rem; color: var(--color-text);">
+          <ul style="margin: 0; padding-left: 18px; font-size: 0.95rem; color: var(--color-text); line-height: 1.8;">
             <li>स्वप्रमाणित घोषणा पत्र (Self Declaration)</li>
             <li>वेतनभोगी हेतु Form 16 / Salary Slip</li>
             <li>कृषक हेतु खतौनी / पटवारी रिपोर्ट</li>
@@ -234,7 +234,7 @@ full_national_html = f"""<!DOCTYPE html>
     </section>
 
     <!-- Real Life Practical Problems & Solutions -->
-    <section style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 28px; margin-bottom: 36px;">
+    <section class="content-box">
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
         <span style="font-size: 1.8rem;">🛠️</span>
         <div>
@@ -247,7 +247,7 @@ full_national_html = f"""<!DOCTYPE html>
 
 for i, item in enumerate(national_faqs, 1):
     full_national_html += f"""
-        <details class="faq-item" style="margin-bottom: 16px; background: var(--color-bg-alt, #f8fafc); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px;" {"open" if i <= 2 else ""}>
+        <details class="faq-box" {"open" if i <= 2 else ""}>
           <summary style="font-weight: 700; font-size: 1.05rem; cursor: pointer; color: var(--color-text); line-height: 1.5;">
             {i}. {item["q"]}
           </summary>
@@ -261,33 +261,33 @@ full_national_html += f"""
     </section>
 
     <!-- Free Citizen Tools -->
-    <section style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 28px; margin-bottom: 36px;">
+    <section class="content-box">
       <h3 style="font-size: 1.3rem; color: var(--color-primary); margin-top: 0; display: flex; align-items: center; gap: 8px;">
         <span>🧰</span> उपयोगी सरकारी नागरिक टूल्स (Free Online Utilities)
       </h3>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
-        <a href="../tools/document-compressor.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; text-decoration: none; color: inherit; background: var(--color-bg-alt); display: flex; align-items: center; gap: 10px;">
+        <a href="../tools/document-compressor.html" class="tool-link-card">
           <span style="font-size: 1.5rem;">📄</span>
           <div>
             <strong style="color: var(--color-primary); display: block; font-size: 0.95rem;">दस्तावेज़ कंप्रेसर (PDF/Img)</strong>
             <span style="font-size: 0.8rem; color: var(--color-text-muted);">100KB साइज में कन्वर्ट करें</span>
           </div>
         </a>
-        <a href="../tools/photo-resizer.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; text-decoration: none; color: inherit; background: var(--color-bg-alt); display: flex; align-items: center; gap: 10px;">
+        <a href="../tools/photo-resizer.html" class="tool-link-card">
           <span style="font-size: 1.5rem;">🖼️</span>
           <div>
             <strong style="color: var(--color-primary); display: block; font-size: 0.95rem;">पासपोर्ट फोटो रिसाइज़र</strong>
             <span style="font-size: 0.8rem; color: var(--color-text-muted);">सरकारी फॉर्म हेतु तैयार</span>
           </div>
         </a>
-        <a href="../tools/self-declaration-builder.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; text-decoration: none; color: inherit; background: var(--color-bg-alt); display: flex; align-items: center; gap: 10px;">
+        <a href="../tools/self-declaration-builder.html" class="tool-link-card">
           <span style="font-size: 1.5rem;">✍️</span>
           <div>
             <strong style="color: var(--color-primary); display: block; font-size: 0.95rem;">स्वप्रमाणित घोषणा पत्र</strong>
             <span style="font-size: 0.8rem; color: var(--color-text-muted);">1-क्लिक में शपथ पत्र जनरेटर</span>
           </div>
         </a>
-        <a href="../tools/csc-locator.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; text-decoration: none; color: inherit; background: var(--color-bg-alt); display: flex; align-items: center; gap: 10px;">
+        <a href="../tools/csc-locator.html" class="tool-link-card">
           <span style="font-size: 1.5rem;">📍</span>
           <div>
             <strong style="color: var(--color-primary); display: block; font-size: 0.95rem;">नजदीकी CSC केंद्र खोजें</strong>
@@ -303,7 +303,7 @@ full_national_html += f"""
         <span class="icon">📍</span> संबंधित प्रमुख सेवाएं (Related All-India Services)
       </h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-        <a href="caste-certificate.html" class="service-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--color-border); border-radius: 12px; text-decoration: none; color: inherit; background: var(--color-surface); box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+        <a href="caste-certificate.html" class="service-card">
           <div>
             <div style="font-size: 1.5rem; margin-bottom: 8px;">📜</div>
             <strong style="color: var(--color-primary); font-size: 1.05rem; display: block; margin-bottom: 6px;">Caste Certificate Guide</strong>
@@ -312,7 +312,7 @@ full_national_html += f"""
           <span style="color: var(--color-accent-saffron, #D97F2B); font-weight: 700; font-size: 0.88rem; margin-top: 14px;">आवेदन करें &rarr;</span>
         </a>
 
-        <a href="domicile-certificate.html" class="service-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--color-border); border-radius: 12px; text-decoration: none; color: inherit; background: var(--color-surface); box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+        <a href="domicile-certificate.html" class="service-card">
           <div>
             <div style="font-size: 1.5rem; margin-bottom: 8px;">🏠</div>
             <strong style="color: var(--color-primary); font-size: 1.05rem; display: block; margin-bottom: 6px;">Domicile Certificate Guide</strong>
@@ -321,7 +321,7 @@ full_national_html += f"""
           <span style="color: var(--color-accent-saffron, #D97F2B); font-weight: 700; font-size: 0.88rem; margin-top: 14px;">आवेदन करें &rarr;</span>
         </a>
 
-        <a href="ration-card.html" class="service-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--color-border); border-radius: 12px; text-decoration: none; color: inherit; background: var(--color-surface); box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+        <a href="ration-card.html" class="service-card">
           <div>
             <div style="font-size: 1.5rem; margin-bottom: 8px;">🌾</div>
             <strong style="color: var(--color-primary); font-size: 1.05rem; display: block; margin-bottom: 6px;">Ration Card Online</strong>
@@ -330,7 +330,7 @@ full_national_html += f"""
           <span style="color: var(--color-accent-saffron, #D97F2B); font-weight: 700; font-size: 0.88rem; margin-top: 14px;">आवेदन करें &rarr;</span>
         </a>
 
-        <a href="../tools/csc-locator.html" class="service-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--color-border); border-radius: 12px; text-decoration: none; color: inherit; background: var(--color-surface); box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+        <a href="../tools/csc-locator.html" class="service-card">
           <div>
             <div style="font-size: 1.5rem; margin-bottom: 8px;">📍</div>
             <strong style="color: var(--color-primary); font-size: 1.05rem; display: block; margin-bottom: 6px;">All-India CSC Locator</strong>
@@ -342,7 +342,7 @@ full_national_html += f"""
     </section>
 
     <!-- Disclaimer -->
-    <section style="background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px; margin: 32px 0;">
+    <section class="callout-box" style="margin: 32px 0;">
       <p style="margin: 0 0 6px 0; font-size: 0.9rem; color: var(--color-text);">
         <strong>🛡️ आधिकारिक स्रोत व डिस्क्लेमर:</strong> आधिकारिक पोर्टल <a href="https://services.india.gov.in" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); font-weight: 600;">National Services Portal (services.india.gov.in)</a> है। SarkariSewa India एक स्वतंत्र नागरिक सूचना पोर्टल है।
       </p>
@@ -361,4 +361,4 @@ full_national_html += f"""
 with open('service/income-certificate.html', 'w', encoding='utf-8') as fp:
     fp.write(full_national_html)
 
-print("🎉 Successfully upgraded national master hub: service/income-certificate.html with verified gov links!")
+print("🎉 Successfully upgraded national master hub: service/income-certificate.html with crisp contrast classes!")
