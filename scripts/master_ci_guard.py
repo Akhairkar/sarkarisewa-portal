@@ -16,7 +16,11 @@ import os, sys, glob, re, json
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
+
+ROOT = os.path.dirname(SCRIPTS_DIR)
 
 def audit_blog_titles():
     print("\n[CHECK 1/7] Auditing Blog Titles for Truncation...")
