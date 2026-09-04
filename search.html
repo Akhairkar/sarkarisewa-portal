@@ -30,20 +30,53 @@
 <link href="https://sarkarisewaindia.com/search.html" hreflang="x-default" rel="alternate"/>
 <meta content="https://sarkarisewaindia.com/search.html" property="og:url"/>
 <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "url": "https://sarkarisewaindia.com/",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://sarkarisewaindia.com/search.html?q={search_term_string}"
-      },
-      "query-input": "required name=search_term_string"
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "url": "https://sarkarisewaindia.com/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://sarkarisewaindia.com/search.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Main is search box mein kya dhundh sakta hoon?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aap kisi bhi government scheme, certificate, CSC center, ya job-alert ka naam type karke dhundh sakte hain."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Agar mujhe exact naam nahi pata to?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "General keyword bhi try karein, jaise \"ration card\" ya \"income certificate\" — related results dikhenge."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kya search mein Hindi aur English dono chalega?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Haan, dono bhashaon mein search kiya ja sakta hai."
+          }
+        }
+      ]
     }
-  }
-  </script>
+  ]
+}
+</script>
 </head>
 <body>
 <script>window.SS_ROOT = "";</script>
@@ -254,6 +287,21 @@
 <div id="search-page-results">
 <!-- Javascript renders results here -->
 </div>
+<section class="service-section" id="page-faq">
+  <h2 class="service-section__title"><span class="icon">❓</span> अक्सर पूछे जाने वाले सवाल</h2>
+  <details>
+    <summary>Main is search box mein kya dhundh sakta hoon?</summary>
+    <p>Aap kisi bhi government scheme, certificate, CSC center, ya job-alert ka naam type karke dhundh sakte hain.</p>
+  </details>
+  <details>
+    <summary>Agar mujhe exact naam nahi pata to?</summary>
+    <p>General keyword bhi try karein, jaise "ration card" ya "income certificate" — related results dikhenge.</p>
+  </details>
+  <details>
+    <summary>Kya search mein Hindi aur English dono chalega?</summary>
+    <p>Haan, dono bhashaon mein search kiya ja sakta hai.</p>
+  </details>
+</section>
 </div>
 </main>
 <div id="site-footer">
