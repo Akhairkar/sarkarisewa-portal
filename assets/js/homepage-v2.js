@@ -13,6 +13,7 @@ async function init(){if(!document.body.classList.contains("homepage-v2"))return
       heroSub:"Government services, schemes, job updates and useful tools — all in one place, in simple language.",
       searchPlaceholder:"Search Aadhaar, PAN, Ration Card, Jobs, Schemes...",searchButton:"Search",
       panelTitle:"Find what you need",panelSub:"Search → Understand → Open official portal",allServices:"All Services",freeTools:"Free Tools",
+      popularKicker:"POPULAR NEEDS",popularTitle:"Popular Services",popularSub:"Frequently searched government services and useful citizen links.",popularAll:"View All Services →",
       featuredKicker:"POPULAR SERVICES",featuredTitle:"Services by Category",featuredSub:"Essential services from every category, with direct working links.",featuredAll:"View All Services →",
       browseKicker:"BROWSE",browseTitle:"Explore by Category",browseAll:"All Services →",
       toolsKicker:"FREE UTILITIES",toolsTitle:"Popular Tools",toolsSub:"Useful calculators and citizen utilities for everyday tasks.",toolsAll:"View All Tools →",
@@ -36,6 +37,7 @@ async function init(){if(!document.body.classList.contains("homepage-v2"))return
       heroSub:"सरकारी सेवाएं, योजनाएं, नौकरी अपडेट और उपयोगी टूल्स — एक ही जगह, आसान भाषा में।",
       searchPlaceholder:"आधार, PAN, राशन कार्ड, नौकरी, योजना खोजें...",searchButton:"खोजें",
       panelTitle:"जो चाहिए, खोजें",panelSub:"खोजें → समझें → आधिकारिक पोर्टल खोलें",allServices:"सभी सेवाएं",freeTools:"फ्री टूल्स",
+      popularKicker:"लोकप्रिय जरूरतें",popularTitle:"लोकप्रिय सेवाएं",popularSub:"अक्सर खोजी जाने वाली सरकारी सेवाएं और उपयोगी नागरिक लिंक।",popularAll:"सभी सेवाएं देखें →",
       featuredKicker:"लोकप्रिय सेवाएं",featuredTitle:"श्रेणी के अनुसार सेवाएं",featuredSub:"हर श्रेणी की जरूरी सेवाएं, सीधे काम करने वाले लिंक के साथ।",featuredAll:"सभी सेवाएं देखें →",
       browseKicker:"ब्राउज़ करें",browseTitle:"श्रेणी के अनुसार खोजें",browseAll:"सभी सेवाएं →",
       toolsKicker:"फ्री उपयोगी टूल्स",toolsTitle:"लोकप्रिय टूल्स",toolsSub:"रोज़मर्रा के काम के लिए उपयोगी कैलकुलेटर और नागरिक टूल्स।",toolsAll:"सभी टूल्स देखें →",
@@ -64,7 +66,7 @@ async function init(){if(!document.body.classList.contains("homepage-v2"))return
     const sb=document.querySelector(".ss-hero-search button"); if(sb)sb.innerHTML=c.searchButton+" <span>→</span>";
     const panel=document.querySelector(".ss-hero-panel"); if(panel){setText(panel.querySelector("strong"),c.panelTitle);setText(panel.querySelector("span:not(.ss-panel-icon)"),c.panelSub);const links=panel.querySelectorAll(".ss-panel-links a");setText(links[0],c.allServices+" →");setText(links[1],c.freeTools+" →");}
     const heads=[...document.querySelectorAll(".ss-section-head")];
-    const vals=[[c.featuredKicker,c.featuredTitle,c.featuredSub,c.featuredAll],[c.toolsKicker,c.toolsTitle,c.toolsSub,c.toolsAll],[c.latestKicker,c.latestTitle,c.latestSub,""],[c.blogKicker,c.blogTitle,"",c.blogAll],[c.faqKicker,c.faqTitle,"",""]];
+    const vals=[[c.popularKicker,c.popularTitle,c.popularSub,c.popularAll],[c.featuredKicker,c.featuredTitle,c.featuredSub,c.featuredAll],[c.toolsKicker,c.toolsTitle,c.toolsSub,c.toolsAll],[c.latestKicker,c.latestTitle,c.latestSub,""],[c.stateKicker,c.stateTitle,c.stateSub,c.stateButton],[c.blogKicker,c.blogTitle,"",c.blogAll],[c.trustKicker,c.trustTitle,c.trustSub,""],[c.faqKicker,c.faqTitle,"",""]];
     heads.forEach((h,i)=>{const v=vals[i];if(!v)return;setText(h.querySelector(".ss-kicker"),v[0]);setText(h.querySelector("h2"),v[1]);const p=h.querySelector("p");if(p&&v[2])setText(p,v[2]);const a=h.querySelector(".ss-view-all");if(a&&v[3])setText(a,v[3]);});
     const toolCards=document.querySelectorAll(".ss-tool-card");
     const toolNames=lang==="hi"?["EPF कैलकुलेटर","सेविंग्स कम्पेरेटर","पात्रता जांचकर्ता","प्रोजेक्ट रिपोर्ट जनरेटर","फोटो रिसाइज़र","CSC लोकेटर"]:["EPF Calculator","Savings Comparator","Eligibility Checker","Project Report Generator","Photo Resizer","CSC Locator"];
