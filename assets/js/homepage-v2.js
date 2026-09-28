@@ -68,6 +68,20 @@ async function init(){if(!document.body.classList.contains("homepage-v2"))return
     const heads=[...document.querySelectorAll(".ss-section-head")];
     const vals=[[c.popularKicker,c.popularTitle,c.popularSub,c.popularAll],[c.featuredKicker,c.featuredTitle,c.featuredSub,c.featuredAll],[c.toolsKicker,c.toolsTitle,c.toolsSub,c.toolsAll],[c.latestKicker,c.latestTitle,c.latestSub,""],[c.stateKicker,c.stateTitle,c.stateSub,c.stateButton],[c.blogKicker,c.blogTitle,"",c.blogAll],[c.trustKicker,c.trustTitle,c.trustSub,""],[c.faqKicker,c.faqTitle,"",""]];
     heads.forEach((h,i)=>{const v=vals[i];if(!v)return;setText(h.querySelector(".ss-kicker"),v[0]);setText(h.querySelector("h2"),v[1]);const p=h.querySelector("p");if(p&&v[2])setText(p,v[2]);const a=h.querySelector(".ss-view-all");if(a&&v[3])setText(a,v[3]);});
+    // Use section-specific selectors for State/Blog so their labels never depend on DOM order.
+    const stateHead=document.querySelector(".ss-state-section .ss-section-head");
+    const blogHead=document.querySelector(".ss-blog-section .ss-section-head");
+    if(stateHead){
+      setText(stateHead.querySelector(".ss-kicker"),c.stateKicker);
+      setText(stateHead.querySelector("h2"),c.stateTitle);
+      setText(stateHead.querySelector("p"),c.stateSub);
+      setText(stateHead.querySelector(".ss-view-all"),c.stateButton);
+    }
+    if(blogHead){
+      setText(blogHead.querySelector(".ss-kicker"),c.blogKicker);
+      setText(blogHead.querySelector("h2"),c.blogTitle);
+      setText(blogHead.querySelector(".ss-view-all"),c.blogAll);
+    }
     const toolCards=document.querySelectorAll(".ss-tool-card");
     const toolNames=lang==="hi"?["EPF कैलकुलेटर","सेविंग्स कम्पेरेटर","पात्रता जांचकर्ता","प्रोजेक्ट रिपोर्ट जनरेटर","फोटो रिसाइज़र","CSC लोकेटर"]:["EPF Calculator","Savings Comparator","Eligibility Checker","Project Report Generator","Photo Resizer","CSC Locator"];
     const toolDesc=lang==="hi"?["EPF बैलेंस का अनुमान लगाएं","बचत योजनाओं की तुलना करें","योजना पात्रता जांचें","ऑनलाइन प्रोजेक्ट रिपोर्ट बनाएं","आवेदन के लिए फोटो का आकार बदलें","नजदीकी CSC केंद्र खोजें"]:["Estimate your EPF balance","Compare savings schemes","Check scheme eligibility","Create a project report online","Resize photos for applications","Find Common Service Centres"];
