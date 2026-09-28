@@ -29,10 +29,10 @@ CREATE POLICY "Allow public read for verified centers only"
     USING (is_verified = true);
 
 -- 3. Authenticated Admins can read, update, and delete everything
--- Relies on the default Supabase authenticated role being the admin
+-- Requires an explicit Supabase Auth app_metadata.role = 'admin'
 CREATE POLICY "Allow authenticated full access to CSC centres"
     ON public.csc_centres
     FOR ALL
     TO authenticated
-    USING (true)
-    WITH CHECK (true);
+    USING (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false))
+    WITH CHECK (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
