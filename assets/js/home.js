@@ -144,6 +144,8 @@ async function renderHome() {
   await loadHomeData();
   renderCategories();
   renderServices();
+  window.__ssHomeServices = SERVICES_DATA;
+  if (typeof window.renderHomeSectors === "function") window.renderHomeSectors(SERVICES_DATA);
   renderBlogSection();
   renderTrustStats();
 }
@@ -156,6 +158,7 @@ onLangChange(() => {
   if (!SERVICES_DATA || !CATEGORIES_DATA) return;
   renderCategories();
   renderServices();
+  if (typeof window.renderHomeSectors === "function") window.renderHomeSectors(SERVICES_DATA);
   renderBlogSection();
   renderHomeDailyUpdates();
 });
