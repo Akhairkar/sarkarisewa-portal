@@ -56,7 +56,7 @@ ROOT = "../"  # blog/<slug>.html is one level deep, same as blog/post.html
 import importlib.util
 
 _svc_mod_spec = importlib.util.spec_from_file_location(
-    "generate_service_pages", REPO_ROOT / "tools" / "generate-service-pages.py"
+    "generate_service_pages", REPO_ROOT / "scripts" / "generate-service-pages.py"
 )
 _svc_mod = importlib.util.module_from_spec(_svc_mod_spec)
 _svc_mod_spec.loader.exec_module(_svc_mod)
@@ -115,7 +115,8 @@ def build_page(post, category, services_by_slug):
         page_title = f"{title} | {BRAND_NAME}"
         
     canonical_url = f"{BASE_URL}/blog/{slug}.html"
-    body_html = t(post.get("body"))
+    body_hi_html = (post.get("body") or {}).get("hi") or (post.get("body") or {}).get("en") or ""
+    body_en_html = (post.get("body") or {}).get("en") or body_hi_html
     date_display = format_date_hi(post.get("datePublished", ""))
 
     cat_crumb = ""
@@ -231,7 +232,8 @@ def build_page(post, category, services_by_slug):
       </header>
 
       <div class="blog-post-body" id="blog-post-body">
-        {body_html}
+        <div class="content-hi">{body_hi_html}</div>
+        <div class="content-en">{body_en_html}</div>
       </div>
 
       <section class="blog-post-related" id="blog-post-related" {"hidden" if related_hidden else ""}>
