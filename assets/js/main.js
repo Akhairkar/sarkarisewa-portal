@@ -81,6 +81,59 @@ async function includePartial(selector, url) {
   }
 }
 
+function cleanupDuplicateSiteChrome() {
+  // Some older generated pages contain a second baked copy of footer
+  // fragments after the canonical footer. Keep the first real instance and
+  // remove only exact site-chrome duplicates; page content is untouched.
+  const dedupe = (selector, keep = 1) => {
+    const nodes = Array.from(document.querySelectorAll(selector));
+    nodes.slice(keep).forEach((node) => node.remove());
+  };
+
+  dedupe(".site-header");
+  dedupe(".footer-disclaimer-banner");
+  dedupe(".footer-grid");
+  dedupe(".footer-bottom");
+  dedupe("#ss-wa-wrapper");
+}
+
+function ensureOfficialPortalLink() {
+  const path = window.location.pathname.toLowerCase();
+
+  // Jan Aushadhi district/state pages: provide a visible, crawlable link to
+  // the current official PMBJP/PMBI portal without changing page metadata.
+  if (path.includes("/service/jan-aushadhi/")) {
+    const main = document.querySelector("main");
+    if (main && !main.querySelector('a[href*="janaushadhi.gov.in"]')) {
+      const h1 = main.querySelector("h1");
+      const card = document.createElement("div");
+      card.className = "official-portal-card";
+      card.style.cssText = "margin:16px 0 24px;padding:14px 16px;border:1px solid var(--color-border,#dbe3ec);border-radius:10px;background:var(--color-surface,#fff);";
+      card.innerHTML = '<strong>🏛️ Official Jan Aushadhi Portal</strong><br><span style="font-size:.92rem;">Application, official Kendra information and other PMBJP services:</span> <a href="https://www.janaushadhi.gov.in/" target="_blank" rel="noopener noreferrer">janaushadhi.gov.in ↗</a>';
+      if (h1) h1.insertAdjacentElement("afterend", card);
+      else main.insertBefore(card, main.firstChild);
+    }
+  }
+
+  // MPBCDC scheme pages: add the verified official corporation portal when
+  // the page does not already expose a visible external official link.
+  if (path.endsWith("/mpbcdc-yojana.html") ||
+      path.endsWith("/mpbcdc-direct-loan-yojana.html") ||
+      path.endsWith("/mpbcdc-seed-capital-yojana.html") ||
+      path.endsWith("/mpbcdc-subsidy-yojana.html")) {
+    const main = document.querySelector("main");
+    if (main && !main.querySelector('a[href*="mpbcdc.maharashtra.gov.in"]')) {
+      const h1 = main.querySelector("h1");
+      const card = document.createElement("div");
+      card.className = "official-portal-card";
+      card.style.cssText = "margin:16px 0 24px;padding:14px 16px;border:1px solid var(--color-border,#dbe3ec);border-radius:10px;background:var(--color-surface,#fff);";
+      card.innerHTML = '<strong>🏛️ Official MPBCDC Portal</strong><br><span style="font-size:.92rem;">Official scheme information and application guidance:</span> <a href="https://mpbcdc.maharashtra.gov.in/" target="_blank" rel="noopener noreferrer">mpbcdc.maharashtra.gov.in ↗</a>';
+      if (h1) h1.insertAdjacentElement("afterend", card);
+      else main.insertBefore(card, main.firstChild);
+    }
+  }
+}
+
 function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   const icon = document.getElementById("theme-icon");
@@ -227,6 +280,8 @@ async function initSite() {
   ]);
 
   wireHeaderControls();
+  cleanupDuplicateSiteChrome();
+  ensureOfficialPortalLink();
   applyLanguage(SITE.lang);
 
   document.dispatchEvent(new CustomEvent("ss:ready"));
