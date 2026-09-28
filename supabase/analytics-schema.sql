@@ -59,7 +59,7 @@ create policy "Only anonymous visits are logged"
 drop policy if exists "Authenticated admin can read page_views" on page_views;
 create policy "Authenticated admin can read page_views"
   on page_views for select
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- ---------------------------------------------------------------------------
 -- 2. active_sessions — upserted every ~45s while a visitor's tab is open
@@ -89,7 +89,7 @@ create policy "Anonymous visitors can update their own session"
 drop policy if exists "Authenticated admin can read active_sessions" on active_sessions;
 create policy "Authenticated admin can read active_sessions"
   on active_sessions for select
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- ---------------------------------------------------------------------------
 -- 3. RPC functions the dashboard's Analytics tab calls directly
