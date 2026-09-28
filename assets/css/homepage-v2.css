@@ -315,3 +315,13 @@ body.homepage-v2{background:linear-gradient(180deg,#f7fbff 0,#fff 35%,#f8fbff 10
 }
 [data-theme="dark"] .homepage-v2 .ss-latest-grid .service-card{background:#101d2c;border-color:#334960}
 [data-theme="dark"] .homepage-v2 .ss-latest-grid .service-card:before{background:#18283a}
+
+/* Telegram + WhatsApp action grid */
+.ss-social-strip{padding:0 0 10px;background:var(--color-bg)}
+.ss-social-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ss-social-card{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 13px;border-radius:14px;text-decoration:none;color:#fff;box-shadow:0 6px 18px rgba(16,36,62,.09);transition:transform .18s ease,box-shadow .18s ease}
+.ss-social-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(16,36,62,.14)}
+.ss-social-telegram{background:linear-gradient(135deg,#168de2,#0878c9)}.ss-social-whatsapp{background:linear-gradient(135deg,#18a957,#128c49)}
+.ss-social-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.18);font-size:1.35rem}
+.ss-social-card strong{display:block;font-size:.82rem;line-height:1.2}.ss-social-card small{display:block;margin-top:3px;font-size:.61rem;line-height:1.25;opacity:.9}.ss-social-card>b{font-size:.65rem;white-space:nowrap}
+@media(max-width:640px){.ss-social-grid{grid-template-columns:1fr 1fr;gap:7px}.ss-social-card{grid-template-columns:32px minmax(0,1fr);gap:7px;padding:9px;border-radius:12px}.ss-social-icon{width:32px;height:32px;border-radius:9px;font-size:1rem}.ss-social-card strong{font-size:.62rem}.ss-social-card small{font-size:.5rem;line-height:1.15}.ss-social-card>b{grid-column:2;font-size:.55rem;margin-top:-2px}}
