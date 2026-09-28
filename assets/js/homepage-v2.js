@@ -97,7 +97,7 @@ async function init(){if(!document.body.classList.contains("homepage-v2"))return
       ["Kisan Services","Useful farmer schemes, cards, insurance and registration links.",["Kisan Credit Card","PM Fasal Bima","Soil Health Card","Kisan Registration"],"Explore Kisan services →"]
     ];
     const popData=lang==="hi"?popularHi:popularEn;
-    popularCards.forEach((card,i)=>{const d=popData[i];if(!d)return;setText(card.querySelector("h3"),d[0]);setText(card.querySelector(">p"),d[1]);card.querySelectorAll(".ss-popular-links a").forEach((a,j)=>{if(d[2][j]){const b=a.querySelector("b");a.childNodes[0].textContent=d[2][j]+" ";if(b)b.textContent="→";}});setText(card.querySelector(".ss-popular-all"),d[3]);});
+    popularCards.forEach((card,i)=>{const d=popData[i];if(!d)return;setText(card.querySelector("h3"),d[0]);setText(card.querySelector("p"),d[1]);card.querySelectorAll(".ss-popular-links a").forEach((a,j)=>{if(d[2][j]){const b=a.querySelector("b");a.childNodes[0].textContent=d[2][j]+" ";if(b)b.textContent="→";}});setText(card.querySelector(".ss-popular-all"),d[3]);});
     const social={
       en:{telegram:["Join Telegram","Daily jobs, schemes & service updates","Join →"],whatsapp:["Share on WhatsApp","Share useful government service links","Share →"]},
       hi:{telegram:["टेलीग्राम से जुड़ें","रोज़गार, योजनाओं और सेवाओं के दैनिक अपडेट","जुड़ें →"],whatsapp:["WhatsApp पर शेयर करें","उपयोगी सरकारी सेवा लिंक शेयर करें","शेयर करें →"]}
