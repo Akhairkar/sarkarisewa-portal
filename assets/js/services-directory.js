@@ -32,7 +32,7 @@ function render(){
  listEl.innerHTML=items.length?items.map(s=>
  '<a class="sd-card" href="'+href(s)+'"><span class="sd-icon">📌</span><span class="sd-card-copy"><strong>'+esc(tfn(s.name))+'</strong><small>'+esc(tfn(s.shortDescription||""))+'</small><em>'+esc(s.category||"")+'</em></span><b>→</b></a>'
  ).join(""):'<div class="sd-empty"><strong>No matching service found</strong><span>Try another keyword or choose a different category.</span></div>';
- if(location.hash==="#all-services"||q||cat) document.getElementById("all-services")?.scrollIntoView({behavior:"smooth",block:"start"});
+ if(location.hash==="#all-services") document.getElementById("all-services")?.scrollIntoView({behavior:"smooth",block:"start"});
 }
 Promise.all([
  typeof fetchAllServices==="function"?fetchAllServices():fetch(ROOT+"data/services.json").then(r=>r.json()),
