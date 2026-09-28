@@ -88,10 +88,21 @@
       .then(async ([postsRaw, services, categoriesRaw]) => {
         const posts = normalizePosts(postsRaw);
         let post = posts.find((p) => p.slug === slug);
-        if (!post) {
-          post = await fetchDbPost(slug);
+
+        // If the local JSON entry exists but has no article body, fall back
+        // to the published Supabase post. This is important for posts whose
+        // metadata is kept in data/blog-posts.json while the full article
+        // body is stored in the admin database.
+        if (!post || !post.body || !post.body.en) {
+          const dbPost = await fetchDbPost(slug);
+          if (dbPost) {
+            post = post
+              ? { ...post, ...dbPost, title: post.title || dbPost.title, excerpt: post.excerpt || dbPost.excerpt }
+              : dbPost;
+          }
         }
-        if (!post) {
+
+        if (!post || !post.body || !post.body.en) {
           renderMissing();
           return;
         }
