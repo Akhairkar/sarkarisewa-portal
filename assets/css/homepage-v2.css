@@ -243,3 +243,16 @@ body.homepage-v2{background:linear-gradient(180deg,#f7fbff 0,#fff 35%,#f8fbff 10
  .homepage-v2 .footer-bottom{margin-top:12px;padding-top:10px;font-size:.68rem;}
 }
 @media(max-width:390px){.homepage-v2 .ss-tool-card{padding:10px!important}.homepage-v2 .ss-tool-card strong{font-size:.78rem}.homepage-v2 .ss-tool-card small{font-size:.64rem}}
+
+/* Popular needs compact 4-row service links */
+.ss-topic-services{background:var(--color-bg)}
+.ss-topic-grid{display:grid;gap:10px;margin-top:4px}
+.ss-topic-row{display:grid;grid-template-columns:125px minmax(0,1fr);align-items:center;gap:14px;padding:10px 12px;border:1px solid var(--color-border);border-radius:14px;background:var(--color-surface);box-shadow:0 3px 12px rgba(16,36,62,.04)}
+.ss-topic-row h3{margin:0;font-size:.92rem;color:var(--color-text);font-weight:850}
+.ss-topic-links{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.ss-topic-links a{display:block;min-width:0;padding:8px 7px;border:1px solid var(--color-border);border-radius:9px;background:var(--color-bg);color:var(--color-text);font-size:.72rem;font-weight:700;text-align:center;text-decoration:none;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ss-topic-links a:hover{border-color:var(--color-primary);color:var(--color-primary);transform:translateY(-1px)}
+@media(max-width:900px){.ss-topic-row{grid-template-columns:95px 1fr}.ss-topic-links{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.ss-topic-row{grid-template-columns:1fr;gap:7px;padding:10px}.ss-topic-row h3{font-size:.82rem}.ss-topic-links{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.ss-topic-links a{font-size:.64rem;padding:7px 4px}}
+@media(max-width:390px){.ss-topic-links a{font-size:.6rem;padding:6px 3px}}
+[data-theme="dark"] .ss-topic-row{background:#101d2c;border-color:#334960}.ss-topic-links a{background:var(--color-bg)}
