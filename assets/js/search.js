@@ -155,14 +155,13 @@
   ];
 
   function getOfficialFallback(query) {
-    const n = query.toLowerCase().replace(/[^a-z0-9\\u0900-\\u097f]/g, "").replace(/yojana|scheme|subsidy|loan/g, "");
-    return OFFICIAL_FALLBACKS.find(item => item.keys.some(k => n.includes(k.replace(/[^a-z0-9\\u0900-\\u097f]/g, "")) || k.replace(/[^a-z0-9\\u0900-\\u097f]/g, "").includes(n)));
+    const n = query.toLowerCase().replace(/[^a-z0-9\u0900-\u097f]/g, "").replace(/yojana|scheme|subsidy|loan/g, "");
+    return OFFICIAL_FALLBACKS.find(item => item.keys.some(k => n.includes(k.replace(/[^a-z0-9\u0900-\u097f]/g, "")) || k.replace(/[^a-z0-9\u0900-\u097f]/g, "").includes(n)));
   }
 
   function getOfficialFallbackHTML(item) {
     if (!item) return "";
-    return \
-      '<div class="service-card" style="border:1px solid var(--color-border);">' +
+    return '<div class="service-card" style="border:1px solid var(--color-border);">' +
       '<div class="service-card__name">' + t(item.name) + ' <span style="font-size:.72rem; padding:3px 7px; border-radius:999px; background:var(--color-surface-alt); color:var(--color-primary);">Official Portal</span></div>' +
       '<div class="service-card__desc">' + t(item.desc) + '</div>' +
       '<div class="service-card__arrow"><a href="' + item.url + '" target="_blank" rel="noopener noreferrer">' + t({en:"Open Official Website &rarr;",hi:"आधिकारिक वेबसाइट खोलें &rarr;"}) + '</a></div>' +
