@@ -108,8 +108,8 @@
         const categories = normalizeCategories(categoriesRaw);
         const category = post.category ? categories.find((c) => c.slug === post.category) : null;
         const relatedService = post.relatedServiceId ? services.find((s) => (s.slug || s.id) === post.relatedServiceId) : null;
-        renderAll(post, category, relatedService, false);
-        onLangChange(() => renderAll(post, category, relatedService, false));
+        renderAll(post, category, relatedService, Boolean(post.isStatic));
+        onLangChange(() => renderAll(post, category, relatedService, Boolean(post.isStatic)));
       })
       .catch((err) => {
         console.error("Failed to load blog post:", err);
@@ -257,7 +257,9 @@
     `;
 
     if (typeof renderShareRow === "function") {
-      const shareUrl = `https://sarkarisewaindia.com/blog/${post.slug || post.id}.html`;
+      const shareUrl = post.isStatic
+        ? `https://sarkarisewaindia.com/blog/${post.slug || post.id}.html`
+        : `https://sarkarisewaindia.com/blog/post.html?slug=${post.slug || post.id}`;
       renderShareRow("blog-share-row", shareUrl, t(post.title), "blog-share");
     }
   }
