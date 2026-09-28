@@ -50,23 +50,23 @@ create policy "Public can read published job_alerts"
 drop policy if exists "Authenticated admin can read all job_alerts" on job_alerts;
 create policy "Authenticated admin can read all job_alerts"
   on job_alerts for select
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 drop policy if exists "Authenticated admin can insert job_alerts" on job_alerts;
 create policy "Authenticated admin can insert job_alerts"
   on job_alerts for insert
-  with check (auth.role() = 'authenticated');
+  with check (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 drop policy if exists "Authenticated admin can update job_alerts" on job_alerts;
 create policy "Authenticated admin can update job_alerts"
   on job_alerts for update
-  using (auth.role() = 'authenticated')
-  with check (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false))
+  with check (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 drop policy if exists "Authenticated admin can delete job_alerts" on job_alerts;
 create policy "Authenticated admin can delete job_alerts"
   on job_alerts for delete
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- ============================================================================
 -- After running this, add job alerts from the admin dashboard's "Job Alerts"
