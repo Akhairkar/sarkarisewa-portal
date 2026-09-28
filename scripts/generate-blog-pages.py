@@ -293,6 +293,9 @@ def main():
     OUT_DIR.mkdir(exist_ok=True)
     written = []
     for post in posts:
+        if not post.get("body"):
+            print(f"  - skipped {post.get('slug')} (no body source; preserving existing static page)")
+            continue
         category = categories_by_slug.get(post.get("category"))
         page_html = build_page(post, category, services_by_slug)
         out_path = OUT_DIR / f"{post['slug']}.html"
