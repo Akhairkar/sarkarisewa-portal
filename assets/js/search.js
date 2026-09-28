@@ -132,6 +132,43 @@
     `;
   }
 
+  // Official fallback resources for popular homepage topics that may not yet
+  // have a dedicated SarkariSewa India service record. This prevents a blank
+  // search result and sends users to the relevant government portal.
+  const OFFICIAL_FALLBACKS = [
+    { keys:["soil health card","soilhealthcard"], name:{en:"Soil Health Card",hi:"मृदा स्वास्थ्य कार्ड"}, desc:{en:"Check the official Soil Health Card portal for soil testing, card generation and farmer guidance.",hi:"मृदा जांच, Soil Health Card और किसान मार्गदर्शन के लिए आधिकारिक पोर्टल देखें।"}, url:"https://soilhealth.dac.gov.in/" },
+    { keys:["pm kisan","kisan samman nidhi"], name:{en:"PM-KISAN Samman Nidhi",hi:"पीएम-किसान सम्मान निधि"}, desc:{en:"Official PM-KISAN portal for registration, beneficiary status and scheme information.",hi:"पंजीकरण, लाभार्थी स्थिति और योजना की जानकारी के लिए आधिकारिक PM-KISAN पोर्टल।"}, url:"https://pmkisan.gov.in/" },
+    { keys:["kisan credit card","kcc"], name:{en:"Kisan Credit Card",hi:"किसान क्रेडिट कार्ड"}, desc:{en:"Government scheme information and eligibility through the National Government scheme portal.",hi:"सरकारी योजना पोर्टल पर किसान क्रेडिट कार्ड की पात्रता और जानकारी देखें।"}, url:"https://www.myscheme.gov.in/schemes/kcc" },
+    { keys:["pm fasal bima","fasal bima"], name:{en:"PM Fasal Bima Yojana",hi:"प्रधानमंत्री फसल बीमा योजना"}, desc:{en:"Official crop insurance portal for farmer applications, premium and policy status.",hi:"फसल बीमा आवेदन, प्रीमियम और पॉलिसी स्थिति के लिए आधिकारिक पोर्टल।"}, url:"https://pmfby.gov.in/" },
+    { keys:["pm kusum subsidy","pm kusum"], name:{en:"PM-KUSUM",hi:"पीएम-कुसुम"}, desc:{en:"Official MNRE PM-KUSUM portal for solar pumps, components and scheme information.",hi:"सोलर पंप और PM-KUSUM योजना की आधिकारिक जानकारी के लिए पोर्टल।"}, url:"https://pmkusum.mnre.gov.in/" },
+    { keys:["solar subsidy","home solar subsidy"], name:{en:"PM Surya Ghar / Rooftop Solar",hi:"पीएम सूर्य घर / रूफटॉप सोलर"}, desc:{en:"Official government rooftop-solar portal for PM Surya Ghar information and applications.",hi:"PM Surya Ghar और रूफटॉप सोलर की आधिकारिक जानकारी व आवेदन पोर्टल।"}, url:"https://pmsuryaghar.gov.in/" },
+    { keys:["pm ujjwala","ujjwala"], name:{en:"Pradhan Mantri Ujjwala Yojana",hi:"प्रधानमंत्री उज्ज्वला योजना"}, desc:{en:"Official PMUY portal for eligibility, documents and new LPG connection information.",hi:"पात्रता, दस्तावेज और नए LPG कनेक्शन की आधिकारिक जानकारी।"}, url:"https://www.pmuy.gov.in/" },
+    { keys:["pm awas","home loan","housing subsidy"], name:{en:"Pradhan Mantri Awas Yojana",hi:"प्रधानमंत्री आवास योजना"}, desc:{en:"Official government housing-scheme information and relevant application portals.",hi:"आवास योजना की सरकारी जानकारी और संबंधित आवेदन पोर्टल।"}, url:"https://pmayuclap.gov.in/" },
+    { keys:["pm jan dhan","jan dhan"], name:{en:"Pradhan Mantri Jan-Dhan Yojana",hi:"प्रधानमंत्री जन-धन योजना"}, desc:{en:"Official government information about PMJDY financial inclusion services.",hi:"PMJDY और वित्तीय समावेशन सेवाओं की सरकारी जानकारी।"}, url:"https://pmjdy.gov.in/" },
+    { keys:["mudra loan","business loan","education loan","personal loan","msme loan"], name:{en:"Government-backed Loan Options",hi:"सरकारी समर्थित ऋण विकल्प"}, desc:{en:"For eligible government-supported credit schemes, check the official JanSamarth portal. Commercial loans do not have one universal government application portal.",hi:"सरकार समर्थित ऋण योजनाओं के लिए आधिकारिक JanSamarth पोर्टल देखें। सामान्य commercial loan के लिए कोई एक सार्वभौमिक सरकारी आवेदन पोर्टल नहीं है।"}, url:"https://www.jansamarth.in/" },
+    { keys:["farm machinery subsidy"], name:{en:"Farm Mechanization / Machinery",hi:"कृषि मशीनरी / यंत्रीकरण"}, desc:{en:"Official agriculture mechanization portal for machinery and related government support information.",hi:"कृषि मशीनरी और सरकारी सहायता की आधिकारिक जानकारी के लिए पोर्टल।"}, url:"https://agrimachinery.nic.in/" },
+    { keys:["food processing subsidy"], name:{en:"Food Processing Government Support",hi:"फूड प्रोसेसिंग सरकारी सहायता"}, desc:{en:"Official Ministry of Food Processing Industries portal for schemes and assistance information.",hi:"फूड प्रोसेसिंग मंत्रालय की योजनाओं और सहायता की आधिकारिक जानकारी।"}, url:"https://mofpi.gov.in/" },
+    { keys:["msme subsidy"], name:{en:"MSME Schemes & Support",hi:"MSME योजनाएं और सहायता"}, desc:{en:"Official MSME Ministry portal for government schemes, credit support and assistance.",hi:"सरकारी MSME योजनाओं, क्रेडिट सहायता और सपोर्ट की आधिकारिक जानकारी।"}, url:"https://msme.gov.in/" },
+    { keys:["kisan pension"], name:{en:"PM-Kisan Maandhan Yojana",hi:"पीएम-किसान मानधन योजना"}, desc:{en:"Official pension scheme information for eligible small and marginal farmers.",hi:"पात्र छोटे और सीमांत किसानों के लिए पेंशन योजना की आधिकारिक जानकारी।"}, url:"https://maandhan.in/" },
+    { keys:["kisan registration"], name:{en:"Farmer Registration / State Agriculture Services",hi:"किसान पंजीकरण / राज्य कृषि सेवाएं"}, desc:{en:"Farmer registration is generally handled through the relevant State Agriculture Department; use the official state agriculture portal.",hi:"किसान पंजीकरण आमतौर पर संबंधित राज्य कृषि विभाग के पोर्टल पर होता है।"}, url:"https://agricoop.nic.in/" },
+    { keys:["ayushman bharat","pm ayushman"], name:{en:"Ayushman Bharat / PM-JAY",hi:"आयुष्मान भारत / PM-JAY"}, desc:{en:"Official National Health Authority information and beneficiary services for PM-JAY.",hi:"PM-JAY की आधिकारिक जानकारी और लाभार्थी सेवाएं।"}, url:"https://pmjay.gov.in/" }
+  ];
+
+  function getOfficialFallback(query) {
+    const n = query.toLowerCase().replace(/[^a-z0-9\\u0900-\\u097f]/g, "").replace(/yojana|scheme|subsidy|loan/g, "");
+    return OFFICIAL_FALLBACKS.find(item => item.keys.some(k => n.includes(k.replace(/[^a-z0-9\\u0900-\\u097f]/g, "")) || k.replace(/[^a-z0-9\\u0900-\\u097f]/g, "").includes(n)));
+  }
+
+  function getOfficialFallbackHTML(item) {
+    if (!item) return "";
+    return \
+      '<div class="service-card" style="border:1px solid var(--color-border);">' +
+      '<div class="service-card__name">' + t(item.name) + ' <span style="font-size:.72rem; padding:3px 7px; border-radius:999px; background:var(--color-surface-alt); color:var(--color-primary);">Official Portal</span></div>' +
+      '<div class="service-card__desc">' + t(item.desc) + '</div>' +
+      '<div class="service-card__arrow"><a href="' + item.url + '" target="_blank" rel="noopener noreferrer">' + t({en:"Open Official Website &rarr;",hi:"आधिकारिक वेबसाइट खोलें &rarr;"}) + '</a></div>' +
+      '</div>';
+  }
+
   function render() {
     const q = ((inputEl && inputEl.value) || "").trim().toLowerCase();
 
@@ -178,17 +215,15 @@
     statusEl.innerHTML = `<strong>${filtered.length}</strong> ${t({ en: "results found", hi: "परिणाम मिले" })}`;
 
     if (!filtered.length) {
+      const official = getOfficialFallback(q);
       resultsEl.classList.remove("service-grid");
       resultsEl.innerHTML = `
-        <div class="no-results-box" style="background: var(--color-surface); border:1px solid var(--color-border); border-radius:8px; padding:24px; text-align:center; margin-bottom:40px; box-shadow: var(--shadow-card);">
-          <h2 style="margin-top:0; color: var(--color-text);">${t({en: "No results found for", hi: "इसके लिए कोई परिणाम नहीं मिला:"})} <span style="color: var(--color-accent-saffron);">"${q}"</span></h2>
-          <p style="color: var(--color-text-muted);">${t({en: "Don't worry, try one of these instead:", hi: "चिंता न करें, इसके बजाय इनमें से कोई एक आज़माएं:"})}</p>
-          <div style="display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap;">
-            <a href="${ROOT}index.html" class="btn btn--primary">${t({en: "Browse All Schemes", hi: "सभी योजनाएं देखें"})}</a>
-            <a href="${ROOT}tools/eligibility-checker.html" class="btn btn--outline">${t({en: "Use Eligibility Checker", hi: "पात्रता इंजन का उपयोग करें"})}</a>
-          </div>
+        <div class="no-results-box" style="background: var(--color-surface); border:1px solid var(--color-border); border-radius:8px; padding:24px; text-align:center; margin-bottom:24px; box-shadow: var(--shadow-card);">
+          <h2 style="margin-top:0; color: var(--color-text);">${official ? t({en:"No matching guide is published on SarkariSewa India yet",hi:"SarkariSewa India पर इसकी गाइड अभी प्रकाशित नहीं है"}) : t({en: "No results found for", hi: "इसके लिए कोई परिणाम नहीं मिला:"})} ${official ? "" : `<span style="color: var(--color-accent-saffron);">"${q}"</span>`}</h2>
+          <p style="color: var(--color-text-muted);">${official ? t({en:"We found the relevant official government portal below.",hi:"नीचे संबंधित आधिकारिक सरकारी पोर्टल दिया गया है।"}) : t({en: "Don't worry, try one of these instead:", hi: "चिंता न करें, इसके बजाय इनमें से कोई एक आज़माएं:"})}</p>
         </div>
-        ${getPopularSearchesHTML()}
+        ${official ? getOfficialFallbackHTML(official) : ""}
+        ${official ? getPopularSearchesHTML() : `<div style="display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap;"><a href="${ROOT}index.html" class="btn btn--primary">${t({en: "Browse All Schemes", hi: "सभी योजनाएं देखें"})}</a><a href="${ROOT}tools/eligibility-checker.html" class="btn btn--outline">${t({en: "Use Eligibility Checker", hi: "पात्रता इंजन का उपयोग करें"})}</a></div>${getPopularSearchesHTML()}`}
       `;
       return;
     }
