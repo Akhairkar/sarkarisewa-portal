@@ -6,13 +6,13 @@
   const featured = [
     ["🆔","Aadhaar Card","UIDAI Services","service/aadhaar-card.html"],
     ["💳","PAN Card","Income Tax Department","service/pan-card.html"],
-    ["🗳️","Voter ID","Election Commission","service/voter-id.html"],
+    ["🗳️","Voter ID","Election Commission","service/voter-id-card.html"],
     ["🚗","Driving Licence","Transport Department","service/driving-licence.html"],
     ["🌐","Passport","MEA Services","service/passport.html"],
     ["☁️","DigiLocker","Digital Documents","service/digilocker.html"],
-    ["❤️","Ayushman Bharat","Health Insurance","service/ayushman-bharat-card.html"],
-    ["⚙️","EPFO","Provident Fund","service/epf.html"],
-    ["🧮","Income Tax","e-Filing Portal","service/income-tax.html"],
+    ["❤️","Ayushman Bharat","Health Insurance","service/ayushman-bharat.html"],
+    ["⚙️","EPFO","Provident Fund","service/epfo.html"],
+    ["🧮","Income Tax","e-Filing Portal","service/income-tax-return-filing.html"],
     ["🍚","Ration Card","Food & Civil Supplies","service/ration-card.html"],
     ["📜","Birth Certificate","Municipal Services","service/birth-certificate.html"],
     ["📍","CSC Locator","Common Service Centres","tools/csc-locator.html"]
