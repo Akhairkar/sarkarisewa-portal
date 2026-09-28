@@ -41,8 +41,8 @@ SERVICE_MAPPINGS = [
         "services": [
             {"title": "PM Kisan Samman Nidhi", "url": "../service/pm-kisan.html", "icon": "🌾"},
             {"title": "Kisan Credit Card (KCC)", "url": "../service/kisan-credit-card.html", "icon": "💳"},
-            {"title": "PM Fasal Bima Yojana", "url": "../service/pm-fasal-bima.html", "icon": "🛡️"},
-            {"title": "PM Kusum Solar Scheme", "url": "../service/pm-kusum-solar-yojana.html", "icon": "☀️"}
+            {"title": "PM Fasal Bima Yojana", "url": "../service/pm-fasal-bima-yojana.html", "icon": "🛡️"},
+            {"title": "PM Kusum Solar Scheme", "url": "../service/pm-kusum.html", "icon": "☀️"}
         ]
     },
     {
@@ -57,8 +57,8 @@ SERVICE_MAPPINGS = [
     {
         "keywords": ["health", "hospital", "ayushman", "swasthya", "medical", "treatment", "bima", "doctor", "medicine"],
         "services": [
-            {"title": "Ayushman Bharat Card (ABHA)", "url": "../service/ayushman-bharat-card.html", "icon": "🏥"},
-            {"title": "Jan Aushadhi Kendra Directory", "url": "../service/jan-aushadhi.html", "icon": "💊"},
+            {"title": "Ayushman Bharat Card (ABHA)", "url": "../service/ayushman-bharat.html", "icon": "🏥"},
+            {"title": "Jan Aushadhi Kendra Directory", "url": "../service/jan-aushadhi-kendra.html", "icon": "💊"},
             {"title": "ABHA Digital Health ID", "url": "../service/abha-health-card.html", "icon": "🪪"},
             {"title": "PM Matru Vandana Yojana", "url": "../service/pm-matru-vandana-yojana.html", "icon": "👶"}
         ]
@@ -87,7 +87,7 @@ SERVICE_MAPPINGS = [
             {"title": "Aadhaar Card Update Guide", "url": "../service/aadhaar-card.html", "icon": "🆔"},
             {"title": "PAN Card Instant Apply & Link", "url": "../service/pan-card.html", "icon": "💳"},
             {"title": "Voter ID Card Online Portal", "url": "../service/voter-id-card.html", "icon": "🗳️"},
-            {"title": "Driving License & Parivahan", "url": "../service/driving-license.html", "icon": "🚗"}
+            {"title": "Driving License & Parivahan", "url": "../service/driving-licence.html", "icon": "🚗"}
         ]
     }
 ]
@@ -95,7 +95,7 @@ SERVICE_MAPPINGS = [
 DEFAULT_SERVICES = [
     {"title": "Aadhaar Card Services", "url": "../service/aadhaar-card.html", "icon": "💳"},
     {"title": "PM Kisan Samman Nidhi", "url": "../service/pm-kisan.html", "icon": "🌾"},
-    {"title": "Ayushman Bharat Golden Card", "url": "../service/ayushman-bharat-card.html", "icon": "🏥"},
+    {"title": "Ayushman Bharat Golden Card", "url": "../service/ayushman-bharat.html", "icon": "🏥"},
     {"title": "CSC / Jan Seva Kendra Locator", "url": "../tools/csc-locator.html", "icon": "📍"}
 ]
 
