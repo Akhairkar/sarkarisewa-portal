@@ -82,6 +82,27 @@ async function init(){if(!document.body.classList.contains("homepage-v2"))return
       setText(blogHead.querySelector("h2"),c.blogTitle);
       setText(blogHead.querySelector(".ss-view-all"),c.blogAll);
     }
+    // Popular Services + social action cards are static homepage markup; localize them explicitly.
+    const popularCards=document.querySelectorAll(".ss-popular-topic-card");
+    const popularHi=[
+      ["वित्त और लोन","बिजनेस, शिक्षा और व्यक्तिगत वित्त के विकल्प।",["मुद्रा लोन","बिजनेस लोन","एजुकेशन लोन","MSME लोन"],"लोन सेवाएं देखें →"],
+      ["सरकारी सब्सिडी","पात्र आवेदकों के लिए सब्सिडी और सहायता विकल्प खोजें।",["सोलर सब्सिडी","PM कुसुम सब्सिडी","कृषि मशीनरी","MSME सब्सिडी"],"सब्सिडी देखें →"],
+      ["PM योजनाएं","प्रमुख प्रधानमंत्री योजनाएं और नागरिक लाभ देखें।",["PM किसान","PM उज्ज्वला योजना","PM आवास योजना","PM जन धन"],"PM योजनाएं देखें →"],
+      ["किसान सेवाएं","किसानों के लिए योजनाएं, कार्ड, बीमा और रजिस्ट्रेशन लिंक।",["किसान क्रेडिट कार्ड","PM फसल बीमा","सॉइल हेल्थ कार्ड","किसान रजिस्ट्रेशन"],"किसान सेवाएं देखें →"]
+    ];
+    const popularEn=[
+      ["Loan & Finance","Business, education and personal finance options.",["Mudra Loan","Business Loan","Education Loan","MSME Loan"],"Explore loan services →"],
+      ["Government Subsidy","Find subsidy and assistance options for eligible applicants.",["Solar Subsidy","PM Kusum Subsidy","Farm Machinery","MSME Subsidy"],"Explore subsidies →"],
+      ["PM Yojana","Explore major Pradhan Mantri schemes and citizen benefits.",["PM Kisan","PM Ujjwala Yojana","PM Awas Yojana","PM Jan Dhan"],"Explore PM schemes →"],
+      ["Kisan Services","Useful farmer schemes, cards, insurance and registration links.",["Kisan Credit Card","PM Fasal Bima","Soil Health Card","Kisan Registration"],"Explore Kisan services →"]
+    ];
+    const popData=lang==="hi"?popularHi:popularEn;
+    popularCards.forEach((card,i)=>{const d=popData[i];if(!d)return;setText(card.querySelector("h3"),d[0]);setText(card.querySelector(">p"),d[1]);card.querySelectorAll(".ss-popular-links a").forEach((a,j)=>{if(d[2][j]){const b=a.querySelector("b");a.childNodes[0].textContent=d[2][j]+" ";if(b)b.textContent="→";}});setText(card.querySelector(".ss-popular-all"),d[3]);});
+    const social={
+      en:{telegram:["Join Telegram","Daily jobs, schemes & service updates","Join →"],whatsapp:["Share on WhatsApp","Share useful government service links","Share →"]},
+      hi:{telegram:["टेलीग्राम से जुड़ें","रोज़गार, योजनाओं और सेवाओं के दैनिक अपडेट","जुड़ें →"],whatsapp:["WhatsApp पर शेयर करें","उपयोगी सरकारी सेवा लिंक शेयर करें","शेयर करें →"]}
+    }[lang];
+    document.querySelectorAll(".ss-social-card").forEach(card=>{const key=card.classList.contains("ss-social-telegram")?"telegram":"whatsapp";const d=social[key];setText(card.querySelector("[data-social-title]"),d[0]);setText(card.querySelector("[data-social-sub]"),d[1]);setText(card.querySelector("b"),d[2]);});
     const toolCards=document.querySelectorAll(".ss-tool-card");
     const toolNames=lang==="hi"?["EPF कैलकुलेटर","सेविंग्स कम्पेरेटर","पात्रता जांचकर्ता","प्रोजेक्ट रिपोर्ट जनरेटर","फोटो रिसाइज़र","CSC लोकेटर"]:["EPF Calculator","Savings Comparator","Eligibility Checker","Project Report Generator","Photo Resizer","CSC Locator"];
     const toolDesc=lang==="hi"?["EPF बैलेंस का अनुमान लगाएं","बचत योजनाओं की तुलना करें","योजना पात्रता जांचें","ऑनलाइन प्रोजेक्ट रिपोर्ट बनाएं","आवेदन के लिए फोटो का आकार बदलें","नजदीकी CSC केंद्र खोजें"]:["Estimate your EPF balance","Compare savings schemes","Check scheme eligibility","Create a project report online","Resize photos for applications","Find Common Service Centres"];
