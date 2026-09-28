@@ -85,14 +85,14 @@ CREATE POLICY "Allow admin select on csc_claims"
 ON public.csc_claims
 FOR SELECT
 TO authenticated
-USING (true);
+USING (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- 4. Allow Admin updates
 CREATE POLICY "Allow admin update on csc_claims"
 ON public.csc_claims
 FOR UPDATE
 TO authenticated
-USING (true);
+USING (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- 5. Prevent public updates/deletes
 CREATE POLICY "Deny public update on csc_claims"
@@ -111,7 +111,7 @@ CREATE POLICY "Allow admin delete on csc_claims"
 ON public.csc_claims
 FOR DELETE
 TO authenticated
-USING (true);
+USING (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- (Note: The admin panel will use either the service_role key or an authenticated admin user to bypass RLS and SELECT/UPDATE records)
 
