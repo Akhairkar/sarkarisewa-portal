@@ -43,23 +43,23 @@ create policy "Public can read published exam_calendar"
 drop policy if exists "Authenticated admin can read all exam_calendar" on exam_calendar;
 create policy "Authenticated admin can read all exam_calendar"
   on exam_calendar for select
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 drop policy if exists "Authenticated admin can insert exam_calendar" on exam_calendar;
 create policy "Authenticated admin can insert exam_calendar"
   on exam_calendar for insert
-  with check (auth.role() = 'authenticated');
+  with check (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 drop policy if exists "Authenticated admin can update exam_calendar" on exam_calendar;
 create policy "Authenticated admin can update exam_calendar"
   on exam_calendar for update
-  using (auth.role() = 'authenticated')
-  with check (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false))
+  with check (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 drop policy if exists "Authenticated admin can delete exam_calendar" on exam_calendar;
 create policy "Authenticated admin can delete exam_calendar"
   on exam_calendar for delete
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- ============================================================================
 -- After running this, add exams from the admin dashboard's "Exam Calendar"
