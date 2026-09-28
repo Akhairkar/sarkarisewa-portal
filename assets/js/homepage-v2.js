@@ -23,7 +23,7 @@
       faqKicker:"HELP",faqTitle:"Frequently Asked Questions",
       faqQ:["Is SarkariSewa India a government website?","Can I apply directly from here?","Are the tools free?","Can I use the website on mobile?"],
       faqA:["No. It is an independent information portal.","We provide guidance and direct links; applications are completed on the relevant official portal.","The listed citizen utilities are designed to be available without a service charge from this portal.","Yes. The homepage and service directory are responsive across mobile, tablet and desktop."],
-      footerTools:["Tools & Calculators","Scheme Eligibility Engine"],
+      footerDisclaimer:"Independent information portal — SarkariSewa India is not affiliated with the Government of India or any State Government. We do not accept applications, process documents, or collect government fees. Use the official portal linked on each guide.",footerTools:["Tools & Calculators","Scheme Eligibility Engine"],
       footerResources:["Project Report Generator","State-wise Popular Services","About","Sitemap","FAQ","Contact"],
       footerSupport:["Support Home","State-wise Services","Helpline Directory","RTI Guide"],
       footerLegal:["Privacy Policy","Disclaimer","Terms & Conditions","Staff Login"]
@@ -73,7 +73,7 @@
     const trust=document.querySelector(".ss-trust-grid");if(trust){setText(trust.querySelector(".ss-kicker"),c.trustKicker);setText(trust.querySelector("h2"),c.trustTitle);setText(trust.querySelector("p"),c.trustSub);const rows=trust.querySelectorAll(".ss-trust-points>div");rows.forEach((r,i)=>{setText(r.querySelector("strong"),c.trust[i*2]);setText(r.querySelector("small"),c.trust[i*2+1]);});}
     const faq=document.querySelectorAll(".ss-faq-grid details");faq.forEach((d,i)=>{setText(d.querySelector("summary"),c.faqQ[i]);setText(d.querySelector("p"),c.faqA[i]);});
     const mobile=document.querySelectorAll("#mobile-nav>a");const mobileVals=[...c.nav,"State Services"];mobile.forEach((a,i)=>{if(mobileVals[i])setText(a,mobileVals[i]);});
-    const lists=document.querySelectorAll(".footer-grid ul");[c.footerTools,c.footerResources,c.footerSupport,c.footerLegal].forEach((arr,i)=>{if(!lists[i])return;lists[i].querySelectorAll("a").forEach((a,j)=>{if(arr[j])setText(a,arr[j]);});});
+    const disc=document.querySelector(".footer-disclaimer-banner p");if(disc)setText(disc,c.footerDisclaimer);const lists=document.querySelectorAll(".footer-grid ul");[c.footerTools,c.footerResources,c.footerSupport,c.footerLegal].forEach((arr,i)=>{if(!lists[i])return;lists[i].querySelectorAll("a").forEach((a,j)=>{if(arr[j])setText(a,arr[j]);});});
   }
   document.addEventListener("ss:ready",()=>apply((window.SITE&&SITE.lang)||"hi"),{once:false});
   document.addEventListener("ss:language-changed",e=>apply(e.detail&&e.detail.lang||"hi"));
