@@ -166,7 +166,7 @@ def main():
 
     json_blog_slugs = {p.get("slug") for p in blog_posts if p.get("slug")}
     db_blog_slugs = set(fetch_db_blog_slugs())
-    blog_slugs = json_blog_slugs | db_blog_slugs
+    blog_slugs = (json_blog_slugs | db_blog_slugs) - {"index", "post"}
 
     with open(os.path.join(ROOT, "data/states.json"), encoding="utf-8") as f:
         states = normalize(json.load(f), "states")
