@@ -140,12 +140,34 @@ function renderTrustStats() {
   if (categoriesEl && CATEGORIES_DATA) categoriesEl.textContent = CATEGORIES_DATA.length;
 }
 
+
+function renderHomeSectors(data){
+  const host=document.getElementById("homepage-sector-services");
+  if(!host || !Array.isArray(data)) return;
+  const categories=[
+    {slug:"identity-documents",icon:"🆔",en:"Identity Documents",hi:"पहचान दस्तावेज़"},
+    {slug:"government-schemes",icon:"📜",en:"Government Schemes",hi:"सरकारी योजनाएं"},
+    {slug:"finance-tax",icon:"💰",en:"Finance & Tax",hi:"वित्त और कर"},
+    {slug:"jobs-education",icon:"🎓",en:"Jobs & Education",hi:"नौकरी और शिक्षा"},
+    {slug:"utilities",icon:"💡",en:"Utilities",hi:"उपयोगिताएं"},
+    {slug:"health",icon:"🏥",en:"Health",hi:"स्वास्थ्य"},
+    {slug:"mpbcdc-schemes",icon:"💸",en:"MPBCDC Schemes",hi:"MPBCDC योजनाएं"}
+  ];
+  const lang=getLang();
+  const local=(v)=>typeof v==="object"?(v&&v[lang])||v?.en||v?.hi||"":String(v||"");
+  const esc2=(v)=>String(v??"").replace(/[&<>'"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[m]));
+  const valid=data.filter(s=>{const n=(local(s.name)+" "+local(s.shortDescription)).toLowerCase();return !n.includes("aadhaar")&&!n.includes("pan card")&&!n.includes("pancard")});
+  host.innerHTML=categories.map(c=>{
+    const items=valid.filter(s=>s.category===c.slug).slice(0,8); if(!items.length)return "";
+    return '<section class="ss-home-sector"><a class="ss-home-sector-panel" href="'+ROOT+'category/'+c.slug+'.html"><span class="ss-home-sector-icon">'+c.icon+'</span><span class="ss-home-sector-copy"><strong>'+esc2(lang==="en"?c.en:c.hi)+'</strong><small>'+items.length+(lang==="hi"?" सेवाएं":" services")+'</small></span><b>→</b></a><div class="ss-home-sector-right"><div class="ss-home-sector-head"><span>'+ (lang==="hi"?"लोकप्रिय सेवाएं":"Popular services") +'</span><a href="'+ROOT+'category/'+c.slug+'.html">'+(lang==="hi"?"सभी देखें →":"View all →")+'</a></div><div class="ss-home-sector-grid">'+items.map(s=>'<a class="ss-home-service" href="'+ssServiceHref(ROOT,s)+'"><strong>'+esc2(local(s.name))+'</strong><small>'+esc2(local(s.shortDescription)||(lang==="hi"?"सेवा गाइड खोलें":"Open service guide"))+'</small></a>').join("")+'</div></div></section>';
+  }).join("");
+}
+
 async function renderHome() {
   await loadHomeData();
   renderCategories();
   renderServices();
-  window.__ssHomeServices = SERVICES_DATA;
-  if (typeof window.renderHomeSectors === "function") window.renderHomeSectors(SERVICES_DATA);
+  renderHomeSectors(SERVICES_DATA);
   renderBlogSection();
   renderTrustStats();
 }
@@ -158,7 +180,7 @@ onLangChange(() => {
   if (!SERVICES_DATA || !CATEGORIES_DATA) return;
   renderCategories();
   renderServices();
-  if (typeof window.renderHomeSectors === "function") window.renderHomeSectors(SERVICES_DATA);
+  renderHomeSectors(SERVICES_DATA);
   renderBlogSection();
   renderHomeDailyUpdates();
 });
