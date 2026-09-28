@@ -22,12 +22,7 @@
   const bodyEl = document.getElementById("blog-post-body");
   const relatedEl = document.getElementById("blog-post-related");
 
-  // GUARD: Pre-rendered static pages already contain HTML content.
-  // Do NOT wipe or dynamically overwrite pre-rendered content on static blog pages.
   const isDynamicShell = window.location.pathname.endsWith("post.html") || window.location.pathname.endsWith("post.html/");
-  if (!isDynamicShell && bodyEl && bodyEl.children.length > 0) {
-    return;
-  }
 
   function normalizePosts(data) {
     if (Array.isArray(data)) return data;
@@ -87,7 +82,13 @@
 
   if (!slug) {
     renderMissing();
+  } else if (isDynamicShell) {
+    loadDynamicPost();
   } else {
+    loadStaticPost();
+  }
+
+  async function loadDynamicPost() {
     Promise.all([
       fetch(`${ROOT}data/blog-posts.json`).then((r) => r.json()),
       fetchAllServices(),
@@ -96,32 +97,19 @@
       .then(async ([postsRaw, services, categoriesRaw]) => {
         const posts = normalizePosts(postsRaw);
         let post = posts.find((p) => p.slug === slug);
-
-        // If the local JSON entry exists but has no article body, fall back
-        // to the published Supabase post. This is important for posts whose
-        // metadata is kept in data/blog-posts.json while the full article
-        // body is stored in the admin database.
         if (!post || !post.body || !post.body.en) {
           const dbPost = await fetchDbPost(slug);
-          if (dbPost) {
-            post = post
-              ? { ...post, ...dbPost, title: post.title || dbPost.title, excerpt: post.excerpt || dbPost.excerpt }
-              : dbPost;
-          }
+          if (dbPost) post = post ? { ...post, ...dbPost } : dbPost;
         }
-
         if (!post || !post.body || !post.body.en) {
           renderMissing();
           return;
         }
         const categories = normalizeCategories(categoriesRaw);
         const category = post.category ? categories.find((c) => c.slug === post.category) : null;
-        const relatedService = post.relatedServiceId
-          ? services.find((s) => (s.slug || s.id) === post.relatedServiceId)
-          : null;
-
-        renderAll(post, category, relatedService);
-        onLangChange(() => renderAll(post, category, relatedService));
+        const relatedService = post.relatedServiceId ? services.find((s) => (s.slug || s.id) === post.relatedServiceId) : null;
+        renderAll(post, category, relatedService, false);
+        onLangChange(() => renderAll(post, category, relatedService, false));
       })
       .catch((err) => {
         console.error("Failed to load blog post:", err);
@@ -129,13 +117,51 @@
       });
   }
 
-  function renderAll(post, category, relatedService) {
+  async function loadStaticPost() {
+    // Static HTML is the primary article source. JS only enhances it and
+    // never clears or replaces the baked-in content.
+    const existingBody = bodyEl ? bodyEl.innerHTML : "";
+    try {
+      const [raw, categoriesRaw, services] = await Promise.all([
+        fetch(`${ROOT}data/blog-posts.json`).then((r) => r.json()),
+        fetch(`${ROOT}data/categories.json`).then((r) => r.json()),
+        fetchAllServices(),
+      ]);
+      const posts = normalizePosts(raw);
+      let post = posts.find((p) => p.slug === slug);
+      if (!post || !post.body || !post.body.en) {
+        const dbPost = await fetchDbPost(slug);
+        if (dbPost) post = post ? { ...post, ...dbPost } : dbPost;
+      }
+      if (!post) return;
+
+      const categories = normalizeCategories(categoriesRaw);
+      const category = post.category ? categories.find((c) => c.slug === post.category) : null;
+      const relatedService = post.relatedServiceId ? services.find((s) => (s.slug || s.id) === post.relatedServiceId) : null;
+
+      if (bodyEl && post.body && post.body.en && !bodyEl.querySelector(":scope > .content-hi")) {
+        bodyEl.innerHTML = `<div class="content-hi">${existingBody}</div><div class="content-en">${post.body.en}</div>`;
+      }
+      renderStaticChrome(post, category, relatedService);
+      if (typeof applyLanguage === "function") applyLanguage(typeof getLang === "function" ? getLang() : "hi");
+      onLangChange(() => renderStaticChrome(post, category, relatedService));
+    } catch (err) {
+      console.warn("Static blog enhancement failed; keeping baked-in HTML:", err);
+    }
+  }
+
+
+  function renderAll(post, category, relatedService, isStatic) {
     document.title = `${t(post.title)} — SarkariSewa India Blog`;
-    renderMeta(post, category);
+    renderMeta(post, category, isStatic);
     renderBreadcrumb(post);
     renderHero(post, category);
-    bodyEl.innerHTML = t(post.body);
+    if (!isStatic) bodyEl.innerHTML = t(post.body);
     renderRelated(relatedService);
+  }
+
+  function renderStaticChrome(post, category, relatedService) {
+    renderAll(post, category, relatedService, true);
   }
 
   function setMetaTag(attr, key, content) {
@@ -148,10 +174,10 @@
     el.setAttribute("content", content);
   }
 
-  function renderMeta(post, category) {
+  function renderMeta(post, category, isStatic = false) {
     const title = t(post.title);
     const excerpt = t(post.excerpt) || "";
-    const url = `https://sarkarisewaindia.com/blog/post.html?slug=${post.slug}`;
+    const url = isStatic ? `https://sarkarisewaindia.com/blog/${post.slug}.html` : `https://sarkarisewaindia.com/blog/post.html?slug=${post.slug}`;
 
     setMetaTag("name", "description", excerpt);
     setMetaTag("property", "og:title", `${title} — SarkariSewa India Blog`);
@@ -208,20 +234,30 @@
       <span class="sep">/</span>
       <a href="${ROOT}blog/index.html" data-i18n="blog_title">Blog</a>
       <span class="sep">/</span>
-      <span class="current">${t(post.title)}</span>
+      <span class="current">
+        <span data-lang-show="hi">${post.title.hi || post.title.en}</span>
+        <span data-lang-show="en">${post.title.en || post.title.hi}</span>
+      </span>
     `;
   }
 
   function renderHero(post, category) {
     heroEl.innerHTML = `
       ${category ? `<span class="service-hero__badge">${category.icon || ""} ${t(category.name)}</span>` : ""}
-      <h1 class="blog-post-hero__title">${t(post.title)}</h1>
-      <p class="blog-post-hero__date">${t({ en: "Published on", hi: "प्रकाशित" })} ${formatDate(post.datePublished)}</p>
+      <h1 class="blog-post-hero__title">
+        <span data-lang-show="hi">${post.title.hi || post.title.en}</span>
+        <span data-lang-show="en">${post.title.en || post.title.hi}</span>
+      </h1>
+      <p class="blog-post-hero__date">
+        <span data-lang-show="hi">प्रकाशित</span>
+        <span data-lang-show="en">Published on</span>
+        ${formatDate(post.datePublished)}
+      </p>
       <div id="blog-share-row"></div>
     `;
 
     if (typeof renderShareRow === "function") {
-      const shareUrl = `https://sarkarisewaindia.com/blog/post.html?slug=${post.slug || post.id}`;
+      const shareUrl = `https://sarkarisewaindia.com/blog/${post.slug || post.id}.html`;
       renderShareRow("blog-share-row", shareUrl, t(post.title), "blog-share");
     }
   }
