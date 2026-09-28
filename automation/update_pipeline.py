@@ -42,7 +42,7 @@ SERVICE_MAPPINGS = [
             {"title": "PM Kisan Samman Nidhi", "url": "../service/pm-kisan.html", "icon": "🌾"},
             {"title": "Kisan Credit Card (KCC)", "url": "../service/kisan-credit-card.html", "icon": "💳"},
             {"title": "PM Fasal Bima Yojana", "url": "../service/pm-fasal-bima-yojana.html", "icon": "🛡️"},
-            {"title": "PM Kusum Solar Scheme", "url": "../service/pm-kusum.html", "icon": "☀️"}
+            {"title": "PM Kusum Solar Scheme", "url": "../service/pm-kusam-solar-pump-apply.html", "icon": "☀️"}
         ]
     },
     {
@@ -50,7 +50,7 @@ SERVICE_MAPPINGS = [
         "services": [
             {"title": "National Pension System (NPS)", "url": "../service/national-pension-system.html", "icon": "💰"},
             {"title": "Atal Pension Yojana (APY)", "url": "../service/atal-pension-yojana.html", "icon": "👵"},
-            {"title": "EPFO Member Passbook & Claim", "url": "../service/epfo-services.html", "icon": "📈"},
+            {"title": "EPFO Member Passbook & Claim", "url": "../service/epfo.html", "icon": "📈"},
             {"title": "Indira Gandhi Pension Scheme", "url": "../service/national-social-assistance-programme.html", "icon": "🏛️"}
         ]
     },
@@ -58,7 +58,7 @@ SERVICE_MAPPINGS = [
         "keywords": ["health", "hospital", "ayushman", "swasthya", "medical", "treatment", "bima", "doctor", "medicine"],
         "services": [
             {"title": "Ayushman Bharat Card (ABHA)", "url": "../service/ayushman-bharat.html", "icon": "🏥"},
-            {"title": "Jan Aushadhi Kendra Directory", "url": "../service/jan-aushadhi-kendra.html", "icon": "💊"},
+            {"title": "Jan Aushadhi Kendra Directory", "url": "../service/jan-aushadhi-store-locator.html", "icon": "💊"},
             {"title": "ABHA Digital Health ID", "url": "../service/abha-health-card.html", "icon": "🪪"},
             {"title": "PM Matru Vandana Yojana", "url": "../service/pm-matru-vandana-yojana.html", "icon": "👶"}
         ]
