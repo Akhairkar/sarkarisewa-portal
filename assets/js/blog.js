@@ -57,8 +57,15 @@
     fetchDbPosts(),
   ])
     .then(([raw, dbPosts]) => {
-      const posts = normalizePosts(raw)
-        .concat(dbPosts)
+      // Local JSON is the canonical source for the static article set.
+      // Published Supabase posts are merged only when their slug is not
+      // already present locally, preventing duplicate cards.
+      const bySlug = new Map();
+      normalizePosts(raw).forEach((post) => bySlug.set(post.slug, { ...post, isStatic: true }));
+      dbPosts.forEach((post) => {
+        if (!bySlug.has(post.slug)) bySlug.set(post.slug, post);
+      });
+      const posts = Array.from(bySlug.values())
         .sort((a, b) => (a.datePublished < b.datePublished ? 1 : -1));
       render(posts);
       onLangChange(() => render(posts));
