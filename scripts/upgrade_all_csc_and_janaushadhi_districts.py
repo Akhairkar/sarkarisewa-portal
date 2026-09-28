@@ -129,11 +129,7 @@ def upgrade_all_csc_district_pages():
         with open(fpath, 'r', encoding='utf-8', errors='ignore') as fp:
             c = fp.read()
             
-        # 1. Update Title & Meta
-        c = re.sub(r'<title>.*?</title>', f'<title>{clean_title}</title>', c, count=1, flags=re.IGNORECASE | re.DOTALL)
-        c = re.sub(r'<meta\s+name=["\']description["\']\s+content=["\'].*?["\']', f'<meta name="description" content="{clean_desc}"', c, count=1, flags=re.IGNORECASE)
-        c = re.sub(r'<meta\s+property=["\']og:title["\']\s+content=["\'].*?["\']', f'<meta property="og:title" content="{clean_title}"', c, count=1, flags=re.IGNORECASE)
-        c = re.sub(r'<meta\s+property=["\']og:description["\']\s+content=["\'].*?["\']', f'<meta property="og:description" content="{clean_desc}"', c, count=1, flags=re.IGNORECASE)
+        # 1. Preserve existing title/meta exactly. Maintenance runs must not alter SEO metadata.
 
         # 2. Inject FAQs Section
         faq_section_html = f'''
@@ -165,11 +161,13 @@ def upgrade_all_csc_district_pages():
         if '"@graph": [' in c and '"FAQPage"' not in c:
             c = c.replace('"@graph": [', f'"@graph": [\n{faq_schema_block},')
             
-        # 4. Bake Header & Footer
+        # 4. Bake Header & Footer only when the host is genuinely empty.
+        # Do not use a nested-HTML regex here: it can stop at the first inner </div>
+        # and leave a second footer/header fragment behind.
         b_header = get_baked_header(prefix)
         b_footer = get_baked_footer(prefix)
-        c = re.sub(r'<div id="site-header">.*?</div>', f'<div id="site-header">\n{b_header}\n</div>', c, flags=re.DOTALL)
-        c = re.sub(r'<div id="site-footer">.*?</div>', f'<div id="site-footer">\n{b_footer}\n</div>', c, flags=re.DOTALL)
+        c = re.sub(r'<div id="site-header">\s*</div>', f'<div id="site-header">\n{b_header}\n</div>', c, count=1, flags=re.DOTALL)
+        c = re.sub(r'<div id="site-footer">\s*</div>', f'<div id="site-footer">\n{b_footer}\n</div>', c, count=1, flags=re.DOTALL)
         
         # Clean brand & mojibake
         c = c.replace('सरकारीसेवा पोर्टल', 'SarkariSewa India').replace('SarkariSewa Portal', 'SarkariSewa India')
