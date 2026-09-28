@@ -123,7 +123,7 @@ function renderBlogSection() {
     const d = new Date(post.datePublished + "T00:00:00");
     const dateStr = isNaN(d.getTime()) ? post.datePublished : d.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" });
     return `
-      <a class="blog-card" href="${ROOT}blog/post.html?slug=${post.slug}">
+      <a class="blog-card" href="${ROOT}blog/${post.slug}.html">
         <div class="blog-card__date">${dateStr}</div>
         <div class="blog-card__title">${t(post.title)}</div>
         <div class="blog-card__excerpt">${t(post.excerpt)}</div>
