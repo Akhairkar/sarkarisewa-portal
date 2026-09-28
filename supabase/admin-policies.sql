@@ -17,16 +17,16 @@
 -- ----------------------------------------------------------------------------
 create policy "Authenticated admin can read all comments"
   on comments for select
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 create policy "Authenticated admin can update comments"
   on comments for update
-  using (auth.role() = 'authenticated')
-  with check (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false))
+  with check (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 create policy "Authenticated admin can delete comments"
   on comments for delete
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- ----------------------------------------------------------------------------
 -- subscribers: admin can read the list (public site still cannot —
@@ -34,7 +34,7 @@ create policy "Authenticated admin can delete comments"
 -- ----------------------------------------------------------------------------
 create policy "Authenticated admin can read subscribers"
   on subscribers for select
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- ============================================================================
 -- After running this, the admin dashboard (once you're logged in via
