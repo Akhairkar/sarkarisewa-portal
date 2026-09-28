@@ -44,20 +44,20 @@ create policy "Public can read published blog_posts"
 -- subscribers moderation) can see drafts and create/edit/delete posts.
 create policy "Authenticated admin can read all blog_posts"
   on blog_posts for select
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 create policy "Authenticated admin can insert blog_posts"
   on blog_posts for insert
-  with check (auth.role() = 'authenticated');
+  with check (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 create policy "Authenticated admin can update blog_posts"
   on blog_posts for update
-  using (auth.role() = 'authenticated')
-  with check (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false))
+  with check (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 create policy "Authenticated admin can delete blog_posts"
   on blog_posts for delete
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- ============================================================================
 -- After running this, the admin dashboard's Blog tab can write posts
