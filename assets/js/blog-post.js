@@ -105,6 +105,14 @@
           renderMissing();
           return;
         }
+
+        // Static HTML is the canonical article URL. If an old/dynamic
+        // ?slug= URL is opened for a local static post, move the visitor
+        // to the real static URL instead of serving duplicate content.
+        if (post.isStatic) {
+          window.location.replace(`${ROOT}blog/${post.slug}.html`);
+          return;
+        }
         const categories = normalizeCategories(categoriesRaw);
         const category = post.category ? categories.find((c) => c.slug === post.category) : null;
         const relatedService = post.relatedServiceId ? services.find((s) => (s.slug || s.id) === post.relatedServiceId) : null;
@@ -144,7 +152,14 @@
       }
       renderStaticChrome(post, category, relatedService);
       if (typeof applyLanguage === "function") applyLanguage(typeof getLang === "function" ? getLang() : "hi");
-      onLangChange(() => renderStaticChrome(post, category, relatedService));
+      onLangChange(() => {
+        renderStaticChrome(post, category, relatedService);
+        // renderStaticChrome() recreates bilingual title/hero nodes, so
+        // re-apply the language after every toggle to those new nodes too.
+        if (typeof applyLanguage === "function") {
+          applyLanguage(typeof getLang === "function" ? getLang() : "hi");
+        }
+      });
     } catch (err) {
       console.warn("Static blog enhancement failed; keeping baked-in HTML:", err);
     }
