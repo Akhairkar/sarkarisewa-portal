@@ -286,7 +286,6 @@ async function initSite() {
 
   document.dispatchEvent(new CustomEvent("ss:ready"));
   loadAnalyticsTracking();
-  initTelegramBanner();
 }
 
 function initTelegramBanner() {
