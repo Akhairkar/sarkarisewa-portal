@@ -48,23 +48,23 @@ create policy "Public can read published services"
 drop policy if exists "Authenticated admin can read all services" on services;
 create policy "Authenticated admin can read all services"
   on services for select
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 drop policy if exists "Authenticated admin can insert services" on services;
 create policy "Authenticated admin can insert services"
   on services for insert
-  with check (auth.role() = 'authenticated');
+  with check (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 drop policy if exists "Authenticated admin can update services" on services;
 create policy "Authenticated admin can update services"
   on services for update
-  using (auth.role() = 'authenticated')
-  with check (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false))
+  with check (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 drop policy if exists "Authenticated admin can delete services" on services;
 create policy "Authenticated admin can delete services"
   on services for delete
-  using (auth.role() = 'authenticated');
+  using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- ============================================================================
 -- After this + Session 1's site-wide code is deployed, you can test it by
