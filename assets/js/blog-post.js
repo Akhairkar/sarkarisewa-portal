@@ -7,7 +7,15 @@
 (function () {
   const ROOT = window.SS_ROOT || "";
   const params = new URLSearchParams(window.location.search);
-  const slug = params.get("slug");
+  // Dynamic shell uses ?slug=..., while legacy/static article pages use
+  // /blog/<slug>.html. Resolve both forms so static pages can load their
+  // published body from Supabase without changing the page shell.
+  const pathName = window.location.pathname || "";
+  const pathFile = pathName.split("/").pop() || "";
+  const pathSlug = pathFile.endsWith(".html") && pathFile !== "post.html"
+    ? decodeURIComponent(pathFile.slice(0, -5))
+    : null;
+  const slug = params.get("slug") || pathSlug;
 
   const breadcrumbEl = document.getElementById("breadcrumb");
   const heroEl = document.getElementById("blog-post-hero");
