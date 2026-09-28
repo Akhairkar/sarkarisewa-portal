@@ -9,9 +9,13 @@ function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 function href(s){return typeof ssServiceHref==="function"?ssServiceHref(ROOT,s):ROOT+"service/"+encodeURIComponent(s.slug)+".html";}
 function render(){
  sectorsEl.innerHTML=cats.map(c=>{
-  const items=all.filter(s=>s.category===c.slug && !["aadhaar","aadhaar-card","pan","pan-card"].includes(String(s.slug||"").toLowerCase()) && !/\\b(aadhaar|pan card|pancard)\\b/i.test(tfn(s.name))).slice(0,8);
+  const items=all.filter(s=>{
+   if(s.category!==c.slug)return false;
+   const n=tfn(s.name).toLowerCase();
+   return !n.includes("aadhaar") && !n.includes("pan card") && !n.includes("pancard");
+  }).slice(0,8);
   if(!items.length)return "";
-  return '<section class="sd-sector" id="sector-'+esc(c.slug)+'"><a class="sd-category-panel" href="'+ROOT+'category/'+esc(c.slug)+'.html"><span class="sd-category-icon">'+esc(c.icon||"▦")+'</span><span class="sd-category-copy"><strong>'+esc(tfn(c.name))+'</strong><small>'+esc(tfn(c.description))+'</small></span><span class="sd-category-count">'+items.length+'<small>services</small></span><b>→</b></a><div class="sd-sector-services"><div class="sd-sector-services-head"><span>Popular services</span><a class="sd-sector-link" href="'+ROOT+'category/'+esc(c.slug)+'.html">View all →</a></div><div class="sd-grid">'+items.map(s=>'<a class="sd-card" href="'+href(s)+'"><span class="sd-icon">📌</span><span class="sd-card-copy"><strong>'+esc(tfn(s.name))+'</strong><small>'+esc(tfn(s.shortDescription||""))+'</small></span><b>→</b></a>').join("")+'</div></div></section>';
+  return '<section class="sd-sector" id="sector-'+esc(c.slug)+'"><a class="sd-category-panel" href="'+ROOT+'category/'+esc(c.slug)+'.html"><span class="sd-category-icon">'+esc(c.icon||"")+'</span><span class="sd-category-copy"><strong>'+esc(tfn(c.name))+'</strong><small>'+esc(tfn(c.description))+'</small></span><span class="sd-category-count">'+items.length+'<small>services</small></span><b>→</b></a><div class="sd-sector-services"><div class="sd-sector-services-head"><span>Popular services</span><a class="sd-sector-link" href="'+ROOT+'category/'+esc(c.slug)+'.html">View all →</a></div><div class="sd-grid">'+items.map(s=>'<a class="sd-card" href="'+href(s)+'"><span class="sd-icon">📌</span><span class="sd-card-copy"><strong>'+esc(tfn(s.name))+'</strong><small>'+esc(tfn(s.shortDescription||""))+'</small></span><b>→</b></a>').join("")+'</div></div></section>';
  }).join("");
 }
 Promise.all([typeof fetchAllServices==="function"?fetchAllServices():fetch(ROOT+"data/services.json").then(r=>r.json()),fetch(ROOT+"data/categories.json").then(r=>r.json())]).then(([s,c])=>{
