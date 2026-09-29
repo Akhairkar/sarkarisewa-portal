@@ -304,22 +304,18 @@
       return;
     }
 
-    resultsEl.innerHTML = filtered
-      .map(
-        (service) => `
-      <a class="service-card" href="${ssServiceHref(ROOT, service)}">
-        <div class="service-card__name">${t(service.name)}</div>
-        <div class="service-card__desc">${t(service.shortDescription || "")}</div>
-        <div class="service-card__tags" style="display:flex; gap:6px; margin: 10px 0; flex-wrap:wrap;">
-          <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Eligibility", hi:"पात्रता"})}</span>
-          <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Documents", hi:"दस्तावेज़"})}</span>
-          <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Apply", hi:"आवेदन"})}</span>
-          <span class="sc-tag" style="background: var(--color-surface-alt); color: var(--color-primary); padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:600;">${t({en:"Status", hi:"स्थिति"})}</span>
-        </div>
-        <div class="service-card__arrow">${t({ en: "View Complete Guide &rarr;", hi: "पूरी गाइड देखें &rarr;" })}</div>
-      </a>
-    `
-      )
-      .join("");
+    const schemeMode = /(?:scheme|schemes|yojana|योजना)/i.test(q) || activeCategory === "government-schemes";
+    const schemeCard = (service) => {
+      const eligibility = Array.isArray(service.eligibility) ? service.eligibility : [];
+      const documents = Array.isArray(service.documentsRequired) ? service.documentsRequired : [];
+      const official = Array.isArray(service.officialLinks) ? service.officialLinks.find((x) => x && x.url) : null;
+      const benefitText = t(service.shortDescription || {en:"Government scheme information, eligibility and application guidance.",hi:"सरकारी योजना की जानकारी, पात्रता और आवेदन मार्गदर्शन।"});
+      const firstText = (arr, fallback) => arr.length ? (typeof arr[0] === "string" ? arr[0] : t(arr[0])) : t(fallback);
+      return '<article class="scheme-result-card"><div class="scheme-result-card__top"><span class="scheme-result-badge">📜 '+t({en:"Government Scheme",hi:"सरकारी योजना"})+'</span><span class="scheme-result-category">'+(service.category||"")+'</span></div><h3>'+t(service.name)+'</h3><p class="scheme-result-benefit"><b>'+t({en:"About / Benefit",hi:"लाभ / जानकारी"})+'</b>'+benefitText+'</p><div class="scheme-result-facts"><div><small>'+t({en:"Eligibility",hi:"पात्रता"})+'</small><span>'+firstText(eligibility,{en:"Check scheme-specific criteria",hi:"योजना की पात्रता देखें"})+'</span></div><div><small>'+t({en:"Documents",hi:"दस्तावेज़"})+'</small><span>'+firstText(documents,{en:"See required documents",hi:"जरूरी दस्तावेज़ देखें"})+'</span></div></div><div class="scheme-result-actions"><a href="'+ssServiceHref(ROOT,service)+'">'+t({en:"View Full Guide →",hi:"पूरी गाइड देखें →"})+'</a>'+(official?'<a class="scheme-result-official" href="'+official.url+'" target="_blank" rel="noopener noreferrer">'+t({en:"Official Site ↗",hi:"आधिकारिक साइट ↗"})+'</a>':"")+'</div></article>';
+    };
+    resultsEl.innerHTML = filtered.map((service) => {
+      if (schemeMode) return schemeCard(service);
+      return '<a class="service-card" href="'+ssServiceHref(ROOT,service)+'"><div class="service-card__name">'+t(service.name)+'</div><div class="service-card__desc">'+t(service.shortDescription || "")+'</div><div class="service-card__tags"><span class="sc-tag">'+t({en:"Eligibility",hi:"पात्रता"})+'</span><span class="sc-tag">'+t({en:"Documents",hi:"दस्तावेज़"})+'</span><span class="sc-tag">'+t({en:"Apply",hi:"आवेदन"})+'</span><span class="sc-tag">'+t({en:"Status",hi:"स्थिति"})+'</span></div><div class="service-card__arrow">'+t({en:"View Complete Guide →",hi:"पूरी गाइड देखें →"})+'</div></a>';
+    }).join("");
   }
 })();
