@@ -1,6 +1,7 @@
 import glob
 import os
 import sys
+from bs4 import BeautifulSoup
 
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -21,6 +22,31 @@ for fpath in sorted(all_html_files):
     if fpath.startswith('admin/') or fpath.startswith('admin\\') or fpath.startswith('.'):
         continue
     if fpath in admin_root_files:
+        continue
+
+    # Never submit dynamic fallback shells or pages explicitly marked noindex.
+    if fpath in {
+        'service/service.html', 'category/category.html',
+        'blog/post.html', 'jobs/post.html', 'exams/exam.html'
+    }:
+        continue
+
+    try:
+        with open(fpath, 'r', encoding='utf-8', errors='ignore') as fp:
+            html = fp.read()
+        soup = BeautifulSoup(html, 'html.parser')
+        robots = soup.find('meta', attrs={'name': lambda v: v and v.lower() == 'robots'})
+        if robots and 'noindex' in (robots.get('content') or '').lower():
+            continue
+        canonical = soup.find('link', rel=lambda v: v and 'canonical' in v)
+        if canonical and canonical.get('href'):
+            expected = f"{base_url}/{fpath}"
+            if fpath == 'index.html':
+                expected = f"{base_url}/"
+            if canonical['href'].rstrip('/') != expected.rstrip('/'):
+                continue
+    except Exception:
+        # Keep the file out of the sitemap when its SEO shell cannot be parsed safely.
         continue
         
     priority = "0.6"
