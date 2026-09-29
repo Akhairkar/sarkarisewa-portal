@@ -243,10 +243,40 @@
     resultsEl.innerHTML='<div class="ss-job-hub-intro"><span>🔔 '+t({en:"Government Job Notifications",hi:"सरकारी नौकरी नोटिफिकेशन"})+'</span><h1>'+t({en:"Latest Government Jobs",hi:"लेटेस्ट सरकारी नौकरियां"})+'</h1><p>'+t({en:"Verified recruitment updates grouped into Live, Upcoming and Expired so you can quickly find the right notification.",hi:"सत्यापित भर्ती अपडेट को Live, Upcoming और Expired में अलग किया गया है ताकि सही नोटिफिकेशन जल्दी मिले।"})+'</p></div>'+html;
   }
 
+  // Dedicated Calculator Hub mode: surface verified calculator/tool pages even when their page title or service record does not contain the word "calculator".
+  const CALCULATOR_RESULTS = [
+    {name:{en:"7th Pay Commission Salary Calculator",hi:"7वां वेतन आयोग सैलरी कैलकुलेटर"},desc:{en:"Estimate revised basic pay and salary under the 7th Pay Commission.",hi:"7वें वेतन आयोग के अनुसार संशोधित बेसिक पे और सैलरी का अनुमान लगाएं।"},url:"7th-pay-commission-calculator.html",tag:{en:"Salary & Pay",hi:"सैलरी और वेतन"},icon:"💰",tone:"blue"},
+    {name:{en:"8th Pay Commission Salary Calculator",hi:"8वां वेतन आयोग सैलरी कैलकुलेटर"},desc:{en:"Explore an indicative 8th Pay Commission salary calculation using the available fitment assumptions.",hi:"उपलब्ध fitment assumptions के आधार पर 8वें वेतन आयोग की अनुमानित सैलरी देखें।"},url:"8th-pay-calculator.html",tag:{en:"Salary & Pay",hi:"सैलरी और वेतन"},icon:"📈",tone:"purple"},
+    {name:{en:"EPF Calculator",hi:"EPF कैलकुलेटर"},desc:{en:"Estimate EPF contributions and retirement savings from salary and contribution inputs.",hi:"सैलरी और योगदान के आधार पर EPF योगदान और रिटायरमेंट बचत का अनुमान लगाएं।"},url:"tools/epf-calculator.html",tag:{en:"PF & Retirement",hi:"PF और रिटायरमेंट"},icon:"🏦",tone:"green"},
+    {name:{en:"Gratuity Calculator",hi:"ग्रेच्युटी कैलकुलेटर"},desc:{en:"Estimate gratuity based on salary and eligible years of service.",hi:"सैलरी और सेवा के वर्षों के आधार पर ग्रेच्युटी का अनुमान लगाएं।"},url:"tools/gratuity-calculator.html",tag:{en:"Employee Benefits",hi:"कर्मचारी लाभ"},icon:"🧾",tone:"orange"},
+    {name:{en:"HRA Calculator",hi:"HRA कैलकुलेटर"},desc:{en:"Estimate HRA-related figures using salary, rent and location inputs.",hi:"सैलरी, किराया और स्थान के आधार पर HRA से जुड़ी गणना करें।"},url:"tools/hra-calculator.html",tag:{en:"Income & Tax",hi:"आय और टैक्स"},icon:"🏠",tone:"blue"},
+    {name:{en:"Income Tax Calculator",hi:"इनकम टैक्स कैलकुलेटर"},desc:{en:"Estimate income tax from the available salary and tax inputs.",hi:"उपलब्ध सैलरी और टैक्स इनपुट के आधार पर इनकम टैक्स का अनुमान लगाएं।"},url:"tools/income-tax-calculator.html",tag:{en:"Income & Tax",hi:"आय और टैक्स"},icon:"🧮",tone:"purple"},
+    {name:{en:"NPS Pension Calculator",hi:"NPS पेंशन कैलकुलेटर"},desc:{en:"Explore indicative NPS retirement corpus and pension outcomes from your inputs.",hi:"आपके इनपुट के आधार पर NPS रिटायरमेंट कॉर्पस और पेंशन का अनुमान देखें।"},url:"nps-pension-calculator.html",tag:{en:"Pension",hi:"पेंशन"},icon:"👴",tone:"green"},
+    {name:{en:"Exam Age Calculator",hi:"परीक्षा आयु कैलकुलेटर"},desc:{en:"Check your age against common government-exam eligibility calculations.",hi:"सरकारी परीक्षाओं के लिए आयु पात्रता की गणना करें।"},url:"exam-age-calculator.html",tag:{en:"Exam Eligibility",hi:"परीक्षा पात्रता"},icon:"🎓",tone:"orange"},
+    {name:{en:"Age Calculator",hi:"आयु कैलकुलेटर"},desc:{en:"Calculate your exact age from your date of birth.",hi:"जन्मतिथि से अपनी सटीक आयु निकालें।"},url:"tools/age-calculator.html",tag:{en:"Utility",hi:"यूटिलिटी"},icon:"📅",tone:"blue"},
+    {name:{en:"Hidden Tax Calculator",hi:"हिडन टैक्स कैलकुलेटर"},desc:{en:"Explore an indicative monthly tax impact from salary and expense inputs.",hi:"सैलरी और खर्च के इनपुट से अनुमानित मासिक टैक्स प्रभाव देखें।"},url:"tools/hidden-tax-calculator.html",tag:{en:"Tax Utility",hi:"टैक्स यूटिलिटी"},icon:"🔍",tone:"orange"},
+    {name:{en:"ITR Penalty Calculator",hi:"ITR पेनल्टी कैलकुलेटर"},desc:{en:"Estimate applicable ITR-related late-filing penalty using the tool inputs.",hi:"टूल के इनपुट के आधार पर ITR से जुड़ी late-filing penalty का अनुमान लगाएं।"},url:"tools/itr-penalty-calculator.html",tag:{en:"Income Tax",hi:"इनकम टैक्स"},icon:"📋",tone:"purple"}
+  ];
+  function isCalculatorQuery(q){
+    return /(?:calculator|calculate|calculation|calc|कैलकुलेटर|गणना)/i.test(q.trim());
+  }
+  function renderCalculatorMode(){
+    const q=(inputEl?.value||"").trim().toLowerCase();
+    if(filtersEl) filtersEl.innerHTML="";
+    if(!resultsEl) return;
+    const words=q.replace(/[^a-z0-9\\u0900-\\u097f]+/gi," ").trim();
+    const specific = words && !/^(calculator|calculators|calculate|calculation|calc|कैलकुलेटर|गणना)$/i.test(words);
+    const list = specific ? CALCULATOR_RESULTS.filter(c=>{ const hay=(t(c.name)+" "+t(c.desc)+" "+t(c.tag)).toLowerCase(); return words.split(/\\s+/).some(w=>w.length>1 && hay.includes(w)); }) : CALCULATOR_RESULTS;
+    const cards=list.map(c=>'<article class="ss-calc-card ss-calc-card--'+c.tone+'"><div class="ss-calc-top"><span class="ss-calc-icon" aria-hidden="true">'+c.icon+'</span><span class="ss-calc-tag">'+t(c.tag)+'</span></div><h3>'+t(c.name)+'</h3><p>'+t(c.desc)+'</p><a class="ss-calc-button" href="'+ROOT+c.url+'">'+t({en:"Use Calculator →",hi:"कैलकुलेटर खोलें →"})+'</a></article>').join("");
+    resultsEl.classList.remove("service-grid");
+    resultsEl.innerHTML='<div class="ss-calc-hub-intro"><span>🧮 '+t({en:"FREE CALCULATOR DIRECTORY",hi:"फ्री कैलकुलेटर डायरेक्टरी"})+'</span><h1>'+t({en:"Government & Useful Calculators",hi:"सरकारी और उपयोगी कैलकुलेटर"})+'</h1><p>'+t({en:"Salary, PF, tax, pension, exam-age and other practical calculations — all in one place.",hi:"सैलरी, PF, टैक्स, पेंशन, परीक्षा-आयु और अन्य उपयोगी गणनाएं — एक ही जगह।"})+'</p></div><div class="ss-calc-grid">'+(cards||'<div class="no-results-box"><h2>'+t({en:"No matching calculator found",hi:"कोई matching calculator नहीं मिला"})+'</h2></div>')+'</div>';
+    if(statusEl) statusEl.innerHTML='<strong>'+list.length+'</strong> '+t({en:"calculators available",hi:"कैलकुलेटर उपलब्ध हैं"});
+  }
+
   function render() {
     const q = ((inputEl && inputEl.value) || params.get("q") || "").trim().toLowerCase();
 
-    if (isJobQuery(q)) { renderJobMode(); return; }
+    if (isJobQuery(q)) { renderJobMode(); return; }\n    if (isCalculatorQuery(q)) { renderCalculatorMode(); return; }
 
     let filtered = ALL_SERVICES;
     if (activeCategory) {
