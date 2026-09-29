@@ -11,6 +11,7 @@ from string import capwords
 CSV_DIR = r"C:\Users\Lenovo\Desktop\chunks"
 OUTPUT_DIR = "service/csc-locator"
 MAX_CENTERS_PER_PAGE = 300 # Thick enough for SEO, small enough for performance
+MIN_INDEXABLE_CENTERS = 5 # Avoid indexing near-empty district pages
 
 def slugify(text):
     return text.lower().replace(" ", "-").replace(".", "").replace("(", "").replace(")", "").replace("&", "and")
@@ -111,6 +112,7 @@ def load_data():
 def build_district_html(state_name, state_slug, dist_name, dist_slug, centers):
     count = len(centers)
     display_count = f"{count}+" if count == MAX_CENTERS_PER_PAGE else str(count)
+    robots_tag = "" if count >= MIN_INDEXABLE_CENTERS else '<meta name="robots" content="noindex,follow"/>'
     
     rows = ""
     for c in centers:
