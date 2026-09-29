@@ -265,12 +265,33 @@
     if(filtersEl) filtersEl.innerHTML="";
     if(!resultsEl) return;
     const words=q.replace(/[^a-z0-9\\u0900-\\u097f]+/gi," ").trim();
-    const specific = words && !/^(calculator|calculators|calculate|calculation|calc|कैलकुलेटर|गणना)$/i.test(words);
-    const list = specific ? CALCULATOR_RESULTS.filter(c=>{ const hay=(t(c.name)+" "+t(c.desc)+" "+t(c.tag)).toLowerCase(); return words.split(/\\s+/).some(w=>w.length>1 && hay.includes(w)); }) : CALCULATOR_RESULTS;
+    const generic=/^(calculator|calculators|calculate|calculation|calc|कैलकुलेटर|गणना)$/i.test(words);
+    const list = generic ? CALCULATOR_RESULTS : CALCULATOR_RESULTS.filter(c=>{
+      const hay=(t(c.name)+" "+t(c.desc)+" "+t(c.tag)).toLowerCase();
+      return words.split(/\\s+/).some(w=>w.length>1 && hay.includes(w));
+    });
     const cards=list.map(c=>'<article class="ss-calc-card ss-calc-card--'+c.tone+'"><div class="ss-calc-top"><span class="ss-calc-icon" aria-hidden="true">'+c.icon+'</span><span class="ss-calc-tag">'+t(c.tag)+'</span></div><h3>'+t(c.name)+'</h3><p>'+t(c.desc)+'</p><a class="ss-calc-button" href="'+ROOT+c.url+'">'+t({en:"Use Calculator →",hi:"कैलकुलेटर खोलें →"})+'</a></article>').join("");
+    const serviceItems=[
+      ["PM Kisan Samman Nidhi","service/pm-kisan.html","Farmer scheme guide, eligibility, documents & status.","किसानों के लिए योजना, पात्रता, दस्तावेज और स्टेटस।","🌾","green"],
+      ["Ayushman Bharat Card","service/ayushman-bharat-card.html","Health scheme guide, eligibility and card information.","स्वास्थ्य योजना, पात्रता और कार्ड की जानकारी।","🏥","blue"],
+      ["PAN Card","service/pan-card.html","PAN application, correction and important guidance.","PAN आवेदन, सुधार और जरूरी जानकारी।","🪪","purple"],
+      ["Ration Card","service/ration-card.html","Ration card application, documents and state guidance.","राशन कार्ड आवेदन और दस्तावेज की जानकारी।","🍚","orange"],
+      ["Income Certificate","service/income-certificate.html","Application process, documents and official guidance.","आय प्रमाण पत्र की प्रक्रिया और दस्तावेज।","📄","blue"],
+      ["EPFO / EPF Services","service/epfo.html","EPF, UAN and related employee-service guidance.","EPF, UAN और कर्मचारी सेवाओं की जानकारी।","🏦","green"]
+    ];
+    const serviceHtml=serviceItems.map(s=>'<a class="ss-calc-service ss-calc-service--'+s[5]+'" href="'+ROOT+s[1]+'"><span class="ss-calc-service-icon">'+s[4]+'</span><div><h3>'+s[0]+'</h3><p>'+t({en:s[2],hi:s[3]})+'</p></div><b>→</b></a>').join("");
+    const jobs=JOB_NOTIFICATIONS.filter(j=>j.status!=="expired").slice(0,4);
+    const jobsHtml=jobs.map(j=>'<a class="ss-calc-job ss-calc-job--'+j.status+'" href="'+j.details+'"><div><span>'+ (j.status==="live"?"🟢":"🔵") +' '+j.org+'</span><h3>'+t(j.title)+'</h3><small>'+j.vacancies+' '+t({en:"posts",hi:"पद"})+' • '+t(j.qualification)+'</small></div><b>View →</b></a>').join("");
+    const faqs=[
+      {q:{en:"Are these calculators free to use?",hi:"क्या ये सभी कैलकुलेटर फ्री हैं?"},a:{en:"Yes. The calculators listed in this directory are provided as free online tools. Results are estimates where the underlying rules or assumptions require verification.",hi:"हां। इस डायरेक्टरी में दिए गए कैलकुलेटर फ्री ऑनलाइन टूल हैं। जहां नियम या assumptions लागू हों, परिणाम अनुमानित हो सकते हैं।"}},
+      {q:{en:"Which calculators are useful for salaried employees?",hi:"सैलरी पाने वाले कर्मचारियों के लिए कौन से कैलकुलेटर उपयोगी हैं?"},a:{en:"7th/8th Pay Commission, EPF, HRA, Income Tax, Gratuity and NPS calculators can help with common salary and retirement calculations.",hi:"7वें/8वें वेतन आयोग, EPF, HRA, Income Tax, Gratuity और NPS calculators आम salary और retirement calculations में मदद कर सकते हैं।"}},
+      {q:{en:"Are calculator results official government calculations?",hi:"क्या कैलकुलेटर का परिणाम सरकारी आधिकारिक गणना है?"},a:{en:"No. These are informational calculators. For a final statutory amount, eligibility decision or filing, verify the applicable rules and the relevant official portal.",hi:"नहीं। ये informational calculators हैं। अंतिम statutory amount, eligibility या filing के लिए लागू नियम और संबंधित official portal से सत्यापन करें।"}},
+      {q:{en:"Can I find government services on this page too?",hi:"क्या इस पेज पर सरकारी सेवाएं भी मिलेंगी?"},a:{en:"Yes. We have added a quick-access service grid below the calculators for commonly searched government services.",hi:"हां। कैलकुलेटर के नीचे commonly searched सरकारी सेवाओं की quick-access grid भी दी गई है।"}}
+    ];
+    const faqHtml=faqs.map((f,i)=>'<details class="ss-calc-faq" '+(i===0?"open":"")+'><summary>'+t(f.q)+'</summary><p>'+t(f.a)+'</p></details>').join("");
     resultsEl.classList.remove("service-grid");
-    resultsEl.innerHTML='<div class="ss-calc-hub-intro"><span>🧮 '+t({en:"FREE CALCULATOR DIRECTORY",hi:"फ्री कैलकुलेटर डायरेक्टरी"})+'</span><h1>'+t({en:"Government & Useful Calculators",hi:"सरकारी और उपयोगी कैलकुलेटर"})+'</h1><p>'+t({en:"Salary, PF, tax, pension, exam-age and other practical calculations — all in one place.",hi:"सैलरी, PF, टैक्स, पेंशन, परीक्षा-आयु और अन्य उपयोगी गणनाएं — एक ही जगह।"})+'</p></div><div class="ss-calc-grid">'+(cards||'<div class="no-results-box"><h2>'+t({en:"No matching calculator found",hi:"कोई matching calculator नहीं मिला"})+'</h2></div>')+'</div>';
-    if(statusEl) statusEl.innerHTML='<strong>'+list.length+'</strong> '+t({en:"calculators available",hi:"कैलकुलेटर उपलब्ध हैं"});
+    resultsEl.innerHTML='<div class="ss-calc-hub-intro"><span>🧮 '+t({en:"FREE CALCULATOR DIRECTORY",hi:"फ्री कैलकुलेटर डायरेक्टरी"})+'</span><h1>'+t({en:"Government & Useful Calculators",hi:"सरकारी और उपयोगी कैलकुलेटर"})+'</h1><p>'+t({en:"Salary, PF, tax, pension, exam-age and other practical calculations — plus useful government services and job updates.",hi:"सैलरी, PF, टैक्स, पेंशन, परीक्षा-आयु और अन्य उपयोगी गणनाएं — साथ में सरकारी सेवाएं और जॉब अपडेट।"})+'</p></div><div class="ss-calc-grid">'+(cards||'<div class="no-results-box"><h2>'+t({en:"No matching calculator found",hi:"कोई matching calculator नहीं मिला"})+'</h2></div>')+'</div><section class="ss-calc-section"><div class="ss-calc-section-head"><div><span>🛠️</span><h2>'+t({en:"Popular Government Services",hi:"लोकप्रिय सरकारी सेवाएं"})+'</h2><p>'+t({en:"Quick access to frequently searched service guides.",hi:"अक्सर खोजी जाने वाली सरकारी सेवाओं तक तेज पहुंच।"})+'</p></div><a href="'+ROOT+'services/index.html">'+t({en:"View All →",hi:"सभी देखें →"})+'</a></div><div class="ss-calc-service-grid">'+serviceHtml+'</div></section><section class="ss-calc-section"><div class="ss-calc-section-head"><div><span>💼</span><h2>'+t({en:"Latest Job Updates",hi:"लेटेस्ट जॉब अपडेट"})+'</h2><p>'+t({en:"Live and upcoming recruitment updates.",hi:"लाइव और आगामी भर्ती अपडेट।"})+'</p></div><a href="'+ROOT+'jobs/index.html">'+t({en:"All Jobs →",hi:"सभी जॉब →"})+'</a></div><div class="ss-calc-job-grid">'+jobsHtml+'</div></section><section class="ss-calc-section ss-calc-faq-section"><div class="ss-calc-section-head"><div><span>❓</span><h2>'+t({en:"Frequently Asked Questions",hi:"अक्सर पूछे जाने वाले सवाल"})+'</h2><p>'+t({en:"Common questions about calculators and using this directory.",hi:"कैलकुलेटर और इस डायरेक्टरी से जुड़े सामान्य सवाल।"})+'</p></div></div>'+faqHtml+'</section>';
+    if(statusEl) statusEl.innerHTML='<strong>'+list.length+'</strong> '+t({en:"calculators available",hi:"कैलकुलेटर उपलब्ध हैं"})+' · '+t({en:"services & jobs below",hi:"नीचे सेवाएं और जॉब अपडेट"}) ;
   }
 
   function render() {
