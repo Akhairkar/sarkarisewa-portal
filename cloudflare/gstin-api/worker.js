@@ -100,7 +100,13 @@ async function razorpayRequest(path, env, options = {}) {
   return { response, data };
 }
 
-async function createOrder(env) {
+async function createOrder(env, gstin) {
+  const normalizedGSTIN = String(gstin || "").trim().toUpperCase();
+
+  if (!isValidGSTIN(normalizedGSTIN)) {
+    throw new Error("Invalid GSTIN format");
+  }
+
   const receipt = `GSTIN_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
 
   const result = await razorpayRequest("/orders", env, {
@@ -111,7 +117,8 @@ async function createOrder(env) {
       receipt,
       notes: {
         service: "GSTIN Verification",
-        website: "SarkariSewaIndia"
+        website: "SarkariSewaIndia",
+        gstin: normalizedGSTIN
       }
     })
   });
@@ -186,6 +193,16 @@ async function verifyPaymentAndGetGSTIN(body, env) {
       success: false,
       status: 400,
       error: "Invalid payment amount"
+    };
+  }
+
+  const orderGSTIN = String(order.notes?.gstin || "").trim().toUpperCase();
+
+  if (!orderGSTIN || orderGSTIN !== normalizedGSTIN) {
+    return {
+      success: false,
+      status: 400,
+      error: "GSTIN does not match the paid order"
     };
   }
 
@@ -291,7 +308,8 @@ export default {
 
     if (request.method === "POST" && url.pathname === "/create-order") {
       try {
-        const order = await createOrder(env);
+        const body = await request.json();
+        const order = await createOrder(env, body.gstin);
 
         return json(
           {
@@ -308,9 +326,11 @@ export default {
         return json(
           {
             success: false,
-            error: "Unable to create payment order"
+            error: error.message === "Invalid GSTIN format"
+              ? error.message
+              : "Unable to create payment order"
           },
-          502,
+          error.message === "Invalid GSTIN format" ? 400 : 502,
           headers
         );
       }
