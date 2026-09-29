@@ -297,7 +297,8 @@
   function render() {
     const q = ((inputEl && inputEl.value) || params.get("q") || "").trim().toLowerCase();
 
-    if (isJobQuery(q)) { renderJobMode(); return; }\n    if (isCalculatorQuery(q)) { renderCalculatorMode(); return; }
+    if (isJobQuery(q)) { renderJobMode(); return; }
+    if (isCalculatorQuery(q)) { renderCalculatorMode(); return; }
 
     let filtered = ALL_SERVICES;
     if (activeCategory) {
