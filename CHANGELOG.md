@@ -1,3 +1,9 @@
+## 2026-09-29 — Session 7: Updates section cleanup
+- Corrected `latest-updates.html` hreflang and Open Graph metadata URLs.
+- Made the automated update pipeline source-grounded instead of inserting generic application/DBT/Aadhaar claims into unrelated news.
+- Added a read-only updates SEO audit script.
+- Existing update articles remain untouched pending source-by-source factual verification.
+
 ## 2026-09-29 — Session 6: Jan Aushadhi thin-page indexing guard
 - Added a 5-store minimum indexing guard to the Jan Aushadhi district-page generator.
 - District pages below the threshold receive `noindex,follow`; state landing pages are not affected.
