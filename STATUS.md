@@ -170,3 +170,10 @@ schema file above has actually been run.
 - **Manual helpline/fee spot-check** — verifying a sample of services' phone numbers/fees against current government sources by hand
 - **Scaling services from 93 toward a larger catalog** — ongoing, no fixed number committed
 - **Related-services curation** — verified now: 91 of 93 services have 4 related services each, 1 has 3, 1 has 5. Fine as-is; only revisit if specific services need better cross-links.
+
+## 2026-09-29 — Service redirect-stub cleanup (Session 3)
+- Audited `service/*.html` and identified **83** redirect-only full-name service files (the checklist's earlier 84 count was stale).
+- Removed those 83 redirect stubs in one repository-tree commit; canonical short-code service pages were retained.
+- Made `scripts/fix_duplicate_service_pairs.py` cleanup-only so it cannot recreate/overwrite redirect stubs.
+- Sitemap cleanup for these removed URLs is preserved; no canonical service content was deleted.
+- Session 3 cleanup does **not** delete the separate dynamic `service/service.html` shell.
