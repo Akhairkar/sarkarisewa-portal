@@ -86,6 +86,10 @@ A successful execution should complete without SQL errors.
 
 ---
 
+## Re-run / idempotency
+
+The migration can be run a second time (it is idempotent). If the wrong/older version was run the first time, run the corrected migration again.
+
 ## Step 5 — Refresh the admin session
 
 After changing `app_metadata`, sign out of the SarkariSewa admin panel and sign in again.
