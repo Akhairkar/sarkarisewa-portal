@@ -261,6 +261,8 @@ def main():
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link rel="icon" href="../../../favicon.ico">
+<link rel="canonical" href="https://sarkarisewaindia.com/service/csc-locator/{state_slug}.html"/>
+<meta name="robots" content="noindex,follow"/>
 <title>{state} CSC Center Near Me (All Districts) | 2026 List</title>
 <link rel="stylesheet" href="../../../assets/css/style.css"/>
 </head>
