@@ -1,3 +1,8 @@
+## 2026-09-29 — Session 8: State vs Service URL audit
+- Added a read-only state/service canonical audit.
+- Fixed the confirmed broken Maharashtra ration-card canonical.
+- Kept legitimate state-specific service pages indexable pending audit evidence; avoided destructive URL consolidation.
+
 ## 2026-09-29 — Session 7: Updates section cleanup
 - Corrected `latest-updates.html` hreflang and Open Graph metadata URLs.
 - Made the automated update pipeline source-grounded instead of inserting generic application/DBT/Aadhaar claims into unrelated news.
