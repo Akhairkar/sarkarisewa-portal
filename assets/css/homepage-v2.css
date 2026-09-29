@@ -352,3 +352,16 @@ body.homepage-v2{background:linear-gradient(180deg,#f7fbff 0,#fff 35%,#f8fbff 10
 [data-theme="dark"] .home-job-card{background:#101d2c;border-color:#334960}
 @media(max-width:1000px){.homepage-v2 .ss-jobs-home-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){.homepage-v2 .ss-jobs-home-grid{grid-template-columns:1fr;gap:8px}.home-job-card{padding:13px;border-radius:14px}.home-job-card h3{font-size:.82rem}.home-job-org{font-size:.63rem}.home-job-meta{font-size:.58rem}.home-job-status,.home-job-category{font-size:.49rem}}
+
+/* Blog cards — visual colour grading */
+.homepage-v2 .ss-blog-section{background:var(--color-bg-alt)}
+.homepage-v2 .ss-blog-grid{gap:12px}
+.homepage-v2 .ss-blog-grid>a,.homepage-v2 .ss-blog-grid>article,.homepage-v2 .ss-blog-card{position:relative;overflow:hidden;border:1px solid var(--color-border);border-radius:16px;background:var(--color-surface);box-shadow:0 6px 20px rgba(16,36,62,.055);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.homepage-v2 .ss-blog-grid>a:before,.homepage-v2 .ss-blog-grid>article:before,.homepage-v2 .ss-blog-card:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--blog-accent,#2563eb)}
+.homepage-v2 .ss-blog-grid>a:nth-child(3n+2):before,.homepage-v2 .ss-blog-grid>article:nth-child(3n+2):before,.homepage-v2 .ss-blog-card:nth-child(3n+2):before{background:#16a34a}
+.homepage-v2 .ss-blog-grid>a:nth-child(3n):before,.homepage-v2 .ss-blog-grid>article:nth-child(3n):before,.homepage-v2 .ss-blog-card:nth-child(3n):before{background:#d97706}
+.homepage-v2 .ss-blog-grid>a:hover,.homepage-v2 .ss-blog-grid>article:hover,.homepage-v2 .ss-blog-card:hover{transform:translateY(-3px);border-color:var(--blog-accent,#2563eb);box-shadow:0 10px 28px rgba(16,36,62,.10)}
+.homepage-v2 .ss-blog-grid>a:nth-child(3n+2):hover,.homepage-v2 .ss-blog-grid>article:nth-child(3n+2):hover,.homepage-v2 .ss-blog-card:nth-child(3n+2):hover{border-color:#16a34a}
+.homepage-v2 .ss-blog-grid>a:nth-child(3n):hover,.homepage-v2 .ss-blog-grid>article:nth-child(3n):hover,.homepage-v2 .ss-blog-card:nth-child(3n):hover{border-color:#d97706}
+[data-theme="dark"] .homepage-v2 .ss-blog-grid>a,[data-theme="dark"] .homepage-v2 .ss-blog-grid>article,[data-theme="dark"] .homepage-v2 .ss-blog-card{background:#101d2c;border-color:#334960}
+@media(max-width:640px){.homepage-v2 .ss-blog-grid{gap:8px}.homepage-v2 .ss-blog-grid>a,.homepage-v2 .ss-blog-grid>article,.homepage-v2 .ss-blog-card{border-radius:14px}}
