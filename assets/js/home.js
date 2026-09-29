@@ -325,3 +325,26 @@ function initSearchAutocomplete() {
 }
 
 document.addEventListener("ss:ready", initSearchAutocomplete);
+
+
+// Homepage dedicated job notifications
+const HOME_JOB_NOTIFICATIONS = [
+  {status:"live",category:"UPSC",title:{en:"UPSC Advertisement No. 11/2026 — 212 Various Posts",hi:"UPSC विज्ञापन संख्या 11/2026 — 212 विभिन्न पद"},org:"Union Public Service Commission (UPSC)",vacancies:"212",last:"2026-10-02",details:"jobs/upsc-advertisement-11-2026-212-posts.html"},
+  {status:"live",category:"Railway",title:{en:"RRB NTPC Recruitment 2026 — 11,558 Posts",hi:"RRB NTPC भर्ती 2026 — 11,558 पद"},org:"Railway Recruitment Boards (RRB)",vacancies:"11,558",last:"2026-10-20",details:"jobs/rrb-ntpc-recruitment-2026.html"},
+  {status:"upcoming",category:"UPSC",title:{en:"UPSC Civil Services Examination 2027",hi:"UPSC सिविल सेवा परीक्षा 2027"},org:"Union Public Service Commission (UPSC)",vacancies:"1,100+ tentative",last:"2027-02-16",details:"jobs/upsc-civil-services-ias-ifs-2027.html"},
+  {status:"upcoming",category:"Banking",title:{en:"SBI Clerk (Junior Associate) Recruitment 2026",hi:"SBI क्लर्क (Junior Associate) भर्ती 2026"},org:"State Bank of India (SBI)",vacancies:"12,100+",last:"2026-12-10",details:"jobs/sbi-clerk-junior-associate-recruitment-2026.html"},
+  {status:"expired",category:"Banking",title:{en:"SBI PO Recruitment 2026-2027 — 2,000+ Posts",hi:"SBI PO भर्ती 2026-2027 — 2,000+ पद"},org:"State Bank of India (SBI)",vacancies:"2,000+",last:"2026-09-27",details:"jobs/sbi-po-recruitment-2026-2027.html"},
+  {status:"expired",category:"State Govt",title:{en:"Rajasthan High Court Stenographer Recruitment 2026 — 163 Posts",hi:"राजस्थान उच्च न्यायालय स्टेनोग्राफर भर्ती 2026 — 163 पद"},org:"Rajasthan High Court",vacancies:"163",last:"2026-08-10",details:"jobs/rajasthan-high-court-stenographer-recruitment-2026-grade-ii-iii-163-posts-ms8e3ooo-3.html"},
+  {status:"expired",category:"Banking",title:{en:"IBPS RRB-XV Recruitment 2026 — 10,313 Posts",hi:"IBPS RRB-XV भर्ती 2026 — 10,313 पद"},org:"Institute of Banking Personnel Selection (IBPS)",vacancies:"10,313",last:"2026-06-30",details:"jobs/ibps-rrb-xv-officer-scale-i-ii-iii-office-assistant-recruitment-2026.html"}
+];
+function renderHomeJobs(){
+  const host=document.getElementById("latest-jobs-grid"); if(!host) return;
+  const lang=getLang();
+  const labels=lang==="hi"?{live:"LIVE • APPLY NOW",upcoming:"UPCOMING",expired:"EXPIRED",posts:"पद",last:"अंतिम तिथि",open:"विवरण देखें →"}:{live:"LIVE • APPLY NOW",upcoming:"UPCOMING",expired:"EXPIRED",posts:"Posts",last:"Last Date",open:"View Details →"};
+  const statusClass={live:"job-live",upcoming:"job-upcoming",expired:"job-expired"};
+  const items=HOME_JOB_NOTIFICATIONS.slice(0,6);
+  host.innerHTML=items.map(j=>{const d=new Date(j.last+"T00:00:00");const date=isNaN(d.getTime())?j.last:d.toLocaleDateString(lang==="hi"?"hi-IN":"en-IN",{day:"2-digit",month:"short",year:"numeric"});return '<article class="home-job-card '+statusClass[j.status]+'"><div class="home-job-top"><span class="home-job-status">'+labels[j.status]+'</span><span class="home-job-category">'+j.category+'</span></div><h3>'+escHome(t(j.title))+'</h3><p class="home-job-org">'+escHome(j.org)+'</p><div class="home-job-meta"><span>👥 '+escHome(j.vacancies)+' '+labels.posts+'</span><span>📅 '+labels.last+': '+date+'</span></div><a href="'+ROOT+j.details+'">'+labels.open+'</a></article>';}).join("");
+}
+function escHome(v){return String(v??"").replace(/[&<>'\"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[m]));}
+document.addEventListener("ss:ready",renderHomeJobs);
+onLangChange(()=>{renderHomeJobs();});
