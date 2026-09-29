@@ -168,8 +168,55 @@
       '</div>';
   }
 
+  // Dedicated Job Notifications mode for /search.html?q=job. This is isolated from normal service search.
+  const JOB_NOTIFICATIONS = [
+    {id:"upsc-ad-11-2026",status:"live",category:"UPSC",title:{en:"UPSC Advertisement No. 11/2026 — 212 Various Posts",hi:"UPSC विज्ञापन संख्या 11/2026 — 212 विभिन्न पद"},org:"Union Public Service Commission (UPSC)",vacancies:"212",qualification:{en:"Post-wise qualification & experience",hi:"पद के अनुसार योग्यता व अनुभव"},start:"2026-09-12",last:"2026-10-02",url:"https://www.upsc.gov.in/whats-new/11%20-%202026",details:"https://sarkarisewaindia.com/jobs/index.html"},
+    {id:"upsc-cse-2027",status:"upcoming",category:"UPSC",title:{en:"UPSC Civil Services Examination 2027",hi:"UPSC सिविल सेवा परीक्षा 2027"},org:"Union Public Service Commission (UPSC)",vacancies:"Tentative / notification to be issued",qualification:{en:"Graduation in any discipline",hi:"किसी भी विषय में स्नातक"},start:"2027-01-14",last:"2027-03-05",url:"https://www.upsc.gov.in/",details:"https://sarkarisewaindia.com/jobs/index.html"},
+    {id:"ssc-cgl-2026",status:"expired",category:"SSC",title:{en:"SSC Combined Graduate Level Examination 2026",hi:"SSC कंबाइंड ग्रेजुएट लेवल परीक्षा 2026"},org:"Staff Selection Commission (SSC)",vacancies:"15,000+ (tentative)",qualification:{en:"Graduation degree",hi:"स्नातक डिग्री"},start:"2026-05-21",last:"2026-06-22",url:"https://ssc.gov.in/",details:"https://sarkarisewaindia.com/jobs/index.html"},
+    {id:"india-post-gds-2026",status:"expired",category:"Postal",title:{en:"India Post GDS Recruitment 2026",hi:"इंडिया पोस्ट GDS भर्ती 2026"},org:"Department of Posts",vacancies:"44,228",qualification:{en:"10th pass",hi:"10वीं पास"},start:"2026-07-01",last:"2026-08-20",url:"https://indiapostgdsonline.gov.in/",details:"https://sarkarisewaindia.com/jobs/india-post-gds-recruitment-2026.html"},
+    {id:"navy-agniveer-2026",status:"expired",category:"Defence",title:{en:"Indian Navy Agniveer SSR / MR Recruitment 2026",hi:"भारतीय नौसेना अग्निवीर SSR / MR भर्ती 2026"},org:"Indian Navy",vacancies:"2,500+",qualification:{en:"10+2 for SSR; 10th for MR",hi:"SSR के लिए 12वीं; MR के लिए 10वीं"},start:"2026-03-14",last:"2026-04-06",url:"https://www.joinindiannavy.gov.in/",details:"https://sarkarisewaindia.com/jobs/indian-navy-agniveer-ssr-recruitment-2026.html"}
+  ];
+
+  function isJobQuery(q){
+    return /^(job|jobs|job notification|job notifications|vacancy|vacancies|recruitment|sarkari job|sarkari jobs|सरकारी नौकरी|नौकरी|भर्ती)$/i.test(q.trim());
+  }
+
+  function jobDate(value){
+    if(!value) return "—";
+    return new Date(value+"T00:00:00").toLocaleDateString(getLang()==="hi"?"hi-IN":"en-IN",{day:"2-digit",month:"short",year:"numeric"});
+  }
+
+  function renderJobMode(){
+    const q=(inputEl?.value||"").trim();
+    if(filtersEl) filtersEl.innerHTML="";
+    if(statusEl) statusEl.innerHTML="";
+    if(!resultsEl) return;
+
+    const groups=[
+      {key:"live",icon:"🟢",en:"Live Jobs",hi:"लाइव नौकरियां"},
+      {key:"upcoming",icon:"🔵",en:"Upcoming Jobs",hi:"आने वाली नौकरियां"},
+      {key:"expired",icon:"⚫",en:"Expired Jobs",hi:"समाप्त नौकरियां"}
+    ];
+    const html=groups.map(g=>{
+      const jobs=JOB_NOTIFICATIONS.filter(j=>j.status===g.key);
+      return '<section class="ss-job-section ss-job-section--'+g.key+'">'+
+        '<div class="ss-job-section-head"><div><span class="ss-job-kicker">'+g.icon+' '+t({en:g.en,hi:g.hi})+'</span><h2>'+t({en:g.en,hi:g.hi})+'</h2></div><span class="ss-job-count">'+jobs.length+'</span></div>'+
+        '<div class="ss-job-grid">'+jobs.map(j=>'<article class="ss-job-card ss-job-card--'+j.status+'">'+
+          '<div class="ss-job-card-top"><span class="ss-job-org">'+j.org+'</span><span class="ss-job-status">'+t({en:g.en,hi:g.hi})+'</span></div>'+
+          '<h3>'+t(j.title)+'</h3>'+
+          '<div class="ss-job-meta"><span>👥 <b>'+t({en:"Posts",hi:"पद"})+'</b> '+j.vacancies+'</span><span>🎓 <b>'+t({en:"Eligibility",hi:"योग्यता"})+'</b> '+t(j.qualification)+'</span></div>'+
+          '<div class="ss-job-dates"><span><small>'+t({en:"Start",hi:"शुरू"})+'</small>'+jobDate(j.start)+'</span><span><small>'+t({en:"Last Date",hi:"अंतिम तिथि"})+'</small>'+jobDate(j.last)+'</span></div>'+
+          '<div class="ss-job-actions"><a class="ss-job-details" href="'+j.details+'">'+t({en:"View Details",hi:"विवरण देखें"})+'</a><a class="ss-job-apply" href="'+j.url+'" target="_blank" rel="noopener noreferrer">'+t({en:"Official Site ↗",hi:"आधिकारिक साइट ↗"})+'</a></div>'+
+        '</article>').join('')+'</div></section>';
+    }).join("");
+    resultsEl.classList.remove("service-grid");
+    resultsEl.innerHTML='<div class="ss-job-hub-intro"><span>🔔 '+t({en:"Government Job Notifications",hi:"सरकारी नौकरी नोटिफिकेशन"})+'</span><h1>'+t({en:"Latest Government Jobs",hi:"लेटेस्ट सरकारी नौकरियां"})+'</h1><p>'+t({en:"Verified recruitment updates grouped into Live, Upcoming and Expired so you can quickly find the right notification.",hi:"सत्यापित भर्ती अपडेट को Live, Upcoming और Expired में अलग किया गया है ताकि सही नोटिफिकेशन जल्दी मिले।"})+'</p></div>'+html;
+  }
+
   function render() {
     const q = ((inputEl && inputEl.value) || "").trim().toLowerCase();
+
+    if (isJobQuery(q)) { renderJobMode(); return; }
 
     let filtered = ALL_SERVICES;
     if (activeCategory) {
