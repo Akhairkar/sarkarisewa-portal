@@ -1,4 +1,10 @@
 
+## 2026-09-29 — Session 5: CSC thin/duplicate URL cleanup
+- Noindexed all 36 duplicate CSC state `index.html` URLs and canonicalized them to the primary state pages.
+- Consolidated 13 duplicate district filename variants with canonical + noindex on alternate URLs.
+- Verified there are no numeric-only CSC district filenames.
+- Preserved district generation normalization so formatting variants are merged on future generation.
+
 ## 2026-09-29 — Session 4: Canonical + internal-link repair
 - Added the idempotent Session 4 repair script for missing canonicals, legacy service slugs, state-relative link depth, and updates-to-states path defects.
 - Updated sitemap generation to emit only existing state pages and filter local noindex/non-self-canonical URLs.
