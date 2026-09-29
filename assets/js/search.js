@@ -214,7 +214,7 @@
   }
 
   function render() {
-    const q = ((inputEl && inputEl.value) || "").trim().toLowerCase();
+    const q = ((inputEl && inputEl.value) || params.get("q") || "").trim().toLowerCase();
 
     if (isJobQuery(q)) { renderJobMode(); return; }
 
