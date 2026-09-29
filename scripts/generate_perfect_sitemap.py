@@ -11,6 +11,7 @@ ROOT_DOMAIN = "https://sarkarisewaindia.com"
 TODAY = datetime.date.today().isoformat()
 
 print("Generating pristine, 100% verified sitemap.xml...")
+# LEGACY generator: kept for reference only. The active repo sitemap workflow uses generate-sitemap.py.
 
 all_html = sorted(glob.glob('**/*.html', recursive=True))
 # Exclude private or non-canonical folders
@@ -28,10 +29,21 @@ for f in all_html:
     with open(f, 'r', encoding='utf-8', errors='ignore') as fp:
         c = fp.read()
         
-    # Exclude redirect stubs
+    # Exclude redirect stubs and pages explicitly marked noindex.
     if 'window.location.replace' in c or 'http-equiv="refresh"' in c:
         continue
-        
+    robots = re.search(r'<meta[^>]+name=["']robots["'][^>]+content=["']([^"']+)["']', c, re.I)
+    if robots and 'noindex' in robots.group(1).lower():
+        continue
+
+    # Sitemap only includes pages whose canonical points to themselves.
+    canonical = re.search(r'<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']', c, re.I)
+    if canonical:
+        href = canonical.group(1).rstrip('/')
+        expected = ROOT_DOMAIN + ('/' if f == 'index.html' else '/' + f.replace('\\', '/'))
+        if href != expected.rstrip('/'):
+            continue
+
     canonical_files.append(f)
 
 print(f"Total canonical, indexable public pages: {len(canonical_files)}")
