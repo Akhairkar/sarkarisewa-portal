@@ -240,33 +240,6 @@ This update is presented from <strong>{item["source_name"]}</strong>. Read the o
         "भविष्य के संदर्भ के लिए मूल स्रोत URL सुरक्षित रखें।"
     ]
 
-    faqs = [
-        {
-            "q_en": f"What is the main objective of {short_title}?",
-            "a_en": "The initiative aims to provide financial assistance, social security, and streamlined digital public services to eligible citizens.",
-            "q_hi": f"{short_title} का मुख्य उद्देश्य क्या है?",
-            "a_hi": "इस पहल का मुख्य उद्देश्य पात्र नागरिकों को सामाजिक सुरक्षा, वित्तीय सहायता और पारदर्शी डिजिटल सेवाएं प्रदान करना है।"
-        },
-        {
-            "q_en": "What documents are required to apply?",
-            "a_en": "Essential documents include Aadhaar Card, Active Mobile Number, Bank Account Passbook (DBT enabled), and relevant eligibility certificates.",
-            "q_hi": "आवेदन के लिए कौन से दस्तावेज़ आवश्यक हैं?",
-            "a_hi": "आवश्यक दस्तावेज़ों में आधार कार्ड, सक्रिय मोबाइल नंबर, बैंक पासबुक (डीबीटी सक्षम) और पात्रता प्रमाण पत्र शामिल हैं।"
-        },
-        {
-            "q_en": "How can I check the live status of my application?",
-            "a_en": "You can check your status online on the official department portal by entering your Application Reference Number or Aadhaar Number.",
-            "q_hi": "आवेदन की ताज़ा स्थिति कैसे जांचें?",
-            "a_hi": "आप आधिकारिक पोर्टल पर जाकर अपनी आवेदन संदर्भ संख्या (Application ID) या आधार नंबर दर्ज करके ऑनलाइन स्टेटस चेक कर सकते हैं।"
-        },
-        {
-            "q_en": "Is there any fee charged for online application?",
-            "a_en": "No, registering on the official government portal is 100% free of cost.",
-            "q_hi": "क्या ऑनलाइन आवेदन के लिए कोई शुल्क देना होता है?",
-            "a_hi": "नहीं, आधिकारिक सरकारी पोर्टल पर ऑनलाइन आवेदन और पंजीकरण पूरी तरह से निःशुल्क (Free) है।"
-        }
-    ]
-
     return {
         "title_en": title_en,
         "title_hi": title_hi,
@@ -277,8 +250,7 @@ This update is presented from <strong>{item["source_name"]}</strong>. Read the o
         "highlights_en": highlights_en,
         "highlights_hi": highlights_hi,
         "steps_en": steps_en,
-        "steps_hi": steps_hi,
-        "faqs": faqs
+        "steps_hi": steps_hi
     }
 
 def generate_static_page(update, content_data):
@@ -307,28 +279,6 @@ def generate_static_page(update, content_data):
 
     st_en = "".join(f"<li style='margin-bottom:10px;'>{s}</li>" for s in content_data["steps_en"])
     st_hi = "".join(f"<li style='margin-bottom:10px;'>{s}</li>" for s in content_data["steps_hi"])
-
-    faq_items_html = ""
-    faq_schema_items = []
-    for f in content_data["faqs"]:
-        faq_schema_items.append({
-            "@type": "Question",
-            "name": f["q_en"],
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": f["a_en"]
-            }
-        })
-        faq_items_html += f"""
-        <details style="margin-bottom:14px; padding:16px; background:var(--color-surface,#fff); border:1px solid var(--color-border,#E2DFD3); border-radius:10px;">
-          <summary style="font-weight:600; font-size:1.05rem; cursor:pointer; color:var(--color-text);">
-            {f['q_en']} / <span style="color:var(--color-primary);">{f['q_hi']}</span>
-          </summary>
-          <div style="margin-top:12px; font-size:0.95rem; line-height:1.7; color:var(--color-text-muted);">
-            <p style="margin-bottom:8px;"><strong>English:</strong> {f['a_en']}</p>
-            <p style="margin:0;"><strong>हिन्दी:</strong> {f['a_hi']}</p>
-          </div>
-        </details>"""
 
     header_html = ""
     footer_html = ""
@@ -360,10 +310,6 @@ def generate_static_page(update, content_data):
                         "url": "https://sarkarisewaindia.com/assets/img/favicon-32.png"
                     }
                 }
-            },
-            {
-                "@type": "FAQPage",
-                "mainEntity": faq_schema_items
             },
             {
                 "@type": "BreadcrumbList",
@@ -456,20 +402,15 @@ def generate_static_page(update, content_data):
     </section>
 
     <section style="background:var(--color-surface,#fff); border:1px solid var(--color-border,#E2DFD3); border-radius:12px; padding:24px; margin-bottom:32px;">
-      <h3 style="margin-top:0; font-size:1.3rem; color:var(--color-text);">📋 How to Apply / Claim Benefits (आवेदन प्रक्रिया)</h3>
+      <h3 style="margin-top:0; font-size:1.3rem; color:var(--color-text);">📋 What to Check Next (आगे क्या देखें)</h3>
       <ol style="padding-left:20px; line-height:1.8; font-size:1rem;">
         {st_en}
       </ol>
       <div style="margin-top:20px; text-align:center;">
         <a href="{source_url}" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="display:inline-block; padding:14px 28px; font-size:1.05rem; font-weight:600; text-decoration:none; border-radius:8px;">
-          🔗 Open Official Government Portal ↗
+          🔗 Open Source / Official Link ↗
         </a>
       </div>
-    </section>
-
-    <section style="margin-bottom:40px;">
-      <h3 style="font-size:1.3rem; color:var(--color-text); margin-bottom:16px;">❓ Frequently Asked Questions (अक्सर पूछे जाने वाले प्रश्न)</h3>
-      {faq_items_html}
     </section>
 
     <section style="margin-bottom:40px;">
