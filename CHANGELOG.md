@@ -1856,3 +1856,9 @@ mismatch, not a stale/partial table, was the real cause. Fixed:
 passed. `node --check` on the dashboard's inline script. BeautifulSoup
 parse on both changed HTML files. Tab-button count matches tab-panel
 count (7/7), no duplicate element IDs, balanced `<div>` tags.
+
+## 2026-09-29 — Security Session 1 correction
+- `supabase/security-hardening.sql`: analytics RPCs now enforce `public.is_admin()` inside each `SECURITY DEFINER` function; browser-side authenticated access remains possible for the admin dashboard without exposing a service-role key.
+- `supabase/SUPABASE-MIGRATION-GUIDE.md`: added the required idempotent/re-run note.
+- Live Supabase execution and admin `app_metadata.role` verification remain manual dashboard steps.
+
