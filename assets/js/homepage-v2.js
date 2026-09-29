@@ -17,7 +17,8 @@ async function init(){if(!document.body.classList.contains("homepage-v2"))return
       featuredKicker:"POPULAR SERVICES",featuredTitle:"Services by Category",featuredSub:"Essential services from every category, with direct working links.",featuredAll:"View All Services →",
       browseKicker:"BROWSE",browseTitle:"Explore by Category",browseAll:"All Services →",
       toolsKicker:"FREE UTILITIES",toolsTitle:"Popular Tools",toolsSub:"Useful calculators and citizen utilities for everyday tasks.",toolsAll:"View All Tools →",
-      latestKicker:"LATEST",latestTitle:"Latest Services & Opportunities",latestSub:"Recently added or updated information from across the portal.",
+      latestKicker:"LATEST SERVICES",latestTitle:"Latest Services",latestSub:"New and recently updated government service guides from SarkariSewa India.",
+      jobsKicker:"JOB NOTIFICATIONS",jobsTitle:"Latest Job Notifications",jobsSub:"Live, upcoming and recently closed recruitment updates.",jobsAll:"View All Jobs →",
       stateKicker:"STATE SERVICES",stateTitle:"Find Services by State",stateSub:"Browse state-specific government services, certificates and useful portals.",stateButton:"Explore All States →",
       blogKicker:"FROM THE BLOG",blogTitle:"Guides & Explainers",blogAll:"Read All →",
       trustKicker:"WHY SARKARISEWA INDIA",trustTitle:"Simple information. Official links. No confusion.",trustSub:"We organise government-service information in a clean, searchable format so you can understand the process before opening the official portal.",
@@ -41,7 +42,8 @@ async function init(){if(!document.body.classList.contains("homepage-v2"))return
       featuredKicker:"लोकप्रिय सेवाएं",featuredTitle:"श्रेणी के अनुसार सेवाएं",featuredSub:"हर श्रेणी की जरूरी सेवाएं, सीधे काम करने वाले लिंक के साथ।",featuredAll:"सभी सेवाएं देखें →",
       browseKicker:"ब्राउज़ करें",browseTitle:"श्रेणी के अनुसार खोजें",browseAll:"सभी सेवाएं →",
       toolsKicker:"फ्री उपयोगी टूल्स",toolsTitle:"लोकप्रिय टूल्स",toolsSub:"रोज़मर्रा के काम के लिए उपयोगी कैलकुलेटर और नागरिक टूल्स।",toolsAll:"सभी टूल्स देखें →",
-      latestKicker:"नवीनतम",latestTitle:"नवीनतम सेवाएं और अवसर",latestSub:"पोर्टल पर हाल में जोड़ी या अपडेट की गई जानकारी।",
+      latestKicker:"नवीनतम सेवाएं",latestTitle:"नवीनतम सेवाएं",latestSub:"पोर्टल पर हाल में जोड़ी या अपडेट की गई सरकारी सेवा जानकारी।",
+      jobsKicker:"जॉब नोटिफिकेशन",jobsTitle:"नवीनतम नौकरी अपडेट",jobsSub:"लाइव, आगामी और हाल में बंद हुई भर्तियों की जानकारी।",jobsAll:"सभी नौकरियां देखें →",
       stateKicker:"राज्य सेवाएं",stateTitle:"राज्य के अनुसार सेवाएं खोजें",stateSub:"अपने राज्य की सरकारी सेवाएं, प्रमाण पत्र और उपयोगी पोर्टल देखें।",stateButton:"सभी राज्य देखें →",
       blogKicker:"ब्लॉग से",blogTitle:"गाइड और आसान जानकारी",blogAll:"सभी पढ़ें →",
       trustKicker:"SARKARISEWA INDIA क्यों",trustTitle:"सरल जानकारी। आधिकारिक लिंक। कोई भ्रम नहीं।",trustSub:"हम सरकारी सेवाओं की जानकारी को साफ और खोजने योग्य तरीके से व्यवस्थित करते हैं, ताकि आधिकारिक पोर्टल खोलने से पहले प्रक्रिया समझ सकें।",
@@ -66,7 +68,7 @@ async function init(){if(!document.body.classList.contains("homepage-v2"))return
     const sb=document.querySelector(".ss-hero-search button"); if(sb)sb.innerHTML=c.searchButton+" <span>→</span>";
     const panel=document.querySelector(".ss-hero-panel"); if(panel){setText(panel.querySelector("strong"),c.panelTitle);setText(panel.querySelector("span:not(.ss-panel-icon)"),c.panelSub);const links=panel.querySelectorAll(".ss-panel-links a");setText(links[0],c.allServices+" →");setText(links[1],c.freeTools+" →");}
     const heads=[...document.querySelectorAll(".ss-section-head")];
-    const vals=[[c.popularKicker,c.popularTitle,c.popularSub,c.popularAll],[c.featuredKicker,c.featuredTitle,c.featuredSub,c.featuredAll],[c.toolsKicker,c.toolsTitle,c.toolsSub,c.toolsAll],[c.latestKicker,c.latestTitle,c.latestSub,""],[c.stateKicker,c.stateTitle,c.stateSub,c.stateButton],[c.blogKicker,c.blogTitle,"",c.blogAll],[c.trustKicker,c.trustTitle,c.trustSub,""],[c.faqKicker,c.faqTitle,"",""]];
+    const vals=[[c.popularKicker,c.popularTitle,c.popularSub,c.popularAll],[c.featuredKicker,c.featuredTitle,c.featuredSub,c.featuredAll],[c.toolsKicker,c.toolsTitle,c.toolsSub,c.toolsAll],[c.latestKicker,c.latestTitle,c.latestSub,""],[c.jobsKicker,c.jobsTitle,c.jobsSub,c.jobsAll],[c.stateKicker,c.stateTitle,c.stateSub,c.stateButton],[c.blogKicker,c.blogTitle,"",c.blogAll],[c.trustKicker,c.trustTitle,c.trustSub,""],[c.faqKicker,c.faqTitle,"",""]];
     heads.forEach((h,i)=>{const v=vals[i];if(!v)return;setText(h.querySelector(".ss-kicker"),v[0]);setText(h.querySelector("h2"),v[1]);const p=h.querySelector("p");if(p&&v[2])setText(p,v[2]);const a=h.querySelector(".ss-view-all");if(a&&v[3])setText(a,v[3]);});
     // Use section-specific selectors for State/Blog so their labels never depend on DOM order.
     const stateHead=document.querySelector(".ss-state-section .ss-section-head");
