@@ -202,42 +202,42 @@ def synthesize_content(item):
     if not desc_hi.endswith('।'):
         desc_hi = desc_hi.rsplit(' ', 1)[0] + "।"
 
-    overview_en = f"""The Government of India and respective state departments have issued a critical notification regarding <strong>{title}</strong>. This measure aims to streamline citizen access, ensure transparent benefit delivery, and enhance public welfare services across the country.
+    overview_en = f"""<strong>{title}</strong><br><br>{summary}
 
-Eligible citizens are advised to review the updated guidelines, application timelines, and required documentation before submitting their claims on the authorized government portal."""
+This update is presented from <strong>{item["source_name"]}</strong>. Read the original source for the complete context, dates, conditions, and any applicable official instructions."""
 
-    overview_hi = f"""भारत सरकार एवं संबंधित राज्य विभागों द्वारा <strong>{title}</strong> के संदर्भ में महत्वपूर्ण आधिकारिक अधिसूचना जारी की गई है। इस पहल का मुख्य उद्देश्य नागरिकों को योजनाओं का पारदर्शी एवं त्वरित लाभ पहुंचाना है।
+    overview_hi = f"""<strong>{title}</strong><br><br>{summary}
 
-सभी पात्र नागरिकों से अनुरोध है कि वे आधिकारिक पोर्टल पर आवेदन करने से पूर्व पात्रता नियमों, समयसीमा और आवश्यक दस्तावेज़ों की भली-भांति जांच कर लें।"""
+यह अपडेट <strong>{item["source_name"]}</strong> के प्रकाशित विवरण पर आधारित है। पूरी जानकारी, तारीख, शर्तें और लागू निर्देशों के लिए मूल स्रोत देखें।"""
 
     highlights_en = [
-        f"Official notification published under {category} category for public welfare.",
-        "Aadhaar authentication and e-KYC integration for direct benefit transfer (DBT).",
-        "Transparent online monitoring and dedicated citizen grievance redressal mechanism.",
-        "Free verification and processing via authorized government digital service portals."
+        f"Topic: {category}.",
+        f"Published source: {item["source_name"]}.",
+        "The original source link is provided on this page for verification and full context.",
+        "Do not treat this news/update page as an application form unless an official application link is explicitly provided."
     ]
 
     highlights_hi = [
-        f"{category} श्रेणी के अंतर्गत आधिकारिक लोक कल्याणकारी अधिसूचना जारी।",
-        "प्रत्यक्ष लाभ अंतरण (DBT) हेतु आधार प्रमाणीकरण एवं ई-केवाईसी अनिवार्य।",
-        "पारदर्शी ऑनलाइन निगरानी और समर्पित नागरिक सहायता प्रणाली उपलब्ध।",
-        "अधिकृत सरकारी डिजिटल सेवा पोर्टलों के माध्यम से निःशुल्क सत्यापन।"
+        f"विषय: {category}।",
+        f"स्रोत: {item["source_name"]}।",
+        "सत्यापन और पूरी जानकारी के लिए मूल स्रोत का लिंक इस पेज पर दिया गया है।",
+        "जब तक स्पष्ट आधिकारिक आवेदन लिंक न दिया गया हो, इस न्यूज़/अपडेट पेज को आवेदन फॉर्म न समझें।"
     ]
 
     steps_en = [
-        "Visit the official government web portal linked below.",
-        "Register or log in using your Aadhaar-linked Mobile OTP.",
-        "Complete the application form with accurate personal and bank details.",
-        "Upload scanned self-attested documents (Aadhaar, photo, income/residence proof).",
-        "Submit the form and save the unique Application Acknowledgment Number for status tracking."
+        "Read the summary on this page.",
+        "Open the original source using the official/source link.",
+        "Check the original publication date and any subsequent corrections or updates.",
+        "If an application or deadline is mentioned, follow only the instructions published by the competent authority.",
+        "Keep the original source URL for reference."
     ]
 
     steps_hi = [
-        "नीचे दिए गए आधिकारिक सरकारी पोर्टल लिंक पर जाएं।",
-        "अपने आधार से लिंक मोबाइल नंबर और OTP के माध्यम से लॉगिन करें।",
-        "आवेदन पत्र में अपना व्यक्तिगत विवरण और बैंक खाता संख्या ध्यानपूर्वक दर्ज करें।",
-        "मांगे गए आवश्यक दस्तावेज़ (आधार कार्ड, फोटो, निवास/आय प्रमाण) अपलोड करें।",
-        "फॉर्म सबमिट करें और स्थिति ट्रैक करने हेतु पावती संख्या (Acknowledgment Number) सुरक्षित रखें।"
+        "इस पेज पर दिए गए संक्षिप्त सारांश को पढ़ें।",
+        "पूरी जानकारी के लिए मूल स्रोत लिंक खोलें।",
+        "मूल प्रकाशन की तारीख और बाद में किए गए संशोधन/अपडेट जांचें।",
+        "यदि आवेदन या समयसीमा का उल्लेख हो, तो संबंधित सक्षम प्राधिकरण के निर्देशों का ही पालन करें।",
+        "भविष्य के संदर्भ के लिए मूल स्रोत URL सुरक्षित रखें।"
     ]
 
     faqs = [
