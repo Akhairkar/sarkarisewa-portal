@@ -1,3 +1,10 @@
+## 2026-09-29 — Session 7: Updates section cleanup complete
+- Fixed incorrect `latest-updates.html` hreflang and Open Graph URL metadata that pointed to `about.html`.
+- Updated `automation/update_pipeline.py` so generated update articles use the source summary/context instead of generic claims about Aadhaar, DBT, documents, fees, and applications.
+- Removed the template's generic application-oriented FAQ content from newly generated updates and replaced it with source-grounded reading/verification guidance.
+- Added `scripts/session7-updates-audit.py` as a read-only checker for canonical URLs, title length, NewsArticle schema, source URL presence, and generic FAQ schema.
+- Existing update articles were not blindly rewritten because their source-specific facts and dates require individual verification.
+
 ## 2026-09-29 — Session 6: Jan Aushadhi thin-page indexing guard complete
 - Updated `scripts/upgrade_all_csc_and_janaushadhi_districts.py` with `MIN_INDEXABLE_JA_STORES=5`.
 - District pages are now generated as `noindex,follow` when their own ItemList reports fewer than 5 stores; state landing pages remain indexable.
