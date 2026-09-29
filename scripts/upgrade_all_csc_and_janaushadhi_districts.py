@@ -106,6 +106,8 @@ def upgrade_all_csc_district_pages():
         if len(parts) == 4: # service/csc-locator/karnataka/bengaluru.html
             state_raw = parts[2]
             dist_raw = parts[3].replace('.html', '')
+            if dist_raw.lower() == 'index':
+                continue
             prefix = "../../../"
         elif len(parts) == 3: # service/csc-locator/delhi.html
             state_raw = parts[2].replace('.html', '')
