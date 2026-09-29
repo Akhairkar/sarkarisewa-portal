@@ -1,3 +1,8 @@
+
+## 2026-09-29 — Session 4: Canonical + internal-link repair
+- Added the idempotent Session 4 repair script for missing canonicals, legacy service slugs, state-relative link depth, and updates-to-states path defects.
+- Updated sitemap generation to emit only existing state pages and filter local noindex/non-self-canonical URLs.
+- Repository verification confirms the identified legacy Ayushman/driving links, legacy state-service prefixes, and CSC-city canonical/template defect are no longer present in the checked repository patterns.
 # CHANGELOG — Consolidated module/fix notes
 
 This file merges what used to be ~21 separate `MODULE*-NOTES.md` / `*-FIX-NOTES.md`
