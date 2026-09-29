@@ -5,7 +5,7 @@ const ALLOWED_ORIGINS = [
   "https://www.sarkarisewaindia.com"
 ];
 
-const GSTIN_PRICE = 2900;
+const GSTIN_PRICE = 100;
 const CURRENCY = "INR";
 
 function getCorsHeaders(origin) {
