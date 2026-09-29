@@ -3,7 +3,23 @@
   const ROOT = window.SS_ROOT || "";
   const params = new URLSearchParams(window.location.search);
 
-  const inputEl = document.getElementById("search-page-input");
+  // The search page keeps its markup lightweight; create the master search console here
+  // when an older cached HTML shell does not yet contain the input.
+  let inputEl = document.getElementById("search-page-input");
+  if (!inputEl) {
+    const anchor = document.querySelector(".page-hero");
+    const box = document.createElement("section");
+    box.className = "ss-search-console";
+    box.setAttribute("aria-label", "Government service search");
+    box.innerHTML = '<div class="ss-search-console__eyebrow"><span>🔎</span><span data-lang-show="en">SEARCH DIRECTORY</span><span data-lang-show="hi">सरकारी सेवा डायरेक्टरी</span></div>' +
+      '<h2><span data-lang-show="en">Find the right government scheme or service</span><span data-lang-show="hi">सही सरकारी योजना या सेवा खोजें</span></h2>' +
+      '<p><span data-lang-show="en">Search by scheme name, document, benefit, department or common keyword.</span><span data-lang-show="hi">योजना, दस्तावेज़, लाभ, विभाग या सामान्य keyword से खोजें।</span></p>' +
+      '<form class="ss-search-box" id="search-page-form" role="search"><span class="ss-search-box__icon" aria-hidden="true">⌕</span><input id="search-page-input" class="search-page-input" type="search" autocomplete="off" enterkeyhint="search" aria-label="Search government schemes and services" placeholder="Search PM Kisan, scholarship, ration card..."><button type="submit" class="ss-search-submit"><span data-lang-show="en">Search</span><span data-lang-show="hi">खोजें</span></button></form>' +
+      '<div class="ss-search-suggestions" aria-label="Popular searches"><span data-lang-show="en">Try:</span><span data-lang-show="hi">उदाहरण:</span><button type="button" data-search-term="scheme">Schemes</button><button type="button" data-search-term="pm kisan">PM Kisan</button><button type="button" data-search-term="scholarship">Scholarship</button><button type="button" data-search-term="ration card">Ration Card</button><button type="button" data-search-term="income certificate">Income Certificate</button><button type="button" data-search-term="job">Jobs</button></div>';
+    if (anchor) anchor.insertAdjacentElement("afterend", box);
+    inputEl = document.getElementById("search-page-input");
+  }
+
   const filtersEl = document.getElementById("search-page-filters");
   const statusEl = document.getElementById("search-page-status");
   const resultsEl = document.getElementById("search-page-results");
@@ -52,6 +68,19 @@
           render();
         });
       }
+
+      document.querySelectorAll("[data-search-term]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          if (!inputEl) return;
+          inputEl.value = btn.getAttribute("data-search-term") || "";
+          const url = new URL(window.location);
+          if (inputEl.value) url.searchParams.set("q", inputEl.value);
+          else url.searchParams.delete("q");
+          window.history.replaceState({}, "", url);
+          render();
+          inputEl.focus();
+        });
+      });
 
       if (formEl) {
         formEl.addEventListener("submit", (e) => {
