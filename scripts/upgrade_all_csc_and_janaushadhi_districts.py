@@ -226,15 +226,15 @@ def upgrade_all_jan_aushadhi_pages():
         # 0. Indexing guard for district pages based on the page's own ItemList count.
         # State landing pages remain indexable; only district pages use this threshold.
         if len(parts) == 4:
-            m_count = re.search(r'"numberOfItems"\\s*:\\s*(\\d+)', c)
+            m_count = re.search(r'"numberOfItems"\s*:\s*(\d+)', c)
             store_count = int(m_count.group(1)) if m_count else 0
-            robots_re = r'<meta\\s+name=["']robots["'][^>]*>'
+            robots_re = r'<meta\s+name=["\']robots["\'][^>]*>'
             if store_count < MIN_INDEXABLE_JA_STORES:
                 robots_tag = '<meta name="robots" content="noindex,follow"/>'
                 if re.search(robots_re, c, flags=re.IGNORECASE):
                     c = re.sub(robots_re, robots_tag, c, count=1, flags=re.IGNORECASE)
                 else:
-                    c = c.replace("<head>", "<head>\\n" + robots_tag, 1)
+                    c = c.replace("<head>", "<head>\n" + robots_tag, 1)
             else:
                 c = re.sub(robots_re, "", c, count=1, flags=re.IGNORECASE)
 
