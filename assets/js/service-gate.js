@@ -1,27 +1,34 @@
-/* Service access gate: public directory stays browseable; individual service workflows require an account. */
+/* Service access gate: browse freely, require a signed-in account for service workflows. */
 (function () {
   "use strict";
   const ROOT = window.SS_ROOT || "";
   const LOGIN = ROOT + "account/login.html";
-  const cards = document.querySelectorAll(".sd-card[data-service-link]");
-  if (!cards.length) return;
 
-  cards.forEach(card => {
-    card.addEventListener("click", async function (event) {
-      const href = card.getAttribute("data-service-link") || card.getAttribute("href");
-      if (!href || href.startsWith("#")) return;
-      event.preventDefault();
-      try {
-        const client = typeof getSupabaseClient === "function" ? await getSupabaseClient() : null;
-        const { data } = client ? await client.auth.getSession() : { data: { session: null } };
-        if (data && data.session) {
-          window.location.href = href;
-          return;
-        }
-      } catch (e) {
-        console.warn("Auth check failed; opening login gate.", e);
+  function safeLocalTarget(value) {
+    try {
+      const u = new URL(value, location.origin);
+      if (u.origin !== location.origin || !u.pathname.startsWith("/")) return "";
+      return u.pathname + u.search + u.hash;
+    } catch (e) { return ""; }
+  }
+
+  document.addEventListener("click", async function (event) {
+    const card = event.target.closest(".sd-card[data-service-link]");
+    if (!card) return;
+    const target = safeLocalTarget(card.getAttribute("data-service-link") || card.getAttribute("href"));
+    if (!target) return;
+
+    event.preventDefault();
+    try {
+      const client = typeof getSupabaseClient === "function" ? await getSupabaseClient() : null;
+      const sessionResult = client ? await client.auth.getSession() : { data: { session: null } };
+      if (sessionResult && sessionResult.data && sessionResult.data.session) {
+        location.href = target;
+        return;
       }
-      window.location.href = LOGIN + "?return=" + encodeURIComponent(href);
-    });
+    } catch (e) {
+      console.warn("Account check failed; continuing through login gate.", e);
+    }
+    location.href = LOGIN + "?return=" + encodeURIComponent(target);
   });
 })();
