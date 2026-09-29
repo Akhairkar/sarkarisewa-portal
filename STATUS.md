@@ -1,3 +1,9 @@
+## 2026-09-29 — Session 8: State vs Service URL audit started/completed
+- Audited the `states/` URL family structure: state landing pages and state-specific service pages are separate URL types and were not blindly collapsed.
+- Added `scripts/session8-state-service-audit.py` to detect canonical mismatches and missing canonical targets across `states/*.html`.
+- Repaired a confirmed broken canonical on `states/maharashtra-ration-card.html`, which pointed to nonexistent `states/mh-ration-card.html`; it now self-canonicalizes.
+- No mass noindex/canonical changes were made where state-specific pages may contain legitimate localized content.
+
 ## 2026-09-29 — Session 7: Updates section cleanup complete
 - Fixed incorrect `latest-updates.html` hreflang and Open Graph URL metadata that pointed to `about.html`.
 - Updated `automation/update_pipeline.py` so generated update articles use the source summary/context instead of generic claims about Aadhaar, DBT, documents, fees, and applications.
