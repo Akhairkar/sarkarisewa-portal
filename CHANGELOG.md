@@ -1,3 +1,9 @@
+## 2026-09-29 — Session 10 (tracking, content pipeline, final audit)
+- Excluded monetization and CSC listings per project scope.
+- Added GA4 events for Telegram clicks and outbound official/source links.
+- Removed generic application/eligibility FAQ generation and FAQPage schema from automated update articles.
+- Added `scripts/session10-final-audit.py` for read-only SEO, sitemap, internal-link, noindex, update-schema, canonical, and analytics checks.
+
 ## 2026-09-29 — Session 9: Performance hygiene
 - Kept current hosting; no Cloudflare migration.
 - Cleaned redundant homepage Google Fonts loading parameter.
