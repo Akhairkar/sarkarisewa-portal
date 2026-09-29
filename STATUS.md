@@ -1,11 +1,11 @@
 
 ## 2026-09-29 — Session 5: CSC thin/duplicate URL cleanup complete
-- Consolidated the duplicate state-level CSC `<state>/index.html` URLs: all 36 are now `noindex,follow` with canonical pointing to the primary `/service/csc-locator/<state>.html` page.
-- Consolidated 13 normalized duplicate district URL pairs by canonicalizing the alternate spelling to the primary district page and applying `noindex,follow` to the alternate URL.
-- Repository tree verification found 0 numeric-only CSC district filenames.
-- `generate_csc_pages.py` already normalizes district-name variants before generation, preventing these duplicate filename variants from being recreated.
-# SarkariSewaIndia — Build Status
-
+- Consolidated the duplicate state-level CSC <state>/index.html URLs: all 36 are noindex,follow with canonical pointing to the primary /service/csc-locator/<state>.html page.
+- Consolidated normalized duplicate district URL variants and kept the primary district URL as the canonical target.
+- Repository tree verification found no numeric-only CSC district filenames.
+- generate_csc_pages.py normalizes district-name variants before generation, preventing duplicate district filenames from recurring.
+- Added MIN_INDEXABLE_CENTERS=5 to the CSC district generator: district pages with fewer than 5 listed centers are generated with noindex,follow to reduce near-empty indexable pages.
+- Added scripts/session5-csc-thin-page-fix.py as a read-only audit helper to identify district pages below the 5-center threshold.
 ## 2026-09-29 — Session 4 canonical/link repair in progress
 - Session 1 code fixes are already committed: analytics RPCs now enforce `public.is_admin()` and the migration guide documents repeat/idempotent execution. Live Supabase Dashboard verification remains manual.
 - Session 4: added `scripts/session4-canonical-link-fix.py` for idempotent broken-canonical and legacy internal-link repair.
