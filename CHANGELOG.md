@@ -1862,3 +1862,9 @@ count (7/7), no duplicate element IDs, balanced `<div>` tags.
 - `supabase/SUPABASE-MIGRATION-GUIDE.md`: added the required idempotent/re-run note.
 - Live Supabase execution and admin `app_metadata.role` verification remain manual dashboard steps.
 
+## 2026-09-29 — Service redirect-stub cleanup (Session 3)
+- Audited `service/*.html` and identified **83** redirect-only full-name service files (the checklist's earlier 84 count was stale).
+- Removed those 83 redirect stubs in one repository-tree commit; canonical short-code service pages were retained.
+- Made `scripts/fix_duplicate_service_pairs.py` cleanup-only so it cannot recreate/overwrite redirect stubs.
+- Sitemap cleanup for these removed URLs is preserved; no canonical service content was deleted.
+- Session 3 cleanup does **not** delete the separate dynamic `service/service.html` shell.
