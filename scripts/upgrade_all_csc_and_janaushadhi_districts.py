@@ -24,6 +24,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HEADER_FILE = os.path.join(ROOT, 'partials', 'header.html')
 FOOTER_FILE = os.path.join(ROOT, 'partials', 'footer.html')
 
+# SEO guard: do not index Jan Aushadhi district pages that contain almost no stores.
+MIN_INDEXABLE_JA_STORES = 5
+
 with open(HEADER_FILE, 'r', encoding='utf-8') as fp:
     RAW_HEADER = fp.read()
 with open(FOOTER_FILE, 'r', encoding='utf-8') as fp:
@@ -79,11 +82,11 @@ def get_csc_faqs(dist_name, state_name):
 
 def get_jan_aushadhi_faqs(dist_name, state_name):
     return [
-        (f"{dist_name} ({state_name}) में जन औषधि केंद्र पर दवाओं पर कितना डिस्काउंट मिलता है?", f"प्रधानमंत्री भारतीय जन औषधि परियोजना (PMBJP) के तहत {dist_name} के सभी केंद्रों पर ब्रांडेड दवाओं की तुलना में 50% से 90% तक की भारी बचत होती है। ₹100 की बीपी/शुगर की दवा यहाँ ₹10-₹20 में मिल जाती है।"),
+        (f"{dist_name} ({state_name}) में जन औषधि केंद्र पर दवाओं पर कितना डिस्काउंट मिलता है?", f"प्रधानमंत्री भारतीय जन औषधि परियोजना (PMBJP) के तहत {dist_name} के सभी केंद्रों पर ब्रांडेड दवाओं की तुलना में 50% से 80% तक की बचत होती है। दवा की कीमत उत्पाद के अनुसार अलग होती है; उपलब्ध MRP और कीमत की आधिकारिक सूची देखें।"),
         (f"{dist_name} में निकटतम जन औषधि केंद्र का पता और फोन नंबर कैसे देखें?", f"SarkariSewa India के इस पेज पर {dist_name} जिले के सभी सक्रिय जन औषधि मेडिकल स्टोर के सटीक पते, संचालक का नाम, मोबाइल नंबर और सीधे Google Maps नेविगेशन लिंक दिए गए हैं।"),
         (f"क्या जन औषधि केंद्र से दवा लेने के लिए डॉक्टर का पर्चा (Prescription) ज़रूरी है?", f"एंटीबायोटिक्स, हृदय रोग, बीपी और शुगर की शेड्यूल दवाओं के लिए डॉक्टर का पर्चा आवश्यक है। सामान्य ओवर-द-काउंटर (OTC) उत्पाद जैसे दर्द निवारक, ओआरएस, विटामिन और सेनेटरी पैड बिना पर्चे के खरीदे जा सकते हैं।"),
         (f"जन औषधि स्टोर के खुलने और बंद होने का समय क्या है?", f"अधिकांश जन औषधि केंद्र सुबह 09:00 बजे से रात 09:00 बजे तक खुले रहते हैं। जिला अस्पताल और मेडिकल कॉलेज परिसरों में स्थित केंद्र 24x7 या ओपीडी समय में कार्यरत रहते हैं।"),
-        (f"क्या जन औषधि दवाओं की गुणवत्ता ब्रांडेड दवाओं के बराबर होती है?", f"हाँ, सभी जन औषधि दवाएं WHO-GMP प्रमाणित कंपनियों द्वारा निर्मित होती हैं और NABL मान्यता प्राप्त प्रयोगशालाओं में कड़े परीक्षण (Testing) के बाद ही बेची जाती हैं। इनकी प्रभावकारिता ब्रांडेड दवाओं के 100% समान होती है।"),
+        (f"क्या जन औषधि दवाओं की गुणवत्ता ब्रांडेड दवाओं के बराबर होती है?", f"हाँ, सभी जन औषधि दवाएं WHO-GMP मानकों के अनुरूप निर्माताओं से दवाएं ली जाती हैं और प्रत्येक बैच की NABL-अनुमोदित प्रयोगशालाओं में जांच की जाती है।"),
         (f"क्या जन औषधि केंद्र पर 'सुविधा' सेनेटरी नैपकिन उपलब्ध हैं?", f"हाँ, महिलाओं के स्वास्थ्य हेतु 100% ऑक्सो-बायोडिग्रेडेबल 'जन औषधि सुविधा' सेनेटरी पैड मात्र **₹1 प्रति पैड** की दर से उपलब्ध हैं।"),
         (f"यदि डॉक्टर ने ब्रांडेड दवा लिखी हो तो जन औषधि केंद्र से दवा कैसे लें?", f"स्टोर संचालक को डॉक्टर का पर्चा दिखाएं। फार्मासिस्ट दवा का एक्टिव सॉल्ट (Generic Molecule) देखकर वही दवा जन औषधि ब्रांड में 90% सस्ते दाम पर दे देगा।"),
         (f"क्या जन औषधि केंद्र पर ब्लड प्रेशर और ग्लूकोमीटर जैसे मेडिकल उपकरण मिलते हैं?", f"हाँ, जन औषधि केंद्रों पर 290+ सर्जिकल एवं मेडिकल उपकरण जैसे डिजिटल बीपी मॉनिटर, ग्लूकोमीटर स्ट्रिप्स, थर्मामीटर, वेपोराइज़र और नेबुलाइज़र बाजार से आधी कीमत पर मिलते हैं।"),
@@ -213,13 +216,28 @@ def upgrade_all_jan_aushadhi_pages():
         clean_title = f"{dist_name} Jan Aushadhi Kendra 2026 | SarkariSewa India"
         if len(clean_title) > 65:
             clean_title = f"{dist_name} PMBJP Kendra 2026 | SarkariSewa India"
-        clean_desc = f"Verified Jan Aushadhi stores in {dist_name}, {state_name} 2026. Get store address, contact number, Google Maps & 90% generic medicine discounts."
+        clean_desc = f"Jan Aushadhi stores in {dist_name}, {state_name} 2026. Check store address, contact details and Google Maps location."
         if len(clean_desc) > 158:
             clean_desc = clean_desc[:155].rsplit(" ", 1)[0] + "..."
             
         with open(fpath, 'r', encoding='utf-8', errors='ignore') as fp:
             c = fp.read()
             
+        # 0. Indexing guard for district pages based on the page's own ItemList count.
+        # State landing pages remain indexable; only district pages use this threshold.
+        if len(parts) == 4:
+            m_count = re.search(r'"numberOfItems"\\s*:\\s*(\\d+)', c)
+            store_count = int(m_count.group(1)) if m_count else 0
+            robots_re = r'<meta\\s+name=["']robots["'][^>]*>'
+            if store_count < MIN_INDEXABLE_JA_STORES:
+                robots_tag = '<meta name="robots" content="noindex,follow"/>'
+                if re.search(robots_re, c, flags=re.IGNORECASE):
+                    c = re.sub(robots_re, robots_tag, c, count=1, flags=re.IGNORECASE)
+                else:
+                    c = c.replace("<head>", "<head>\\n" + robots_tag, 1)
+            else:
+                c = re.sub(robots_re, "", c, count=1, flags=re.IGNORECASE)
+
         # 1. Update Title & Meta
         c = re.sub(r'<title>.*?</title>', f'<title>{clean_title}</title>', c, count=1, flags=re.IGNORECASE | re.DOTALL)
         c = re.sub(r'<meta\s+name=["\']description["\']\s+content=["\'].*?["\']', f'<meta name="description" content="{clean_desc}"', c, count=1, flags=re.IGNORECASE)
