@@ -1,3 +1,12 @@
+## 2026-09-29 — Session 6: Jan Aushadhi thin-page indexing guard complete
+- Updated `scripts/upgrade_all_csc_and_janaushadhi_districts.py` with `MIN_INDEXABLE_JA_STORES=5`.
+- District pages are now generated as `noindex,follow` when their own ItemList reports fewer than 5 stores; state landing pages remain indexable.
+- Existing nested state `index.html` URLs remain consolidated as `noindex,follow` duplicates pointing to the primary state HTML URL.
+- Tightened generated Jan Aushadhi meta descriptions and removed the unsupported generic "90% discount" claim from the template.
+- Corrected generated FAQ wording to align with current PMBJP official information on 50%-80% lower prices and batch testing.
+- Added `scripts/session6-jan-aushadhi-thin-page-audit.py` as a read-only audit helper.
+- This session intentionally uses a generator-level guard rather than blindly noindexing existing district pages without first measuring their store counts.
+
 
 ## 2026-09-29 — Session 5: CSC thin/duplicate URL cleanup complete
 - Consolidated the duplicate state-level CSC <state>/index.html URLs: all 36 are noindex,follow with canonical pointing to the primary /service/csc-locator/<state>.html page.
