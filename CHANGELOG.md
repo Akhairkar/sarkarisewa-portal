@@ -1,3 +1,10 @@
+## 2026-09-29 — Session 6: Jan Aushadhi thin-page indexing guard
+- Added a 5-store minimum indexing guard to the Jan Aushadhi district-page generator.
+- District pages below the threshold receive `noindex,follow`; state landing pages are not affected.
+- Kept nested state `index.html` URLs noindex/canonicalized as duplicate URLs.
+- Removed the template's unsupported "90% generic medicine discounts" wording and corrected FAQ claims.
+- Added `scripts/session6-jan-aushadhi-thin-page-audit.py` for read-only verification.
+
 
 ## 2026-09-29 — Session 5: CSC thin/duplicate URL cleanup
 - Noindexed duplicate CSC state index URLs and canonicalized them to the primary state pages.
