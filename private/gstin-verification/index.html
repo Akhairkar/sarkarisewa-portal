@@ -53,7 +53,7 @@ main{max-width:820px;margin:38px auto;padding:0 18px}.intro{text-align:center;ma
 </main>
 <script>
 const input=document.getElementById('gstin'), result=document.getElementById('result'), verify=document.getElementById('verify');
-const endpoint='/api/gstin/';
+const endpoint='https://sarkarisewa-gstin-api.khairkar92.workers.dev/gstin/';
 const fields={legal:document.getElementById('legal'),shown:document.getElementById('shown'),time:document.getElementById('time')};
 function esc(v){return v==null||v===''?'—':String(v)}
 function formatDate(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleDateString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric'})}
@@ -75,7 +75,7 @@ async function runVerification(){
   const values=document.querySelectorAll('.item strong');
   values[3].textContent=formatDate(d.registration_date);
   values[4].textContent=esc(d.taxpayer_type);
-  values[5].textContent=esc(d.address||d.city||d.state_code);
+  values[5].textContent=esc([d.address,d.city].filter(Boolean).join(', ')||d.state_code);
   values[6].textContent=esc(d.business_constitution);
   fields.time.textContent=new Date(body.verified_at||Date.now()).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
   setStatus(String(d.status||'').toLowerCase()==='active');
