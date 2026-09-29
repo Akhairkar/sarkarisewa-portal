@@ -1,3 +1,9 @@
+## 2026-09-29 — Session 9: Performance hygiene
+- Kept current hosting; no Cloudflare migration.
+- Cleaned redundant homepage Google Fonts loading parameter.
+- Added static performance hygiene audit helper.
+- Avoided risky global asset changes without measured Lighthouse/PageSpeed evidence.
+
 ## 2026-09-29 — Session 8: State vs Service URL audit
 - Added a read-only state/service canonical audit.
 - Fixed the confirmed broken Maharashtra ration-card canonical.
