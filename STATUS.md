@@ -1,3 +1,10 @@
+## 2026-09-29 — Session 10: Tracking + content pipeline + final audit scope complete
+- Monetization and CSC listing work are intentionally excluded from this session.
+- Improved site analytics tracking for Telegram clicks and outbound official/source links while retaining existing tool, WhatsApp, navigation, and scroll events.
+- Removed the remaining generic FAQ generation and FAQPage schema from the automated updates pipeline; update pages now use source-grounded summary/verification guidance instead.
+- Added `scripts/session10-final-audit.py`, a read-only final checker for canonicals, local links, sitemap/noindex consistency, update FAQ schema, duplicate canonical targets, and analytics-loader presence.
+- No payment/listing system was added.
+
 ## 2026-09-29 — Session 9: Performance hygiene / hosting-safe optimization
 - No Cloudflare migration was performed; the site remains on its existing hosting setup.
 - Audited homepage loading structure: CSS/JS assets are already largely split into purpose-specific files and homepage scripts use `defer`.
