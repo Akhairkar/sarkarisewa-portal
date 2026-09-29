@@ -1,4 +1,10 @@
 # SarkariSewaIndia — Build Status
+
+## 2026-09-29 — Security Session 1 in progress
+- Updated `supabase/security-hardening.sql` so analytics RPC authorization is enforced inside each function with `public.is_admin()`; normal authenticated users receive `not authorized` instead of gaining analytics access.
+- Migration guide now explicitly documents repeat/idempotent execution.
+- Supabase Dashboard admin `app_metadata.role` and live migration execution still require manual verification in the Supabase Dashboard; no Supabase connector is available in this coding session.
+
 _Rewritten from a full code inventory, not carried over from older notes._
 _Last verified: 2 Aug 2026._
 
