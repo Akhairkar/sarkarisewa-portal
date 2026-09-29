@@ -20,6 +20,7 @@ import json
 import os
 import urllib.request
 import urllib.error
+import re
 from datetime import date
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -178,7 +179,9 @@ def main():
     for state in states:
         slug = state.get("slug")
         if slug:
-            urls.append((f"{BASE_URL}/states/state.html?state={slug}", "0.6", "monthly"))
+            state_path = os.path.join(ROOT, "states", f"{slug}.html")
+            if os.path.isfile(state_path):
+                urls.append((f"{BASE_URL}/states/{slug}.html", "0.6", "monthly"))
 
     for cat in categories:
         slug = cat.get("slug")
@@ -208,6 +211,29 @@ def main():
     for slug in sorted(fetch_db_exam_slugs()):
         urls.append((f"{BASE_URL}/exams/exam.html?slug={slug}", "0.7", "weekly"))
 
+
+    # SEO guard: only include existing local HTML pages that are indexable
+    # and self-canonical. This prevents sitemap/noindex/canonical conflicts.
+    filtered_urls = []
+    for loc, priority, freq in urls:
+        if not loc.startswith(BASE_URL + "/"):
+            continue
+        rel = loc[len(BASE_URL) + 1:].split("?", 1)[0].split("#", 1)[0]
+        local = os.path.join(ROOT, rel)
+        if not os.path.isfile(local):
+            continue
+        try:
+            with open(local, encoding="utf-8", errors="ignore") as fh:
+                page_html = fh.read()
+            if re.search(r'<meta\s+[^>]*name=["\']robots["\'][^>]*content=["\'][^"\']*noindex[^"\']*["\']', page_html, re.I) or re.search(r'<meta\s+[^>]*content=["\'][^"\']*noindex[^"\']*["\'][^>]*name=["\']robots["\']', page_html, re.I):
+                continue
+            cm = re.search(r'<link\s+[^>]*rel=["\']canonical["\'][^>]*href=["\']([^"\']+)', page_html, re.I)
+            if cm and cm.group(1).rstrip("/") != loc.rstrip("/"):
+                continue
+        except OSError:
+            continue
+        filtered_urls.append((loc, priority, freq))
+    urls = filtered_urls
 
     lines = ['<?xml version="1.0" encoding="UTF-8"?>']
     lines.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
