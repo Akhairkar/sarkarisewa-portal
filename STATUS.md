@@ -1,3 +1,9 @@
+## 2026-09-29 — Session 9: Performance hygiene / hosting-safe optimization
+- No Cloudflare migration was performed; the site remains on its existing hosting setup.
+- Audited homepage loading structure: CSS/JS assets are already largely split into purpose-specific files and homepage scripts use `defer`.
+- Removed redundant Google Fonts query parameter on the homepage so font loading uses a single `display=swap` declaration.
+- Added read-only `scripts/session9-performance-audit.py` for static CSS/JS/font-loading hygiene checks.
+- No speculative bulk minification or asset deletion was performed because those changes can break shared pages.
 ## 2026-09-29 — Session 8: State vs Service URL audit started/completed
 - Audited the `states/` URL family structure: state landing pages and state-specific service pages are separate URL types and were not blindly collapsed.
 - Added `scripts/session8-state-service-audit.py` to detect canonical mismatches and missing canonical targets across `states/*.html`.
