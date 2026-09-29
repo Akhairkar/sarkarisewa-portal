@@ -1,9 +1,10 @@
 # SarkariSewaIndia — Build Status
 
-## 2026-09-29 — Security Session 1 in progress
-- Updated `supabase/security-hardening.sql` so analytics RPC authorization is enforced inside each function with `public.is_admin()`; normal authenticated users receive `not authorized` instead of gaining analytics access.
-- Migration guide now explicitly documents repeat/idempotent execution.
-- Supabase Dashboard admin `app_metadata.role` and live migration execution still require manual verification in the Supabase Dashboard; no Supabase connector is available in this coding session.
+## 2026-09-29 — Session 4 canonical/link repair in progress
+- Session 1 code fixes are already committed: analytics RPCs now enforce `public.is_admin()` and the migration guide documents repeat/idempotent execution. Live Supabase Dashboard verification remains manual.
+- Session 4: added `scripts/session4-canonical-link-fix.py` for idempotent broken-canonical and legacy internal-link repair.
+- Session 4: `generate-sitemap.py` now emits real static state URLs and excludes local noindex/non-self-canonical pages.
+- Session 4 is NOT marked complete yet: the repair script still needs to be executed and its audit output verified.
 
 _Rewritten from a full code inventory, not carried over from older notes._
 _Last verified: 2 Aug 2026._
