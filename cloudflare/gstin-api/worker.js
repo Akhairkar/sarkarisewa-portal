@@ -5,8 +5,17 @@ const ALLOWED_ORIGINS = [
   "https://www.sarkarisewaindia.com"
 ];
 
-const GSTIN_PRICE = 100;
-const CURRENCY = "INR";
+const DEFAULT_GSTIN_PRICE = 100;
+const DEFAULT_CURRENCY = "INR";
+
+function getPrice(env) {
+  const value = Number(env.GSTIN_PRICE || DEFAULT_GSTIN_PRICE);
+  return Number.isInteger(value) && value > 0 ? value : DEFAULT_GSTIN_PRICE;
+}
+
+function getCurrency(env) {
+  return env.CURRENCY || DEFAULT_CURRENCY;
+}
 
 function getCorsHeaders(origin) {
   const corsOrigin = ALLOWED_ORIGINS.includes(origin)
@@ -112,8 +121,8 @@ async function createOrder(env, gstin) {
   const result = await razorpayRequest("/orders", env, {
     method: "POST",
     body: JSON.stringify({
-      amount: GSTIN_PRICE,
-      currency: CURRENCY,
+      amount: getPrice(env),
+      currency: getCurrency(env),
       receipt,
       notes: {
         service: "GSTIN Verification",
@@ -124,9 +133,11 @@ async function createOrder(env, gstin) {
   });
 
   if (!result.response.ok || !result.data.id) {
-    throw new Error(
+    const error = new Error(
       result.data?.error?.description || "Unable to create Razorpay order"
     );
+    error.razorpay_status = result.response.status;
+    throw error;
   }
 
   return result.data;
@@ -280,7 +291,7 @@ async function verifyPaymentAndGetGSTIN(body, env) {
 
   const order = orderResult.data;
 
-  if (order.amount !== GSTIN_PRICE || order.currency !== CURRENCY) {
+  if (order.amount !== getPrice(env) || order.currency !== getCurrency(env)) {
     return {
       success: false,
       status: 400,
@@ -322,7 +333,7 @@ async function verifyPaymentAndGetGSTIN(body, env) {
     };
   }
 
-  if (payment.amount !== GSTIN_PRICE || payment.currency !== CURRENCY) {
+  if (payment.amount !== getPrice(env) || payment.currency !== getCurrency(env)) {
     return {
       success: false,
       status: 400,
@@ -454,8 +465,8 @@ export default {
             success: true,
             key_id: env.RAZORPAY_KEY_ID,
             order_id: order.id,
-            amount: GSTIN_PRICE,
-            currency: CURRENCY
+            amount: getPrice(env),
+            currency: getCurrency(env)
           },
           200,
           headers
@@ -466,7 +477,10 @@ export default {
             success: false,
             error: error.message === "Invalid GSTIN format"
               ? error.message
-              : "Unable to create payment order"
+              : error.message === "Razorpay credentials are not configured"
+                ? "Payment service credentials are not configured"
+                : "Unable to create payment order",
+            ...(error.razorpay_status ? { provider_status: error.razorpay_status } : {})
           },
           error.message === "Invalid GSTIN format" ? 400 : 502,
           headers
