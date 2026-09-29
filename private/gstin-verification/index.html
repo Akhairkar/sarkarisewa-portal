@@ -53,10 +53,43 @@ main{max-width:820px;margin:38px auto;padding:0 18px}.intro{text-align:center;ma
 </main>
 <script>
 const input=document.getElementById('gstin'), result=document.getElementById('result'), verify=document.getElementById('verify');
-verify.addEventListener('click',()=>{const v=input.value.trim().toUpperCase(); if(v.length!==15){input.focus(); input.setCustomValidity('GSTIN must contain 15 characters'); input.reportValidity(); input.setCustomValidity(''); return;} document.getElementById('shown').textContent=v; document.getElementById('time').textContent=new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}); result.classList.add('show');});
+const endpoint='/api/gstin/';
+const fields={legal:document.getElementById('legal'),shown:document.getElementById('shown'),time:document.getElementById('time')};
+function esc(v){return v==null||v===''?'—':String(v)}
+function formatDate(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleDateString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric'})}
+function setStatus(active){const badge=document.querySelector('.badge');badge.innerHTML='<i class="dot"></i> '+(active?'ACTIVE · सक्रिय':'NOT ACTIVE · सक्रिय नहीं');badge.style.background=active?'var(--okbg)':'#fff3e8';badge.style.color=active?'var(--ok)':'var(--warn)'}
+async function runVerification(){
+ const v=input.value.trim().toUpperCase();
+ if(!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(v)){
+  input.focus();input.setCustomValidity('Enter a valid 15-character GSTIN / सही 15-अंकीय GSTIN दर्ज करें');input.reportValidity();input.setCustomValidity('');return;
+ }
+ verify.disabled=true;verify.innerHTML='Verifying…<br><span style="font-size:11px;font-weight:600">सत्यापन हो रहा है</span>';
+ try{
+  const res=await fetch(endpoint+encodeURIComponent(v),{headers:{Accept:'application/json'}});
+  const body=await res.json();
+  if(!res.ok||!body.success) throw new Error(body.error||'Verification failed');
+  const d=body.data||{};
+  fields.shown.textContent=esc(d.gstin);
+  fields.legal.textContent=esc(d.legal_name);
+  const trade=document.querySelectorAll('.item strong')[1];trade.textContent=esc(d.trade_name);
+  const values=document.querySelectorAll('.item strong');
+  values[3].textContent=formatDate(d.registration_date);
+  values[4].textContent=esc(d.taxpayer_type);
+  values[5].textContent=esc(d.address||d.city||d.state_code);
+  values[6].textContent=esc(d.business_constitution);
+  fields.time.textContent=new Date(body.verified_at||Date.now()).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+  setStatus(String(d.status||'').toLowerCase()==='active');
+  result.classList.add('show');
+ }catch(err){
+  alert(err.message||'Verification service unavailable. Please try again.');
+ }finally{
+  verify.disabled=false;verify.innerHTML='Verify GSTIN<br><span style="font-size:11px;font-weight:600">GSTIN सत्यापित करें</span>';
+ }
+}
+verify.addEventListener('click',runVerification);
 input.addEventListener('input',()=>input.value=input.value.toUpperCase().replace(/\s/g,''));
 document.getElementById('again').onclick=()=>{result.classList.remove('show');input.value='';input.focus()};
-document.getElementById('share').onclick=async()=>{const text='GSTIN Verification Report\nGSTIN: '+document.getElementById('shown').textContent+'\nStatus: ACTIVE / सक्रिय'; if(navigator.share) await navigator.share({title:'GSTIN Verification Report',text}); else await navigator.clipboard.writeText(text+'\n'+location.href)};
+document.getElementById('share').onclick=async()=>{const text='GSTIN Verification Report\nGSTIN: '+fields.shown.textContent+'\nStatus: '+document.querySelector('.badge').textContent.trim(); if(navigator.share) await navigator.share({title:'GSTIN Verification Report',text}); else await navigator.clipboard.writeText(text+'\n'+location.href)};
 document.getElementById('pdf').onclick=()=>window.print();
 </script>
 </body>
