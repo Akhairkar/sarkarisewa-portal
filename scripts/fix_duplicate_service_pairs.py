@@ -12,9 +12,10 @@ import re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SERVICE_DIR = os.path.join(ROOT, "service")
 
-PAIRS = [
+PAIRS = []
 
-]
+# Pair list is intentionally empty after Session 3 cleanup. Canonical pages are
+# determined from the current repository rather than a stale hard-coded list.
 
 def remove_stub_urls_from_sitemap():
     path = os.path.join(ROOT, "sitemap.xml")
