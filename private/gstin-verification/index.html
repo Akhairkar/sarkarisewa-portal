@@ -31,8 +31,8 @@ main{max-width:820px;margin:38px auto;padding:0 18px}.intro{text-align:center;ma
 </section>
 <section class="card">
 <label class="label" for="gstin">GSTIN / GSTIN नंबर</label>
-<div class="inputrow"><input id="gstin" maxlength="15" autocomplete="off" placeholder="Enter 15-character GSTIN / 15 अंकों का GSTIN"><button class="primary" id="verify">Pay ₹29 & Verify<br><span style="font-size:11px;font-weight:600">₹29 भुगतान करके सत्यापित करें</span></button></div>
-<p class="hint">First, the GSTIN format and checksum are checked. <strong>Only a correctly formatted GSTIN proceeds to payment.</strong> The ₹29 service fee is charged before live GSTIN verification.</p>
+<div class="inputrow"><input id="gstin" maxlength="15" autocomplete="off" placeholder="Enter 15-character GSTIN / 15 अंकों का GSTIN"><button class="primary" id="verify">Verify GSTIN<br><span style="font-size:11px;font-weight:600">GSTIN सत्यापित करें</span></button></div>
+<p class="hint">Enter the complete 15-character GSTIN. Format and checksum are checked before any verification request.</p>
 <div class="validation" id="validation" role="alert"></div>
 <div class="result" id="result">
 <div class="status"><h2>Verification Result<br><span style="font-size:13px;color:var(--muted);font-weight:600">सत्यापन परिणाम</span></h2><span class="badge"><i class="dot"></i> ACTIVE · सक्रिय</span></div>
@@ -47,7 +47,7 @@ main{max-width:820px;margin:38px auto;padding:0 18px}.intro{text-align:center;ma
 <div class="item"><span>Verification Time · जांच समय</span><strong id="time">—</strong></div>
 </div>
 <div class="actions"><button class="action primary2" id="pdf">↓ Download PDF · PDF डाउनलोड</button><button class="action" id="share">↗ Share Report · रिपोर्ट साझा करें</button><button class="action" id="again">＋ Verify Another · दूसरा GSTIN</button></div>
-<p class="note"><strong>₹29 GSTIN Verification Service Fee:</strong> Payment is required for the live verification request. This is a verification service, not a government fee. Preview data only. Production version will display the provider's actual verification response. This report is not a government-issued certificate; for authoritative confirmation, use the official GST Portal.</p>
+<p class="note">Preview data only. Production version will display the provider's actual verification response. This report is not a government-issued certificate; for authoritative confirmation, use the official GST Portal.</p>
 </div>
 </section>
 <div style="margin-top:18px;text-align:center"><a href="/private/services/" style="color:var(--accent);font-size:12px;font-weight:750;text-decoration:none">← All Services · सभी सेवाएं</a></div>
@@ -197,14 +197,14 @@ async function runVerification(){
    amount:order.amount,
    currency:order.currency||'INR',
    name:'SarkariSewa India',
-   description:'GSTIN Verification — ₹29 Service Fee',
+   description:'GSTIN Verification',
    order_id:order.order_id,
    prefill:{},
    notes:{service:'GSTIN Verification',gstin:v},
    theme:{color:'#0b5cab'},
    modal:{
     ondismiss:function(){
-     setButton('Pay ₹29 & Verify<br><span style="font-size:11px;font-weight:600">₹29 भुगतान करके सत्यापित करें</span>',false);
+     setButton('Verify GSTIN<br><span style="font-size:11px;font-weight:600">GSTIN सत्यापित करें</span>',false);
     }
    },
    handler:async function(response){
