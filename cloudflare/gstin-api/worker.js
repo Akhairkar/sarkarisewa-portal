@@ -132,6 +132,98 @@ async function createOrder(env, gstin) {
   return result.data;
 }
 
+async function updatePaymentNotes(paymentId, notes, env) {
+  const result = await razorpayRequest(
+    `/payments/${encodeURIComponent(paymentId)}`,
+    env,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ notes })
+    }
+  );
+
+  return result;
+}
+
+function verificationIsFresh(timestamp) {
+  const value = Number(timestamp || 0);
+  if (!Number.isFinite(value) || value <= 0) return false;
+  return Date.now() - value < 2 * 60 * 1000;
+}
+
+async function callGSTINApi(normalizedGSTIN, env) {
+  if (!env.GSTIN_API_KEY) {
+    return {
+      success: false,
+      status: 503,
+      error: "GSTIN API key is not configured"
+    };
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+
+  try {
+    const gstinResponse = await fetch(API_BASE + normalizedGSTIN, {
+      method: "GET",
+      headers: {
+        "x-api-key": env.GSTIN_API_KEY,
+        Accept: "application/json"
+      },
+      signal: controller.signal
+    });
+
+    const text = await gstinResponse.text();
+    let result;
+
+    try {
+      result = JSON.parse(text);
+    } catch {
+      result = {};
+    }
+
+    if (!gstinResponse.ok || result.success !== true) {
+      return {
+        success: false,
+        status: gstinResponse.status || 502,
+        error: result.error || "GSTIN verification failed"
+      };
+    }
+
+    const data = result.data || {};
+
+    return {
+      success: true,
+      status: 200,
+      data: {
+        gstin: data.gstin || normalizedGSTIN,
+        legal_name: data.legal_name || "",
+        trade_name: data.trade_name || "",
+        status: data.status || "",
+        taxpayer_type: data.taxpayer_type || "",
+        business_constitution: data.business_constitution || "",
+        registration_date: data.registration_date || "",
+        cancellation_date: data.cancellation_date || "",
+        state_code: data.state_code || "",
+        address: data.address || "",
+        city: data.city || "",
+        address_details: data.address_details || {},
+        verified_at: new Date().toISOString()
+      }
+    };
+  } catch (error) {
+    return {
+      success: false,
+      status: 504,
+      error: error?.name === "AbortError"
+        ? "GSTIN verification service timed out. Please retry."
+        : "GSTIN verification service unavailable. Please retry."
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function verifyPaymentAndGetGSTIN(body, env) {
   const {
     razorpay_order_id,
@@ -246,53 +338,99 @@ async function verifyPaymentAndGetGSTIN(body, env) {
     };
   }
 
-  if (!env.GSTIN_API_KEY) {
+  const existingNotes = payment.notes && typeof payment.notes === "object"
+    ? { ...payment.notes }
+    : {};
+
+  const existingState = String(existingNotes.verification_state || "");
+  const existingGSTIN = String(existingNotes.verification_gstin || "")
+    .trim()
+    .toUpperCase();
+  const existingUpdatedAt = existingNotes.verification_updated_at;
+
+  if (existingGSTIN && existingGSTIN !== normalizedGSTIN) {
+    return {
+      success: false,
+      status: 409,
+      error: "Payment is already bound to a different GSTIN"
+    };
+  }
+
+  if (existingState === "processing" && verificationIsFresh(existingUpdatedAt)) {
+    return {
+      success: false,
+      status: 409,
+      error: "This payment is already being processed. Please retry shortly."
+    };
+  }
+
+  const claimToken = crypto.randomUUID();
+
+  const processingNotes = {
+    ...existingNotes,
+    verification_state: "processing",
+    verification_gstin: normalizedGSTIN,
+    verification_token: claimToken,
+    verification_updated_at: String(Date.now())
+  };
+
+  const claimResult = await updatePaymentNotes(
+    razorpay_payment_id,
+    processingNotes,
+    env
+  );
+
+  if (!claimResult.response.ok) {
     return {
       success: false,
       status: 503,
-      error: "GSTIN API key is not configured"
+      error: "Unable to lock payment verification. Please retry."
     };
   }
 
-  const gstinResponse = await fetch(API_BASE + normalizedGSTIN, {
-    method: "GET",
-    headers: {
-      "x-api-key": env.GSTIN_API_KEY,
-      Accept: "application/json"
-    }
-  });
+  const claimedPaymentResult = await razorpayRequest(
+    `/payments/${encodeURIComponent(razorpay_payment_id)}`,
+    env,
+    { method: "GET" }
+  );
 
-  const result = await gstinResponse.json();
-
-  if (!gstinResponse.ok || result.success !== true) {
+  if (!claimedPaymentResult.response.ok) {
     return {
       success: false,
-      status: gstinResponse.status || 502,
-      error: result.error || "GSTIN verification failed"
+      status: 503,
+      error: "Unable to confirm payment verification lock. Please retry."
     };
   }
 
-  const data = result.data || {};
+  const claimedNotes = claimedPaymentResult.data.notes || {};
 
-  return {
-    success: true,
-    status: 200,
-    data: {
-      gstin: data.gstin || normalizedGSTIN,
-      legal_name: data.legal_name || "",
-      trade_name: data.trade_name || "",
-      status: data.status || "",
-      taxpayer_type: data.taxpayer_type || "",
-      business_constitution: data.business_constitution || "",
-      registration_date: data.registration_date || "",
-      cancellation_date: data.cancellation_date || "",
-      state_code: data.state_code || "",
-      address: data.address || "",
-      city: data.city || "",
-      address_details: data.address_details || {},
-      verified_at: new Date().toISOString()
-    }
+  if (
+    claimedNotes.verification_state === "processing" &&
+    claimedNotes.verification_token !== claimToken
+  ) {
+    return {
+      success: false,
+      status: 409,
+      error: "This payment is already being processed. Please retry shortly."
+    };
+  }
+
+  const apiResult = await callGSTINApi(normalizedGSTIN, env);
+
+  const finalNotes = {
+    ...processingNotes,
+    verification_state: apiResult.success ? "completed" : "failed",
+    verification_token: "",
+    verification_updated_at: String(Date.now())
   };
+
+  await updatePaymentNotes(razorpay_payment_id, finalNotes, env);
+
+  if (!apiResult.success) {
+    return apiResult;
+  }
+
+  return apiResult;
 }
 
 export default {
