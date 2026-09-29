@@ -1868,3 +1868,10 @@ count (7/7), no duplicate element IDs, balanced `<div>` tags.
 - Made `scripts/fix_duplicate_service_pairs.py` cleanup-only so it cannot recreate/overwrite redirect stubs.
 - Sitemap cleanup for these removed URLs is preserved; no canonical service content was deleted.
 - Session 3 cleanup does **not** delete the separate dynamic `service/service.html` shell.
+
+
+## 2026-09-29 — Session 4: canonical and internal-link repair
+
+- Added `scripts/session4-canonical-link-fix.py`, an idempotent repair pass for missing local canonical targets, legacy service slugs, state relative-link depth, and `updates/` state-index paths.
+- Updated `generate-sitemap.py` so real static `states/<slug>.html` pages are used instead of the legacy `states/state.html?state=...` shell, and local sitemap entries are excluded when a page is noindex or non-self-canonical.
+- Session 4 remains open until the repair pass is executed and the resulting broken-link/canonical audit is verified.
