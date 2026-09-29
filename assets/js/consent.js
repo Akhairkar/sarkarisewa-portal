@@ -24,17 +24,34 @@
   }
 
   function setupCustomTracking() {
-    // 1. Track WhatsApp Clicks
+    // 1. Track outbound community/support links
     document.addEventListener("click", function (e) {
       const link = e.target.closest("a");
-      if (link && (link.href.includes("whatsapp.com") || link.href.includes("wa.me"))) {
-        gtag("event", "whatsapp_click", {
-          link_url: link.href
+      if (link) {
+        const href = link.href || "";
+        const text = link.textContent.trim().slice(0, 80);
+        if (href.includes("whatsapp.com") || href.includes("wa.me")) {
+          gtag("event", "whatsapp_click", { link_url: href, link_text: text });
+        }
+        if (href.includes("t.me/") || href.includes("telegram.me/")) {
+          gtag("event", "telegram_click", { link_url: href, link_text: text });
+        }
+      }
+    });
+
+    // 2. Track official/source outbound links
+    document.addEventListener("click", function (e) {
+      const link = e.target.closest("a");
+      if (link && link.target === "_blank" && link.href && !link.href.includes(window.location.hostname)) {
+        gtag("event", "official_link_click", {
+          link_url: link.href,
+          link_text: link.textContent.trim().slice(0, 100),
+          page_path: window.location.pathname
         });
       }
     });
 
-    // 2. Track Tools & Calculators Usage
+    // 3. Track Tools & Calculators Usage
     document.addEventListener("submit", function (e) {
       if (window.location.pathname.includes("/tools/")) {
         gtag("event", "tool_usage", {
@@ -53,7 +70,7 @@
       }
     });
 
-    // 3. Track Next Page / Navigation (Internal Links)
+    // 4. Track Next Page / Navigation (Internal Links)
     document.addEventListener("click", function (e) {
       const link = e.target.closest("a");
       if (link && link.href && link.hostname === window.location.hostname && !link.hash) {
@@ -63,7 +80,7 @@
       }
     });
 
-    // 4. Track Scroll Depth
+    // 5. Track Scroll Depth
     let scrollMarks = { 25: false, 50: false, 75: false, 90: false };
     window.addEventListener("scroll", function () {
       const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
