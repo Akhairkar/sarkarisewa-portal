@@ -16,7 +16,7 @@ form.addEventListener("submit",async e=>{
  btn.disabled=true;show("Secure link bheja ja raha hai…");
  try{
   const c=await getSupabaseClient();if(!c)throw new Error("Supabase unavailable");
-  const destination=location.origin+location.pathname+(returnTo?"?return="+encodeURIComponent(safeReturn(returnTo)):"");
+  const destination=location.origin+"/account/auth-callback.html"+(returnTo?"?return="+encodeURIComponent(safeReturn(returnTo)):"");
   const {error}=await c.auth.signInWithOtp({email:value,options:{emailRedirectTo:destination}});
   if(error)throw error;
   show("Link bhej diya gaya hai. Apna email check karein aur secure link open karein.");
