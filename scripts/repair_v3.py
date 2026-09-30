@@ -308,7 +308,11 @@ def main():
             changed += 1
 
     print(f"HTML pages scanned: {len(pages)}")
-    duplicate_repairs = resolve_duplicate_canonicals(pages)\n    changed += duplicate_repairs\n    counters["duplicate_canonical_repairs"] = duplicate_repairs\n\n    print(f"Files changed: {changed}")
+    duplicate_repairs = resolve_duplicate_canonicals(pages)
+    changed += duplicate_repairs
+    counters["duplicate_canonical_repairs"] = duplicate_repairs
+
+    print(f"Files changed: {changed}")
     for k, v in counters.items():
         print(f"{k}: {v}")
 
