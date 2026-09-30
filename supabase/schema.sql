@@ -67,3 +67,29 @@ create policy "Anyone can subscribe"
 -- 2. Go to Settings → API and copy your Project URL + anon public key —
 --    these go into assets/js/supabase-client.js (see that file's comments).
 -- ============================================================================
+
+
+-- ----------------------------------------------------------------------------
+-- Table: customers
+-- One private customer profile per authenticated Supabase user.
+-- ----------------------------------------------------------------------------
+create table if not exists customers (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text not null,
+  phone text,
+  marketing_consent boolean not null default false,
+  email_service_updates boolean not null default true,
+  whatsapp_service_updates boolean not null default false,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create unique index if not exists customers_email_idx on customers (lower(email));
+alter table customers enable row level security;
+
+create policy "Customers can insert their own profile" on customers
+  for insert to authenticated with check (auth.uid() = id);
+create policy "Customers can read their own profile" on customers
+  for select to authenticated using (auth.uid() = id);
+create policy "Customers can update their own profile" on customers
+  for update to authenticated using (auth.uid() = id) with check (auth.uid() = id);
