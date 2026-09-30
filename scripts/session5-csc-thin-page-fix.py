@@ -24,7 +24,7 @@ def main():
         count = len(TR_RE.findall(m.group(1))) if m else 0
         if count < THRESHOLD:
             thin.append((path, count))
-            if not re.search(r'<meta\s+name=["']robots["'][^>]*noindex', html, re.I):
+            if not re.search(r"""<meta\s+name=["']robots["'][^>]*noindex""", html, re.I):
                 indexable_thin.append((path, count))
     print(f"CSC district pages checked: {len(glob.glob('service/csc-locator/*/*.html'))}")
     print(f"Near-empty pages (<{THRESHOLD} centers): {len(thin)}")
