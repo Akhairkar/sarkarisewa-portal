@@ -54,6 +54,8 @@ jobs:
           python scripts/session10-final-audit.py
 
       - name: Commit generated repairs
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "sarkarisewa-maintenance"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
