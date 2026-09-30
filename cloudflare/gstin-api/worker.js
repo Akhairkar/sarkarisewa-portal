@@ -5,7 +5,7 @@ const ALLOWED_ORIGINS = [
   "https://www.sarkarisewaindia.com"
 ];
 
-const DEFAULT_GSTIN_PRICE = 100;
+const DEFAULT_GSTIN_PRICE = 2000;
 const DEFAULT_CURRENCY = "INR";
 
 function getPrice(env) {
