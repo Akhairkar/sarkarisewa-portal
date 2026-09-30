@@ -132,11 +132,14 @@ def add_head_defer(html):
     new_head = re.sub(r'<script\b[^>]*\bsrc=["\'][^"\']+["\'][^>]*>', repl, head, flags=re.I)
     return html[:head_match.start(1)] + new_head + html[head_match.end(1):]
 
+def _replace_href(html, old, new):
+    pattern = re.compile(r'(\\bhref=["\\\'])' + re.escape(old) + r'(["\\\'])', re.I)
+    return pattern.sub(lambda m: m.group(1) + new + m.group(2), html)
+
 def repair_links(html):
     original = html
     for old, new in KNOWN_REPLACEMENTS.items():
-        pattern = re.compile(r'(\\bhref=["\\\'])' + re.escape(old) + r'(["\\\'])', re.I)
-        html = pattern.sub(lambda m: m.group(1) + new + m.group(2), html)
+        html = _replace_href(html, old, new)
     return html, html != original
 
 def repair_contextual_links(html, path):
@@ -147,15 +150,23 @@ def repair_contextual_links(html, path):
         html = html.replace("../../service/", "../service/")
         html = html.replace("../../claim-your-csc.html", "../claim-your-csc.html")
 
-    # State-service pages historically used two-letter state codes. Convert only
-    # the known certificate/ration/income/domicile patterns to the real filenames.
+    # Repair legacy two-letter state-service links only when the destination
+    # actually exists. This preserves valid short-code pages while fixing
+    # references that point at the newer full-state filenames.
+    service_dir = ROOT / "service"
+    existing = {p.name for p in service_dir.glob("*.html")}
     for code, state in STATE_CODES.items():
         for service in ("caste-certificate", "domicile-certificate", "ration-card", "income-certificate"):
+            candidates = [
+                f"{state}-{service}.html",
+                f"{code}-{service}.html",
+            ]
+            target = next((name for name in candidates if name in existing), None)
+            if not target:
+                continue
+            old_name = f"{code}-{service}.html"
             for prefix in ("../service/", "/service/", "service/", BASE + "/service/"):
-                old = f"{prefix}{code}-{service}.html"
-                new = f"{prefix}{state}-{service}.html"
-                pattern = re.compile(r'(\\bhref=["\\\'])' + re.escape(old) + r'(["\\\'])', re.I)
-                html = pattern.sub(lambda m: m.group(1) + new + m.group(2), html)
+                html = _replace_href(html, prefix + old_name, prefix + target)
     return html, html != original
 
 def canonical_local_path(value):
