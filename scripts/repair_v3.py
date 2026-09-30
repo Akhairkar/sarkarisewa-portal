@@ -21,6 +21,16 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = "https://sarkarisewaindia.com"
 THRESHOLD = 5
 
+STATE_CODES = {
+    "an":"andaman-nicobar","ap":"andhra-pradesh","ar":"arunachal-pradesh","as":"assam","br":"bihar",
+    "ch":"chandigarh","cg":"chhattisgarh","dn":"dadra-nagar-haveli-daman-diu","ga":"goa","gj":"gujarat",
+    "hr":"haryana","hp":"himachal-pradesh","jk":"jammu-kashmir","jh":"jharkhand","ka":"karnataka",
+    "kl":"kerala","la":"ladakh","ld":"lakshadweep","mp":"madhya-pradesh","mh":"maharashtra",
+    "mn":"manipur","ml":"meghalaya","mz":"mizoram","nl":"nagaland","od":"odisha","pb":"punjab",
+    "py":"puducherry","rj":"rajasthan","sk":"sikkim","tn":"tamil-nadu","tg":"telangana","tr":"tripura",
+    "up":"uttar-pradesh","uk":"uttarakhand","wb":"west-bengal",
+}
+
 KNOWN_REPLACEMENTS = {
     "../service/epfo-uan.html": "../service/epfo.html",
     "/service/epfo-uan.html": "/service/epfo.html",
@@ -123,6 +133,58 @@ def repair_links(html):
     for old, new in KNOWN_REPLACEMENTS.items():
         html = html.replace(old, new)
     return html, html != original
+
+def repair_contextual_links(html, path):
+    original = html
+    rel = path.relative_to(ROOT).as_posix()
+    if rel.startswith("updates/"):
+        html = html.replace("../../../service/", "../service/")
+        html = html.replace("../../service/", "../service/")
+        html = html.replace("../../claim-your-csc.html", "../claim-your-csc.html")
+
+    # State-service pages historically used two-letter state codes. Convert only
+    # the known certificate/ration/income/domicile patterns to the real filenames.
+    for code, state in STATE_CODES.items():
+        for service in ("caste-certificate", "domicile-certificate", "ration-card", "income-certificate"):
+            for prefix in ("../service/", "/service/", "service/"):
+                old = f"{prefix}{code}-{service}.html"
+                new = f"{prefix}{state}-{service}.html"
+                html = html.replace(old, new)
+    return html, html != original
+
+def canonical_local_path(value):
+    raw = value.split("#",1)[0].split("?",1)[0]
+    if raw.startswith(BASE):
+        raw = raw[len(BASE):] or "/"
+    if raw.startswith("/"):
+        return (ROOT / raw.lstrip("/")).resolve()
+    return None
+
+def resolve_duplicate_canonicals(pages):
+    groups = {}
+    for path in pages:
+        c = canonical(path.read_text(encoding="utf-8", errors="ignore"))
+        if not c:
+            continue
+        groups.setdefault(c.rstrip("/"), []).append(path)
+    changed = 0
+    for target, members in groups.items():
+        if len(members) < 2:
+            continue
+        local = canonical_local_path(target)
+        if local is None or not local.exists():
+            continue
+        keep = next((p for p in members if p.resolve() == local.resolve()), min(members, key=lambda p: str(p)))
+        for p in members:
+            if p.resolve() == keep.resolve():
+                continue
+            html = p.read_text(encoding="utf-8", errors="ignore")
+            new = ensure_noindex(html)
+            new = set_canonical(new, own_url(keep))
+            if new != html:
+                p.write_text(new, encoding="utf-8")
+                changed += 1
+    return changed
 
 def target_from_url(page, value):
     raw = value.split("#",1)[0].split("?",1)[0]
@@ -229,7 +291,8 @@ def main():
             counters["canonical_repairs"] += 1
 
         html, l = repair_links(html)
-        if l:
+        html, contextual = repair_contextual_links(html, path)
+        if l or contextual:
             counters["known_link_repairs"] += 1
 
         # Only scripts in <head> are render-blocking. Bottom-of-body scripts
@@ -245,7 +308,7 @@ def main():
             changed += 1
 
     print(f"HTML pages scanned: {len(pages)}")
-    print(f"Files changed: {changed}")
+    duplicate_repairs = resolve_duplicate_canonicals(pages)\n    changed += duplicate_repairs\n    counters["duplicate_canonical_repairs"] = duplicate_repairs\n\n    print(f"Files changed: {changed}")
     for k, v in counters.items():
         print(f"{k}: {v}")
 

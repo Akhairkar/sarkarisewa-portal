@@ -59,7 +59,7 @@ SERVICE_MAPPINGS = [
         "services": [
             {"title": "Ayushman Bharat Card (ABHA)", "url": "../service/ayushman-bharat.html", "icon": "🏥"},
             {"title": "Jan Aushadhi Kendra Directory", "url": "../service/jan-aushadhi-store-locator.html", "icon": "💊"},
-            {"title": "ABHA Digital Health ID", "url": "../service/abha-health-card.html", "icon": "🪪"},
+            {"title": "ABHA Digital Health ID", "url": "../service/abha-health-id.html", "icon": "🪪"},
             {"title": "PM Matru Vandana Yojana", "url": "../service/pm-matru-vandana-yojana.html", "icon": "👶"}
         ]
     },

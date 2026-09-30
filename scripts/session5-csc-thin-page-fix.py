@@ -14,6 +14,7 @@ TR_RE = re.compile(r"<tr>")
 
 def main():
     thin = []
+    indexable_thin = []
     for path in sorted(glob.glob("service/csc-locator/*/*.html")):
         if path.endswith("/index.html"):
             continue
@@ -23,10 +24,13 @@ def main():
         count = len(TR_RE.findall(m.group(1))) if m else 0
         if count < THRESHOLD:
             thin.append((path, count))
+            if not re.search(r'<meta\s+name=["']robots["'][^>]*noindex', html, re.I):
+                indexable_thin.append((path, count))
     print(f"CSC district pages checked: {len(glob.glob('service/csc-locator/*/*.html'))}")
     print(f"Near-empty pages (<{THRESHOLD} centers): {len(thin)}")
-    for path, count in thin:
-        print(f"{count:>3}  {path}")
+    print(f"Indexable near-empty pages (must be 0): {len(indexable_thin)}")
+    for path, count in indexable_thin:
+        print(f"INDEXABLE {count:>3}  {path}")
 
 if __name__ == "__main__":
     main()
