@@ -25,7 +25,9 @@ HEADER_FILE = os.path.join(ROOT, 'partials', 'header.html')
 FOOTER_FILE = os.path.join(ROOT, 'partials', 'footer.html')
 
 # SEO guard: do not index Jan Aushadhi district pages that contain almost no stores.
+MIN_INDEXABLE_CSC_CENTERS = 5
 MIN_INDEXABLE_JA_STORES = 5
+
 
 with open(HEADER_FILE, 'r', encoding='utf-8') as fp:
     RAW_HEADER = fp.read()
@@ -94,6 +96,18 @@ def get_jan_aushadhi_faqs(dist_name, state_name):
         (f"{dist_name} में अपना नया जन औषधि केंद्र (Franchise) कैसे खोलें?", f"डी.फार्मा या बी.फार्मा डिग्री धारक अथवा पंजीकृत एनजीओ **janaushadhi.gov.in** पर ऑनलाइन आवेदन कर सकते हैं। सरकार द्वारा ₹5 लाख तक की वित्तीय सहायता (इंसेंटिव) प्रदान की जाती है।")
     ]
 
+def is_thin_csc_file(fpath):
+    with open(fpath, 'r', encoding='utf-8', errors='ignore') as fp:
+        html = fp.read()
+    m = re.search(r'<tbody\\b[^>]*>(.*?)</tbody>', html, re.IGNORECASE | re.DOTALL)
+    return len(re.findall(r'<tr\\b', m.group(1), re.IGNORECASE)) < MIN_INDEXABLE_CSC_CENTERS
+
+def is_thin_ja_file(fpath):
+    with open(fpath, 'r', encoding='utf-8', errors='ignore') as fp:
+        html = fp.read()
+    m = re.search(r'"numberOfItems"\\s*:\\s*(\\d+)', html)
+    return not m or int(m.group(1)) < MIN_INDEXABLE_JA_STORES
+
 def upgrade_all_csc_district_pages():
     print("\n--- Upgrading All CSC Locator District & State Pages (service/csc-locator/) ---")
     csc_files = glob.glob(os.path.join(ROOT, 'service', 'csc-locator', '**', '*.html'), recursive=True)
@@ -102,6 +116,10 @@ def upgrade_all_csc_district_pages():
     for fpath in csc_files:
         rel = os.path.relpath(fpath, ROOT)
         if rel in ('service/csc-locator/index.html', 'service/csc-locator.html'):
+            continue
+        # Permanently remove district pages with fewer than 5 CSC records.
+        if len(rel.replace('\\\\', '/').split('/')) == 4 and is_thin_csc_file(fpath):
+            os.remove(fpath)
             continue
             
         parts = rel.replace('\\', '/').split('/')
@@ -194,6 +212,10 @@ def upgrade_all_jan_aushadhi_pages():
     for fpath in ja_files:
         rel = os.path.relpath(fpath, ROOT)
         if rel in ('service/jan-aushadhi/index.html', 'service/jan-aushadhi.html'):
+            continue
+        # Permanently remove district pages with fewer than 5 listed stores.
+        if len(rel.replace('\\\\', '/').split('/')) == 4 and is_thin_ja_file(fpath):
+            os.remove(fpath)
             continue
             
         parts = rel.replace('\\', '/').split('/')
