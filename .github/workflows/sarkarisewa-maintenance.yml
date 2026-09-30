@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: sarkarisewa-maintenance
@@ -63,5 +64,8 @@ jobs:
             git commit -m "chore: apply Re-Audit v3 SEO and content maintenance"
             git fetch origin main
             git rebase origin/main
-            git push
+            git push --force-with-lease origin HEAD:refs/heads/automation/re-audit-v3
+            if ! gh pr view automation/re-audit-v3 --base main >/dev/null 2>&1; then
+              gh pr create --base main --head automation/re-audit-v3 --title "fix: Re-Audit v3 SEO and security cleanup" --body "Automated Re-Audit v3 repair pass: thin-page noindex, canonical/link repair, sitemap regeneration, private/account noindex, updates cleanup, and maintenance automation."
+            fi
           fi

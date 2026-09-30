@@ -71,8 +71,17 @@ def main():
 
     for canonical, count in canonicals.items():
         if count > 1:
-            # Multiple canonicals are not automatically wrong, but flag for review.
-            issues.append((Path(canonical.replace(BASE, "").lstrip("/")), f"canonical target used by {count} pages"))
+            members = []
+            for page in pages:
+                c = page.read_text(encoding="utf-8", errors="ignore")
+                m = re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)', c, re.I)
+                if m and m.group(1).rstrip("/") == canonical.rstrip("/"):
+                    members.append((page, c))
+            indexable_members = [p for p, c in members if not re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\'][^"\']*noindex', c, re.I)]
+            # A primary self-canonical plus one or more noindex aliases is intentional consolidation.
+            if len(indexable_members) <= 1:
+                continue
+            issues.append((Path(canonical.replace(BASE, "").lstrip("/")), f"canonical target used by {count} indexable pages"))
 
     sitemap = ROOT / "sitemap.xml"
     if sitemap.exists():

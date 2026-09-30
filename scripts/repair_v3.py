@@ -32,6 +32,10 @@ STATE_CODES = {
 }
 
 KNOWN_REPLACEMENTS = {
+    "https://sarkarisewaindia.com/service/ayushman-bharat-card.html": "https://sarkarisewaindia.com/service/ayushman-bharat.html",
+    "https://sarkarisewaindia.com/service/driving-license.html": "https://sarkarisewaindia.com/service/driving-licence.html",
+    "https://sarkarisewaindia.com/service/pm-fasal-bima.html": "https://sarkarisewaindia.com/service/pm-fasal-bima-yojana.html",
+    "https://sarkarisewaindia.com/service/pm-kusum-solar-yojana.html": "https://sarkarisewaindia.com/service/pm-kusam-solar-pump-apply.html",
     "../service/epfo-uan.html": "../service/epfo.html",
     "/service/epfo-uan.html": "/service/epfo.html",
     "service/epfo-uan.html": "service/epfo.html",
@@ -147,7 +151,7 @@ def repair_contextual_links(html, path):
     # the known certificate/ration/income/domicile patterns to the real filenames.
     for code, state in STATE_CODES.items():
         for service in ("caste-certificate", "domicile-certificate", "ration-card", "income-certificate"):
-            for prefix in ("../service/", "/service/", "service/"):
+            for prefix in ("../service/", "/service/", "service/", BASE + "/service/"):
                 old = f"{prefix}{code}-{service}.html"
                 new = f"{prefix}{state}-{service}.html"
                 pattern = re.compile(r'(\\bhref=["\\\'])' + re.escape(old) + r'(["\\\'])', re.I)
