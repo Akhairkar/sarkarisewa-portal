@@ -43,6 +43,9 @@ jobs:
       - name: Run update content pipeline
         run: python automation/update_pipeline.py
 
+      - name: Repair generated update links and metadata
+        run: python scripts/repair_v3.py
+
       - name: Regenerate sitemap
         run: python generate-sitemap.py
 
