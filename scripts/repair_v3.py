@@ -133,7 +133,7 @@ def add_head_defer(html):
     return html[:head_match.start(1)] + new_head + html[head_match.end(1):]
 
 def _replace_href(html, old, new):
-    pattern = re.compile(r'(\\bhref=["\\\'])' + re.escape(old) + r'(["\\\'])', re.I)
+    pattern = re.compile(r'(\bhref=["\\\'])' + re.escape(old) + r'(["\\\'])', re.I)
     return pattern.sub(lambda m: m.group(1) + new + m.group(2), html)
 
 def repair_links(html):
