@@ -48,6 +48,9 @@ KNOWN_REPLACEMENTS = {
     "../service/vidyalakshmi-education-loan.html": "https://www.vidyalakshmi.co.in/Students/",
     "/service/vidyalakshmi-education-loan.html": "https://www.vidyalakshmi.co.in/Students/",
     "service/vidyalakshmi-education-loan.html": "https://www.vidyalakshmi.co.in/Students/",
+    "../service/ayushman-bharat-card.html": "../service/ayushman-bharat.html",
+    "../service/driving-license.html": "../service/driving-licence.html",
+    "../service/pm-fasal-bima.html": "../service/pm-fasal-bima-yojana.html",
 }
 
 def own_url(path):
