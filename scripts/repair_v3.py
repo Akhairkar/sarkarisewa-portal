@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""SarkariSewa India — Re-Audit v3 repair pass.
+"""SarkariSewa India — repository repair pass.
 
-Idempotent, repository-wide repairs for the 30 Sep 2026 audit:
+Idempotent, repository-wide repairs for the current site structure:
 - retroactively noindex thin CSC/Jan Aushadhi district pages
 - noindex duplicate nested state index URLs
 - noindex updates/account/private pages and remove FAQPage JSON-LD from updates
@@ -333,7 +333,7 @@ def main():
             path.write_text(html, encoding="utf-8")
             changed += 1
 
-    print(f"HTML pages scanned: {len(pages)}")
+    print(f"HTML pages processed: {len(pages)}")
     duplicate_repairs = resolve_duplicate_canonicals(pages)
     changed += duplicate_repairs
     counters["duplicate_canonical_repairs"] = duplicate_repairs
