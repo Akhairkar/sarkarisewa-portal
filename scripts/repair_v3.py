@@ -221,6 +221,9 @@ def target_from_url(page, value):
     return (page.parent / raw).resolve()
 
 def repair_missing_canonical(html, path):
+    rel = path.relative_to(ROOT).as_posix()
+    if rel.startswith(("private/", "account/")):
+        return html, False
     c = canonical(html)
     if not c:
         return set_canonical(html, own_url(path)), True
