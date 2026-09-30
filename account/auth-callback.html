@@ -43,14 +43,6 @@ try{
  const {data,error}=await c.auth.getSession();
  if(error) throw error;
  if(!data.session) throw new Error("Email verification could not create a session.");
- const user=data.session.user;
- const email=(user.email||"").trim().toLowerCase();
- const phone=(user.user_metadata&&user.user_metadata.phone_number)||null;
- const emailServiceUpdates=user.user_metadata&&typeof user.user_metadata.email_service_updates==="boolean"?user.user_metadata.email_service_updates:true;
- if(email){
-  const {error:profileError}=await c.from("customers").upsert({id:user.id,email,phone,email_service_updates:emailServiceUpdates,updated_at:new Date().toISOString()},{onConflict:"id"});
-  if(profileError) throw profileError;
- }
  location.replace(target);
 }catch(err){
  console.error(err);
