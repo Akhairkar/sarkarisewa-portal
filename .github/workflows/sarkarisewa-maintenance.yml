@@ -70,7 +70,5 @@ jobs:
             git fetch origin main
             git rebase origin/main
             git push --force-with-lease origin HEAD:refs/heads/automation/re-audit-v3
-            if ! gh pr view automation/re-audit-v3 --base main >/dev/null 2>&1; then
-              gh pr create --base main --head automation/re-audit-v3 --title "fix: Re-Audit v3 SEO and security cleanup" --body "Automated Re-Audit v3 repair pass: thin-page noindex, canonical/link repair, sitemap regeneration, private/account noindex, updates cleanup, and maintenance automation."
-            fi
+            echo "Repairs pushed to automation/re-audit-v3; PR creation is handled outside Actions because this repository disallows GitHub Actions from creating pull requests."
           fi
