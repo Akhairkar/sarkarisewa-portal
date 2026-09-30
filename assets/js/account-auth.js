@@ -1,7 +1,7 @@
 /* Account auth UI. Supabase email OTP/magic-link flow; no password is stored by the site. */
 (function(){
 "use strict";
-const form=document.getElementById("auth-form"), email=document.getElementById("email"), phone=document.getElementById("phone"), btn=document.getElementById("submit"), status=document.getElementById("status");
+const form=document.getElementById("auth-form"), email=document.getElementById("email"), phone=document.getElementById("phone"), serviceUpdates=document.getElementById("service-updates"), btn=document.getElementById("submit"), status=document.getElementById("status");
 if(!form)return;
 const params=new URLSearchParams(location.search);
 const returnTo=params.get("return")||"";
@@ -22,7 +22,7 @@ form.addEventListener("submit",async e=>{
   const c=await getSupabaseClient();if(!c)throw new Error("Supabase unavailable");
   const destination=location.origin+"/account/auth-callback.html"+(returnTo?"?return="+encodeURIComponent(safeReturn(returnTo)):"");
   const options={emailRedirectTo:destination};
-  if(window.SS_AUTH_MODE==="signup") options.data={phone_number:phoneValue};
+  if(window.SS_AUTH_MODE==="signup") options.data={phone_number:phoneValue,email_service_updates:!!(serviceUpdates&&serviceUpdates.checked)};
   const {error}=await c.auth.signInWithOtp({email:value,options});
   if(error)throw error;
   show("Link bhej diya gaya hai. Apna email check karein aur secure link open karein.");
