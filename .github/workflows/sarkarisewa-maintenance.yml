@@ -61,5 +61,7 @@ jobs:
             echo "No repository changes."
           else
             git commit -m "chore: apply Re-Audit v3 SEO and content maintenance"
+            git fetch origin main
+            git rebase origin/main
             git push
           fi

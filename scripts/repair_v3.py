@@ -131,7 +131,8 @@ def add_head_defer(html):
 def repair_links(html):
     original = html
     for old, new in KNOWN_REPLACEMENTS.items():
-        html = html.replace(old, new)
+        pattern = re.compile(r'(\\bhref=["\\\'])' + re.escape(old) + r'(["\\\'])', re.I)
+        html = pattern.sub(lambda m: m.group(1) + new + m.group(2), html)
     return html, html != original
 
 def repair_contextual_links(html, path):
@@ -149,7 +150,8 @@ def repair_contextual_links(html, path):
             for prefix in ("../service/", "/service/", "service/"):
                 old = f"{prefix}{code}-{service}.html"
                 new = f"{prefix}{state}-{service}.html"
-                html = html.replace(old, new)
+                pattern = re.compile(r'(\\bhref=["\\\'])' + re.escape(old) + r'(["\\\'])', re.I)
+                html = pattern.sub(lambda m: m.group(1) + new + m.group(2), html)
     return html, html != original
 
 def canonical_local_path(value):
