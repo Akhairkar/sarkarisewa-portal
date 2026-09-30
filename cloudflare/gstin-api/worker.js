@@ -455,21 +455,6 @@ export default {
 
     const url = new URL(request.url);
 
-    if (request.method === "GET" && url.pathname === "/debug-config") {
-      return json(
-        {
-          success: true,
-          razorpay_key_id_present: Boolean(env.RAZORPAY_KEY_ID),
-          razorpay_key_secret_present: Boolean(env.RAZORPAY_KEY_SECRET),
-          gstin_api_key_present: Boolean(env.GSTIN_API_KEY),
-          price: getPrice(env),
-          currency: getCurrency(env)
-        },
-        200,
-        headers
-      );
-    }
-
     if (request.method === "POST" && url.pathname === "/create-order") {
       try {
         const body = await request.json();

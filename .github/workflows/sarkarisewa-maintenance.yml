@@ -1,0 +1,65 @@
+name: SarkariSewa India Maintenance
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "20 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sarkarisewa-maintenance
+  cancel-in-progress: false
+
+jobs:
+  repair-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install automation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r automation/requirements.txt
+
+      - name: Retroactive CSC and Jan Aushadhi upgrade
+        run: python scripts/upgrade_all_csc_and_janaushadhi_districts.py
+
+      - name: Re-audit v3 repair pass
+        run: python scripts/repair_v3.py
+
+      - name: Run update content pipeline
+        run: python automation/update_pipeline.py
+
+      - name: Regenerate sitemap
+        run: python generate-sitemap.py
+
+      - name: Run audits
+        run: |
+          python scripts/session5-csc-thin-page-fix.py
+          python scripts/session6-jan-aushadhi-thin-page-audit.py
+          python scripts/session7-updates-audit.py
+          python scripts/session10-final-audit.py
+
+      - name: Commit generated repairs
+        run: |
+          git config user.name "sarkarisewa-maintenance"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No repository changes."
+          else
+            git commit -m "chore: apply Re-Audit v3 SEO and content maintenance"
+            git push
+          fi
