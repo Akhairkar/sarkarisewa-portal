@@ -252,11 +252,10 @@ def thin_ja(path, html):
 
 def duplicate_state_index(path):
     rel = path.relative_to(ROOT).as_posix().split("/")
-    if len(rel) == 4 and rel[0] == "service" and rel[2] in {"csc-locator", "jan-aushadhi"}:
-        return False
     if len(rel) == 4 and rel[0:2] in (["service", "csc-locator"], ["service", "jan-aushadhi"]) and rel[-1] == "index.html":
         return True
     return False
+
 
 def state_index_canonical(path):
     rel = path.relative_to(ROOT).as_posix().split("/")
