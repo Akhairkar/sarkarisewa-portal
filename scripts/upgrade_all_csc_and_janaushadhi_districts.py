@@ -99,13 +99,13 @@ def get_jan_aushadhi_faqs(dist_name, state_name):
 def is_thin_csc_file(fpath):
     with open(fpath, 'r', encoding='utf-8', errors='ignore') as fp:
         html = fp.read()
-    m = re.search(r'<tbody\\b[^>]*>(.*?)</tbody>', html, re.IGNORECASE | re.DOTALL)
-    return len(re.findall(r'<tr\\b', m.group(1), re.IGNORECASE)) < MIN_INDEXABLE_CSC_CENTERS
+    m = re.search(r'<tbody\b[^>]*>(.*?)</tbody>', html, re.IGNORECASE | re.DOTALL)
+    return len(re.findall(r'<tr\b', m.group(1), re.IGNORECASE)) < MIN_INDEXABLE_CSC_CENTERS
 
 def is_thin_ja_file(fpath):
     with open(fpath, 'r', encoding='utf-8', errors='ignore') as fp:
         html = fp.read()
-    m = re.search(r'"numberOfItems"\\s*:\\s*(\\d+)', html)
+    m = re.search(r'"numberOfItems"\s*:\s*(\d+)', html)
     return not m or int(m.group(1)) < MIN_INDEXABLE_JA_STORES
 
 def upgrade_all_csc_district_pages():
