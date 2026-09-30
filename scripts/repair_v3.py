@@ -146,8 +146,8 @@ def repair_contextual_links(html, path):
     original = html
     rel = path.relative_to(ROOT).as_posix()
     if rel.startswith(("private/", "account/")):
-        html = ensure_noindex(html)
-        html = re.sub(r"<link\\s+[^>]*rel=[\'\"]canonical[\'\"][^>]*>", "", html, count=1, flags=re.I)
+        html = re.sub(r'<meta\\s+[^>]*name=["\']robots["\'][^>]*>', '<meta name="robots" content="noindex,nofollow">', html, count=1, flags=re.I)
+        html = re.sub(r'<link\\s+[^>]*rel=["\']canonical["\'][^>]*>', '', html, count=1, flags=re.I)
 
     if rel.startswith("updates/"):
         html = html.replace("../../../service/", "../service/")
