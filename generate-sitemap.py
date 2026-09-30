@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parent
 BASE = "https://sarkarisewaindia.com"
 TODAY = date.today().isoformat()
-EXCLUDED_PREFIXES = ("admin/", "private/", "partials/", ".")
+EXCLUDED_PREFIXES = ("admin/", "private/", "account/", "partials/", ".")
 EXCLUDED_FILES = {"404.html", "service/service.html", "category/category.html",
                   "blog/post.html", "jobs/post.html", "exams/exam.html"}
 
