@@ -85,7 +85,7 @@
       "name": "क्या सभी सरकारी नौकरियों के लिए OTR (One Time Registration) जरूरी है?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "हाँ, SSC, UPSC, UPSSSC, RPSC, BPSC और रेलवे (RRB) जैसी प्रमुख भर्ती संस्थाओं में अब किसी भी फॉर्म को भरने से पहले OTR प्रोफाइल बनाना अनिवार्य कर दिया गया है।"
+        "text": "हर भर्ती में OTR अनिवार्य नहीं है। जिस आयोग/भर्ती की नवीनतम आधिकारिक अधिसूचना में OTR की आवश्यकता दी गई हो, उसी के अनुसार registration पूरा करें।"
       }
     },
     {
@@ -93,7 +93,7 @@
       "name": "10वीं पास युवाओं के लिए कौन-कौन सी प्रमुख सरकारी नौकरियां हैं?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SSC MTS, Havaldar, India Post GDS (44,228 पद), रेलवे ग्रुप-डी (Railway Group D), अग्निवीर (Agniveer) और राज्य सफाई कर्मचारी भर्तियां प्रमुख 10वीं पास नौकरियां हैं।"
+        "text": "SSC MTS, Havaldar, India Post GDS जैसी भर्तियां, रेलवे ग्रुप-डी (Railway Group D), अग्निवीर (Agniveer) और राज्य सफाई कर्मचारी भर्तियां प्रमुख 10वीं पास नौकरियां हैं।"
       }
     },
     {
@@ -149,7 +149,7 @@
       "name": "क्या SarkariSewa India पर दी जाने वाली जानकारी निःशुल्क है?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "हाँ, SarkariSewa India का पूरा जॉब पोर्टल, लाइव सर्च इंजन, परीक्षा टूल्स और अलर्ट्स सभी देशवासियों हेतु 100% निःशुल्क हैं।"
+        "text": "SarkariSewa India स्वतंत्र जानकारी और उपयोगी tools देता है। आवेदन या भर्ती की अंतिम प्रक्रिया संबंधित सरकारी/भर्ती संस्था की official website पर ही पूरी करें।"
       }
     }
   ]
@@ -333,19 +333,57 @@
         सरकारी नौकरी अलर्ट एवं भर्ती डायरेक्टरी
       </h1>
       <p style="color: var(--color-muted); font-size: 1.05rem; max-width: 750px; margin: 0 auto 24px auto;">
-        एसएससी, यूपीएससी, रेलवे, बैंकिंग, रक्षा व राज्य स्तरीय 1,00,000+ सक्रिय पदों की आधिकारिक अधिसूचनाएं, ऑनलाइन आवेदन लिंक व परीक्षा तिथियां।
+        एसएससी, यूपीएससी, रेलवे, बैंकिंग, रक्षा और राज्य भर्ती से जुड़ी नई सूचनाएं, आवेदन लिंक, परीक्षा तिथियां, एडमिट कार्ड और परिणाम की जानकारी एक जगह देखें।
       </p>
 
       <!-- Master Instant Live Search Box -->
       <div style="max-width: 680px; margin: 0 auto; position: relative;">
         <div style="display: flex; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
           <span style="padding: 12px 16px; font-size: 1.2rem; display: flex; align-items: center;">🔍</span>
-          <input type="text" id="catSearchInput" placeholder="भर्ती या पद का नाम खोजें (उदा. SSC CGL, RRB NTPC, Banking, 10th Pass)..." style="flex: 1; border: none; padding: 14px 8px; font-size: 1rem; outline: none; background: transparent; color: var(--color-text);">
-          <button id="catSearchClear" style="background: transparent; border: none; padding: 0 16px; font-size: 1.2rem; color: var(--color-muted); cursor: pointer; display: none;" title="Clear Search">✕</button>
+          <input type="search" id="catSearchInput" aria-label="भर्ती या पद खोजें" placeholder="भर्ती या पद का नाम खोजें (उदा. SSC CGL, RRB NTPC, Banking, 10th Pass)..." style="flex: 1; border: none; padding: 14px 8px; font-size: 1rem; outline: none; background: transparent; color: var(--color-text);">
+          <button id="catSearchClear" aria-label="Clear job search" style="background: transparent; border: none; padding: 0 16px; font-size: 1.2rem; color: var(--color-muted); cursor: pointer; display: none;" title="Clear Search">✕</button>
         </div>
         <div id="catSearchSuggestions" style="position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; max-height: 380px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 9999; display: none; text-align: left;"></div>
       </div>
     </div>
+
+
+    <!-- Official Recruitment Portals -->
+    <section class="official-job-portals" aria-labelledby="official-job-portals-title">
+      <div class="official-job-portals__intro">
+        <span class="job-section-kicker">Official sources</span>
+        <h2 id="official-job-portals-title">आधिकारिक भर्ती पोर्टल से जानकारी सत्यापित करें</h2>
+        <p>भर्ती की अंतिम तिथि, पात्रता, शुल्क, पदों की संख्या और आवेदन प्रक्रिया हमेशा संबंधित भर्ती संस्था की नवीनतम अधिसूचना से मिलाएं।</p>
+      </div>
+      <div class="official-job-portals__grid">
+        <a class="official-job-portal-card" href="https://ssc.gov.in/" target="_blank" rel="noopener noreferrer">
+          <span class="official-job-portal-card__icon">🏛️</span><span><strong>SSC</strong><small>Staff Selection Commission · आधिकारिक नोटिस, परीक्षा और आवेदन</small></span><b aria-hidden="true">↗</b>
+        </a>
+        <a class="official-job-portal-card" href="https://www.upsc.gov.in/" target="_blank" rel="noopener noreferrer">
+          <span class="official-job-portal-card__icon">🏛️</span><span><strong>UPSC</strong><small>Union Public Service Commission · परीक्षा और भर्ती विज्ञापन</small></span><b aria-hidden="true">↗</b>
+        </a>
+        <a class="official-job-portal-card" href="https://www.ibps.in/" target="_blank" rel="noopener noreferrer">
+          <span class="official-job-portal-card__icon">🏦</span><span><strong>IBPS</strong><small>Banking recruitment · CRP, notifications और updates</small></span><b aria-hidden="true">↗</b>
+        </a>
+        <a class="official-job-portal-card" href="https://www.rrbmumbai.gov.in/" target="_blank" rel="noopener noreferrer">
+          <span class="official-job-portal-card__icon">🚆</span><span><strong>RRB Mumbai</strong><small>Railway Recruitment Board · official railway recruitment notices</small></span><b aria-hidden="true">↗</b>
+        </a>
+      </div>
+      <div class="official-job-portals__note" role="note">⚠️ किसी भी आवेदन के लिए केवल संबंधित भर्ती संस्था की official website/notification में दिए आवेदन लिंक और निर्देश को अंतिम मानें।</div>
+    </section>
+
+    <!-- Application checklist -->
+    <section class="job-application-guide" aria-labelledby="job-application-guide-title">
+      <div><span class="job-section-kicker">Before you apply</span><h2 id="job-application-guide-title">सरकारी नौकरी फॉर्म भरने से पहले 6 चीजें जांचें</h2></div>
+      <div class="job-checklist-grid">
+        <div><b>01</b><span><strong>Eligibility</strong><small>आयु, शिक्षा, nationality और category conditions देखें।</small></span></div>
+        <div><b>02</b><span><strong>Dates</strong><small>Opening, closing और correction dates नोट करें।</small></span></div>
+        <div><b>03</b><span><strong>Documents</strong><small>Photo, signature, ID और certificates तैयार रखें।</small></span></div>
+        <div><b>04</b><span><strong>Fee</strong><small>Application fee, exemptions और payment rules देखें।</small></span></div>
+        <div><b>05</b><span><strong>Notification</strong><small>Official PDF में post-wise conditions पढ़ें।</small></span></div>
+        <div><b>06</b><span><strong>Final submit</strong><small>Submitted form, payment receipt और registration number सुरक्षित रखें।</small></span></div>
+      </div>
+    </section>
 
     <!-- Category Filter Tabs -->
     <div class="hub-filter-tabs">
@@ -802,7 +840,7 @@
         .then(data => { allPortalServices = Array.isArray(data) ? data : (data.services || []); })
         .catch(e => console.log('Services json load skipped'));
 
-      searchInput.addEventListener('input', function() {
+      if (!searchInput || !suggestionsBox) return;\n      searchInput.addEventListener('input', function() {
         const val = this.value.trim();
         searchClear.style.display = val ? 'block' : 'none';
         applyFilters();
