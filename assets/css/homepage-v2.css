@@ -408,3 +408,31 @@ body.homepage-v2{background:linear-gradient(180deg,#f7fbff 0,#fff 35%,#f8fbff 10
 .ss-home-sector:hover{border-color:color-mix(in srgb,var(--category-accent) 38%,var(--color-border));box-shadow:0 9px 25px color-mix(in srgb,var(--category-accent) 13%,transparent)}
 [data-theme="dark"] .ss-home-sector-panel{background:color-mix(in srgb,var(--category-accent) 8%,var(--color-bg));}
 [data-theme="dark"] .ss-home-sector{border-color:color-mix(in srgb,var(--category-accent) 28%,#334960)}
+
+/* Popular Tools — modern colorful cards */
+.homepage-v2 .popular-tools,
+.homepage-v2 .tools-section{position:relative}
+.homepage-v2 .popular-tools .tool-card,
+.homepage-v2 .tools-section .tool-card{position:relative;overflow:hidden;border:1px solid var(--color-border);border-radius:16px;background:var(--color-surface);box-shadow:0 5px 18px rgba(16,36,62,.055);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.homepage-v2 .popular-tools .tool-card:before,
+.homepage-v2 .tools-section .tool-card:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--tool-accent,var(--color-primary))}
+.homepage-v2 .popular-tools .tool-card:nth-child(1),
+.homepage-v2 .tools-section .tool-card:nth-child(1){--tool-accent:#2563eb;--tool-tint:#eff6ff}
+.homepage-v2 .popular-tools .tool-card:nth-child(2),
+.homepage-v2 .tools-section .tool-card:nth-child(2){--tool-accent:#7c3aed;--tool-tint:#f5f3ff}
+.homepage-v2 .popular-tools .tool-card:nth-child(3),
+.homepage-v2 .tools-section .tool-card:nth-child(3){--tool-accent:#0d9488;--tool-tint:#f0fdfa}
+.homepage-v2 .popular-tools .tool-card:nth-child(4),
+.homepage-v2 .tools-section .tool-card:nth-child(4){--tool-accent:#ea580c;--tool-tint:#fff7ed}
+.homepage-v2 .popular-tools .tool-card:nth-child(5),
+.homepage-v2 .tools-section .tool-card:nth-child(5){--tool-accent:#16a34a;--tool-tint:#f0fdf4}
+.homepage-v2 .popular-tools .tool-card:nth-child(6),
+.homepage-v2 .tools-section .tool-card:nth-child(6){--tool-accent:#e11d48;--tool-tint:#fff1f2}
+.homepage-v2 .popular-tools .tool-card:hover,
+.homepage-v2 .tools-section .tool-card:hover{transform:translateY(-3px);border-color:var(--tool-accent);box-shadow:0 10px 26px rgba(16,36,62,.1)}
+.homepage-v2 .popular-tools .tool-card .tool-icon,
+.homepage-v2 .tools-section .tool-card .tool-icon{color:var(--tool-accent);background:var(--tool-tint);border-radius:12px}
+.homepage-v2 .popular-tools .tool-card h3,
+.homepage-v2 .tools-section .tool-card h3{color:var(--color-text)}
+.homepage-v2 .popular-tools .tool-card .tool-link,
+.homepage-v2 .tools-section .tool-card .tool-link{color:var(--tool-accent);font-weight:800}
