@@ -37,7 +37,7 @@
       padding: 42px 24px;
       border-radius: 16px;
       margin-bottom: 36px;
-      box-shadow: 0 10px 30px rgba(16, 36, 62, 0.15);
+      box-shadow: 0 12px 34px rgba(16, 36, 62, 0.16); border: 1px solid rgba(255,255,255,0.08);
     }
     .cat-hero h1 { font-size: 2.2rem; margin: 0 0 12px 0; color: #ffffff; }
     .cat-hero p { font-size: 1.1rem; margin: 0 0 24px 0; color: #cbd5e1; max-width: 800px; line-height: 1.6; }
@@ -127,6 +127,14 @@
     html[lang="en"] h3[data-lang-show="en"] {
       display: block !important;
     }
+   
+    .scheme-guide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:22px 0 30px}
+    .scheme-guide-card{display:flex;flex-direction:column;gap:7px;padding:18px;border:1px solid var(--color-border);border-radius:14px;background:var(--color-surface);color:var(--color-text);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.04);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+    .scheme-guide-card:hover,.scheme-guide-card:focus-visible{transform:translateY(-2px);border-color:var(--color-primary);box-shadow:0 10px 24px rgba(0,0,0,.08)}
+    .scheme-guide-card span{color:var(--color-text-muted);font-size:.9rem;line-height:1.55}
+    .scheme-note{padding:16px 18px;margin:18px 0 30px;border-left:4px solid #f59e0b;border-radius:10px;background:var(--color-bg-alt);line-height:1.65}
+    @media(max-width:640px){.scheme-guide-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.scheme-guide-card{transition:none}.scheme-guide-card:hover,.scheme-guide-card:focus-visible{transform:none}}
   </style>
 
   <script type="application/ld+json" id="category-schema">
@@ -170,7 +178,7 @@
           "name": "सरकारी योजनाओं के लिए पात्रता की जांच सबसे आसान तरीके से कैसे करें?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "हमारे Scheme Eligibility Engine टूल में अपनी उम्र, लिंग, वार्षिक पारिवारिक आय और राज्य दर्ज करें; आपको तत्काल 100% सटीक योग्य योजनाओं की सूची मिल जाएगी।"
+            "text": "हमारे Scheme Eligibility Engine टूल में अपनी उम्र, लिंग, वार्षिक पारिवारिक आय और राज्य दर्ज करें; आपको संभावित योजनाओं की जानकारी मिल सकती है; अंतिम पात्रता संबंधित योजना के आधिकारिक नियमों और दस्तावेज़ों से तय होती है।"
           }
         },
         {
@@ -178,7 +186,7 @@
           "name": "क्या एक परिवार को एक साथ कई सरकारी योजनाओं का लाभ मिल सकता है?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "हाँ, यदि परिवार पात्रता शर्तों को पूरा करता है तो वह एक साथ पीएम किसान, आयुष्मान भारत, पीएम सूर्य घर मुफ़्त बिजली और लाडकी बहीण योजना का लाभ ले सकता है।"
+            "text": "एक से अधिक योजनाओं का लाभ योजना-विशिष्ट पात्रता, exclusions और नियमों पर निर्भर करता है; प्रत्येक योजना की शर्तें अलग से जांचें।"
           }
         },
         {
@@ -358,7 +366,7 @@
 <span aria-hidden="true" id="theme-icon">🌙</span>
 <span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
 </button>
-<button class="icon-btn" id="lang-toggle" type="button">
+<button aria-label="Switch language" class="icon-btn" id="lang-toggle" type="button">
 <span data-i18n="lang_toggle">हिंदी</span>
 </button>
 <button aria-expanded="false" aria-label="Menu" class="nav-toggle" id="nav-toggle" type="button">☰</button>
@@ -440,7 +448,7 @@
       </p>
 
       <div>
-        <span class="stat-badge">🏛️ 100% आधिकारिक पोर्टल लिंक</span>
+        <span class="stat-badge">🏛️ Official-source links</span>
         <span class="stat-badge">⚡ Instant Status & e-KYC</span>
         <span class="stat-badge">🔒 सुरक्षित व निःशुल्क गाइड</span>
       </div>
@@ -533,13 +541,25 @@
       </div>
     </section>
 
-    <!-- ALL SERVICES DIRECTORY GRID -->
+    <section class="service-section" aria-labelledby="scheme-guide-title" style="margin-bottom:34px;">
+  <h2 id="scheme-guide-title" style="color:var(--color-primary);font-size:1.6rem;margin-bottom:12px;">योजना चुनने से पहले क्या देखें?</h2>
+  <p style="color:var(--color-text-muted);line-height:1.7;margin-bottom:18px;">किसी योजना को केवल नाम या headline देखकर eligible न मानें। अपनी category, income, residence, age, documents और current notification की शर्तें जांचें।</p>
+  <div class="scheme-guide-grid">
+    <a class="scheme-guide-card" href="../tools/eligibility-checker.html"><strong>🎯 Eligibility Check</strong><span>संभावित योजनाओं को shortlist करें और official rules से verify करें।</span></a>
+    <a class="scheme-guide-card" href="../tools/document-checklist.html"><strong>📋 Documents</strong><span>आवेदन से पहले सामान्य document preparation checklist देखें।</span></a>
+    <a class="scheme-guide-card" href="../tools/status-troubleshooter.html"><strong>🔍 Application Status</strong><span>Submitted application के status या सामान्य issue के लिए troubleshooting guidance लें।</span></a>
+    <a class="scheme-guide-card" href="../states/index.html"><strong>🗺️ State Services</strong><span>राज्य-विशिष्ट योजनाओं और citizen service portals तक पहुंचें।</span></a>
+  </div>
+  <div class="scheme-note"><strong>Official-source check:</strong> योजना की राशि, eligibility, application dates, documents और exclusions समय के साथ बदल सकते हैं। अंतिम जानकारी संबंधित मंत्रालय, राज्य विभाग या official scheme portal से verify करें।</div>
+</section>
+
+<!-- ALL SERVICES DIRECTORY GRID -->
     <section class="service-section" style="margin-bottom: 44px;">
       <h2 style="color: var(--color-primary); font-size: 1.6rem; margin-bottom: 20px; border-bottom: 2px solid var(--color-border); padding-bottom: 12px;">
         📑 <span data-lang-show="hi">सभी सरकारी योजनाएं सेवाएं (All 34 Services)</span>
         <span data-lang-show="en">Complete List of Government Schemes Services</span>
       </h2>
-      <div id="categoryServicesGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+      <div id="categoryServicesGrid" aria-label="Government schemes and services" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
         <a class="service-card" href="../service/pm-kisan.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
@@ -1290,10 +1310,10 @@
       <span style="font-size: 2.5rem; display: block; margin-bottom: 8px;">✈️</span>
       <h3 style="font-size: 1.5rem; margin: 0 0 10px 0; color: #ffffff;">SarkariSewa VIP Telegram कम्युनिटी से जुड़ें</h3>
       <p style="font-size: 1rem; color: #e0f2fe; max-width: 600px; margin: 0 auto 20px auto; line-height: 1.6;">
-        सभी सरकारी योजनाओं, भर्ती सूचनाओं, छात्रवृत्ति और नई किस्तों के रियल-टाइम अलर्ट सीधे अपने फोन पर प्राप्त करें। 100% मुफ़्त और सुरक्षित।
+        सरकारी योजनाओं, भर्ती सूचनाओं और महत्वपूर्ण updates के लिए channel उपलब्ध है। किसी भी update को इस्तेमाल करने से पहले संबंधित official source से पुष्टि करें।
       </p>
       <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #ffffff; color: #0088cc; font-weight: 700; padding: 14px 32px; border-radius: 30px; text-decoration: none; font-size: 1.05rem; box-shadow: 0 4px 14px rgba(0,0,0,0.15); transition: transform 0.2s;">
-        Join Telegram VIP Channel ↗
+        Join Telegram Updates ↗
       </a>
     </div>
 
@@ -1367,7 +1387,7 @@
 <button aria-label="Close" id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
 <a aria-label="Join our Telegram Channel" class="ss-wa-floating-bar" href="https://t.me/sarkarisewaindia" rel="noopener noreferrer" target="_blank">
 <span style="font-size: 18px; margin-right: 4px;">✈️</span>
-<span data-i18n="wa_join" style="font-weight: 600;">Join Telegram VIP</span>
+<span data-i18n="wa_join" style="font-weight: 600;">Join Telegram Updates</span>
 </a>
 </div>
 
