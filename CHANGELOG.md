@@ -1917,3 +1917,9 @@ count (7/7), no duplicate element IDs, balanced `<div>` tags.
 - Added `scripts/session4-canonical-link-fix.py`, an idempotent repair pass for missing local canonical targets, legacy service slugs, state relative-link depth, and `updates/` state-index paths.
 - Updated `generate-sitemap.py` so real static `states/<slug>.html` pages are used instead of the legacy `states/state.html?state=...` shell, and local sitemap entries are excluded when a page is noindex or non-self-canonical.
 - Session 4 remains open until the repair pass is executed and the resulting broken-link/canonical audit is verified.
+
+## 2026-10-01 — Session 1: Broken internal links
+- Fixed broken internal service links in `sitemap.html` by pointing them to existing `states/` pages.
+- Fixed broken short-code state-service links in affected `states/*-income-certificate.html` pages.
+- Fixed broken state-hub income-certificate links in affected `states/<state>.html` pages.
+- No titles, meta descriptions, canonical URLs, H1 text, filenames, redirects, or page deletions changed.
