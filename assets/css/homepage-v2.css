@@ -486,3 +486,35 @@ body.homepage-v2{background:linear-gradient(180deg,#f7fbff 0,#fff 35%,#f8fbff 10
  .homepage-v2 .ss-latest-services-section .service-card:after{padding-top:8px;font-size:.66rem}
 }
 @media(max-width:390px){.homepage-v2 .ss-latest-services-section .ss-latest-grid{grid-template-columns:1fr}}
+
+/* Modern homepage tool cards */
+.ss-tools-grid .ss-tool-card{
+  position:relative;
+  min-height:112px;
+  padding:18px;
+  overflow:hidden;
+  background:linear-gradient(145deg,var(--color-surface),var(--color-bg));
+  box-shadow:0 6px 18px #10243e0b;
+}
+.ss-tools-grid .ss-tool-card::after{
+  content:"";
+  position:absolute;
+  width:72px;height:72px;
+  right:-28px;top:-28px;
+  border-radius:50%;
+  background:#2563eb0d;
+  pointer-events:none;
+}
+.ss-tools-grid .ss-tool-card>span{
+  width:50px;height:50px;
+  border-radius:15px;
+  background:linear-gradient(135deg,#2563eb18,#14b8a612);
+  font-size:1.45rem;
+  box-shadow:inset 0 0 0 1px #2563eb0d;
+}
+.ss-tools-grid .ss-tool-card strong{font-size:1rem;line-height:1.25}
+.ss-tools-grid .ss-tool-card small{font-size:.84rem}
+.ss-tools-grid .ss-tool-card>b{padding-top:2px;text-decoration:none}
+.ss-tools-grid .ss-tool-card:hover{transform:translateY(-5px);box-shadow:0 16px 32px #10243e1a;border-color:#2563eb55}
+@media(max-width:700px){.ss-tools-grid{grid-template-columns:1fr 1fr}.ss-tools-grid .ss-tool-card{min-height:105px;padding:15px}.ss-tools-grid .ss-tool-card>span{width:44px;height:44px}}
+@media(max-width:430px){.ss-tools-grid{grid-template-columns:1fr}.ss-tools-grid .ss-tool-card{min-height:auto}}
