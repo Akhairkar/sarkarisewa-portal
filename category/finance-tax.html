@@ -31,8 +31,11 @@
   <link rel="stylesheet" href="../assets/css/share-widget.css">
 
   <style>
-    .cat-hero {
-      background: linear-gradient(135deg, #10243E 0%, #1a365d 100%);
+     .cat-hero {
+      background: linear-gradient(135deg, #312e81 0%, #7c3aed 52%, #db2777 100%);
+      border: 1px solid rgba(255,255,255,.18);
+      position: relative;
+      overflow: hidden;
       color: #ffffff;
       padding: 42px 24px;
       border-radius: 16px;
@@ -93,6 +96,19 @@
       color: #E8EDF3 !important;
     }
 
+    .cat-hero::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-90px;top:-120px;background:rgba(255,255,255,.12);pointer-events:none}
+    .service-section > div > a:hover{transform:translateY(-4px);border-color:#8b5cf6!important;box-shadow:0 14px 32px rgba(79,70,229,.14)!important}
+    .service-section > div > a:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}
+    .service-section > div > a:nth-child(3n+1) span:first-child{background:#ede9fe!important;color:#6d28d9!important}
+    .service-section > div > a:nth-child(3n+2) span:first-child{background:#fce7f3!important;color:#be185d!important}
+    .service-section > div > a:nth-child(3n) span:first-child{background:#dcfce7!important;color:#047857!important}
+    .finance-guide,.finance-official-card{border-radius:16px}
+    .finance-official-card{display:flex;flex-direction:column;gap:6px;padding:16px;background:var(--color-surface);border:1px solid var(--color-border);text-decoration:none;color:var(--color-text);transition:.2s ease}
+    .finance-official-card:hover{transform:translateY(-3px);border-color:#8b5cf6;box-shadow:0 10px 24px rgba(124,58,237,.12)}
+    .finance-official-card span{font-size:.84rem;color:var(--color-text-muted)}
+    .finance-official-card:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}
+    @media(max-width:640px){.cat-hero{padding:32px 18px}.cat-hero h1{font-size:1.8rem}}
+    @media(prefers-reduced-motion:reduce){.service-section > div > a,.finance-official-card{transition:none}.service-section > div > a:hover,.finance-official-card:hover{transform:none}}
     /* Language Toggle Visibility Rules */
     html[lang="hi"] [data-lang-show="en"],
     html:not([lang="en"]) [data-lang-show="en"] {
@@ -170,7 +186,7 @@
           "name": "न्यू टैक्स रिजीम (New Regime) में ₹7.75 लाख तक शून्य टैक्स कैसे बनता है?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "धारा 87A के तहत ₹7 लाख तक की आय पर ₹25,000 की पूर्ण छूट (Rebate) और वेतनभोगियों को ₹75,000 का स्टैंडर्ड डिडक्शन मिलने से ₹7,75,000 तक कुल टैक्स ₹0 हो जाता है।"
+            "text": "AY 2026-27 के लिए नई कर व्यवस्था में धारा 87A की rebate taxable income ₹12 लाख तक लागू है, अधिकतम ₹60,000 तक। Salaried taxpayers के लिए ₹75,000 standard deduction का अलग प्रभाव हो सकता है; अपनी स्थिति के अनुसार official Income Tax guidance देखें।"
           }
         },
         {
@@ -178,7 +194,7 @@
           "name": "EPF खाते पर मिलने वाला ब्याज क्या पूरी तरह टैक्स-फ्री होता है?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "कर्मचारी द्वारा प्रति वित्तीय वर्ष ₹2,50,000 (गैर-सरकारी) या ₹5,00,000 (बिना नियोक्ता योगदान) तक के वार्षिक अंशदान पर अर्जित समस्त ब्याज पूर्णतः कर-मुक्त (Tax-Free) होता है।"
+            "text": "EPF contribution से जुड़े interest taxation के लिए ₹2.5 लाख की specified contribution सीमा (कुछ परिस्थितियों में ₹5 लाख) और taxable contribution account के नियम लागू हो सकते हैं। अपनी contribution structure के अनुसार current Income Tax/EPFO rules verify करें।"
           }
         },
         {
@@ -186,7 +202,7 @@
           "name": "पब्लिक प्रोविडेंट फंड (PPF) को EEE स्टेटस क्यों कहा जाता है?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "PPF में जमा राशि (Exempt under 80C), सालाना मिलने वाला 7.1% चक्रवृद्धि ब्याज (Exempt) और 15 साल बाद मैच्योरिटी पर मिलने वाली कुल राशि (Exempt) तीनों 100% टैक्स-फ्री होते हैं।"
+            "text": "PPF को सामान्यतः EEE tax treatment से जोड़ा जाता है, लेकिन interest rate सरकार द्वारा समय-समय पर निर्धारित किया जाता है। वर्तमान rate, contribution limits और withdrawal/maturity rules के लिए official notification देखें।"
           }
         },
         {
@@ -449,13 +465,23 @@
       <div class="search-filter-box" style="position: relative; max-width: 680px; margin: 24px 0 0 0; text-align: left;">
         <div style="position: relative; display: flex; align-items: center;">
           <span style="position: absolute; left: 18px; font-size: 1.2rem; pointer-events: none; z-index: 2;">🔍</span>
-          <input type="search" id="catSearchInput" autocomplete="off" 
+          <label for="catSearchInput" class="visually-hidden">वित्त और कर सेवाएं खोजें</label><input type="search" id="catSearchInput" aria-label="वित्त और कर सेवाएं खोजें" autocomplete="off" 
             placeholder="इस श्रेणी या पूरे पोर्टल में सेवा खोजें (उदा. आयकर रिटर्न)..." 
             style="width: 100%; padding: 15px 18px 15px 48px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.4); background: var(--color-surface); color: var(--color-text); font-size: 1rem; outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.1); box-sizing: border-box; transition: all 0.2s ease;">
         </div>
         <ul class="search-suggestions" id="catSearchSuggestions" style="display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.22); max-height: 400px; overflow-y: auto; z-index: 9999; list-style: none; padding: 6px 0; margin: 0;"></ul>
       </div>
     </div>
+
+    <section class="finance-guide" aria-labelledby="finance-guide-title" style="margin:0 0 40px;padding:24px;background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(219,39,119,.06));border:1px solid rgba(124,58,237,.2);">
+      <h2 id="finance-guide-title" style="margin:0 0 16px;color:var(--color-primary);font-size:1.5rem;">🧭 वित्तीय सेवा चुनने से पहले क्या देखें?</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;">
+        <div style="padding:16px;background:var(--color-surface);border-radius:12px;border-left:4px solid #7c3aed;"><strong>Tax filing</strong><p style="margin:7px 0 0;color:var(--color-text-muted);line-height:1.55;">AY/FY, income sources, deductions और applicable tax regime पहले जांचें।</p></div>
+        <div style="padding:16px;background:var(--color-surface);border-radius:12px;border-left:4px solid #db2777;"><strong>Saving schemes</strong><p style="margin:7px 0 0;color:var(--color-text-muted);line-height:1.55;">Interest rate, tenure, lock-in और current government notification verify करें।</p></div>
+        <div style="padding:16px;background:var(--color-surface);border-radius:12px;border-left:4px solid #059669;"><strong>EPF / NPS</strong><p style="margin:7px 0 0;color:var(--color-text-muted);line-height:1.55;">Eligibility, contribution rules और withdrawal/tax conditions official portal पर देखें।</p></div>
+        <div style="padding:16px;background:var(--color-surface);border-radius:12px;border-left:4px solid #f59e0b;"><strong>GST / business</strong><p style="margin:7px 0 0;color:var(--color-text-muted);line-height:1.55;">Registration threshold और filing requirement business type तथा current rules पर निर्भर हो सकती है।</p></div>
+      </div>
+    </section>
 
     <!-- FEATURED FLAGSHIP SERVICES GRID -->
     <section class="service-section" style="margin-bottom: 40px;">
@@ -533,13 +559,24 @@
       </div>
     </section>
 
+    <section aria-labelledby="finance-official-title" style="margin:0 0 40px;">
+      <h2 id="finance-official-title" style="margin:0 0 6px;color:var(--color-primary);font-size:1.5rem;">🔗 प्रमुख आधिकारिक वित्तीय पोर्टल</h2>
+      <p style="margin:0 0 16px;color:var(--color-text-muted);">शुल्क, नियम और current requirements के लिए संबंधित विभाग की official website को अंतिम source मानें।</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;">
+        <a class="finance-official-card" href="https://www.incometax.gov.in/" target="_blank" rel="noopener noreferrer"><strong>Income Tax Department ↗</strong><span>ITR, PAN, AIS और tax services</span></a>
+        <a class="finance-official-card" href="https://www.gst.gov.in/" target="_blank" rel="noopener noreferrer"><strong>GST Portal ↗</strong><span>GST registration, returns और taxpayer services</span></a>
+        <a class="finance-official-card" href="https://www.epfindia.gov.in/" target="_blank" rel="noopener noreferrer"><strong>EPFO ↗</strong><span>UAN, passbook, claims और member services</span></a>
+        <a class="finance-official-card" href="https://enps.nsdl.com/" target="_blank" rel="noopener noreferrer"><strong>eNPS ↗</strong><span>NPS account and pension-related services</span></a>
+      </div>
+    </section>
+
     <!-- ALL SERVICES DIRECTORY GRID -->
     <section class="service-section" style="margin-bottom: 44px;">
       <h2 style="color: var(--color-primary); font-size: 1.6rem; margin-bottom: 20px; border-bottom: 2px solid var(--color-border); padding-bottom: 12px;">
         📑 <span data-lang-show="hi">सभी वित्त और कर सेवाएं (All 26 Services)</span>
         <span data-lang-show="en">Complete List of Finance & Tax Services</span>
       </h2>
-      <div id="categoryServicesGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+      <div id="categoryServicesGrid" role="list" aria-label="Finance and tax services" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
         <a class="service-card" href="../service/itr-penalty-calculator.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
@@ -1156,12 +1193,12 @@
     <!-- VIP TELEGRAM COMMUNITY BANNER -->
     <div style="background: linear-gradient(135deg, #0088cc 0%, #005580 100%); border-radius: 16px; padding: 32px 24px; color: #ffffff; text-align: center; margin: 40px 0; box-shadow: 0 8px 30px rgba(0, 136, 204, 0.2);">
       <span style="font-size: 2.5rem; display: block; margin-bottom: 8px;">✈️</span>
-      <h3 style="font-size: 1.5rem; margin: 0 0 10px 0; color: #ffffff;">SarkariSewa VIP Telegram कम्युनिटी से जुड़ें</h3>
+      <h3 style="font-size: 1.5rem; margin: 0 0 10px 0; color: #ffffff;">SarkariSewa India Telegram Updates से जुड़ें</h3>
       <p style="font-size: 1rem; color: #e0f2fe; max-width: 600px; margin: 0 auto 20px auto; line-height: 1.6;">
-        सभी सरकारी योजनाओं, भर्ती सूचनाओं, छात्रवृत्ति और नई किस्तों के रियल-टाइम अलर्ट सीधे अपने फोन पर प्राप्त करें। 100% मुफ़्त और सुरक्षित।
+        सरकारी सेवाओं, वित्तीय जानकारी और उपयोगी नागरिक updates के लिए Telegram channel देखें। महत्वपूर्ण tax, payment या deadline information के लिए संबंधित official department source को प्राथमिकता दें।
       </p>
       <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #ffffff; color: #0088cc; font-weight: 700; padding: 14px 32px; border-radius: 30px; text-decoration: none; font-size: 1.05rem; box-shadow: 0 4px 14px rgba(0,0,0,0.15); transition: transform 0.2s;">
-        Join Telegram VIP Channel ↗
+        Join Telegram Updates ↗
       </a>
     </div>
 
