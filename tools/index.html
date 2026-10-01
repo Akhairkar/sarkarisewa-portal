@@ -25,68 +25,16 @@
 <link href="../assets/css/module9.css" rel="stylesheet"/>
 <link href="../assets/css/module16.css" rel="stylesheet"/>
 <style>
-    .tools-hero {
-      background: var(--color-brand);
-      color: var(--color-brand-text);
-      padding: 60px 20px;
-      text-align: center;
-      border-radius: 12px;
-      margin-bottom: 40px;
-    }
-    .tools-hero h1 {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-    }
-    .tools-hero p {
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto;
-      color: rgba(255, 255, 255, 0.9);
-    }
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
-      margin-bottom: 60px;
-    }
-    .tool-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 12px;
-      padding: 24px;
-      transition: box-shadow 0.2s, transform 0.2s;
-      text-decoration: none;
-      color: var(--color-text);
-      display: flex;
-      flex-direction: column;
-    }
-    .tool-card:hover {
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-      transform: translateY(-2px);
-    }
-    .tool-card__icon {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-    }
-    .tool-card__title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--color-primary);
-    }
-    .tool-card__desc {
-      font-size: 0.95rem;
-      color: var(--color-text-muted);
-      line-height: 1.5;
-      margin-bottom: 16px;
-      flex-grow: 1;
-    }
-    .tool-card__arrow {
-      color: var(--color-accent);
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-  </style>
+.tools-hero{background:linear-gradient(135deg,var(--color-brand),#1d4ed8);color:var(--color-brand-text);padding:56px 20px;text-align:center;border-radius:20px;margin-bottom:28px;box-shadow:0 18px 40px rgba(15,23,42,.12)}
+.tools-hero h1{font-size:clamp(2rem,5vw,2.7rem);margin-bottom:12px}.tools-hero p{font-size:1.05rem;max-width:680px;margin:auto;color:rgba(255,255,255,.9);line-height:1.65}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;margin-bottom:44px}
+.tool-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:18px;padding:22px;transition:transform .2s,box-shadow .2s,border-color .2s;text-decoration:none;color:var(--color-text);display:flex;flex-direction:column;min-height:190px}
+.tool-card:hover{box-shadow:0 12px 30px rgba(15,23,42,.1);transform:translateY(-3px);border-color:var(--color-primary)}
+.tool-card:focus-visible{outline:3px solid var(--color-accent-saffron);outline-offset:3px}.tool-card__icon{font-size:2.35rem;margin-bottom:12px}.tool-card__title{font-size:1.18rem;font-weight:700;margin-bottom:7px;color:var(--color-primary)}.tool-card__desc{font-size:.94rem;color:var(--color-text-muted);line-height:1.55;margin-bottom:14px;flex-grow:1}.tool-card__arrow{color:var(--color-accent);font-weight:700}
+.tools-useful{margin:0 0 36px;padding:24px;border:1px solid var(--color-border);border-radius:18px;background:var(--color-surface)}.tools-useful h2{margin:0 0 8px}.tools-useful p{color:var(--color-text-muted);line-height:1.65}.tools-useful-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.tools-useful-grid div{padding:14px;border:1px solid var(--color-border);border-radius:13px}.tools-useful-grid strong{display:block;margin-bottom:4px}.tools-useful-grid span{font-size:.88rem;color:var(--color-text-muted);line-height:1.5}
+@media(max-width:700px){.tools-useful-grid{grid-template-columns:1fr}.tools-hero{padding:42px 18px}}
+@media(prefers-reduced-motion:reduce){.tool-card{transition:none}}
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -106,7 +54,7 @@
           "name": "Index का उपयोग कैसे करें?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "इस टूल में अपनी आवश्यक जानकारी दर्ज करें और 'Calculate / Check' बटन दबाएं। कुछ ही सेकंड में आपको 100% सटीक परिणाम और विस्तृत रिपोर्ट मिल जाएगी।"
+            "text": "इस टूल में अपनी आवश्यक जानकारी दर्ज करें और 'Calculate / Check' बटन दबाएं। कुछ ही सेकंड में आपको गणना का परिणाम और उपलब्ध विवरण मिल जाएगी।"
           }
         },
         {
@@ -114,7 +62,7 @@
           "name": "क्या Index के परिणाम 2026 के सरकारी नियमों के अनुसार हैं?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "हाँ, यह टूल भारत सरकार और संबंधित नियामक प्राधिकरणों के नवीनतम 2026 नियमों, स्लैब और गाइडलाइन्स के अनुसार काम करता है।"
+            "text": "हाँ, यह टूल संबंधित tool में दिए गए calculation rules और available inputs के आधार पर परिणाम देता है।"
           }
         },
         {
@@ -138,7 +86,7 @@
           "name": "क्या इस टूल का उपयोग करने के लिए कोई रजिस्ट्रेशन जरूरी है?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "नहीं! SarkariSewa India के सभी टूल्स बिना किसी लॉगिन या रजिस्ट्रेशन के 100% निःशुल्क उपयोग के लिए उपलब्ध हैं।"
+            "text": "नहीं! SarkariSewa India के अधिकांश tools बिना login के उपयोग किए जा सकते हैं; किसी paid/private service की शर्त अलग हो सकती है।"
           }
         },
         {
@@ -320,6 +268,7 @@
 </header>
 </div>
 <main class="container" id="main-content">
+<section class="tools-useful" aria-labelledby="tools-useful-title"><h2 id="tools-useful-title">कौन-सा tool कब उपयोग करें?</h2><p>पहले अपनी जरूरत चुनें, फिर संबंधित calculator या utility खोलें। सरकारी आवेदन की अंतिम पात्रता, शुल्क और नियम हमेशा संबंधित official notification/portal से verify करें।</p><div class="tools-useful-grid"><div><strong>💰 पैसे और PF</strong><span>EPF, gratuity, savings और salary calculations के लिए financial tools.</span></div><div><strong>📄 Documents</strong><span>Photo, signature, document और declaration तैयार करने वाली utilities.</span></div><div><strong>🎯 Schemes & status</strong><span>Eligibility, application status और citizen-service guidance के लिए tools.</span></div></div></section>
 <nav aria-label="Breadcrumb" class="breadcrumb" style="margin-top:20px;">
 <a href="../index.html">Home</a>
 <span class="sep">/</span>
