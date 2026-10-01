@@ -66,11 +66,11 @@ function renderServices() {
   const lang = getLang();
   const dict = (window.SITE && SITE.langData && SITE.langData[lang]) || {};
 
-  // "Latest" = genuinely sorted by each service's dateAdded
-  // Handle undefined dates by defaulting to empty string.
+  // "Latest" = sorted by the most recent known content date.
+  // Prefer dateUpdated when available, then fall back to dateAdded.
   const sorted = SERVICES_DATA.slice().sort((a, b) => {
-    const da = a.dateAdded || "";
-    const db = b.dateAdded || "";
+    const da = a.dateUpdated || a.dateAdded || "";
+    const db = b.dateUpdated || b.dateAdded || "";
     return da < db ? 1 : (da > db ? -1 : 0);
   });
 
