@@ -1,0 +1,45 @@
+/* ==========================================================================
+   share-widget.css
+   Reusable "Share: WhatsApp / Telegram / Copy link" row, used on service
+   detail pages, blog post pages, and job alert detail pages so the same
+   sharing experience is consistent everywhere. Loaded alongside whichever
+   page-specific stylesheet is already in use — class names match the
+   ones originally introduced in module19.css for job alert pages.
+   ========================================================================== */
+
+.job-post-share-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 18px;
+  flex-wrap: wrap;
+}
+.job-post-share-row__label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+.job-post-share-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.job-post-share-icon:hover {
+  transform: translateY(-1px);
+  border-color: var(--color-accent-saffron);
+  color: var(--color-accent-saffron);
+}
+.job-post-share-icon--whatsapp:hover { color: #25D366; border-color: #25D366; }
+.job-post-share-icon--telegram:hover { color: #229ED9; border-color: #229ED9; }
+.job-post-share-copied {
+  font-size: 0.82rem;
+  color: var(--color-accent-green);
+  font-weight: 600;
+}

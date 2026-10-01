@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+  <link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+  <link href="../favicon.ico" rel="icon"/>
+  <link href="../manifest.json" rel="manifest"/>
+  <link rel="canonical" href="https://sarkarisewaindia.com/tools/photo-resizer.html"/>
+  <meta name="description" content="SSC, UPSC, रेलवे, पुलिस व बैंकिंग फॉर्म हेतु पासपोर्ट फोटो को 20KB से 50KB में रिसाइज, क्रॉप व नेम-डेट स्टैम्प जोड़ें। 100% फ्री और सुरक्षित।" />
+  <meta property="og:title" content="Govt Exam Photo Resizer 2026 | SarkariSewa India">
+  <meta property="og:description" content="Online photo resizer, cropper & compressor with Name & Date of Photo (DOP) stamp for SSC, UPSC, IBPS, Railway and State Govt application forms."/>
+  <meta content="website" property="og:type"/>
+  <meta property="og:url" content="https://sarkarisewaindia.com/tools/photo-resizer.html"/>
+  <meta content="https://sarkarisewaindia.com/assets/img/og-image.png" property="og:image"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta name="twitter:title" content="Govt Exam Photo Resizer 2026 | SarkariSewa India">
+  <meta content="सरकारी परीक्षा फॉर्म के लिए पासपोर्ट फोटो को 20KB-50KB में बदलें और नाम व तारीख जोड़ें।" name="twitter:description"/>
+  <title>Govt Exam Photo Resizer 2026 | SarkariSewa India</title>
+  
+  <link href="../assets/css/style.css" rel="stylesheet"/>
+  <link href="../assets/css/module2.css" rel="stylesheet"/>
+  <link href="../assets/css/module7.css" rel="stylesheet"/>
+  <link href="../assets/css/share-widget.css" rel="stylesheet"/>
+
+  <!-- Cropper.js for professional client-side image cropping -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet"/>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+
+  <style>
+    .resizer-container {
+      max-width: 1080px;
+      margin: 24px auto 60px auto;
+      padding: 0 16px;
+    }
+    .resizer-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+      margin-bottom: 36px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .resizer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .tool-panel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(16, 36, 62, 0.05);
+    }
+    .upload-zone {
+      border: 2px dashed var(--color-primary);
+      border-radius: 12px;
+      padding: 48px 20px;
+      text-align: center;
+      cursor: pointer;
+      background: rgba(16, 36, 62, 0.02);
+      transition: all 0.25s ease;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      background: rgba(37, 99, 235, 0.06);
+      border-color: #2563eb;
+      transform: translateY(-2px);
+    }
+    .crop-workspace {
+      display: none;
+      width: 100%;
+      height: 440px;
+      background: #0f172a;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .crop-workspace img {
+      max-width: 100%;
+      display: block;
+    }
+    .preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 18px 0;
+    }
+    .chip {
+      padding: 7px 14px;
+      border: 1.5px solid var(--color-border);
+      border-radius: 20px;
+      background: var(--color-surface);
+      color: var(--color-text);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .chip:hover {
+      border-color: var(--color-primary);
+      background: rgba(16, 36, 62, 0.04);
+    }
+    .chip.active {
+      background: var(--color-primary);
+      color: #ffffff;
+      border-color: var(--color-primary);
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--color-primary);
+      font-size: 0.92rem;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--color-border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background: var(--color-surface);
+      color: var(--color-text);
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+    .stamp-box {
+      display: none;
+      padding: 14px;
+      background: rgba(16, 36, 62, 0.03);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+    .result-card {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: var(--color-surface-alt, #f8fafc);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      text-align: center;
+    }
+    .preview-final {
+      max-width: 180px;
+      height: auto;
+      border: 2px solid var(--color-border);
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin: 12px auto;
+      display: block;
+      background: #ffffff;
+    }
+    .stat-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+  </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Govt Exam Passport Photo Resizer",
+      "url": "https://sarkarisewaindia.com/tools/photo-resizer.html",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "SSC और UPSC फॉर्म के लिए फोटो का मानक साइज क्या है?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SSC और रेलवे के लिए फोटो का साइज 20KB से 50KB तथा 3.5×4.5 cm होना चाहिए। UPSC के लिए 20KB से 300KB (1:1 Ratio) स्वीकार्य है।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "फोटो पर नाम और तारीख (DOP) स्टैम्प कैसे लगाएं?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "टूल में 'नाम व फोटो दिनांक जोड़ें' चेकबॉक्स पर टिक करें, अपना नाम और तारीख दर्ज करें। टूल फोटो के नीचे सफेद पट्टी में स्वचालित स्टैम्प जोड़ देगा।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "क्या चश्मा या टोपी पहनकर फोटो अपलोड कर सकते हैं?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "नहीं, SSC और UPSC के नए नियमों के अनुसार चश्मा, काला चश्मा, टोपी या मास्क वाली तस्वीरें तत्काल रिजेक्ट कर दी जाती हैं।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "फोटो का बैकग्राउंड कैसा होना चाहिए?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "सरकारी फॉर्म के लिए हमेशा हल्का या सफेद (Solid White / Light Blue) बैकग्राउंड होना अनिवार्य है।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "क्या मोबाइल से ली गई सेल्फी अपलोड कर सकते हैं?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "सेल्फी से बचना चाहिए क्योंकि कैमरे की नजदीकी से चेहरे का अनुपात बदल जाता है। सीधे सामने से खींची गई फोटो ही उपयोग करें।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "फोटो 20KB से कम होने पर क्या समस्या आती है?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "20KB से कम फोटो बहुत ज्यादा कंप्रेस होने के कारण धुंधली (Blurry) हो जाती है और एडमिट कार्ड पर पहचान में नहीं आती।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "क्या फोटो रिसाइज करने पर क्वालिटी खराब होगी?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "हमारा टूल स्मार्ट बाइनरी सर्च एल्गोरिदम का उपयोग करता है जो शार्पनेस और क्लेरिटी बनाए रखते हुए सटीक लक्ष्य साइज प्रदान करता है।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "क्या यह टूल बैंकिंग (IBPS / SBI) परीक्षाओं के लिए उपयुक्त है?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "हाँ, इसमें IBPS (200×230 पिक्सल) और स्टेट PSCs के लिए विशेष प्रीसेट्स उपलब्ध हैं।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "क्या मैं फोटो को 90 डिग्री घुमा या फ्लिप कर सकता हूँ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "हाँ, टूल में लाइव 90° रोटेशन और हॉरिजॉन्टल फ्लिप के बटन उपलब्ध हैं।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "क्या मेरी फोटो आपके सर्वर पर अपलोड होती है?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "बिल्कुल नहीं! फोटो 100% आपके डिवाइस पर प्रोसेस होती है और डाउनलोड के बाद स्वतः समाप्त हो जाती है।"
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body data-slug="photo-resizer">
+  <script>window.SS_ROOT = "../";</script>
+  
+  <div id="site-header">
+    <div class="tricolor-rule"></div>
+    <a class="skip-link" data-i18n="skip_to_content" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">S</span>
+          <span class="brand-text">
+            <span class="brand-title" data-i18n="site_name">SarkariSewa India</span>
+            <span class="brand-tagline" data-i18n="site_tagline">Every Indian government service, in one place</span>
+          </span>
+        </a>
+        <nav aria-label="Primary" class="main-nav">
+          <ul>
+            <li><a data-i18n="nav_home" href="../index.html">Home</a></li>
+            <li class="nav-dropdown">
+              <a class="nav-dropdown-toggle" href="#" data-i18n="nav_categories">Categories 📁 ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a></li>
+                <li><a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a></li>
+                <li><a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a></li>
+                <li><a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a></li>
+                <li><a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a></li>
+                <li><a data-i18n="nav_health" href="../category/health.html">Health</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-dropdown-toggle" href="#">Updates &amp; Support 📢 ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a></li>
+                <li><a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a></li>
+                <li><a data-i18n="nav_blog" href="../blog/index.html">Blog</a></li>
+                <li><a data-i18n="nav_support" href="../support/index.html">Support</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: var(--color-accent-green); color: white;">Image Tools 📸 ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a href="../tools/photo-resizer.html">🖼️ Govt Exam Photo Resizer</a></li>
+                <li><a href="../tools/signature-resizer.html">✍️ Signature Resizer</a></li>
+                <li><a href="../tools/document-compressor.html">📄 Document Compressor</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-dropdown-toggle" data-i18n="nav_state_services" href="../states/index.html">State Services 🏛️ ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a href="../states/index.html">🗺️ All States Hub</a></li>
+                <li><a href="../states/uttar-pradesh.html">📍 Uttar Pradesh</a></li>
+                <li><a href="../states/maharashtra.html">📍 Maharashtra</a></li>
+                <li><a href="../states/bihar.html">📍 Bihar</a></li>
+                <li><a href="../states/rajasthan.html">📍 Rajasthan</a></li>
+                <li><a href="../states/madhya-pradesh.html">📍 Madhya Pradesh</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-dropdown-toggle" href="../tools/index.html" data-i18n="nav_citizen_utilities">Citizen Utilities 🛠️ ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a href="../tools/csc-locator.html" style="font-weight: 600; color: var(--color-primary);">📍 CSC / e-Seva Locator <span style="font-size: 0.75rem; background: var(--color-accent-green); color: white; padding: 2px 4px; border-radius: 4px; margin-left: 4px;">NEW</span></a></li>
+                <li><a data-i18n="nav_eligibility_engine" href="../tools/eligibility-checker.html" style="font-weight: 600; color: var(--color-accent-green);">🎯 Scheme Eligibility Engine</a></li>
+                <li><a href="../tools/document-checklist.html">📋 Document Checklist</a></li>
+                <li><a href="../tools/self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+                <li><a href="../tools/typing-speed-test.html">⌨️ Typing Speed Test</a></li>
+                <li><a href="../tools/deadline-calendar.html">📅 Deadline Calendar</a></li>
+                <li><a href="../tools/pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
+                <li><a href="../tools/status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
+                <li><a href="../tools/govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+                <li><a href="../tools/age-calculator.html">⏳ Age &amp; Retirement Calculator</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a class="nav-highlight nav-dropdown-toggle" href="../tools/index.html" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;">Financial Calculators 💰 ▾</a>
+              <ul class="nav-dropdown-menu">
+                <li><a href="../tools/savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+                <li><a href="../tools/gratuity-calculator.html">💰 Gratuity Calculator</a></li>
+                <li><a href="../tools/epf-calculator.html">📈 EPF Calculator</a></li>
+                <li><a href="../tools/income-tax-calculator.html">⚖️ Income Tax Calculator</a></li>
+                <li><a href="../tools/itr-penalty-calculator.html">⚖️ Late Filing Penalty Calculator</a></li>
+                <li><a href="../tools/hra-calculator.html">🏠 HRA Exemption Calculator</a></li>
+                <li style="border-top: 1px solid var(--color-border); margin-top: 4px; padding-top: 4px;"><a href="../7th-pay-commission-calculator.html">🧮 7th Pay Calculator</a></li>
+                <li><a href="../8th-pay-calculator.html">🚀 8th Pay Projection</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="../tools/csc-locator.html" class="btn btn--primary header-csc-btn" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <span data-lang-show="en">📍 Nearest CSC</span>
+            <span data-lang-show="hi">📍 जन सेवा केंद्र</span>
+          </a>
+          <a aria-label="Search" class="icon-btn" href="../search.html">
+            <span aria-hidden="true">🔍</span>
+            <span class="visually-hidden" data-i18n="search_title">Search Services</span>
+          </a>
+          <button aria-label="Toggle theme" class="icon-btn" id="theme-toggle" type="button">
+            <span aria-hidden="true" id="theme-icon">🌙</span>
+            <span class="visually-hidden" data-i18n="theme_toggle">Toggle theme</span>
+          </button>
+          <button class="icon-btn" id="lang-toggle" type="button">
+            <span data-i18n="lang_toggle">हिंदी</span>
+          </button>
+          <button aria-expanded="false" aria-label="Menu" class="nav-toggle" id="nav-toggle" type="button">☰</button>
+        </div>
+      </div>
+      <nav aria-label="Primary mobile" class="mobile-nav" id="mobile-nav">
+        <a data-i18n="search_title" href="../search.html">Search Services</a>
+        <a data-i18n="nav_home" href="../index.html">Home</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">📸 Image Tools</div>
+        <a href="../tools/photo-resizer.html" style="padding-left: 32px;">🖼️ Govt Exam Photo Resizer</a>
+        <a href="../tools/signature-resizer.html" style="padding-left: 32px;">✍️ Signature Resizer</a>
+        <a href="../tools/document-compressor.html" style="padding-left: 32px;">📄 Document Compressor</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">🛠️ Citizen Utilities</div>
+        <a href="../tools/csc-locator.html" style="padding-left: 32px;">📍 CSC / e-Seva Locator</a>
+        <a href="../tools/eligibility-checker.html" style="padding-left: 32px;" data-i18n="nav_eligibility_engine">🎯 Scheme Eligibility Engine</a>
+        <a href="../tools/document-checklist.html" style="padding-left: 32px;">📋 Document Checklist</a>
+        <a href="../tools/self-declaration-builder.html" style="padding-left: 32px;">📝 Self-Declaration Builder</a>
+        <a href="../tools/typing-speed-test.html" style="padding-left: 32px;">⌨️ Typing Speed Test</a>
+        <a href="../tools/deadline-calendar.html" style="padding-left: 32px;">📅 Deadline Calendar</a>
+        <a href="../tools/pan-aadhaar-conflict-resolver.html" style="padding-left: 32px;">🔗 PAN-Aadhaar Resolver</a>
+        <a href="../tools/status-troubleshooter.html" style="padding-left: 32px;">🔍 Status Troubleshooter</a>
+        <a href="../tools/govt-card-clarifier.html" style="padding-left: 32px;">💳 Govt Card Clarifier</a>
+        <a href="../tools/age-calculator.html" style="padding-left: 32px;">⏳ Age &amp; Retirement Calculator</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">💰 Financial Calculators</div>
+        <a href="../tools/savings-comparator.html" style="padding-left: 32px;">📊 Savings Comparator</a>
+        <a href="../tools/gratuity-calculator.html" style="padding-left: 32px;">💰 Gratuity Calculator</a>
+        <a href="../tools/income-tax-calculator.html" style="padding-left: 32px;">⚖️ Income Tax</a>
+        <a href="../tools/itr-penalty-calculator.html" style="padding-left: 32px;">⚖️ Late Filing Penalty Calculator</a>
+        <a href="../tools/epf-calculator.html" style="padding-left: 32px;">📈 EPF Calculator</a>
+        <a href="../tools/hra-calculator.html" style="padding-left: 32px;">🏠 HRA Exemption</a>
+        <a href="../7th-pay-commission-calculator.html" style="padding-left: 32px;">🧮 7th Pay Calculator</a>
+        <a href="../8th-pay-calculator.html" style="padding-left: 32px;">🚀 8th Pay Projection</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">🏛️ State Services</div>
+        <a href="../states/index.html" style="padding-left: 32px;">🗺️ All States Hub</a>
+        <a href="../states/index.html" style="padding-left: 32px;">📍 Uttar Pradesh</a>
+        <a href="../states/index.html" style="padding-left: 32px;">📍 Maharashtra</a>
+        <a href="../states/index.html" style="padding-left: 32px;">📍 Bihar</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">📁 Categories</div>
+        <a data-i18n="nav_identity" href="../category/identity-documents.html">Identity Documents</a>
+        <a data-i18n="nav_schemes" href="../category/government-schemes.html">Government Schemes</a>
+        <a data-i18n="nav_finance" href="../category/finance-tax.html">Finance &amp; Tax</a>
+        <a data-i18n="nav_jobs" href="../category/jobs-education.html">Jobs &amp; Education</a>
+        <a data-i18n="nav_utilities" href="../category/utilities.html">Utilities</a>
+        <a data-i18n="nav_health" href="../category/health.html">Health</a>
+        <div style="font-weight: 700; padding: 8px 16px; margin-top: 8px; background: rgba(255,255,255,0.12); color: #ffffff; border-radius: 6px; margin: 8px 12px 4px 12px;">📌 Links</div>
+        <a data-i18n="nav_support" href="../support/index.html">Support</a>
+        <a data-i18n="nav_blog" href="../blog/index.html">Blog</a>
+        <a data-i18n="nav_jobalerts" href="../jobs/index.html">Job Alerts</a>
+        <a data-i18n="nav_examcal" href="../exams/index.html">Exam Calendar</a>
+        <div style="padding: 10px 16px; border-top: 1px solid var(--color-border); margin-top: 8px;">
+          <button class="btn btn--outline" id="mobile-theme-toggle" style="width:100%; justify-content:center; gap:8px;" type="button">
+            <span id="mobile-theme-icon">🌙</span> <span data-i18n="theme_toggle">Toggle theme</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+  </div>
+
+  <main class="resizer-container" id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb" style="font-size: 0.9rem; margin-bottom: 20px; color: var(--color-text-muted);">
+      <a href="../index.html" style="color: var(--color-primary); text-decoration: none;">होम (Home)</a> &gt; 
+      <a href="../index.html" style="color: var(--color-primary); text-decoration: none;">टूल्स (Tools)</a> &gt; 
+      <span style="color: var(--color-text);">सरकारी परीक्षा फोटो रिसाइज़र (Govt Exam Photo Resizer)</span>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section style="background: linear-gradient(135deg, #10243E 0%, #173663 60%, #0c2650 100%); color: #ffffff; border-radius: 18px; padding: 32px 28px; box-shadow: 0 10px 35px rgba(16, 36, 62, 0.25); border: 1px solid rgba(255,255,255,0.15); margin-bottom: 32px;">
+      <span style="background: rgba(255,255,255,0.15); padding: 5px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px;">🇮🇳 100% सुरक्षित एवं प्राइवेट (No Server Uploads)</span>
+      <h1 style="font-size: 2.2rem; line-height: 1.3; color: #ffffff; margin: 16px 0 10px 0;">
+        <span data-lang-show="hi">सरकारी परीक्षा पासपोर्ट फोटो रिसाइज़र (20KB - 50KB) + Date Stamp</span>
+        <span data-lang-show="en">Govt Exam Passport Photo Resizer &amp; Compressor (20KB - 50KB)</span>
+      </h1>
+      <p style="font-size: 1.02rem; line-height: 1.7; color: rgba(255,255,255,0.9); max-width: 860px; margin: 0 0 16px 0;">
+        <span data-lang-show="hi">SSC, UPSC, रेलवे, पुलिस, NTA और बैंकिंग फॉर्म के लिए अपनी फोटो को 3.5×4.5 cm में क्रॉप करें, नाम व फोटो खींचने की तारीख (DOP) जोड़ें और सटीक 20KB से 50KB में 1-क्लिक में डाउनलोड करें।</span>
+        <span data-lang-show="en">Crop, resize, and compress your passport photograph to exact 20KB - 50KB limits with customizable Name &amp; Date of Photo (DOP) stamp for all Indian competitive exam portals.</span>
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.88rem;">
+        <span style="background: rgba(255,255,255,0.12); padding: 6px 14px; border-radius: 8px;">🔒 100% Client-Side Privacy</span>
+        <span style="background: rgba(255,255,255,0.12); padding: 6px 14px; border-radius: 8px;">📅 Name &amp; Date Stamp Ready</span>
+        <span style="background: rgba(255,255,255,0.12); padding: 6px 14px; border-radius: 8px;">⚡ Instant 20-50 KB Output</span>
+      </div>
+    </section>
+
+    <!-- 2-COLUMN INTERACTIVE RESIZER WORKSPACE -->
+    <div class="resizer-grid">
+      
+      <!-- LEFT COLUMN: PHOTO WORKSPACE -->
+      <div class="tool-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">
+          <h2 style="font-size: 1.25rem; color: var(--color-primary); margin: 0;">
+            📸 फोटो एडिटर एवं क्रॉप कैनवस
+          </h2>
+          <span style="font-size: 0.85rem; color: #059669; font-weight: 700;">🟢 Live Cropper Ready</span>
+        </div>
+
+        <!-- Initial Upload Area -->
+        <div class="upload-zone" id="uploadArea">
+          <div style="font-size: 3rem; margin-bottom: 12px;">🖼️</div>
+          <div style="font-size: 1.2rem; font-weight: 700; color: var(--color-primary); margin-bottom: 6px;">
+            अपनी पासपोर्ट फोटो यहाँ चुनें या ड्रैग करें
+          </div>
+          <div style="font-size: 0.9rem; color: var(--color-text-muted);">
+            सपोर्टेड फॉर्मेट्स: JPG, JPEG, PNG, WebP (Max 15 MB)
+          </div>
+          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" style="display: none;" />
+        </div>
+
+        <!-- Cropper Workspace Container -->
+        <div class="crop-workspace" id="workspace">
+          <img id="image" src="" alt="Passport Photo Workspace" />
+        </div>
+
+        <!-- Rotation & Quick Adjustments -->
+        <div id="crop-actions-bar" style="display: none; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn--outline" id="btnRotateLeft" style="padding: 6px 12px; font-size: 0.85rem;">🔄 90° बाएँ (Left)</button>
+            <button type="button" class="btn btn--outline" id="btnRotateRight" style="padding: 6px 12px; font-size: 0.85rem;">🔄 90° दाएँ (Right)</button>
+            <button type="button" class="btn btn--outline" id="btnFlipH" style="padding: 6px 12px; font-size: 0.85rem;">↔️ फ्लिप (Flip)</button>
+          </div>
+          <button type="button" class="btn btn--outline" id="btnChangePhoto" style="padding: 6px 12px; font-size: 0.85rem; color: #dc2626; border-color: #fca5a5;">
+            ❌ फोटो बदलें
+          </button>
+        </div>
+
+        <!-- Result Section -->
+        <div class="result-card" id="resultSection">
+          <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.2rem;">
+            🎉 आपकी पासपोर्ट फोटो तैयार है!
+          </h3>
+          <img id="resultImage" class="preview-final" alt="Final Processed Passport Photo" />
+          <div style="display: flex; justify-content: center; gap: 16px; margin: 16px 0; flex-wrap: wrap;">
+            <span class="stat-badge" id="finalSize" style="background: #059669; color: #ffffff;">-- KB</span>
+            <span class="stat-badge" id="finalDims" style="background: rgba(37,99,235,0.12); color: #2563eb;">-- x -- px</span>
+          </div>
+          <a id="downloadBtn" class="btn btn--primary" download="sarkarisewa_passport_photo.jpg" style="display: inline-flex; width: 100%; justify-content: center; padding: 13px; font-size: 1.05rem; font-weight: 700; text-decoration: none;">
+            ⬇️ डाउनलोड करें (Download Photo)
+          </a>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: CONTROLS & PRESETS -->
+      <div class="tool-panel" id="controlsSection" style="opacity: 0.5; pointer-events: none;">
+        <h3 style="margin-top: 0; color: var(--color-primary); font-size: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 10px;">
+          ⚙️ परीक्षा सेटिंग्स एवं स्टैम्प
+        </h3>
+
+        <!-- Exam Presets -->
+        <div class="form-group">
+          <label>🎯 परीक्षा प्रीसेट चुनें (Exam Presets):</label>
+          <div class="preset-chips">
+            <button type="button" class="chip active" data-ratio="0.7777" data-w="350" data-h="450">SSC / Railway (3.5x4.5 cm)</button>
+            <button type="button" class="chip" data-ratio="1" data-w="350" data-h="350">UPSC (Square 1:1)</button>
+            <button type="button" class="chip" data-ratio="0.8695" data-w="200" data-h="230">IBPS / Banking (200x230)</button>
+            <button type="button" class="chip" data-ratio="0.75" data-w="300" data-h="400">State PSC / Police</button>
+            <button type="button" class="chip" data-ratio="NaN" data-w="350" data-h="450">Free Crop (कस्टम)</button>
+          </div>
+        </div>
+
+        <!-- Target Size (KB) -->
+        <div class="form-group">
+          <label for="targetKb">📦 लक्ष्य फ़ाइल साइज (Target Max KB):</label>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <input type="number" id="targetKb" class="form-control" value="50" min="10" max="200" style="font-weight: 700; width: 110px;" />
+            <span style="font-size: 0.9rem; color: var(--color-text-muted); font-weight: 600;">KB (मानक: 20-50 KB)</span>
+          </div>
+        </div>
+
+        <!-- Name & Date Stamp Toggle -->
+        <div style="padding: 12px; background: rgba(16, 36, 62, 0.03); border: 1px solid var(--color-border); border-radius: 8px; margin-bottom: 16px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; color: var(--color-primary); margin: 0;">
+            <input type="checkbox" id="addStamp" style="width: 18px; height: 18px; accent-color: var(--color-primary);" />
+            <span>📅 नाम व फोटो दिनांक जोड़ें (Name &amp; DOP Stamp)</span>
+          </label>
+        </div>
+
+        <!-- Stamp Inputs -->
+        <div class="stamp-box" id="stampInputs">
+          <div class="form-group">
+            <label for="stampName">उम्मीदवार का नाम (Candidate Name):</label>
+            <input type="text" id="stampName" class="form-control" placeholder="उदा. RAHUL KUMAR" style="text-transform: uppercase;" />
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="stampDate">फोटो खींचने की तारीख (Date of Photo):</label>
+            <input type="date" id="stampDate" class="form-control" />
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <button type="button" id="processBtn" class="btn btn--primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 1.05rem; font-weight: 700; margin-top: 10px;">
+          ✂️ क्रॉप करें और 20-50KB में कंप्रेस करें
+        </button>
+
+        <div id="loader" style="display: none; text-align: center; margin-top: 12px; font-size: 0.92rem; color: var(--color-primary); font-weight: 700;">
+          ⏳ फोटो कंप्रेस व स्टैम्प प्रोसेसिंग चालू है...
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- OFFICIAL PHOTO RULES & PREVENTION TABLE -->
+    <div class="tool-panel" style="margin-bottom: 32px;">
+      <h3 style="color: var(--color-primary); font-size: 1.3rem; margin-top: 0; margin-bottom: 16px;">
+        📋 सरकारी भर्ती आयोगों के फोटो दिशानिर्देश व रिजेक्शन से बचाव (Rules 2026)
+      </h3>
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+          <thead>
+            <tr style="background: rgba(16, 36, 62, 0.06); border-bottom: 2px solid var(--color-border);">
+              <th style="padding: 12px;">आयोग (Exam Commission)</th>
+              <th style="padding: 12px;">स्वीकार्य आयाम (Dimensions)</th>
+              <th style="padding: 12px;">स्वीकार्य साइज (File Size)</th>
+              <th style="padding: 12px;">विशेष नियम (Special Rules)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 12px; font-weight: 700;">SSC (CGL, CHSL, MTS, GD, CPO)</td>
+              <td style="padding: 12px;">3.5 cm (चौड़ाई) × 4.5 cm (ऊंचाई)</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">20 KB से 50 KB</td>
+              <td style="padding: 12px;">सीधा चेहरा, सफेद बैकग्राउंड, दोनों कान दिखने अनिवार्य</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 12px; font-weight: 700;">UPSC (Civil Services, NDA, CDS, CMS)</td>
+              <td style="padding: 12px;">350 × 350 पिक्सल (1:1 Ratio)</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">20 KB से 300 KB</td>
+              <td style="padding: 12px;">फोटो में 3/4 भाग चेहरा कवर होना चाहिए, 10 दिन से पुरानी न हो</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 12px; font-weight: 700;">Railway RRB (NTPC, Group D, ALP)</td>
+              <td style="padding: 12px;">35 mm × 45 mm (Passport Size)</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">30 KB से 70 KB</td>
+              <td style="padding: 12px;">चश्मा (Spectacles) या टोपी (Cap) पहनकर फोटो न खिंचवाएं</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 12px; font-weight: 700;">IBPS / SBI (PO, Clerk, SO)</td>
+              <td style="padding: 12px;">200 × 230 पिक्सल (4.5 × 3.5 cm)</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">20 KB से 50 KB</td>
+              <td style="padding: 12px;">हल्का या सफेद बैकग्राउंड, लाल आंखें (Red-eye) न हों</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; font-weight: 700;">NTA (NEET, JEE Main, CUET)</td>
+              <td style="padding: 12px;">Passport (10-200 KB) &amp; Postcard (4x6)</td>
+              <td style="padding: 12px; font-weight: 700; color: #059669;">10 KB से 200 KB</td>
+              <td style="padding: 12px;">नाम व फोटो खींचने की तारीख (DOP) नीचे सफेद पट्टी पर अनिवार्य</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 6 PROBLEM SOLVERS -->
+    <div class="tool-panel" style="margin-bottom: 32px;">
+      <h3 style="color: var(--color-primary); font-size: 1.3rem; margin-top: 0; margin-bottom: 16px;">
+        🛠️ फोटो रिजेक्शन से बचाव: 6 प्रमुख समस्याएं व समाधान (Problem Solvers)
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">1. 'Date of Photo (DOP)' स्टैम्प कैसे जोड़ें?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">हमारे टूल में <strong>'नाम व फोटो दिनांक जोड़ें'</strong> बॉक्स पर टिक करें। अपना नाम और आज की तारीख डालें, हमारा टूल फोटो के नीचे मानक सफेद पट्टी में नाम-तारीख जोड़ देता है।</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">2. क्या चश्मा (Spectacles) पहनकर फोटो खिंचवा सकते हैं?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">नहीं! SSC, UPSC और रेलवे के नए नियमों के अनुसार चश्मा, काला चश्मा, टोपी, मफलर या मास्क पहनकर ली गई तस्वीरें फॉर्म रिजेक्ट करवा देती हैं। हमेशा बिना चश्मे की फोटो अपलोड करें।</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">3. बैकग्राउंड कैसा होना चाहिए?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">बैकग्राउंड हमेशा एक समान सफेद (Solid White) या हल्का नीला/ग्रे होना चाहिए। पीछे पेड़, दीवार का डिज़ाइन या अन्य व्यक्ति नहीं दिखने चाहिए।</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">4. फोटो 20 KB से कम या 50 KB से ज्यादा क्यों नहीं होनी चाहिए?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">भर्ती पोर्टलों के सर्वर सख्त सीमा लागू करते हैं। 20KB से कम फोटो धुंधली हो जाती है और 50KB से ज्यादा अपलोड ही नहीं होती। हमारा टूल हमेशा 20-50 KB के सुरक्षित ब्रैकेट में कंप्रेस करता है।</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">5. क्या मोबाइल सेल्फी अपलोड कर सकते हैं?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">सेल्फी से बचना चाहिए क्योंकि सेल्फी में कैमरा पास होने से चेहरे का अनुपात बिगड़ जाता है। किसी मित्र या परिवार के सदस्य से सीधे सामने से फोटो खिंचवाएं।</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(37,99,235,0.02);">
+          <h4 style="margin: 0 0 6px 0; color: var(--color-primary);">6. क्या मेरी फोटो किसी सर्वर पर सेव होती है?</h4>
+          <p style="margin: 0; font-size: 0.9rem; color: var(--color-text); line-height: 1.6;">बिल्कुल नहीं! आपकी फोटो 100% आपके अपने ब्राउज़र में प्रोसेस होती है और तुरंत डिलीट हो जाती है। कोई भी डेटा सर्वर पर स्टोर नहीं किया जाता।</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- USEFUL TOOLS & RELATED SERVICES -->
+    <div style="margin-top: 36px; padding: 24px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px;">
+      <h3 style="margin-top: 0; color: var(--color-primary);">🛠️ उपयोगी टूल्स एवं संबंधित सुविधाएं</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
+        <a href="../tools/signature-resizer.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: inherit; background: var(--color-surface-alt, #f8fafc); display: block;">
+          <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">✍️ Signature Resizer (10-20 KB)</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">हस्ताक्षर क्रॉप व साइज रिसाइजर</div>
+        </a>
+        <a href="../tools/document-compressor.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: inherit; background: var(--color-surface-alt, #f8fafc); display: block;">
+          <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">📄 Document Compressor (100KB)</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">मार्कशीट व सर्टिफिकेट कंप्रेसर</div>
+        </a>
+        <a href="../tools/typing-speed-test.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: inherit; background: var(--color-surface-alt, #f8fafc); display: block;">
+          <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">⌨️ Typing Speed Test (DEST)</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">सरकारी क्लर्क व स्टेनो टाइपिंग टेस्ट</div>
+        </a>
+        <a href="../tools/status-troubleshooter.html" style="padding: 14px; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: inherit; background: var(--color-surface-alt, #f8fafc); display: block;">
+          <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">🔍 Status Troubleshooter</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">अटके व रिजेक्ट फॉर्म का समाधान</div>
+        </a>
+      </div>
+    </div>
+
+  
+    <!-- FAQ SECTION -->
+    <section class="faq-section" style="margin: 36px 0;">
+      <h2 style="font-size: 1.5rem; color: var(--color-primary); margin-bottom: 18px; display: flex; align-items: center; gap: 8px;">
+        <span>💡</span> अक्सर पूछे जाने वाले महत्वपूर्ण सवाल (FAQs)
+      </h2>
+      <div class="faq-accordion-list">
+
+        <details class="faq-item" style="margin-bottom: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 1.02rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>❓ SSC और UPSC फॉर्म के लिए फोटो का मानक साइज क्या है?</span>
+          </summary>
+          <div class="faq-answer" style="margin-top: 10px; color: var(--color-text); line-height: 1.6; font-size: 0.95rem; border-top: 1px dashed var(--color-border); padding-top: 10px;">
+            SSC और रेलवे के लिए फोटो का साइज 20KB से 50KB तथा 3.5×4.5 cm होना चाहिए। UPSC के लिए 20KB से 300KB (1:1 Ratio) स्वीकार्य है।
+          </div>
+        </details>
+        <details class="faq-item" style="margin-bottom: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 1.02rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>❓ फोटो पर नाम और तारीख (DOP) स्टैम्प कैसे लगाएं?</span>
+          </summary>
+          <div class="faq-answer" style="margin-top: 10px; color: var(--color-text); line-height: 1.6; font-size: 0.95rem; border-top: 1px dashed var(--color-border); padding-top: 10px;">
+            टूल में 'नाम व फोटो दिनांक जोड़ें' चेकबॉक्स पर टिक करें, अपना नाम और तारीख दर्ज करें। टूल फोटो के नीचे सफेद पट्टी में स्वचालित स्टैम्प जोड़ देगा।
+          </div>
+        </details>
+        <details class="faq-item" style="margin-bottom: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 1.02rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>❓ क्या चश्मा या टोपी पहनकर फोटो अपलोड कर सकते हैं?</span>
+          </summary>
+          <div class="faq-answer" style="margin-top: 10px; color: var(--color-text); line-height: 1.6; font-size: 0.95rem; border-top: 1px dashed var(--color-border); padding-top: 10px;">
+            नहीं, SSC और UPSC के नए नियमों के अनुसार चश्मा, काला चश्मा, टोपी या मास्क वाली तस्वीरें तत्काल रिजेक्ट कर दी जाती हैं।
+          </div>
+        </details>
+        <details class="faq-item" style="margin-bottom: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 1.02rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>❓ फोटो का बैकग्राउंड कैसा होना चाहिए?</span>
+          </summary>
+          <div class="faq-answer" style="margin-top: 10px; color: var(--color-text); line-height: 1.6; font-size: 0.95rem; border-top: 1px dashed var(--color-border); padding-top: 10px;">
+            सरकारी फॉर्म के लिए हमेशा हल्का या सफेद (Solid White / Light Blue) बैकग्राउंड होना अनिवार्य है।
+          </div>
+        </details>
+        <details class="faq-item" style="margin-bottom: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 1.02rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>❓ क्या मोबाइल से ली गई सेल्फी अपलोड कर सकते हैं?</span>
+          </summary>
+          <div class="faq-answer" style="margin-top: 10px; color: var(--color-text); line-height: 1.6; font-size: 0.95rem; border-top: 1px dashed var(--color-border); padding-top: 10px;">
+            सेल्फी से बचना चाहिए क्योंकि कैमरे की नजदीकी से चेहरे का अनुपात बदल जाता है। सीधे सामने से खींची गई फोटो ही उपयोग करें।
+          </div>
+        </details>
+        <details class="faq-item" style="margin-bottom: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 1.02rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>❓ फोटो 20KB से कम होने पर क्या समस्या आती है?</span>
+          </summary>
+          <div class="faq-answer" style="margin-top: 10px; color: var(--color-text); line-height: 1.6; font-size: 0.95rem; border-top: 1px dashed var(--color-border); padding-top: 10px;">
+            20KB से कम फोटो बहुत ज्यादा कंप्रेस होने के कारण धुंधली (Blurry) हो जाती है और एडमिट कार्ड पर पहचान में नहीं आती।
+          </div>
+        </details>
+        <details class="faq-item" style="margin-bottom: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 1.02rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>❓ क्या फोटो रिसाइज करने पर क्वालिटी खराब होगी?</span>
+          </summary>
+          <div class="faq-answer" style="margin-top: 10px; color: var(--color-text); line-height: 1.6; font-size: 0.95rem; border-top: 1px dashed var(--color-border); padding-top: 10px;">
+            हमारा टूल स्मार्ट बाइनरी सर्च एल्गोरिदम का उपयोग करता है जो शार्पनेस और क्लेरिटी बनाए रखते हुए सटीक लक्ष्य साइज प्रदान करता है।
+          </div>
+        </details>
+        <details class="faq-item" style="margin-bottom: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 1.02rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>❓ क्या यह टूल बैंकिंग (IBPS / SBI) परीक्षाओं के लिए उपयुक्त है?</span>
+          </summary>
+          <div class="faq-answer" style="margin-top: 10px; color: var(--color-text); line-height: 1.6; font-size: 0.95rem; border-top: 1px dashed var(--color-border); padding-top: 10px;">
+            हाँ, इसमें IBPS (200×230 पिक्सल) और स्टेट PSCs के लिए विशेष प्रीसेट्स उपलब्ध हैं।
+          </div>
+        </details>
+        <details class="faq-item" style="margin-bottom: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 1.02rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>❓ क्या मैं फोटो को 90 डिग्री घुमा या फ्लिप कर सकता हूँ?</span>
+          </summary>
+          <div class="faq-answer" style="margin-top: 10px; color: var(--color-text); line-height: 1.6; font-size: 0.95rem; border-top: 1px dashed var(--color-border); padding-top: 10px;">
+            हाँ, टूल में लाइव 90° रोटेशन और हॉरिजॉन्टल फ्लिप के बटन उपलब्ध हैं।
+          </div>
+        </details>
+        <details class="faq-item" style="margin-bottom: 12px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+          <summary style="font-weight: 700; cursor: pointer; color: var(--color-primary); font-size: 1.02rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>❓ क्या मेरी फोटो आपके सर्वर पर अपलोड होती है?</span>
+          </summary>
+          <div class="faq-answer" style="margin-top: 10px; color: var(--color-text); line-height: 1.6; font-size: 0.95rem; border-top: 1px dashed var(--color-border); padding-top: 10px;">
+            बिल्कुल नहीं! फोटो 100% आपके डिवाइस पर प्रोसेस होती है और डाउनलोड के बाद स्वतः समाप्त हो जाती है।
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer">
+    <footer class="site-footer">
+      <div class="tricolor-rule"></div>
+      <div class="container" style="padding-top:36px;">
+        <div class="footer-disclaimer-banner" style="background-color: var(--color-surface-alt, #f8fafc); border: 1px solid var(--color-border); padding: 16px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid #ef4444;">
+          <h4 style="margin: 0 0 8px 0; font-size: 16px; color: var(--color-text);">⚠️ Non-Affiliation Disclaimer (अस्वीकरण)</h4>
+          <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted);">SarkariSewa India is an independent private information portal. <strong>We are NOT associated with the Government of India or any State Government.</strong> This website is for informational purposes only. We never ask for money or process official applications.</p>
+        </div>
+        <div class="footer-grid">
+          <div>
+            <h4 data-i18n="site_name">SarkariSewa India</h4>
+            <p data-i18n="footer_about">SarkariSewa India is an independent information guide to Indian government services. We are not a government website and do not process applications.</p>
+          </div>
+          <div>
+            <h4 data-i18n="footer_tools_title">Tools &amp; Apps</h4>
+            <ul>
+              <li><a href="../index.html">🧮 Tools &amp; Calculators</a></li>
+              <li><a data-i18n="nav_eligibility_engine" href="eligibility-checker.html">🎯 Scheme Eligibility Engine</a></li>
+              <li><a href="document-checklist.html">📋 Document Checklist</a></li>
+              <li><a href="self-declaration-builder.html">📝 Self-Declaration Builder</a></li>
+              <li><a href="photo-resizer.html">📸 Govt Exam Photo Resizer</a></li>
+              <li><a href="signature-resizer.html">✍️ Signature Resizer</a></li>
+              <li><a href="document-compressor.html">📄 Document Compressor</a></li>
+              <li><a href="savings-comparator.html">📊 Savings Scheme Comparator</a></li>
+              <li><a href="govt-card-clarifier.html">💳 Govt Card Clarifier</a></li>
+              <li><a href="pan-aadhaar-conflict-resolver.html">🔗 PAN-Aadhaar Resolver</a></li>
+              <li><a href="status-troubleshooter.html">🔍 Status Troubleshooter</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="footer_resources_title">Resources</h4>
+            <ul>
+              <li><a data-i18n="nav_project_report" href="../project-report/index.html">Project Report Generator</a></li>
+              <li><a data-i18n="states_hub_title" href="../states/index.html">State-wise Popular Services</a></li>
+              <li><a data-i18n="footer_about_link" href="../about.html">About</a></li>
+              <li><a data-i18n="footer_sitemap_link" href="../sitemap.html">Sitemap</a></li>
+              <li><a data-i18n="footer_faq_link" href="../faq.html">FAQ</a></li>
+              <li><a data-i18n="footer_contact_link" href="../contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="footer_support_title">Support</h4>
+            <ul>
+              <li><a data-i18n="footer_support_home_link" href="../support/index.html">Support Home</a></li>
+              <li><a data-i18n="footer_state_link" href="../support/state-wise-services.html">State-wise Services</a></li>
+              <li><a data-i18n="footer_helpline_link" href="../support/helpline-directory.html">Helpline Directory</a></li>
+              <li><a data-i18n="footer_rti_link" href="../support/rti-guide.html">RTI Guide</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="footer_legal_title">Legal</h4>
+            <ul>
+              <li><a data-i18n="privacy_title" href="../privacy-policy.html">Privacy Policy</a></li>
+              <li><a data-i18n="disclaimer_title" href="../disclaimer.html">Disclaimer</a></li>
+              <li><a data-i18n="terms_title" href="../terms.html">Terms &amp; Conditions</a></li>
+              <li><a data-i18n="admin_link" href="../admin/login.html">Staff Login</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© <span id="footer-year"></span> SarkariSewa India · <span data-i18n="footer_rights">All content is for informational purposes only.</span></span>
+        </div>
+      </div>
+    </footer>
+    <div class="ss-wa-wrapper" id="ss-wa-wrapper">
+      <button aria-label="Close" id="ss-wa-close" onclick="document.getElementById('ss-wa-wrapper').style.display='none'" style="position: absolute; top: -8px; right: -8px; background: #fff; color: #333; border: 1px solid #ddd; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1;">×</button>
+      <a aria-label="Join our Telegram Channel" class="ss-wa-floating-bar" href="https://t.me/sarkarisewaindia" rel="noopener noreferrer" target="_blank">
+        <span style="font-size: 18px; margin-right: 4px;">✈️</span>
+        <span data-i18n="wa_join" style="font-weight: 600;">Join Telegram VIP</span>
+      </a>
+    </div>
+  </div>
+
+  <script defer="" src="../assets/js/main.js?v=2.4"></script>
+  <script defer="" src="../assets/js/consent.js"></script>
+  <script defer="" src="../assets/js/i18n-helper.js"></script>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('fileInput');
+      const workspace = document.getElementById('workspace');
+      const image = document.getElementById('image');
+      const controlsSection = document.getElementById('controlsSection');
+      const cropActionsBar = document.getElementById('crop-actions-bar');
+      const chips = document.querySelectorAll('.chip');
+      const addStampCheckbox = document.getElementById('addStamp');
+      const stampInputs = document.getElementById('stampInputs');
+      const processBtn = document.getElementById('processBtn');
+      const loader = document.getElementById('loader');
+      const resultSection = document.getElementById('resultSection');
+      const resultImage = document.getElementById('resultImage');
+      const finalSize = document.getElementById('finalSize');
+      const finalDims = document.getElementById('finalDims');
+      const downloadBtn = document.getElementById('downloadBtn');
+      
+      let cropper = null;
+      let targetRatio = 0.7777; // default 3.5x4.5
+
+      uploadArea.addEventListener('click', () => fileInput.click());
+      
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+      
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+      });
+      
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+          handleFile(e.dataTransfer.files[0]);
+        }
+      });
+      
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+          handleFile(e.target.files[0]);
+        }
+      });
+
+      function handleFile(file) {
+        if (!file.type.startsWith('image/')) {
+          alert('कृपया वैध फोटो फ़ाइल (JPG, PNG) चुनें।');
+          return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          image.src = e.target.result;
+          uploadArea.style.display = 'none';
+          workspace.style.display = 'block';
+          cropActionsBar.style.display = 'flex';
+          controlsSection.style.opacity = '1';
+          controlsSection.style.pointerEvents = 'auto';
+          resultSection.style.display = 'none';
+          
+          if (cropper) cropper.destroy();
+          initCropper();
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function initCropper() {
+        if (typeof Cropper === 'undefined') {
+          setTimeout(initCropper, 100);
+          return;
+        }
+        cropper = new Cropper(image, {
+          viewMode: 1,
+          aspectRatio: targetRatio,
+          dragMode: 'crop',
+          autoCropArea: 0.85,
+          restore: false,
+          guides: true,
+          center: true,
+          highlight: false,
+          cropBoxMovable: true,
+          cropBoxResizable: true,
+          toggleDragModeOnDblclick: false,
+        });
+      }
+
+      // Rotation & Flip Controls
+      document.getElementById('btnRotateLeft').addEventListener('click', () => {
+        if (cropper) cropper.rotate(-90);
+      });
+      document.getElementById('btnRotateRight').addEventListener('click', () => {
+        if (cropper) cropper.rotate(90);
+      });
+      let flipped = false;
+      document.getElementById('btnFlipH').addEventListener('click', () => {
+        if (cropper) {
+          flipped = !flipped;
+          cropper.scaleX(flipped ? -1 : 1);
+        }
+      });
+      document.getElementById('btnChangePhoto').addEventListener('click', () => {
+        uploadArea.style.display = 'block';
+        workspace.style.display = 'none';
+        cropActionsBar.style.display = 'none';
+        resultSection.style.display = 'none';
+        controlsSection.style.opacity = '0.5';
+        controlsSection.style.pointerEvents = 'none';
+        fileInput.value = '';
+        if (cropper) cropper.destroy();
+      });
+
+      // Handle Preset Chips
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          
+          const ratio = parseFloat(chip.dataset.ratio);
+          targetRatio = isNaN(ratio) ? NaN : ratio;
+          
+          if (cropper) {
+            cropper.setAspectRatio(targetRatio);
+          }
+        });
+      });
+
+      // Handle Stamp Toggle
+      addStampCheckbox.addEventListener('change', (e) => {
+        stampInputs.style.display = e.target.checked ? 'block' : 'none';
+        if (e.target.checked && !document.getElementById('stampDate').value) {
+          document.getElementById('stampDate').valueAsDate = new Date();
+        }
+      });
+
+      // Process & Compress
+      processBtn.addEventListener('click', async () => {
+        if (!cropper) return;
+        
+        processBtn.style.display = 'none';
+        loader.style.display = 'block';
+        
+        setTimeout(async () => {
+          try {
+            let canvas = cropper.getCroppedCanvas({
+              fillColor: '#ffffff',
+              imageSmoothingEnabled: true,
+              imageSmoothingQuality: 'high'
+            });
+            
+            // Add Name & DOP Stamp if selected
+            if (addStampCheckbox.checked) {
+              const name = document.getElementById('stampName').value.trim().toUpperCase();
+              let dateStr = document.getElementById('stampDate').value;
+              if (dateStr) {
+                const parts = dateStr.split('-');
+                dateStr = `DOP: ${parts[2]}/${parts[1]}/${parts[0]}`; // DD/MM/YYYY
+              }
+              
+              if (name || dateStr) {
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width;
+                const h = canvas.height;
+                const stampH = Math.min(h * 0.18, 90); 
+                
+                // Draw clean solid white banner at bottom
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, h - stampH, w, stampH);
+                
+                // Top border for the stamp box
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = Math.max(1, Math.floor(stampH * 0.03));
+                ctx.beginPath();
+                ctx.moveTo(0, h - stampH);
+                ctx.lineTo(w, h - stampH);
+                ctx.stroke();
+
+                ctx.fillStyle = '#000000';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                const fontSize = Math.max(13, Math.floor(stampH * 0.32));
+                ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+                const lineH = fontSize * 1.25;
+                
+                if (name && dateStr) {
+                  ctx.fillText(name, w/2, h - stampH + stampH/2 - lineH/2);
+                  ctx.fillText(dateStr, w/2, h - stampH + stampH/2 + lineH/2);
+                } else {
+                  ctx.fillText(name || dateStr, w/2, h - stampH/2);
+                }
+              }
+            }
+
+            // Cap dimensions to 600px for optimal form size
+            if (canvas.width > 600 || canvas.height > 600) {
+              const scale = 600 / Math.max(canvas.width, canvas.height);
+              const scaledCanvas = document.createElement('canvas');
+              scaledCanvas.width = Math.round(canvas.width * scale);
+              scaledCanvas.height = Math.round(canvas.height * scale);
+              const sctx = scaledCanvas.getContext('2d');
+              sctx.drawImage(canvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+              canvas = scaledCanvas;
+            }
+
+            // Binary Search Compression for Exact Target KB (20-50 KB)
+            const targetKb = parseFloat(document.getElementById('targetKb').value) || 50;
+            const targetBytes = targetKb * 1024;
+            
+            let minQ = 0.1, maxQ = 0.95, currentQ = 0.85, bestBlob = null;
+            for (let i = 0; i < 8; i++) {
+              const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', currentQ));
+              if (blob.size <= targetBytes) {
+                bestBlob = blob;
+                minQ = currentQ;
+                currentQ = (minQ + maxQ) / 2;
+              } else {
+                maxQ = currentQ;
+                currentQ = (minQ + maxQ) / 2;
+              }
+            }
+            
+            if (!bestBlob) {
+              bestBlob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.2));
+            }
+
+            const url = URL.createObjectURL(bestBlob);
+            resultImage.src = url;
+            downloadBtn.href = url;
+            finalSize.textContent = (bestBlob.size / 1024).toFixed(1) + ' KB';
+            finalDims.textContent = `${canvas.width} x ${canvas.height} px`;
+            
+            resultSection.style.display = 'block';
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+          } catch(e) {
+            console.error(e);
+            alert("फोटो प्रोसेसिंग में त्रुटि हुई। कृपया पुनः प्रयास करें।");
+          } finally {
+            loader.style.display = 'none';
+            processBtn.style.display = 'block';
+          }
+        }, 100);
+      });
+    });
+  </script>
+</body>
+</html>

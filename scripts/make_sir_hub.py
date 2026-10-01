@@ -1,0 +1,706 @@
+# -*- coding: utf-8 -*-
+import os
+import sys
+import json
+import re
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SERVICE_DIR = os.path.join(ROOT, 'service')
+
+sys.path.append(os.path.join(ROOT, 'tools'))
+from sir_data_batch1 import BATCH_1
+from sir_data_batch2 import BATCH_2
+from sir_data_batch3 import BATCH_3
+from sir_data_batch4 import BATCH_4
+from sir_data_batch5 import BATCH_5
+
+ALL_STATES = {}
+for b in [BATCH_1, BATCH_2, BATCH_3, BATCH_4, BATCH_5]:
+    ALL_STATES.update(b)
+print(f'Total states available: {len(ALL_STATES)}')
+
+def render_useful_tools_html():
+    return '''    <!-- USEFUL TOOLS SECTION -->
+    <section class="service-section" style="margin-top: 36px;">
+      <h3 style="color: var(--color-primary); font-size: 1.55rem; margin-bottom: 8px;">
+        🛠️ <span data-lang-show="en">Useful Citizen Tools &amp; Utilities</span>
+        <span data-lang-show="hi">उपयोगी नागरिक टूल्स एवं सुविधाएं</span>
+      </h3>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 20px;">
+        <span data-lang-show="en">Use our verified, free citizen tools to check eligibility, track status, generate reports, or find nearest CSC kendras.</span>
+        <span data-lang-show="hi">मतदाता सूची सत्यापन, स्टेटस ट्रैकिंग, दस्तावेज़ चेकलिस्ट व सीएससी केंद्र खोजने के लिए हमारे मुफ़्त टूल्स का उपयोग करें।</span>
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+        <a href="../tools/eligibility-checker.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">🎯</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Scheme Eligibility Checker</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">अपनी उम्र, आय और श्रेणी के आधार पर सरकारी योजनाओं की पात्रता 1 मिनट में जांचें।</p>
+          </div>
+          <div style="font-weight: 700; color: #2563eb; font-size: 0.85rem; margin-top: 12px;">Check Eligibility ↗</div>
+        </a>
+
+        <a href="../tools/document-checklist.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">📋</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Document Checklist Tool</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">वोटर आईडी, आधार, जाति, आय व पैन कार्ड के लिए आवश्यक दस्तावेज़ों की सूची तैयार करें।</p>
+          </div>
+          <div style="font-weight: 700; color: #146B3A; font-size: 0.85rem; margin-top: 12px;">Generate Checklist ↗</div>
+        </a>
+
+        <a href="../tools/status-troubleshooter.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">🔍</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Application Troubleshooter</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">यदि आपका वोटर फॉर्म 6 या 8 पेंडिंग या रिजेक्ट है, तो तुरंत समाधान खोजें।</p>
+          </div>
+          <div style="font-weight: 700; color: #D97F2B; font-size: 0.85rem; margin-top: 12px;">Fix Application Status ↗</div>
+        </a>
+
+        <a href="../tools/csc-locator.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="font-size: 1.8rem; margin-bottom: 8px;">📍</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">CSC / e-Seva Kendra Locator</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">अपने पिनकोड या ज़िले में निकटतम अधिकृत जन सेवा केंद्र / आपले सरकार केंद्र खोजें।</p>
+          </div>
+          <div style="font-weight: 700; color: #7c3aed; font-size: 0.85rem; margin-top: 12px;">Find Nearest Center ↗</div>
+        </a>
+      </div>
+    </section>'''
+
+def render_30_states_grid_html():
+    cards = []
+    for slug, data in sorted(ALL_STATES.items(), key=lambda x: x[1]['state_en']):
+        state_en = data['state_en']
+        state_hi = data['state_hi']
+        total_ac = data['total_ac']
+        total_dist = data['total_districts']
+        ceo_url = data['ceo_url']
+        state_page_link = f"../states/{slug}.html"
+        
+        cards.append(f'''        <div class="state-card-box" data-name="{state_en.lower()} {state_hi}" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+              <span style="font-size: 1.8rem;">🇮🇳</span>
+              <span style="background: var(--color-surface-alt); border: 1px solid var(--color-border); color: var(--color-text); font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 20px;">
+                {total_dist} Districts
+              </span>
+            </div>
+            <h3 style="margin: 0 0 6px 0; font-size: 1.25rem; color: var(--color-primary); font-weight: 700;">
+              {state_en}
+            </h3>
+            <div style="font-size: 0.95rem; color: var(--color-text-muted); margin-bottom: 12px;">
+              {state_hi} ({total_ac} Assembly Constituencies)
+            </div>
+          </div>
+          
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px;">
+            <a href="{state_page_link}" class="btn btn--primary" style="text-align: center; justify-content: center; text-decoration: none; padding: 10px 14px; font-size: 0.9rem; font-weight: 700; border-radius: 8px;">
+              📋 <span data-lang-show="en">Check {state_en} List ↗</span><span data-lang-show="hi">{state_hi} वोटर लिस्ट देखें ↗</span>
+            </a>
+            <a href="{ceo_url}" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 0.82rem; color: var(--color-text-muted); text-decoration: none; font-weight: 600; padding: 4px;">
+              <span>🌐 Official CEO Portal</span>
+              <span style="font-size: 0.9rem;">↗</span>
+            </a>
+          </div>
+        </div>''')
+    
+    grid_inner = "\\n".join(cards)
+    
+    return f'''    <!-- 30 STATES INTERACTIVE DIRECTORY & SEARCH -->
+    <section style="margin: 40px 0; background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: 16px; padding: 28px 22px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px;">
+        <div>
+          <span style="background: var(--color-brand); color: #ffffff; padding: 4px 12px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.5px;">
+            🗺️ ALL-INDIA DIRECTORY (30 STATES &amp; UTS)
+          </span>
+          <h2 style="color: var(--color-primary); font-size: 1.7rem; margin: 10px 0 4px 0;">
+            <span data-lang-show="en">Select Your State for Special Intensive Revision (SIR) 2026</span>
+            <span data-lang-show="hi">अपने राज्य की सघन पुनरीक्षण (SIR) 2026 मतदाता सूची चुनें</span>
+          </h2>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; margin: 0;">
+            भारत के सभी 30 राज्यों व केंद्र शासित प्रदेशों की आधिकारिक CEO लिंक, विधानसभा क्षेत्रवार सूची एवं ज़िला गाइड।
+          </p>
+        </div>
+        
+        <!-- Live State Search Input -->
+        <div style="min-width: 280px; max-width: 380px; width: 100%;">
+          <input type="text" id="stateSearchInput" onkeyup="filterStates()" placeholder="🔍 Search State (e.g. Maharashtra, UP, Bihar)..." style="width: 100%; padding: 12px 16px; border: 1.5px solid var(--color-border); border-radius: 10px; font-size: 0.95rem; background: var(--color-surface); color: var(--color-text); outline: none;" />
+        </div>
+      </div>
+
+      <div id="stateCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 18px;">
+{grid_inner}
+      </div>
+      
+      <div id="noStateFound" style="display: none; text-align: center; padding: 40px 20px; color: var(--color-text-muted);">
+        <div style="font-size: 2.2rem; margin-bottom: 8px;">🔍</div>
+        <p style="font-size: 1.1rem; font-weight: 600;">कोई राज्य नहीं मिला (No matching state found)</p>
+        <p style="font-size: 0.9rem;">कृपया सही स्पेलिंग जांचें या राष्ट्रीय मतदाता सेवा पोर्टल <a href="https://voters.eci.gov.in" target="_blank" style="color: var(--color-link); font-weight: 700;">voters.eci.gov.in</a> पर सीधे खोजें।</p>
+      </div>
+
+      <script>
+        function filterStates() {{
+          var input = document.getElementById('stateSearchInput');
+          var filter = input.value.toLowerCase().trim();
+          var grid = document.getElementById('stateCardsGrid');
+          var cards = grid.getElementsByClassName('state-card-box');
+          var foundCount = 0;
+          
+          for (var i = 0; i < cards.length; i++) {{
+            var name = cards[i].getAttribute('data-name');
+            if (name.indexOf(filter) > -1) {{
+              cards[i].style.display = 'flex';
+              foundCount++;
+            }} else {{
+              cards[i].style.display = 'none';
+            }}
+          }}
+          
+          var noMsg = document.getElementById('noStateFound');
+          if (foundCount === 0) {{
+            noMsg.style.display = 'block';
+          }} else {{
+            noMsg.style.display = 'none';
+          }}
+        }}
+      </script>
+    </section>'''
+
+def render_faq_html(faqs):
+    faq_cards = []
+    for i, f in enumerate(faqs):
+        is_open = "open" if i == 0 else ""
+        faq_cards.append(f'''      <details class="faq-item" {is_open} style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
+        <summary class="faq-item__q" style="padding: 16px 20px; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1.05rem;">
+          <span>{f['q']}</span>
+          <span style="font-size: 1.2rem;">▾</span>
+        </summary>
+        <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
+          {f['a']}
+        </div>
+      </details>''')
+    return "\\n".join(faq_cards)
+
+def render_master_sir_page():
+    faqs = [
+        {"q": "विशेष सघन पुनरीक्षण (Special Intensive Revision - SIR) 2026 क्या है?", "a": "भारत निर्वाचन आयोग (ECI) द्वारा पूरे देश में मतदाता सूचियों (Electoral Rolls) को शुद्ध, त्रुटिरहित और 100% अपडेट करने के लिए चलाया जाने वाला सघन राष्ट्रव्यापी अभियान है। इसके तहत बूथ लेवल ऑफिसर (BLO) घर-घर जाकर मौजूदा मतदाताओं का भौतिक सत्यापन करते हैं, मृत/स्थलांतरित मतदाताओं के नाम हटाते हैं और 18 वर्ष पूर्ण कर चुके नए युवाओं का नाम जोड़ते हैं।"},
+        {"q": "क्या SIR अभियान के दौरान ऑनलाइन सत्यापन करना ज़रूरी है?", "a": "हाँ, यदि आप घर पर नहीं मिल पाते हैं या अपने नाम की तुरंत पुष्टि करना चाहते हैं, तो <code>voters.eci.gov.in</code> पर जाकर अपने EPIC नंबर से ऑनलाइन सत्यापन कर सकते हैं। ऑनलाइन फॉर्म सबमिट करने के बाद बीएलओ आपके विवरण का फील्ड सत्यापन करता है।"},
+        {"q": "नए मतदाता का नाम जोड़ने के लिए कौन सा फॉर्म भरना होता है?", "a": "18 वर्ष या उससे अधिक आयु के सभी भारतीय नागरिक <strong>Form 6</strong> भरकर नया मतदाता पहचान पत्र (EPIC) प्राप्त कर सकते हैं। इसे आप ECI पोर्टल या Voter Helpline App से 100% ऑनलाइन भर सकते हैं।"},
+        {"q": "वोटर कार्ड में नाम, पता या फोटो में सुधार के लिए कौन सा फॉर्म है?", "a": "मतदाता सूची में किसी भी प्रकार के सुधार (Correction of Entries), पते में परिवर्तन (Shifting of Residence) या नया प्लास्टिक वोटर कार्ड मंगाने (Replacement EPIC) के लिए <strong>Form 8</strong> भरा जाता है।"},
+        {"q": "यदि BLO के घर आने के समय दरवाजा बंद हो या कोई न मिले तो क्या नाम कट जाएगा?", "a": "बीएलओ नियमानुसार कम से कम 3 बार घर का दौरा करता है। यदि फिर भी संपर्क न हो तो नोटिस जारी किया जाता है। किसी भी अनहोनी से बचने के लिए आप स्वयं <code>voters.eci.gov.in</code> पर स्टेटस जांचें या <strong>1950</strong> हेल्पलाइन पर कॉल करें।"},
+        {"q": "डिजिटल वोटर आईडी कार्ड (e-EPIC) पीडीएफ में कैसे डाउनलोड करें?", "a": "यदि आपका मोबाइल नंबर वोटर लिस्ट में लिंक्ड है, तो <code>voters.eci.gov.in</code> पर जाकर 'Download e-EPIC' पर क्लिक करें। अपने EPIC नंबर और OTP से मात्र 30 सेकंड में वैध डिजिटल वोटर आईडी डाउनलोड करें।"},
+        {"q": "प्रारूप मतदाता सूची (Draft Electoral Roll) और अंतिम सूची (Final Roll) में क्या अंतर है?", "a": "सत्यापन के बाद प्रारंभिक सूची 'Draft Roll' के रूप में प्रकाशित होती है, जिस पर नागरिक 30 दिनों तक दावे व आपत्तियां (Claims & Objections) दर्ज कर सकते हैं। इन सभी का निस्तारण करने के बाद अंतिम एवं सर्वमान्य 'Final Electoral Roll' जारी होती है।"},
+        {"q": "क्या आधार कार्ड को वोटर आईडी से लिंक करना (Form 6B) अनिवार्य है?", "a": "आधार कार्ड को वोटर आईडी से जोड़ना स्वैच्छिक (Voluntary) है। आधार नंबर न देने पर किसी का नाम मतदाता सूची से काटा नहीं जा सकता। लेकिन पहचान प्रमाणीकरण व दोहरे नामों को रोकने के लिए ECI द्वारा Form 6B भरने की सलाह दी जाती है।"},
+        {"q": "प्रवासी भारतीय (NRI) मतदाता के रूप में पंजीकरण कैसे करें?", "a": "विदेश में रहने वाले भारतीय नागरिक जिनके पास वैध भारतीय पासपोर्ट है, वे <strong>Form 6A</strong> के माध्यम से अपने गृह विधानसभा क्षेत्र में प्रवासी मतदाता के रूप में पंजीकरण करा सकते हैं।"},
+        {"q": "मतदाता सूची से जुड़ी किसी भी समस्या के लिए आधिकारिक हेल्पलाइन क्या है?", "a": "भारत निर्वाचन आयोग का राष्ट्रीय टोल-फ्री नंबर <strong>1950</strong> है। इसके अलावा प्रत्येक राज्य के मुख्य निर्वाचन अधिकारी (CEO) कार्यालय का स्थानीय हेल्पलाइन नंबर भी सक्रिय रहता है।"}
+    ]
+
+    faq_html = render_faq_html(faqs)
+    states_grid_html = render_30_states_grid_html()
+    tools_html = render_useful_tools_html()
+
+    return f'''<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="canonical" href="https://sarkarisewaindia.com/service/special-intensive-revision-sir.html" />
+  <meta name="description" content="Special Intensive Revision (SIR) 2026: Official ECI guide for voter list verification, BLO door-to-door enumeration, Form 6/7/8 apply online &amp; 30 state voter roll portals." />
+  <meta property="og:title" content="Special Intensive Revision (SIR) 2026: Voter List Verification &amp; 30 State Hub" />
+  <meta property="og:description" content="ECI Special Intensive Revision (SIR) 2026: Complete nationwide voter list verification guide, Form 6/8 apply, and 30 state direct directory." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://sarkarisewaindia.com/service/special-intensive-revision-sir.html" />
+  <meta property="og:image" content="https://sarkarisewaindia.com/assets/img/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Special Intensive Revision (SIR) 2026: National Voter Verification Hub" />
+  <meta name="twitter:description" content="ECI SIR 2026: Voter list verification, BLO enumeration, Form 6/7/8 &amp; 30 state portals." />
+  <title>Special Intensive Revision (SIR) 2026: Voter List Verification &amp; 30 State Hub</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/module2.css" />
+  <link rel="stylesheet" href="../assets/css/module7.css" />
+  <link rel="stylesheet" href="../assets/css/module15.css" />
+  <link rel="stylesheet" href="../assets/css/module16.css" />
+  <link rel="stylesheet" href="../assets/css/share-widget.css" />
+
+  <script type="application/ld+json" id="service-schema">
+  {{{{
+    "@context": "https://schema.org",
+    "@graph": [
+      {{{{
+        "@type": "GovernmentService",
+        "name": "Special Intensive Revision (SIR) 2026 — National Voter List Verification",
+        "alternateName": "विशेष सघन पुनरीक्षण (SIR) 2026 — भारत निर्वाचन आयोग",
+        "description": "Official nationwide voter list verification, door-to-door enumeration by BLOs, and online voter services under the Election Commission of India across 30 states and union territories.",
+        "url": "https://sarkarisewaindia.com/service/special-intensive-revision-sir.html",
+        "serviceType": "National Electoral Roll Verification and Citizen Registration",
+        "provider": {{{{
+          "@type": "GovernmentOrganization",
+          "name": "Election Commission of India (ECI)",
+          "sameAs": ["https://eci.gov.in", "https://voters.eci.gov.in"]
+        }}}},
+        "areaServed": {{{{
+          "@type": "AdministrativeArea",
+          "name": "India"
+        }}}}
+      }}}},
+      {{{{
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {{{{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://sarkarisewaindia.com/index.html"
+          }}}},
+          {{{{
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Identity Documents",
+            "item": "https://sarkarisewaindia.com/category/identity-documents.html"
+          }}}},
+          {{{{
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Special Intensive Revision (SIR) 2026",
+            "item": "https://sarkarisewaindia.com/service/special-intensive-revision-sir.html"
+          }}}}
+        ]
+      }}}},
+      {{{{
+        "@type": "FAQPage",
+        "mainEntity": [
+          {{{{
+            "@type": "Question",
+            "name": "विशेष सघन पुनरीक्षण (SIR) 2026 क्या है?",
+            "acceptedAnswer": {{{{
+              "@type": "Answer",
+              "text": "भारत निर्वाचन आयोग द्वारा देश भर में मतदाता सूचियों के शुद्धिकरण और बीएलओ द्वारा घर-घर जाकर मतदाताओं के भौतिक सत्यापन का राष्ट्रव्यापी अभियान है।"
+            }}}}
+          }}}},
+          {{{{
+            "@type": "Question",
+            "name": "मतदाता सूची में सुधार के लिए कौन सा फॉर्म भरना होता है?",
+            "acceptedAnswer": {{{{
+              "@type": "Answer",
+              "text": "मतदाता सूची में नाम, पता या फोटो सुधार के लिए Form 8 भरा जाता है, जबकि नए नाम के लिए Form 6 भरा जाता है।"
+            }}}}
+          }}}}
+        ]
+      }}}}
+    ]
+  }}}}
+  </script>
+
+  <style>
+    .stat-badge-box {{{{
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      transition: transform 0.2s;
+    }}}}
+    .stat-badge-box:hover {{{{
+      transform: translateY(-2px);
+    }}}}
+    .prob-box {{{{
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }}}}
+    .form-action-card {{{{
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }}}}
+  </style>
+</head>
+<body data-slug="special-intensive-revision-sir">
+  <script>window.SS_ROOT = "../";</script>
+  <div id="site-header"></div>
+
+  <main class="container" style="padding-top: 20px; padding-bottom: 60px;">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="../category/identity-documents.html">🆔 पहचान दस्तावेज़</a>
+      <span class="sep">/</span>
+      <span class="current">Special Intensive Revision (SIR) Hub</span>
+    </nav>
+
+    <!-- HERO HEADER -->
+    <header class="service-hero" id="service-hero" style="text-align: left; padding: 24px 0 10px 0;">
+      <span class="service-hero__badge" style="background: var(--color-brand); color: #ffffff; padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">
+        🏛️ ECI NATIONWIDE VOTER LIST VERIFICATION (विशेष सघन पुनरीक्षण 2026)
+      </span>
+      <h1 style="font-size: 2.2rem; line-height: 1.3; color: var(--color-primary); margin: 14px 0 12px 0; font-weight: 800;">
+        <span data-lang-show="en">Special Intensive Revision (SIR) 2026: Voter List Verification &amp; 30 State Hub</span>
+        <span data-lang-show="hi">विशेष सघन पुनरीक्षण (SIR) 2026: मतदाता सूची सत्यापन व 30 राज्यों की डायरेक्ट लिस्ट</span>
+      </h1>
+      <p style="font-size: 1.08rem; line-height: 1.7; color: var(--color-text-muted); max-width: 950px; margin: 0 0 20px 0;">
+        <span data-lang-show="en">Official Master Hub for the Election Commission of India (ECI) Special Intensive Revision (SIR) 2026. Verify your name in the draft voter roll, check BLO door-to-door verification guidelines, apply for Form 6/7/8 online, and access state-specific voter portals across all 30 States and UTs.</span>
+        <span data-lang-show="hi">भारत निर्वाचन आयोग (ECI) द्वारा देश भर में मतदाता सूचियों के शुद्धिकरण, नए नामों के पंजीकरण और मृत/स्थान परिवर्तित मतदाताओं के सत्यापन हेतु चलाया जा रहा विशेष राष्ट्रव्यापी अभियान। नीचे दिए गए सर्च बार से अपने राज्य का चयन करें, अपना नाम सर्च करें या सीधे फॉर्म 6/7/8 ऑनलाइन भरें।</span>
+      </p>
+
+      <!-- 1-CLICK ACTION BUTTONS -->
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;">
+        <a href="https://voters.eci.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="font-weight: 700; padding: 12px 20px; font-size: 0.95rem;">
+          🌐 <span data-lang-show="en">ECI Voters Portal (voters.eci.gov.in) ↗</span><span data-lang-show="hi">राष्ट्रीय मतदाता पोर्टल (voters.eci.gov.in) ↗</span>
+        </a>
+        <a href="https://electoralsearch.eci.gov.in/" target="_blank" rel="noopener noreferrer" class="btn" style="background: #146B3A; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          🔍 <span data-lang-show="en">Search Name in Electoral Roll (EPIC) ↗</span><span data-lang-show="hi">वोटर लिस्ट में नाम खोजें (EPIC सर्च) ↗</span>
+        </a>
+        <a href="https://voters.eci.gov.in/form6" target="_blank" rel="noopener noreferrer" class="btn" style="background: #2563eb; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          📝 <span data-lang-show="en">Form 6: New Voter (18+) ↗</span><span data-lang-show="hi">फॉर्म 6: नया वोटर पंजीकरण ↗</span>
+        </a>
+        <a href="https://voters.eci.gov.in/form8" target="_blank" rel="noopener noreferrer" class="btn" style="background: #D97F2B; color: #fff; font-weight: 700; padding: 12px 20px; font-size: 0.95rem; text-decoration: none;">
+          ✏️ <span data-lang-show="en">Form 8: Correction / Shifting ↗</span><span data-lang-show="hi">फॉर्म 8: नाम/पता सुधार ↗</span>
+        </a>
+      </div>
+      <div id="svc-share-row"></div>
+    </header>
+
+    <div class="tricolor-rule" aria-hidden="true"></div>
+
+    <!-- KEY STATS 4-GRID -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 30px 0;">
+      <div class="stat-badge-box" style="border-left: 5px solid #2563eb;">
+        <div style="font-size: 1.8rem;">🗺️</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">COVERAGE</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #2563eb;">All 30 States &amp; UTs</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">सम्पूर्ण भारत में सघन पुनरीक्षण अभियान</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #146B3A;">
+        <div style="font-size: 1.8rem;">📍</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">POLLING BOOTHS</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #146B3A;">~10.5 Lakh Booths</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">समस्त पोलिंग स्टेशनों पर बीएलओ सत्यापन</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #D97F2B;">
+        <div style="font-size: 1.8rem;">🆓</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">GOVT FEE</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #D97F2B;">₹0 (100% Free)</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">सत्यापन व फॉर्म हेतु शून्य सरकारी शुल्क</div>
+      </div>
+
+      <div class="stat-badge-box" style="border-left: 5px solid #7c3aed;">
+        <div style="font-size: 1.8rem;">📞</div>
+        <div style="color: var(--color-text-muted); font-size: 0.85rem; font-weight: 700;">NATIONAL HELPLINE</div>
+        <div style="font-size: 1.6rem; font-weight: 800; color: #7c3aed;">1950 (Toll-Free)</div>
+        <div style="font-size: 0.82rem; color: var(--color-text-muted);">24x7 राष्ट्रीय मतदाता सहायता नंबर</div>
+      </div>
+    </div>
+
+    <!-- 4 CORE VOTER FORMS ACTION MATRIX -->
+    <section style="margin: 36px 0;">
+      <h2 style="color: var(--color-primary); font-size: 1.6rem; margin-bottom: 18px;">
+        📑 <span data-lang-show="en">ECI Voter Service Forms: Choose Your Action</span>
+        <span data-lang-show="hi">निर्वाचन आयोग वोटर फॉर्म्स: अपनी आवश्यकता अनुसार फॉर्म चुनें</span>
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px;">
+        <!-- Form 6 -->
+        <div class="form-action-card" style="border-top: 4px solid #2563eb;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="background: #2563eb; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">FORM 6</span>
+              <span style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 600;">Age 18+</span>
+            </div>
+            <h3 style="margin: 0 0 6px 0; font-size: 1.15rem; color: var(--color-primary);">नया मतदाता पंजीकरण (New Voter)</h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0 0 14px 0;">पहली बार वोटर बनने वाले या 18 वर्ष पूर्ण कर चुके भारतीय नागरिकों के लिए नया वोटर कार्ड आवेदन।</p>
+          </div>
+          <a href="https://voters.eci.gov.in/form6" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="text-align: center; justify-content: center; text-decoration: none; padding: 10px; font-size: 0.88rem; font-weight: 700; border-radius: 6px;">
+            Fill Form 6 Online ↗
+          </a>
+        </div>
+
+        <!-- Form 8 -->
+        <div class="form-action-card" style="border-top: 4px solid #146B3A;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="background: #146B3A; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">FORM 8</span>
+              <span style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 600;">Correction / Shift</span>
+            </div>
+            <h3 style="margin: 0 0 6px 0; font-size: 1.15rem; color: var(--color-primary);">नाम, पता व फोटो में सुधार</h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0 0 14px 0;">वोटर कार्ड में नाम, जन्मतिथि, पता बदलने या नया पीवीसी कार्ड (Replacement) प्राप्त करने के लिए।</p>
+          </div>
+          <a href="https://voters.eci.gov.in/form8" target="_blank" rel="noopener noreferrer" class="btn" style="background: #146B3A; color: #fff; text-align: center; justify-content: center; text-decoration: none; padding: 10px; font-size: 0.88rem; font-weight: 700; border-radius: 6px;">
+            Fill Form 8 Online ↗
+          </a>
+        </div>
+
+        <!-- Form 7 -->
+        <div class="form-action-card" style="border-top: 4px solid #D97F2B;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="background: #D97F2B; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">FORM 7</span>
+              <span style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 600;">Objection / Delete</span>
+            </div>
+            <h3 style="margin: 0 0 6px 0; font-size: 1.15rem; color: var(--color-primary);">नाम विलोपन / आपत्ति (Deletion)</h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0 0 14px 0;">मृतक मतदाताओं या हमेशा के लिए स्थान बदल चुके नागरिकों का नाम मतदाता सूची से हटाने हेतु।</p>
+          </div>
+          <a href="https://voters.eci.gov.in/form7" target="_blank" rel="noopener noreferrer" class="btn" style="background: #D97F2B; color: #fff; text-align: center; justify-content: center; text-decoration: none; padding: 10px; font-size: 0.88rem; font-weight: 700; border-radius: 6px;">
+            Fill Form 7 Online ↗
+          </a>
+        </div>
+
+        <!-- e-EPIC Download -->
+        <div class="form-action-card" style="border-top: 4px solid #7c3aed;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="background: #7c3aed; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">e-EPIC PDF</span>
+              <span style="font-size: 0.82rem; color: var(--color-text-muted); font-weight: 600;">Instant Download</span>
+            </div>
+            <h3 style="margin: 0 0 6px 0; font-size: 1.15rem; color: var(--color-primary);">डिजिटल वोटर कार्ड डाउनलोड</h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0 0 14px 0;">मोबाइल नंबर लिंक्ड होने पर अपने EPIC नंबर से आधिकारिक डिजिटल वोटर आईडी पीडीएफ प्राप्त करें।</p>
+          </div>
+          <a href="https://voters.eci.gov.in" target="_blank" rel="noopener noreferrer" class="btn" style="background: #7c3aed; color: #fff; text-align: center; justify-content: center; text-decoration: none; padding: 10px; font-size: 0.88rem; font-weight: 700; border-radius: 6px;">
+            Download e-EPIC ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+{states_grid_html}
+
+    <!-- 6 REAL-WORLD PROBLEMS & DEEP PROBLEM SOLVERS -->
+    <section class="blog-content" style="line-height: 1.85; font-size: 1.05rem; color: var(--color-text); margin: 40px 0;">
+      <h2 style="color: var(--color-primary); font-size: 1.75rem; margin-bottom: 24px;">
+        💡 <span data-lang-show="en">Top 6 SIR 2026 Verification Issues &amp; 100% Practical Solutions</span>
+        <span data-lang-show="hi">सघन पुनरीक्षण (SIR 2026) से जुड़ी 6 मुख्य समस्याएं व उनका पक्का समाधान</span>
+      </h2>
+
+      <div class="prob-box" style="border-left: 6px solid #2563eb;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">1. बीएलओ सर्वे के दौरान घर पर ताला बंद था, क्या मेरा नाम वोटर लिस्ट से कट जाएगा?</h3>
+        <p>कई नागरिक काम के सिलसिले में दिन में घर पर नहीं होते और बीएलओ का दौरा छूट जाता है।</p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> निर्वाचन आयोग के नियमों के अनुसार बीएलओ कम से कम 3 बार घर का दौरा करता है। यदि दौरा छूट भी जाए, तो तुरंत <code>voters.eci.gov.in</code> पर जाकर 'Search in Electoral Roll' करें। यदि नाम प्रदर्शित हो रहा है, तो आपका नाम सुरक्षित है। यदि कोई विसंगति दिखे तो ऑनलाइन Form 8 भरकर सत्यापन पूरा कर लें।</li>
+        </ul>
+      </div>
+
+      <div class="prob-box" style="border-left: 6px solid #146B3A;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">2. वोटर आईडी कार्ड में नाम की स्पेलिंग, पिता का नाम या जन्मतिथि गलत है—सुधार कैसे करें?</h3>
+        <p>गलत स्पेलिंग के कारण कई बार मतदान केंद्र पर पहचान पत्र को लेकर विवाद हो जाता है।</p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> ECI पोर्टल पर जाकर <strong>Form 8 (Correction of Entries)</strong> का चयन करें। जिस प्रविष्टि में त्रुटि है (जैसे Name या DOB), उसे टिक करें और सही प्रमाण पत्र (10वीं मार्कशीट/आधार कार्ड/पैन कार्ड) अपलोड करें। 15 से 21 दिनों में सुधार होकर नया कार्ड अपडेट हो जाता है।</li>
+        </ul>
+      </div>
+
+      <div class="prob-box" style="border-left: 6px solid #D97F2B;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">3. मैंने हाल ही में अपना मकान/शहर बदला है, नया वोटर कार्ड कैसे बनवाएं?</h3>
+        <p>पुराने पते से नया पता बदलने पर पुराना वोटर कार्ड निरस्त करना और नए क्षेत्र में नाम जोड़ना आवश्यक है।</p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> आपको Form 6 भरने की ज़रूरत नहीं है! <strong>Form 8 में 'Shifting of Residence'</strong> का विकल्प चुनें। इसमें 'Within Assembly Constituency' (उसी विधानसभा में) या 'Outside Assembly Constituency' (दूसरी विधानसभा में) का चयन करें। नया पता प्रमाण अपलोड करते ही आपका नाम पुराने बूथ से कटकर नए बूथ पर शिफ्ट हो जाएगा।</li>
+        </ul>
+      </div>
+
+      <div class="prob-box" style="border-left: 6px solid #7c3aed;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">4. पुराना ब्लैक एंड व्हाइट फोटो या धुंधला फोटो कैसे बदलें?</h3>
+        <p>कई पुराने वोटर कार्ड्स पर फोटो बहुत धुंधला होता है जिससे ई-केवाईसी में परेशानी आती है।</p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> Form 8 में 'Photograph Correction' चुनें और अपना नया पासपोर्ट साइज रंगीन फोटो (सफेद बैकग्राउंड) अपलोड करें। निर्वाचन आयोग द्वारा नया रंगीन एचडी पीवीसी वोटर कार्ड आपके डाक पते पर निःशुल्क भेज दिया जाएगा।</li>
+        </ul>
+      </div>
+
+      <div class="prob-box" style="border-left: 6px solid #059669;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">5. फॉर्म सबमिट करने के बाद हफ्तों तक स्टेटस पेंडिंग क्यों दिखता है?</h3>
+        <p>दस्तावेज़ अस्पष्ट होने या बीएलओ द्वारा फील्ड वेरिफिकेशन रिपोर्ट जमा न करने पर आवेदन रुक सकता है।</p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> अपने रेफरेंस नंबर के साथ <strong>1950</strong> पर कॉल करें और अपने विधानसभा क्षेत्र के ERO (Electoral Registration Officer) कार्यालय से बीएलओ का फोन नंबर प्राप्त करें। बीएलओ से संपर्क करके भौतिक सत्यापन पूरा करवाएं।</li>
+        </ul>
+      </div>
+
+      <div class="prob-box" style="border-left: 6px solid #db2777;">
+        <h3 style="margin-top: 0; color: var(--color-primary);">6. क्या 17+ आयु वाले युवा पहले से फॉर्म 6 भर सकते हैं?</h3>
+        <p>निर्वाचन आयोग ने अब साल में 4 कट-ऑफ तिथियां (1 जनवरी, 1 अप्रैल, 1 जुलाई, 1 अक्टूबर) निर्धारित की हैं।</p>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li><strong>समाधान:</strong> जी हाँ! यदि आपकी आयु 17 वर्ष से अधिक है, तो आप एडवांस में Form 6 सबमिट कर सकते हैं। जैसे ही आप संबंधित तिमाही में 18 वर्ष के होंगे, आपका नाम स्वतः वोटर लिस्ट में जुड़ जाएगा।</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- STEP BY STEP SIR VERIFICATION ROADMAP -->
+    <section style="background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: 16px; padding: 26px; margin: 36px 0;">
+      <h2 style="color: var(--color-primary); font-size: 1.55rem; margin-top: 0;">
+        🚀 SIR 2026: 5-Step Complete Verification &amp; Registration Roadmap
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 18px;">
+        <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border); color: var(--color-text);">
+          <div style="background: #2563eb; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">1</div>
+          <strong style="color: var(--color-primary);">ऑनलाइन सर्च:</strong> <code>voters.eci.gov.in</code> पर जाकर अपना नाम व पोलिंग स्टेशन विवरण जांचें।
+        </div>
+
+        <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border); color: var(--color-text);">
+          <div style="background: #2563eb; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">2</div>
+          <strong style="color: var(--color-primary);">बीएलओ सत्यापन:</strong> बूथ लेवल ऑफिसर (BLO) द्वारा घर-घर आकर भौतिक गणना फॉर्म का मिलान किया जाता है।
+        </div>
+
+        <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border); color: var(--color-text);">
+          <div style="background: #2563eb; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">3</div>
+          <strong style="color: var(--color-primary);">ड्राफ्ट रोल प्रकाशन:</strong> निर्वाचन आयोग द्वारा प्रारूप मतदाता सूची का सार्वजनिक प्रकाशन किया जाता है।
+        </div>
+
+        <div style="background: var(--color-surface); padding: 18px; border-radius: 10px; border: 1px solid var(--color-border); color: var(--color-text);">
+          <div style="background: #2563eb; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px;">4</div>
+          <strong style="color: var(--color-primary);">दावे व आपत्तियां:</strong> छूटे हुए नामों के लिए Form 6 और सुधार के लिए Form 8 दाखिल करें।
+        </div>
+      </div>
+    </section>
+
+    <!-- FREQUENTLY ASKED QUESTIONS SECTION -->
+    <section class="service-section" style="margin-top: 36px;">
+      <h3 style="color: var(--color-primary); font-size: 1.55rem; margin-bottom: 18px;">
+        ❓ <span data-lang-show="en">Frequently Asked Questions (FAQs)</span>
+        <span data-lang-show="hi">अक्सर पूछे जाने वाले सवाल (FAQs)</span>
+      </h3>
+{faq_html}
+    </section>
+
+{tools_html}
+
+    <!-- OFFICIAL VERIFIED PORTAL LINKS -->
+    <section class="service-section" style="background: linear-gradient(135deg, #1e1e38, #2a2a52); color: #ffffff; border-radius: 16px; padding: 28px 24px; margin: 36px 0; box-shadow: 0 8px 24px rgba(0,0,0,0.12);">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 14px;">
+        <span style="font-size: 2.2rem;">🏛️</span>
+        <div>
+          <h2 style="margin: 0; font-size: 1.35rem; color: #ffffff; font-weight: 700;">निर्वाचन आयोग आधिकारिक पोर्टल लिंक (Official Links)</h2>
+          <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 0.92rem;">Election Commission of India (ECI) National Voter Services</p>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 20px;">
+        <a href="https://voters.eci.gov.in/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: #2563eb; color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; font-size: 1rem; border: 1px solid #3b82f6;">
+          <span>🌐 ECI National Voters Portal</span>
+          <span style="font-size: 1.1rem;">↗</span>
+        </a>
+        <a href="https://electoralsearch.eci.gov.in/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: #059669; color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; font-size: 1rem; border: 1px solid #10b981;">
+          <span>🔍 Search Name in Electoral Roll</span>
+          <span style="font-size: 1.1rem;">↗</span>
+        </a>
+        <a href="https://eci.gov.in/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.1); color: #ffffff; padding: 14px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; font-size: 1rem; border: 1px solid rgba(255,255,255,0.2);">
+          <span>🏢 ECI Main Website</span>
+          <span style="font-size: 1.1rem;">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- RELATED IDENTITY SERVICES -->
+    <section class="service-section">
+      <h2 class="service-section__title"><span class="icon">🔗</span> संबंधित पहचान व नागरिक सेवाएं</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 16px;">
+        <a href="../service/voter-id-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid var(--color-primary); border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">🪪</div>
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--color-primary);">Voter ID Card (EPIC)</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">वोटर कार्ड ऑनलाइन आवेदन, स्टेटस चेक व पीवीसी कार्ड डाउनलोड।</p>
+        </a>
+
+        <a href="../service/aadhaar-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #146B3A; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">🆔</div>
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #146B3A;">Aadhaar Card Services</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">आधार अपडेट, बायोमेट्रिक लॉक व आधार-वोटर लिंकिंग गाइड।</p>
+        </a>
+
+        <a href="../service/domicile-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #D97F2B; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">📜</div>
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #D97F2B;">Domicile Certificate</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">निवास प्रमाण पत्र ऑनलाइन आवेदन व पात्रता शर्तें।</p>
+        </a>
+
+        <a href="../service/birth-certificate.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-top: 4px solid #7c3aed; border-radius: 10px; padding: 18px; text-decoration: none; color: var(--color-text);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">👶</div>
+          <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: #7c3aed;">Birth Certificate</h3>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0;">जन्म प्रमाण पत्र ऑनलाइन पंजीकरण व डिजिटल डाउनलोड।</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- VIP TELEGRAM BANNER -->
+    <div style="background: linear-gradient(135deg, #0088cc 0%, #005f8f 100%); border-radius: 12px; padding: 24px; color: #fff; margin: 36px 0; text-align: center; box-shadow: 0 4px 12px rgba(0,136,204,0.25);">
+      <h3 style="margin: 0 0 8px 0; color: #fff; font-size: 1.4rem;">✈️ SarkariSewa VIP Telegram Community</h3>
+      <p style="margin: 0 0 16px 0; color: #e0f2fe; font-size: 0.95rem;">मतदाता सूची अपडेट, सरकारी योजनाओं, जॉब्स व छात्रवृत्ति अलर्ट्स की सबसे तेज़ जानकारी पाएं।</p>
+      <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="btn" style="background: #fff; color: #0088cc; font-weight: 700; padding: 10px 24px; text-decoration: none; border-radius: 8px; display: inline-block;">Join Telegram Channel ↗</a>
+    </div>
+
+    <!-- COMMENTS SECTION -->
+    <section class="service-section" id="comments-section">
+      <h2 class="service-section__title"><span class="icon">💬</span> Questions &amp; Comments</h2>
+      <p class="comments-note">यह विशेष सघन पुनरीक्षण (SIR 2026) से जुड़ी सार्वजनिक चर्चा है। आधिकारिक सहायता के लिए 1950 पर संपर्क करें।</p>
+      <form id="comment-form" class="comment-form">
+        <div class="comment-form__row">
+          <input type="text" id="comment-name" maxlength="80" placeholder="आपका नाम (Your Name)" required />
+        </div>
+        <div class="comment-form__row">
+          <textarea id="comment-message" maxlength="2000" rows="3" placeholder="SIR 2026 या वोटर लिस्ट सत्यापन से जुड़ा अपना सवाल पूछें..." required></textarea>
+        </div>
+        <div class="comment-form__actions">
+          <span class="comment-form__status" id="comment-form-status"></span>
+          <button type="submit" class="btn-primary" id="comment-submit">Post Question</button>
+        </div>
+      </form>
+      <div id="comments-list" class="comments-list">
+        <p class="loading">Loading comments…</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/consent.js"></script>
+  <script src="../assets/js/i18n-helper.js"></script>
+  <script src="../assets/js/supabase-client.js"></script>
+  <script src="../assets/js/services-data.js"></script>
+  <script src="../assets/js/share-widget.js"></script>
+  <script src="../assets/js/service-template.js"></script>
+</body>
+</html>'''
+
+def convert_to_root_html(content):
+    res = content.replace('window.SS_ROOT = "../";', 'window.SS_ROOT = "";')
+    res = res.replace('../assets/', 'assets/')
+    res = res.replace('../index.html', 'index.html')
+    res = res.replace('../category/', 'category/')
+    res = res.replace('../service/', 'service/')
+    res = res.replace('../states/', 'states/')
+    res = res.replace('../tools/', 'tools/')
+    return res
+
+def build_sir_master():
+    html_content = render_master_sir_page()
+    
+    # 1. Write to service/special-intensive-revision-sir.html
+    service_path = os.path.join(SERVICE_DIR, 'special-intensive-revision-sir.html')
+    with open(service_path, 'w', encoding='utf-8') as f:
+        f.write(html_content)
+    print(f'Generated: service/special-intensive-revision-sir.html ({len(html_content)} bytes)')
+    
+    # 2. Write to root /special-intensive-revision-sir.html
+    root_path = os.path.join(ROOT, 'special-intensive-revision-sir.html')
+    root_content = convert_to_root_html(html_content)
+    with open(root_path, 'w', encoding='utf-8') as f:
+        f.write(root_content)
+    print(f'Generated: special-intensive-revision-sir.html ({len(root_content)} bytes)')
+
+if __name__ == '__main__':
+    build_sir_master()
+    print('SIR Master Hub generated successfully!')

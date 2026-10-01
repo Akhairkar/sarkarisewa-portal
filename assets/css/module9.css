@@ -1,0 +1,116 @@
+/* ==========================================================================
+   module9.css — Blog (Module 9)
+   Load after style.css, module2.css, module7.css.
+   ========================================================================== */
+
+/* ---------- Blog list ---------- */
+.section-head__link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent-saffron);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.section-head__link:hover { text-decoration: underline; }
+
+.blog-list {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  margin-top: 1.5rem;
+}
+.blog-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: var(--color-text);
+  display: block;
+}
+.blog-card__date {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+.blog-card__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: var(--color-primary);
+}
+.blog-card__excerpt {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 14px;
+}
+.blog-card__arrow {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-accent-saffron);
+}
+
+/* ---------- Single blog post ---------- */
+.blog-post-hero {
+  margin: 1.5rem 0 1rem;
+}
+.blog-post-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  margin: 10px 0 6px;
+}
+.blog-post-hero__date {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.blog-post-body {
+  max-width: 720px;
+  font-size: 1.02rem;
+  line-height: 1.75;
+}
+.blog-post-body h2 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  margin: 1.75rem 0 0.75rem;
+  color: var(--color-primary);
+}
+.blog-post-body p { margin: 0 0 1rem; }
+.blog-post-body ul,
+.blog-post-body ol {
+  margin: 0 0 1rem;
+  padding-left: 1.4rem;
+}
+.blog-post-body li { margin-bottom: 0.4rem; }
+.blog-post-body strong { color: var(--color-primary); }
+
+.blog-post-related {
+  max-width: 720px;
+  margin: 2.5rem 0 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+.blog-post-related__label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.blog-post-related .service-card {
+  max-width: 360px;
+}
+
+.blog-post-back {
+  margin: 1.5rem 0 3rem;
+}
+.blog-post-back a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+.blog-post-back a:hover { text-decoration: underline; }
