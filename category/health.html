@@ -32,7 +32,7 @@
 
   <style>
     .cat-hero {
-      background: linear-gradient(135deg, #10243E 0%, #1a365d 100%);
+      background: linear-gradient(135deg, #0f766e 0%, #0891b2 52%, #2563eb 100%);
       color: #ffffff;
       padding: 42px 24px;
       border-radius: 16px;
@@ -127,6 +127,12 @@
     html[lang="en"] h3[data-lang-show="en"] {
       display: block !important;
     }
+
+    .health-action-panel{margin:0 0 32px;padding:26px;border:1px solid var(--color-border);border-radius:18px;background:linear-gradient(145deg,rgba(20,184,166,.08),rgba(37,99,235,.06));box-shadow:0 8px 26px rgba(15,23,42,.06)}
+    .health-section-head{margin-bottom:18px}.health-section-head h2{margin:5px 0 8px;color:var(--color-primary);font-size:1.55rem}.health-section-head p{margin:0;color:var(--color-text-muted);line-height:1.7;max-width:850px}.health-kicker{display:inline-block;color:#0f766e;background:rgba(20,184,166,.12);padding:5px 10px;border-radius:999px;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+    .health-portal-grid,.health-guide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.health-portal-grid a,.health-guide-grid article{display:flex;flex-direction:column;gap:7px;padding:18px;border-radius:14px;background:var(--color-surface);border:1px solid var(--color-border);text-decoration:none;color:var(--color-text);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.health-portal-grid a strong{color:#2563eb}.health-portal-grid a span,.health-guide-grid p{font-size:.88rem;color:var(--color-text-muted);line-height:1.55;margin:0}.health-guide-grid article{border-top:4px solid #14b8a6}.health-guide-grid article:nth-child(2){border-top-color:#2563eb}.health-guide-grid article:nth-child(3){border-top-color:#7c3aed}.health-guide-grid article:nth-child(4){border-top-color:#f59e0b}.health-guide-grid article>span{font-size:.75rem;font-weight:800;color:var(--color-text-muted)}.health-portal-grid a:hover,.health-guide-grid article:hover{transform:translateY(-3px);border-color:#14b8a6;box-shadow:0 10px 24px rgba(15,23,42,.09)}.health-portal-grid a:focus-visible,.health-guide-grid article:focus-within{outline:3px solid rgba(37,99,235,.28);outline-offset:2px}
+    [data-theme="dark"] .health-action-panel{background:linear-gradient(145deg,rgba(20,184,166,.12),rgba(37,99,235,.10));border-color:#294052}.health-portal-grid a,.health-guide-grid article{min-height:100%}@media(max-width:640px){.health-action-panel{padding:20px;border-radius:15px}.health-section-head h2{font-size:1.3rem}.health-portal-grid,.health-guide-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.health-portal-grid a,.health-guide-grid article{transition:none}.health-portal-grid a:hover,.health-guide-grid article:hover{transform:none}}
   </style>
 
   <script type="application/ld+json" id="category-schema">
@@ -170,7 +176,7 @@
           "name": "आयुष्मान भारत योजना के तहत कौन-कौन सी बीमारियां और सर्जरी कवर हैं?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "कैंसर, हार्ट बाईपास, घुटना प्रत्यारोपण, मोतियाबिंद, डायलिसिस और प्रसव सहित 1,949 से अधिक सर्जिकल व मेडिकल पैकेज पूरी तरह मुफ्त हैं।"
+            "text": "PM-JAY में उपचार और पैकेज कवरेज योजना के वर्तमान पैकेज, पात्रता और empanelled hospital के नियमों पर निर्भर करते हैं; कवरेज की पुष्टि आधिकारिक NHA स्रोत से करें।"
           }
         },
         {
@@ -178,7 +184,7 @@
           "name": "क्या आयुष्मान कार्ड से ओपीडी (OPD) परामर्श और दवाएं भी मुफ्त मिलती हैं?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "आयुष्मान भारत योजना अस्पताल में 24 घंटे या उससे अधिक भर्ती होने पर लागू होती है। भर्ती से 3 दिन पहले और छुट्टी के 15 दिन बाद तक की दवाएं और जांचें पूरी तरह मुफ्त हैं।"
+            "text": "PM-JAY मुख्यतः secondary और tertiary hospitalization के लिए है; covered pre- और post-hospitalization benefits तथा उनकी अवधि संबंधित package और वर्तमान scheme rules के अनुसार देखें।"
           }
         },
         {
@@ -186,7 +192,7 @@
           "name": "आभा आईडी (ABHA Card) का क्या लाभ है?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "यह आपकी डिजिटल मेडिकल हिस्ट्री का सुरक्षित वॉल्ट है, जिससे देश के किसी भी अस्पताल में जाने पर पुराने कागजी पर्चे और रिपोर्ट साथ ले जाने की आवश्यकता नहीं पड़ती।"
+            "text": "ABHA एक digital health identifier है। रिकॉर्ड तभी उपलब्ध या साझा होंगे जब वे संबंधित digital health ecosystem में linked हों और आवश्यक consent/authorization लागू हो।"
           }
         },
         {
@@ -194,7 +200,7 @@
           "name": "जन औषधि जेनेरिक दवाएं ब्रांडेड दवाओं जितनी ही असरदार क्यों होती हैं?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "क्योंकि भारतीय औषधि महानियंत्रक (CDSCO) के सख्त गुणवत्ता और बायोइक्विवेलेंस (Bio-equivalence) परीक्षणों के बाद ही जेनेरिक दवाओं को मंजूरी दी जाती है।"
+            "text": "जेनेरिक दवाओं की गुणवत्ता और therapeutic equivalence संबंधित regulatory standards पर निर्भर करती है। किसी दवा का विकल्प बदलने से पहले डॉक्टर या pharmacist से सलाह लें।"
           }
         },
         {
@@ -242,7 +248,7 @@
           "name": "स्वास्थ्य सेवाओं और आपातकालीन हेल्पलाइन का नंबर क्या है?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "राष्ट्रीय एम्बुलेंस सेवा: 108, राष्ट्रीय स्वास्थ्य हेल्पलाइन: 1123978046, आयुष्मान भारत हेल्पलाइन: 14555।"
+            "text": "आपातकाल में 112 राष्ट्रीय emergency number है; ambulance और योजना-संबंधी सहायता के लिए स्थानीय/राज्य सेवा तथा संबंधित official helpline की वर्तमान जानकारी जांचें। PM-JAY के लिए NHA हेल्पलाइन 14555 उपलब्ध है।"
           }
         }
       ]
@@ -440,22 +446,51 @@
       </p>
 
       <div>
-        <span class="stat-badge">🏛️ 100% आधिकारिक पोर्टल लिंक</span>
-        <span class="stat-badge">⚡ Instant Status & e-KYC</span>
-        <span class="stat-badge">🔒 सुरक्षित व निःशुल्क गाइड</span>
+        <span class="stat-badge">🏛️ Official portal links</span>
+        <span class="stat-badge">🔎 Status & eligibility guidance</span>
+        <span class="stat-badge">🔒 Safety-first health guidance</span>
       </div>
 
       <!-- MASTER LIVE SEARCH BOX (1-Key Instant Search & Suggestions) -->
       <div class="search-filter-box" style="position: relative; max-width: 680px; margin: 24px 0 0 0; text-align: left;">
         <div style="position: relative; display: flex; align-items: center;">
           <span style="position: absolute; left: 18px; font-size: 1.2rem; pointer-events: none; z-index: 2;">🔍</span>
-          <input type="search" id="catSearchInput" autocomplete="off" 
+          <label for="catSearchInput" class="visually-hidden">स्वास्थ्य सेवाएं खोजें / Search health services</label>
+          <input type="search" id="catSearchInput" aria-label="स्वास्थ्य सेवाएं खोजें / Search health services" autocomplete="off" 
             placeholder="इस श्रेणी या पूरे पोर्टल में सेवा खोजें (उदा. आयुष्मान भारत PM-JAY)..." 
             style="width: 100%; padding: 15px 18px 15px 48px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.4); background: var(--color-surface); color: var(--color-text); font-size: 1rem; outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.1); box-sizing: border-box; transition: all 0.2s ease;">
         </div>
         <ul class="search-suggestions" id="catSearchSuggestions" style="display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.22); max-height: 400px; overflow-y: auto; z-index: 9999; list-style: none; padding: 6px 0; margin: 0;"></ul>
       </div>
     </div>
+
+<section class="health-action-panel" aria-labelledby="health-official-heading">
+      <div class="health-section-head">
+        <span class="health-kicker">Official sources</span>
+        <h2 id="health-official-heading">🏛️ आधिकारिक स्वास्थ्य पोर्टल</h2>
+        <p>लाभ, पात्रता, अस्पताल, स्वास्थ्य रिकॉर्ड या रक्त उपलब्धता की जानकारी लेते समय नीचे दिए गए आधिकारिक स्रोत को प्राथमिकता दें। नियम और उपलब्धता समय के साथ बदल सकती है।</p>
+      </div>
+      <div class="health-portal-grid" role="list">
+        <a role="listitem" href="https://nha.gov.in/" target="_blank" rel="noopener noreferrer"><strong>Ayushman Bharat / NHA</strong><span>PM-JAY और संबंधित स्वास्थ्य योजनाओं की आधिकारिक जानकारी</span></a>
+        <a role="listitem" href="https://abdm.gov.in/" target="_blank" rel="noopener noreferrer"><strong>ABDM / ABHA</strong><span>डिजिटल हेल्थ अकाउंट और स्वास्थ्य रिकॉर्ड से जुड़ी जानकारी</span></a>
+        <a role="listitem" href="https://aam.mohfw.gov.in/" target="_blank" rel="noopener noreferrer"><strong>Ayushman Arogya Mandir</strong><span>नजदीकी प्राथमिक स्वास्थ्य सेवाओं और कार्यक्रमों की जानकारी</span></a>
+        <a role="listitem" href="https://eraktkosh.mohfw.gov.in/eraktkoshPortal/" target="_blank" rel="noopener noreferrer"><strong>e-RaktKosh</strong><span>ब्लड उपलब्धता, ब्लड सेंटर और डोनेशन सेवाएं</span></a>
+        <a role="listitem" href="https://esanjeevani.mohfw.gov.in/" target="_blank" rel="noopener noreferrer"><strong>eSanjeevani</strong><span>सरकारी टेलीमेडिसिन सेवा की आधिकारिक जानकारी</span></a>
+      </div>
+    </section>
+
+    <section class="health-action-panel health-guide-panel" aria-labelledby="health-guide-heading">
+      <div class="health-section-head">
+        <span class="health-kicker">Before you apply</span>
+        <h2 id="health-guide-heading">🩺 स्वास्थ्य सेवा चुनने से पहले क्या जांचें?</h2>
+      </div>
+      <div class="health-guide-grid" role="list">
+        <article role="listitem"><span>01</span><strong>पात्रता</strong><p>योजना, कार्ड या सेवा की वर्तमान eligibility आधिकारिक पोर्टल पर जांचें।</p></article>
+        <article role="listitem"><span>02</span><strong>अस्पताल / केंद्र</strong><p>इलाज या सुविधा लेने से पहले संबंधित empanelled hospital या service centre की पुष्टि करें।</p></article>
+        <article role="listitem"><span>03</span><strong>दस्तावेज़</strong><p>आधार/पहचान, मोबाइल, कार्ड और आवश्यक medical records की जरूरत सेवा के अनुसार अलग हो सकती है।</p></article>
+        <article role="listitem"><span>04</span><strong>आपातकाल</strong><p>गंभीर या जानलेवा स्थिति में ऑनलाइन जानकारी पर निर्भर न रहें; तुरंत स्थानीय emergency medical help लें।</p></article>
+      </div>
+    </section>
 
     <!-- FEATURED FLAGSHIP SERVICES GRID -->
     <section class="service-section" style="margin-bottom: 40px;">
@@ -939,7 +974,7 @@
           <span style="font-size: 1.2rem;">▾</span>
         </summary>
         <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          कैंसर, हार्ट बाईपास, घुटना प्रत्यारोपण, मोतियाबिंद, डायलिसिस और प्रसव सहित 1,949 से अधिक सर्जिकल व मेडिकल पैकेज पूरी तरह मुफ्त हैं।
+          PM-JAY में उपचार और पैकेज कवरेज वर्तमान package list, पात्रता और empanelled hospital के नियमों पर निर्भर करते हैं; कवरेज की पुष्टि आधिकारिक NHA स्रोत से करें।
         </div>
       </details>
       <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
@@ -948,7 +983,7 @@
           <span style="font-size: 1.2rem;">▾</span>
         </summary>
         <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          आयुष्मान भारत योजना अस्पताल में 24 घंटे या उससे अधिक भर्ती होने पर लागू होती है। भर्ती से 3 दिन पहले और छुट्टी के 15 दिन बाद तक की दवाएं और जांचें पूरी तरह मुफ्त हैं।
+          PM-JAY मुख्यतः secondary और tertiary hospitalization के लिए है; covered pre- और post-hospitalization benefits तथा उनकी अवधि वर्तमान scheme rules के अनुसार देखें।
         </div>
       </details>
       <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
@@ -957,7 +992,7 @@
           <span style="font-size: 1.2rem;">▾</span>
         </summary>
         <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          यह आपकी डिजिटल मेडिकल हिस्ट्री का सुरक्षित वॉल्ट है, जिससे देश के किसी भी अस्पताल में जाने पर पुराने कागजी पर्चे और रिपोर्ट साथ ले जाने की आवश्यकता नहीं पड़ती।
+          ABHA एक digital health identifier है। रिकॉर्ड तभी उपलब्ध या साझा होंगे जब वे संबंधित digital health ecosystem में linked हों और आवश्यक consent/authorization लागू हो।
         </div>
       </details>
       <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
@@ -966,7 +1001,7 @@
           <span style="font-size: 1.2rem;">▾</span>
         </summary>
         <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          क्योंकि भारतीय औषधि महानियंत्रक (CDSCO) के सख्त गुणवत्ता और बायोइक्विवेलेंस (Bio-equivalence) परीक्षणों के बाद ही जेनेरिक दवाओं को मंजूरी दी जाती है।
+          जेनेरिक दवाओं की गुणवत्ता और therapeutic equivalence संबंधित regulatory standards पर निर्भर करती है। किसी दवा का विकल्प बदलने से पहले डॉक्टर या pharmacist से सलाह लें।
         </div>
       </details>
       <details class="faq-item"  style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 12px; overflow: hidden;">
@@ -1020,7 +1055,7 @@
           <span style="font-size: 1.2rem;">▾</span>
         </summary>
         <div class="faq-item__a" style="padding: 0 20px 18px 20px; color: var(--color-text); line-height: 1.75; font-size: 0.98rem;">
-          राष्ट्रीय एम्बुलेंस सेवा: 108, राष्ट्रीय स्वास्थ्य हेल्पलाइन: 1123978046, आयुष्मान भारत हेल्पलाइन: 14555।
+          आपातकाल में 112 राष्ट्रीय emergency number है; ambulance और योजना-संबंधी सहायता के लिए स्थानीय/राज्य सेवा तथा संबंधित official helpline की वर्तमान जानकारी जांचें। PM-JAY के लिए NHA हेल्पलाइन 14555 उपलब्ध है।
         </div>
       </details>
     </section>
@@ -1073,15 +1108,15 @@
     <!-- EMAIL & WHATSAPP SCHEME ALERT SUBSCRIBE WIDGET -->
     <div id="subscribe-widget" data-service-id="health" style="margin: 40px 0;"></div>
 
-    <!-- VIP TELEGRAM COMMUNITY BANNER -->
+    <!-- TELEGRAM UPDATES BANNER -->
     <div style="background: linear-gradient(135deg, #0088cc 0%, #005580 100%); border-radius: 16px; padding: 32px 24px; color: #ffffff; text-align: center; margin: 40px 0; box-shadow: 0 8px 30px rgba(0, 136, 204, 0.2);">
       <span style="font-size: 2.5rem; display: block; margin-bottom: 8px;">✈️</span>
-      <h3 style="font-size: 1.5rem; margin: 0 0 10px 0; color: #ffffff;">SarkariSewa VIP Telegram कम्युनिटी से जुड़ें</h3>
+      <h3 style="font-size: 1.5rem; margin: 0 0 10px 0; color: #ffffff;">SarkariSewa India Telegram Updates से जुड़ें</h3>
       <p style="font-size: 1rem; color: #e0f2fe; max-width: 600px; margin: 0 auto 20px auto; line-height: 1.6;">
-        सभी सरकारी योजनाओं, भर्ती सूचनाओं, छात्रवृत्ति और नई किस्तों के रियल-टाइम अलर्ट सीधे अपने फोन पर प्राप्त करें। 100% मुफ़्त और सुरक्षित।
+        सरकारी योजनाओं और स्वास्थ्य सेवाओं से जुड़े अपडेट यहां साझा किए जा सकते हैं। किसी भी महत्वपूर्ण जानकारी के लिए संबंधित आधिकारिक स्रोत और नवीनतम नियम भी जांचें।
       </p>
       <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #ffffff; color: #0088cc; font-weight: 700; padding: 14px 32px; border-radius: 30px; text-decoration: none; font-size: 1.05rem; box-shadow: 0 4px 14px rgba(0,0,0,0.15); transition: transform 0.2s;">
-        Join Telegram VIP Channel ↗
+        Join Telegram Updates ↗
       </a>
     </div>
 
