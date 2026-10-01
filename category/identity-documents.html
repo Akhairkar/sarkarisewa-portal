@@ -93,6 +93,13 @@
       color: #E8EDF3 !important;
     }
 
+    .identity-official-card,.identity-related-link{display:flex;flex-direction:column;gap:6px;padding:16px;border:1px solid var(--color-border);border-radius:12px;background:var(--color-surface);color:var(--color-text);text-decoration:none;transition:transform .18s ease,box-shadow .18s ease}
+.identity-official-card span{font-size:.84rem;color:var(--color-text-muted);line-height:1.45}
+.identity-official-card:hover,.identity-related-link:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.08)}
+.identity-official-card:focus-visible,.identity-related-link:focus-visible{outline:3px solid rgba(37,99,235,.35);outline-offset:2px}
+@media(max-width:640px){.cat-hero{padding:30px 18px}.cat-hero h1{font-size:1.75rem}.identity-official-card,.identity-related-link{padding:14px}}
+@media(prefers-reduced-motion:reduce){.identity-official-card,.identity-related-link{transition:none}.identity-official-card:hover,.identity-related-link:hover{transform:none}}
+
     /* Language Toggle Visibility Rules */
     html[lang="hi"] [data-lang-show="en"],
     html:not([lang="en"]) [data-lang-show="en"] {
@@ -186,7 +193,7 @@
           "name": "पैन कार्ड और आधार कार्ड लिंक न होने पर क्या नुकसान होता है?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "पैन कार्ड इनऑपरेटिव हो जाता है, जिससे इनकम टैक्स रिफंड रुक जाता है, 20% की उच्च दर पर टीडीएस कटता है, और ₹50,000 से अधिक के बैंक लेनदेन या डीमैट खाते ब्लॉक हो जाते हैं।"
+            "text": "PAN-Aadhaar linking के नियम और लागू परिणाम समय के साथ बदल सकते हैं। वर्तमान स्थिति के लिए Income Tax Department के official portal पर PAN/Aadhaar link status verify करें।"
           }
         },
         {
@@ -202,7 +209,7 @@
           "name": "ड्राइविंग लाइसेंस को स्मार्ट कार्ड चिप DL में कैसे बदलें?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "परिवहन सेवा पोर्टल (parivahan.gov.in) पर 'Apply for Duplicate / Replacement of DL' विकल्प चुनें, ₹200-400 का निर्धारित शुल्क भरें और नया स्मार्ट कार्ड घर पर डाक से प्राप्त करें।"
+            "text": "Driving Licence replacement, renewal या अन्य सेवाओं के विकल्प राज्य और आवेदन की स्थिति के अनुसार अलग हो सकते हैं। Sarathi/Parivahan portal पर current service, fee और appointment requirements देखकर आवेदन करें।"
           }
         },
         {
@@ -218,7 +225,7 @@
           "name": "जन्म प्रमाण पत्र (Birth Certificate) में नाम जुड़वाने की समय-सीमा क्या है?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "जन्म पंजीकरण के 1 वर्ष के भीतर बिना शुल्क के और 15 वर्ष तक नाम सुधार/जोड़ने हेतु नगर निगम या ग्राम पंचायत के रजिस्ट्रार (जन्म-मृत्यु) कार्यालय में आवेदन किया जा सकता है।"
+            "text": "जन्म प्रमाण पत्र में नाम जोड़ने या सुधार की प्रक्रिया और समय-सीमा स्थानीय registration authority और लागू नियमों पर निर्भर करती है। संबंधित official authority से current requirements verify करें।"
           }
         },
         {
@@ -440,7 +447,7 @@
       </p>
 
       <div>
-        <span class="stat-badge">🏛️ 100% आधिकारिक पोर्टल लिंक</span>
+        <span class="stat-badge">🔗 Official source links</span>
         <span class="stat-badge">⚡ Instant Status & e-KYC</span>
         <span class="stat-badge">🔒 सुरक्षित व निःशुल्क गाइड</span>
       </div>
@@ -449,13 +456,22 @@
       <div class="search-filter-box" style="position: relative; max-width: 680px; margin: 24px 0 0 0; text-align: left;">
         <div style="position: relative; display: flex; align-items: center;">
           <span style="position: absolute; left: 18px; font-size: 1.2rem; pointer-events: none; z-index: 2;">🔍</span>
-          <input type="search" id="catSearchInput" autocomplete="off" 
+          <label for="catSearchInput" class="visually-hidden">पहचान दस्तावेज़ और संबंधित सेवाएं खोजें</label><input type="search" id="catSearchInput" aria-label="पहचान दस्तावेज़ और संबंधित सेवाएं खोजें" autocomplete="off" 
             placeholder="इस श्रेणी या पूरे पोर्टल में सेवा खोजें (उदा. आधार कार्ड)..." 
             style="width: 100%; padding: 15px 18px 15px 48px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.4); background: var(--color-surface); color: var(--color-text); font-size: 1rem; outline: none; box-shadow: 0 4px 20px rgba(0,0,0,0.1); box-sizing: border-box; transition: all 0.2s ease;">
         </div>
         <ul class="search-suggestions" id="catSearchSuggestions" style="display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--color-surface); border: 2px solid var(--color-border); border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.22); max-height: 400px; overflow-y: auto; z-index: 9999; list-style: none; padding: 6px 0; margin: 0;"></ul>
       </div>
     </div>
+
+    <section aria-labelledby="identity-guide-title" style="margin:0 0 40px;padding:24px;border:1px solid var(--color-border);border-radius:16px;background:var(--color-surface)">
+<h2 id="identity-guide-title" style="margin:0 0 16px;color:var(--color-primary);font-size:1.5rem">🧭 पहचान दस्तावेज़ चुनने और अपडेट करने का आसान तरीका</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px">
+<div style="padding:16px;border:1px solid var(--color-border);border-radius:12px"><strong>1. उद्देश्य तय करें</strong><p style="margin:7px 0 0;color:var(--color-text-muted)">KYC, टैक्स, मतदान, यात्रा, ड्राइविंग या राज्य प्रमाण पत्र—पहले जरूरत पहचानें।</p></div>
+<div style="padding:16px;border:1px solid var(--color-border);border-radius:12px"><strong>2. रिकॉर्ड मिलाएं</strong><p style="margin:7px 0 0;color:var(--color-text-muted)">नाम, जन्मतिथि और पता सभी रिकॉर्ड में एक जैसे हैं या नहीं, पहले जांचें।</p></div>
+<div style="padding:16px;border:1px solid var(--color-border);border-radius:12px"><strong>3. Official portal verify करें</strong><p style="margin:7px 0 0;color:var(--color-text-muted)">शुल्क, पात्रता, समयसीमा और दस्तावेज़ संबंधित विभाग की साइट पर verify करें।</p></div>
+<div style="padding:16px;border:1px solid var(--color-border);border-radius:12px"><strong>4. Reference सुरक्षित रखें</strong><p style="margin:7px 0 0;color:var(--color-text-muted)">Acknowledgement/reference number संभालकर रखें और official status page से tracking करें।</p></div>
+</div></section>
 
     <!-- FEATURED FLAGSHIP SERVICES GRID -->
     <section class="service-section" style="margin-bottom: 40px;">
@@ -533,13 +549,24 @@
       </div>
     </section>
 
+    <section aria-labelledby="official-id-portals" style="margin:0 0 40px">
+<h2 id="official-id-portals" style="margin:0 0 6px;color:var(--color-primary);font-size:1.5rem">🔗 प्रमुख आधिकारिक पोर्टल</h2>
+<p style="margin:0 0 16px;color:var(--color-text-muted)">सीधे संबंधित विभाग के portal पर जाएं। SarkariSewa India स्वयं official application submit नहीं करता।</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px">
+<a href="https://www.uidai.gov.in/" target="_blank" rel="noopener noreferrer" class="identity-official-card"><strong>UIDAI / Aadhaar</strong><span>myAadhaar, update और status ↗</span></a>
+<a href="https://www.incometax.gov.in/" target="_blank" rel="noopener noreferrer" class="identity-official-card"><strong>Income Tax Department</strong><span>PAN, e-PAN और tax services ↗</span></a>
+<a href="https://voters.eci.gov.in/" target="_blank" rel="noopener noreferrer" class="identity-official-card"><strong>ECI Voters' Services</strong><span>Voter registration, EPIC और status ↗</span></a>
+<a href="https://www.passportindia.gov.in/" target="_blank" rel="noopener noreferrer" class="identity-official-card"><strong>Passport Seva</strong><span>Passport application और tracking ↗</span></a>
+<a href="https://parivahan.gov.in/" target="_blank" rel="noopener noreferrer" class="identity-official-card"><strong>Parivahan</strong><span>Driving Licence और transport services ↗</span></a>
+</div></section>
+
     <!-- ALL SERVICES DIRECTORY GRID -->
     <section class="service-section" style="margin-bottom: 44px;">
       <h2 style="color: var(--color-primary); font-size: 1.6rem; margin-bottom: 20px; border-bottom: 2px solid var(--color-border); padding-bottom: 12px;">
         📑 <span data-lang-show="hi">सभी पहचान दस्तावेज़ सेवाएं (All 29 Services)</span>
         <span data-lang-show="en">Complete List of Identity Documents Services</span>
       </h2>
-      <div id="categoryServicesGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+      <div id="categoryServicesGrid" role="list" aria-label="Identity document services" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
         <a class="service-card" href="../service/aadhaar-card.html" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--color-text); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease;">
           <div>
             <div style="font-weight: 700; color: var(--color-primary); font-size: 1.05rem; margin-bottom: 8px;">
@@ -1220,6 +1247,16 @@
         </a>
       </div>
     </section>
+
+    <section aria-labelledby="identity-related-title" style="margin:0 0 40px;padding:22px;border-radius:16px;border:1px solid var(--color-border);background:linear-gradient(135deg,var(--color-surface),rgba(37,99,235,.04))">
+<h2 id="identity-related-title" style="margin:0 0 14px;color:var(--color-primary);font-size:1.4rem">🛠️ आवेदन में दिक्कत हो तो</h2>
+<div style="display:flex;flex-wrap:wrap;gap:10px">
+<a href="../tools/document-checklist.html" class="identity-related-link">📋 Document Checklist</a>
+<a href="../tools/status-troubleshooter.html" class="identity-related-link">🔍 Status Troubleshooter</a>
+<a href="../support/helpline-directory.html" class="identity-related-link">☎️ Helpline Directory</a>
+<a href="../states/index.html" class="identity-related-link">🗺️ State Services</a>
+<a href="../search.html" class="identity-related-link">🔎 Search all services</a>
+</div></section>
 
     <!-- EMAIL & WHATSAPP SCHEME ALERT SUBSCRIBE WIDGET -->
     <div id="subscribe-widget" data-service-id="identity-documents" style="margin: 40px 0;"></div>
