@@ -545,3 +545,25 @@ body.homepage-v2{background:linear-gradient(180deg,#f7fbff 0,#fff 35%,#f8fbff 10
   line-height:1.5;
   max-width:520px;
 }
+
+
+/* Homepage accessibility and theme hardening */
+.homepage-v2 .ss-latest-services-section .service-card:focus-within,
+.homepage-v2 .ss-tools-section .ss-tool-card:focus-visible,
+.homepage-v2 .ss-latest-services-section .service-card a:focus-visible{
+  outline:3px solid color-mix(in srgb,var(--color-primary) 55%,transparent);
+  outline-offset:3px;
+}
+.homepage-v2 .ss-latest-services-section .service-card a{
+  color:var(--service-accent);
+}
+[data-theme="dark"] .homepage-v2 .ss-latest-services-section .service-card{
+  --service-tint:#142438;
+  background:linear-gradient(145deg,var(--color-surface),var(--service-tint));
+}
+@media(prefers-reduced-motion:reduce){
+  .homepage-v2 .ss-latest-services-section .service-card,
+  .homepage-v2 .ss-tools-section .ss-tool-card{transition:none}
+  .homepage-v2 .ss-latest-services-section .service-card:hover,
+  .homepage-v2 .ss-tools-section .ss-tool-card:hover{transform:none}
+}

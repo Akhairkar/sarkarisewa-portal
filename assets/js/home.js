@@ -48,8 +48,10 @@ function renderCategories() {
   const host = document.getElementById("category-grid");
   if (!host) return;
   const lang = getLang();
-  host.innerHTML = CATEGORIES_DATA.map((c) => {
-    const count = SERVICES_DATA.filter((s) => s.category === c.slug).length;
+  const categories = Array.isArray(CATEGORIES_DATA) ? CATEGORIES_DATA : [];
+  const services = Array.isArray(SERVICES_DATA) ? SERVICES_DATA : [];
+  host.innerHTML = categories.map((c) => {
+    const count = services.filter((s) => s.category === c.slug).length;
     return `
       <a class="cat-card" href="${ssCategoryHref(ROOT, c.slug)}">
         <div class="cat-icon" aria-hidden="true">${c.icon}</div>
@@ -63,12 +65,14 @@ function renderCategories() {
 function renderServices() {
   const host = document.getElementById("latest-grid");
   if (!host) return;
+
   const lang = getLang();
   const dict = (window.SITE && SITE.langData && SITE.langData[lang]) || {};
+  const services = Array.isArray(SERVICES_DATA) ? SERVICES_DATA : [];
 
   // "Latest" = sorted by the most recent known content date.
   // Prefer dateUpdated when available, then fall back to dateAdded.
-  const sorted = SERVICES_DATA.slice().sort((a, b) => {
+  const sorted = services.slice().sort((a, b) => {
     const da = a.dateUpdated || a.dateAdded || "";
     const db = b.dateUpdated || b.dateAdded || "";
     return da < db ? 1 : (da > db ? -1 : 0);
@@ -77,33 +81,41 @@ function renderServices() {
   const TARGET = 8;
   const picked = sorted.slice(0, TARGET);
 
-  if (!picked.length) {\n    host.innerHTML = `<div class="ss-empty-state"><strong>${lang === "hi" ? "सेवाएं जल्द उपलब्ध होंगी" : "Services will appear here soon"}</strong><span>${lang === "hi" ? "कृपया सभी सेवाएं देखने के लिए नीचे दिए लिंक का उपयोग करें।" : "Use the link below to browse all available services."}</span></div>`;\n  } else {\n    host.innerHTML = picked.map((s) => {
-    const links = (s.officialLinks || []).slice(0, 3).map((l, i) => `
-      <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="${i === 0 ? "official" : ""}">
-        ${t(l.label)}
-      </a>
-    `).join("");
-    return `
-      <article class="service-card">
-        <h3>${t(s.name)}</h3>
-        <p>${t(s.shortDescription)}</p>
-        <div class="service-links">
-          ${links}
-          <a href="${ssServiceHref(ROOT, s)}">${dict.read_more || (lang === "hi" ? "गाइड पढ़ें" : "Read guide")}</a>
-        </div>
-      </article>
-    `;
-  }).join("");
+  if (!picked.length) {
+    host.innerHTML = `
+      <div class="ss-empty-state" role="status">
+        <strong>${lang === "hi" ? "सेवाएं जल्द उपलब्ध होंगी" : "Services will appear here soon"}</strong>
+        <span>${lang === "hi" ? "कृपया सभी सेवाएं देखने के लिए नीचे दिए लिंक का उपयोग करें।" : "Use the link below to browse all available services."}</span>
+      </div>`;
+  } else {
+    host.innerHTML = picked.map((s) => {
+      const links = (Array.isArray(s.officialLinks) ? s.officialLinks : []).slice(0, 3).map((l, i) => `
+        <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="${i === 0 ? "official" : ""}" aria-label="${t(l.label)} — ${lang === "hi" ? "आधिकारिक लिंक" : "official link"}">
+          ${t(l.label)}
+        </a>
+      `).join("");
 
-  }\n\n  const viewAllHost = document.getElementById("latest-view-all");
+      return `
+        <article class="service-card">
+          <h3>${t(s.name)}</h3>
+          <p>${t(s.shortDescription)}</p>
+          <div class="service-links">
+            ${links}
+            <a href="${ssServiceHref(ROOT, s)}">${dict.read_more || (lang === "hi" ? "गाइड पढ़ें" : "Read guide")}</a>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  const viewAllHost = document.getElementById("latest-view-all");
   if (viewAllHost) {
     viewAllHost.innerHTML = `<a href="${ROOT}search.html">${t({
-      en: `View all ${SERVICES_DATA.length}+ services →`,
-      hi: `सभी ${SERVICES_DATA.length}+ सेवाएं देखें →`,
+      en: `View all ${services.length}+ services →`,
+      hi: `सभी ${services.length}+ सेवाएं देखें →`,
     })}</a>`;
   }
 }
-
 function renderBlogSection() {
   const host = document.getElementById("homepage-blog-list");
   if (!host || !BLOG_DATA) return;
