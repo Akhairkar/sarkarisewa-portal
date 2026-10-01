@@ -112,7 +112,7 @@ async function init(){if(!document.body.classList.contains("homepage-v2"))return
     const state=document.querySelector(".ss-state-wrap");if(state){setText(state.querySelector(".ss-kicker"),c.stateKicker);setText(state.querySelector("h2"),c.stateTitle);setText(state.querySelector("p"),c.stateSub);setText(state.querySelector(".ss-primary-btn"),c.stateButton);}
     const trust=document.querySelector(".ss-trust-grid");if(trust){setText(trust.querySelector(".ss-kicker"),c.trustKicker);setText(trust.querySelector("h2"),c.trustTitle);setText(trust.querySelector("p"),c.trustSub);const rows=trust.querySelectorAll(".ss-trust-points>div");rows.forEach((r,i)=>{setText(r.querySelector("strong"),c.trust[i*2]);setText(r.querySelector("small"),c.trust[i*2+1]);});}
     const faq=document.querySelectorAll(".ss-faq-grid details");faq.forEach((d,i)=>{setText(d.querySelector("summary"),c.faqQ[i]);setText(d.querySelector("p"),c.faqA[i]);});
-    const mobile=document.querySelectorAll("#mobile-nav>a");const mobileVals=[...c.nav,"State Services"];mobile.forEach((a,i)=>{if(mobileVals[i])setText(a,mobileVals[i]);});
+    const mobile=document.querySelectorAll("#mobile-nav>a");const mobileVals=lang==="hi"?[...c.nav,"राज्य सेवाएं"]:[...c.nav,"State Services"];mobile.forEach((a,i)=>{if(mobileVals[i])setText(a,mobileVals[i]);});
     const disc=document.querySelector(".footer-disclaimer-banner p");if(disc)setText(disc,c.footerDisclaimer);const lists=document.querySelectorAll(".footer-grid ul");[c.footerTools,c.footerResources,c.footerSupport,c.footerLegal].forEach((arr,i)=>{if(!lists[i])return;lists[i].querySelectorAll("a").forEach((a,j)=>{if(arr[j])setText(a,arr[j]);});});
   }
   document.addEventListener("ss:ready",()=>apply((window.SITE&&SITE.lang)||"hi"),{once:false});
