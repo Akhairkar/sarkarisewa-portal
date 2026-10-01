@@ -18,7 +18,8 @@ BASE = "https://sarkarisewaindia.com"
 TODAY = date.today().isoformat()
 EXCLUDED_PREFIXES = ("admin/", "private/", "account/", "partials/", ".")
 EXCLUDED_FILES = {"404.html", "service/service.html", "category/category.html",
-                  "blog/post.html", "jobs/post.html", "exams/exam.html"}
+                  "blog/post.html", "jobs/post.html", "exams/exam.html",
+                  "deadline-detail.html", "tools/deadline-detail.html", "update.html"}
 
 def canonical(html):
     m = re.search(r'<link\s+[^>]*rel=["\']canonical["\'][^>]*href=["\']([^"\']+)', html, re.I)

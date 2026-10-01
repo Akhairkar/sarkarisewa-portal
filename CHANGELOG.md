@@ -40,6 +40,12 @@
 - Added the idempotent Session 4 repair script for missing canonicals, legacy service slugs, state-relative link depth, and updates-to-states path defects.
 - Updated sitemap generation to emit only existing state pages and filter local noindex/non-self-canonical URLs.
 - Repository verification confirms the identified legacy Ayushman/driving links, legacy state-service prefixes, and CSC-city canonical/template defect are no longer present in the checked repository patterns.
+## 2026-10-01 — Session 2: Dynamic detail-shell indexing cleanup
+- Added `noindex,follow` to the generic deadline detail and update detail shells because their primary content is populated client-side and the base URLs are not standalone content pages.
+- Removed the three dynamic shell URLs from the XML sitemap.
+- Added explicit generator exclusions so future sitemap builds do not re-add these shells.
+- Kept existing titles, meta descriptions, canonicals, URLs, H1s, and filenames unchanged.
+
 # CHANGELOG — Consolidated module/fix notes
 
 This file merges what used to be ~21 separate `MODULE*-NOTES.md` / `*-FIX-NOTES.md`
