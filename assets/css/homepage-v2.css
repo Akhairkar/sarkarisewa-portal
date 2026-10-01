@@ -436,3 +436,30 @@ body.homepage-v2{background:linear-gradient(180deg,#f7fbff 0,#fff 35%,#f8fbff 10
 .homepage-v2 .tools-section .tool-card h3{color:var(--color-text)}
 .homepage-v2 .popular-tools .tool-card .tool-link,
 .homepage-v2 .tools-section .tool-card .tool-link{color:var(--tool-accent);font-weight:800}
+
+/* Popular Tools — complete modern card/grid redesign */
+.homepage-v2 .ss-tools-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.homepage-v2 .ss-tool-card{--tool-accent:var(--color-primary);--tool-tint:var(--color-bg-alt);position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto auto auto;gap:5px 13px;min-height:148px;padding:18px!important;border:1px solid color-mix(in srgb,var(--tool-accent) 20%,var(--color-border));border-radius:18px;background:linear-gradient(145deg,var(--color-surface),var(--tool-tint));box-shadow:0 7px 22px rgba(16,36,62,.055);overflow:hidden;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.homepage-v2 .ss-tool-card:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--tool-accent)}
+.homepage-v2 .ss-tool-card:nth-child(1){--tool-accent:#2563eb;--tool-tint:#eff6ff}
+.homepage-v2 .ss-tool-card:nth-child(2){--tool-accent:#7c3aed;--tool-tint:#f5f3ff}
+.homepage-v2 .ss-tool-card:nth-child(3){--tool-accent:#0d9488;--tool-tint:#f0fdfa}
+.homepage-v2 .ss-tool-card:nth-child(4){--tool-accent:#ea580c;--tool-tint:#fff7ed}
+.homepage-v2 .ss-tool-card:nth-child(5){--tool-accent:#16a34a;--tool-tint:#f0fdf4}
+.homepage-v2 .ss-tool-card:nth-child(6){--tool-accent:#e11d48;--tool-tint:#fff1f2}
+.homepage-v2 .ss-tool-card>span{grid-column:1;grid-row:1/3;display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:var(--tool-tint);color:var(--tool-accent);font-size:1.45rem;border:1px solid color-mix(in srgb,var(--tool-accent) 14%,transparent)}
+.homepage-v2 .ss-tool-card>strong{grid-column:2;grid-row:1;font-size:.98rem;line-height:1.25}
+.homepage-v2 .ss-tool-card>small{grid-column:2;grid-row:2;color:var(--color-text-light);font-size:.76rem;line-height:1.35}
+.homepage-v2 .ss-tool-card>b{grid-column:1/3;grid-row:3;margin-top:8px;padding-top:10px;border-top:1px solid color-mix(in srgb,var(--tool-accent) 14%,var(--color-border));font-size:.78rem;color:var(--tool-accent);font-weight:850}
+.homepage-v2 .ss-tool-card:hover{transform:translateY(-4px);border-color:var(--tool-accent);box-shadow:0 13px 30px color-mix(in srgb,var(--tool-accent) 15%,transparent)}
+.homepage-v2 .ss-tools-section .ss-view-all{color:var(--color-primary)}
+@media(max-width:900px){.homepage-v2 .ss-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}}
+@media(max-width:640px){
+ .homepage-v2 .ss-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ .homepage-v2 .ss-tool-card{min-height:122px;padding:12px!important;border-radius:14px!important;grid-template-columns:34px minmax(0,1fr);gap:4px 8px}
+ .homepage-v2 .ss-tool-card>span{width:34px!important;height:34px!important;font-size:1.05rem!important;border-radius:10px}
+ .homepage-v2 .ss-tool-card>strong{font-size:.76rem!important}
+ .homepage-v2 .ss-tool-card>small{font-size:.66rem!important;line-height:1.25}
+ .homepage-v2 .ss-tool-card>b{font-size:.67rem!important;margin-top:5px;padding-top:7px}
+}
+@media(max-width:390px){.homepage-v2 .ss-tools-grid{grid-template-columns:1fr!important}}
