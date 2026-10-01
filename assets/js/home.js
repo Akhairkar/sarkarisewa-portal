@@ -77,7 +77,7 @@ function renderServices() {
   const TARGET = 8;
   const picked = sorted.slice(0, TARGET);
 
-  host.innerHTML = picked.map((s) => {
+  if (!picked.length) {\n    host.innerHTML = `<div class="ss-empty-state"><strong>${lang === "hi" ? "सेवाएं जल्द उपलब्ध होंगी" : "Services will appear here soon"}</strong><span>${lang === "hi" ? "कृपया सभी सेवाएं देखने के लिए नीचे दिए लिंक का उपयोग करें।" : "Use the link below to browse all available services."}</span></div>`;\n  } else {\n    host.innerHTML = picked.map((s) => {
     const links = (s.officialLinks || []).slice(0, 3).map((l, i) => `
       <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="${i === 0 ? "official" : ""}">
         ${t(l.label)}
@@ -95,7 +95,7 @@ function renderServices() {
     `;
   }).join("");
 
-  const viewAllHost = document.getElementById("latest-view-all");
+  }\n\n  const viewAllHost = document.getElementById("latest-view-all");
   if (viewAllHost) {
     viewAllHost.innerHTML = `<a href="${ROOT}search.html">${t({
       en: `View all ${SERVICES_DATA.length}+ services →`,
