@@ -389,3 +389,22 @@ body.homepage-v2{background:linear-gradient(180deg,#f7fbff 0,#fff 35%,#f8fbff 10
  .ss-home-sector-count{font-size:1.35rem;margin-top:3px}
  .ss-home-sector-copy small{font-size:.55rem}
 }
+
+/* Services by Category — subtle category accents */
+.ss-home-sector:nth-child(1){--category-accent:#2563eb;--category-tint:#eff6ff}
+.ss-home-sector:nth-child(2){--category-accent:#16a34a;--category-tint:#f0fdf4}
+.ss-home-sector:nth-child(3){--category-accent:#ea580c;--category-tint:#fff7ed}
+.ss-home-sector:nth-child(4){--category-accent:#7c3aed;--category-tint:#f5f3ff}
+.ss-home-sector:nth-child(5){--category-accent:#0d9488;--category-tint:#f0fdfa}
+.ss-home-sector:nth-child(6){--category-accent:#e11d48;--category-tint:#fff1f2}
+.ss-home-sector{position:relative;overflow:hidden;border-color:color-mix(in srgb,var(--category-accent) 20%,var(--color-border));box-shadow:0 5px 18px color-mix(in srgb,var(--category-accent) 9%,transparent)}
+.ss-home-sector:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--category-accent);opacity:.9}
+.ss-home-sector-panel{background:color-mix(in srgb,var(--category-tint) 70%,var(--color-bg));border-color:color-mix(in srgb,var(--category-accent) 16%,var(--color-border))}
+.ss-home-sector-icon{background:color-mix(in srgb,var(--category-accent) 11%,var(--color-surface));color:var(--category-accent)}
+.ss-home-sector-count{color:var(--category-accent)}
+.ss-home-sector-panel>b{color:var(--category-accent)}
+.ss-home-sector-head a{color:var(--category-accent)}
+.ss-home-service:hover{border-color:var(--category-accent);background:color-mix(in srgb,var(--category-tint) 55%,var(--color-bg))}
+.ss-home-sector:hover{border-color:color-mix(in srgb,var(--category-accent) 38%,var(--color-border));box-shadow:0 9px 25px color-mix(in srgb,var(--category-accent) 13%,transparent)}
+[data-theme="dark"] .ss-home-sector-panel{background:color-mix(in srgb,var(--category-accent) 8%,var(--color-bg));}
+[data-theme="dark"] .ss-home-sector{border-color:color-mix(in srgb,var(--category-accent) 28%,#334960)}
