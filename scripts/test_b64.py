@@ -1,1 +1,0 @@
-print('Base64 test successful')
