@@ -39,21 +39,21 @@
 <section class="sub-stats" id="stats">
 <div class="sub-stat"><b id="m-total">—</b><span>Total subscribers</span></div>
 <div class="sub-stat"><b id="m-email">—</b><span>Email opted-in</span></div>
-<div class="sub-stat"><b id="m-wa">—</b><span>WhatsApp opted-in</span></div>
+<div class="sub-stat"><b id="m-wa">—</b><span>WhatsApp opted-in · disabled</span></div>
 <div class="sub-stat"><b id="m-tg">—</b><span>Telegram linked</span></div>
 <div class="sub-stat"><b id="m-topics">—</b><span>Topic subscriptions</span></div>
 </section>
 
 <section class="dash-card">
 <h3 style="margin-top:0">Send an update</h3>
-<p class="sub-note">Campaigns are sent only to subscribers who have opted into the selected channel. Actual delivery needs the corresponding provider/webhook secret configured in Supabase Edge Function secrets.</p>
+<p class="sub-note">Email and Telegram are available. WhatsApp sending is disabled. Telegram has two modes: private messages to linked subscribers and broadcast posts to the SarkariSewa India channel.</p>
 <div class="campaign-grid">
 <form class="campaign-form" id="campaign-form">
 <input id="campaign-title" maxlength="160" placeholder="Campaign title" required/>
 <select id="campaign-channel" required>
 <option value="email">📧 Email</option>
-<option value="whatsapp">💬 WhatsApp</option>
-<option value="telegram">✈️ Telegram</option>
+<option value="telegram">✈️ Telegram DM</option>
+<option value="telegram_channel">📢 Telegram Channel</option>
 </select>
 <select id="campaign-service">
 <option value="">All service subscriptions</option>
@@ -66,8 +66,9 @@
 <h4 style="margin-top:0">Before sending</h4>
 <ul class="sub-note" style="padding-left:20px">
 <li>Use this for useful updates, not repetitive promotional messages.</li>
-<li>WhatsApp requires valid recipient opt-in and an appropriate provider/template workflow where applicable.</li>
-<li>Telegram individual delivery works only when a subscriber has a linked <code>telegram_chat_id</code>; your public Telegram channel is separate.</li>
+<li>WhatsApp sending is disabled until a proper provider/API workflow is configured.</li>
+<li>Telegram Channel publishing requires the bot to be an administrator of the channel with permission to post, plus the bot token/channel settings in Supabase Edge Function Secrets.</li>
+<li>Telegram DM works only when a subscriber has a linked <code>telegram_chat_id</code>; Channel publishing is a separate broadcast.</li>
 <li>Every campaign creates a delivery record so failures can be reviewed.</li>
 </ul>
 <p class="sub-note danger-note">Do not paste API keys into this page. Provider credentials belong in Supabase Edge Function Secrets.</p>
@@ -78,7 +79,7 @@
 <section class="dash-card">
 <div class="sub-toolbar">
 <input id="search" placeholder="Search email, phone or service…"/>
-<select id="channel-filter"><option value="">All channels</option><option value="email">Email</option><option value="whatsapp">WhatsApp</option><option value="telegram">Telegram</option></select>
+<select id="channel-filter"><option value="">All channels</option><option value="email">Email</option><option value="telegram">Telegram</option></select>
 <select id="service-filter"><option value="">All services</option></select>
 <label class="sub-check"><input type="checkbox" id="opted-only" checked/> opted-in only</label>
 <button class="theme-toggle-btn" type="button" id="export">Export CSV</button>
@@ -119,14 +120,14 @@ function render(){
   const q=$("search").value.trim().toLowerCase(), cf=$("channel-filter").value, sf=$("service-filter").value, only=$("opted-only").checked;
   const rows=ALL_SUBSCRIBERS.filter(s=>{
     const text=[s.email,s.phone,s.service_id,s.source,s.language,(s.notification_topics||[]).join(" ")].join(" ").toLowerCase();
-    const channelOk=!cf || (cf==="email"&&s.email_opted_in&&s.email) || (cf==="whatsapp"&&s.whatsapp_opted_in&&s.phone) || (cf==="telegram"&&s.telegram_opted_in&&s.telegram_chat_id);
+    const channelOk=!cf || (cf==="email"&&s.email_opted_in&&s.email) || (cf==="telegram"&&s.telegram_opted_in&&s.telegram_chat_id);
     const anyOpt=s.email_opted_in&&s.email || s.whatsapp_opted_in&&s.phone || s.telegram_opted_in&&s.telegram_chat_id;
     return (!q||text.includes(q))&&(!sf||s.service_id===sf)&&(!only||anyOpt)&&channelOk;
   });
   $("row-count").textContent=rows.length+" subscriber(s) shown";
   $("subscribers-table").querySelector("tbody").innerHTML=rows.length?rows.map(s=>{
     const topics=(s.notification_topics||[]).join(", ");
-    return '<tr><td>'+esc(s.email)||"—"+'</td><td>'+esc(s.phone)||"—"+'</td><td>'+channelPill("Email",s.email_opted_in&&s.email)+channelPill("WhatsApp",s.whatsapp_opted_in&&s.phone)+channelPill("Telegram",s.telegram_opted_in&&s.telegram_chat_id)+'</td><td>'+esc(topics||serviceLabel(s.service_id))+'</td><td>'+esc(s.source||"—")+'</td><td>'+esc(s.language||"—")+'</td><td>'+new Date(s.created_at).toLocaleString("en-IN")+'</td><td>'+esc(s.last_notified_at?new Date(s.last_notified_at).toLocaleString("en-IN"):"—")+'</td></tr>'
+    return '<tr><td>'+esc(s.email||"—")+'</td><td>'+esc(s.phone||"—")+'</td><td>'+channelPill("Email",s.email_opted_in&&s.email)+channelPill("WhatsApp",s.whatsapp_opted_in&&s.phone)+channelPill("Telegram",s.telegram_opted_in&&s.telegram_chat_id)+'</td><td>'+esc(topics||serviceLabel(s.service_id))+'</td><td>'+esc(s.source||"—")+'</td><td>'+esc(s.language||"—")+'</td><td>'+new Date(s.created_at).toLocaleString("en-IN")+'</td><td>'+esc(s.last_notified_at?new Date(s.last_notified_at).toLocaleString("en-IN"):"—")+'</td></tr>'
   }).join(""):'<tr><td colspan="8">No subscribers match the current filters.</td></tr>';
 }
 async function load(){
@@ -149,19 +150,20 @@ $("export").onclick=()=>{
   const csv=[["email","phone","email_opted_in","whatsapp_opted_in","telegram_opted_in","service","topics","source","language","created_at"],...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="sarkarisewa-subscribers.csv";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 };
+$("campaign-channel").addEventListener("change",()=>{const isChannel=$("campaign-channel").value==="telegram_channel";$("campaign-service").disabled=isChannel;if(isChannel)$("campaign-service").value="";$("campaign-message").placeholder=isChannel?"Write the channel broadcast… Include the page link when useful.":"Write the update message… Include the page link when useful.";});
 $("campaign-form").addEventListener("submit",async e=>{
   e.preventDefault();
   const channel=$("campaign-channel").value,title=$("campaign-title").value.trim(),message=$("campaign-message").value.trim(),service_id=$("campaign-service").value||null;
   if(!message)return;
   const result=$("send-result"),btn=$("send-btn");
-  const eligible=ALL_SUBSCRIBERS.filter(s=>{if(service_id&&s.service_id!==service_id)return false;if(channel==="email")return s.email_opted_in&&s.email;if(channel==="whatsapp")return s.whatsapp_opted_in&&s.phone;return s.telegram_opted_in&&s.telegram_chat_id;});
+  const eligible=channel==="telegram_channel"?[{}]:ALL_SUBSCRIBERS.filter(s=>{if(service_id&&s.service_id!==service_id)return false;if(channel==="email")return s.email_opted_in&&s.email;return s.telegram_opted_in&&s.telegram_chat_id;});
   if(!eligible.length){result.style.display="block";result.textContent="No eligible opted-in subscribers for this channel/filter.";return}
-  if(!confirm("Send this "+channel+" update to "+eligible.length+" opted-in subscriber(s)?"))return;
-  btn.disabled=true;btn.textContent="Sending…";result.style.display="block";result.textContent="Dispatching campaign…";
+  if(!confirm(channel==="telegram_channel"?"Publish this update to the SarkariSewa India Telegram channel?":"Send this "+channel+" update to "+eligible.length+" opted-in subscriber(s)?"))return;
+  btn.disabled=true;btn.textContent=channel==="telegram_channel"?"Publishing…":"Sending…";result.style.display="block";result.textContent=channel==="telegram_channel"?"Publishing to Telegram channel…":"Dispatching campaign…";
   try{
     const {data,error}=await SUPABASE_CLIENT.functions.invoke("notification-dispatch",{body:{channel,title,message,service_id}});
     if(error)throw error;
-    result.textContent="Done: "+(data.sent||0)+" sent, "+(data.failed||0)+" failed, audience "+(data.total||eligible.length)+".";
+    result.textContent=channel==="telegram_channel"?"Published to Telegram channel · message ID "+(data.telegram_message_id||"—")+".":"Done: "+(data.sent||0)+" sent, "+(data.failed||0)+" failed, audience "+(data.total||eligible.length)+".";
     await load();
   }catch(err){result.textContent="Campaign could not be dispatched: "+(err.message||err)}
   finally{btn.disabled=false;btn.textContent="Preview audience & send"}
