@@ -1,8 +1,8 @@
 /* Service access gate: browse freely, require a signed-in account for service workflows. */
 (function () {
   "use strict";
-  const ROOT = window.SS_ROOT || "";
-  const LOGIN = ROOT + "account/login.html";
+  const GATE_ROOT = window.SS_ROOT || "";
+  const LOGIN = GATE_ROOT + "account/login.html";
 
   function safeLocalTarget(value) {
     try {
