@@ -277,7 +277,14 @@
   ]
 }
   </script>
-</head>
+<style id="ss-csc-pipeline-v1">
+.ss-csc-guide{margin:0 0 48px;padding:24px;border:1px solid var(--color-border,#dbe2ea);border-radius:18px;background:linear-gradient(135deg,rgba(37,99,235,.055),rgba(16,185,129,.045));box-shadow:0 8px 24px rgba(15,23,42,.05)}
+.ss-csc-guide h2{margin:0 0 9px;color:var(--color-text,#0f172a);font-size:1.4rem}.ss-csc-guide>p{margin:0 0 18px;color:var(--color-text-muted,#64748b);line-height:1.7}
+.ss-csc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.ss-csc-card{padding:16px;border:1px solid var(--color-border,#dbe2ea);border-radius:13px;background:var(--color-surface,#fff)}.ss-csc-card h3{margin:0 0 7px;font-size:1rem;color:var(--color-primary,#1d4ed8)}.ss-csc-card p{margin:0;color:var(--color-text-muted,#64748b);line-height:1.62;font-size:.93rem}
+.ss-csc-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}.ss-csc-actions a{display:inline-flex;align-items:center;padding:10px 13px;border:1px solid var(--color-border,#dbe2ea);border-radius:10px;background:var(--color-surface,#fff);color:var(--color-primary,#1d4ed8);font-weight:700;text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}.ss-csc-actions a:hover,.ss-csc-actions a:focus-visible{transform:translateY(-2px);border-color:var(--color-primary,#2563eb);box-shadow:0 7px 18px rgba(15,23,42,.08)}
+@media(max-width:980px){.ss-csc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:640px){.ss-csc-guide{padding:18px}.ss-csc-grid{grid-template-columns:1fr}.ss-csc-actions{display:grid;grid-template-columns:1fr}.ss-csc-actions a{justify-content:center}}
+@media(prefers-reduced-motion:reduce){.ss-csc-actions a{transition:none}.ss-csc-actions a:hover,.ss-csc-actions a:focus-visible{transform:none}}
+</style></head>
 <body class="site-body">
   <div id="site-header">
 <div class="tricolor-rule"></div>
@@ -558,8 +565,8 @@
         <div style="font-size: 2rem; margin-bottom: 12px;">✅</div>
         <h3 style="margin: 0 0 8px 0; font-size: 1.2rem; color: var(--color-primary);">Verified CSC</h3>
         <p style="margin: 0; color: var(--color-text-muted); font-size: 0.95rem;">
-          <span data-lang-show="en">View trusted, verified centres and their services.</span>
-          <span data-lang-show="hi">Verified सेंटर्स और उनकी सर्विसेस देखें।</span>
+          <span data-lang-show="en">View locator results and review centre details before visiting.</span>
+          <span data-lang-show="hi">Locator results देखें और visit से पहले centre details review करें।</span>
         </p>
       </div>
       <a href="../claim-your-csc.html" style="background: var(--color-surface); padding: 24px; border-radius: 12px; border: 1px solid var(--color-border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; cursor: pointer; text-decoration: none; display: block; color: inherit;">
@@ -613,9 +620,29 @@
       <a href="../claim-your-csc.html" class="btn" style="background: white; color: #1e3a8a; font-weight: 700; padding: 12px 24px; border-radius: 8px; font-size: 1.1rem; text-decoration: none; display: inline-block;">
         Claim Your CSC
       </a>
-      <a href="#" style="color: white; text-decoration: underline; font-size: 0.9rem; opacity: 0.9;">How verification works?</a>
+      <a href="#ss-csc-guide" style="color: white; text-decoration: underline; font-size: 0.9rem; opacity: 0.9;">How verification works?</a>
     </div>
   </section>
+
+<section class="ss-csc-guide" id="ss-csc-guide">
+<h2><span data-lang-show="en">CSC Locator: 8 Checks Before Visiting a Centre</span><span data-lang-show="hi">CSC Locator: सेंटर जाने से पहले 8 जरूरी चेक</span></h2>
+<p><span data-lang-show="en">Use the search tool to shortlist a centre, then confirm the service and current instructions before visiting. Search results on this page are informational and should be cross-checked when the service is important.</span><span data-lang-show="hi">लोकेटर से सेंटर shortlist करें, फिर जाने से पहले service और current instructions की पुष्टि करें। इस पेज के search results informational हैं; जरूरी सेवा के लिए official source से cross-check करें।</span></p>
+<div class="ss-csc-grid">
+<article class="ss-csc-card"><h3>1. Select state</h3><p><span data-lang-show="en">Choose the correct state first so the district list matches your search.</span><span data-lang-show="hi">पहले सही राज्य चुनें ताकि district list सही मिले।</span></p></article>
+<article class="ss-csc-card"><h3>2. Narrow by district/PIN</h3><p><span data-lang-show="en">Use district or PIN code to reduce the search area and compare nearby results.</span><span data-lang-show="hi">District या PIN code से search area छोटा करें और nearby results compare करें।</span></p></article>
+<article class="ss-csc-card"><h3>3. Confirm the service</h3><p><span data-lang-show="en">A centre may not provide every service. Confirm the specific service before travelling.</span><span data-lang-show="hi">हर सेंटर पर हर service जरूरी नहीं है। जाने से पहले अपनी specific service confirm करें।</span></p></article>
+<article class="ss-csc-card"><h3>4. Check contact details</h3><p><span data-lang-show="en">Review the displayed centre name, address and contact information before calling or visiting.</span><span data-lang-show="hi">Call या visit करने से पहले centre name, address और contact details देखें।</span></p></article>
+<article class="ss-csc-card"><h3>5. Ask about documents</h3><p><span data-lang-show="en">Keep the documents required for your actual government service ready; requirements vary by service.</span><span data-lang-show="hi">जिस government service के लिए जा रहे हैं उसके जरूरी documents पहले तैयार रखें; requirements service के अनुसार बदल सकती हैं।</span></p></article>
+<article class="ss-csc-card"><h3>6. Confirm charges</h3><p><span data-lang-show="en">Ask for the applicable service charge before paying and request a receipt where available.</span><span data-lang-show="hi">Payment से पहले applicable service charge पूछें और उपलब्ध हो तो receipt लें।</span></p></article>
+<article class="ss-csc-card"><h3>7. Protect personal data</h3><p><span data-lang-show="en">Share Aadhaar, OTP, banking or other sensitive information only when the official service requires it.</span><span data-lang-show="hi">Aadhaar, OTP, banking या अन्य sensitive information केवल official service requirement होने पर ही share करें।</span></p></article>
+<article class="ss-csc-card"><h3>8. Cross-check official source</h3><p><span data-lang-show="en">For important applications, verify the service instructions on the relevant government portal before submission.</span><span data-lang-show="hi">महत्वपूर्ण application के लिए submit करने से पहले संबंधित government portal की instructions जरूर verify करें।</span></p></article>
+</div>
+<div class="ss-csc-actions">
+<a href="https://www.digitalindia.gov.in/di-ecosystem/" target="_blank" rel="noopener noreferrer">🌐 Digital India — CSC</a>
+<a href="http://csc.gov.in/" target="_blank" rel="noopener noreferrer">🔗 CSC Official Portal</a>
+<a href="../claim-your-csc.html">🏢 Claim Your CSC</a>
+</div>
+</section>
 
   <!-- 4. SEARCH RESULTS -->
   <section id="csc-results-section" style="margin-bottom: 48px;">
