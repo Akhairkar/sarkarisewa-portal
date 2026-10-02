@@ -1,31 +1,24 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="../favicon.ico" rel="icon"/>
-<link href="../manifest.json" rel="manifest"/>
-<title>Subscribers Directory — SarkariSewa Admin</title>
-<meta content="noindex, nofollow" name="robots"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="icon" href="../favicon.ico"/>
+<link rel="manifest" href="../manifest.json"/>
+<title>Subscribers & Notifications — SarkariSewa Admin</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="../assets/css/style.css" rel="stylesheet"/>
 <link href="../assets/css/admin-theme.css?v=3" rel="stylesheet"/>
 <script defer src="../assets/js/admin-theme-toggle.js"></script>
-<link rel="canonical" href="https://sarkarisewaindia.com/admin/subscribers.html"></head>
+<style>
+.sub-wrap{display:grid;gap:18px}.sub-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.sub-stat{padding:17px;border:1px solid var(--admin-border);border-radius:14px;background:var(--admin-surface)}.sub-stat b{display:block;font-size:1.45rem;color:var(--admin-text)}.sub-stat span{font-size:.78rem;color:var(--admin-text-muted)}.sub-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.sub-toolbar input,.sub-toolbar select,.campaign-form input,.campaign-form textarea,.campaign-form select{background:var(--admin-surface);color:var(--admin-text);border:1px solid var(--admin-border);border-radius:10px;padding:10px 12px}.sub-toolbar input{min-width:230px;flex:1}.sub-check{display:flex;gap:7px;align-items:center;font-size:.86rem;color:var(--admin-text-sub)}.sub-table-wrap{overflow:auto}.sub-table{width:100%;border-collapse:collapse;min-width:900px}.sub-table th,.sub-table td{padding:11px 10px;border-bottom:1px solid var(--admin-border);text-align:left;font-size:.82rem;vertical-align:top}.sub-table th{color:var(--admin-text-muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.04em}.pill{display:inline-flex;padding:4px 8px;border-radius:999px;background:rgba(16,185,129,.12);color:#10b981;font-size:.72rem;font-weight:700;margin:2px}.pill.off{background:rgba(148,163,184,.12);color:var(--admin-text-muted)}.campaign-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.campaign-form{display:grid;gap:10px}.campaign-form textarea{min-height:130px;resize:vertical}.campaign-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.sub-note{font-size:.78rem;color:var(--admin-text-muted);line-height:1.55}.result{padding:10px 12px;border-radius:10px;background:var(--admin-surface-alt);font-size:.82rem;display:none}.danger-note{border-left:3px solid #f59e0b;padding-left:10px}@media(max-width:900px){.sub-stats{grid-template-columns:repeat(2,1fr)}.campaign-grid{grid-template-columns:1fr}}@media(max-width:560px){.sub-stats{grid-template-columns:1fr 1fr}.sub-stat b{font-size:1.2rem}}
+</style>
+</head>
 <body>
-<div class="admin-layout" hidden="" id="dash-wrap">
+<div class="admin-layout" hidden id="dash-wrap">
 <aside class="admin-sidebar">
-<div class="admin-sidebar-brand">
-<div class="admin-sidebar-logo">S</div>
-<div>
-<div class="admin-sidebar-title">SarkariSewa</div>
-<div class="admin-sidebar-subtitle">Admin Console</div>
-</div>
-</div>
+<div class="admin-sidebar-brand"><div class="admin-sidebar-logo">S</div><div><div class="admin-sidebar-title">SarkariSewa</div><div class="admin-sidebar-subtitle">Admin Console</div></div></div>
 <nav class="admin-nav">
 <a class="admin-nav-item" href="dashboard.html">📊 Overview</a>
 <a class="admin-nav-item" href="comments.html">💬 Comments</a>
@@ -38,96 +31,149 @@
 <a class="admin-nav-item" href="services.html">⚙️ Services</a>
 <a class="admin-nav-item" href="analytics.html">📈 Analytics</a>
 </nav>
-<div class="admin-sidebar-footer">
-<button class="theme-toggle-btn" type="button">☀️ Light Mode</button>
-<div id="whoami" style="font-size:0.78rem; color:var(--admin-text-muted);">Loading identity…</div>
-<button class="logout-btn" id="logout" style="width:100%;">Log out</button>
-</div>
+<div class="admin-sidebar-footer"><button class="theme-toggle-btn" type="button">☀️ Light Mode</button><div id="whoami" style="font-size:.78rem;color:var(--admin-text-muted)">Loading identity…</div><button class="logout-btn" id="logout" style="width:100%">Log out</button></div>
 </aside>
 <main class="admin-main">
-<div class="admin-topbar">
-<div class="admin-page-title">
-<h1>Subscribers Directory</h1>
-<p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">View users opted in for email &amp; WhatsApp service notifications.</p>
+<div class="admin-topbar"><div class="admin-page-title"><h1>Subscribers & Notifications</h1><p style="margin:4px 0 0;font-size:.86rem;color:var(--admin-text-muted)">Subscriber preferences, audience metrics and opt-in notification campaigns.</p></div></div>
+<div class="sub-wrap">
+<section class="sub-stats" id="stats">
+<div class="sub-stat"><b id="m-total">—</b><span>Total subscribers</span></div>
+<div class="sub-stat"><b id="m-email">—</b><span>Email opted-in</span></div>
+<div class="sub-stat"><b id="m-wa">—</b><span>WhatsApp opted-in</span></div>
+<div class="sub-stat"><b id="m-tg">—</b><span>Telegram linked</span></div>
+<div class="sub-stat"><b id="m-topics">—</b><span>Topic subscriptions</span></div>
+</section>
+
+<section class="dash-card">
+<h3 style="margin-top:0">Send an update</h3>
+<p class="sub-note">Campaigns are sent only to subscribers who have opted into the selected channel. Actual delivery needs the corresponding provider/webhook secret configured in Supabase Edge Function secrets.</p>
+<div class="campaign-grid">
+<form class="campaign-form" id="campaign-form">
+<input id="campaign-title" maxlength="160" placeholder="Campaign title" required/>
+<select id="campaign-channel" required>
+<option value="email">📧 Email</option>
+<option value="whatsapp">💬 WhatsApp</option>
+<option value="telegram">✈️ Telegram</option>
+</select>
+<select id="campaign-service">
+<option value="">All service subscriptions</option>
+</select>
+<textarea id="campaign-message" maxlength="4000" placeholder="Write the update message… Include the page link when useful." required></textarea>
+<div class="campaign-actions"><button class="logout-btn logout-btn--primary" type="submit" id="send-btn">Preview audience &amp; send</button><button class="theme-toggle-btn" type="button" id="clear-btn">Clear</button></div>
+<div class="result" id="send-result"></div>
+</form>
+<div>
+<h4 style="margin-top:0">Before sending</h4>
+<ul class="sub-note" style="padding-left:20px">
+<li>Use this for useful updates, not repetitive promotional messages.</li>
+<li>WhatsApp requires valid recipient opt-in and an appropriate provider/template workflow where applicable.</li>
+<li>Telegram individual delivery works only when a subscriber has a linked <code>telegram_chat_id</code>; your public Telegram channel is separate.</li>
+<li>Every campaign creates a delivery record so failures can be reviewed.</li>
+</ul>
+<p class="sub-note danger-note">Do not paste API keys into this page. Provider credentials belong in Supabase Edge Function Secrets.</p>
 </div>
 </div>
-<div class="dash-card">
-<h3 style="margin-top:0;">All subscribers <span id="subscribers-count" style="color:var(--admin-text-muted); font-weight:400; font-size:0.85rem;"></span></h3>
-<table class="cat-table" id="subscribers-table">
-<thead><tr><th>Email</th><th>Phone</th><th>WhatsApp?</th><th>Service</th><th>Date</th></tr></thead>
-<tbody><tr><td class="loading" colspan="5">Loading…</td></tr></tbody>
+</section>
+
+<section class="dash-card">
+<div class="sub-toolbar">
+<input id="search" placeholder="Search email, phone or service…"/>
+<select id="channel-filter"><option value="">All channels</option><option value="email">Email</option><option value="whatsapp">WhatsApp</option><option value="telegram">Telegram</option></select>
+<select id="service-filter"><option value="">All services</option></select>
+<label class="sub-check"><input type="checkbox" id="opted-only" checked/> opted-in only</label>
+<button class="theme-toggle-btn" type="button" id="export">Export CSV</button>
+</div>
+<p id="row-count" class="sub-note" style="margin:10px 0"></p>
+<div class="sub-table-wrap">
+<table class="sub-table" id="subscribers-table">
+<thead><tr><th>Email</th><th>Phone</th><th>Channels</th><th>Topics / service</th><th>Source</th><th>Language</th><th>Joined</th><th>Last notified</th></tr></thead>
+<tbody><tr><td colspan="8">Loading…</td></tr></tbody>
 </table>
+</div>
+</section>
+
+<section class="dash-card">
+<h3 style="margin-top:0">Recent campaigns</h3>
+<div class="sub-table-wrap"><table class="sub-table"><thead><tr><th>Title</th><th>Channel</th><th>Status</th><th>Audience</th><th>Sent</th><th>Failed</th><th>Created</th></tr></thead><tbody id="campaign-history"><tr><td colspan="7">Loading…</td></tr></tbody></table></div>
+</section>
 </div>
 </main>
 </div>
-<div class="admin-wrap-login" id="dash-loading">
-<p class="loading" style="font-size:1.1rem; color:var(--admin-text-sub);">Connecting to Supabase Console…</p>
-</div>
+<div class="admin-wrap-login" id="dash-loading"><p class="loading" style="font-size:1.1rem;color:var(--admin-text-sub)">Connecting to Supabase Console…</p></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../assets/js/supabase-client.js"></script>
 <script>
-  let SUPABASE_CLIENT = null;
-
-  (async function init() {
-    SUPABASE_CLIENT = await getSupabaseClient();
-    if (!SUPABASE_CLIENT) {
-      document.getElementById("dash-loading").innerHTML = "<p class='loading'>Backend not configured.</p>";
-      return;
-    }
-    const { data } = await SUPABASE_CLIENT.auth.getSession();
-    if (!data || !data.session) {
-      window.location.href = "login.html";
-      return;
-    }
-    document.getElementById("whoami").textContent = "Logged in as " + data.session.user.email;
-    document.getElementById("dash-loading").hidden = true;
-    document.getElementById("dash-wrap").hidden = false;
-    loadSubscribers();
-  })();
-
-  document.getElementById("logout").addEventListener("click", async function () {
-    if (SUPABASE_CLIENT) await SUPABASE_CLIENT.auth.signOut();
-    window.location.href = "login.html";
+let SUPABASE_CLIENT=null, ALL_SUBSCRIBERS=[];
+const $=id=>document.getElementById(id);
+function esc(v){const d=document.createElement("div");d.textContent=v==null?"":String(v);return d.innerHTML}
+function channelPill(label,on){return '<span class="pill'+(on?'':' off')+'">'+esc(label)+'</span>'}
+function serviceLabel(v){return v||"General updates"}
+function uniqueServices(){return [...new Set(ALL_SUBSCRIBERS.map(s=>s.service_id).filter(Boolean))].sort()}
+function fillServiceFilters(){
+  const opts=uniqueServices().map(s=>'<option value="'+esc(s)+'">'+esc(s)+'</option>').join("");
+  $("service-filter").insertAdjacentHTML("beforeend",opts);
+  $("campaign-service").insertAdjacentHTML("beforeend",opts);
+}
+function render(){
+  const q=$("search").value.trim().toLowerCase(), cf=$("channel-filter").value, sf=$("service-filter").value, only=$("opted-only").checked;
+  const rows=ALL_SUBSCRIBERS.filter(s=>{
+    const text=[s.email,s.phone,s.service_id,s.source,s.language,(s.notification_topics||[]).join(" ")].join(" ").toLowerCase();
+    const channelOk=!cf || (cf==="email"&&s.email_opted_in&&s.email) || (cf==="whatsapp"&&s.whatsapp_opted_in&&s.phone) || (cf==="telegram"&&s.telegram_opted_in&&s.telegram_chat_id);
+    const anyOpt=s.email_opted_in&&s.email || s.whatsapp_opted_in&&s.phone || s.telegram_opted_in&&s.telegram_chat_id;
+    return (!q||text.includes(q))&&(!sf||s.service_id===sf)&&(!only||anyOpt)&&channelOk;
   });
-
-  function escapeHtml(str) {
-    const div = document.createElement("div");
-    div.textContent = str == null ? "" : str;
-    return div.innerHTML;
-  }
-
-  async function loadSubscribers() {
-    const tbody = document.querySelector("#subscribers-table tbody");
-    const { data, error } = await SUPABASE_CLIENT
-      .from("subscribers")
-      .select("email, phone, whatsapp_opted_in, service_id, created_at")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      tbody.innerHTML = `<tr><td colspan="5">Could not load subscribers: ${escapeHtml(error.message)}</td></tr>`;
-      return;
-    }
-
-    document.getElementById("subscribers-count").textContent = `(${data.length})`;
-    if (!data.length) {
-      tbody.innerHTML = `<tr><td colspan="5">No subscribers yet.</td></tr>`;
-      return;
-    }
-
-    tbody.innerHTML = data
-      .map(
-        (s) => `
-      <tr>
-        <td>${escapeHtml(s.email) || "—"}</td>
-        <td>${escapeHtml(s.phone) || "—"}</td>
-        <td>${s.whatsapp_opted_in ? "✅" : "—"}</td>
-        <td>${escapeHtml(s.service_id) || "General"}</td>
-        <td>${new Date(s.created_at).toLocaleDateString("en-IN")}</td>
-      </tr>
-    `
-      )
-      .join("");
-  }
+  $("row-count").textContent=rows.length+" subscriber(s) shown";
+  $("subscribers-table").querySelector("tbody").innerHTML=rows.length?rows.map(s=>{
+    const topics=(s.notification_topics||[]).join(", ");
+    return '<tr><td>'+esc(s.email)||"—"+'</td><td>'+esc(s.phone)||"—"+'</td><td>'+channelPill("Email",s.email_opted_in&&s.email)+channelPill("WhatsApp",s.whatsapp_opted_in&&s.phone)+channelPill("Telegram",s.telegram_opted_in&&s.telegram_chat_id)+'</td><td>'+esc(topics||serviceLabel(s.service_id))+'</td><td>'+esc(s.source||"—")+'</td><td>'+esc(s.language||"—")+'</td><td>'+new Date(s.created_at).toLocaleString("en-IN")+'</td><td>'+esc(s.last_notified_at?new Date(s.last_notified_at).toLocaleString("en-IN"):"—")+'</td></tr>'
+  }).join(""):'<tr><td colspan="8">No subscribers match the current filters.</td></tr>';
+}
+async function load(){
+  const {data,error}=await SUPABASE_CLIENT.from("subscribers").select("id,email,phone,whatsapp_opted_in,email_opted_in,telegram_opted_in,telegram_chat_id,service_id,notification_topics,source,language,last_notified_at,created_at").order("created_at",{ascending:false});
+  if(error)throw error;
+  ALL_SUBSCRIBERS=data||[];
+  $("m-total").textContent=ALL_SUBSCRIBERS.length;
+  $("m-email").textContent=ALL_SUBSCRIBERS.filter(s=>s.email_opted_in&&s.email).length;
+  $("m-wa").textContent=ALL_SUBSCRIBERS.filter(s=>s.whatsapp_opted_in&&s.phone).length;
+  $("m-tg").textContent=ALL_SUBSCRIBERS.filter(s=>s.telegram_opted_in&&s.telegram_chat_id).length;
+  $("m-topics").textContent=ALL_SUBSCRIBERS.filter(s=>(s.notification_topics||[]).length).length;
+  fillServiceFilters(); render();
+  const c=await SUPABASE_CLIENT.from("notification_campaigns").select("title,channel,status,total_recipients,sent_count,failed_count,created_at").order("created_at",{ascending:false}).limit(20);
+  $("campaign-history").innerHTML=c.error?'<tr><td colspan="7">'+esc(c.error.message)+'</td></tr>':(c.data||[]).map(x=>'<tr><td>'+esc(x.title)+'</td><td>'+esc(x.channel)+'</td><td>'+esc(x.status)+'</td><td>'+x.total_recipients+'</td><td>'+x.sent_count+'</td><td>'+x.failed_count+'</td><td>'+new Date(x.created_at).toLocaleString("en-IN")+'</td></tr>').join("")||'<tr><td colspan="7">No campaigns yet.</td></tr>';
+}
+$("search").addEventListener("input",render); $("channel-filter").addEventListener("change",render); $("service-filter").addEventListener("change",render); $("opted-only").addEventListener("change",render);
+$("clear-btn").onclick=()=>{$("campaign-title").value="";$("campaign-message").value="";$("campaign-service").value="";};
+$("export").onclick=()=>{
+  const rows=ALL_SUBSCRIBERS.map(s=>[s.email||"",s.phone||"",s.email_opted_in?"yes":"no",s.whatsapp_opted_in?"yes":"no",s.telegram_opted_in?"yes":"no",s.service_id||"General", (s.notification_topics||[]).join("|"),s.source||"",s.language||"",s.created_at||""]);
+  const csv=[["email","phone","email_opted_in","whatsapp_opted_in","telegram_opted_in","service","topics","source","language","created_at"],...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="sarkarisewa-subscribers.csv";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+$("campaign-form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const channel=$("campaign-channel").value,title=$("campaign-title").value.trim(),message=$("campaign-message").value.trim(),service_id=$("campaign-service").value||null;
+  if(!message)return;
+  const result=$("send-result"),btn=$("send-btn");
+  const eligible=ALL_SUBSCRIBERS.filter(s=>{if(service_id&&s.service_id!==service_id)return false;if(channel==="email")return s.email_opted_in&&s.email;if(channel==="whatsapp")return s.whatsapp_opted_in&&s.phone;return s.telegram_opted_in&&s.telegram_chat_id;});
+  if(!eligible.length){result.style.display="block";result.textContent="No eligible opted-in subscribers for this channel/filter.";return}
+  if(!confirm("Send this "+channel+" update to "+eligible.length+" opted-in subscriber(s)?"))return;
+  btn.disabled=true;btn.textContent="Sending…";result.style.display="block";result.textContent="Dispatching campaign…";
+  try{
+    const {data,error}=await SUPABASE_CLIENT.functions.invoke("notification-dispatch",{body:{channel,title,message,service_id}});
+    if(error)throw error;
+    result.textContent="Done: "+(data.sent||0)+" sent, "+(data.failed||0)+" failed, audience "+(data.total||eligible.length)+".";
+    await load();
+  }catch(err){result.textContent="Campaign could not be dispatched: "+(err.message||err)}
+  finally{btn.disabled=false;btn.textContent="Preview audience & send"}
+});
+(async function(){
+  try{
+    SUPABASE_CLIENT=await getSupabaseClient(); if(!SUPABASE_CLIENT)throw new Error("Backend not configured");
+    const {data}=await SUPABASE_CLIENT.auth.getSession(); if(!data||!data.session){location.href="login.html";return}
+    $("whoami").textContent="Logged in as "+data.session.user.email; $("dash-loading").hidden=true; $("dash-wrap").hidden=false; await load();
+  }catch(e){$("dash-loading").innerHTML="<p>Could not load subscribers: "+esc(e.message||e)+"</p>"}
+})();
+$("logout").addEventListener("click",async()=>{if(SUPABASE_CLIENT)await SUPABASE_CLIENT.auth.signOut();location.href="login.html"});
 </script>
 </body>
 </html>
