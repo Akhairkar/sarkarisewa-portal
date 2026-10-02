@@ -21,7 +21,7 @@ function render(){
 }
 function populateFilter(){if(!filterEl)return;const l=labels();filterEl.innerHTML='<option value="">'+esc(l.all)+"</option>"+cats.map(c=>'<option value="'+esc(c.slug)+'">'+esc(tfn(c.name))+"</option>").join("");}
 Promise.all([
-  fetch(ROOT+"data/services.json").then(r=>{if(!r.ok)throw new Error("services data failed");return r.json();}),
+  fetch(ROOT+"data/services-directory.json").then(r=>{if(!r.ok)throw new Error("directory data failed");return r.json();}),
   fetch(ROOT+"data/categories.json").then(r=>{if(!r.ok)throw new Error("categories data failed");return r.json();})
 ]).then(([s,c])=>{
  all=Array.isArray(s)?s:(s&&Array.isArray(s.services)?s.services:[]);
