@@ -8,7 +8,7 @@ const filterEl=document.getElementById("sd-category-filter");
 let all=[],cats=[];
 const tfn=(x)=>{if(!x)return "";if(typeof x==="string")return x;const lang=currentLang();return x[lang]||x.en||x.hi||"";};
 function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function href(s){return typeof ssServiceHref==="function"?ssServiceHref(ROOT,s):ROOT+"service/"+encodeURIComponent(s.slug)+".html";}
+function href(s){if(s&&s.customUrl)return ROOT+s.customUrl;const slug=s&&(s.slug||s.id)||"";return ROOT+"service/"+encodeURIComponent(slug)+".html";}
 function currentLang(){return typeof getLang==="function"?getLang():"hi";}
 function labels(){return currentLang()==="hi"?{popular:"लोकप्रिय सेवाएं",view:"सभी देखें",services:"सेवाएं",search:"सेवाएं, दस्तावेज़, नौकरी या योजना खोजें",all:"सभी श्रेणियां",empty:"कोई सेवा नहीं मिली",hint:"अपना खोज शब्द या श्रेणी बदलकर देखें।"}:{popular:"Popular services",view:"View all",services:"services",search:"Search services, documents, jobs or schemes",all:"All categories",empty:"No services found",hint:"Try a different search term or category."};}
 function updateSearchUI(){const l=labels();if(searchEl)searchEl.placeholder=l.search;if(filterEl&&filterEl.options[0])filterEl.options[0].textContent=l.all;}
