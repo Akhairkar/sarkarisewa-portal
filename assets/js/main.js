@@ -322,18 +322,18 @@ function initTelegramBanner() {
       </div>
       <div class="tg-text-wrap">
         <div class="tg-channel-name">SarkariSewa India 🇮🇳</div>
-        <div class="tg-tagline">📢 रोज़ाना FREE सरकारी अपडेट्स पायें!</div>
+        <div class="tg-tagline">📢 रोज़ाना सरकारी अपडेट्स पायें!</div>
       </div>
       <button class="tg-close-btn" id="tg-close-trigger" onclick="closeTgBanner()" aria-label="Close">✕</button>
     </div>
     <a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener noreferrer" class="tg-join-btn" id="tg-join-trigger" onclick="closeTgBanner(true)">
       <span class="tg-bell">🔔</span>
-      Free Join करें — अभी!
+      Join करें — अभी!
       <span class="tg-arrow">→</span>
     </a>
     <div class="tg-stats">
       <span class="tg-dot"></span>
-      Naukri Alerts &nbsp;•&nbsp; Sarkari Yojana &nbsp;•&nbsp; Exam Updates &nbsp;•&nbsp; 100% Free
+      Naukri Alerts &nbsp;•&nbsp; Sarkari Yojana &nbsp;•&nbsp; Exam Updates
     </div>
   `;
 
