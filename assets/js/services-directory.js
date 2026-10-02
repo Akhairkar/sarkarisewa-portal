@@ -6,7 +6,7 @@ const countEl=document.getElementById("services-directory-count");
 const searchEl=document.getElementById("sd-search");
 const filterEl=document.getElementById("sd-category-filter");
 let all=[],cats=[];
-const tfn=typeof t==="function"?t:(x)=>typeof x==="object"?(x.en||x.hi||""):String(x||"");
+const tfn=(x)=>{if(!x)return "";if(typeof x==="string")return x;const lang=currentLang();return x[lang]||x.en||x.hi||"";};
 function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\":"&quot;","'":"&#39;"}[c]));}
 function href(s){return typeof ssServiceHref==="function"?ssServiceHref(ROOT,s):ROOT+"service/"+encodeURIComponent(s.slug)+".html";}
 function currentLang(){return typeof getLang==="function"?getLang():"hi";}
