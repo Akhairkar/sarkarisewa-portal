@@ -1,0 +1,59 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import TaskList from "../../components/TaskList.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { STATES } from "../../data/site";
+import { exists } from "../../lib/repo";
+
+// CSC and Jan Aushadhi state pages use slightly different slugs in places.
+const alt: Record<string, string[]> = {
+  "andaman-nicobar": ["andaman-nicobar", "andaman-and-nicobar"],
+  "jammu-kashmir": ["jammu-and-kashmir", "jammu-kashmir"],
+  "dadra-nagar-haveli-daman-diu": ["dadra-nagar-haveli-daman-diu", "dadra-and-nagar-haveli-and-daman-and-diu", "dnh-dd"],
+};
+const pick = (dir: string, slug: string) =>
+  (alt[slug] ?? [slug]).map((s) => `service/${dir}/${s}.html`).find(exists);
+const csc = STATES.map((s) => ({ ...s, href: pick("csc-locator", s.slug) })).filter((s) => s.href);
+const ja = STATES.map((s) => ({ ...s, href: pick("jan-aushadhi", s.slug) })).filter((s) => s.href);
+
+const quick = [
+  { href: "/tools/csc-locator.html", emoji: "📍", title: "CSC Locator", text: "PIN code या ज़िले से नज़दीकी CSC खोजें" },
+  { href: "/service/jan-aushadhi-store-locator.html", emoji: "💊", title: "जन औषधि केंद्र खोजें", text: "50-80% सस्ती जेनेरिक दवाएं" },
+  { href: "/support/helpline-directory.html", emoji: "📞", title: "सरकारी हेल्पलाइन", text: "सभी विभागों के टोल-फ्री नंबर" },
+];
+const crumbs = [{ label: "होम", href: "/" }, { label: "आपके पास" }];
+const faq = [
+  { q: "CSC (कॉमन सर्विस सेंटर) में कौन से काम होते हैं?", a: "CSC या जन सेवा केंद्र पर प्रमाण पत्र, राशन कार्ड, आयुष्मान कार्ड, PAN, बिजली बिल, बैंकिंग और कई सरकारी योजनाओं के ऑनलाइन आवेदन होते हैं। ऑपरेटर हर सेवा का तय शुल्क लेता है।" },
+  { q: "जन औषधि केंद्र की दवा सस्ती क्यों होती है?", a: "जन औषधि केंद्रों पर ब्रांडेड दवाओं की जगह उसी सॉल्ट की जेनेरिक दवाएं मिलती हैं, जो आमतौर पर 50% से 80% तक सस्ती होती हैं। सरकार के अनुसार इनकी गुणवत्ता की जांच होती है।" },
+  { q: "लिस्ट में दिए नंबर पर बात नहीं हो रही तो?", a: "केंद्रों की जानकारी सरकारी डेटा से ली गई है और समय के साथ बदल सकती है। जाने से पहले फोन करके पुष्टि करें या पास के दूसरे केंद्र पर जाएं।" },
+];
+---
+<Base
+  title="आपके पास: CSC सेंटर और जन औषधि केंद्र, राज्य और ज़िले के अनुसार | SarkariSewa India"
+  description="अपने ज़िले के CSC / जन सेवा केंद्र और प्रधानमंत्री जन औषधि केंद्र खोजें: पता, फोन नंबर और नक्शा। सभी 36 राज्यों की लिस्ट।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <h1>आपके पास 📍</h1>
+    <p class="page-intro">ऑनलाइन फॉर्म खुद नहीं भर पा रहे? पास के CSC सेंटर जाएं। सस्ती दवा चाहिए? जन औषधि केंद्र खोजें। अपना राज्य चुनें, फिर ज़िला।</p>
+  </section>
+  <section class="block"><TaskList items={quick} /></section>
+
+  <section class="block" id="csc">
+    <div class="block-head"><h2>CSC / जन सेवा केंद्र: राज्य चुनें</h2></div>
+    <div class="state-grid">{csc.map((s) => <a href={"/" + s.href}>{s.hi}<small>{s.name}</small></a>)}</div>
+  </section>
+
+  <section class="block" id="jan-aushadhi">
+    <div class="block-head"><h2>जन औषधि केंद्र: राज्य चुनें</h2></div>
+    <div class="state-grid">{ja.map((s) => <a href={"/" + s.href}>{s.hi}<small>{s.name}</small></a>)}</div>
+  </section>
+
+  <Faq items={faq} />
+  <Explore exclude={["/tools/csc-locator.html", "/service/jan-aushadhi-store-locator.html"]} />
+</Base>

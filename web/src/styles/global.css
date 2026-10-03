@@ -255,12 +255,13 @@ table { width: 100%; border-collapse: collapse; }
 
 /* ---------- Card grids (related / explore / states) ---------- */
 .grid-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-@media (min-width: 700px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
+.card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 700px) { .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .card {
   display: flex; flex-direction: column; gap: 4px; padding: 14px; border-radius: var(--radius);
   border: 1px solid var(--c-line); background: var(--c-surface); text-decoration: none; color: var(--c-ink);
   transition: transform 0.12s ease, border-color 0.12s ease;
+  min-width: 0; overflow-wrap: anywhere;
 }
 .card:hover { border-color: var(--c-brand); transform: translateY(-2px); color: var(--c-ink); }
 .card .emoji { font-size: 1.5rem; line-height: 1; }
@@ -376,7 +377,8 @@ table { width: 100%; border-collapse: collapse; }
 .cta.disabled { background: var(--c-surface-2); color: var(--c-muted); pointer-events: none; }
 
 /* State tiles */
-.state-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.state-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.state-grid a, .task { min-width: 0; overflow-wrap: anywhere; }
 @media (min-width: 640px) { .state-grid { grid-template-columns: repeat(4, 1fr); } }
 @media (min-width: 1000px) { .state-grid { grid-template-columns: repeat(6, 1fr); } }
 .state-grid a { padding: 10px 12px; border-radius: 12px; border: 1px solid var(--c-line); background: var(--c-surface); text-decoration: none; color: var(--c-ink); font-weight: 700; font-size: 0.95rem; line-height: 1.2; }

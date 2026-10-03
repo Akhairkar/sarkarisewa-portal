@@ -165,6 +165,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Jan Aushadhi data asli hai:** `jan_aushadhi_all_india.csv` (~20,700 stores, PMBJP ka official data, lat/long ke saath). Ye ek achha data asset hai.
 
 ## 10. Log
+- **2026-10-03:** Pages source = GitHub Actions (user ne set kiya). Hubs live kiye: /students/, /yojana/, /tools/, /near-me/, /states/. Top nav naye hubs par point karta hai. Sitemap har deploy par assemble.mjs se update hota hai (naye pages add, rebuilt pages ki lastmod refresh, index.html wale duplicate URL hatate hain).
 - **2026-10-03:** User ne design approve kiya. Homepage, /documents/, /paid-services/ live kiye.
 - **2026-10-03:** Admin panel ko view-only banaya. Naya logo live kiya. Astro setup aur pilot page (Jharkhand senior citizen card) banaye.
 - **2026-10-03:** CSC noindex bug live par fix kiya. Ab se kaam seedha `main` (live) par jayega, user ne allow kiya hai.

@@ -1,0 +1,75 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import SearchBox from "../../components/SearchBox.astro";
+import TaskList from "../../components/TaskList.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { exists, pageTitle } from "../../lib/repo";
+
+const EXAMS = [
+  "exams/ssc-exam-calendar-2026-2027.html", "exams/railway-rrb-exam-schedule-2026-2027.html", "exams/banking-ibps-sbi-calendar-2026-2027.html",
+  "exams/upsc-annual-exam-calendar-2027.html", "exams/ssc-cgl-2026.html", "exams/rrb-ntpc-ug-2026.html", "exams/rrb-group-d-2026.html",
+  "exams/ibps-po-2026.html", "exams/ibps-clerk-2026.html", "exams/upsc-cse-2026.html",
+];
+const exams = EXAMS.filter(exists).map((rel) => ({ href: "/" + rel, emoji: "📅", title: pageTitle(rel).split(/[,|]/)[0].trim(), text: "तारीखें, एडमिट कार्ड, रिजल्ट" }));
+
+const SCHOLAR = [
+  ["service/national-scholarship-portal.html", "🎓", "National Scholarship Portal (NSP)", "केंद्र और राज्यों की 100+ छात्रवृत्तियां"],
+  ["service/post-matric-scholarship-obc-ebc.html", "📘", "Post Matric Scholarship (OBC/EBC)", "11वीं के बाद की पढ़ाई के लिए"],
+  ["service/pragati-scholarship-girl-students.html", "👩‍🎓", "AICTE प्रगति स्कॉलरशिप", "टेक्निकल पढ़ाई करने वाली छात्राओं के लिए"],
+  ["service/saksham-scholarship-specially-abled.html", "♿", "AICTE सक्षम स्कॉलरशिप", "दिव्यांग छात्रों के लिए"],
+  ["service/pm-usp-college-scholarship.html", "🏫", "PM-USP कॉलेज स्कॉलरशिप", "कॉलेज और यूनिवर्सिटी के छात्रों के लिए"],
+  ["service/pm-vidyalaxmi-scheme.html", "💰", "PM विद्यालक्ष्मी एजुकेशन लोन", "बिना गारंटी पढ़ाई का लोन"],
+] as const;
+const scholarships = SCHOLAR.filter(([rel]) => exists(rel)).map(([rel, emoji, title, text]) => ({ href: "/" + rel, emoji, title, text }));
+
+const quick = [
+  { href: "/jobs/index.html", emoji: "🎯", title: "नई सरकारी नौकरियां", text: "भर्ती, पद, योग्यता और आखिरी तारीख" },
+  { href: "/exams/index.html", emoji: "📅", title: "Exam Calendar 2026-27", text: "SSC, Railway, Bank, UPSC की तारीखें" },
+  { href: "/tools/age-calculator.html", emoji: "⏳", title: "Exam Age Calculator", text: "Cut-off तारीख पर सही उम्र" },
+];
+const tools = [
+  { href: "/tools/photo-resizer.html", emoji: "🖼️", title: "Photo Resizer", text: "फॉर्म के साइज़ (KB) में फोटो" },
+  { href: "/tools/signature-resizer.html", emoji: "✍️", title: "Signature Resizer", text: "सिग्नेचर सही साइज़ में" },
+  { href: "/tools/document-compressor.html", emoji: "🗜️", title: "PDF Compressor", text: "दस्तावेज़ छोटा करें" },
+  { href: "/tools/typing-speed-test.html", emoji: "⌨️", title: "Typing Speed Test", text: "SSC/कोर्ट टाइपिंग की तैयारी" },
+  { href: "/tools/self-declaration-builder.html", emoji: "📝", title: "Self Declaration", text: "स्व-घोषणा पत्र बनाएं" },
+  { href: "/deadline-calendar.html", emoji: "⏰", title: "Deadline Calendar", text: "फॉर्म की आखिरी तारीखें" },
+].filter((t) => exists(t.href));
+const docs = [
+  { href: "/documents/#income-certificate", emoji: "💰", title: "आय प्रमाण पत्र", text: "छात्रवृत्ति और फीस छूट के लिए" },
+  { href: "/documents/#caste-certificate", emoji: "📜", title: "जाति प्रमाण पत्र", text: "आरक्षण के लिए" },
+  { href: "/documents/#domicile-certificate", emoji: "🏠", title: "निवास प्रमाण पत्र", text: "राज्य कोटे के लिए" },
+];
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "Students" }];
+const faq = [
+  { q: "फॉर्म भरते समय फोटो और सिग्नेचर का साइज़ कैसे ठीक करें?", a: "हर भर्ती नोटिफिकेशन में फोटो और सिग्नेचर का साइज़ (KB और pixel) लिखा होता है। हमारे Photo Resizer और Signature Resizer में वही साइज़ डालें, फाइल आपके फोन में ही बदलती है, कहीं अपलोड नहीं होती।" },
+  { q: "उम्र सीमा किस तारीख से गिनी जाती है?", a: "हर भर्ती में उम्र एक तय तारीख (cut-off date) पर गिनी जाती है, जो नोटिफिकेशन में लिखी होती है। Exam Age Calculator में अपनी जन्मतिथि और वही तारीख डालें।" },
+  { q: "छात्रवृत्ति के लिए कौन से प्रमाण पत्र चाहिए?", a: "ज़्यादातर छात्रवृत्तियों में आय प्रमाण पत्र, जाति प्रमाण पत्र (आरक्षित वर्ग के लिए), निवास प्रमाण पत्र, पिछली कक्षा की मार्कशीट और आधार से लिंक बैंक खाता चाहिए।" },
+];
+---
+<Base
+  title="Students: सरकारी नौकरी, Exam Calendar, Scholarship और Tools | SarkariSewa India"
+  description="नई सरकारी भर्तियां, SSC/Railway/Bank/UPSC exam calendar, NSP और दूसरी छात्रवृत्तियां, और फॉर्म भरने के फ्री टूल्स: फोटो resizer, age calculator।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <h1>Students के लिए 🎓</h1>
+    <p class="page-intro">सरकारी नौकरी की तैयारी से फॉर्म भरने तक: भर्तियां, exam की तारीखें, छात्रवृत्ति और काम के टूल्स एक जगह।</p>
+    <SearchBox placeholder="जैसे: SSC CGL, RRB NTPC, NSP स्कॉलरशिप…" />
+  </section>
+
+  <section class="block"><TaskList items={quick} /></section>
+  <CardGrid title="Exam Calendar और तारीखें" cards={exams} id="exams" />
+  <CardGrid title="छात्रवृत्ति (Scholarship)" cards={scholarships} id="scholarship" />
+  <CardGrid title="फॉर्म भरने के फ्री टूल्स" cards={tools} id="tools" />
+  <CardGrid title="छात्रों को अक्सर चाहिए ये प्रमाण पत्र" cards={docs} id="docs" />
+  <Faq items={faq} />
+  <Explore exclude={["/jobs/index.html"]} />
+</Base>

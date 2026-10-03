@@ -68,6 +68,11 @@ for (const rel of listHtml(DIST)) {
   const html = fs.readFileSync(path.join(DIST, rel), "utf8");
   if (/<meta name="robots" content="noindex/.test(html)) continue;
   const loc = `${SITE}/${rel.replace(/(^|\/)index\.html$/, "$1")}`;
+  // Drop the ".../index.html" spelling of a directory URL so it is listed once.
+  if (loc.endsWith("/")) {
+    const dup = new RegExp(`  <url>\\s*<loc>${(loc + "index.html").replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>[\\s\\S]*?</url>\\n`);
+    sm = sm.replace(dup, "");
+  }
   const entry = new RegExp(`(<loc>${loc.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>\\s*<lastmod>)[^<]*(</lastmod>)`);
   if (entry.test(sm)) { sm = sm.replace(entry, `$1${today}$2`); refreshed++; }
   else {

@@ -10,18 +10,18 @@ export const SITE = {
 export const NAV = [
   { href: "/", label: "होम", icon: "home" },
   { href: "/documents/", label: "दस्तावेज़", icon: "doc" },
-  { href: "/jobs/index.html", label: "Students", icon: "cap" },
-  { href: "/tools/index.html", label: "Tools", icon: "tool" },
+  { href: "/students/", label: "Students", icon: "cap" },
+  { href: "/tools/", label: "Tools", icon: "tool" },
   { href: "/paid-services/", label: "Services", icon: "star" },
 ] as const;
 
 export const TOP_NAV = [
   { href: "/documents/", label: "दस्तावेज़" },
-  { href: "/jobs/index.html", label: "Jobs" },
-  { href: "/exams/index.html", label: "Exams" },
-  { href: "/category/government-schemes.html", label: "Yojana" },
-  { href: "/tools/index.html", label: "Tools" },
-  { href: "/tools/csc-locator.html", label: "CSC Near Me" },
+  { href: "/students/", label: "Students" },
+  { href: "/yojana/", label: "Yojana" },
+  { href: "/tools/", label: "Tools" },
+  { href: "/near-me/", label: "Near Me" },
+  { href: "/states/", label: "राज्य" },
   { href: "/paid-services/", label: "Paid Services" },
 ] as const;
 
@@ -46,13 +46,14 @@ export const FOOTER = [
     links: [
       { href: "/documents/", label: "सभी दस्तावेज़" },
       { href: "/service/aadhaar-card.html", label: "Aadhaar" },
-      { href: "/states/index.html", label: "राज्य अनुसार सेवाएं" },
+      { href: "/states/", label: "राज्य अनुसार सेवाएं" },
       { href: "/support/helpline-directory.html", label: "Helpline नंबर" },
     ],
   },
   {
     title: "Students",
     links: [
+      { href: "/students/", label: "Students hub" },
       { href: "/jobs/index.html", label: "सरकारी नौकरी" },
       { href: "/exams/index.html", label: "Exam Calendar" },
       { href: "/tools/age-calculator.html", label: "Age Calculator" },
