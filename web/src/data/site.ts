@@ -126,7 +126,7 @@ export const POPULAR_TASKS: Card[] = [
 // Documents that have a page for every state at /states/<state>-<slug>.html
 export const DOCS: { slug: string; emoji: string; title: Text; text: Text; national?: string }[] = [
   { slug: "senior-citizen-card", emoji: "👴", title: { hi: "सीनियर सिटीजन कार्ड", en: "Senior Citizen Card" }, text: { hi: "60+ पहचान पत्र, पेंशन और 70+ आयुष्मान", en: "60+ ID card, pension, Ayushman 70+" }, national: "/service/senior-citizen-card.html" },
-  { slug: "labour-card", emoji: "👷", title: { hi: "लेबर कार्ड (BOCW)", en: "Labour Card (BOCW)" }, text: { hi: "निर्माण मज़दूर पंजीकरण और योजनाएं", en: "Construction worker registration and benefits" } },
+  { slug: "labour-card", emoji: "👷", title: { hi: "लेबर कार्ड (BOCW)", en: "Labour Card (BOCW)" }, text: { hi: "निर्माण मज़दूर पंजीकरण और योजनाएं", en: "Construction worker registration and benefits" }, national: "/service/labour-card-construction-workers.html" },
   { slug: "ration-card", emoji: "🍚", title: { hi: "राशन कार्ड", en: "Ration Card" }, text: { hi: "नया कार्ड, नाम जोड़ना, e-KYC", en: "New card, add member, e-KYC" }, national: "/service/ration-card.html" },
   { slug: "voter-id-card", emoji: "🗳️", title: { hi: "वोटर ID कार्ड", en: "Voter ID Card" }, text: { hi: "नया कार्ड, सुधार, डाउनलोड", en: "New card, correction, download" }, national: "/service/voter-id-card.html" },
   { slug: "sir-voter-list", emoji: "📋", title: { hi: "SIR वोटर लिस्ट", en: "SIR Voter List" }, text: { hi: "लिस्ट में अपना नाम देखें", en: "Check your name in the list" } },

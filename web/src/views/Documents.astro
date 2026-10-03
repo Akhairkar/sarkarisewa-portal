@@ -64,4 +64,15 @@ const faq = lang === "en" ? [
   <CardGrid title={L("पूरे भारत में एक जैसे दस्तावेज़", "Documents that are the same across India")} cards={NATIONAL_DOCS} id="national" />
   <Faq items={faq} />
   <Explore />
+  <script is:inline>
+  // Open the document a link points to (e.g. /documents/#labour-card).
+  (function () {
+    function openHash() {
+      var el = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (el && el.tagName === "DETAILS") { el.open = true; el.scrollIntoView({ block: "start" }); }
+    }
+    openHash();
+    window.addEventListener("hashchange", openHash);
+  })();
+  </script>
 </Base>
