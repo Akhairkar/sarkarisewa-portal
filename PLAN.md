@@ -140,11 +140,13 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Root ki safai baaki hai:** root mein ~250 purane one-off scripts (`fix_*`, `inject_batch*`, `test_*`) publicly deploy ho rahe hain. Astro migration (Phase 4) mein ye deploy se bahar ho jayenge.
 
 ## 9b. Urgent issues mile (2026-10-03)
-- **CSC pages galti se noindex ho gaye hain.** 996 mein se 910 CSC pages `noindex` hain, jinmein 855 aise hain jinpe 5 se zyada centres hain (jaise Kolkata, Delhi, Mumbai, Bengaluru, Ahmedabad). Pichhle 3 mahine ke 873 CSC clicks mein se **718 clicks inhi noindex pages se aaye the**. Agar fix nahi kiya toh ye traffic khatam ho jayega.
+- ✅ **FIXED 2026-10-03 (live, commit fa7753c):** 855 CSC pages se galat noindex hataya aur unhe sitemap mein add kiya. 10 duplicate district pairs ka canonical theek kiya. Rajahmundry (3 centres) jaise thin pages noindex hi rahenge.
+- **(Purani note) CSC pages galti se noindex ho gaye the.** 996 mein se 910 CSC pages `noindex` hain, jinmein 855 aise hain jinpe 5 se zyada centres hain (jaise Kolkata, Delhi, Mumbai, Bengaluru, Ahmedabad). Pichhle 3 mahine ke 873 CSC clicks mein se **718 clicks inhi noindex pages se aaye the**. Agar fix nahi kiya toh ye traffic khatam ho jayega.
 - **Duplicate pages:** `service/<state>-<doc>.html` aur `states/<state>-<doc>.html` ek hi topic par do alag pages hain, aur dono khud ko canonical batate hain. Ye keyword cannibalization hai. Fix: `states/` wala page primary rahega (traffic wahin hai), `service/` wala duplicate page us par canonical/redirect karega.
 - **`data/csc-centers.json` mein fake sample data hai** (jaise "Neha CSC", rating 4.9). Ise kahin use nahi karna. Asli CSC data Supabase `csc_centres` table mein hai.
 - **Jan Aushadhi data asli hai:** `jan_aushadhi_all_india.csv` (~20,700 stores, PMBJP ka official data, lat/long ke saath). Ye ek achha data asset hai.
 
 ## 10. Log
+- **2026-10-03:** CSC noindex bug live par fix kiya. Ab se kaam seedha `main` (live) par jayega, user ne allow kiya hai.
 - **2026-10-03:** GSC export analyse kiya (section 6).
 - **2026-10-03:** Targets decide kiye. Purane 30 md/txt docs hataye. Ye PLAN.md banaya.
