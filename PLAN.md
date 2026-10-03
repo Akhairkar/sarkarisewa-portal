@@ -46,7 +46,7 @@ Ye repo ka **ek hi** doc hai. Har session isi file se shuru hoga aur isi file me
 ## 5. Phases
 - [x] Phase 0: Targets discuss karna, purane docs hatana
 - [x] Phase 1: GSC data analysis (section 8 dekho)
-- [ ] Phase 2: Site structure. Menu, hubs, URL plan aur language URL plan.
+- [ ] Phase 2: Site structure. Menu, hubs, URL plan aur language URL plan. (Draft section 9-10 mein hai, user approval baaki)
 - [ ] Phase 3: Naya logo + design system + homepage mockup (user approval ke liye)
 - [ ] Phase 4: Astro setup (purani site `public/` mein) + GitHub Actions deploy
 - [ ] Phase 5: Hub pages + paid services pages (GST, RC/challan)
@@ -59,6 +59,61 @@ Ye repo ka **ek hi** doc hai. Har session isi file se shuru hoga aur isi file me
 - **Zaroori txt files, inhe delete nahi karna:** `robots.txt`, `ads.txt`, `990cec6ab75587968bc7a43b4721e52c.txt` (IndexNow key, `scripts/submit-indexnow.py` use karta hai), `automation/requirements.txt`.
 - **Known issue:** `active_sessions` ki update policy ke chalte koi bhi anon visitor kisi bhi doosre visitor ka session row update kar sakta hai. Isse sirf "online now" count par asar padta hai. Baad mein fix karna hai.
 - **Root ki safai baaki hai:** root mein ~250 purane one-off scripts (`fix_*`, `inject_batch*`, `test_*`) publicly deploy ho rahe hain. Astro migration (Phase 4) mein ye deploy se bahar ho jayenge.
+
+## 9. Competitor analysis (2026-10-03)
+Note: is environment se competitor sites khul nahi rahi (network block), isliye analysis sirf search results par based hai.
+
+| Type | Kaun | Taakat | Kamzori (hamara mauka) |
+|---|---|---|---|
+| Bade brands | cleartax, bankbazaar, HDFC/Kotak/Canara blogs | Domain authority, saaf design | Ek generic national page hota hai, state-specific detail kam. Zyadatar English mein, Hindi ke liye Google Translate wala version. |
+| Chhote yojana blogs | chhotitools, legaldev, yojanaschemehindi, egovtschemes, topguide, wikiprocedure | Hindi, bahut saare pages | Thin, purane (2023/2025 ka content), ads se bhare, official link aur verified date nahi |
+| Job sites | sarkariresult.app, freejobalert, quicksarkari, sarkarijob, **sarkarisewa.com** (naam milta-julta hai) | Roz update, brand search | Sirf link ki list, koi explanation nahi, clutter, "eligible hun ya nahi" type tools nahi |
+| "Sarkari PSA" | sarkaripsa.com (yojana, jobs, aur "Sarkari Kaam" official links page) | Brand search (yahi hamare 76k impressions hain) | Hamare jaisa hi content hai. Hamein brand query nahi, topic jeetna hai. |
+| Near-me | locator.csc.gov.in, sarkariyojana.com, goodreturns | Official data | Hamare CSC pages already rank kar rahe hain |
+| Scholarship | buddy4study, shiksha, selfstudys | Strong scholarship content | State-wise documents + scholarship + jobs ek jagah kahin nahi |
+
+**Hamara differentiation:**
+1. State-specific sahi jaankari, official link + "last verified" date ke saath
+2. Hindi-first, asli Hindi (translate nahi)
+3. "Rejection ke kaaran aur solution" section
+4. Offline ke liye nearest CSC (hamare CSC pages se internal link)
+5. Students ke liye eligibility tools (age, qualification) + deadline calendar
+6. Fast, mobile-first site
+
+**Competitors se seekha format:** ek "Sarkari Kaam / सभी official links" directory page. Isme demand hai, aur ye ek strong hub banta hai.
+
+## 10. Site structure (draft, approval baaki)
+**Bhasha URL:** Hindi default rahegi, existing root URLs par. Isse purane ranking wale URL nahi badlenge. English `/en/...` par, Marathi `/mr/...` par (sirf chune hue pages).
+
+**Main menu.** Mobile par neeche bottom nav mein 5 items honge, desktop par upar.
+
+| Menu | Hub URL | Andar kya |
+|---|---|---|
+| Home | `/` | Search, popular kaam, latest jobs/deadlines, state chunein |
+| दस्तावेज़ (Documents) | `/documents/` | Har document ka hub (`/documents/senior-citizen-card/`): national overview + 36 states ka grid. State pages ke URL same rahenge (`/states/<state>-<doc>.html`). |
+| Students | `/students/` | Jobs (`/jobs/`), Exam calendar (`/exams/`), Admit card/Result, Scholarship (`/scholarship/`), eligibility tools |
+| Yojana | `/yojana/` | Central + state schemes |
+| Tools | `/tools/` | Existing calculators/tools (age, salary, tax, document compressor, eligibility checker) |
+| Paid Services | `/services/` | GSTIN verification (live), RC/challan (next) |
+| Near Me | `/near-me/` | CSC locator, Jan Aushadhi (existing pages) |
+| Sarkari Kaam | `/sarkari-kaam/` | Saare official portals ki verified directory |
+| State hub | `/states/<state>.html` (existing) | Us state ke saare documents, yojana, jobs, CSC/JA |
+
+**Har page ka template (document x state):**
+1. Seedha jawab box: fees, samay, portal, kaun apply kar sakta hai
+2. Official links box (last verified date ke saath)
+3. Eligibility
+4. Documents checklist
+5. Online apply steps
+6. Offline / CSC
+7. Status check
+8. Download / renewal
+9. Rejection ke kaaran + solution
+10. Helpline
+11. FAQ
+12. Related services/tools grid
+13. Doosre states ka grid
+14. Breadcrumb + schema (HowTo/FAQ/Breadcrumb)
 
 ## 8. GSC analysis (export: 2026-10-03, last 3 months, Web)
 - **Total:** 5,485 clicks, 3.7 lakh impressions. Avg position ~7.7. **85% traffic mobile** se aata hai.
