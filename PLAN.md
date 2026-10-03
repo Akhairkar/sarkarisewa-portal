@@ -145,6 +145,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - Layout: `web/src/layouts/Base.astro`. Isme title, description, canonical, hreflang, OG, aur JSON-LD (Breadcrumb, Article, FAQPage) sab automatic aate hain.
 - Components: `Breadcrumbs`, `OfficialLinks`, `Faq`, `CardGrid` (related), `StateGrid` (doosre states), `Explore` ("Ye bhi dekhein").
 - Explore cards aur menu ek hi jagah se aate hain: `web/src/data/site.ts`.
+- Push se pehle hamesha **clean clone** par build test karna hai (`git clone` karke `npm ci && npm run site`). Local build un files ko bhi pakad leta hai jo `.gitignore` ki wajah se GitHub tak nahi pahunchti (2026-10-03 ko `lib/` rule se 4 deploy fail hue the).
 - Local build: `cd web && npm ci && npm run site`. Output `web/_site/` mein banta hai.
 - Pilot page: `states/jharkhand-senior-citizen-card` (research ke baad likha, 2026-10-03).
 - Duplicate `service/<state>-<doc>.html` page ka canonical `states/` wale page par point karta hai, aur use sitemap se hata diya jata hai.
