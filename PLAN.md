@@ -176,6 +176,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Jan Aushadhi data asli hai:** `jan_aushadhi_all_india.csv` (~20,700 stores, PMBJP ka official data, lat/long ke saath). Ye ek achha data asset hai.
 
 ## 10. Log
+- **2026-10-04:** Senior citizen batch 2: Punjab, Rajasthan, UP, Chhattisgarh, Himachal.
 - **2026-10-04:** Senior citizen batch 1: MP, Bihar, Uttarakhand, Delhi (+ Jharkhand naye template par). Template `SeniorCitizenGuide.astro`, content `web/src/guides/senior/<state>.ts`. Duplicate `service/` pages ka canonical states/ par hai. Header mein light/dark theme button joda (`ss-theme` localStorage mein save hota hai). Trending tiles user ke kehne par hataye.
 - **2026-10-03:** English versions live kiye (/en/ + 7 hubs), header mein EN/हिं toggle. Homepage par Trending tiles aur "सभी 24 टूल्स" link joda.
 - **2026-10-03:** GST verification page par naya header, footer, mobile menu, rang aur font lagaye. Payment script bilkul nahi badla. IndexNow deploy mein joda.
