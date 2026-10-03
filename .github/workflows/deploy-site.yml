@@ -22,6 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -33,9 +35,24 @@ jobs:
       - name: Build and assemble
         run: npm run site
         working-directory: web
+      - name: List changed files for IndexNow
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ -n "$BEFORE" ] && git cat-file -e "$BEFORE" 2>/dev/null; then
+            git diff --name-only "$BEFORE" "${{ github.sha }}" > web/changed-files.txt
+          else
+            echo "web/" > web/changed-files.txt
+          fi
+          wc -l web/changed-files.txt
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web/_site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: indexnow-input
+          path: |
+            web/changed-files.txt
+          retention-days: 1
 
   deploy:
     needs: build
@@ -46,3 +63,26 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # After the new pages are live, tell IndexNow engines what changed.
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: actions/download-artifact@v4
+        with:
+          name: indexnow-input
+          path: web
+      - name: Build (to know which pages are indexable)
+        run: npm ci && npm run site
+        working-directory: web
+      - name: Submit to IndexNow
+        run: node scripts/indexnow.mjs $(cat changed-files.txt)
+        working-directory: web

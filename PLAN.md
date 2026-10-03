@@ -154,6 +154,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Admin access:** Supabase Auth user ka `app_metadata` = `{"role":"admin"}` hona chahiye (`user_metadata` nahi). Saari admin policies `public.is_admin()` use karti hain (`supabase/security-hardening.sql`).
 - **Zaroori txt files, inhe delete nahi karna:** `robots.txt`, `ads.txt`, `990cec6ab75587968bc7a43b4721e52c.txt` (IndexNow key, `scripts/submit-indexnow.py` use karta hai), `automation/requirements.txt`.
 - **Known issue:** `active_sessions` ki update policy ke chalte koi bhi anon visitor kisi bhi doosre visitor ka session row update kar sakta hai. Isse sirf "online now" count par asar padta hai. Baad mein fix karna hai.
+- **Bing / IndexNow:** Bing account block nahi hai, sirf password bhool gaye hain. Bing Webmaster Tools mein Google account se login karke GSC se site import ho sakti hai. IndexNow har deploy ke baad apne aap chalta hai (`web/scripts/indexnow.mjs`, workflow ka `indexnow` job): badle hue pages Bing, Yandex waghera ko bhej deta hai. Iske liye koi account nahi chahiye.
 - **AdSense:** `ads.txt` mein abhi placeholder `pub-0000000000000000` hai. AdSense account milne par asli publisher ID daalni hai.
 - **Root ki safai baaki hai:** root mein ~250 purane one-off scripts (`fix_*`, `inject_batch*`, `test_*`) publicly deploy ho rahe hain. Astro migration (Phase 4) mein ye deploy se bahar ho jayenge.
 
@@ -165,6 +166,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Jan Aushadhi data asli hai:** `jan_aushadhi_all_india.csv` (~20,700 stores, PMBJP ka official data, lat/long ke saath). Ye ek achha data asset hai.
 
 ## 10. Log
+- **2026-10-03:** GST verification page par naya header, footer, mobile menu, rang aur font lagaye. Payment script bilkul nahi badla. IndexNow deploy mein joda.
 - **2026-10-03:** Pages source = GitHub Actions (user ne set kiya). Hubs live kiye: /students/, /yojana/, /tools/, /near-me/, /states/. Top nav naye hubs par point karta hai. Sitemap har deploy par assemble.mjs se update hota hai (naye pages add, rebuilt pages ki lastmod refresh, index.html wale duplicate URL hatate hain).
 - **2026-10-03:** User ne design approve kiya. Homepage, /documents/, /paid-services/ live kiye.
 - **2026-10-03:** Admin panel ko view-only banaya. Naya logo live kiya. Astro setup aur pilot page (Jharkhand senior citizen card) banaye.
