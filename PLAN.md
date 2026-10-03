@@ -136,6 +136,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - Har naya page `Base.astro` layout aur `global.css` ke components se hi banega. Page-specific CSS nahi likhni, aur naye rang ya font nahi lane.
 - Rang: brand blue `#1d4ed8`, saffron `#f59e0b` (CTA/highlight), green `#047857` (official/verified). Font: Mukta.
 - Building blocks: hero + search, task rows, card grid, state tiles, doc list, answer box, steps, checklist, tables, callouts, official links, FAQ, "ये भी देखें" (explore). Inke alawa kuch naya chahiye toh pehle `global.css` mein component banana hai.
+- Responsive: har page mobile-first banega. 320 / 360 / 768 / 1024 / 1440px par check hoga ki horizontal scroll nahi aata. Mobile par bottom nav dikhega, desktop par top nav.
 - Order: homepage → main hubs (documents, students, yojana, tools, near-me, states) → paid services → guide pages.
 - Design samples (homepage, documents hub, paid services hub) user approval ke liye bheje gaye: 2026-10-03.
 
@@ -164,6 +165,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Jan Aushadhi data asli hai:** `jan_aushadhi_all_india.csv` (~20,700 stores, PMBJP ka official data, lat/long ke saath). Ye ek achha data asset hai.
 
 ## 10. Log
+- **2026-10-03:** User ne design approve kiya. Homepage, /documents/, /paid-services/ live kiye.
 - **2026-10-03:** Admin panel ko view-only banaya. Naya logo live kiya. Astro setup aur pilot page (Jharkhand senior citizen card) banaye.
 - **2026-10-03:** CSC noindex bug live par fix kiya. Ab se kaam seedha `main` (live) par jayega, user ne allow kiya hai.
 - **2026-10-03:** GSC export analyse kiya (section 6).
