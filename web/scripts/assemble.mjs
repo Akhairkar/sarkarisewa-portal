@@ -80,5 +80,14 @@ for (const rel of listHtml(DIST)) {
     added++;
   }
 }
+// Never list URLs that robots.txt blocks, or a host-only homepage duplicate.
+const disallow = fs.readFileSync(path.join(OUT, "robots.txt"), "utf8")
+  .split("\n").map((l) => l.match(/^\s*Disallow:\s*(\S+)/i)?.[1]).filter(Boolean);
+let dropped = 0;
+sm = sm.replace(/  <url>\s*<loc>([^<]*)<\/loc>[\s\S]*?<\/url>\n/g, (block, loc) => {
+  const p = loc.slice(SITE.length);
+  if (p === "" || disallow.some((d) => p.startsWith(d))) { dropped++; return ""; }
+  return block;
+});
 fs.writeFileSync(smPath, sm);
-console.log(`assembled ${OUT}: sitemap refreshed ${refreshed}, added ${added}`);
+console.log(`assembled ${OUT}: sitemap refreshed ${refreshed}, added ${added}, dropped ${dropped}`);
