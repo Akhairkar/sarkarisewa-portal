@@ -169,7 +169,7 @@
     { keys:["pm kisan","kisan samman nidhi"], name:{en:"PM-KISAN Samman Nidhi",hi:"पीएम-किसान सम्मान निधि"}, desc:{en:"Official PM-KISAN portal for registration, beneficiary status and scheme information.",hi:"पंजीकरण, लाभार्थी स्थिति और योजना की जानकारी के लिए आधिकारिक PM-KISAN पोर्टल।"}, url:"https://pmkisan.gov.in/" },
     { keys:["kisan credit card","kcc"], name:{en:"Kisan Credit Card",hi:"किसान क्रेडिट कार्ड"}, desc:{en:"Government scheme information and eligibility through the National Government scheme portal.",hi:"सरकारी योजना पोर्टल पर किसान क्रेडिट कार्ड की पात्रता और जानकारी देखें।"}, url:"https://www.myscheme.gov.in/schemes/kcc" },
     { keys:["pm fasal bima","fasal bima"], name:{en:"PM Fasal Bima Yojana",hi:"प्रधानमंत्री फसल बीमा योजना"}, desc:{en:"Official crop insurance portal for farmer applications, premium and policy status.",hi:"फसल बीमा आवेदन, प्रीमियम और पॉलिसी स्थिति के लिए आधिकारिक पोर्टल।"}, url:"https://pmfby.gov.in/" },
-    { keys:["pm kusum subsidy","pm kusum"], name:{en:"PM-KUSUM",hi:"पीएम-कुसुम"}, desc:{en:"Official MNRE PM-KUSUM portal for solar pumps, components and scheme information.",hi:"सोलर पंप और PM-KUSUM योजना की आधिकारिक जानकारी के लिए पोर्टल।"}, url:"https://pmkusum.mnre.gov.in/" },
+    { keys:["pm kusum subsidy","pm kusum","kusum yojana","pm kusum solar pump"], name:{en:"PM-KUSUM Solar Pump Scheme",hi:"पीएम-कुसुम सोलर पंप योजना"}, desc:{en:"Read the SarkariSewa India guide for PM-KUSUM: scheme components, solar-pump subsidy structure, eligibility, documents and how to reach the official state implementing agency. Official details are subject to state-wise implementation.",hi:"PM-कुसुम की पूरी गाइड: योजना के घटक, सोलर पंप सब्सिडी की संरचना, पात्रता, दस्तावेज़ और राज्य की कार्यान्वयन एजेंसी तक पहुंचने की जानकारी। अंतिम प्रक्रिया राज्य के अनुसार हो सकती है।"}, url:"https://pmkusum.mnre.gov.in/", localUrl:"service/pm-kusam-solar-pump-apply.html" },
     { keys:["solar subsidy","home solar subsidy"], name:{en:"PM Surya Ghar / Rooftop Solar",hi:"पीएम सूर्य घर / रूफटॉप सोलर"}, desc:{en:"Official government rooftop-solar portal for PM Surya Ghar information and applications.",hi:"PM Surya Ghar और रूफटॉप सोलर की आधिकारिक जानकारी व आवेदन पोर्टल।"}, url:"https://pmsuryaghar.gov.in/" },
     { keys:["pm ujjwala","ujjwala"], name:{en:"Pradhan Mantri Ujjwala Yojana",hi:"प्रधानमंत्री उज्ज्वला योजना"}, desc:{en:"Official PMUY portal for eligibility, documents and new LPG connection information.",hi:"पात्रता, दस्तावेज और नए LPG कनेक्शन की आधिकारिक जानकारी।"}, url:"https://www.pmuy.gov.in/" },
     { keys:["pm awas","home loan","housing subsidy"], name:{en:"Pradhan Mantri Awas Yojana",hi:"प्रधानमंत्री आवास योजना"}, desc:{en:"Official government housing-scheme information and relevant application portals.",hi:"आवास योजना की सरकारी जानकारी और संबंधित आवेदन पोर्टल।"}, url:"https://pmayuclap.gov.in/" },
@@ -190,10 +190,11 @@
 
   function getOfficialFallbackHTML(item) {
     if (!item) return "";
+    const guide = item.localUrl ? '<a class="btn btn--primary" href="' + ROOT + item.localUrl + '">' + t({en:"Read Full Guide &rarr;",hi:"पूरी गाइड पढ़ें &rarr;"}) + '</a>' : "";
     return '<div class="service-card" style="border:1px solid var(--color-border);">' +
-      '<div class="service-card__name">' + t(item.name) + ' <span style="font-size:.72rem; padding:3px 7px; border-radius:999px; background:var(--color-surface-alt); color:var(--color-primary);">Official Portal</span></div>' +
+      '<div class="service-card__name">' + t(item.name) + ' <span style="font-size:.72rem; padding:3px 7px; border-radius:999px; background:var(--color-surface-alt); color:var(--color-primary);">Official Source</span></div>' +
       '<div class="service-card__desc">' + t(item.desc) + '</div>' +
-      '<div class="service-card__arrow"><a href="' + item.url + '" target="_blank" rel="noopener noreferrer">' + t({en:"Open Official Website &rarr;",hi:"आधिकारिक वेबसाइट खोलें &rarr;"}) + '</a></div>' +
+      '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">' + guide + '<a class="btn btn--outline" href="' + item.url + '" target="_blank" rel="noopener noreferrer">' + t({en:"Open Official Portal &rarr;",hi:"आधिकारिक पोर्टल खोलें &rarr;"}) + '</a></div>' +
       '</div>';
   }
 
