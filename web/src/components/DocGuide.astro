@@ -1,0 +1,77 @@
+---
+// One template for state guides made of sections (employment exchange,
+// ration card, certificates, new state services).
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import OfficialLinks from "./OfficialLinks.astro";
+import Faq from "./Faq.astro";
+import CardGrid from "./CardGrid.astro";
+import StateGrid from "./StateGrid.astro";
+import Explore from "./Explore.astro";
+import type { DocGuide } from "../guides/doc/types";
+
+interface Props { g: DocGuide; canonical?: string }
+const { g, canonical } = Astro.props;
+const crumbs = [
+  { label: "होम", href: "/" },
+  { label: "राज्य सेवाएं", href: "/states/" },
+  { label: g.state.hi, href: `/states/${g.state.slug}.html` },
+  { label: g.docHi },
+];
+---
+<Base title={g.title} description={g.description} breadcrumbs={crumbs} faq={g.faq} published={g.published} modified={g.modified} canonical={canonical}>
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{g.h1}</h1>
+      <div class="meta-row"><span class="verified">✓ जानकारी जांची गई: {g.verified}</span></div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">{g.lead}</p>
+        <dl class="facts">{g.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}</dl>
+      </section>
+
+      {g.notice && <div class="callout warn"><p set:html={g.notice} /></div>}
+
+      {g.sections.map((s, i) => (
+        <>
+          <section class="section" id={s.id}>
+            <h2>{s.title}</h2>
+            {s.intro && <p set:html={s.intro} />}
+            {s.steps && <ol class="steps">{s.steps.map((x) => <li set:html={x} />)}</ol>}
+            {s.list && <ul class="checklist">{s.list.map((x) => <li set:html={x} />)}</ul>}
+            {s.table && (
+              <div class="table-wrap">
+                <table>
+                  <thead><tr>{s.table.head.map((h) => <th>{h}</th>)}</tr></thead>
+                  <tbody>{s.table.rows.map((r) => <tr>{r.map((c) => <td set:html={c} />)}</tr>)}</tbody>
+                </table>
+              </div>
+            )}
+            {s.callout && <div class={`callout ${s.callout.kind}`}><p set:html={s.callout.html} /></div>}
+            {s.html && <Fragment set:html={s.html} />}
+          </section>
+          {i === 2 && <div class="ad-slot" aria-hidden="true"></div>}
+        </>
+      ))}
+
+      <OfficialLinks verified={g.verified} links={g.official} />
+      <Faq items={g.faq} />
+      <CardGrid title="इनसे जुड़ी जानकारी" cards={g.related} id="related" />
+      <StateGrid doc={g.doc} current={g.state.slug} title={g.otherStatesTitle ?? `दूसरे राज्यों में ${g.docHi}`} />
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          {g.sections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+          <li><a href="#faq">सवाल-जवाब</a></li>
+        </ol>
+        {g.aside.map((a, i) => <a class={`cta${i ? " secondary" : ""}`} href={a.href}>{a.label}</a>)}
+      </section>
+    </aside>
+  </div>
+</Base>
