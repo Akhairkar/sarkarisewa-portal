@@ -1,0 +1,146 @@
+---
+// One template for every state's labour card (BOCW) guide.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import OfficialLinks from "./OfficialLinks.astro";
+import Faq from "./Faq.astro";
+import CardGrid from "./CardGrid.astro";
+import StateGrid from "./StateGrid.astro";
+import Explore from "./Explore.astro";
+import type { LabourGuide } from "../guides/labour/types";
+import { eshramVsBocw, eshramNote } from "../guides/labour/common";
+
+interface Props { g: LabourGuide; canonical?: string }
+const { g, canonical } = Astro.props;
+const crumbs = [
+  { label: "होम", href: "/" },
+  { label: "राज्य सेवाएं", href: "/states/" },
+  { label: g.state.hi, href: `/states/${g.state.slug}.html` },
+  { label: "लेबर कार्ड" },
+];
+const toc = [
+  ["eshram", "लेबर कार्ड या e-Shram?"],
+  ["patrata", "कौन बनवा सकता है"],
+  ["documents", "ज़रूरी दस्तावेज़"],
+  ["apply", "आवेदन कैसे करें"],
+  ["fees", "फीस और रिन्यूअल"],
+  ["status", "स्टेटस और कार्ड डाउनलोड"],
+  ["yojana", "योजनाएं और राशि"],
+  ...(g.extra ?? []).map((e) => [e.id, e.title]),
+  ["reject", "दिक्कत आए तो"],
+  ["faq", "सवाल-जवाब"],
+];
+---
+<Base title={g.title} description={g.description} breadcrumbs={crumbs} faq={g.faq} published={g.published} modified={g.modified} canonical={canonical}>
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{g.h1}</h1>
+      <div class="meta-row">
+        <span class="verified">✓ जानकारी जांची गई: {g.verified}</span>
+        <span>पढ़ने में 6 मिनट</span>
+      </div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">{g.lead}</p>
+        <dl class="facts">
+          {g.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}
+        </dl>
+      </section>
+
+      {g.notice && <div class="callout warn"><p set:html={g.notice} /></div>}
+
+      <section class="section" id="eshram">
+        <h2>लेबर कार्ड (BOCW) या e-Shram कार्ड: कौन सा चाहिए?</h2>
+        <p>लोग दोनों को "लेबर कार्ड" कहते हैं, पर ये अलग हैं। {g.state.hi} का लेबर कार्ड {g.board} बनाता है।</p>
+        <div class="table-wrap wide">
+          <table>
+            <thead><tr><th>बात</th><th>लेबर कार्ड (BOCW)</th><th>e-Shram कार्ड</th></tr></thead>
+            <tbody>{eshramVsBocw.map(([k, a, b]) => <tr><td>{k}</td><td>{a}</td><td>{b}</td></tr>)}</tbody>
+          </table>
+        </div>
+        <div class="callout info"><p set:html={eshramNote} /></div>
+      </section>
+
+      <section class="section" id="patrata">
+        <h2>{g.state.hi} में लेबर कार्ड कौन बनवा सकता है</h2>
+        <ul class="checklist">{g.eligibility.map((d) => <li set:html={d} />)}</ul>
+      </section>
+
+      <section class="section" id="documents">
+        <h2>ज़रूरी दस्तावेज़</h2>
+        <ul class="checklist">{g.documents.map((d) => <li set:html={d} />)}</ul>
+        <p style="color:var(--c-muted);font-size:.95rem">फोटो या PDF का साइज़ ज़्यादा है? <a href="/tools/document-compressor.html">यहां फ्री में छोटा करें</a>। कागज़ों की पूरी लिस्ट बनानी है तो <a href="/tools/document-checklist.html">Document Checklist</a> देखें।</p>
+      </section>
+
+      <section class="section" id="apply">
+        <h2>{g.state.hi} लेबर कार्ड के लिए आवेदन कैसे करें</h2>
+        {g.apply.intro && <p set:html={g.apply.intro} />}
+        <ol class="steps">{g.apply.steps.map((s) => <li set:html={s} />)}</ol>
+        {g.apply.offline && <div class="callout ok"><p set:html={g.apply.offline} /></div>}
+      </section>
+
+      <section class="section" id="fees">
+        <h2>फीस, वैधता और रिन्यूअल</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>बात</th><th>जानकारी</th></tr></thead>
+            <tbody>{g.fees.map(([k, v]) => <tr><td>{k}</td><td set:html={v} /></tr>)}</tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="status">
+        <h2>आवेदन का स्टेटस और लेबर कार्ड डाउनलोड</h2>
+        <ol class="steps">{g.status.map((s) => <li set:html={s} />)}</ol>
+      </section>
+
+      <div class="ad-slot" aria-hidden="true"></div>
+
+      <section class="section" id="yojana">
+        <h2>लेबर कार्ड से मिलने वाली योजनाएं और राशि</h2>
+        <div class="table-wrap wide">
+          <table>
+            <thead><tr><th>योजना</th><th>कितना मिलता है</th><th>ध्यान दें</th></tr></thead>
+            <tbody>{g.schemes.map(([a, b, c]) => <tr><td>{a}</td><td set:html={b} /><td set:html={c} /></tr>)}</tbody>
+          </table>
+        </div>
+        {g.schemesNote && <p set:html={g.schemesNote} />}
+      </section>
+
+      {(g.extra ?? []).map((e) => (
+        <section class="section" id={e.id}>
+          <h2>{e.title}</h2>
+          <Fragment set:html={e.html} />
+        </section>
+      ))}
+
+      <section class="section" id="reject">
+        <h2>आवेदन अटक जाए या रिजेक्ट हो जाए तो क्या करें</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>दिक्कत</th><th>हल</th></tr></thead>
+            <tbody>{g.reject.map(([p, f]) => <tr><td set:html={p} /><td set:html={f} /></tr>)}</tbody>
+          </table>
+        </div>
+        <div class="callout info"><p><strong>दलालों से बचें:</strong> लेबर कार्ड बनवाने के लिए बोर्ड की तय फीस के अलावा किसी को पैसे न दें। फॉर्म भरवाना हो तो <a href={g.csc}>नज़दीकी CSC</a> पर रसीद के साथ भरवाएं।</p></div>
+      </section>
+
+      <OfficialLinks verified={g.verified} links={g.official} />
+      <Faq items={g.faq} />
+      <CardGrid title="इनसे जुड़ी जानकारी" cards={g.related} id="related" />
+      <StateGrid doc="labour-card" current={g.state.slug} title="दूसरे राज्यों में लेबर कार्ड" />
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>{toc.map(([id, label]) => <li><a href={`#${id}`}>{label}</a></li>)}</ol>
+        <a class="cta" href={g.csc}>📍 नज़दीकी CSC सेंटर खोजें</a>
+        <a class="cta secondary" href="/service/e-shram-card.html">🪪 e-Shram कार्ड गाइड</a>
+      </section>
+    </aside>
+  </div>
+</Base>
