@@ -11,7 +11,7 @@ import Faq from "../../components/Faq.astro";
 import Explore from "../../components/Explore.astro";
 import { STATES, DOCS, NATIONAL_DOCS } from "../../data/site";
 import { STATE_SCHEMES } from "../../data/schemes";
-import { exists, REPO_ROOT } from "../../lib/repo";
+import { exists, REPO_ROOT, pageTitle } from "../../lib/repo";
 import { cscPages, cscStatePages, stateOf, stateTotals, oldMeta } from "../../lib/csc";
 import type { SeniorGuide } from "../../guides/senior/types";
 
@@ -31,6 +31,23 @@ const docs = DOCS.filter((d) => exists(`states/${st.slug}-${d.slug}.html`)).map(
 }));
 const schemes = STATE_SCHEMES.filter(([s, slug]) => s === st.slug && exists(`service/${slug}.html`))
   .map(([, slug, emoji, hi, en]) => ({ href: `/service/${slug}.html`, emoji, title: { hi, en }, text: { hi: "पात्रता, राशि और आवेदन", en: "Eligibility, amount, how to apply" } }));
+
+// Every other existing service page of this state (by file-name prefix),
+// except copies of the documents above and schemes already listed.
+const PREFIX: Record<string, string[]> = {
+  "andhra-pradesh": ["ap"], "arunachal-pradesh": ["arunachal"], assam: ["as", "assam"], bihar: ["br", "bihar"],
+  chhattisgarh: ["cg"], delhi: ["dl", "delhi"], gujarat: ["gj"], goa: ["goa"], "himachal-pradesh": ["hp"], haryana: ["hr"],
+  jharkhand: ["jh"], karnataka: ["ka"], kerala: ["kl"], manipur: ["manipur"], meghalaya: ["meghalaya"], maharashtra: ["mh"],
+  mizoram: ["mizoram"], "madhya-pradesh": ["mp"], nagaland: ["nagaland"], odisha: ["od"], punjab: ["pb"], rajasthan: ["rj"],
+  sikkim: ["sikkim"], telangana: ["tg"], "tamil-nadu": ["tn"], tripura: ["tripura"], uttarakhand: ["uk"], "uttar-pradesh": ["up"],
+  "west-bengal": ["wb"],
+};
+const DOC_COPY = /-(birth|death|caste|income|domicile|ration|driving|senior|labour|employment|voter)-(certificate|card|licence|exchange)$|-senior-citizen-card$/;
+const listed = new Set(schemes.map((x) => x.href));
+const more = fs.readdirSync(path.join(REPO_ROOT, "service")).filter((f) => f.endsWith(".html")).map((f) => f.slice(0, -5))
+  .filter((f) => (PREFIX[st.slug] ?? []).some((p) => f.startsWith(`${p}-`)) && !DOC_COPY.test(f) && !listed.has(`/service/${f}.html`))
+  .map((f) => ({ href: `/service/${f}.html`, title: pageTitle(`service/${f}.html`).replace(/\s*[:(].*$/, "").trim() || f }))
+  .sort((a, b) => a.title.localeCompare(b.title));
 
 // Checked facts from the rebuilt guides of this state.
 const senior = Object.values(import.meta.glob<Record<string, unknown>>("../../guides/senior/*.ts", { eager: true }))
@@ -122,6 +139,13 @@ const faq = [
       </section>
     )}
 
+    {more.length > 0 && (
+      <section class="section" id="aur-sevayen">
+        <h2>{st.hi} की और सेवाएं</h2>
+        <ul class="chips">{more.map((m) => <li><a href={m.href}>{m.title}</a></li>)}</ul>
+      </section>
+    )}
+
     <CardGrid title="केंद्र सरकार के ज़रूरी दस्तावेज़" id="national" cards={NATIONAL_DOCS} more={{ href: "/documents/", label: "सभी दस्तावेज़ ›" }} />
 
     <section class="section" id="tips">
@@ -132,6 +156,18 @@ const faq = [
         <li><strong>कागज़ों की साफ स्कैन कॉपी रखें।</strong> साइज़ ज़्यादा हो तो <a href="/tools/document-compressor.html">फ्री में छोटा करें</a>।</li>
         <li><strong>आवेदन नंबर संभालकर रखें।</strong> इसी से स्टेटस देखा जाता है; अटक जाए तो <a href="/tools/status-troubleshooter.html">Status Troubleshooter</a> देखें।</li>
       </ol>
+    </section>
+
+    <section class="section" id="tools">
+      <h2>आवेदन में काम आने वाले फ्री टूल</h2>
+      <ul class="chips">
+        <li><a href="/tools/document-checklist.html">📋 डॉक्यूमेंट चेकलिस्ट</a></li>
+        <li><a href="/tools/eligibility-checker.html">✅ पात्रता जांच</a></li>
+        <li><a href="/tools/self-declaration-builder.html">✍️ स्व-घोषणा पत्र बनाएं</a></li>
+        <li><a href="/tools/status-troubleshooter.html">🔎 स्टेटस ट्रबलशूटर</a></li>
+        <li><a href="/support/rti-guide.html">⚖️ RTI गाइड</a></li>
+        <li><a href="/support/helpline-directory.html">📞 हेल्पलाइन नंबर</a></li>
+      </ul>
     </section>
 
     {portals.length > 0 && <OfficialLinks verified="4 अक्टूबर 2026" links={portals} />}
