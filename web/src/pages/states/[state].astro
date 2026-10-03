@@ -1,0 +1,146 @@
+---
+// State hub: every guide we have for the state, its schemes, CSC and Jan
+// Aushadhi numbers, and the official portals the old hub already linked.
+import fs from "node:fs";
+import path from "node:path";
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import OfficialLinks from "../../components/OfficialLinks.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { STATES, DOCS, NATIONAL_DOCS } from "../../data/site";
+import { STATE_SCHEMES } from "../../data/schemes";
+import { exists, REPO_ROOT } from "../../lib/repo";
+import { cscPages, cscStatePages, stateOf, stateTotals, oldMeta } from "../../lib/csc";
+import type { SeniorGuide } from "../../guides/senior/types";
+
+export function getStaticPaths() {
+  return STATES.filter((s) => exists(`states/${s.slug}.html`)).map((s) => ({ params: { state: s.slug }, props: { st: s } }));
+}
+const { st } = Astro.props as { st: (typeof STATES)[number] };
+const rel = `states/${st.slug}.html`;
+const old = oldMeta(rel);
+const html = fs.readFileSync(path.join(REPO_ROOT, rel), "utf8");
+
+// Guides rebuilt in the new design (content checked) get a badge.
+const isNew = (slug: string) => fs.existsSync(path.join(process.cwd(), `src/pages/states/${st.slug}-${slug}.astro`));
+const docs = DOCS.filter((d) => exists(`states/${st.slug}-${d.slug}.html`)).map((d) => ({
+  href: `/states/${st.slug}-${d.slug}.html`, emoji: d.emoji,
+  title: { hi: `${st.hi} ${d.title.hi}`, en: `${st.name} ${d.title.en}` }, text: d.text,
+}));
+const schemes = STATE_SCHEMES.filter(([s, slug]) => s === st.slug && exists(`service/${slug}.html`))
+  .map(([, slug, emoji, hi, en]) => ({ href: `/service/${slug}.html`, emoji, title: { hi, en }, text: { hi: "पात्रता, राशि और आवेदन", en: "Eligibility, amount, how to apply" } }));
+
+// Checked facts from the rebuilt guides of this state.
+const senior = Object.values(import.meta.glob<Record<string, unknown>>("../../guides/senior/*.ts", { eager: true }))
+  .flatMap((m) => Object.values(m))
+  .find((g): g is SeniorGuide => typeof g === "object" && g !== null && (g as SeniorGuide).state?.slug === st.slug && "pension" in (g as object));
+
+// CSC numbers for the state.
+const cscState = cscStatePages().find((s) => !s.canonical && stateOf(s.dbState)?.slug === st.slug);
+const csc = cscState ? stateTotals(cscState.dbState) : null;
+const cscTop = cscState ? cscPages().filter((p) => p.stateDir === cscState.stateDir && !p.canonical && !p.d.town).sort((a, b) => b.d.count - a.d.count).slice(0, 8) : [];
+const jaHref = exists(`service/jan-aushadhi/${st.slug}.html`) ? `/service/jan-aushadhi/${st.slug}.html` : null;
+
+// Official portals already linked from the old hub (government domains only).
+const portals = [...new Set([...html.matchAll(/href="(https?:\/\/[^"]+)"/g)].map((m) => m[1].replace(/\/$/, "")))]
+  .filter((u) => /\.(gov\.in|nic\.in)(\/|$)/.test(new URL(u).hostname + "/"))
+  .filter((u, i, a) => a.findIndex((x) => new URL(x).hostname === new URL(u).hostname) === i)
+  .map((u) => ({ href: u, title: new URL(u).hostname.replace(/^www\./, ""), note: "Official portal" }));
+
+const n = (x: number) => x.toLocaleString("en-IN");
+const title = old.title || `${st.hi} सरकारी सेवाएं 2026 | SarkariSewa India`;
+const description = old.description || `${st.hi} के प्रमाण पत्र, राशन कार्ड, लेबर कार्ड, योजनाएं और नज़दीकी CSC की जानकारी, official links के साथ।`;
+const crumbs = [{ label: "होम", href: "/" }, { label: "राज्य सेवाएं", href: "/states/" }, { label: st.hi }];
+const faq = [
+  { q: `${st.hi} में आय, जाति और निवास प्रमाण पत्र कहां बनते हैं?`, a: `ये प्रमाण पत्र राज्य के e-District / सेवा पोर्टल से ऑनलाइन, या तहसील और नज़दीकी CSC से बनते हैं। हर प्रमाण पत्र की अलग गाइड इस पेज पर है, जिसमें ज़रूरी कागज़, फीस और official link दिए गए हैं।` },
+  ...(csc ? [{ q: `${st.hi} में कितने CSC सेंटर हैं?`, a: `CSC के रिकॉर्ड के अनुसार ${st.hi} में ${n(csc.total)} CSC / जन सेवा केंद्र दर्ज हैं, जो ${csc.districts} ज़िलों में हैं। अपने ज़िले का पेज खोलकर PIN कोड या लोकेशन से नज़दीकी केंद्र खोजें।` }] : []),
+  ...(schemes.length ? [{ q: `${st.hi} सरकार की मुख्य योजनाएं कौन सी हैं?`, a: `इस पेज पर ${st.hi} की ${schemes.map((s) => s.title.hi).join(", ")} की गाइड है। केंद्र सरकार की योजनाओं के लिए योजना पेज देखें।` }] : []),
+  { q: "क्या SarkariSewa India सरकारी वेबसाइट है?", a: "नहीं। यह एक स्वतंत्र जानकारी पोर्टल है। आवेदन और सरकारी फीस का भुगतान सिर्फ official सरकारी पोर्टल पर करें, जिनके लिंक हर गाइड में दिए गए हैं।" },
+];
+---
+<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} modified="2026-10-04" schemaType="WebPage">
+  <Breadcrumbs items={crumbs} />
+  <article>
+    <h1>{st.hi} सरकारी सेवाएं 2026: प्रमाण पत्र, कार्ड, योजनाएं और नज़दीकी केंद्र</h1>
+    <p class="page-intro">{st.hi} ({st.name}) के लोगों के लिए सभी ज़रूरी गाइड एक जगह: कौन सा कागज़ कहां और कैसे बनता है, कौन सी योजना किसके लिए है, और काम के लिए नज़दीकी CSC कहां है।</p>
+
+    <section class="answer" aria-labelledby="answer-title">
+      <p class="answer-title" id="answer-title">इस पेज पर</p>
+      <dl class="facts">
+        <div><dt>प्रमाण पत्र और कार्ड गाइड</dt><dd>{docs.length}</dd></div>
+        {schemes.length > 0 && <div><dt>राज्य की योजनाएं</dt><dd>{schemes.length}</dd></div>}
+        {csc && <div><dt>CSC केंद्र</dt><dd>{n(csc.total)}</dd></div>}
+        {csc && <div><dt>ज़िले (CSC डेटा)</dt><dd>{csc.districts}</dd></div>}
+      </dl>
+    </section>
+
+    <CardGrid title={`${st.hi} के प्रमाण पत्र और कार्ड`} id="documents" cards={docs.map((d) => (isNew(d.href.split(`${st.slug}-`)[1].replace(".html", "")) ? { ...d, badge: "नई गाइड" } : d))} />
+
+    {schemes.length > 0 && <CardGrid title={`${st.hi} सरकार की योजनाएं`} id="yojana" cards={schemes} more={{ href: "/yojana/", label: "सभी योजनाएं ›" }} />}
+
+    {senior && (
+      <section class="section" id="buzurg">
+        <h2>{st.hi} में बुज़ुर्गों के लिए</h2>
+        <div class="options">
+          <div class="option">
+            <span class="tag green">60+ · {senior.pension.amount}</span>
+            <h3>{senior.pension.name}</h3>
+            <p set:html={senior.pension.intro} />
+            <a class="more" href={`/states/${st.slug}-senior-citizen-card.html#pension`}>पात्रता और आवेदन →</a>
+          </div>
+          <div class="option">
+            <span class="tag">पहचान पत्र</span>
+            <h3>वरिष्ठ नागरिक पहचान पत्र</h3>
+            <p>{senior.idCard.office}</p>
+            <a class="more" href={`/states/${st.slug}-senior-citizen-card.html#kaise-banwaye`}>कैसे बनवाएं →</a>
+          </div>
+          <div class="option">
+            <span class="tag saffron">70+ · ₹5 लाख इलाज</span>
+            <h3>आयुष्मान वय वंदना कार्ड</h3>
+            <p>70 साल से ऊपर हर व्यक्ति को हर साल ₹5 लाख तक मुफ्त इलाज, आय की कोई शर्त नहीं।</p>
+            <a class="more" href={`/states/${st.slug}-senior-citizen-card.html#vay-vandana`}>कार्ड कैसे बनाएं →</a>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <div class="ad-slot" aria-hidden="true"></div>
+
+    {(csc || jaHref) && (
+      <section class="section" id="paas">
+        <h2>{st.hi} में नज़दीकी केंद्र</h2>
+        {csc && cscState && (
+          <>
+            <p>{st.hi} में <strong>{n(csc.total)} CSC / जन सेवा केंद्र</strong> हैं, जहां आधार अपडेट, PAN, आयुष्मान कार्ड और राज्य के प्रमाण पत्रों के लिए आवेदन होता है। सबसे ज़्यादा केंद्र वाले ज़िले:</p>
+            <ul class="chips">{cscTop.map((p) => <li><a href={p.href}>{p.name} <small>{n(p.d.count)}</small></a></li>)}</ul>
+            <p><a class="cta" href={`/service/csc-locator/${cscState.file}`}>📍 {st.hi} के सभी ज़िलों के CSC देखें</a></p>
+          </>
+        )}
+        {jaHref && <p>सस्ती दवा चाहिए? <a href={jaHref}>{st.hi} के जन औषधि केंद्र</a> पर ब्रांडेड जैसी दवाएं 50-80% कम दाम में मिलती हैं।</p>}
+      </section>
+    )}
+
+    <CardGrid title="केंद्र सरकार के ज़रूरी दस्तावेज़" id="national" cards={NATIONAL_DOCS} more={{ href: "/documents/", label: "सभी दस्तावेज़ ›" }} />
+
+    <section class="section" id="tips">
+      <h2>आवेदन से पहले ये 4 बातें</h2>
+      <ol class="steps">
+        <li><strong>सिर्फ official पोर्टल पर आवेदन करें।</strong> हर गाइड में सही लिंक दिया है; मिलते-जुलते नाम वाली वेबसाइट पर पैसे न भरें।</li>
+        <li><strong>आधार से जुड़ा मोबाइल चालू रखें।</strong> ज़्यादातर आवेदन OTP से होते हैं।</li>
+        <li><strong>कागज़ों की साफ स्कैन कॉपी रखें।</strong> साइज़ ज़्यादा हो तो <a href="/tools/document-compressor.html">फ्री में छोटा करें</a>।</li>
+        <li><strong>आवेदन नंबर संभालकर रखें।</strong> इसी से स्टेटस देखा जाता है; अटक जाए तो <a href="/tools/status-troubleshooter.html">Status Troubleshooter</a> देखें।</li>
+      </ol>
+    </section>
+
+    {portals.length > 0 && <OfficialLinks verified="4 अक्टूबर 2026" links={portals} />}
+    <Faq items={faq} />
+
+    <section class="section" id="dusre-rajya">
+      <h2>दूसरे राज्य</h2>
+      <ul class="chips">{STATES.filter((s) => s.slug !== st.slug && exists(`states/${s.slug}.html`)).map((s) => <li><a href={`/states/${s.slug}.html`}>{s.hi}</a></li>)}</ul>
+    </section>
+    <Explore />
+  </article>
+</Base>

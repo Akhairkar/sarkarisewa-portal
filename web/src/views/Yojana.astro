@@ -6,6 +6,7 @@ import CardGrid from "../components/CardGrid.astro";
 import Faq from "../components/Faq.astro";
 import Explore from "../components/Explore.astro";
 import { STATES } from "../data/site";
+import { STATE_SCHEMES } from "../data/schemes";
 import { langOf, t, localize, UI } from "../i18n";
 import { services, exists } from "../lib/repo";
 
@@ -17,47 +18,7 @@ const central = services(["government-schemes"]).map(toCard("🏛️"));
 const health = services(["health"]).map(toCard("🏥"));
 const mpbcdc = services(["mpbcdc-schemes"]).map(toCard("🏦"));
 
-// State schemes: [state slug, page slug, emoji, Hindi name, English name]
-const STATE_SCHEMES: [string, string, string, string, string][] = [
-  ["andhra-pradesh", "ap-thalliki-vandanam", "👩‍👧", "तल्लिकी वंदनम", "Thalliki Vandanam"],
-  ["arunachal-pradesh", "arunachal-cmaay-scheme", "🏥", "मुख्यमंत्री आरोग्य अरुणाचल योजना", "CM Arogya Arunachal Yojana (CMAAY)"],
-  ["arunachal-pradesh", "arunachal-dulari-kanya-scheme", "👧", "दुलारी कन्या योजना", "Dulari Kanya Scheme"],
-  ["arunachal-pradesh", "arunachal-deen-dayal-upadhyaya-bunkar-yojana", "🧵", "दीनदयाल उपाध्याय बुनकर योजना", "Deen Dayal Upadhyaya Bunkar Yojana"],
-  ["assam", "as-orunodoi-scheme", "👩", "अरुणोदय योजना", "Orunodoi Scheme"],
-  ["bihar", "br-kanya-utthan-yojana", "👧", "मुख्यमंत्री कन्या उत्थान योजना", "Kanya Utthan Yojana"],
-  ["chhattisgarh", "cg-mahtari-vandan-yojana", "👩", "महतारी वंदन योजना", "Mahtari Vandan Yojana"],
-  ["goa", "goa-dayanand-social-security-scheme--dsss-", "👴", "दयानंद सामाजिक सुरक्षा योजना", "Dayanand Social Security Scheme"],
-  ["goa", "goa-deen-dayal-swasthya-seva-yojana--ddssy-", "🏥", "दीनदयाल स्वास्थ्य सेवा योजना", "Deen Dayal Swasthya Seva Yojana"],
-  ["goa", "goa-griha-aadhar-scheme", "🏠", "गृह आधार योजना", "Griha Aadhar Scheme"],
-  ["gujarat", "gj-vahli-dikri-yojana", "👧", "वहाली दीकरी योजना", "Vahli Dikri Yojana"],
-  ["himachal-pradesh", "hp-himcare-scheme", "🏥", "हिमकेयर योजना", "HIMCARE Scheme"],
-  ["himachal-pradesh", "hp-mukhya-mantri-swawalamban-yojana", "💼", "मुख्यमंत्री स्वावलंबन योजना", "Mukhya Mantri Swawalamban Yojana"],
-  ["himachal-pradesh", "hp-sahara-yojana", "🤝", "सहारा योजना", "Sahara Yojana"],
-  ["jharkhand", "jh-maiya-samman-yojana", "👩", "मैया सम्मान योजना", "Maiya Samman Yojana"],
-  ["karnataka", "ka-gruha-lakshmi-yojana", "👩", "गृह लक्ष्मी योजना", "Gruha Lakshmi Yojana"],
-  ["kerala", "kl-social-security-pension", "👴", "सामाजिक सुरक्षा पेंशन", "Social Security Pension"],
-  ["manipur", "manipur-chief-minister-widow-pension-scheme", "🤝", "मुख्यमंत्री विधवा पेंशन योजना", "CM Widow Pension Scheme"],
-  ["manipur", "manipur-cmht-scheme", "🏥", "मुख्यमंत्री हकसेल तेंगबांग (CMHT)", "CMHT Health Scheme"],
-  ["manipur", "manipur-lairik-yengminnasi-scheme", "📚", "लाइरिक येंगमिन्नासी योजना", "Lairik Yengminnasi Scheme"],
-  ["meghalaya", "meghalaya-focus-scheme", "🌾", "FOCUS योजना", "FOCUS Scheme"],
-  ["meghalaya", "meghalaya-mhis-scheme", "🏥", "मेघालय स्वास्थ्य बीमा योजना (MHIS)", "Meghalaya Health Insurance Scheme (MHIS)"],
-  ["maharashtra", "mh-ladki-bahin-yojana", "👩", "लाडकी बहिन योजना", "Ladki Bahin Yojana"],
-  ["maharashtra", "mh-bandhkam-kamgar-yojana", "👷", "बांधकाम कामगार योजना", "Bandhkam Kamgar Yojana"],
-  ["mizoram", "mizoram-bpl-housing-scheme", "🏠", "BPL आवास योजना", "BPL Housing Scheme"],
-  ["mizoram", "mizoram-chief-minister-rural-housing-scheme", "🏠", "मुख्यमंत्री ग्रामीण आवास योजना", "CM Rural Housing Scheme"],
-  ["madhya-pradesh", "mp-ladli-laxmi-yojana", "👧", "लाडली लक्ष्मी योजना", "Ladli Laxmi Yojana"],
-  ["nagaland", "nagaland-cmhis-scheme", "🏥", "मुख्यमंत्री स्वास्थ्य बीमा योजना (CMHIS)", "CM Health Insurance Scheme (CMHIS)"],
-  ["odisha", "od-subhadra-yojana", "👩", "सुभद्रा योजना", "Subhadra Yojana"],
-  ["punjab", "pb-ashirwad-scheme", "💍", "आशीर्वाद योजना", "Ashirwad Scheme"],
-  ["rajasthan", "rj-chiranjeevi-yojana", "🏥", "चिरंजीवी योजना", "Chiranjeevi Yojana"],
-  ["sikkim", "sikkim-aama-yojana", "👩", "आमा योजना", "Aama Yojana"],
-  ["sikkim", "sikkim-sgay-yojana", "🏠", "सिक्किम गरीब आवास योजना", "Sikkim Garib Awas Yojana"],
-  ["sikkim", "sikkim-vatsalya-yojana", "👶", "वात्सल्य योजना", "Vatsalya Yojana"],
-  ["telangana", "tg-mahalakshmi-scheme", "👩", "महालक्ष्मी योजना", "Mahalakshmi Scheme"],
-  ["tripura", "tripura-yuba-yogayog-yojana", "📱", "युवा योगायोग योजना", "Yuba Yogayog Yojana"],
-  ["uttar-pradesh", "up-kanya-sumangala-yojana", "👧", "कन्या सुमंगला योजना", "Kanya Sumangala Yojana"],
-  ["west-bengal", "wb-lakshmir-bhandar", "👩", "लक्ष्मीर भंडार", "Lakshmir Bhandar"],
-];
+
 const stateName = (slug: string) => { const s = STATES.find((x) => x.slug === slug); return s ? (lang === "en" ? s.name : s.hi) : slug; };
 const stateSchemes = STATE_SCHEMES.filter(([, slug]) => exists(`service/${slug}.html`)).map(([st, slug, emoji, hi, en]) => ({
   href: `/service/${slug}.html`, emoji, title: L(hi, en), text: stateName(st),

@@ -210,7 +210,8 @@ table { width: 100%; border-collapse: collapse; }
 }
 .official a:hover { border-color: var(--c-green); }
 .official .ico { flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--c-green-50); color: var(--c-green); }
-.official strong { display: block; font-size: 0.98rem; line-height: 1.3; }
+.official a > span:not(.ico):not(.ext) { min-width: 0; }
+.official strong { display: block; font-size: 0.98rem; line-height: 1.3; overflow-wrap: anywhere; }
 .official small { display: block; color: var(--c-muted); font-size: 0.8rem; word-break: break-all; }
 .official .ext { margin-left: auto; color: var(--c-muted); flex-shrink: 0; }
 
