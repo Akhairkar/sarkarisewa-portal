@@ -151,6 +151,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - Page file: `web/src/pages/<same-url-path>.astro`. Example: `states/jharkhand-senior-citizen-card.astro` banega `/states/jharkhand-senior-citizen-card.html`.
 - Layout: `web/src/layouts/Base.astro`. Isme title, description, canonical, hreflang, OG, aur JSON-LD (Breadcrumb, Article, FAQPage) sab automatic aate hain.
 - Har page par (Base layout se): header mein Telegram button (t.me/sarkarisewaindia), footer se pehle `Subscribe` box (Telegram + mobile/email form, Supabase `subscribers` table mein save hota hai, admin → Subscribers mein dikhta hai; `source` mein page URL aur `notification_topics` mein chune hue topic jaate hain).
+- Guide templates: ek document ke saare rajya ek hi template se bante hain (jaise `SeniorCitizenGuide.astro` + `guides/senior/*.ts`). Naye rajya ke liye sirf config file likhni hai.
 - Components: `Breadcrumbs`, `OfficialLinks`, `Faq`, `CardGrid` (related), `StateGrid` (doosre states), `Explore` ("Ye bhi dekhein").
 - Explore cards aur menu ek hi jagah se aate hain: `web/src/data/site.ts`.
 - Push se pehle hamesha **clean clone** par build test karna hai (`git clone` karke `npm ci && npm run site`). Local build un files ko bhi pakad leta hai jo `.gitignore` ki wajah se GitHub tak nahi pahunchti (2026-10-03 ko `lib/` rule se 4 deploy fail hue the).
@@ -175,6 +176,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Jan Aushadhi data asli hai:** `jan_aushadhi_all_india.csv` (~20,700 stores, PMBJP ka official data, lat/long ke saath). Ye ek achha data asset hai.
 
 ## 10. Log
+- **2026-10-04:** Senior citizen batch 1: MP, Bihar, Uttarakhand, Delhi (+ Jharkhand naye template par). Template `SeniorCitizenGuide.astro`, content `web/src/guides/senior/<state>.ts`. Duplicate `service/` pages ka canonical states/ par hai. Header mein light/dark theme button joda (`ss-theme` localStorage mein save hota hai). Trending tiles user ke kehne par hataye.
 - **2026-10-03:** English versions live kiye (/en/ + 7 hubs), header mein EN/हिं toggle. Homepage par Trending tiles aur "सभी 24 टूल्स" link joda.
 - **2026-10-03:** GST verification page par naya header, footer, mobile menu, rang aur font lagaye. Payment script bilkul nahi badla. IndexNow deploy mein joda.
 - **2026-10-03:** Pages source = GitHub Actions (user ne set kiya). Hubs live kiye: /students/, /yojana/, /tools/, /near-me/, /states/. Top nav naye hubs par point karta hai. Sitemap har deploy par assemble.mjs se update hota hai (naye pages add, rebuilt pages ki lastmod refresh, index.html wale duplicate URL hatate hain).

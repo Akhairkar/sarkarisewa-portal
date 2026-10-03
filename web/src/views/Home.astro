@@ -3,7 +3,6 @@ import Base from "../layouts/Base.astro";
 import SearchBox from "../components/SearchBox.astro";
 import TaskList from "../components/TaskList.astro";
 import CardGrid from "../components/CardGrid.astro";
-import Trending from "../components/Trending.astro";
 import Faq from "../components/Faq.astro";
 import { SITE, POPULAR_TASKS, PAID_SERVICES, STATES } from "../data/site";
 import { langOf, t, localize } from "../i18n";
@@ -82,8 +81,6 @@ const faq = lang === "en" ? [
       <span>{L("फ्री गाइड और टूल्स", "Free guides and tools")}</span>
     </div>
   </section>
-
-  <Trending />
 
   <section class="block" aria-labelledby="popular">
     <div class="block-head"><h2 id="popular">{L("लोग सबसे ज़्यादा यह खोज रहे हैं", "Most searched")}</h2><a href={localize("/documents/", lang)}>{L("सभी दस्तावेज़ ›", "All documents ›")}</a></div>

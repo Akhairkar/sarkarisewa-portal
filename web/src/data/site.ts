@@ -177,20 +177,3 @@ export const PAID_SERVICES: PaidService[] = [
   },
 ];
 
-// Trending strip under the homepage hero: bright tiles people click straight
-// away. Keep it to what people are searching for right now (GSC) and update it
-// as demand changes.
-export const TRENDING: { href: string; label: Text; tone: "saffron" | "green" | "blue" | "red" | "purple" | "teal" }[] = [
-  { href: "/service/senior-citizen-card.html", label: { hi: "सीनियर सिटीजन कार्ड", en: "Senior Citizen Card" }, tone: "saffron" },
-  { href: "/service/ayushman-bharat-vayo-vandana.html", label: { hi: "आयुष्मान वय वंदना 70+", en: "Ayushman Vay Vandana 70+" }, tone: "green" },
-  { href: "/documents/#labour-card", label: { hi: "लेबर कार्ड", en: "Labour Card" }, tone: "blue" },
-  { href: "/special-intensive-revision-sir.html", label: { hi: "SIR वोटर लिस्ट", en: "SIR Voter List" }, tone: "red" },
-  { href: "/service/pm-kisan.html", label: { hi: "PM किसान किस्त", en: "PM Kisan Instalment" }, tone: "green" },
-  { href: "/service/mh-ladki-bahin-yojana.html", label: { hi: "लाडकी बहिन योजना", en: "Ladki Bahin Yojana" }, tone: "purple" },
-  { href: "/service/jh-maiya-samman-yojana.html", label: { hi: "मैया सम्मान योजना", en: "Maiya Samman Yojana" }, tone: "purple" },
-  { href: "/services/gstin-verification/", label: { hi: "GST नंबर चेक ₹20", en: "GST Number Check ₹20" }, tone: "teal" },
-  { href: "/exams/index.html", label: { hi: "Exam Calendar 2026", en: "Exam Calendar 2026" }, tone: "blue" },
-  { href: "/service/national-scholarship-portal.html", label: { hi: "NSP स्कॉलरशिप", en: "NSP Scholarship" }, tone: "saffron" },
-  { href: "/tools/csc-locator.html", label: { hi: "नज़दीकी CSC सेंटर", en: "CSC Near Me" }, tone: "teal" },
-  { href: "/service/jan-aushadhi-store-locator.html", label: { hi: "जन औषधि केंद्र", en: "Jan Aushadhi Kendra" }, tone: "red" },
-];

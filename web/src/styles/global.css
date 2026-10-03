@@ -436,25 +436,6 @@ table { width: 100%; border-collapse: collapse; }
   .icon-btn { min-width: 36px; height: 36px; padding: 0 6px; }
 }
 
-/* ---------- Trending tiles (homepage, under hero) ---------- */
-.trending { margin: 18px 0 8px; }
-.trending-title { font-weight: 800; color: var(--c-ink); margin: 0 0 8px; }
-.trend-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-@media (min-width: 640px) { .trend-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 1000px) { .trend-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.trend {
-  display: flex; align-items: center; justify-content: center; text-align: center; min-height: 52px; padding: 8px 10px;
-  border-radius: 12px; color: #fff; font-weight: 800; text-decoration: none; line-height: 1.25; overflow-wrap: anywhere;
-  box-shadow: 0 2px 0 rgb(0 0 0 / 0.12); transition: transform 0.1s ease, filter 0.1s ease;
-}
-.trend:hover { color: #fff; transform: translateY(-2px); filter: brightness(1.08); }
-.trend.saffron { background: #d97706; }
-.trend.green { background: #047857; }
-.trend.blue { background: #1d4ed8; }
-.trend.red { background: #b91c1c; }
-.trend.purple { background: #7c3aed; }
-.trend.teal { background: #0f766e; }
-
 /* Header fit with language + Telegram + search buttons */
 .lang-btn { font-weight: 800; min-width: 40px; }
 @media (max-width: 479px) {
@@ -476,3 +457,18 @@ table { width: 100%; border-collapse: collapse; }
   .icon-btn { min-width: 32px; height: 34px; padding: 0 5px; }
   .icon-btn svg { width: 18px; height: 18px; }
 }
+
+/* Theme toggle: show the icon of the theme you would switch to */
+.theme-btn .i-sun { display: none; }
+:root[data-theme="dark"] .theme-btn .i-sun { display: block; }
+:root[data-theme="dark"] .theme-btn .i-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-btn .i-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-btn .i-moon { display: none; }
+}
+/* Four header buttons on small phones: let the brand name wrap to two lines */
+@media (max-width: 419px) {
+  .brand-name { white-space: normal; max-width: 6.2em; line-height: 1.05; }
+}
+.bottom-nav a { min-width: 0; padding: 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 359px) { .bottom-nav a { font-size: 0.64rem; } }

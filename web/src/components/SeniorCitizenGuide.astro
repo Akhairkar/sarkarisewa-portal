@@ -1,0 +1,175 @@
+---
+// One template for every state's senior citizen card guide, so all of them
+// share the same structure and design.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import OfficialLinks from "./OfficialLinks.astro";
+import Faq from "./Faq.astro";
+import CardGrid from "./CardGrid.astro";
+import StateGrid from "./StateGrid.astro";
+import Explore from "./Explore.astro";
+import type { SeniorGuide } from "../guides/senior/types";
+
+interface Props { g: SeniorGuide }
+const { g } = Astro.props;
+const crumbs = [
+  { label: "होम", href: "/" },
+  { label: "राज्य सेवाएं", href: "/states/" },
+  { label: g.state.hi, href: `/states/${g.state.slug}.html` },
+  { label: "सीनियर सिटीजन कार्ड" },
+];
+const toc = [
+  ["kaun-sa-card", "कौन सा कार्ड चाहिए"],
+  ["kaise-banwaye", "पहचान पत्र कैसे बनवाएं"],
+  ["documents", "ज़रूरी दस्तावेज़"],
+  ["pension", `${g.pension.name}`],
+  ...(g.extra ?? []).map((e) => [e.id, e.title]),
+  ["vay-vandana", "आयुष्मान वय वंदना 70+"],
+  ["fayde", "फायदे और ज़रूरी कागज़"],
+  ["reject", "रिजेक्ट हो तो क्या करें"],
+  ["official-links", "Official links"],
+  ["faq", "सवाल-जवाब"],
+];
+---
+<Base title={g.title} description={g.description} breadcrumbs={crumbs} faq={g.faq} published={g.published} modified={g.modified}>
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{g.h1}</h1>
+      <div class="meta-row">
+        <span class="verified">✓ जानकारी जांची गई: {g.verified}</span>
+        <span>पढ़ने में 5 मिनट</span>
+      </div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">{g.lead}</p>
+        <dl class="facts">
+          {g.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}
+        </dl>
+      </section>
+
+      <section class="section" id="kaun-sa-card">
+        <h2>पहले समझें: आपको कौन सा कार्ड चाहिए?</h2>
+        <p>लोग "सीनियर सिटीजन कार्ड" लिखकर अलग-अलग चीज़ें खोजते हैं। अपनी ज़रूरत के हिसाब से सही विकल्प चुनें:</p>
+        <div class="options">
+          <div class="option">
+            <span class="tag">60+ · पहचान</span>
+            <h3>वरिष्ठ नागरिक पहचान पत्र</h3>
+            <p>उम्र का सरकारी सबूत। {g.idCard.office}</p>
+            <a class="more" href="#kaise-banwaye">कैसे बनवाएं ↓</a>
+          </div>
+          <div class="option">
+            <span class="tag green">60+ · {g.pension.amount}</span>
+            <h3>{g.pension.name}</h3>
+            <p>{g.state.hi} सरकार की पेंशन, पैसा सीधे बैंक खाते में आता है।</p>
+            <a class="more" href="#pension">पेंशन की जानकारी ↓</a>
+          </div>
+          <div class="option">
+            <span class="tag saffron">70+ · ₹5 लाख इलाज</span>
+            <h3>आयुष्मान वय वंदना कार्ड</h3>
+            <p>केंद्र सरकार का हेल्थ कार्ड। 70 साल से ऊपर हर व्यक्ति को मुफ्त इलाज, चाहे आय कितनी भी हो।</p>
+            <a class="more" href="#vay-vandana">कार्ड कैसे बनाएं ↓</a>
+          </div>
+          <div class="option">
+            <span class="tag">कई फायदों के लिए</span>
+            <h3>सिर्फ आधार काफी है</h3>
+            <p>बैंक FD का ज़्यादा ब्याज, टैक्स छूट और SCSS के लिए अलग कार्ड नहीं चाहिए, आधार/PAN पर लिखी जन्मतिथि से काम चलता है।</p>
+            <a class="more" href="#fayde">कौन सा फायदा कैसे ↓</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="kaise-banwaye">
+        <h2>वरिष्ठ नागरिक पहचान पत्र कैसे बनवाएं</h2>
+        {g.idCard.note && <div class="callout info"><p set:html={g.idCard.note} /></div>}
+        <ol class="steps">{g.idCard.steps.map((s) => <li set:html={s} />)}</ol>
+        {g.idCard.after && <p set:html={g.idCard.after} />}
+      </section>
+
+      <section class="section" id="documents">
+        <h2>ज़रूरी दस्तावेज़</h2>
+        <ul class="checklist">{g.documents.map((d) => <li set:html={d} />)}</ul>
+        <p style="color:var(--c-muted);font-size:.95rem">फोटो या PDF का साइज़ ज़्यादा है? <a href="/tools/document-compressor.html">यहां फ्री में छोटा करें</a>।</p>
+      </section>
+
+      <section class="section" id="pension">
+        <h2>{g.pension.name}: {g.pension.amount}</h2>
+        <p set:html={g.pension.intro} />
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>बात</th><th>जानकारी</th></tr></thead>
+            <tbody>{g.pension.rows.map(([k, v]) => <tr><td>{k}</td><td set:html={v} /></tr>)}</tbody>
+          </table>
+        </div>
+        <h3>पेंशन का स्टेटस और पैसा न आए तो</h3>
+        <p set:html={g.pension.status} />
+      </section>
+
+      {(g.extra ?? []).map((e) => (
+        <section class="section" id={e.id}>
+          <h2>{e.title}</h2>
+          <Fragment set:html={e.html} />
+        </section>
+      ))}
+
+      <section class="section" id="vay-vandana">
+        <h2>70+ हैं? आयुष्मान वय वंदना कार्ड ज़रूर बनवाएं</h2>
+        <p>यह केंद्र सरकार का कार्ड है। 70 साल या उससे ज़्यादा उम्र के हर नागरिक को <strong>हर साल ₹5 लाख तक का मुफ्त इलाज</strong> मिलता है, सरकारी और सूचीबद्ध (empanelled) प्राइवेट अस्पतालों में। इसमें आय की कोई सीमा नहीं है।</p>
+        <ol class="steps">
+          <li><strong>Ayushman App खोलें</strong> या <a href="https://beneficiary.nha.gov.in/" target="_blank" rel="noopener nofollow">beneficiary.nha.gov.in</a> पर जाएं।</li>
+          <li><strong>मोबाइल नंबर और OTP से लॉगिन करें।</strong></li>
+          <li><strong>राज्य में "{g.state.hi}" चुनें</strong> और बुज़ुर्ग का आधार नंबर डालें।</li>
+          <li><strong>आधार e-KYC पूरा करें</strong> (OTP या चेहरे से)। सिर्फ आधार कार्ड ही ज़रूरी दस्तावेज़ है।</li>
+          <li><strong>कार्ड डाउनलोड करें।</strong> मंज़ूरी के बाद कार्ड ऐप से डाउनलोड हो जाता है।</li>
+        </ol>
+        <div class="callout ok"><p><strong>फोन नहीं चलाते?</strong> नज़दीकी <a href={g.csc}>CSC सेंटर</a> या आयुष्मान से जुड़े अस्पताल में आधार लेकर जाएं, वहां कार्ड बन जाएगा। पूरी जानकारी: <a href="/service/ayushman-bharat-vayo-vandana.html">आयुष्मान वय वंदना गाइड</a>।</p></div>
+      </section>
+
+      <div class="ad-slot" aria-hidden="true"></div>
+
+      <section class="section" id="fayde">
+        <h2>बुज़ुर्गों के फायदे: किसके लिए क्या चाहिए</h2>
+        <div class="table-wrap wide">
+          <table>
+            <thead><tr><th>फायदा</th><th>अभी की स्थिति</th><th>क्या दिखाना होगा</th></tr></thead>
+            <tbody>
+              <tr><td>बैंक FD पर ज़्यादा ब्याज</td><td>ज़्यादातर बैंक 60+ को आम ग्राहक से ज़्यादा ब्याज देते हैं</td><td>आधार/PAN (KYC में जन्मतिथि)</td></tr>
+              <tr><td>Senior Citizen Savings Scheme (SCSS)</td><td>60+ के लिए डाकघर और बैंकों में उपलब्ध</td><td>उम्र का कोई भी प्रमाण</td></tr>
+              <tr><td>Income Tax छूट</td><td>पुरानी व्यवस्था (old regime) में 60+ की छूट सीमा ज़्यादा है</td><td>PAN पर जन्मतिथि</td></tr>
+              <tr><td>रेल किराए में छूट</td><td><strong>मार्च 2020 से बंद</strong>, सिर्फ lower berth में प्राथमिकता मिलती है</td><td>टिकट पर सही उम्र</td></tr>
+              <tr><td>मुफ्त इलाज (70+)</td><td>आयुष्मान वय वंदना कार्ड से ₹5 लाख/साल</td><td>आधार e-KYC</td></tr>
+              <tr><td>{g.pension.name}</td><td>{g.pension.amount}</td><td>आधार, बैंक खाता, निवास</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="color:var(--c-muted);font-size:.95rem">Tax का हिसाब लगाना है? <a href="/tools/income-tax-calculator.html">Income Tax Calculator</a> से पुरानी और नई व्यवस्था की तुलना करें।</p>
+      </section>
+
+      <section class="section" id="reject">
+        <h2>आवेदन रुक जाए या रिजेक्ट हो जाए तो क्या करें</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>दिक्कत</th><th>हल</th></tr></thead>
+            <tbody>{g.reject.map(([p, f]) => <tr><td set:html={p} /><td set:html={f} /></tr>)}</tbody>
+          </table>
+        </div>
+      </section>
+
+      <OfficialLinks verified={g.verified} links={g.official} />
+      <Faq items={g.faq} />
+      <CardGrid title="इनसे जुड़ी जानकारी" cards={g.related} id="related" />
+      <StateGrid doc="senior-citizen-card" current={g.state.slug} title="दूसरे राज्यों में सीनियर सिटीजन कार्ड" />
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>{toc.map(([id, label]) => <li><a href={`#${id}`}>{label}</a></li>)}</ol>
+        <a class="cta" href={g.csc}>📍 नज़दीकी CSC सेंटर खोजें</a>
+        <a class="cta secondary" href="/tools/age-calculator.html">⏳ उम्र कैलकुलेटर</a>
+      </section>
+    </aside>
+  </div>
+</Base>
