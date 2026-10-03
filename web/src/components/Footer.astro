@@ -1,0 +1,27 @@
+---
+import { FOOTER } from "../data/site";
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a class="brand" href="/">
+          <img src="/assets/img/sarkarisewa-mark.svg" alt="" width="34" height="34" />
+          <span class="brand-name">Sarkari<b>Sewa</b> <span class="brand-sub">India</span></span>
+        </a>
+        <p style="margin-top:10px;color:var(--c-muted)">सरकारी दस्तावेज़, योजनाएं और नौकरियों की सही जानकारी, आसान भाषा में। हर जानकारी के साथ official link।</p>
+      </div>
+      {FOOTER.map((col) => (
+        <div>
+          <h3>{col.title}</h3>
+          <ul>{col.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+        </div>
+      ))}
+    </div>
+    <p class="footer-note">
+      SarkariSewa India एक स्वतंत्र जानकारी पोर्टल है। हम किसी भी सरकारी विभाग से जुड़े नहीं हैं। आवेदन हमेशा official वेबसाइट पर ही करें।
+      © {year} SarkariSewa India
+    </p>
+  </div>
+</footer>

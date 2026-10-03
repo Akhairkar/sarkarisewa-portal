@@ -1,0 +1,257 @@
+---
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import OfficialLinks from "../../components/OfficialLinks.astro";
+import Faq from "../../components/Faq.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import StateGrid from "../../components/StateGrid.astro";
+import Explore from "../../components/Explore.astro";
+
+const VERIFIED = "3 अक्टूबर 2026";
+const MODIFIED = "2026-10-03";
+
+const crumbs = [
+  { label: "होम", href: "/" },
+  { label: "राज्य सेवाएं", href: "/states/index.html" },
+  { label: "झारखंड", href: "/states/jharkhand.html" },
+  { label: "सीनियर सिटीजन कार्ड" },
+];
+
+const faq = [
+  {
+    q: "झारखंड में सीनियर सिटीजन कार्ड कहाँ बनता है?",
+    a: "वरिष्ठ नागरिक पहचान पत्र या प्रमाण पत्र के लिए अपने प्रखंड (BDO) या अनुमंडल (SDO) कार्यालय से संपर्क करें। कई ज़िलों में ज़िला समाज कल्याण कार्यालय भी यह काम देखता है। मदद के लिए Elderline 14567 पर कॉल कर सकते हैं।",
+  },
+  {
+    q: "क्या JharSewa पर सीनियर सिटीजन कार्ड ऑनलाइन बनता है?",
+    a: "JharSewa पर पेंशन (सर्वजन पेंशन) और प्रमाण पत्रों जैसी सेवाएं मिलती हैं। सीनियर सिटीजन पहचान पत्र की अलग सेवा हर ज़िले में ऑनलाइन नहीं दिखती, इसलिए आवेदन से पहले अपने प्रखंड कार्यालय में पूछ लें कि आपके ज़िले में प्रक्रिया क्या है।",
+  },
+  {
+    q: "सीनियर सिटीजन कार्ड के लिए कितनी उम्र होनी चाहिए?",
+    a: "वरिष्ठ नागरिक पहचान पत्र के लिए उम्र 60 साल या उससे ज़्यादा होनी चाहिए। आयुष्मान वय वंदना कार्ड के लिए उम्र 70 साल या उससे ज़्यादा होनी चाहिए।",
+  },
+  {
+    q: "क्या सीनियर सिटीजन कार्ड के बिना बुज़ुर्गों को फायदे नहीं मिलते?",
+    a: "ज़्यादातर फायदों के लिए अलग कार्ड ज़रूरी नहीं है। बैंक FD पर ज़्यादा ब्याज, Income Tax में छूट और Senior Citizen Savings Scheme के लिए आधार या PAN जैसे किसी भी उम्र प्रमाण से काम चल जाता है।",
+  },
+  {
+    q: "क्या रेलवे में सीनियर सिटीजन को किराए में छूट मिलती है?",
+    a: "नहीं। रेलवे में वरिष्ठ नागरिकों की किराया छूट मार्च 2020 से बंद है और 2026-27 के बजट में भी दोबारा शुरू नहीं हुई। टिकट बुक करते समय नीचे की बर्थ (lower berth) में प्राथमिकता अभी भी मिलती है।",
+  },
+  {
+    q: "सर्वजन पेंशन में हर महीने कितने पैसे मिलते हैं?",
+    a: "झारखंड सर्वजन पेंशन योजना में पात्र लाभार्थी को ₹1,000 प्रति माह मिलते हैं। पैसा सीधे बैंक खाते में आता है। राशि और पात्रता में बदलाव हो सकता है, इसलिए आवेदन के समय प्रखंड कार्यालय से पुष्टि कर लें।",
+  },
+  {
+    q: "आयुष्मान वय वंदना कार्ड के लिए आय की कोई सीमा है?",
+    a: "नहीं। 70 साल या उससे ज़्यादा उम्र का हर भारतीय नागरिक, आय कितनी भी हो, आयुष्मान वय वंदना कार्ड बनवा सकता है। इसमें ₹5 लाख तक का मुफ्त इलाज मिलता है।",
+  },
+];
+
+const related = [
+  { href: "/service/ayushman-bharat-vayo-vandana.html", emoji: "🏥", title: "आयुष्मान वय वंदना कार्ड", text: "70+ के लिए ₹5 लाख मुफ्त इलाज" },
+  { href: "/states/jharkhand-ration-card.html", emoji: "🍚", title: "झारखंड राशन कार्ड", text: "आवेदन, लिस्ट और स्टेटस" },
+  { href: "/service/csc-locator/jharkhand.html", emoji: "📍", title: "झारखंड CSC / प्रज्ञा केंद्र", text: "ज़िले के अनुसार केंद्रों की लिस्ट" },
+  { href: "/service/jan-aushadhi/jharkhand.html", emoji: "💊", title: "झारखंड जन औषधि केंद्र", text: "बुज़ुर्गों की दवा सस्ती में" },
+  { href: "/tools/age-calculator.html", emoji: "⏳", title: "उम्र कैलकुलेटर", text: "60 या 70 साल कब पूरे होंगे?" },
+  { href: "/states/jharkhand.html", emoji: "🗺️", title: "झारखंड की सभी सेवाएं", text: "प्रमाण पत्र, योजनाएं और पोर्टल" },
+];
+---
+<Base
+  title="Jharkhand Senior Citizen Card 2026: Apply & Status"
+  description="झारखंड सीनियर सिटीजन कार्ड कहाँ और कैसे बनता है, ज़रूरी दस्तावेज़, सर्वजन पेंशन ₹1,000 और 70+ के लिए आयुष्मान वय वंदना कार्ड। Official links के साथ।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  published="2026-08-01"
+  modified={MODIFIED}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <div class="page has-aside">
+    <article>
+      <h1>झारखंड सीनियर सिटीजन कार्ड 2026: कहाँ और कैसे बनेगा</h1>
+      <div class="meta-row">
+        <span class="verified">✓ जानकारी जांची गई: {VERIFIED}</span>
+        <span>पढ़ने में 5 मिनट</span>
+      </div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">
+          झारखंड में 60 साल से ऊपर के बुज़ुर्गों का पहचान पत्र आमतौर पर प्रखंड (BDO) या अनुमंडल (SDO) कार्यालय से बनता है।
+          पेंशन के लिए सर्वजन पेंशन योजना में आवेदन करें, और 70 साल से ऊपर हैं तो आयुष्मान वय वंदना कार्ड ज़रूर बनवाएं।
+        </p>
+        <dl class="facts">
+          <div><dt>उम्र</dt><dd>60 साल या ज़्यादा</dd></div>
+          <div><dt>कहाँ बनेगा</dt><dd>BDO / SDO कार्यालय</dd></div>
+          <div><dt>सर्वजन पेंशन</dt><dd>₹1,000 / महीना</dd></div>
+          <div><dt>मदद (Elderline)</dt><dd><a href="tel:14567">14567</a> (फ्री)</dd></div>
+        </dl>
+      </section>
+
+      <section class="section" id="kaun-sa-card">
+        <h2>पहले समझें: आपको कौन सा कार्ड चाहिए?</h2>
+        <p>लोग "सीनियर सिटीजन कार्ड" लिखकर अलग-अलग चीज़ें खोजते हैं। अपनी ज़रूरत के हिसाब से सही विकल्प चुनें:</p>
+        <div class="options">
+          <div class="option">
+            <span class="tag">60+ · पहचान</span>
+            <h3>वरिष्ठ नागरिक पहचान पत्र</h3>
+            <p>उम्र का सरकारी सबूत, जो सरकारी दफ्तरों और अस्पतालों में प्राथमिकता के लिए काम आता है।</p>
+            <a class="more" href="#kaise-banwaye">कैसे बनवाएं ↓</a>
+          </div>
+          <div class="option">
+            <span class="tag green">60+ · ₹1,000/माह</span>
+            <h3>सर्वजन पेंशन योजना</h3>
+            <p>झारखंड सरकार की पेंशन। इसमें आय की कोई शर्त नहीं है, पैसा सीधे बैंक खाते में आता है।</p>
+            <a class="more" href="#pension">पेंशन की जानकारी ↓</a>
+          </div>
+          <div class="option">
+            <span class="tag saffron">70+ · ₹5 लाख इलाज</span>
+            <h3>आयुष्मान वय वंदना कार्ड</h3>
+            <p>केंद्र सरकार का हेल्थ कार्ड। 70 साल से ऊपर हर व्यक्ति को मुफ्त इलाज, चाहे आय कितनी भी हो।</p>
+            <a class="more" href="#vay-vandana">कार्ड कैसे बनाएं ↓</a>
+          </div>
+          <div class="option">
+            <span class="tag">कई फायदों के लिए</span>
+            <h3>सिर्फ आधार काफी है</h3>
+            <p>बैंक FD का ज़्यादा ब्याज, टैक्स छूट और SCSS के लिए अलग कार्ड नहीं चाहिए, आधार/PAN पर लिखी जन्मतिथि से काम चलता है।</p>
+            <a class="more" href="#fayde">कौन सा फायदा कैसे ↓</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="kaise-banwaye">
+        <h2>वरिष्ठ नागरिक पहचान पत्र कैसे बनवाएं</h2>
+        <div class="callout info">
+          <p><strong>ध्यान दें:</strong> झारखंड में इस पहचान पत्र की प्रक्रिया ज़िले के अनुसार अलग हो सकती है। JharSewa पर यह सेवा हर ज़िले में ऑनलाइन नहीं दिखती, इसलिए पहला कदम अपने प्रखंड कार्यालय से पूछना है।</p>
+        </div>
+        <ol class="steps">
+          <li><strong>दस्तावेज़ तैयार करें।</strong> नीचे दी गई लिस्ट के सभी कागज़ों की फोटोकॉपी और 2 पासपोर्ट साइज़ फोटो साथ रखें।</li>
+          <li><strong>प्रखंड (BDO) या अनुमंडल (SDO) कार्यालय जाएं।</strong> वहां वरिष्ठ नागरिक पहचान पत्र का फॉर्म मांगें। कुछ ज़िलों में यह काम ज़िला समाज कल्याण कार्यालय करता है।</li>
+          <li><strong>फॉर्म भरें और जमा करें।</strong> नाम और जन्मतिथि बिल्कुल वैसी ही लिखें जैसी आधार कार्ड में है। जमा करने की रसीद ज़रूर लें।</li>
+          <li><strong>सत्यापन (verification) का इंतज़ार करें।</strong> कार्यालय आपके दस्तावेज़ जांचेगा। कितने दिन लगेंगे, यह रसीद लेते समय पूछ लें।</li>
+          <li><strong>कार्ड/प्रमाण पत्र लें।</strong> देरी हो या कोई सुन न रहा हो, तो Elderline <a href="tel:14567">14567</a> पर कॉल करें। यह केंद्र सरकार की फ्री हेल्पलाइन है (सुबह 8 से रात 8 बजे, हर दिन)।</li>
+        </ol>
+        <p>चल नहीं सकते या कार्यालय दूर है? परिवार का कोई सदस्य आपके दस्तावेज़ लेकर जा सकता है। फोटो पर हस्ताक्षर या अंगूठे का निशान पहले से लगा दें।</p>
+      </section>
+
+      <section class="section" id="documents">
+        <h2>ज़रूरी दस्तावेज़</h2>
+        <ul class="checklist">
+          <li><strong>आधार कार्ड</strong> (पहचान और जन्मतिथि के लिए)</li>
+          <li><strong>उम्र का प्रमाण:</strong> जन्म प्रमाण पत्र, स्कूल सर्टिफिकेट, PAN, पासपोर्ट या वोटर ID में से कोई एक</li>
+          <li><strong>पते का प्रमाण:</strong> वोटर ID, राशन कार्ड या बिजली बिल</li>
+          <li><strong>2 पासपोर्ट साइज़ फोटो</strong> (हाल की)</li>
+          <li><strong>मोबाइल नंबर</strong> (बेहतर है कि आधार से लिंक हो)</li>
+          <li><strong>बैंक पासबुक की कॉपी</strong> (पेंशन के लिए आवेदन कर रहे हैं तो)</li>
+        </ul>
+        <p style="color:var(--c-muted);font-size:.95rem">फोटो या PDF का साइज़ ज़्यादा है? <a href="/tools/document-compressor.html">यहां फ्री में छोटा करें</a>।</p>
+      </section>
+
+      <section class="section" id="pension">
+        <h2>सर्वजन पेंशन योजना: ₹1,000 हर महीने</h2>
+        <p>झारखंड सरकार का महिला, बाल विकास एवं सामाजिक सुरक्षा विभाग यह योजना चलाता है। इसमें आय की कोई जांच नहीं होती, यानी गरीबी रेखा (BPL) कार्ड ज़रूरी नहीं है।</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>बात</th><th>जानकारी</th></tr></thead>
+            <tbody>
+              <tr><td>राशि</td><td>₹1,000 प्रति माह, सीधे बैंक खाते में</td></tr>
+              <tr><td>उम्र</td><td>60 साल या ज़्यादा। सरकारी घोषणाओं के अनुसार महिलाओं और SC/ST पुरुषों के लिए उम्र सीमा 50 साल की गई है, आवेदन के समय प्रखंड में पुष्टि करें।</td></tr>
+              <tr><td>दूसरे पात्र</td><td>विधवा, परित्यक्त/निराश्रित महिलाएं, दिव्यांग, आदिम जनजाति (PVTG) और HIV/AIDS से पीड़ित व्यक्ति</td></tr>
+              <tr><td>कहाँ आवेदन करें</td><td><a href="https://jharsewa.jharkhand.gov.in/" target="_blank" rel="noopener nofollow">JharSewa पोर्टल</a> या प्रखंड (BDO) कार्यालय</td></tr>
+              <tr><td>शर्त</td><td>झारखंड का निवासी होना ज़रूरी</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>पेंशन का स्टेटस कैसे देखें</h3>
+        <p>JharSewa पर लॉगिन करके अपने आवेदन का नंबर डालें। पेंशन मंज़ूर हो चुकी है पर पैसा नहीं आ रहा, तो बैंक में पता करें कि खाता आधार से लिंक (DBT) है या नहीं। सबसे आम वजह यही होती है।</p>
+      </section>
+
+      <section class="section" id="vay-vandana">
+        <h2>70+ हैं? आयुष्मान वय वंदना कार्ड ज़रूर बनवाएं</h2>
+        <p>यह केंद्र सरकार का कार्ड है। 70 साल या उससे ज़्यादा उम्र के हर नागरिक को <strong>हर साल ₹5 लाख तक का मुफ्त इलाज</strong> मिलता है, सरकारी और सूचीबद्ध (empanelled) प्राइवेट अस्पतालों में। इसमें आय की कोई सीमा नहीं है।</p>
+        <ol class="steps">
+          <li><strong>Ayushman App खोलें</strong> या <a href="https://beneficiary.nha.gov.in/" target="_blank" rel="noopener nofollow">beneficiary.nha.gov.in</a> पर जाएं।</li>
+          <li><strong>मोबाइल नंबर और OTP से लॉगिन करें।</strong></li>
+          <li><strong>राज्य में "Jharkhand" चुनें</strong> और बुज़ुर्ग का आधार नंबर डालें।</li>
+          <li><strong>आधार e-KYC पूरा करें</strong> (OTP या चेहरे से)। सिर्फ आधार कार्ड ही ज़रूरी दस्तावेज़ है।</li>
+          <li><strong>कार्ड डाउनलोड करें।</strong> मंज़ूरी के बाद कार्ड ऐप से डाउनलोड हो जाता है।</li>
+        </ol>
+        <div class="callout ok"><p><strong>फोन नहीं चलाते?</strong> नज़दीकी <a href="/service/csc-locator/jharkhand.html">CSC / प्रज्ञा केंद्र</a> या आयुष्मान से जुड़े अस्पताल में आधार लेकर जाएं, वहां कार्ड बन जाएगा। पूरी जानकारी: <a href="/service/ayushman-bharat-vayo-vandana.html">आयुष्मान वय वंदना गाइड</a>।</p></div>
+      </section>
+
+      <div class="ad-slot" aria-hidden="true"></div>
+
+      <section class="section" id="fayde">
+        <h2>बुज़ुर्गों के फायदे: किसके लिए क्या चाहिए</h2>
+        <div class="table-wrap wide">
+          <table>
+            <thead><tr><th>फायदा</th><th>अभी की स्थिति</th><th>क्या दिखाना होगा</th></tr></thead>
+            <tbody>
+              <tr><td>बैंक FD पर ज़्यादा ब्याज</td><td>ज़्यादातर बैंक 60+ को आम ग्राहक से ज़्यादा ब्याज देते हैं</td><td>आधार/PAN (KYC में जन्मतिथि)</td></tr>
+              <tr><td>Senior Citizen Savings Scheme (SCSS)</td><td>60+ के लिए डाकघर और बैंकों में उपलब्ध</td><td>उम्र का कोई भी प्रमाण</td></tr>
+              <tr><td>Income Tax छूट</td><td>पुरानी व्यवस्था (old regime) में 60+ की छूट सीमा ज़्यादा है</td><td>PAN पर जन्मतिथि</td></tr>
+              <tr><td>रेल किराए में छूट</td><td><strong>मार्च 2020 से बंद</strong>, सिर्फ lower berth में प्राथमिकता मिलती है</td><td>टिकट पर सही उम्र</td></tr>
+              <tr><td>मुफ्त इलाज (70+)</td><td>आयुष्मान वय वंदना कार्ड से ₹5 लाख/साल</td><td>आधार e-KYC</td></tr>
+              <tr><td>सर्वजन पेंशन</td><td>₹1,000/माह</td><td>आधार, बैंक खाता, निवास</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="color:var(--c-muted);font-size:.95rem">Tax का हिसाब लगाना है? <a href="/tools/income-tax-calculator.html">Income Tax Calculator</a> से पुरानी और नई व्यवस्था की तुलना करें।</p>
+      </section>
+
+      <section class="section" id="reject">
+        <h2>आवेदन रुक जाए या रिजेक्ट हो जाए तो क्या करें</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>दिक्कत</th><th>हल</th></tr></thead>
+            <tbody>
+              <tr><td>आधार और दूसरे कागज़ में जन्मतिथि अलग है</td><td>पहले आधार में जन्मतिथि सुधरवाएं, फिर आवेदन करें। फॉर्म में वही तारीख लिखें जो आधार में है।</td></tr>
+              <tr><td>आधार में उम्र सिर्फ साल (जैसे 01-01-1960) लिखी है</td><td>स्कूल सर्टिफिकेट या जन्म प्रमाण पत्र साथ लगाएं ताकि सही तारीख का सबूत रहे।</td></tr>
+              <tr><td>मोबाइल पर OTP नहीं आता</td><td>आधार से लिंक मोबाइल नंबर इस्तेमाल करें, या आधार केंद्र पर नंबर अपडेट करवाएं।</td></tr>
+              <tr><td>पेंशन मंज़ूर है पर पैसा नहीं आया</td><td>बैंक जाकर खाते की आधार सीडिंग (DBT) चेक करवाएं और खाता चालू (KYC पूरी) है, यह देखें।</td></tr>
+              <tr><td>कार्यालय में बार-बार चक्कर</td><td>लिखित आवेदन की रसीद रखें और Elderline 14567 पर शिकायत दर्ज करें।</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <OfficialLinks
+        verified={VERIFIED}
+        links={[
+          { href: "https://jharsewa.jharkhand.gov.in/", title: "JharSewa (झारखंड ई-डिस्ट्रिक्ट पोर्टल)", note: "पेंशन और प्रमाण पत्र के आवेदन" },
+          { href: "https://beneficiary.nha.gov.in/", title: "आयुष्मान कार्ड पोर्टल (NHA)", note: "वय वंदना कार्ड 70+" },
+          { href: "https://elderline.dosje.gov.in/", title: "Elderline: राष्ट्रीय वरिष्ठ नागरिक हेल्पलाइन", note: "सामाजिक न्याय मंत्रालय, भारत सरकार" },
+          { href: "tel:14567", title: "Elderline हेल्पलाइन: 14567", note: "फ्री, सुबह 8 से रात 8 बजे, हर दिन" },
+        ]}
+      />
+
+      <Faq items={faq} />
+
+      <CardGrid title="इनसे जुड़ी जानकारी" cards={related} id="related" />
+
+      <StateGrid doc="senior-citizen-card" current="jharkhand" title="दूसरे राज्यों में सीनियर सिटीजन कार्ड" />
+
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          <li><a href="#kaun-sa-card">कौन सा कार्ड चाहिए</a></li>
+          <li><a href="#kaise-banwaye">पहचान पत्र कैसे बनवाएं</a></li>
+          <li><a href="#documents">ज़रूरी दस्तावेज़</a></li>
+          <li><a href="#pension">सर्वजन पेंशन ₹1,000</a></li>
+          <li><a href="#vay-vandana">आयुष्मान वय वंदना 70+</a></li>
+          <li><a href="#fayde">फायदे और ज़रूरी कागज़</a></li>
+          <li><a href="#reject">रिजेक्ट हो तो क्या करें</a></li>
+          <li><a href="#official-links">Official links</a></li>
+          <li><a href="#faq">सवाल-जवाब</a></li>
+        </ol>
+        <a class="cta" href="/service/csc-locator/jharkhand.html">📍 नज़दीकी प्रज्ञा केंद्र खोजें</a>
+        <a class="cta secondary" href="/tools/age-calculator.html">⏳ उम्र कैलकुलेटर</a>
+      </section>
+    </aside>
+  </div>
+</Base>

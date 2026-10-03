@@ -1,0 +1,19 @@
+---
+import type { Card } from "../data/site";
+interface Props { title: string; lead?: string; cards: Card[]; variant?: "plain" | "explore"; id?: string }
+const { title, lead, cards, variant = "plain", id } = Astro.props;
+---
+<section class={`section ${variant === "explore" ? "explore" : ""}`} id={id}>
+  <h2>{title}</h2>
+  {lead && <p class="lead">{lead}</p>}
+  <div class="card-grid">
+    {cards.map((c) => (
+      <a class="card" href={c.href}>
+        {c.badge && <span class="badge">{c.badge}</span>}
+        <span class="emoji" aria-hidden="true">{c.emoji}</span>
+        <strong>{c.title}</strong>
+        <small>{c.text}</small>
+      </a>
+    ))}
+  </div>
+</section>

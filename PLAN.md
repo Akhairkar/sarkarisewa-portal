@@ -29,7 +29,7 @@ Ye repo ka **ek hi** doc hai. Har session isi file se shuru hoga aur isi file me
 |---|---|
 | Tech | **Astro**. Output pure static HTML hoga, isliye indexing par koi asar nahi. Sitemap, hreflang, canonical aur schema components se automatic banenge. |
 | Hosting | Abhi **GitHub Pages + GitHub Actions** (Astro build). Baad mein Cloudflare Pages par shift karenge. |
-| Purani site | Purani saari files Astro ke `public/` mein jaisi hain waisi rahengi. Naye pages ek-ek karke unki jagah lenge. Ek baar mein poori site nahi badlegi. |
+| Purani site | Purani files repo root mein hi rahengi. Deploy ke waqt `web/scripts/assemble.mjs` purani site copy karta hai (scripts, `.py`, `.md`, SQL, CSV chhod kar), phir Astro ke naye pages usi URL par overwrite karta hai, phir sitemap update karta hai. Naye pages ek-ek karke purane pages ki jagah lenge. |
 | Bhasha | Har bhasha ka alag URL hoga, hreflang ke saath. **Hindi primary**, English saath mein. Marathi sirf wahan jahan genuinely useful ho (Maharashtra-specific). JS toggle se bhasha badalne wala tarika band hoga. |
 | CSC / Jan Aushadhi | Ye ~25% traffic laate hain, isliye inhe **bhi upgrade karna hai**: naya design/logo, research-based title/meta, aur real data (official PMBJP / CSC data) se useful district pages. |
 | Payment | GST verification ka existing flow waisa hi rahega (`private/gstin-verification/` + `cloudflare/gstin-api/` worker). Nayi API services ke liye naya flow banega. |
@@ -49,8 +49,8 @@ Ye repo ka **ek hi** doc hai. Har session isi file se shuru hoga aur isi file me
 - [x] Phase 0: Targets discuss karna, purane docs hatana
 - [x] Phase 1: GSC data analysis (section 6 dekho)
 - [ ] Phase 2: Site structure. Menu, hubs, URL plan aur language URL plan. (Draft section 7-8 mein hai, user approval baaki)
-- [ ] Phase 3: Naya logo + design system + homepage mockup (user approval ke liye)
-- [ ] Phase 4: Astro setup (purani site `public/` mein) + GitHub Actions deploy
+- [x] Phase 3: Naya logo (live, poori site par) + design system (`web/src/styles/global.css`)
+- [~] Phase 4: Astro setup `web/` mein ho gaya + `.github/workflows/deploy-site.yml`. **User action baaki:** GitHub Settings → Pages → Source = "GitHub Actions". Iske baad hi naye pages live honge.
 - [ ] Phase 5: Hub pages + paid services pages (GST, RC/challan)
 - [ ] Phase 6: Information pages, chhote batches mein
 - [ ] Phase 7: CSC/JA par faisla, phir AdSense apply
@@ -132,11 +132,21 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 13. Doosre states ka grid
 14. Breadcrumb + schema (HowTo/FAQ/Breadcrumb)
 
+## 8b. Naya page kaise banta hai (Astro)
+- Page file: `web/src/pages/<same-url-path>.astro`. Example: `states/jharkhand-senior-citizen-card.astro` banega `/states/jharkhand-senior-citizen-card.html`.
+- Layout: `web/src/layouts/Base.astro`. Isme title, description, canonical, hreflang, OG, aur JSON-LD (Breadcrumb, Article, FAQPage) sab automatic aate hain.
+- Components: `Breadcrumbs`, `OfficialLinks`, `Faq`, `CardGrid` (related), `StateGrid` (doosre states), `Explore` ("Ye bhi dekhein").
+- Explore cards aur menu ek hi jagah se aate hain: `web/src/data/site.ts`.
+- Local build: `cd web && npm ci && npm run site`. Output `web/_site/` mein banta hai.
+- Pilot page: `states/jharkhand-senior-citizen-card` (research ke baad likha, 2026-10-03).
+- Duplicate `service/<state>-<doc>.html` page ka canonical `states/` wale page par point karta hai, aur use sitemap se hata diya jata hai.
+
 ## 9. Zaroori technical notes
 - **Supabase:** website mein sirf `anon` key hai. `service_role` key kabhi bhi frontend mein nahi daalni.
 - **Admin access:** Supabase Auth user ka `app_metadata` = `{"role":"admin"}` hona chahiye (`user_metadata` nahi). Saari admin policies `public.is_admin()` use karti hain (`supabase/security-hardening.sql`).
 - **Zaroori txt files, inhe delete nahi karna:** `robots.txt`, `ads.txt`, `990cec6ab75587968bc7a43b4721e52c.txt` (IndexNow key, `scripts/submit-indexnow.py` use karta hai), `automation/requirements.txt`.
 - **Known issue:** `active_sessions` ki update policy ke chalte koi bhi anon visitor kisi bhi doosre visitor ka session row update kar sakta hai. Isse sirf "online now" count par asar padta hai. Baad mein fix karna hai.
+- **AdSense:** `ads.txt` mein abhi placeholder `pub-0000000000000000` hai. AdSense account milne par asli publisher ID daalni hai.
 - **Root ki safai baaki hai:** root mein ~250 purane one-off scripts (`fix_*`, `inject_batch*`, `test_*`) publicly deploy ho rahe hain. Astro migration (Phase 4) mein ye deploy se bahar ho jayenge.
 
 ## 9b. Urgent issues mile (2026-10-03)
@@ -147,6 +157,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Jan Aushadhi data asli hai:** `jan_aushadhi_all_india.csv` (~20,700 stores, PMBJP ka official data, lat/long ke saath). Ye ek achha data asset hai.
 
 ## 10. Log
+- **2026-10-03:** Admin panel ko view-only banaya. Naya logo live kiya. Astro setup aur pilot page (Jharkhand senior citizen card) banaye.
 - **2026-10-03:** CSC noindex bug live par fix kiya. Ab se kaam seedha `main` (live) par jayega, user ne allow kiya hai.
 - **2026-10-03:** GSC export analyse kiya (section 6).
 - **2026-10-03:** Targets decide kiye. Purane 30 md/txt docs hataye. Ye PLAN.md banaya.

@@ -1,0 +1,10 @@
+---
+import Icon from "./Icon.astro";
+import { NAV } from "../data/site";
+const path = Astro.url.pathname;
+---
+<nav class="bottom-nav" aria-label="मोबाइल मेनू">
+  {NAV.map((l) => (
+    <a href={l.href} aria-current={path === l.href ? "page" : undefined}><Icon name={l.icon} />{l.label}</a>
+  ))}
+</nav>

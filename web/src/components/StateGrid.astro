@@ -1,0 +1,18 @@
+---
+// Links to the same document for every state that has a page.
+import fs from "node:fs";
+import path from "node:path";
+import { STATES } from "../data/site";
+interface Props { doc: string; title: string; current?: string }
+const { doc, title, current } = Astro.props;
+const repoRoot = path.resolve(process.cwd(), "..");
+const items = STATES.filter((s) => s.slug !== current && fs.existsSync(path.join(repoRoot, "states", `${s.slug}-${doc}.html`)));
+---
+{items.length > 0 && (
+  <section class="section" id="other-states">
+    <h2>{title}</h2>
+    <ul class="chips">
+      {items.map((s) => <li><a href={`/states/${s.slug}-${doc}.html`}>{s.hi}</a></li>)}
+    </ul>
+  </section>
+)}

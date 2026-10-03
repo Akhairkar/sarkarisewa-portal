@@ -1,0 +1,15 @@
+---
+// FAQ list. The same items feed FAQPage schema in the layout, so answers here
+// must be plain text (no HTML).
+interface Props { items: { q: string; a: string }[]; title?: string; id?: string }
+const { items, title = "अक्सर पूछे जाने वाले सवाल", id = "faq" } = Astro.props;
+---
+<section class="section faq" id={id}>
+  <h2>{title}</h2>
+  {items.map((f, i) => (
+    <details open={i === 0}>
+      <summary>{f.q}</summary>
+      <div><p>{f.a}</p></div>
+    </details>
+  ))}
+</section>

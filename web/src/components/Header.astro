@@ -1,0 +1,19 @@
+---
+import Icon from "./Icon.astro";
+import { TOP_NAV } from "../data/site";
+const path = Astro.url.pathname;
+---
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/" aria-label="SarkariSewa India होम">
+      <img src="/assets/img/sarkarisewa-mark.svg" alt="" width="38" height="38" />
+      <span class="brand-name">Sarkari<b>Sewa</b><span class="brand-sub">India · सरकारी काम, आसान भाषा में</span></span>
+    </a>
+    <nav class="top-nav" aria-label="मुख्य मेनू">
+      {TOP_NAV.map((l) => <a href={l.href} aria-current={path === l.href ? "page" : undefined}>{l.label}</a>)}
+    </nav>
+    <div class="header-actions">
+      <a class="icon-btn" href="/search.html" aria-label="खोजें"><Icon name="search" size={20} /></a>
+    </div>
+  </div>
+</header>

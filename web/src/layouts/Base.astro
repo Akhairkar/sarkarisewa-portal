@@ -1,0 +1,108 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import BottomNav from "../components/BottomNav.astro";
+import { SITE } from "../data/site";
+
+interface Crumb { label: string; href?: string }
+interface Props {
+  title: string;
+  description: string;
+  lang?: "hi" | "en" | "mr";
+  breadcrumbs?: Crumb[];
+  faq?: { q: string; a: string }[];
+  published?: string; // YYYY-MM-DD
+  modified?: string; // YYYY-MM-DD
+  noindex?: boolean;
+  ogImage?: string;
+  schemaType?: "Article" | "WebPage";
+}
+const {
+  title, description, lang = "hi", breadcrumbs = [], faq = [], published, modified,
+  noindex = false, ogImage = "/assets/img/og-image.png", schemaType = "Article",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const image = new URL(ogImage, SITE.url).href;
+
+const schema: Record<string, unknown>[] = [];
+if (breadcrumbs.length) {
+  schema.push({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((b, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: b.label,
+      item: new URL(b.href ?? Astro.url.pathname, SITE.url).href,
+    })),
+  });
+}
+schema.push({
+  "@context": "https://schema.org",
+  "@type": schemaType,
+  headline: title,
+  description,
+  inLanguage: lang,
+  mainEntityOfPage: canonical,
+  image,
+  ...(published && { datePublished: published }),
+  ...(modified && { dateModified: modified }),
+  author: { "@type": "Organization", name: SITE.name, url: SITE.url },
+  publisher: {
+    "@type": "Organization",
+    name: SITE.name,
+    logo: { "@type": "ImageObject", url: `${SITE.url}/assets/img/android-chrome-512.png` },
+  },
+});
+if (faq.length) {
+  schema.push({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  });
+}
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content={noindex ? "noindex,follow" : "index,follow,max-image-preview:large"} />
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" hreflang={lang} href={canonical} />
+  <link rel="alternate" hreflang="x-default" href={canonical} />
+  <meta name="theme-color" content="#1d4ed8" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" href="/assets/img/sarkarisewa-mark.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content={SITE.name} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={image} />
+  <meta property="og:locale" content={lang === "hi" ? "hi_IN" : lang === "mr" ? "mr_IN" : "en_IN"} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  <slot name="head" />
+</head>
+<body>
+  <a class="skip-link" href="#main">सीधे जानकारी पर जाएं</a>
+  <Header />
+  <main id="main" class="container">
+    <slot />
+  </main>
+  <Footer />
+  <BottomNav />
+  <script is:inline>window.SS_ROOT = "/";</script>
+  <script is:inline defer src="/assets/js/analytics-track.js"></script>
+</body>
+</html>
