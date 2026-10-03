@@ -3,11 +3,11 @@
    ========================================================================== */
 
 (function () {
-  const savedTheme = ((function(k){try{return localStorage.getItem(k);}catch(e){return null;}})()) || "dark";
+  const savedTheme = ((function(k){try{return localStorage.getItem(k);}catch(e){return null;}})("admin-theme")) || "dark";
   document.documentElement.setAttribute("data-theme", savedTheme);
 
   window.addEventListener("DOMContentLoaded", () => {
-    const toggleBtns = document.querySelectorAll(".theme-toggle-btn");
+    const toggleBtns = document.querySelectorAll(".admin-sidebar-footer .theme-toggle-btn");
     
     function updateBtnText(theme) {
       toggleBtns.forEach((btn) => {
@@ -22,7 +22,7 @@
         const current = document.documentElement.getAttribute("data-theme") || "dark";
         const next = current === "dark" ? "light" : "dark";
         document.documentElement.setAttribute("data-theme", next);
-        (function(k,v){try{localStorage.setItem(k,v);}catch(e){}})(, );
+        (function(k,v){try{localStorage.setItem(k,v);}catch(e){}})("admin-theme", next);
         updateBtnText(next);
       });
     });

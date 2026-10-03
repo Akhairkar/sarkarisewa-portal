@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link rel="icon" href="../favicon.ico"/>
 <link rel="manifest" href="../manifest.json"/>
-<title>Subscribers & Notifications — SarkariSewa Admin</title>
+<title>Subscribers — SarkariSewa Admin</title>
 <meta name="robots" content="noindex, nofollow"/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="../assets/css/style.css" rel="stylesheet"/>
@@ -19,22 +19,11 @@
 <div class="admin-layout" hidden id="dash-wrap">
 <aside class="admin-sidebar">
 <div class="admin-sidebar-brand"><div class="admin-sidebar-logo">S</div><div><div class="admin-sidebar-title">SarkariSewa</div><div class="admin-sidebar-subtitle">Admin Console</div></div></div>
-<nav class="admin-nav">
-<a class="admin-nav-item" href="dashboard.html">📊 Overview</a>
-<a class="admin-nav-item" href="comments.html">💬 Comments</a>
-<a class="admin-nav-item active" href="subscribers.html">📬 Subscribers</a>
-<a class="admin-nav-item" href="csc.html">🏬 CSC Listings</a>
-<a class="admin-nav-item" href="blog.html">📝 Blog Manager</a>
-<a class="admin-nav-item" href="jobs.html">💼 Job Alerts</a>
-<a class="admin-nav-item" href="exams.html">📅 Exam Calendar</a>
-<a class="admin-nav-item" href="deadlines.html">🗓️ Deadlines</a>
-<a class="admin-nav-item" href="services.html">⚙️ Services</a>
-<a class="admin-nav-item" href="analytics.html">📈 Analytics</a>
-</nav>
+<nav class="admin-nav"></nav>
 <div class="admin-sidebar-footer"><button class="theme-toggle-btn" type="button">☀️ Light Mode</button><div id="whoami" style="font-size:.78rem;color:var(--admin-text-muted)">Loading identity…</div><button class="logout-btn" id="logout" style="width:100%">Log out</button></div>
 </aside>
 <main class="admin-main">
-<div class="admin-topbar"><div class="admin-page-title"><h1>Subscribers & Notifications</h1><p style="margin:4px 0 0;font-size:.86rem;color:var(--admin-text-muted)">Subscriber preferences, audience metrics and opt-in notification campaigns.</p></div></div>
+<div class="admin-topbar"><div class="admin-page-title"><h1>Subscribers</h1><p style="margin:4px 0 0;font-size:.86rem;color:var(--admin-text-muted)">Subscribers ki list aur unki preferences (sirf dekhne aur export ke liye).</p></div></div>
 <div class="sub-wrap">
 <section class="sub-stats" id="stats">
 <div class="sub-stat"><b id="m-total">—</b><span>Total subscribers</span></div>
@@ -42,38 +31,6 @@
 <div class="sub-stat"><b id="m-wa">—</b><span>WhatsApp opted-in · disabled</span></div>
 <div class="sub-stat"><b id="m-tg">—</b><span>Telegram linked</span></div>
 <div class="sub-stat"><b id="m-topics">—</b><span>Topic subscriptions</span></div>
-</section>
-
-<section class="dash-card">
-<h3 style="margin-top:0">Send an update</h3>
-<p class="sub-note">Email and Telegram are available. WhatsApp sending is disabled. Telegram has two modes: private messages to linked subscribers and broadcast posts to the SarkariSewa India channel.</p>
-<div class="campaign-grid">
-<form class="campaign-form" id="campaign-form">
-<input id="campaign-title" maxlength="160" placeholder="Campaign title" required/>
-<select id="campaign-channel" required>
-<option value="email">📧 Email</option>
-<option value="telegram">✈️ Telegram DM</option>
-<option value="telegram_channel">📢 Telegram Channel</option>
-</select>
-<select id="campaign-service">
-<option value="">All service subscriptions</option>
-</select>
-<textarea id="campaign-message" maxlength="4000" placeholder="Write the update message… Include the page link when useful." required></textarea>
-<div class="campaign-actions"><button class="logout-btn logout-btn--primary" type="submit" id="send-btn">Preview audience &amp; send</button><button class="theme-toggle-btn" type="button" id="clear-btn">Clear</button></div>
-<div class="result" id="send-result"></div>
-</form>
-<div>
-<h4 style="margin-top:0">Before sending</h4>
-<ul class="sub-note" style="padding-left:20px">
-<li>Use this for useful updates, not repetitive promotional messages.</li>
-<li>WhatsApp sending is disabled until a proper provider/API workflow is configured.</li>
-<li>Telegram Channel publishing requires the bot to be an administrator of the channel with permission to post, plus the bot token/channel settings in Supabase Edge Function Secrets.</li>
-<li>Telegram DM works only when a subscriber has a linked <code>telegram_chat_id</code>; Channel publishing is a separate broadcast.</li>
-<li>Every campaign creates a delivery record so failures can be reviewed.</li>
-</ul>
-<p class="sub-note danger-note">Do not paste API keys into this page. Provider credentials belong in Supabase Edge Function Secrets.</p>
-</div>
-</div>
 </section>
 
 <section class="dash-card">
@@ -93,10 +50,6 @@
 </div>
 </section>
 
-<section class="dash-card">
-<h3 style="margin-top:0">Recent campaigns</h3>
-<div class="sub-table-wrap"><table class="sub-table"><thead><tr><th>Title</th><th>Channel</th><th>Status</th><th>Audience</th><th>Sent</th><th>Failed</th><th>Created</th></tr></thead><tbody id="campaign-history"><tr><td colspan="7">Loading…</td></tr></tbody></table></div>
-</section>
 </div>
 </main>
 </div>
@@ -104,6 +57,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/admin-common.js"></script>
 <script>
 let SUPABASE_CLIENT=null, ALL_SUBSCRIBERS=[];
 const $=id=>document.getElementById(id);
@@ -114,7 +68,6 @@ function uniqueServices(){return [...new Set(ALL_SUBSCRIBERS.map(s=>s.service_id
 function fillServiceFilters(){
   const opts=uniqueServices().map(s=>'<option value="'+esc(s)+'">'+esc(s)+'</option>').join("");
   $("service-filter").insertAdjacentHTML("beforeend",opts);
-  $("campaign-service").insertAdjacentHTML("beforeend",opts);
 }
 function render(){
   const q=$("search").value.trim().toLowerCase(), cf=$("channel-filter").value, sf=$("service-filter").value, only=$("opted-only").checked;
@@ -140,34 +93,13 @@ async function load(){
   $("m-tg").textContent=ALL_SUBSCRIBERS.filter(s=>s.telegram_opted_in&&s.telegram_chat_id).length;
   $("m-topics").textContent=ALL_SUBSCRIBERS.filter(s=>(s.notification_topics||[]).length).length;
   fillServiceFilters(); render();
-  const c=await SUPABASE_CLIENT.from("notification_campaigns").select("title,channel,status,total_recipients,sent_count,failed_count,created_at").order("created_at",{ascending:false}).limit(20);
-  $("campaign-history").innerHTML=c.error?'<tr><td colspan="7">'+esc(c.error.message)+'</td></tr>':(c.data||[]).map(x=>'<tr><td>'+esc(x.title)+'</td><td>'+esc(x.channel)+'</td><td>'+esc(x.status)+'</td><td>'+x.total_recipients+'</td><td>'+x.sent_count+'</td><td>'+x.failed_count+'</td><td>'+new Date(x.created_at).toLocaleString("en-IN")+'</td></tr>').join("")||'<tr><td colspan="7">No campaigns yet.</td></tr>';
 }
 $("search").addEventListener("input",render); $("channel-filter").addEventListener("change",render); $("service-filter").addEventListener("change",render); $("opted-only").addEventListener("change",render);
-$("clear-btn").onclick=()=>{$("campaign-title").value="";$("campaign-message").value="";$("campaign-service").value="";};
 $("export").onclick=()=>{
   const rows=ALL_SUBSCRIBERS.map(s=>[s.email||"",s.phone||"",s.email_opted_in?"yes":"no",s.whatsapp_opted_in?"yes":"no",s.telegram_opted_in?"yes":"no",s.service_id||"General", (s.notification_topics||[]).join("|"),s.source||"",s.language||"",s.created_at||""]);
   const csv=[["email","phone","email_opted_in","whatsapp_opted_in","telegram_opted_in","service","topics","source","language","created_at"],...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="sarkarisewa-subscribers.csv";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 };
-$("campaign-channel").addEventListener("change",()=>{const isChannel=$("campaign-channel").value==="telegram_channel";$("campaign-service").disabled=isChannel;if(isChannel)$("campaign-service").value="";$("campaign-message").placeholder=isChannel?"Write the channel broadcast… Include the page link when useful.":"Write the update message… Include the page link when useful.";});
-$("campaign-form").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const channel=$("campaign-channel").value,title=$("campaign-title").value.trim(),message=$("campaign-message").value.trim(),service_id=$("campaign-service").value||null;
-  if(!message)return;
-  const result=$("send-result"),btn=$("send-btn");
-  const eligible=channel==="telegram_channel"?[{}]:ALL_SUBSCRIBERS.filter(s=>{if(service_id&&s.service_id!==service_id)return false;if(channel==="email")return s.email_opted_in&&s.email;return s.telegram_opted_in&&s.telegram_chat_id;});
-  if(!eligible.length){result.style.display="block";result.textContent="No eligible opted-in subscribers for this channel/filter.";return}
-  if(!confirm(channel==="telegram_channel"?"Publish this update to the SarkariSewa India Telegram channel?":"Send this "+channel+" update to "+eligible.length+" opted-in subscriber(s)?"))return;
-  btn.disabled=true;btn.textContent=channel==="telegram_channel"?"Publishing…":"Sending…";result.style.display="block";result.textContent=channel==="telegram_channel"?"Publishing to Telegram channel…":"Dispatching campaign…";
-  try{
-    const {data,error}=await SUPABASE_CLIENT.functions.invoke("notification-dispatch",{body:{channel,title,message,service_id}});
-    if(error)throw error;
-    result.textContent=channel==="telegram_channel"?"Published to Telegram channel · message ID "+(data.telegram_message_id||"—")+".":"Done: "+(data.sent||0)+" sent, "+(data.failed||0)+" failed, audience "+(data.total||eligible.length)+".";
-    await load();
-  }catch(err){result.textContent="Campaign could not be dispatched: "+(err.message||err)}
-  finally{btn.disabled=false;btn.textContent="Preview audience & send"}
-});
 (async function(){
   try{
     SUPABASE_CLIENT=await getSupabaseClient(); if(!SUPABASE_CLIENT)throw new Error("Backend not configured");

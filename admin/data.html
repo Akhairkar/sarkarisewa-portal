@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+<link rel="icon" href="../favicon.ico">
+<title>Content Data — SarkariSewa Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/admin-theme.css?v=3">
+<script defer src="../assets/js/admin-theme-toggle.js"></script>
+<style>
+.ov-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.ov-stat{padding:16px;border:1px solid var(--admin-border);border-radius:14px;background:var(--admin-surface)}
+.ov-stat b{display:block;font-size:1.5rem;color:var(--admin-text)}
+.ov-stat span{font-size:.8rem;color:var(--admin-text-muted)}
+.ov-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ov-links a{display:block;padding:12px 14px;border:1px solid var(--admin-border);border-radius:12px;color:var(--admin-text);text-decoration:none;background:var(--admin-surface)}
+.ov-links a small{display:block;color:var(--admin-text-muted)}
+.data-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.data-toolbar select,.data-toolbar input{background:var(--admin-surface);color:var(--admin-text);border:1px solid var(--admin-border);border-radius:10px;padding:9px 12px}
+.data-toolbar input{flex:1;min-width:200px}
+.data-table{width:100%;border-collapse:collapse;min-width:700px}
+.data-table th,.data-table td{padding:9px 10px;border-bottom:1px solid var(--admin-border);text-align:left;font-size:.82rem;vertical-align:top}
+.data-table th{color:var(--admin-text-muted);font-size:.74rem;text-transform:uppercase}
+@media(max-width:900px){.ov-grid{grid-template-columns:repeat(2,1fr)}.ov-links{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.ov-links{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="admin-layout" id="dash-wrap" hidden>
+<aside class="admin-sidebar">
+<div class="admin-sidebar-brand"><div class="admin-sidebar-logo">S</div><div><div class="admin-sidebar-title">SarkariSewa</div><div class="admin-sidebar-subtitle">Admin Console</div></div></div>
+<nav class="admin-nav"></nav>
+<div class="admin-sidebar-footer"><button type="button" class="theme-toggle-btn">☀️ Light Mode</button><div style="font-size:.78rem;color:var(--admin-text-muted)" id="whoami">Loading…</div><button class="logout-btn" id="logout" style="width:100%">Log out</button></div>
+</aside>
+<main class="admin-main">
+<div class="admin-topbar"><div class="admin-page-title"><h1>Content Data</h1><p style="margin:4px 0 0;font-size:.86rem;color:var(--admin-text-muted)">Database mein jo content hai use dekhne ke liye (read-only). Yahan se kuch publish ya edit nahi hota.</p></div></div>
+
+<section class="dash-card">
+<div class="data-toolbar">
+<select id="table">
+<option value="job_alerts">Job alerts</option>
+<option value="exam_calendar">Exam calendar</option>
+<option value="deadlines">Deadlines</option>
+<option value="blog_posts">Blog posts</option>
+<option value="services">Services</option>
+</select>
+<input id="search" placeholder="Search…">
+<button class="theme-toggle-btn" type="button" id="export">Export CSV</button>
+</div>
+<p id="row-count" style="font-size:.8rem;color:var(--admin-text-muted);margin:0 0 8px"></p>
+<div style="overflow-x:auto"><table class="data-table" id="grid"><thead></thead><tbody><tr><td>Loading…</td></tr></tbody></table></div>
+</section>
+</main>
+</div>
+<div class="admin-wrap-login" id="dash-loading"><p class="loading" style="font-size:1.1rem;color:var(--admin-text-sub)">Connecting…</p></div>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script>
+(async function () {
+  const client = await adminGuard();
+  const $ = id => document.getElementById(id);
+  const HIDE = /^(content|body|description|html|details|faq|steps|meta|seo)/i;
+  let rows = [], cols = [];
+  function cell(v) {
+    if (v == null) return "—";
+    if (typeof v === "object") v = JSON.stringify(v);
+    v = String(v);
+    return adminEsc(v.length > 120 ? v.slice(0, 120) + "…" : v);
+  }
+  function render() {
+    const q = $("search").value.trim().toLowerCase();
+    const shown = q ? rows.filter(r => JSON.stringify(r).toLowerCase().includes(q)) : rows;
+    $("row-count").textContent = shown.length + " / " + rows.length + " rows";
+    $("grid").tHead.innerHTML = "<tr>" + cols.map(c => "<th>" + adminEsc(c) + "</th>").join("") + "</tr>";
+    $("grid").tBodies[0].innerHTML = shown.length
+      ? shown.map(r => "<tr>" + cols.map(c => "<td>" + cell(r[c]) + "</td>").join("") + "</tr>").join("")
+      : "<tr><td>No rows.</td></tr>";
+  }
+  async function load() {
+    $("grid").tBodies[0].innerHTML = "<tr><td>Loading…</td></tr>";
+    const { data, error } = await client.from($("table").value).select("*").limit(1000);
+    if (error) { $("grid").tBodies[0].innerHTML = "<tr><td>" + adminEsc(error.message) + "</td></tr>"; rows = []; return; }
+    rows = data || [];
+    cols = rows.length ? Object.keys(rows[0]).filter(c => !HIDE.test(c)).slice(0, 10) : [];
+    render();
+  }
+  $("table").addEventListener("change", load);
+  $("search").addEventListener("input", render);
+  $("export").addEventListener("click", () => {
+    if (!rows.length) return;
+    const all = Object.keys(rows[0]);
+    const csv = [all, ...rows.map(r => all.map(c => typeof r[c] === "object" && r[c] !== null ? JSON.stringify(r[c]) : r[c] ?? ""))]
+      .map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(",")).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    a.download = $("table").value + ".csv"; a.click();
+  });
+  load();
+})();
+</script>
+</body>
+</html>

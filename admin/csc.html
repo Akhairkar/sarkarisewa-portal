@@ -26,18 +26,7 @@
 <div class="admin-sidebar-subtitle">Admin Console</div>
 </div>
 </div>
-<nav class="admin-nav">
-<a class="admin-nav-item" href="dashboard.html">📊 Overview</a>
-<a class="admin-nav-item" href="comments.html">💬 Comments</a>
-<a class="admin-nav-item" href="subscribers.html">📬 Subscribers</a>
-<a class="admin-nav-item active" href="csc.html">🏬 CSC Listings</a>
-<a class="admin-nav-item" href="blog.html">📝 Blog Manager</a>
-<a class="admin-nav-item" href="jobs.html">💼 Job Alerts</a>
-<a class="admin-nav-item" href="exams.html">📅 Exam Calendar</a>
-<a class="admin-nav-item" href="deadlines.html">🗓️ Deadlines</a>
-<a class="admin-nav-item" href="services.html">⚙️ Services</a>
-<a class="admin-nav-item" href="analytics.html">📈 Analytics</a>
-</nav>
+<nav class="admin-nav"></nav>
 <div class="admin-sidebar-footer">
 <button class="theme-toggle-btn" type="button">☀️ Light Mode</button>
 <div id="whoami" style="font-size:0.78rem; color:var(--admin-text-muted);">Loading identity…</div>
@@ -97,7 +86,8 @@
 </div>
 <!-- Dependencies -->
 <script src="../assets/js/supabase-client.js"></script>
-<script src="../assets/js/admin-auth.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script>adminGuard();</script>
 <script src="../assets/js/admin-csc.js"></script>
 </body>
 </html>
