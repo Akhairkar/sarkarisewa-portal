@@ -143,6 +143,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 ## 8b. Naya page kaise banta hai (Astro)
 - Page file: `web/src/pages/<same-url-path>.astro`. Example: `states/jharkhand-senior-citizen-card.astro` banega `/states/jharkhand-senior-citizen-card.html`.
 - Layout: `web/src/layouts/Base.astro`. Isme title, description, canonical, hreflang, OG, aur JSON-LD (Breadcrumb, Article, FAQPage) sab automatic aate hain.
+- Har page par (Base layout se): header mein Telegram button (t.me/sarkarisewaindia), footer se pehle `Subscribe` box (Telegram + mobile/email form, Supabase `subscribers` table mein save hota hai, admin → Subscribers mein dikhta hai; `source` mein page URL aur `notification_topics` mein chune hue topic jaate hain).
 - Components: `Breadcrumbs`, `OfficialLinks`, `Faq`, `CardGrid` (related), `StateGrid` (doosre states), `Explore` ("Ye bhi dekhein").
 - Explore cards aur menu ek hi jagah se aate hain: `web/src/data/site.ts`.
 - Push se pehle hamesha **clean clone** par build test karna hai (`git clone` karke `npm ci && npm run site`). Local build un files ko bhi pakad leta hai jo `.gitignore` ki wajah se GitHub tak nahi pahunchti (2026-10-03 ko `lib/` rule se 4 deploy fail hue the).

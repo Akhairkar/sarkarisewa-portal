@@ -1,0 +1,86 @@
+---
+// Site-wide updates box: Telegram channel + subscribe form. Saves to the
+// Supabase `subscribers` table (insert-only for visitors); rows show up in
+// admin/subscribers.html.
+const TELEGRAM = "https://t.me/sarkarisewaindia";
+const TOPICS = [
+  ["jobs", "सरकारी नौकरी"],
+  ["yojana", "योजनाएं"],
+  ["documents", "दस्तावेज़ / प्रमाण पत्र"],
+  ["deadlines", "आखिरी तारीखें"],
+];
+---
+<section class="updates" aria-labelledby="updates-title">
+  <div class="updates-inner">
+    <div>
+      <h2 id="updates-title">नई नौकरी और योजना की खबर सबसे पहले 🔔</h2>
+      <p>हमारे Telegram चैनल से जुड़ें, या नीचे नंबर डालकर अपडेट पाएं। बिल्कुल फ्री, कोई spam नहीं।</p>
+      <a class="tg-btn" href={TELEGRAM} target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21.9 4.6 18.7 19.7c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13.4l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.6z"/></svg>
+        Telegram चैनल Join करें
+      </a>
+    </div>
+    <form class="sub-form" id="sub-form" novalidate>
+      <label for="sub-phone">मोबाइल नंबर</label>
+      <input id="sub-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="10 अंकों का नंबर" />
+      <label for="sub-email">Email <small>(वैकल्पिक)</small></label>
+      <input id="sub-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+      <fieldset>
+        <legend>किसकी खबर चाहिए?</legend>
+        {TOPICS.map(([v, l], i) => <label class="chk"><input type="checkbox" name="topics" value={v} checked={i < 2} /> {l}</label>)}
+      </fieldset>
+      <button type="submit">अपडेट पाएं</button>
+      <p class="sub-status" role="status" aria-live="polite"></p>
+      <p class="sub-note">सब्सक्राइब करके आप सहमत हैं कि हम आपको सरकारी अपडेट भेज सकते हैं। आपका नंबर कभी किसी को नहीं दिया जाता।</p>
+    </form>
+  </div>
+</section>
+
+<script is:inline>
+(function () {
+  var form = document.getElementById("sub-form");
+  if (!form) return;
+  var status = form.querySelector(".sub-status");
+  var btn = form.querySelector("button");
+  function say(msg, ok) { status.textContent = msg; status.className = "sub-status " + (ok ? "ok" : "err"); }
+  function loadClient() {
+    if (typeof window.getSupabaseClient === "function") return window.getSupabaseClient();
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement("script");
+      s.src = "/assets/js/supabase-client.js";
+      s.onload = function () { resolve(window.getSupabaseClient()); };
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var phone = form.phone.value.replace(/\D/g, "").replace(/^(91|0)(?=\d{10}$)/, "");
+    var email = form.email.value.trim();
+    var topics = Array.prototype.map.call(form.querySelectorAll("input[name=topics]:checked"), function (c) { return c.value; });
+    if (phone && !/^[6-9]\d{9}$/.test(phone)) return say("कृपया सही 10 अंकों का मोबाइल नंबर डालें।");
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say("कृपया सही email डालें।");
+    if (!phone && !email) return say("मोबाइल नंबर या email में से कम से कम एक डालें।");
+    btn.disabled = true; btn.textContent = "जोड़ रहे हैं…"; say("", true);
+    try {
+      var client = await loadClient();
+      if (!client) throw new Error("backend");
+      var res = await client.from("subscribers").insert({
+        phone: phone || null,
+        email: email || null,
+        email_opted_in: !!email,
+        notification_topics: topics,
+        source: location.pathname,
+        language: document.documentElement.lang || "hi"
+      });
+      if (res.error) throw res.error;
+      form.reset();
+      say("✅ धन्यवाद! आप जुड़ गए हैं। सबसे तेज़ अपडेट के लिए Telegram चैनल भी Join करें।", true);
+    } catch (err) {
+      say("अभी सब्सक्राइब नहीं हो पाया। थोड़ी देर बाद फिर कोशिश करें, या Telegram चैनल Join करें।");
+    } finally {
+      btn.disabled = false; btn.textContent = "अपडेट पाएं";
+    }
+  });
+})();
+</script>

@@ -399,3 +399,32 @@ table { width: 100%; border-collapse: collapse; }
 .doc-list .doc-body > a { display: inline-block; font-weight: 700; margin-bottom: 10px; text-decoration: none; }
 
 .notice { font-size: 0.85rem; color: var(--c-muted); border-top: 1px solid var(--c-line); padding-top: 14px; }
+
+/* ---------- Updates box (Telegram + subscribe), on every page ---------- */
+.updates { background: var(--c-surface); border-top: 1px solid var(--c-line); padding: 28px 0; margin-top: 24px; }
+.updates-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); display: grid; gap: 20px; }
+@media (min-width: 860px) { .updates-inner { grid-template-columns: 1fr 1fr; align-items: start; } }
+.updates h2 { margin-bottom: 0.3em; }
+.updates p { color: var(--c-muted); }
+.tg-btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 12px;
+  background: #229ed9; color: #fff; font-weight: 800; text-decoration: none;
+}
+.tg-btn:hover { background: #1b8bc0; color: #fff; }
+.sub-form { display: grid; gap: 6px; background: var(--c-bg); border: 1px solid var(--c-line); border-radius: var(--radius); padding: 16px; }
+.sub-form label { font-weight: 700; font-size: 0.92rem; color: var(--c-ink); }
+.sub-form label small { font-weight: 500; color: var(--c-muted); }
+.sub-form input[type="tel"], .sub-form input[type="email"] {
+  height: 48px; padding: 0 14px; font: inherit; border: 2px solid var(--c-line); border-radius: 12px; background: var(--c-surface); color: var(--c-ink); margin-bottom: 6px;
+}
+.sub-form input:focus { outline: none; border-color: var(--c-brand); }
+.sub-form fieldset { border: 0; padding: 0; margin: 4px 0 8px; display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.sub-form legend { font-weight: 700; font-size: 0.92rem; color: var(--c-ink); margin-bottom: 4px; padding: 0; }
+.sub-form .chk { font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+.sub-form button { height: 48px; border: 0; border-radius: 12px; background: var(--c-saffron); color: #1f1300; font: inherit; font-weight: 800; cursor: pointer; }
+.sub-form button:disabled { opacity: 0.6; cursor: wait; }
+.sub-status { margin: 4px 0 0; font-weight: 700; font-size: 0.92rem; min-height: 1.2em; }
+.sub-status.ok { color: var(--c-green); }
+.sub-status.err { color: var(--c-red); }
+.sub-note { font-size: 0.78rem; margin: 0; }
+.icon-btn.tg { color: #229ed9; }
