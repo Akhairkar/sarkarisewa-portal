@@ -1,0 +1,134 @@
+---
+// Jobs hub: every job page in /jobs/, grouped by application status. Status is
+// worked out at build time and refreshed in the browser from data-last.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { JOBS } from "../../data/jobs";
+import { oldMeta } from "../../lib/csc";
+
+const SECTOR_HI: Record<string, string> = {
+  SSC: "SSC", UPSC: "UPSC", Banking: "बैंक", Railway: "रेलवे", Defence: "रक्षा", Scientific: "ISRO / वैज्ञानिक",
+  "State Govt": "राज्य सरकार", Health: "स्वास्थ्य", Post: "डाक विभाग",
+};
+const today = new Date().toISOString().slice(0, 10);
+const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "long", year: "numeric" });
+const jobs = JOBS.map((j) => {
+  const m = oldMeta(`jobs/${j.slug}.html`);
+  return { ...j, href: `/jobs/${j.slug}.html`, title: m.title.replace(/\s*[|—]\s*SarkariSewa.*$/i, "").trim(), text: m.description };
+});
+const state = (j: (typeof jobs)[number]) => (j.status === "expected" ? "expected" : j.last >= today ? "open" : "closed");
+const groups = [
+  { id: "chalu", title: "आवेदन चालू है", note: "इन भर्तियों में अभी ऑनलाइन आवेदन हो रहा है। आखिरी तारीख से पहले official वेबसाइट पर फॉर्म भरें.", list: jobs.filter((j) => state(j) === "open") },
+  { id: "jald", title: "जल्द आने वाली भर्तियां", note: "इनकी तारीखें अभी संभावित हैं; official नोटिफिकेशन आने पर बदल सकती हैं.", list: jobs.filter((j) => state(j) === "expected") },
+  { id: "band", title: "आवेदन बंद (संदर्भ के लिए)", note: "इनकी आखिरी तारीख निकल चुकी है। सिलेबस, पात्रता और अगली भर्ती की तैयारी के लिए पढ़ें.", list: jobs.filter((j) => state(j) === "closed") },
+].filter((g) => g.list.length);
+const sectors = [...new Set(jobs.map((j) => j.sector))];
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "Students", href: "/students/" }, { label: "सरकारी नौकरी" }];
+const faq = [
+  { q: "सरकारी नौकरी का फॉर्म कहां भरें?", a: "हमेशा भर्ती करने वाली संस्था की official वेबसाइट पर, जैसे ssc.gov.in, upsc.gov.in, rrbapply.gov.in या बैंक/IBPS की वेबसाइट। हर भर्ती पेज पर official लिंक दिया गया है। फीस किसी एजेंट को न दें." },
+  { q: "आखिरी तारीख निकल गई तो क्या करें?", a: "उस भर्ती में आवेदन नहीं हो सकता। उसी पद की अगली भर्ती अक्सर हर साल आती है, इसलिए पेज पर दिया सिलेबस और पात्रता देखकर तैयारी शुरू करें और Exam Calendar देखते रहें." },
+  { q: "उम्र की गणना कैसे होती है?", a: "हर नोटिफिकेशन में एक cut-off तारीख दी होती है, उसी तारीख पर उम्र गिनी जाती है। हमारे Exam Age Calculator से अपनी सही उम्र निकालें और आरक्षित वर्ग की छूट जोड़ें." },
+  { q: "फोटो और सिग्नेचर का साइज़ कैसे ठीक करें?", a: "ज़्यादातर फॉर्म में फोटो 20-50 KB और सिग्नेचर 10-20 KB के आसपास मांगे जाते हैं; सही साइज़ हर नोटिफिकेशन में लिखा होता है। हमारे फ्री Photo / Signature Resizer से तय साइज़ में बनाएं." },
+];
+---
+<Base
+  title="सरकारी नौकरी 2026 | SarkariSewa India"
+  description="सरकारी नौकरी 2026: SSC, UPSC, रेलवे, बैंक, ISRO, AIIMS और राज्य सरकार की भर्तियां। किसमें आवेदन चालू है, आखिरी तारीख, पात्रता और official लिंक एक जगह।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  modified={today}
+  schemaType="WebPage"
+  canonical="/jobs/index.html"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">🎯 हर भर्ती के साथ official लिंक</span>
+    <h1>सरकारी नौकरी 2026: <em>भर्तियां, आखिरी तारीख और पात्रता</em></h1>
+    <p class="page-intro">SSC, UPSC, रेलवे, बैंक, ISRO, AIIMS और राज्य सरकार की भर्तियां। सबसे ऊपर वो भर्तियां हैं जिनमें अभी आवेदन चालू है।</p>
+    <div class="search-box job-search" role="search">
+      <label class="sr-only" for="job-q">भर्ती खोजें</label>
+      <input id="job-q" type="search" placeholder="भर्ती खोजें: SSC, रेलवे, बैंक, 12वीं पास…" autocomplete="off" />
+    </div>
+    <ul class="chips job-filter" aria-label="विभाग चुनें">
+      <li><button type="button" class="chip-btn active" data-sector="">सभी</button></li>
+      {sectors.map((s) => <li><button type="button" class="chip-btn" data-sector={s}>{SECTOR_HI[s] ?? s}</button></li>)}
+    </ul>
+  </section>
+
+  {groups.map((g, gi) => (
+    <>
+      <section class="block job-group" id={g.id}>
+        <div class="block-head"><h2>{g.title} <small class="count">({g.list.length})</small></h2></div>
+        <p class="block-lead">{g.note}</p>
+        <div class="job-list">
+          {g.list.map((j) => (
+            <a class={`job-card ${state(j)}`} href={j.href} data-sector={j.sector} data-last={j.last} data-expected={j.status === "expected" ? "1" : undefined} data-q={`${j.title} ${j.slug.replace(/-/g, " ")} ${j.sector} ${SECTOR_HI[j.sector] ?? ""}`.toLowerCase()}>
+              <span class="job-top">
+                <span class="tag">{SECTOR_HI[j.sector] ?? j.sector}</span>
+                <span class={`job-status ${state(j)}`}>{state(j) === "open" ? "● आवेदन चालू" : state(j) === "expected" ? "संभावित" : "आवेदन बंद"}</span>
+              </span>
+              <strong>{j.title}</strong>
+              <small>{j.text.length > 150 ? j.text.slice(0, 148) + "…" : j.text}</small>
+              <span class="job-date">📅 आखिरी तारीख: <b>{fmt(j.last)}</b>{j.lastNote && <em> · {j.lastNote}</em>}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+      {gi === 0 && <div class="ad-slot" aria-hidden="true"></div>}
+    </>
+  ))}
+  <p class="job-empty" hidden>इस खोज से कोई भर्ती नहीं मिली। दूसरा शब्द आज़माएं।</p>
+
+  <section class="block">
+    <div class="block-head"><h2>पुरानी भर्तियां</h2><a href="/jobs/expired.html">Expired Jobs Archive ›</a></div>
+    <p class="block-lead">पिछले सालों की भर्तियों की जानकारी, कट-ऑफ और पैटर्न समझने के लिए।</p>
+  </section>
+
+  <CardGrid title="फॉर्म भरने से पहले ये टूल" id="tools" cards={[
+    { href: "/exams/index.html", emoji: "📅", title: { hi: "Exam Calendar", en: "Exam Calendar" }, text: { hi: "SSC, Railway, Bank, UPSC की तारीखें", en: "Exam dates" } },
+    { href: "/tools/age-calculator.html", emoji: "⏳", title: { hi: "Exam Age Calculator", en: "Exam Age Calculator" }, text: { hi: "कट-ऑफ तारीख पर सही उम्र", en: "Age on cut-off date" } },
+    { href: "/tools/document-compressor.html", emoji: "🗜️", title: { hi: "फोटो / Signature Resizer", en: "Photo / Signature Resizer" }, text: { hi: "फॉर्म के साइज़ में, फ्री", en: "Right size, free" } },
+    { href: "/documents/#caste-certificate", emoji: "📜", title: { hi: "जाति प्रमाण पत्र", en: "Caste certificate" }, text: { hi: "आरक्षण के लिए, राज्य के अनुसार", en: "For reservation" } },
+    { href: "/documents/#employment-exchange", emoji: "💼", title: { hi: "रोज़गार कार्यालय पंजीकरण", en: "Employment exchange" }, text: { hi: "राज्य के अनुसार गाइड", en: "State-wise guide" } },
+    { href: "/students/", emoji: "🎓", title: { hi: "Students Hub", en: "Students Hub" }, text: { hi: "छात्रवृत्ति, प्रमाण पत्र और टूल्स", en: "Scholarships, certificates, tools" } },
+  ]} />
+
+  <Faq items={faq} />
+  <p class="notice">भर्ती की जानकारी official नोटिफिकेशन से ली गई है। आवेदन से पहले हमेशा भर्ती संस्था की official वेबसाइट पर नोटिफिकेशन पढ़ें; तारीखें बदल सकती हैं।</p>
+  <Explore />
+
+  <script is:inline>
+  (function () {
+    var today = new Date().toISOString().slice(0, 10);
+    var cards = [].slice.call(document.querySelectorAll(".job-card"));
+    // Refresh status in the browser, so a card closes on its last date.
+    cards.forEach(function (c) {
+      if (c.dataset.expected || c.dataset.last >= today || !c.classList.contains("open")) return;
+      c.classList.remove("open"); c.classList.add("closed");
+      var s = c.querySelector(".job-status"); s.className = "job-status closed"; s.textContent = "आवेदन बंद";
+    });
+    var q = document.getElementById("job-q"), sector = "", empty = document.querySelector(".job-empty");
+    function apply() {
+      var t = (q.value || "").trim().toLowerCase(), shown = 0;
+      cards.forEach(function (c) {
+        var ok = (!sector || c.dataset.sector === sector) && (!t || c.dataset.q.indexOf(t) !== -1);
+        c.hidden = !ok; if (ok) shown++;
+      });
+      document.querySelectorAll(".job-group").forEach(function (g) { g.hidden = !g.querySelector(".job-card:not([hidden])"); });
+      empty.hidden = shown > 0;
+    }
+    q.addEventListener("input", apply);
+    document.querySelectorAll(".chip-btn").forEach(function (b) {
+      b.addEventListener("click", function () {
+        sector = b.dataset.sector;
+        document.querySelectorAll(".chip-btn").forEach(function (x) { x.classList.toggle("active", x === b); });
+        apply();
+      });
+    });
+  })();
+  </script>
+</Base>

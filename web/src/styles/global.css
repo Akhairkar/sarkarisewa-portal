@@ -504,3 +504,29 @@ table.compact th, table.compact td { padding: 8px 8px; font-size: 0.88rem; }
 .page article p a, .page article li a, .page article td a { overflow-wrap: anywhere; }
 .faq, .steps, .checklist, .callout, .answer-lead { overflow-wrap: anywhere; }
 .doc-list details, .section[id] { scroll-margin-top: 76px; }
+
+/* Jobs hub */
+.job-search { margin: 14px 0 10px; }
+.job-search input { flex: 1; min-width: 0; height: 50px; padding: 0 16px; font: inherit; border: 2px solid var(--c-line); border-radius: 14px; background: var(--c-surface); color: var(--c-ink); }
+.job-search input:focus { outline: none; border-color: var(--c-brand); }
+.chip-btn { padding: 7px 13px; border-radius: 999px; border: 1px solid var(--c-line); background: var(--c-surface); color: var(--c-text); font: inherit; font-size: 0.9rem; font-weight: 700; cursor: pointer; }
+.chip-btn.active { background: var(--c-brand); border-color: var(--c-brand); color: #fff; }
+.count { color: var(--c-muted); font-weight: 600; font-size: 0.9em; }
+.job-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@media (min-width: 760px) { .job-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.job-card { display: flex; flex-direction: column; gap: 6px; padding: 16px; border: 1px solid var(--c-line); border-radius: 16px; background: var(--c-surface); text-decoration: none; color: var(--c-text); overflow-wrap: anywhere; }
+.job-card:hover { border-color: var(--c-brand); }
+.job-card.open { border-left: 4px solid var(--c-green); }
+.job-card.expected { border-left: 4px solid var(--c-saffron); }
+.job-card.closed { opacity: 0.85; }
+.job-card strong { color: var(--c-ink); font-size: 1.02rem; line-height: 1.35; }
+.job-card small { color: var(--c-muted); line-height: 1.45; }
+.job-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.job-status { font-size: 0.8rem; font-weight: 800; }
+.job-status.open { color: var(--c-green); }
+.job-status.expected { color: #b45309; }
+.job-status.closed { color: var(--c-muted); }
+.job-date { font-size: 0.88rem; color: var(--c-text); }
+.job-date em { font-style: normal; color: var(--c-muted); }
+.job-empty { text-align: center; color: var(--c-muted); }
+.job-card .tag { font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--c-brand-50); color: var(--c-brand); }

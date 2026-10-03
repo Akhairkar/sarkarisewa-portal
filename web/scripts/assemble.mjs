@@ -75,14 +75,19 @@ let added = 0, refreshed = 0;
 for (const rel of listHtml(DIST)) {
   const html = fs.readFileSync(path.join(DIST, rel), "utf8");
   if (/<meta name="robots" content="noindex/.test(html)) continue;
-  const loc = `${SITE}/${rel.replace(/(^|\/)index\.html$/, "$1")}`;
-  // A page that names another page as canonical is not listed itself.
   const canon = html.match(/rel="canonical" href="([^"]*)"/)?.[1];
+  // A directory page is listed as "x/", unless its canonical keeps "x/index.html".
+  const loc = canon === `${SITE}/${rel}` ? canon : `${SITE}/${rel.replace(/(^|\/)index\.html$/, "$1")}`;
+  // A page that names another page as canonical is not listed itself.
   if (canon && canon !== `${SITE}/${rel}` && canon !== loc) {
     sm = sm.replace(new RegExp(`  <url>\\s*<loc>${loc.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>[\\s\\S]*?</url>\\n`), "");
     continue;
   }
   // Drop the ".../index.html" spelling of a directory URL so it is listed once.
+  if (loc.endsWith("/index.html")) {
+    const dup = new RegExp(`  <url>\\s*<loc>${loc.slice(0, -10).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>[\\s\\S]*?</url>\\n`);
+    sm = sm.replace(dup, "");
+  }
   if (loc.endsWith("/")) {
     const dup = new RegExp(`  <url>\\s*<loc>${(loc + "index.html").replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>[\\s\\S]*?</url>\\n`);
     sm = sm.replace(dup, "");
