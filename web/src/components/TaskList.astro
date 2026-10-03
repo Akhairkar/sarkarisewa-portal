@@ -1,0 +1,14 @@
+---
+import type { Card } from "../data/site";
+interface Props { items: Card[] }
+const { items } = Astro.props;
+---
+<div class="tasks">
+  {items.map((t) => (
+    <a class="task" href={t.href}>
+      <span class="emoji" aria-hidden="true">{t.emoji}</span>
+      <span><strong>{t.title}</strong><small>{t.text}</small></span>
+      <span class="go" aria-hidden="true">›</span>
+    </a>
+  ))}
+</div>

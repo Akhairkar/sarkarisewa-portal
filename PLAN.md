@@ -132,6 +132,13 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 13. Doosre states ka grid
 14. Breadcrumb + schema (HowTo/FAQ/Breadcrumb)
 
+## 8a. Design rule (end tak same)
+- Har naya page `Base.astro` layout aur `global.css` ke components se hi banega. Page-specific CSS nahi likhni, aur naye rang ya font nahi lane.
+- Rang: brand blue `#1d4ed8`, saffron `#f59e0b` (CTA/highlight), green `#047857` (official/verified). Font: Mukta.
+- Building blocks: hero + search, task rows, card grid, state tiles, doc list, answer box, steps, checklist, tables, callouts, official links, FAQ, "ये भी देखें" (explore). Inke alawa kuch naya chahiye toh pehle `global.css` mein component banana hai.
+- Order: homepage → main hubs (documents, students, yojana, tools, near-me, states) → paid services → guide pages.
+- Design samples (homepage, documents hub, paid services hub) user approval ke liye bheje gaye: 2026-10-03.
+
 ## 8b. Naya page kaise banta hai (Astro)
 - Page file: `web/src/pages/<same-url-path>.astro`. Example: `states/jharkhand-senior-citizen-card.astro` banega `/states/jharkhand-senior-citizen-card.html`.
 - Layout: `web/src/layouts/Base.astro`. Isme title, description, canonical, hreflang, OG, aur JSON-LD (Breadcrumb, Article, FAQPage) sab automatic aate hain.

@@ -1,0 +1,9 @@
+---
+interface Props { placeholder?: string }
+const { placeholder = "जैसे: राशन कार्ड, लेबर कार्ड, SSC भर्ती…" } = Astro.props;
+---
+<form class="search-box" action="/search.html" method="get" role="search">
+  <label class="sr-only" for="q">खोजें</label>
+  <input id="q" name="q" type="search" placeholder={placeholder} autocomplete="off" enterkeyhint="search" />
+  <button type="submit">खोजें</button>
+</form>

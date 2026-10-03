@@ -9,20 +9,20 @@ export const SITE = {
 
 export const NAV = [
   { href: "/", label: "होम", icon: "home" },
-  { href: "/category/identity-documents.html", label: "दस्तावेज़", icon: "doc" },
+  { href: "/documents/", label: "दस्तावेज़", icon: "doc" },
   { href: "/jobs/index.html", label: "Students", icon: "cap" },
   { href: "/tools/index.html", label: "Tools", icon: "tool" },
-  { href: "/services/gstin-verification/", label: "Services", icon: "star" },
+  { href: "/paid-services/", label: "Services", icon: "star" },
 ] as const;
 
 export const TOP_NAV = [
-  { href: "/category/identity-documents.html", label: "दस्तावेज़" },
+  { href: "/documents/", label: "दस्तावेज़" },
   { href: "/jobs/index.html", label: "Jobs" },
   { href: "/exams/index.html", label: "Exams" },
   { href: "/category/government-schemes.html", label: "Yojana" },
   { href: "/tools/index.html", label: "Tools" },
   { href: "/tools/csc-locator.html", label: "CSC Near Me" },
-  { href: "/services/gstin-verification/", label: "Paid Services" },
+  { href: "/paid-services/", label: "Paid Services" },
 ] as const;
 
 export type Card = { href: string; emoji: string; title: string; text: string; badge?: string; tags?: string[] };
@@ -44,7 +44,7 @@ export const FOOTER = [
   {
     title: "दस्तावेज़",
     links: [
-      { href: "/category/identity-documents.html", label: "सभी दस्तावेज़" },
+      { href: "/documents/", label: "सभी दस्तावेज़" },
       { href: "/service/aadhaar-card.html", label: "Aadhaar" },
       { href: "/states/index.html", label: "राज्य अनुसार सेवाएं" },
       { href: "/support/helpline-directory.html", label: "Helpline नंबर" },
@@ -108,4 +108,61 @@ export const STATES: { slug: string; name: string; hi: string }[] = [
   { slug: "ladakh", name: "Ladakh", hi: "लद्दाख" },
   { slug: "lakshadweep", name: "Lakshadweep", hi: "लक्षद्वीप" },
   { slug: "puducherry", name: "Puducherry", hi: "पुडुचेरी" },
+];
+
+// Most-searched tasks (from GSC, Oct 2026). Shown on the homepage.
+export const POPULAR_TASKS: Card[] = [
+  { href: "/service/senior-citizen-card.html", emoji: "👴", title: "सीनियर सिटीजन कार्ड", text: "राज्य अनुसार आवेदन, पेंशन, 70+ आयुष्मान" },
+  { href: "/documents/#labour-card", emoji: "👷", title: "लेबर कार्ड", text: "निर्माण मज़दूर पंजीकरण, डाउनलोड" },
+  { href: "/service/ration-card.html", emoji: "🍚", title: "राशन कार्ड", text: "नया कार्ड, लिस्ट में नाम, e-KYC" },
+  { href: "/special-intensive-revision-sir.html", emoji: "🗳️", title: "वोटर लिस्ट / SIR", text: "लिस्ट में नाम देखें, नया वोटर ID" },
+  { href: "/documents/#employment-exchange", emoji: "💼", title: "रोज़गार कार्यालय कार्ड", text: "Employment exchange पंजीकरण" },
+  { href: "/service/birth-certificate.html", emoji: "👶", title: "जन्म प्रमाण पत्र", text: "आवेदन और डाउनलोड" },
+  { href: "/service/caste-certificate.html", emoji: "📜", title: "जाति प्रमाण पत्र", text: "SC/ST/OBC प्रमाण पत्र" },
+  { href: "/service/udid-disability-card-download.html", emoji: "♿", title: "UDID / दिव्यांग कार्ड", text: "आवेदन, स्टेटस, डाउनलोड" },
+  { href: "/service/e-shram-card.html", emoji: "🪪", title: "e-Shram कार्ड", text: "असंगठित मज़दूरों का कार्ड" },
+];
+
+// Documents that have a page for every state at /states/<state>-<slug>.html
+export const DOCS: { slug: string; emoji: string; title: string; text: string; national?: string }[] = [
+  { slug: "senior-citizen-card", emoji: "👴", title: "सीनियर सिटीजन कार्ड", text: "60+ पहचान पत्र, पेंशन और 70+ आयुष्मान", national: "/service/senior-citizen-card.html" },
+  { slug: "labour-card", emoji: "👷", title: "लेबर कार्ड (BOCW)", text: "निर्माण मज़दूर पंजीकरण और योजनाएं" },
+  { slug: "ration-card", emoji: "🍚", title: "राशन कार्ड", text: "नया कार्ड, नाम जोड़ना, e-KYC", national: "/service/ration-card.html" },
+  { slug: "voter-id-card", emoji: "🗳️", title: "वोटर ID कार्ड", text: "नया कार्ड, सुधार, डाउनलोड", national: "/service/voter-id-card.html" },
+  { slug: "sir-voter-list", emoji: "📋", title: "SIR वोटर लिस्ट", text: "लिस्ट में अपना नाम देखें" },
+  { slug: "employment-exchange", emoji: "💼", title: "रोज़गार कार्यालय कार्ड", text: "Employment exchange पंजीकरण" },
+  { slug: "birth-certificate", emoji: "👶", title: "जन्म प्रमाण पत्र", text: "आवेदन, सुधार, डाउनलोड", national: "/service/birth-certificate.html" },
+  { slug: "death-certificate", emoji: "🕊️", title: "मृत्यु प्रमाण पत्र", text: "आवेदन और डाउनलोड", national: "/service/death-certificate.html" },
+  { slug: "caste-certificate", emoji: "📜", title: "जाति प्रमाण पत्र", text: "SC/ST/OBC प्रमाण पत्र", national: "/service/caste-certificate.html" },
+  { slug: "income-certificate", emoji: "💰", title: "आय प्रमाण पत्र", text: "छात्रवृत्ति और योजनाओं के लिए", national: "/service/income-certificate.html" },
+  { slug: "domicile-certificate", emoji: "🏠", title: "निवास / डोमिसाइल प्रमाण पत्र", text: "राज्य का स्थायी निवासी प्रमाण", national: "/service/domicile-certificate.html" },
+  { slug: "driving-licence", emoji: "🚗", title: "ड्राइविंग लाइसेंस", text: "लर्निंग, पक्का लाइसेंस, रिन्यूअल", national: "/service/driving-licence.html" },
+];
+
+export const NATIONAL_DOCS: Card[] = [
+  { href: "/service/aadhaar-card.html", emoji: "🆔", title: "आधार कार्ड", text: "नया, अपडेट, डाउनलोड" },
+  { href: "/service/pan-card.html", emoji: "💳", title: "PAN कार्ड", text: "नया PAN, सुधार, आधार लिंक" },
+  { href: "/service/passport.html", emoji: "🛂", title: "पासपोर्ट", text: "आवेदन, फीस, अपॉइंटमेंट" },
+  { href: "/service/ayushman-bharat.html", emoji: "🏥", title: "आयुष्मान कार्ड", text: "₹5 लाख तक मुफ्त इलाज" },
+  { href: "/service/e-shram-card.html", emoji: "🪪", title: "e-Shram कार्ड", text: "असंगठित मज़दूरों का कार्ड" },
+  { href: "/service/udid-disability-card-download.html", emoji: "♿", title: "UDID कार्ड", text: "दिव्यांग पहचान पत्र" },
+];
+
+export type PaidService = {
+  href: string; emoji: string; title: string; text: string; price: string; unit: string;
+  live: boolean; points: string[];
+};
+
+// Paid services. The GSTIN page keeps its existing payment flow.
+export const PAID_SERVICES: PaidService[] = [
+  {
+    href: "/services/gstin-verification/", emoji: "🧾", title: "GSTIN Verification", price: "₹20", unit: "प्रति GSTIN", live: true,
+    text: "किसी भी GST नंबर की जानकारी साफ रिपोर्ट में: असली है या नहीं, चालू है या बंद।",
+    points: ["Legal name और trade name", "Active / Cancelled स्टेटस", "पंजीकरण की तारीख और राज्य", "PDF रिपोर्ट डाउनलोड"],
+  },
+  {
+    href: "/private/rc-challan/", emoji: "🚗", title: "RC e-Challan Report", price: "₹49", unit: "प्रति गाड़ी", live: false,
+    text: "गाड़ी नंबर डालें और सभी pending traffic challan एक रिपोर्ट में देखें।",
+    points: ["Pending challan की गिनती", "Challan नंबर, तारीख, राशि", "Offence और राज्य", "एक से ज़्यादा challan एक साथ"],
+  },
 ];
