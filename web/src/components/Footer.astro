@@ -1,27 +1,26 @@
 ---
 import { FOOTER } from "../data/site";
+import { langOf, t, localize, UI } from "../i18n";
+const lang = langOf(Astro.url);
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-about">
-        <a class="brand" href="/">
+        <a class="brand" href={lang === "en" ? "/en/" : "/"}>
           <img src="/assets/img/sarkarisewa-mark.svg" alt="" width="34" height="34" />
           <span class="brand-name">Sarkari<b>Sewa</b> India</span>
         </a>
-        <p style="margin-top:10px;color:var(--c-muted)">सरकारी दस्तावेज़, योजनाएं और नौकरियों की सही जानकारी, आसान भाषा में। हर जानकारी के साथ official link।</p>
+        <p style="margin-top:10px;color:var(--c-muted)">{t(UI.footerAbout, lang)}</p>
       </div>
       {FOOTER.map((col) => (
         <div>
-          <h3>{col.title}</h3>
-          <ul>{col.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+          <h3>{t(col.title, lang)}</h3>
+          <ul>{col.links.map((l) => <li><a href={localize(l.href, lang)}>{t(l.label, lang)}</a></li>)}</ul>
         </div>
       ))}
     </div>
-    <p class="footer-note">
-      SarkariSewa India एक स्वतंत्र जानकारी पोर्टल है। हम किसी भी सरकारी विभाग से जुड़े नहीं हैं। आवेदन हमेशा official वेबसाइट पर ही करें।
-      © {year} SarkariSewa India
-    </p>
+    <p class="footer-note">{t(UI.footerNote, lang)} © {year} SarkariSewa India</p>
   </div>
 </footer>

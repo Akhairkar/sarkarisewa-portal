@@ -1,20 +1,27 @@
 ---
 import Icon from "./Icon.astro";
 import { TOP_NAV } from "../data/site";
+import { langOf, t, localize, twin, UI } from "../i18n";
+const lang = langOf(Astro.url);
 const path = Astro.url.pathname;
+const pair = twin(path);
+// Language switch: same page in the other language, else that language's home.
+const other = lang === "hi" ? "en" : "hi";
+const switchHref = pair ? pair[other] : other === "en" ? "/en/" : "/";
 ---
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/" aria-label="SarkariSewa India होम">
+    <a class="brand" href={lang === "en" ? "/en/" : "/"} aria-label={`SarkariSewa India ${t(UI.home, lang)}`}>
       <img src="/assets/img/sarkarisewa-mark.svg" alt="" width="38" height="38" />
-      <span class="brand-name">Sarkari<b>Sewa</b> India<span class="brand-sub">सरकारी काम, आसान भाषा में</span></span>
+      <span class="brand-name">Sarkari<b>Sewa</b> India<span class="brand-sub">{t(UI.tagline, lang)}</span></span>
     </a>
-    <nav class="top-nav" aria-label="मुख्य मेनू">
-      {TOP_NAV.map((l) => <a href={l.href} aria-current={path === l.href ? "page" : undefined}>{l.label}</a>)}
+    <nav class="top-nav" aria-label={t(UI.menu, lang)}>
+      {TOP_NAV.map((l) => { const href = localize(l.href, lang); return <a href={href} aria-current={path === href ? "page" : undefined}>{t(l.label, lang)}</a>; })}
     </nav>
     <div class="header-actions">
-      <a class="icon-btn tg" href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener" aria-label="Telegram चैनल Join करें"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21.9 4.6 18.7 19.7c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13.4l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.6z"/></svg></a>
-      <a class="icon-btn" href="/search.html" aria-label="खोजें"><Icon name="search" size={20} /></a>
+      <a class="icon-btn lang-btn" href={switchHref} hreflang={other} lang={other} aria-label={t(UI.switchTo, lang)} title={t(UI.switchTo, lang)}>{lang === "hi" ? "EN" : "हिं"}</a>
+      <a class="icon-btn tg" href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener" aria-label={t(UI.telegram, lang)}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21.9 4.6 18.7 19.7c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13.4l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.6z"/></svg></a>
+      <a class="icon-btn" href="/search.html" aria-label={t(UI.search, lang)}><Icon name="search" size={20} /></a>
     </div>
   </div>
 </header>

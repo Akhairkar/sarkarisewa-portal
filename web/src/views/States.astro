@@ -1,0 +1,50 @@
+---
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+import { STATES, DOCS } from "../data/site";
+import { langOf, t, localize, UI } from "../i18n";
+import { exists } from "../lib/repo";
+
+const lang = langOf(Astro.url);
+const L = (hi: string, en: string) => (lang === "en" ? en : hi);
+const states = STATES.filter((s) => exists(`states/${s.slug}.html`)).map((s) => ({
+  ...s, count: DOCS.filter((d) => exists(`states/${s.slug}-${d.slug}.html`)).length,
+}));
+const crumbs = [{ label: t(UI.home, lang), href: localize("/", lang) }, { label: L("राज्य", "States") }];
+const faq = lang === "en" ? [
+  { q: "What is on a state page?", a: "Each state page covers that state's certificates (birth, caste, income, domicile), cards (ration, labour, senior citizen, voter ID), employment registration, driving licence and the state's official portals." },
+  { q: "Which is my state's portal?", a: "Most states issue certificates through an e-District portal with a different name in each state (for example JharSewa, RTPS, Aaple Sarkar). See your state's page for the correct name and link." },
+] : [
+  { q: "राज्य के पेज पर क्या मिलेगा?", a: "हर राज्य के पेज पर उस राज्य के प्रमाण पत्र (जन्म, जाति, आय, निवास), कार्ड (राशन, लेबर, सीनियर सिटीजन, वोटर ID), रोज़गार पंजीकरण, ड्राइविंग लाइसेंस और राज्य के official पोर्टल की गाइड है।" },
+  { q: "मेरा राज्य का पोर्टल कौन सा है?", a: "ज़्यादातर राज्यों में प्रमाण पत्र e-District पोर्टल से बनते हैं, जिसका नाम हर राज्य में अलग है (जैसे JharSewa, RTPS, आपले सरकार)। अपने राज्य के पेज पर सही नाम और लिंक देखें।" },
+];
+---
+<Base
+  title={L("राज्य अनुसार सरकारी सेवाएं: सभी 36 राज्य और केंद्र शासित प्रदेश | SarkariSewa India", "Government Services by State: All 36 States & UTs | SarkariSewa India")}
+  description={L(
+    "अपना राज्य चुनें: राशन कार्ड, लेबर कार्ड, सीनियर सिटीजन कार्ड, जन्म, जाति, आय और निवास प्रमाण पत्र, वोटर ID और रोज़गार पंजीकरण की राज्य अनुसार गाइड।",
+    "Choose your state: state-wise guides to ration card, labour card, senior citizen card, birth, caste, income and domicile certificates, voter ID and employment registration."
+  )}
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <h1>{L("अपना राज्य चुनें", "Choose your state")}</h1>
+    <p class="page-intro">{L("प्रमाण पत्र और कार्ड राज्य सरकारें बनाती हैं, इसलिए हर राज्य का तरीका अलग है। अपने राज्य की सभी सेवाएं एक जगह देखें।", "Certificates and cards are issued by state governments, so the process differs by state. See all your state's services in one place.")}</p>
+  </section>
+  <section class="block">
+    <div class="state-grid">
+      {states.map((s) => <a href={`/states/${s.slug}.html`}>{lang === "en" ? s.name : s.hi}<small>{lang === "en" ? s.hi : s.name} · {s.count} {L("गाइड", "guides")}</small></a>)}
+    </div>
+  </section>
+  <section class="section">
+    <h2>{L("दस्तावेज़ के अनुसार देखें", "Browse by document")}</h2>
+    <ul class="chips">{DOCS.map((d) => <li><a href={localize(`/documents/#${d.slug}`, lang)}>{d.emoji} {t(d.title, lang)}</a></li>)}</ul>
+  </section>
+  <Faq items={faq} />
+  <Explore />
+</Base>

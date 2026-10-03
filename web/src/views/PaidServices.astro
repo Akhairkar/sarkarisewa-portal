@@ -1,0 +1,72 @@
+---
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+import { PAID_SERVICES } from "../data/site";
+import { langOf, t, localize, UI } from "../i18n";
+
+const lang = langOf(Astro.url);
+const L = (hi: string, en: string) => (lang === "en" ? en : hi);
+const crumbs = [{ label: t(UI.home, lang), href: localize("/", lang) }, { label: "Online Services" }];
+const faq = lang === "en" ? [
+  { q: "Is this a government service?", a: "No. SarkariSewa India is an independent private platform. These verification services are based on responses from an authorised provider. For official confirmation, use the relevant government portal." },
+  { q: "What is the fee for?", a: "The fee is for our verification service and report, not a government fee. The amount is shown clearly before payment." },
+  { q: "How do I pay?", a: "Payment is made through Razorpay using UPI, card or net banking. We never ask for your UPI PIN, OTP or card PIN." },
+  { q: "When do I get the report?", a: "As soon as payment succeeds, the report appears on screen and you can download it as a PDF." },
+] : [
+  { q: "क्या यह सरकारी सेवा है?", a: "नहीं। SarkariSewa India एक स्वतंत्र निजी प्लेटफ़ॉर्म है। ये verification सेवाएं authorized provider से मिली जानकारी पर आधारित हैं। आधिकारिक पुष्टि के लिए संबंधित सरकारी पोर्टल देखें।" },
+  { q: "शुल्क किस बात का है?", a: "यह शुल्क हमारी verification सेवा और रिपोर्ट का है, कोई सरकारी फीस नहीं। भुगतान से पहले राशि साफ दिखाई जाती है।" },
+  { q: "भुगतान कैसे होता है?", a: "भुगतान Razorpay के ज़रिए UPI, कार्ड या नेट बैंकिंग से होता है। हम आपका UPI PIN, OTP या कार्ड PIN कभी नहीं मांगते।" },
+  { q: "रिपोर्ट कब मिलती है?", a: "भुगतान सफल होते ही रिपोर्ट स्क्रीन पर दिखती है और आप उसे PDF में डाउनलोड कर सकते हैं।" },
+];
+---
+<Base
+  title="Online Verification Services: GSTIN, e-Challan | SarkariSewa India"
+  description={L(
+    "GSTIN Verification ₹20 में: GST नंबर असली है या नहीं, चालू है या बंद, साफ PDF रिपोर्ट के साथ। RC e-Challan Report जल्द आ रही है।",
+    "GSTIN Verification for ₹20: check if a GST number is genuine and active, with a clean PDF report. RC e-Challan Report coming soon."
+  )}
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">🔒 {L("Razorpay से सुरक्षित भुगतान", "Secure payment via Razorpay")}</span>
+    <h1>Online Verification Services</h1>
+    <p class="page-intro">{L("GST नंबर, गाड़ी के challan जैसी जानकारी सेकंडों में, साफ रिपोर्ट के साथ। कीमत पहले से तय, कोई छिपा शुल्क नहीं।", "GST number or vehicle challan details in seconds, in a clean report. Fixed price, no hidden charges.")}</p>
+  </section>
+
+  <section class="block" aria-label={L("सेवाएं", "Services")}>
+    <div class="svc-grid">
+      {PAID_SERVICES.map((s) => (
+        <div class="svc">
+          <div class="svc-top">
+            <span class="emoji" aria-hidden="true">{s.emoji}</span>
+            <div><span class={`status ${s.live ? "live" : "soon"}`}>{s.live ? "● Live" : L("जल्द आ रहा है", "Coming soon")}</span><h3>{s.title}</h3></div>
+            <div class="price">{s.price}<small>{t(s.unit, lang)}</small></div>
+          </div>
+          <p>{t(s.text, lang)}</p>
+          <ul>{s.points.map((p) => <li>{t(p, lang)}</li>)}</ul>
+          {s.live
+            ? <a class="cta" href={s.href}>{L("अभी जांचें →", "Check now →")}</a>
+            : <span class="cta disabled">{L("जल्द शुरू होगा", "Launching soon")}</span>}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>{L("कैसे काम करता है", "How it works")}</h2>
+    <ol class="steps">
+      <li><strong>{L("नंबर डालें।", "Enter the number.")}</strong> {L("GSTIN या गाड़ी का नंबर। फॉर्मेट पहले ही जांच लिया जाता है, ताकि गलत नंबर पर पैसे न कटें।", "A GSTIN or vehicle number. The format is checked first, so you never pay for a wrong number.")}</li>
+      <li><strong>{L("भुगतान करें।", "Pay.")}</strong> {L("Razorpay पर UPI, कार्ड या नेट बैंकिंग से।", "With UPI, card or net banking on Razorpay.")}</li>
+      <li><strong>{L("रिपोर्ट पाएं।", "Get the report.")}</strong> {L("स्क्रीन पर तुरंत, PDF डाउनलोड और शेयर के साथ।", "Instantly on screen, with PDF download and sharing.")}</li>
+    </ol>
+    <div class="callout warn"><p><strong>{L("ध्यान दें:", "Note:")}</strong> {L("यह सरकारी वेबसाइट नहीं है और यहां कोई सरकारी प्रमाण पत्र जारी नहीं होता। अपना password, OTP या UPI PIN किसी से साझा न करें।", "This is not a government website and no government certificate is issued here. Never share your password, OTP or UPI PIN.")}</p></div>
+  </section>
+
+  <Faq items={faq} />
+  <Explore exclude={["/services/gstin-verification/"]} />
+</Base>

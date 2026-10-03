@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CardGrid from "../components/CardGrid.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+import { DOCS, NATIONAL_DOCS, STATES } from "../data/site";
+import { langOf, t, localize, UI } from "../i18n";
+import { exists } from "../lib/repo";
+
+const lang = langOf(Astro.url);
+const L = (hi: string, en: string) => (lang === "en" ? en : hi);
+const docs = DOCS.map((d) => ({ ...d, states: STATES.filter((s) => exists(`states/${s.slug}-${d.slug}.html`)) }));
+const crumbs = [{ label: t(UI.home, lang), href: localize("/", lang) }, { label: L("दस्तावेज़", "Documents") }];
+const faq = lang === "en" ? [
+  { q: "Where are government certificates issued?", a: "In most states, birth, caste, income and domicile certificates are issued through the state's e-District portal or at a nearby CSC / Jan Seva Kendra. Each state page names the correct portal." },
+  { q: "Why is the same document issued differently in each state?", a: "Certificates and cards are issued by state governments, so the portal, fee, documents and time differ by state. That is why we have a separate guide for every state." },
+  { q: "What if I cannot apply online?", a: "Visit your nearest CSC / Jan Seva Kendra. The operator applies online for you for a fixed fee. Find your district's centre with the CSC Locator." },
+] : [
+  { q: "सरकारी प्रमाण पत्र कहां बनते हैं?", a: "ज़्यादातर राज्यों में जन्म, जाति, आय और निवास प्रमाण पत्र राज्य के e-District पोर्टल या नज़दीकी CSC / जन सेवा केंद्र से बनते हैं। हर राज्य का सही पोर्टल उस राज्य के पेज पर दिया गया है।" },
+  { q: "एक ही दस्तावेज़ अलग-अलग राज्यों में अलग क्यों बनता है?", a: "प्रमाण पत्र और कार्ड राज्य सरकारें जारी करती हैं, इसलिए पोर्टल, फीस, ज़रूरी कागज़ और समय राज्य के अनुसार बदलते हैं। इसीलिए हमने हर राज्य की अलग गाइड बनाई है।" },
+  { q: "ऑनलाइन आवेदन नहीं कर पा रहे तो क्या करें?", a: "नज़दीकी CSC / जन सेवा केंद्र पर जाएं। वहां ऑपरेटर तय शुल्क लेकर आपका ऑनलाइन आवेदन कर देता है। अपने ज़िले का केंद्र CSC Locator से खोजें।" },
+];
+---
+<Base
+  title={L("सरकारी दस्तावेज़ और प्रमाण पत्र: राज्य अनुसार गाइड | SarkariSewa India", "Government Documents & Certificates: State-wise Guides | SarkariSewa India")}
+  description={L(
+    "राशन कार्ड, लेबर कार्ड, सीनियर सिटीजन कार्ड, जन्म, जाति, आय और निवास प्रमाण पत्र: हर राज्य में आवेदन कैसे करें, ज़रूरी कागज़ और official पोर्टल।",
+    "Ration card, labour card, senior citizen card, birth, caste, income and domicile certificates: how to apply in every state, documents needed and official portals."
+  )}
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <h1>{L("सरकारी दस्तावेज़ और प्रमाण पत्र", "Government documents & certificates")}</h1>
+    <p class="page-intro">{L("कौन सा कार्ड या प्रमाण पत्र चाहिए? उसे चुनें, फिर अपना राज्य। हर गाइड में आवेदन के स्टेप, ज़रूरी कागज़ और official link है।", "Pick the card or certificate you need, then your state. Every guide has the steps, documents and official link.")}</p>
+    <SearchBox placeholder={L("जैसे: लेबर कार्ड बिहार, जाति प्रमाण पत्र…", "e.g. labour card Bihar, caste certificate…")} />
+  </section>
+
+  <section class="block" aria-labelledby="state-docs">
+    <div class="block-head"><h2 id="state-docs">{L("राज्य के अनुसार बनने वाले दस्तावेज़", "Documents issued by states")}</h2></div>
+    <p class="block-lead">{L("दस्तावेज़ पर टैप करें और अपना राज्य चुनें।", "Tap a document and choose your state.")}</p>
+    <div class="doc-list">
+      {docs.map((d, i) => (
+        <details id={d.slug} open={i === 0}>
+          <summary>
+            <span class="emoji" aria-hidden="true">{d.emoji}</span>
+            <span><strong>{t(d.title, lang)}</strong><small>{t(d.text, lang)} · {d.states.length} {L("राज्य", "states")}</small></span>
+          </summary>
+          <div class="doc-body">
+            {d.national && <a href={d.national}>{t(d.title, lang)}: {L("पूरी जानकारी ›", "full guide ›")}</a>}
+            <ul class="chips">
+              {d.states.map((s) => <li><a href={`/states/${s.slug}-${d.slug}.html`}>{lang === "en" ? s.name : s.hi}</a></li>)}
+            </ul>
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <CardGrid title={L("पूरे भारत में एक जैसे दस्तावेज़", "Documents that are the same across India")} cards={NATIONAL_DOCS} id="national" />
+  <Faq items={faq} />
+  <Explore />
+</Base>

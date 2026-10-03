@@ -23,7 +23,7 @@ type Service = {
   name: { en?: string; hi?: string }; shortDescription?: { en?: string; hi?: string };
 };
 
-export type ServiceLink = { href: string; title: string; text: string; category: string; date: string };
+export type ServiceLink = { href: string; title: { hi: string; en: string }; text: { hi: string; en: string }; category: string; date: string };
 
 /** Entries of data/services.json whose page exists, as links. */
 export function services(categories: string[]): ServiceLink[] {
@@ -35,8 +35,11 @@ export function services(categories: string[]): ServiceLink[] {
       return {
         href: "/" + rel,
         rel,
-        title: s.name.hi || s.name.en || s.slug,
-        text: s.shortDescription?.hi || s.shortDescription?.en || "",
+        title: { hi: s.name.hi || s.name.en || s.slug, en: s.name.en || s.name.hi || s.slug },
+        text: {
+          hi: s.shortDescription?.hi || s.shortDescription?.en || "",
+          en: s.shortDescription?.en || s.shortDescription?.hi || "",
+        },
         category: s.category,
         date: s.dateAdded ?? "",
       };

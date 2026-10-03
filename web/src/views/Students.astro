@@ -1,0 +1,94 @@
+---
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import SearchBox from "../components/SearchBox.astro";
+import TaskList from "../components/TaskList.astro";
+import CardGrid from "../components/CardGrid.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+import { langOf, t, localize, UI } from "../i18n";
+import { exists, pageTitle } from "../lib/repo";
+
+const lang = langOf(Astro.url);
+const L = (hi: string, en: string) => (lang === "en" ? en : hi);
+
+const EXAMS: [string, string][] = [
+  ["exams/ssc-exam-calendar-2026-2027.html", "SSC Exam Calendar 2026-27"],
+  ["exams/railway-rrb-exam-schedule-2026-2027.html", "Railway RRB Exam Calendar 2026-27"],
+  ["exams/banking-ibps-sbi-calendar-2026-2027.html", "Banking (IBPS / SBI) Exam Calendar 2026-27"],
+  ["exams/upsc-annual-exam-calendar-2027.html", "UPSC Exam Calendar 2026-27"],
+  ["exams/ssc-cgl-2026.html", "SSC CGL 2026"],
+  ["exams/rrb-ntpc-ug-2026.html", "RRB NTPC (UG) 2026"],
+  ["exams/rrb-group-d-2026.html", "RRB Group D 2026"],
+  ["exams/ibps-po-2026.html", "IBPS PO 2026"],
+  ["exams/ibps-clerk-2026.html", "IBPS Clerk 2026"],
+  ["exams/upsc-cse-2026.html", "UPSC Civil Services 2026"],
+];
+const exams = EXAMS.filter(([rel]) => exists(rel)).map(([rel, en]) => ({
+  href: "/" + rel, emoji: "📅", title: lang === "en" ? en : pageTitle(rel).split(/[,|]/)[0].trim(), text: L("तारीखें, एडमिट कार्ड, रिजल्ट", "Dates, admit card, result"),
+}));
+
+const SCHOLAR: [string, string, string, string, string][] = [
+  ["service/national-scholarship-portal.html", "🎓", "National Scholarship Portal (NSP)", "केंद्र और राज्यों की 100+ छात्रवृत्तियां", "100+ central and state scholarships"],
+  ["service/post-matric-scholarship-obc-ebc.html", "📘", "Post Matric Scholarship (OBC/EBC)", "11वीं के बाद की पढ़ाई के लिए", "For studies after Class 10"],
+  ["service/pragati-scholarship-girl-students.html", "👩‍🎓", "AICTE Pragati Scholarship", "टेक्निकल पढ़ाई करने वाली छात्राओं के लिए", "For girls in technical education"],
+  ["service/saksham-scholarship-specially-abled.html", "♿", "AICTE Saksham Scholarship", "दिव्यांग छात्रों के लिए", "For students with disabilities"],
+  ["service/pm-usp-college-scholarship.html", "🏫", "PM-USP College Scholarship", "कॉलेज और यूनिवर्सिटी के छात्रों के लिए", "For college and university students"],
+  ["service/pm-vidyalaxmi-scheme.html", "💰", "PM Vidyalaxmi Education Loan", "बिना गारंटी पढ़ाई का लोन", "Collateral-free education loan"],
+];
+const scholarships = SCHOLAR.filter(([rel]) => exists(rel)).map(([rel, emoji, title, hi, en]) => ({ href: "/" + rel, emoji, title, text: L(hi, en) }));
+
+const quick = [
+  { href: "/jobs/index.html", emoji: "🎯", title: L("नई सरकारी नौकरियां", "Latest government jobs"), text: L("भर्ती, पद, योग्यता और आखिरी तारीख", "Posts, eligibility and last dates") },
+  { href: "/exams/index.html", emoji: "📅", title: "Exam Calendar 2026-27", text: L("SSC, Railway, Bank, UPSC की तारीखें", "SSC, Railway, Bank, UPSC dates") },
+  { href: "/tools/age-calculator.html", emoji: "⏳", title: "Exam Age Calculator", text: L("Cut-off तारीख पर सही उम्र", "Exact age on the cut-off date") },
+];
+const tools = [
+  { href: "/tools/photo-resizer.html", emoji: "🖼️", title: "Photo Resizer", text: L("फॉर्म के साइज़ (KB) में फोटो", "Photo in the form's KB size") },
+  { href: "/tools/signature-resizer.html", emoji: "✍️", title: "Signature Resizer", text: L("सिग्नेचर सही साइज़ में", "Signature in the right size") },
+  { href: "/tools/document-compressor.html", emoji: "🗜️", title: "PDF Compressor", text: L("दस्तावेज़ छोटा करें", "Make documents smaller") },
+  { href: "/tools/typing-speed-test.html", emoji: "⌨️", title: "Typing Speed Test", text: L("SSC/कोर्ट टाइपिंग की तैयारी", "Practice for SSC/court typing tests") },
+  { href: "/tools/self-declaration-builder.html", emoji: "📝", title: "Self Declaration", text: L("स्व-घोषणा पत्र बनाएं", "Create a self-declaration") },
+  { href: "/deadline-calendar.html", emoji: "⏰", title: "Deadline Calendar", text: L("फॉर्म की आखिरी तारीखें", "Form last dates") },
+].filter((x) => exists(x.href));
+const docs = [
+  { href: "/documents/#income-certificate", emoji: "💰", title: L("आय प्रमाण पत्र", "Income certificate"), text: L("छात्रवृत्ति और फीस छूट के लिए", "For scholarships and fee waivers") },
+  { href: "/documents/#caste-certificate", emoji: "📜", title: L("जाति प्रमाण पत्र", "Caste certificate"), text: L("आरक्षण के लिए", "For reservation") },
+  { href: "/documents/#domicile-certificate", emoji: "🏠", title: L("निवास प्रमाण पत्र", "Domicile certificate"), text: L("राज्य कोटे के लिए", "For state quota") },
+];
+
+const crumbs = [{ label: t(UI.home, lang), href: localize("/", lang) }, { label: "Students" }];
+const faq = lang === "en" ? [
+  { q: "How do I resize my photo and signature for a form?", a: "Every recruitment notice gives the photo and signature size in KB and pixels. Enter those sizes in our Photo Resizer and Signature Resizer. The file is changed in your own browser and is not uploaded anywhere." },
+  { q: "From which date is the age limit counted?", a: "Age is counted on a fixed cut-off date written in the notification. Enter your date of birth and that date in the Exam Age Calculator." },
+  { q: "Which certificates do I need for a scholarship?", a: "Most scholarships need an income certificate, a caste certificate (for reserved categories), a domicile certificate, the last mark sheet and a bank account linked to Aadhaar." },
+] : [
+  { q: "फॉर्म भरते समय फोटो और सिग्नेचर का साइज़ कैसे ठीक करें?", a: "हर भर्ती नोटिफिकेशन में फोटो और सिग्नेचर का साइज़ (KB और pixel) लिखा होता है। हमारे Photo Resizer और Signature Resizer में वही साइज़ डालें, फाइल आपके फोन में ही बदलती है, कहीं अपलोड नहीं होती।" },
+  { q: "उम्र सीमा किस तारीख से गिनी जाती है?", a: "हर भर्ती में उम्र एक तय तारीख (cut-off date) पर गिनी जाती है, जो नोटिफिकेशन में लिखी होती है। Exam Age Calculator में अपनी जन्मतिथि और वही तारीख डालें।" },
+  { q: "छात्रवृत्ति के लिए कौन से प्रमाण पत्र चाहिए?", a: "ज़्यादातर छात्रवृत्तियों में आय प्रमाण पत्र, जाति प्रमाण पत्र (आरक्षित वर्ग के लिए), निवास प्रमाण पत्र, पिछली कक्षा की मार्कशीट और आधार से लिंक बैंक खाता चाहिए।" },
+];
+---
+<Base
+  title={L("Students: सरकारी नौकरी, Exam Calendar, Scholarship और Tools | SarkariSewa India", "Students: Government Jobs, Exam Calendar, Scholarships & Tools | SarkariSewa India")}
+  description={L(
+    "नई सरकारी भर्तियां, SSC/Railway/Bank/UPSC exam calendar, NSP और दूसरी छात्रवृत्तियां, और फॉर्म भरने के फ्री टूल्स: फोटो resizer, age calculator।",
+    "Latest government vacancies, SSC/Railway/Bank/UPSC exam calendars, NSP and other scholarships, and free form-filling tools: photo resizer, age calculator."
+  )}
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <h1>{L("Students के लिए 🎓", "For students 🎓")}</h1>
+    <p class="page-intro">{L("सरकारी नौकरी की तैयारी से फॉर्म भरने तक: भर्तियां, exam की तारीखें, छात्रवृत्ति और काम के टूल्स एक जगह।", "From job preparation to filling forms: vacancies, exam dates, scholarships and tools in one place.")}</p>
+    <SearchBox placeholder={L("जैसे: SSC CGL, RRB NTPC, NSP स्कॉलरशिप…", "e.g. SSC CGL, RRB NTPC, NSP scholarship…")} />
+  </section>
+  <section class="block"><TaskList items={quick} /></section>
+  <CardGrid title={L("Exam Calendar और तारीखें", "Exam calendars and dates")} cards={exams} id="exams" />
+  <CardGrid title={L("छात्रवृत्ति (Scholarship)", "Scholarships")} cards={scholarships} id="scholarship" />
+  <CardGrid title={L("फॉर्म भरने के फ्री टूल्स", "Free form-filling tools")} cards={tools} id="tools" more={{ href: "/tools/", label: L("सभी टूल्स ›", "All tools ›") }} />
+  <CardGrid title={L("छात्रों को अक्सर चाहिए ये प्रमाण पत्र", "Certificates students often need")} cards={docs} id="docs" />
+  <Faq items={faq} />
+  <Explore exclude={["/jobs/index.html"]} />
+</Base>

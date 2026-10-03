@@ -140,6 +140,13 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - Order: homepage → main hubs (documents, students, yojana, tools, near-me, states) → paid services → guide pages.
 - Design samples (homepage, documents hub, paid services hub) user approval ke liye bheje gaye: 2026-10-03.
 
+## 8c. Bhasha (Hindi / English)
+- Hindi pages root par hain, English pages `/en/...` par. Header ka **EN / हिं** button us page ke doosri bhasha wale version par le jaata hai. Agar doosri bhasha ka version nahi hai toh us bhasha ke homepage par.
+- Saare UI shabd aur data `{ hi, en }` mein hain (`web/src/i18n.ts`, `web/src/data/site.ts`). Component URL dekh kar bhasha khud samajh leta hai.
+- Hub pages `web/src/views/*.astro` mein hain. `pages/x/index.astro` (Hindi) aur `pages/en/x/index.astro` (English) dono usi view ko dikhate hain.
+- Jo pages dono bhashaon mein hain, unki list `BILINGUAL` (i18n.ts) mein hai. Inke liye hreflang (hi, en, x-default) apne aap lagta hai.
+- Abhi dono bhashaon mein: homepage aur 7 hubs. Guide pages ka English version baad mein banega.
+
 ## 8b. Naya page kaise banta hai (Astro)
 - Page file: `web/src/pages/<same-url-path>.astro`. Example: `states/jharkhand-senior-citizen-card.astro` banega `/states/jharkhand-senior-citizen-card.html`.
 - Layout: `web/src/layouts/Base.astro`. Isme title, description, canonical, hreflang, OG, aur JSON-LD (Breadcrumb, Article, FAQPage) sab automatic aate hain.
@@ -168,6 +175,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Jan Aushadhi data asli hai:** `jan_aushadhi_all_india.csv` (~20,700 stores, PMBJP ka official data, lat/long ke saath). Ye ek achha data asset hai.
 
 ## 10. Log
+- **2026-10-03:** English versions live kiye (/en/ + 7 hubs), header mein EN/हिं toggle. Homepage par Trending tiles aur "सभी 24 टूल्स" link joda.
 - **2026-10-03:** GST verification page par naya header, footer, mobile menu, rang aur font lagaye. Payment script bilkul nahi badla. IndexNow deploy mein joda.
 - **2026-10-03:** Pages source = GitHub Actions (user ne set kiya). Hubs live kiye: /students/, /yojana/, /tools/, /near-me/, /states/. Top nav naye hubs par point karta hai. Sitemap har deploy par assemble.mjs se update hota hai (naye pages add, rebuilt pages ki lastmod refresh, index.html wale duplicate URL hatate hain).
 - **2026-10-03:** User ne design approve kiya. Homepage, /documents/, /paid-services/ live kiye.

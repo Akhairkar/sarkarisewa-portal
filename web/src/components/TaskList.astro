@@ -1,13 +1,15 @@
 ---
 import type { Card } from "../data/site";
+import { langOf, t, localize } from "../i18n";
 interface Props { items: Card[] }
 const { items } = Astro.props;
+const lang = langOf(Astro.url);
 ---
 <div class="tasks">
-  {items.map((t) => (
-    <a class="task" href={t.href}>
-      <span class="emoji" aria-hidden="true">{t.emoji}</span>
-      <span><strong>{t.title}</strong><small>{t.text}</small></span>
+  {items.map((it) => (
+    <a class="task" href={localize(it.href, lang)}>
+      <span class="emoji" aria-hidden="true">{it.emoji}</span>
+      <span><strong>{t(it.title, lang)}</strong><small>{t(it.text, lang)}</small></span>
       <span class="go" aria-hidden="true">›</span>
     </a>
   ))}

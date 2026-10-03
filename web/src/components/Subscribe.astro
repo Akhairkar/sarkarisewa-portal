@@ -2,36 +2,48 @@
 // Site-wide updates box: Telegram channel + subscribe form. Saves to the
 // Supabase `subscribers` table (insert-only for visitors); rows show up in
 // admin/subscribers.html.
+import { langOf } from "../i18n";
+const lang = langOf(Astro.url);
+const L = (hi: string, en: string) => (lang === "en" ? en : hi);
 const TELEGRAM = "https://t.me/sarkarisewaindia";
 const TOPICS = [
-  ["jobs", "सरकारी नौकरी"],
-  ["yojana", "योजनाएं"],
-  ["documents", "दस्तावेज़ / प्रमाण पत्र"],
-  ["deadlines", "आखिरी तारीखें"],
+  ["jobs", L("सरकारी नौकरी", "Government jobs")],
+  ["yojana", L("योजनाएं", "Schemes")],
+  ["documents", L("दस्तावेज़ / प्रमाण पत्र", "Documents / certificates")],
+  ["deadlines", L("आखिरी तारीखें", "Deadlines")],
 ];
+const MSG = {
+  phone: L("कृपया सही 10 अंकों का मोबाइल नंबर डालें।", "Please enter a valid 10-digit mobile number."),
+  email: L("कृपया सही email डालें।", "Please enter a valid email."),
+  need: L("मोबाइल नंबर या email में से कम से कम एक डालें।", "Enter a mobile number or an email."),
+  busy: L("जोड़ रहे हैं…", "Subscribing…"),
+  btn: L("अपडेट पाएं", "Get updates"),
+  ok: L("✅ धन्यवाद! आप जुड़ गए हैं। सबसे तेज़ अपडेट के लिए Telegram चैनल भी Join करें।", "✅ Thank you, you are subscribed! Join our Telegram channel for the fastest updates."),
+  fail: L("अभी सब्सक्राइब नहीं हो पाया। थोड़ी देर बाद फिर कोशिश करें, या Telegram चैनल Join करें।", "Could not subscribe right now. Please try again later, or join our Telegram channel."),
+};
 ---
 <section class="updates" aria-labelledby="updates-title">
   <div class="updates-inner">
     <div>
-      <h2 id="updates-title">नई नौकरी और योजना की खबर सबसे पहले 🔔</h2>
-      <p>हमारे Telegram चैनल से जुड़ें, या नीचे नंबर डालकर अपडेट पाएं। बिल्कुल फ्री, कोई spam नहीं।</p>
+      <h2 id="updates-title">{L("नई नौकरी और योजना की खबर सबसे पहले 🔔", "Be the first to know about new jobs and schemes 🔔")}</h2>
+      <p>{L("हमारे Telegram चैनल से जुड़ें, या नीचे नंबर डालकर अपडेट पाएं। बिल्कुल फ्री, कोई spam नहीं।", "Join our Telegram channel, or leave your number below. Free, no spam.")}</p>
       <a class="tg-btn" href={TELEGRAM} target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21.9 4.6 18.7 19.7c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13.4l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.6z"/></svg>
-        Telegram चैनल Join करें
+        {L("Telegram चैनल Join करें", "Join Telegram channel")}
       </a>
     </div>
-    <form class="sub-form" id="sub-form" novalidate>
-      <label for="sub-phone">मोबाइल नंबर</label>
-      <input id="sub-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="10 अंकों का नंबर" />
-      <label for="sub-email">Email <small>(वैकल्पिक)</small></label>
+    <form class="sub-form" id="sub-form" novalidate data-msg={JSON.stringify(MSG)}>
+      <label for="sub-phone">{L("मोबाइल नंबर", "Mobile number")}</label>
+      <input id="sub-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" placeholder={L("10 अंकों का नंबर", "10-digit number")} />
+      <label for="sub-email">Email <small>({L("वैकल्पिक", "optional")})</small></label>
       <input id="sub-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
       <fieldset>
-        <legend>किसकी खबर चाहिए?</legend>
+        <legend>{L("किसकी खबर चाहिए?", "What updates do you want?")}</legend>
         {TOPICS.map(([v, l], i) => <label class="chk"><input type="checkbox" name="topics" value={v} checked={i < 2} /> {l}</label>)}
       </fieldset>
-      <button type="submit">अपडेट पाएं</button>
+      <button type="submit">{MSG.btn}</button>
       <p class="sub-status" role="status" aria-live="polite"></p>
-      <p class="sub-note">सब्सक्राइब करके आप सहमत हैं कि हम आपको सरकारी अपडेट भेज सकते हैं। आपका नंबर कभी किसी को नहीं दिया जाता।</p>
+      <p class="sub-note">{L("सब्सक्राइब करके आप सहमत हैं कि हम आपको सरकारी अपडेट भेज सकते हैं। आपका नंबर कभी किसी को नहीं दिया जाता।", "By subscribing you agree to receive government updates from us. We never share your number.")}</p>
     </form>
   </div>
 </section>
@@ -42,6 +54,7 @@ const TOPICS = [
   if (!form) return;
   var status = form.querySelector(".sub-status");
   var btn = form.querySelector("button");
+  var M = JSON.parse(form.dataset.msg);
   function say(msg, ok) { status.textContent = msg; status.className = "sub-status " + (ok ? "ok" : "err"); }
   function loadClient() {
     if (typeof window.getSupabaseClient === "function") return window.getSupabaseClient();
@@ -58,10 +71,10 @@ const TOPICS = [
     var phone = form.phone.value.replace(/\D/g, "").replace(/^(91|0)(?=\d{10}$)/, "");
     var email = form.email.value.trim();
     var topics = Array.prototype.map.call(form.querySelectorAll("input[name=topics]:checked"), function (c) { return c.value; });
-    if (phone && !/^[6-9]\d{9}$/.test(phone)) return say("कृपया सही 10 अंकों का मोबाइल नंबर डालें।");
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say("कृपया सही email डालें।");
-    if (!phone && !email) return say("मोबाइल नंबर या email में से कम से कम एक डालें।");
-    btn.disabled = true; btn.textContent = "जोड़ रहे हैं…"; say("", true);
+    if (phone && !/^[6-9]\d{9}$/.test(phone)) return say(M.phone);
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say(M.email);
+    if (!phone && !email) return say(M.need);
+    btn.disabled = true; btn.textContent = M.busy; say("", true);
     try {
       var client = await loadClient();
       if (!client) throw new Error("backend");
@@ -75,11 +88,11 @@ const TOPICS = [
       });
       if (res.error) throw res.error;
       form.reset();
-      say("✅ धन्यवाद! आप जुड़ गए हैं। सबसे तेज़ अपडेट के लिए Telegram चैनल भी Join करें।", true);
+      say(M.ok, true);
     } catch (err) {
-      say("अभी सब्सक्राइब नहीं हो पाया। थोड़ी देर बाद फिर कोशिश करें, या Telegram चैनल Join करें।");
+      say(M.fail);
     } finally {
-      btn.disabled = false; btn.textContent = "अपडेट पाएं";
+      btn.disabled = false; btn.textContent = M.btn;
     }
   });
 })();

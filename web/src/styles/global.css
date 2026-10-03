@@ -435,3 +435,44 @@ table { width: 100%; border-collapse: collapse; }
   .header-actions { gap: 4px; }
   .icon-btn { min-width: 36px; height: 36px; padding: 0 6px; }
 }
+
+/* ---------- Trending tiles (homepage, under hero) ---------- */
+.trending { margin: 18px 0 8px; }
+.trending-title { font-weight: 800; color: var(--c-ink); margin: 0 0 8px; }
+.trend-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (min-width: 640px) { .trend-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .trend-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.trend {
+  display: flex; align-items: center; justify-content: center; text-align: center; min-height: 52px; padding: 8px 10px;
+  border-radius: 12px; color: #fff; font-weight: 800; text-decoration: none; line-height: 1.25; overflow-wrap: anywhere;
+  box-shadow: 0 2px 0 rgb(0 0 0 / 0.12); transition: transform 0.1s ease, filter 0.1s ease;
+}
+.trend:hover { color: #fff; transform: translateY(-2px); filter: brightness(1.08); }
+.trend.saffron { background: #d97706; }
+.trend.green { background: #047857; }
+.trend.blue { background: #1d4ed8; }
+.trend.red { background: #b91c1c; }
+.trend.purple { background: #7c3aed; }
+.trend.teal { background: #0f766e; }
+
+/* Header fit with language + Telegram + search buttons */
+.lang-btn { font-weight: 800; min-width: 40px; }
+@media (max-width: 479px) {
+  .brand-sub { display: none; }
+  .site-header .container { gap: 8px; }
+  .header-actions { gap: 4px; }
+  .icon-btn { min-width: 36px; height: 36px; padding: 0 6px; }
+  .brand img { width: 34px; height: 34px; }
+  .brand-name { font-size: 1.05rem; }
+}
+@media (max-width: 359px) { .brand-name { font-size: 0.95rem; } .brand img { width: 30px; height: 30px; } }
+@media (min-width: 900px) and (max-width: 1199px) {
+  .brand-sub { display: none; }
+  .top-nav a { padding: 8px 8px; font-size: 0.9rem; }
+}
+@media (max-width: 359px) {
+  .site-header .container { padding: 0 10px; gap: 6px; }
+  .brand { gap: 6px; }
+  .icon-btn { min-width: 32px; height: 34px; padding: 0 5px; }
+  .icon-btn svg { width: 18px; height: 18px; }
+}

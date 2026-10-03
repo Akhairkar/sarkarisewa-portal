@@ -1,0 +1,100 @@
+---
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CardGrid from "../components/CardGrid.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+import { STATES } from "../data/site";
+import { langOf, t, localize, UI } from "../i18n";
+import { services, exists } from "../lib/repo";
+
+const lang = langOf(Astro.url);
+const L = (hi: string, en: string) => (lang === "en" ? en : hi);
+const short = (s: string) => (s.length > 90 ? s.slice(0, 88) + "…" : s);
+const toCard = (emoji: string) => (s: ReturnType<typeof services>[number]) => ({ href: s.href, emoji, title: t(s.title, lang), text: short(t(s.text, lang)) });
+const central = services(["government-schemes"]).map(toCard("🏛️"));
+const health = services(["health"]).map(toCard("🏥"));
+const mpbcdc = services(["mpbcdc-schemes"]).map(toCard("🏦"));
+
+// State schemes: [state slug, page slug, emoji, Hindi name, English name]
+const STATE_SCHEMES: [string, string, string, string, string][] = [
+  ["andhra-pradesh", "ap-thalliki-vandanam", "👩‍👧", "तल्लिकी वंदनम", "Thalliki Vandanam"],
+  ["arunachal-pradesh", "arunachal-cmaay-scheme", "🏥", "मुख्यमंत्री आरोग्य अरुणाचल योजना", "CM Arogya Arunachal Yojana (CMAAY)"],
+  ["arunachal-pradesh", "arunachal-dulari-kanya-scheme", "👧", "दुलारी कन्या योजना", "Dulari Kanya Scheme"],
+  ["arunachal-pradesh", "arunachal-deen-dayal-upadhyaya-bunkar-yojana", "🧵", "दीनदयाल उपाध्याय बुनकर योजना", "Deen Dayal Upadhyaya Bunkar Yojana"],
+  ["assam", "as-orunodoi-scheme", "👩", "अरुणोदय योजना", "Orunodoi Scheme"],
+  ["bihar", "br-kanya-utthan-yojana", "👧", "मुख्यमंत्री कन्या उत्थान योजना", "Kanya Utthan Yojana"],
+  ["chhattisgarh", "cg-mahtari-vandan-yojana", "👩", "महतारी वंदन योजना", "Mahtari Vandan Yojana"],
+  ["goa", "goa-dayanand-social-security-scheme--dsss-", "👴", "दयानंद सामाजिक सुरक्षा योजना", "Dayanand Social Security Scheme"],
+  ["goa", "goa-deen-dayal-swasthya-seva-yojana--ddssy-", "🏥", "दीनदयाल स्वास्थ्य सेवा योजना", "Deen Dayal Swasthya Seva Yojana"],
+  ["goa", "goa-griha-aadhar-scheme", "🏠", "गृह आधार योजना", "Griha Aadhar Scheme"],
+  ["gujarat", "gj-vahli-dikri-yojana", "👧", "वहाली दीकरी योजना", "Vahli Dikri Yojana"],
+  ["himachal-pradesh", "hp-himcare-scheme", "🏥", "हिमकेयर योजना", "HIMCARE Scheme"],
+  ["himachal-pradesh", "hp-mukhya-mantri-swawalamban-yojana", "💼", "मुख्यमंत्री स्वावलंबन योजना", "Mukhya Mantri Swawalamban Yojana"],
+  ["himachal-pradesh", "hp-sahara-yojana", "🤝", "सहारा योजना", "Sahara Yojana"],
+  ["jharkhand", "jh-maiya-samman-yojana", "👩", "मैया सम्मान योजना", "Maiya Samman Yojana"],
+  ["karnataka", "ka-gruha-lakshmi-yojana", "👩", "गृह लक्ष्मी योजना", "Gruha Lakshmi Yojana"],
+  ["kerala", "kl-social-security-pension", "👴", "सामाजिक सुरक्षा पेंशन", "Social Security Pension"],
+  ["manipur", "manipur-chief-minister-widow-pension-scheme", "🤝", "मुख्यमंत्री विधवा पेंशन योजना", "CM Widow Pension Scheme"],
+  ["manipur", "manipur-cmht-scheme", "🏥", "मुख्यमंत्री हकसेल तेंगबांग (CMHT)", "CMHT Health Scheme"],
+  ["manipur", "manipur-lairik-yengminnasi-scheme", "📚", "लाइरिक येंगमिन्नासी योजना", "Lairik Yengminnasi Scheme"],
+  ["meghalaya", "meghalaya-focus-scheme", "🌾", "FOCUS योजना", "FOCUS Scheme"],
+  ["meghalaya", "meghalaya-mhis-scheme", "🏥", "मेघालय स्वास्थ्य बीमा योजना (MHIS)", "Meghalaya Health Insurance Scheme (MHIS)"],
+  ["maharashtra", "mh-ladki-bahin-yojana", "👩", "लाडकी बहिन योजना", "Ladki Bahin Yojana"],
+  ["maharashtra", "mh-bandhkam-kamgar-yojana", "👷", "बांधकाम कामगार योजना", "Bandhkam Kamgar Yojana"],
+  ["mizoram", "mizoram-bpl-housing-scheme", "🏠", "BPL आवास योजना", "BPL Housing Scheme"],
+  ["mizoram", "mizoram-chief-minister-rural-housing-scheme", "🏠", "मुख्यमंत्री ग्रामीण आवास योजना", "CM Rural Housing Scheme"],
+  ["madhya-pradesh", "mp-ladli-laxmi-yojana", "👧", "लाडली लक्ष्मी योजना", "Ladli Laxmi Yojana"],
+  ["nagaland", "nagaland-cmhis-scheme", "🏥", "मुख्यमंत्री स्वास्थ्य बीमा योजना (CMHIS)", "CM Health Insurance Scheme (CMHIS)"],
+  ["odisha", "od-subhadra-yojana", "👩", "सुभद्रा योजना", "Subhadra Yojana"],
+  ["punjab", "pb-ashirwad-scheme", "💍", "आशीर्वाद योजना", "Ashirwad Scheme"],
+  ["rajasthan", "rj-chiranjeevi-yojana", "🏥", "चिरंजीवी योजना", "Chiranjeevi Yojana"],
+  ["sikkim", "sikkim-aama-yojana", "👩", "आमा योजना", "Aama Yojana"],
+  ["sikkim", "sikkim-sgay-yojana", "🏠", "सिक्किम गरीब आवास योजना", "Sikkim Garib Awas Yojana"],
+  ["sikkim", "sikkim-vatsalya-yojana", "👶", "वात्सल्य योजना", "Vatsalya Yojana"],
+  ["telangana", "tg-mahalakshmi-scheme", "👩", "महालक्ष्मी योजना", "Mahalakshmi Scheme"],
+  ["tripura", "tripura-yuba-yogayog-yojana", "📱", "युवा योगायोग योजना", "Yuba Yogayog Yojana"],
+  ["uttar-pradesh", "up-kanya-sumangala-yojana", "👧", "कन्या सुमंगला योजना", "Kanya Sumangala Yojana"],
+  ["west-bengal", "wb-lakshmir-bhandar", "👩", "लक्ष्मीर भंडार", "Lakshmir Bhandar"],
+];
+const stateName = (slug: string) => { const s = STATES.find((x) => x.slug === slug); return s ? (lang === "en" ? s.name : s.hi) : slug; };
+const stateSchemes = STATE_SCHEMES.filter(([, slug]) => exists(`service/${slug}.html`)).map(([st, slug, emoji, hi, en]) => ({
+  href: `/service/${slug}.html`, emoji, title: L(hi, en), text: stateName(st),
+}));
+
+const crumbs = [{ label: t(UI.home, lang), href: localize("/", lang) }, { label: L("सरकारी योजनाएं", "Government schemes") }];
+const faq = lang === "en" ? [
+  { q: "How do I find which government scheme is for me?", a: "Enter your age, state, income and category in the Eligibility Checker to see the schemes you may qualify for. Then apply through the official link on each scheme's page." },
+  { q: "What if the scheme money has not reached my account?", a: "First check with your bank that the account is linked to Aadhaar (DBT/NPCI mapping) and KYC is complete. Then check the application status on the scheme's official portal." },
+  { q: "Do I have to pay anyone to get a scheme?", a: "Applying for government schemes is usually free. A CSC operator may charge a fixed service fee. Beware of people asking for money in the name of a scheme." },
+] : [
+  { q: "मेरे लिए कौन सी सरकारी योजना है, कैसे पता करें?", a: "Eligibility Checker में अपनी उम्र, राज्य, आय और श्रेणी डालें, वह बताएगा कि आप किन योजनाओं के लिए पात्र हो सकते हैं। फिर हर योजना के पेज पर official link से आवेदन करें।" },
+  { q: "योजना का पैसा खाते में नहीं आया तो क्या करें?", a: "सबसे पहले बैंक में जांचें कि खाता आधार से लिंक (DBT/NPCI mapping) है और KYC पूरी है। फिर योजना के official पोर्टल पर आवेदन का स्टेटस देखें।" },
+  { q: "क्या योजना के लिए किसी को पैसे देने होते हैं?", a: "सरकारी योजनाओं में आवेदन आमतौर पर मुफ्त होता है। CSC पर ऑपरेटर तय सेवा शुल्क ले सकता है। योजना के नाम पर पैसे मांगने वालों से सावधान रहें।" },
+];
+---
+<Base
+  title={L("सरकारी योजनाएं 2026: केंद्र और राज्य की योजनाओं की लिस्ट | SarkariSewa India", "Government Schemes 2026: Central & State Scheme List | SarkariSewa India")}
+  description={L(
+    "PM Kisan, आयुष्मान, आवास, उज्ज्वला से लेकर लाडकी बहिन, मैया सम्मान जैसी राज्य योजनाएं: पात्रता, आवेदन और स्टेटस की गाइड official links के साथ।",
+    "From PM Kisan, Ayushman, Awas and Ujjwala to state schemes like Ladki Bahin and Maiya Samman: eligibility, how to apply and status, with official links."
+  )}
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <h1>{L("सरकारी योजनाएं", "Government schemes")}</h1>
+    <p class="page-intro">{L("केंद्र और राज्य सरकार की योजनाएं: कौन पात्र है, कितना फायदा है, आवेदन कैसे करें और पैसा न आए तो क्या करें।", "Central and state schemes: who qualifies, how much you get, how to apply and what to do if money doesn't arrive.")}</p>
+    <SearchBox placeholder={L("जैसे: PM Kisan, लाडकी बहिन, आवास योजना…", "e.g. PM Kisan, Ladki Bahin, housing scheme…")} />
+    <p><a class="cta" style="display:inline-block" href="/tools/eligibility-checker.html">✅ {L("मैं किन योजनाओं के लिए पात्र हूं?", "Which schemes am I eligible for?")}</a></p>
+  </section>
+  <CardGrid title={L("केंद्र सरकार की योजनाएं", "Central government schemes")} cards={central} id="central" />
+  <CardGrid title={L("राज्य सरकार की योजनाएं", "State government schemes")} cards={stateSchemes} id="state" />
+  <CardGrid title={L("स्वास्थ्य योजनाएं और सेवाएं", "Health schemes and services")} cards={health} id="health" />
+  {mpbcdc.length > 0 && <CardGrid title={L("महाराष्ट्र: MPBCDC लोन योजनाएं", "Maharashtra: MPBCDC loan schemes")} cards={mpbcdc} id="mpbcdc" />}
+  <Faq items={faq} />
+  <Explore />
+</Base>

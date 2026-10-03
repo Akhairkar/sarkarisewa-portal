@@ -1,11 +1,13 @@
 ---
 import Icon from "./Icon.astro";
+import { langOf, t, UI } from "../i18n";
 interface Props { links: { href: string; title: string; note?: string }[]; verified: string; id?: string }
 const { links, verified, id = "official-links" } = Astro.props;
+const lang = langOf(Astro.url);
 ---
 <section class="section" id={id}>
-  <h2>Official links</h2>
-  <p style="color:var(--c-muted);font-size:.92rem">ये सरकारी वेबसाइट/नंबर हैं। आवेदन और भुगतान सिर्फ इन्हीं पर करें। <span style="color:var(--c-green);font-weight:700">आखिरी जांच: {verified}</span></p>
+  <h2>{t(UI.officialTitle, lang)}</h2>
+  <p style="color:var(--c-muted);font-size:.92rem">{t(UI.officialLead, lang)} <span style="color:var(--c-green);font-weight:700">{t(UI.lastChecked, lang)}: {verified}</span></p>
   <ul class="official">
     {links.map((l) => (
       <li>

@@ -5,12 +5,12 @@ import Footer from "../components/Footer.astro";
 import BottomNav from "../components/BottomNav.astro";
 import Subscribe from "../components/Subscribe.astro";
 import { SITE } from "../data/site";
+import { langOf, twin, t, UI } from "../i18n";
 
 interface Crumb { label: string; href?: string }
 interface Props {
   title: string;
   description: string;
-  lang?: "hi" | "en" | "mr";
   breadcrumbs?: Crumb[];
   faq?: { q: string; a: string }[];
   published?: string; // YYYY-MM-DD
@@ -20,11 +20,13 @@ interface Props {
   schemaType?: "Article" | "WebPage";
 }
 const {
-  title, description, lang = "hi", breadcrumbs = [], faq = [], published, modified,
+  title, description, breadcrumbs = [], faq = [], published, modified,
   noindex = false, ogImage = "/assets/img/og-image.png", schemaType = "Article",
 } = Astro.props;
 
+const lang = langOf(Astro.url);
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const pair = twin(Astro.url.pathname);
 const image = new URL(ogImage, SITE.url).href;
 
 const schema: Record<string, unknown>[] = [];
@@ -74,8 +76,15 @@ if (faq.length) {
   <meta name="description" content={description} />
   <meta name="robots" content={noindex ? "noindex,follow" : "index,follow,max-image-preview:large"} />
   <link rel="canonical" href={canonical} />
-  <link rel="alternate" hreflang={lang} href={canonical} />
-  <link rel="alternate" hreflang="x-default" href={canonical} />
+  {pair ? (
+    <>
+      <link rel="alternate" hreflang="hi" href={new URL(pair.hi, SITE.url).href} />
+      <link rel="alternate" hreflang="en" href={new URL(pair.en, SITE.url).href} />
+      <link rel="alternate" hreflang="x-default" href={new URL(pair.hi, SITE.url).href} />
+    </>
+  ) : (
+    <link rel="alternate" hreflang={lang} href={canonical} />
+  )}
   <meta name="theme-color" content="#1d4ed8" />
   <link rel="icon" href="/favicon.ico" sizes="48x48" />
   <link rel="icon" href="/assets/img/sarkarisewa-mark.svg" type="image/svg+xml" />
@@ -96,7 +105,7 @@ if (faq.length) {
   <slot name="head" />
 </head>
 <body>
-  <a class="skip-link" href="#main">सीधे जानकारी पर जाएं</a>
+  <a class="skip-link" href="#main">{t(UI.skip, lang)}</a>
   <Header />
   <main id="main" class="container">
     <slot />

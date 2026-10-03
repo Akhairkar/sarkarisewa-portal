@@ -1,9 +1,11 @@
 ---
+import { langOf, t, UI } from "../i18n";
 interface Props { placeholder?: string }
-const { placeholder = "जैसे: राशन कार्ड, लेबर कार्ड, SSC भर्ती…" } = Astro.props;
+const lang = langOf(Astro.url);
+const { placeholder = t(UI.searchPh, lang) } = Astro.props;
 ---
 <form class="search-box" action="/search.html" method="get" role="search">
-  <label class="sr-only" for="q">खोजें</label>
+  <label class="sr-only" for="q">{t(UI.search, lang)}</label>
   <input id="q" name="q" type="search" placeholder={placeholder} autocomplete="off" enterkeyhint="search" />
-  <button type="submit">खोजें</button>
+  <button type="submit">{t(UI.search, lang)}</button>
 </form>

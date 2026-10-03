@@ -1,0 +1,139 @@
+---
+import Base from "../layouts/Base.astro";
+import SearchBox from "../components/SearchBox.astro";
+import TaskList from "../components/TaskList.astro";
+import CardGrid from "../components/CardGrid.astro";
+import Trending from "../components/Trending.astro";
+import Faq from "../components/Faq.astro";
+import { SITE, POPULAR_TASKS, PAID_SERVICES, STATES } from "../data/site";
+import { langOf, t, localize } from "../i18n";
+import { exists } from "../lib/repo";
+
+const lang = langOf(Astro.url);
+const L = (hi: string, en: string) => (lang === "en" ? en : hi);
+const states = STATES.filter((s) => exists(`states/${s.slug}.html`));
+
+const students = [
+  { href: "/jobs/index.html", emoji: "🎯", title: L("नई सरकारी नौकरियां", "Latest government jobs"), text: L("भर्ती, योग्यता और आखिरी तारीख", "Vacancies, eligibility, last dates") },
+  { href: "/exams/index.html", emoji: "📅", title: "Exam Calendar", text: L("SSC, Railway, Bank, UPSC की तारीखें", "SSC, Railway, Bank, UPSC dates") },
+  { href: "/tools/age-calculator.html", emoji: "⏳", title: "Exam Age Calculator", text: L("Cut-off तारीख पर आपकी सही उम्र", "Your exact age on the cut-off date") },
+  { href: "/tools/document-compressor.html", emoji: "🗜️", title: L("फोटो / Signature Resizer", "Photo / Signature Resizer"), text: L("फॉर्म के साइज़ में, फ्री", "Right size for any form, free") },
+  { href: "/tools/eligibility-checker.html", emoji: "✅", title: "Eligibility Checker", text: L("आप किन योजनाओं के लिए पात्र हैं", "Schemes you may qualify for") },
+  { href: "/deadline-calendar.html", emoji: "⏰", title: "Deadline Calendar", text: L("फॉर्म और योजना की आखिरी तारीखें", "Form and scheme deadlines") },
+];
+
+const tools = [
+  { href: "/tools/income-tax-calculator.html", emoji: "🧮", title: "Income Tax Calculator", text: L("नई vs पुरानी व्यवस्था", "New vs old regime") },
+  { href: "/7th-pay-commission-calculator.html", emoji: "💵", title: "7th Pay Calculator", text: L("सरकारी वेतन का हिसाब", "Government salary calculator") },
+  { href: "/tools/epf-calculator.html", emoji: "🏦", title: "EPF Calculator", text: L("रिटायरमेंट पर PF कितना", "Your PF at retirement") },
+  { href: "/tools/gratuity-calculator.html", emoji: "🎁", title: "Gratuity Calculator", text: L("नौकरी छोड़ने पर ग्रेच्युटी", "Gratuity when you leave a job") },
+  { href: "/tools/document-checklist.html", emoji: "📋", title: "Document Checklist", text: L("किस काम में कौन सा कागज़", "Which papers for which task") },
+  { href: "/tools/hra-calculator.html", emoji: "🏠", title: "HRA Calculator", text: L("HRA टैक्स छूट", "HRA tax exemption") },
+];
+
+const near = [
+  { href: "/tools/csc-locator.html", emoji: "📍", title: L("नज़दीकी CSC / जन सेवा केंद्र", "Nearest CSC / Jan Seva Kendra"), text: L("ज़िले के अनुसार पता और फोन नंबर", "Address and phone, district-wise") },
+  { href: "/service/jan-aushadhi-store-locator.html", emoji: "💊", title: L("जन औषधि केंद्र", "Jan Aushadhi Kendra"), text: L("50-80% सस्ती दवा, ज़िले के अनुसार", "Medicines 50-80% cheaper, district-wise") },
+  { href: "/support/helpline-directory.html", emoji: "📞", title: L("सरकारी हेल्पलाइन नंबर", "Government helpline numbers"), text: L("सभी विभागों के टोल-फ्री नंबर", "Toll-free numbers of all departments") },
+];
+
+const faq = lang === "en" ? [
+  { q: "What is SarkariSewa India?", a: "SarkariSewa India is an independent information portal with easy guides to government documents, schemes, jobs and tools, always with official links. We are not a government website." },
+  { q: "Can I fill government forms here?", a: "No. We explain where and how to apply. Always apply and pay any government fee on the official government website." },
+  { q: "How accurate is the information?", a: "Every guide shows the official link and the date it was last checked. Rules change, so confirm on the official website before applying." },
+  { q: "What are the paid services?", a: "A few services such as GSTIN Verification are paid. The fee is for our service, not a government fee, and the price is shown clearly before you pay." },
+] : [
+  { q: "SarkariSewa India क्या है?", a: "SarkariSewa India एक स्वतंत्र जानकारी पोर्टल है। यहां सरकारी दस्तावेज़, योजनाएं, नौकरियां और टूल्स की जानकारी आसान हिंदी में, official links के साथ मिलती है। हम कोई सरकारी वेबसाइट नहीं हैं।" },
+  { q: "क्या यहां से सरकारी फॉर्म भरे जाते हैं?", a: "नहीं। हम बताते हैं कि आवेदन कहां और कैसे करें। आवेदन और सरकारी फीस का भुगतान हमेशा official सरकारी वेबसाइट पर ही करें।" },
+  { q: "जानकारी कितनी सही है?", a: "हर गाइड पर official link और आखिरी जांच की तारीख दी जाती है। नियम बदलते रहते हैं, इसलिए आवेदन से पहले official वेबसाइट पर ज़रूर देख लें।" },
+  { q: "Paid services क्या हैं?", a: "GSTIN Verification जैसी कुछ सेवाएं सशुल्क हैं। यह हमारी सेवा का शुल्क है, सरकारी फीस नहीं। भुगतान से पहले राशि और शर्तें साफ दिखाई जाती हैं।" },
+];
+---
+<Base
+  title={L("Government Services, Schemes, Jobs & Tools | SarkariSewa India", "Government Services, Schemes, Jobs & Tools in English | SarkariSewa India")}
+  description={L(
+    "भारत सरकार और सभी राज्यों की सरकारी सेवाओं, योजनाओं, राशन कार्ड, वोटर ID, पेंशन व प्रमाण पत्रों की ऑनलाइन गाइड, पात्रता व आधिकारिक लिंक।",
+    "Simple guides to Indian government services: ration card, voter ID, pension, certificates and schemes for every state, with eligibility and official links."
+  )}
+  faq={faq}
+  schemaType="WebPage"
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE.name,
+    url: SITE.url,
+    inLanguage: lang,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE.url}/search.html?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  })} />
+
+  <section class="hero">
+    <span class="eyebrow">✓ {L("हर जानकारी के साथ official link", "Official link with every guide")}</span>
+    <h1>{lang === "en" ? <>Government services, <em>made simple</em></> : <>सरकारी काम, <em>आसान भाषा में</em></>}</h1>
+    <p class="page-intro">{L("दस्तावेज़ कैसे बनवाएं, कौन सी योजना आपके लिए है, नई सरकारी नौकरियां और काम के टूल्स, सब एक जगह।", "How to get documents, which schemes are for you, new government jobs and handy tools, all in one place.")}</p>
+    <SearchBox />
+    <div class="trust-row">
+      <span>{L("36 राज्यों की जानकारी", "All 36 states and UTs")}</span>
+      <span>{L("आसान हिंदी", "Simple language")}</span>
+      <span>{L("फ्री गाइड और टूल्स", "Free guides and tools")}</span>
+    </div>
+  </section>
+
+  <Trending />
+
+  <section class="block" aria-labelledby="popular">
+    <div class="block-head"><h2 id="popular">{L("लोग सबसे ज़्यादा यह खोज रहे हैं", "Most searched")}</h2><a href={localize("/documents/", lang)}>{L("सभी दस्तावेज़ ›", "All documents ›")}</a></div>
+    <TaskList items={POPULAR_TASKS} />
+  </section>
+
+  <section class="block" aria-labelledby="states">
+    <div class="block-head"><h2 id="states">{L("अपना राज्य चुनें", "Choose your state")}</h2><a href={localize("/states/", lang)}>{L("सभी राज्य ›", "All states ›")}</a></div>
+    <p class="block-lead">{L("आपके राज्य के प्रमाण पत्र, कार्ड, पोर्टल और योजनाएं।", "Certificates, cards, portals and schemes of your state.")}</p>
+    <div class="state-grid">
+      {states.map((s) => <a href={`/states/${s.slug}.html`}>{lang === "en" ? s.name : s.hi}<small>{lang === "en" ? s.hi : s.name}</small></a>)}
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="students">
+    <div class="block-head"><h2 id="students">{L("Students के लिए 🎓", "For students 🎓")}</h2><a href={localize("/students/", lang)}>{L("Students hub ›", "Students hub ›")}</a></div>
+    <p class="block-lead">{L("भर्ती, exam की तारीखें, उम्र और फॉर्म भरने के टूल्स।", "Vacancies, exam dates, age and form-filling tools.")}</p>
+    <TaskList items={students} />
+  </section>
+
+  <section class="block" aria-labelledby="paid">
+    <div class="block-head"><h2 id="paid">Online Services</h2><a href={localize("/paid-services/", lang)}>{L("सभी सेवाएं ›", "All services ›")}</a></div>
+    <div class="svc-grid">
+      {PAID_SERVICES.map((s) => (
+        <div class="svc">
+          <div class="svc-top">
+            <span class="emoji" aria-hidden="true">{s.emoji}</span>
+            <div><span class={`status ${s.live ? "live" : "soon"}`}>{s.live ? "● Live" : L("जल्द आ रहा है", "Coming soon")}</span><h3>{s.title}</h3></div>
+            <div class="price">{s.price}<small>{t(s.unit, lang)}</small></div>
+          </div>
+          <p>{t(s.text, lang)}</p>
+          {s.live
+            ? <a class="cta" href={s.href}>{L("अभी जांचें →", "Check now →")}</a>
+            : <span class="cta disabled">{L("जल्द शुरू होगा", "Launching soon")}</span>}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CardGrid title={L("काम के फ्री टूल्स 🛠️", "Free tools 🛠️")} cards={tools} id="tools" more={{ href: "/tools/", label: L("सभी 24 टूल्स ›", "All 24 tools ›") }} />
+
+  <section class="block" aria-labelledby="near">
+    <div class="block-head"><h2 id="near">{L("आपके पास", "Near you")}</h2><a href={localize("/near-me/", lang)}>{L("सभी राज्य ›", "All states ›")}</a></div>
+    <TaskList items={near} />
+  </section>
+
+  <Faq items={faq} title={L("SarkariSewa के बारे में", "About SarkariSewa")} />
+
+  <p class="notice">{L(
+    "SarkariSewa India एक स्वतंत्र जानकारी पोर्टल है और किसी सरकारी विभाग से जुड़ा नहीं है। आवेदन और सरकारी फीस का भुगतान सिर्फ official वेबसाइट पर करें।",
+    "SarkariSewa India is an independent information portal and is not affiliated with any government department. Apply and pay government fees only on official websites."
+  )}</p>
+</Base>

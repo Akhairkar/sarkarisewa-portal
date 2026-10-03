@@ -3,9 +3,11 @@
 // site, even when the cards are unrelated to the current topic.
 import CardGrid from "./CardGrid.astro";
 import { EXPLORE } from "../data/site";
+import { langOf, t, UI, hiPath } from "../i18n";
 interface Props { exclude?: string[]; count?: number }
 const { exclude = [], count = 6 } = Astro.props;
-const here = Astro.url.pathname;
+const lang = langOf(Astro.url);
+const here = hiPath(Astro.url.pathname);
 const cards = EXPLORE.filter((c) => c.href !== here && !exclude.includes(c.href)).slice(0, count);
 ---
-<CardGrid title="ये भी देखें 👀" lead="लोग इन्हें सबसे ज़्यादा इस्तेमाल कर रहे हैं" cards={cards} variant="explore" id="explore" />
+<CardGrid title={t(UI.explore, lang)} lead={t(UI.exploreLead, lang)} cards={cards} variant="explore" id="explore" />
