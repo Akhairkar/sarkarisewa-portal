@@ -176,6 +176,12 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Jan Aushadhi data asli hai:** `jan_aushadhi_all_india.csv` (~20,700 stores, PMBJP ka official data, lat/long ke saath). Ye ek achha data asset hai.
 
 ## 10. Log
+- **2026-10-04:** CSC pages naye design mein (Astro): 862 zila/shahar pages + 36 rajya pages. Har zila page par us zile ke asli numbers (kul kendra, PIN code ke hisaab se ginti, aaspaas ke zile), live search (saare kendra, PIN, naam, "mere paas" location se), sevayen, fees (UIDAI: ₹75/₹125), asli CSC pehchanne ke tips, FAQ. Code: `web/src/lib/csc.ts`, `components/Csc*.astro`, `pages/service/csc-locator/`. Data files: `csc-districts.txt`, `csc-geo.txt` (Supabase export).
+  - **Bada bug mila:** `anon` role ke paas `csc_centers` par SELECT grant hi nahi tha, isliye purane pages ki live list kabhi load nahi hoti thi. Listing columns par grant diya, aur "nearest CSC" ke liye `csc_nearby()` function + latitude index (`supabase/csc-nearby.sql`).
+  - Descriptions badle: purane sab "VLE phone numbers" ka vaada karte the, jo data mein hai hi nahi.
+  - Ek hi zile ke spelling wale duplicate pages (98) ka canonical main page par (zyada GSC impressions wala); shahar pages (Siliguri, Noida, Kalyan…) apne alag rahe. 5 galat rajya mein rakhe pages (maharashtra/bhadohi…) ka canonical sahi page par. J&K rajya page ka circular canonical theek kiya.
+  - Rajya page `<state>.html` main hai; purane `<state>/index.html` par wahi naya page copy hota hai (assemble.mjs).
+  - Abhi purane rahe (data nahi): Maharashtra ke 13 zile, Rajasthan/Arunachal/Nagaland ke naye zile, Kanyakumari, Bardhaman, Delhi/delhi.html.
 - **2026-10-04:** Naya search page (`/search.html`, noindex): deploy par `search-index.json` banta hai (saare indexable pages ka URL + title). Hindi/English synonyms aur rajyon ke short forms (MP, UP…) samajhta hai.
 - **2026-10-04:** CSC data jaanch: `csc_centers` mein 13.66 lakh rows; purani `%ilike%` query 4-11 sec (timeout). Exact state+district query 22 ms. Maharashtra ke 13 zile (Mumbai, Pune, Nagpur…) data mein hain hi nahi. Zila mapping `web/src/data/csc-districts.txt` mein save hai.
 - **2026-10-04:** Senior citizen batch 2: Punjab, Rajasthan, UP, Chhattisgarh, Himachal.

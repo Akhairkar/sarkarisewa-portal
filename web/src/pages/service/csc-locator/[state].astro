@@ -1,0 +1,11 @@
+---
+// CSC state pages: <state>.html. Old <state>/index.html copies get the same
+// page in scripts/assemble.mjs (their canonical already names <state>.html).
+import CscState from "../../../components/CscState.astro";
+import { cscStatePages, type CscStatePage } from "../../../lib/csc";
+export function getStaticPaths() {
+  return cscStatePages().filter((s) => !s.file.includes("/")).map((sp) => ({ params: { state: sp.file.slice(0, -5) }, props: { sp } }));
+}
+const { sp } = Astro.props as { sp: CscStatePage };
+---
+<CscState sp={sp} />

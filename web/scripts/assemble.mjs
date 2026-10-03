@@ -58,6 +58,14 @@ function listHtml(dir, base = dir) {
 fs.rmSync(OUT, { recursive: true, force: true });
 copyTree(ROOT, OUT, true);
 fs.cpSync(DIST, OUT, { recursive: true });
+// An old "x/index.html" whose canonical is "x.html" gets the rebuilt x.html too,
+// so visitors on the old address see the same new page.
+for (const rel of listHtml(DIST)) {
+  const idx = path.join(OUT, rel.slice(0, -5), "index.html");
+  if (!rel.endsWith(".html") || rel.endsWith("index.html") || fs.existsSync(path.join(DIST, rel.slice(0, -5), "index.html")) || !fs.existsSync(idx)) continue;
+  const canon = fs.readFileSync(idx, "utf8").slice(0, 8000).match(/rel="canonical" href="([^"]*)"/)?.[1];
+  if (canon === `${SITE}/${rel}`) fs.copyFileSync(path.join(DIST, rel), idx);
+}
 
 // Sitemap: keep the existing one, refresh entries for rebuilt pages, add new ones.
 const today = new Date().toISOString().slice(0, 10);
@@ -68,6 +76,12 @@ for (const rel of listHtml(DIST)) {
   const html = fs.readFileSync(path.join(DIST, rel), "utf8");
   if (/<meta name="robots" content="noindex/.test(html)) continue;
   const loc = `${SITE}/${rel.replace(/(^|\/)index\.html$/, "$1")}`;
+  // A page that names another page as canonical is not listed itself.
+  const canon = html.match(/rel="canonical" href="([^"]*)"/)?.[1];
+  if (canon && canon !== `${SITE}/${rel}` && canon !== loc) {
+    sm = sm.replace(new RegExp(`  <url>\\s*<loc>${loc.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>[\\s\\S]*?</url>\\n`), "");
+    continue;
+  }
   // Drop the ".../index.html" spelling of a directory URL so it is listed once.
   if (loc.endsWith("/")) {
     const dup = new RegExp(`  <url>\\s*<loc>${(loc + "index.html").replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>[\\s\\S]*?</url>\\n`);
@@ -80,13 +94,19 @@ for (const rel of listHtml(DIST)) {
     added++;
   }
 }
-// Never list URLs that robots.txt blocks, or a host-only homepage duplicate.
+// Never list URLs that robots.txt blocks, a host-only homepage duplicate, or a
+// page whose canonical names another page.
 const disallow = fs.readFileSync(path.join(OUT, "robots.txt"), "utf8")
   .split("\n").map((l) => l.match(/^\s*Disallow:\s*(\S+)/i)?.[1]).filter(Boolean);
 let dropped = 0;
 sm = sm.replace(/  <url>\s*<loc>([^<]*)<\/loc>[\s\S]*?<\/url>\n/g, (block, loc) => {
   const p = loc.slice(SITE.length);
   if (p === "" || disallow.some((d) => p.startsWith(d))) { dropped++; return ""; }
+  const file = path.join(OUT, decodeURI(p).replace(/\/$/, "/index.html"));
+  if (p.endsWith(".html") && fs.existsSync(file)) {
+    const canon = fs.readFileSync(file, "utf8").slice(0, 8000).match(/rel="canonical" href="([^"]*)"/)?.[1];
+    if (canon && canon !== loc) { dropped++; return ""; }
+  }
   return block;
 });
 fs.writeFileSync(smPath, sm);

@@ -1,0 +1,133 @@
+---
+// Live CSC search: nearest to the visitor, by PIN code, by VLE name, and
+// (for a district) the full list. Reads csc_centers through the public REST API.
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+interface Props {
+  title: string;
+  dbState: string;
+  names: string[]; // district spellings in the table; empty = whole state
+  area: string; // shown in status messages
+  total: number;
+  pin: string; // example PIN for the placeholder
+  allLabel?: string; // button to list every centre (districts only)
+}
+const { title, dbState, names, area, total, pin, allLabel } = Astro.props;
+const live = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY, state: dbState, names, name: area, total };
+---
+<section class="section csc-live" id="khojen" data-live={JSON.stringify(live)}>
+  <h2>{title}</h2>
+  <button class="cta csc-near" type="button">📍 मेरे पास के CSC दिखाएं</button>
+  <form class="csc-form" role="search">
+    <label class="sr-only" for="csc-q">PIN कोड या केंद्र का नाम</label>
+    <input id="csc-q" name="q" type="search" inputmode="search" autocomplete="off" placeholder={`PIN कोड (जैसे ${pin}) या VLE का नाम`} />
+    <button type="submit">खोजें</button>
+  </form>
+  <p class="sr-status csc-status" role="status" aria-live="polite"></p>
+  <div class="csc-results"></div>
+  <button class="more-btn csc-more" type="button" hidden>और केंद्र दिखाएं</button>
+  {allLabel && <button class="more-btn csc-all" type="button">{allLabel}</button>}
+</section>
+
+<script>
+  type Row = { csc_id: string; vle_name: string; district?: string; address: string; pincode: string; latitude: string; longitude: string; km?: number };
+  const box = document.querySelector<HTMLElement>(".csc-live");
+  if (box) {
+    const cfg = JSON.parse(box.dataset.live!);
+    const out = box.querySelector<HTMLElement>(".csc-results")!;
+    const status = box.querySelector<HTMLElement>(".csc-status")!;
+    const more = box.querySelector<HTMLButtonElement>(".csc-more")!;
+    const all = box.querySelector<HTMLButtonElement>(".csc-all");
+    const input = box.querySelector<HTMLInputElement>("#csc-q")!;
+    const PAGE = 20;
+    const COLS = "csc_id,vle_name,district,address,pincode,latitude,longitude";
+    const head = { apikey: cfg.key, Authorization: `Bearer ${cfg.key}` };
+    const inList = `(${cfg.names.map((n: string) => `"${n.replace(/"/g, '\\"')}"`).join(",")})`;
+    const base = `state=eq.${encodeURIComponent(cfg.state)}` + (cfg.names.length ? `&district=in.${encodeURIComponent(inList)}` : "");
+    let next: (() => Promise<Row[]>) | null = null;
+
+    const esc = (s: string) => (s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+    const map = (r: Row) => /^\d+(\.\d+)?$/.test(r.latitude) && /^\d+(\.\d+)?$/.test(r.longitude)
+      ? `https://www.google.com/maps?q=${r.latitude},${r.longitude}`
+      : `https://www.google.com/maps/search/${encodeURIComponent(`${r.address} ${r.pincode}`)}`;
+    const card = (r: Row) => `<li class="csc-card"><strong>${esc(r.vle_name)}</strong><span>${esc(r.address)}</span>`
+      + `<span class="pin">PIN ${esc(r.pincode)}${r.km != null ? ` · ${r.km < 1 ? Math.round(r.km * 1000) + " मीटर" : r.km.toFixed(1) + " km"}` : ""}${r.district && r.district !== cfg.names[0] && r.km != null ? ` · ${esc(r.district)}` : ""}</span>`
+      + `<a href="${map(r)}" target="_blank" rel="noopener nofollow">रास्ता देखें ↗</a></li>`;
+
+    async function get(path: string, init?: RequestInit): Promise<Row[]> {
+      const res = await fetch(`${cfg.url}/rest/v1/${path}`, { ...init, headers: { ...head, ...(init?.headers ?? {}) } });
+      if (!res.ok) throw new Error(String(res.status));
+      return res.json();
+    }
+    function show(rows: Row[], reset: boolean) {
+      if (reset) out.innerHTML = "";
+      let ul = out.querySelector("ul");
+      if (!ul) { ul = document.createElement("ul"); ul.className = "csc-list"; out.append(ul); }
+      ul.insertAdjacentHTML("beforeend", rows.map(card).join(""));
+    }
+    async function run(label: string, page: (offset: number) => Promise<Row[]>) {
+      status.textContent = "खोज रहे हैं…";
+      more.hidden = true;
+      let offset = 0;
+      try {
+        const rows = await page(0);
+        show(rows, true);
+        status.textContent = rows.length ? label.replace("{n}", String(rows.length) + (rows.length === PAGE ? "+" : "")) : "कोई केंद्र नहीं मिला। दूसरा PIN कोड या नाम आज़माएं, या \"मेरे पास\" बटन दबाएं।";
+        offset = rows.length;
+        next = rows.length === PAGE ? () => page(offset) : null;
+        more.hidden = !next;
+        more.onclick = async () => {
+          if (!next) return;
+          more.disabled = true;
+          const r = await next().catch(() => []);
+          show(r, false);
+          offset += r.length;
+          next = r.length === PAGE ? () => page(offset) : null;
+          more.hidden = !next;
+          more.disabled = false;
+        };
+      } catch {
+        status.textContent = "अभी केंद्र लोड नहीं हो पाए। थोड़ी देर बाद फिर कोशिश करें या नीचे दी गई लिस्ट देखें।";
+      }
+    }
+
+    const listAll = () => run(`${cfg.name} के ${cfg.total.toLocaleString("en-IN")} केंद्र (PIN के क्रम में)`, (o) =>
+      get(`csc_centers?select=${COLS}&${base}&order=pincode.asc,vle_name.asc&limit=${PAGE}&offset=${o}`));
+    const byPin = (pin: string) => run(`PIN ${pin} में {n} केंद्र`, (o) =>
+      get(`csc_centers?select=${COLS}&pincode=eq.${pin}&order=vle_name.asc&limit=${PAGE}&offset=${o}`));
+    const byName = (q: string) => run(`"${q}" नाम वाले {n} केंद्र`, (o) =>
+      get(`csc_centers?select=${COLS}&${base}&vle_name=ilike.${encodeURIComponent(`*${q.replace(/[*,()]/g, " ")}*`)}&order=vle_name.asc&limit=${PAGE}&offset=${o}`));
+
+    all?.addEventListener("click", () => { all.hidden = true; listAll(); });
+    box.querySelector("form")!.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = input.value.trim();
+      if (/^\d{6}$/.test(q)) byPin(q);
+      else if (q.length >= 3) byName(q);
+      else status.textContent = "6 अंकों का PIN कोड या कम से कम 3 अक्षर का नाम लिखें।";
+    });
+    document.querySelectorAll<HTMLAnchorElement>(".csc-pin").forEach((a) => a.addEventListener("click", () => {
+      input.value = a.dataset.pin!;
+      byPin(a.dataset.pin!);
+    }));
+    box.querySelector(".csc-near")!.addEventListener("click", () => {
+      if (!navigator.geolocation) { status.textContent = "आपका ब्राउज़र लोकेशन नहीं देता। PIN कोड से खोजें।"; return; }
+      status.textContent = "आपकी लोकेशन ले रहे हैं…";
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude: lat, longitude: lng } = pos.coords;
+          const rpc = (deg: number) => get("rpc/csc_nearby", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ p_lat: lat, p_lng: lng, p_deg: deg, p_limit: PAGE }),
+          });
+          run("आपके सबसे पास के केंद्र, दूरी के क्रम में", async (o) => {
+            if (o) return [];
+            const r = await rpc(0.1);
+            return r.length >= 5 ? r : rpc(0.4);
+          }).then(() => { more.hidden = true; });
+        },
+        () => { status.textContent = "लोकेशन की अनुमति नहीं मिली। अपना PIN कोड डालकर खोजें।"; },
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
+      );
+    });
+  }
+</script>

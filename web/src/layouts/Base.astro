@@ -18,14 +18,15 @@ interface Props {
   noindex?: boolean;
   ogImage?: string;
   schemaType?: "Article" | "WebPage";
+  canonical?: string; // site path, when another page is the main copy
 }
 const {
   title, description, breadcrumbs = [], faq = [], published, modified,
-  noindex = false, ogImage = "/assets/img/og-image.png", schemaType = "Article",
+  noindex = false, canonical: canonicalPath, ogImage = "/assets/img/og-image.png", schemaType = "Article",
 } = Astro.props;
 
 const lang = langOf(Astro.url);
-const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).href;
 const pair = twin(Astro.url.pathname);
 const image = new URL(ogImage, SITE.url).href;
 

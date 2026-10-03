@@ -1,0 +1,50 @@
+---
+// Shared CSC guidance: services, fees, how to spot a genuine centre, VLE claim.
+interface Props { name: string; services: { name: string; href?: string; take: string }[] }
+const { name, services } = Astro.props;
+---
+<section class="section" id="sevayen">
+  <h2>{name} के CSC पर कौन सी सेवाएं मिलती हैं</h2>
+  <p>हर CSC पर सभी सेवाएं नहीं होतीं। जाने से पहले केंद्र पर पूछ लें, खासकर आधार के लिए, क्योंकि आधार सेवा सिर्फ UIDAI से मंज़ूर केंद्रों पर होती है।</p>
+  <div class="table-wrap wide">
+    <table>
+      <thead><tr><th>सेवा</th><th>साथ क्या ले जाएं</th></tr></thead>
+      <tbody>
+        {services.map((s) => <tr><td>{s.href ? <a href={s.href}>{s.name}</a> : s.name}</td><td>{s.take}</td></tr>)}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section" id="fees">
+  <h2>फीस: सरकारी शुल्क और CSC सेवा शुल्क</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>काम</th><th>तय फीस</th></tr></thead>
+      <tbody>
+        <tr><td>नया आधार बनवाना</td><td>मुफ्त</td></tr>
+        <tr><td>आधार demographic अपडेट (नाम, पता, जन्मतिथि, मोबाइल)</td><td>₹75</td></tr>
+        <tr><td>आधार biometric अपडेट (फोटो, फिंगरप्रिंट, आंख)</td><td>₹125</td></tr>
+        <tr><td>दूसरी सेवाएं</td><td>सरकारी फीस + CSC का सेवा शुल्क (सेवा और राज्य के हिसाब से)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout info"><p><strong>ज़्यादा पैसा मांगा जाए तो:</strong> आधार के लिए UIDAI हेल्पलाइन <a href="tel:1947">1947</a>, बाकी सेवाओं के लिए CSC हेल्पलाइन <a href="tel:18001213468">1800-121-3468</a> या helpdesk@csc.gov.in पर शिकायत करें। हर भुगतान की रसीद ज़रूर लें।</p></div>
+</section>
+
+<section class="section" id="asli-csc">
+  <h2>असली CSC कैसे पहचानें</h2>
+  <ul class="checklist">
+    <li>केंद्र पर <strong>CSC का बोर्ड और CSC ID</strong> लगी होनी चाहिए। शक हो तो ID पूछें।</li>
+    <li>आधार का काम सिर्फ <strong>UIDAI से मंज़ूर केंद्र</strong> पर कराएं, जहां आधार की मशीन से बायोमेट्रिक लिया जाता है।</li>
+    <li>अपना <strong>OTP किसी को न बताएं</strong> और खाली कागज़ पर दस्तखत न करें।</li>
+    <li>हर आवेदन का <strong>Acknowledgement / आवेदन नंबर</strong> लें, ताकि बाद में खुद स्टेटस देख सकें।</li>
+    <li>काम के बाद मूल दस्तावेज़ वापस लें, फोटोकॉपी पर "सिर्फ़ … के लिए" लिखकर दें।</li>
+  </ul>
+</section>
+
+<section class="section" id="vle">
+  <h2>क्या आप {name} में CSC चलाते हैं?</h2>
+  <p>अपना केंद्र claim करें और फोन नंबर, समय व सेवाएं जोड़ें, ताकि आसपास के लोग आप तक पहुंच सकें।</p>
+  <a class="cta" href="/claim-your-csc.html">अपना CSC claim करें →</a>
+</section>

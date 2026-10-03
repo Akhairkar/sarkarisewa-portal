@@ -1,0 +1,133 @@
+---
+// CSC state page: every district with its number of centres, live search for
+// the whole state, and the shared CSC guidance.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import OfficialLinks from "./OfficialLinks.astro";
+import Faq from "./Faq.astro";
+import CardGrid from "./CardGrid.astro";
+import Explore from "./Explore.astro";
+import CscTool from "./CscTool.astro";
+import CscInfo from "./CscInfo.astro";
+import { cscPages, cscStatePages, oldOnlyPages, oldMeta, stateOf, stateTotals, cscServices, type CscStatePage } from "../lib/csc";
+import { exists } from "../lib/repo";
+
+interface Props { sp: CscStatePage }
+const { sp } = Astro.props;
+const st = stateOf(sp.dbState);
+const rel = `service/csc-locator/${sp.file}`;
+const tot = stateTotals(sp.dbState);
+const n = tot.total.toLocaleString("en-IN");
+const districts = cscPages().filter((p) => p.stateDir === sp.stateDir && !p.canonical && p.d.dbState === sp.dbState);
+const byCount = [...districts].filter((p) => !p.d.town).sort((a, b) => b.d.count - a.d.count);
+const top3 = byCount.slice(0, 3);
+const others = oldOnlyPages(sp.stateDir);
+const pin = byCount[0]?.top[0]?.[0] ?? "110001";
+const verified = "3 अक्टूबर 2026";
+const { services } = cscServices(st);
+const mainHref = `/service/csc-locator/${cscStatePages().find((s) => s.stateDir === sp.stateDir && !s.canonical)!.file}`;
+const otherStates = cscStatePages().filter((s) => !s.canonical && s.stateDir !== sp.stateDir);
+const jaRel = `service/jan-aushadhi/${st.slug}.html`;
+
+const old = oldMeta(rel).title;
+const title = old && !/^Index\b/.test(old) ? old : `${st.name} CSC Center List 2026 | SarkariSewa India`;
+const description = `${n} CSC centres in ${st.name} across ${tot.districts} districts: district-wise list with address, PIN code and map. Find the nearest Jan Seva Kendra by PIN code or your location.`;
+const crumbs = [
+  { label: "होम", href: "/" },
+  { label: "आपके पास", href: "/near-me/" },
+  { label: `${st.hi} CSC` },
+];
+const faq = [
+  { q: `${st.hi} में कितने CSC सेंटर हैं?`, a: `CSC के रिकॉर्ड के अनुसार ${st.name} में ${n} CSC / जन सेवा केंद्र दर्ज हैं, जो ${tot.districts} ज़िलों में हैं।${top3.length ? ` सबसे ज़्यादा केंद्र ${top3.map((p) => `${p.name} (${p.d.count.toLocaleString("en-IN")})`).join(", ")} में हैं।` : ""}` },
+  { q: `${st.hi} में मेरे पास का CSC कैसे खोजें?`, a: `इस पेज पर "📍 मेरे पास के CSC" बटन दबाएं या अपना 6 अंकों का PIN कोड डालें। अपने ज़िले के पेज पर उस ज़िले के सभी केंद्रों की लिस्ट, PIN कोड के हिसाब से गिनती और नक्शा मिलेगा।` },
+  { q: "क्या यहां CSC का फोन नंबर मिलेगा?", a: "CSC के सार्वजनिक रिकॉर्ड में संचालक (VLE) का फोन नंबर नहीं होता, इसलिए हम नंबर नहीं दिखाते। केंद्र का पता और नक्शा देखकर सीधे जाएं। मदद या शिकायत के लिए CSC हेल्पलाइन 1800-121-3468 पर कॉल करें।" },
+  { q: "CSC पर आधार अपडेट की फीस कितनी है?", a: "UIDAI के अनुसार demographic अपडेट (नाम, पता, जन्मतिथि, मोबाइल) ₹75 और biometric अपडेट ₹125 का है। नया आधार मुफ्त बनता है। आधार सेवा सिर्फ UIDAI से मंज़ूर केंद्रों पर होती है।" },
+  { q: "नया CSC कैसे खोलें?", a: "CSC खोलने के लिए csc.gov.in पर VLE रजिस्ट्रेशन होता है। इसके लिए आधार, PAN, बैंक खाता, 10वीं पास का प्रमाण और TEC सर्टिफिकेट चाहिए। पूरी जानकारी official वेबसाइट पर देखें।" },
+];
+---
+<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} modified="2026-10-03" canonical={sp.canonical}>
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{st.hi} CSC सेंटर लिस्ट 2026: ज़िलेवार जन सेवा केंद्र, पता और PIN कोड</h1>
+      <div class="meta-row"><span class="verified">✓ डेटा अपडेट: {verified}</span><span>{st.name}</span></div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">
+          {st.hi} में <strong>{n} CSC / जन सेवा केंद्र</strong> दर्ज हैं, जो {tot.districts} ज़िलों में फैले हैं।
+          नीचे अपने ज़िले पर दबाएं या PIN कोड डालकर सबसे नज़दीकी केंद्र खोजें।
+        </p>
+        <dl class="facts">
+          <div><dt>कुल CSC केंद्र</dt><dd>{n}</dd></div>
+          <div><dt>ज़िले</dt><dd>{tot.districts}</dd></div>
+          {top3[0] && <div><dt>सबसे ज़्यादा केंद्र</dt><dd>{top3[0].name} ({top3[0].d.count.toLocaleString("en-IN")})</dd></div>}
+          <div><dt>CSC हेल्पलाइन</dt><dd><a href="tel:18001213468">1800-121-3468</a></dd></div>
+        </dl>
+      </section>
+
+      <CscTool title={`${st.hi} में नज़दीकी CSC खोजें`} dbState={sp.dbState} names={[]} area={st.hi} total={tot.total} pin={pin} />
+
+      <section class="section" id="zile">
+        <h2>{st.hi} के ज़िलेवार CSC केंद्र</h2>
+        <p>अपने ज़िले पर दबाएं। वहां उस ज़िले के सभी केंद्र, PIN कोड के हिसाब से गिनती और नक्शा मिलेगा।</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ज़िला / शहर</th><th>CSC केंद्र</th></tr></thead>
+            <tbody>
+              {districts.map((p) => (
+                <tr><td><a href={p.href}>{p.name}</a>{p.d.town && <small> ({p.d.town} ज़िला)</small>}</td><td>{p.d.count.toLocaleString("en-IN")}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {others.length > 0 && (
+          <>
+            <p>इन ज़िलों का पूरा डेटा अभी CSC रिकॉर्ड में नहीं है, इनके पेज पर कुछ केंद्रों की जानकारी है:</p>
+            <ul class="chips">{others.map((o) => <li><a href={o.href}>{o.name}</a></li>)}</ul>
+          </>
+        )}
+      </section>
+
+      <div class="ad-slot" aria-hidden="true"></div>
+
+      <CscInfo name={st.hi} services={services} />
+
+      <section class="section" id="dusre-rajya">
+        <h2>दूसरे राज्यों के CSC</h2>
+        <ul class="chips">{otherStates.map((s) => <li><a href={`/service/csc-locator/${s.file}`}>{stateOf(s.dbState).hi}</a></li>)}</ul>
+      </section>
+
+      <CardGrid title={`${st.hi} में और क्या काम का है`} id="related" cards={[
+        ...(exists(`states/${st.slug}.html`) ? [{ href: `/states/${st.slug}.html`, emoji: "🏛️", title: { hi: `${st.hi} की सरकारी सेवाएं`, en: `${st.name} services` }, text: { hi: "प्रमाण पत्र, कार्ड और योजनाएं", en: "Certificates, cards, schemes" } }] : []),
+        ...(exists(jaRel) ? [{ href: `/${jaRel}`, emoji: "💊", title: { hi: `${st.hi} जन औषधि केंद्र`, en: `Jan Aushadhi ${st.name}` }, text: { hi: "50-80% सस्ती दवा की दुकानें", en: "Medicines 50-80% cheaper" } }] : []),
+        { href: "/tools/csc-locator.html", emoji: "📍", title: { hi: "CSC Locator (पूरा भारत)", en: "CSC Locator (India)" }, text: { hi: "किसी भी राज्य और ज़िले में खोजें", en: "Search any state and district" } },
+        { href: "/tools/document-checklist.html", emoji: "📋", title: { hi: "डॉक्यूमेंट चेकलिस्ट", en: "Document Checklist" }, text: { hi: "CSC जाने से पहले कागज़ तैयार करें", en: "Get your papers ready" } },
+      ].filter((c) => exists(c.href.slice(1)))} />
+
+      <OfficialLinks verified={verified} links={[
+        { href: "https://locator.csccloud.in/", title: "CSC Locator (official)", note: "राज्य, ज़िला और ब्लॉक से CSC खोजें" },
+        { href: "https://csc.gov.in/", title: "CSC e-Governance Services India" },
+        { href: "https://register.csc.gov.in/", title: "नया CSC खोलने के लिए VLE रजिस्ट्रेशन" },
+        { href: "tel:18001213468", title: "CSC हेल्पलाइन", note: "1800-121-3468 (टोल-फ्री)" },
+      ]} />
+      <Faq items={faq} />
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          <li><a href="#khojen">नज़दीकी CSC खोजें</a></li>
+          <li><a href="#zile">ज़िलेवार लिस्ट</a></li>
+          <li><a href="#sevayen">कौन सी सेवाएं</a></li>
+          <li><a href="#fees">फीस</a></li>
+          <li><a href="#asli-csc">असली CSC पहचानें</a></li>
+          <li><a href="#faq">सवाल-जवाब</a></li>
+        </ol>
+        {top3.map((p) => <a class="cta secondary" href={p.href}>{p.name} CSC ({p.d.count.toLocaleString("en-IN")})</a>)}
+      </section>
+    </aside>
+  </div>
+</Base>
