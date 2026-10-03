@@ -31,9 +31,11 @@ Ye repo ka **ek hi** doc hai. Har session isi file se shuru hoga aur isi file me
 | Hosting | Abhi **GitHub Pages + GitHub Actions** (Astro build). Baad mein Cloudflare Pages par shift karenge. |
 | Purani site | Purani saari files Astro ke `public/` mein jaisi hain waisi rahengi. Naye pages ek-ek karke unki jagah lenge. Ek baar mein poori site nahi badlegi. |
 | Bhasha | Har bhasha ka alag URL hoga, hreflang ke saath. **Hindi primary**, English saath mein. Marathi sirf wahan jahan genuinely useful ho (Maharashtra-specific). JS toggle se bhasha badalne wala tarika band hoga. |
-| CSC / Jan Aushadhi | Abhi content touch nahi karna. Sirf naya **logo/brand** wahan bhi lagana hai. AdSense apply karne se pehle inke noindex/delete par faisla karna hai. |
+| CSC / Jan Aushadhi | Ye ~25% traffic laate hain, isliye inhe **bhi upgrade karna hai**: naya design/logo, research-based title/meta, aur real data (official PMBJP / CSC data) se useful district pages. |
 | Payment | GST verification ka existing flow waisa hi rahega (`private/gstin-verification/` + `cloudflare/gstin-api/` worker). Nayi API services ke liye naya flow banega. |
 | Brand | Naya logo aur design system banega, jo poori site par lagega (CSC/JA pages bhi). |
+| Title/meta | Saare pages ke title, description aur meta tags research karke badal sakte hain (million-visitor strategy). |
+| Explore block | Har page par do block honge: (1) **Related**, jo usi topic se jude pages dikhaye; (2) **Attention-grabbing "Ye bhi dekhein"**, jo popular/trending services, tools aur paid services dikhaye, chahe topic se related na ho. Maqsad hai ki visitor site explore kare (pages/session badhe). |
 | Hub pages | Banenge. Har category ka ek hub page hoga, aur topic clusters usi hub se linked honge. |
 
 ## 4. Paid services
@@ -136,6 +138,12 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **Zaroori txt files, inhe delete nahi karna:** `robots.txt`, `ads.txt`, `990cec6ab75587968bc7a43b4721e52c.txt` (IndexNow key, `scripts/submit-indexnow.py` use karta hai), `automation/requirements.txt`.
 - **Known issue:** `active_sessions` ki update policy ke chalte koi bhi anon visitor kisi bhi doosre visitor ka session row update kar sakta hai. Isse sirf "online now" count par asar padta hai. Baad mein fix karna hai.
 - **Root ki safai baaki hai:** root mein ~250 purane one-off scripts (`fix_*`, `inject_batch*`, `test_*`) publicly deploy ho rahe hain. Astro migration (Phase 4) mein ye deploy se bahar ho jayenge.
+
+## 9b. Urgent issues mile (2026-10-03)
+- **CSC pages galti se noindex ho gaye hain.** 996 mein se 910 CSC pages `noindex` hain, jinmein 855 aise hain jinpe 5 se zyada centres hain (jaise Kolkata, Delhi, Mumbai, Bengaluru, Ahmedabad). Pichhle 3 mahine ke 873 CSC clicks mein se **718 clicks inhi noindex pages se aaye the**. Agar fix nahi kiya toh ye traffic khatam ho jayega.
+- **Duplicate pages:** `service/<state>-<doc>.html` aur `states/<state>-<doc>.html` ek hi topic par do alag pages hain, aur dono khud ko canonical batate hain. Ye keyword cannibalization hai. Fix: `states/` wala page primary rahega (traffic wahin hai), `service/` wala duplicate page us par canonical/redirect karega.
+- **`data/csc-centers.json` mein fake sample data hai** (jaise "Neha CSC", rating 4.9). Ise kahin use nahi karna. Asli CSC data Supabase `csc_centres` table mein hai.
+- **Jan Aushadhi data asli hai:** `jan_aushadhi_all_india.csv` (~20,700 stores, PMBJP ka official data, lat/long ke saath). Ye ek achha data asset hai.
 
 ## 10. Log
 - **2026-10-03:** GSC export analyse kiya (section 6).
