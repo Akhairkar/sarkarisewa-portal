@@ -54,8 +54,8 @@ const toc = [
       <section class="section" id="eshram">
         <h2>लेबर कार्ड (BOCW) या e-Shram कार्ड: कौन सा चाहिए?</h2>
         <p>लोग दोनों को "लेबर कार्ड" कहते हैं, पर ये अलग हैं। {g.state.hi} का लेबर कार्ड {g.board} बनाता है।</p>
-        <div class="table-wrap wide">
-          <table>
+        <div class="table-wrap">
+          <table class="compact">
             <thead><tr><th>बात</th><th>लेबर कार्ड (BOCW)</th><th>e-Shram कार्ड</th></tr></thead>
             <tbody>{eshramVsBocw.map(([k, a, b]) => <tr><td>{k}</td><td>{a}</td><td>{b}</td></tr>)}</tbody>
           </table>
@@ -100,10 +100,10 @@ const toc = [
 
       <section class="section" id="yojana">
         <h2>लेबर कार्ड से मिलने वाली योजनाएं और राशि</h2>
-        <div class="table-wrap wide">
+        <div class="table-wrap">
           <table>
-            <thead><tr><th>योजना</th><th>कितना मिलता है</th><th>ध्यान दें</th></tr></thead>
-            <tbody>{g.schemes.map(([a, b, c]) => <tr><td>{a}</td><td set:html={b} /><td set:html={c} /></tr>)}</tbody>
+            <thead><tr><th>योजना</th><th>कितना मिलता है</th></tr></thead>
+            <tbody>{g.schemes.map(([a, b, c]) => <tr><td><strong>{a}</strong></td><td><span set:html={b} />{c && <small class="cell-note" set:html={c} />}</td></tr>)}</tbody>
           </table>
         </div>
         {g.schemesNote && <p set:html={g.schemesNote} />}

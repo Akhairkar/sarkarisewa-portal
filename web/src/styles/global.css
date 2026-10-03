@@ -184,10 +184,10 @@ table { width: 100%; border-collapse: collapse; }
 }
 .answer-title { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--c-brand); margin: 0 0 6px; }
 .answer-lead { font-size: 1.08rem; color: var(--c-ink); font-weight: 600; margin-bottom: 14px; }
-.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; }
 .facts div { background: var(--c-surface); border: 1px solid var(--c-line); border-radius: var(--radius-sm); padding: 10px 12px; }
 .facts dt { font-size: 0.75rem; color: var(--c-muted); font-weight: 700; }
-.facts dd { margin: 2px 0 0; font-weight: 700; color: var(--c-ink); line-height: 1.35; font-size: 0.95rem; }
+.facts dd { margin: 2px 0 0; font-weight: 700; color: var(--c-ink); line-height: 1.35; font-size: 0.95rem; overflow-wrap: anywhere; }
 @media (min-width: 700px) { .facts { grid-template-columns: repeat(4, 1fr); } }
 
 /* ---------- Option cards (which card do you need) ---------- */
@@ -499,3 +499,5 @@ table { width: 100%; border-collapse: collapse; }
 .csc-card .pin { color: var(--c-text); font-weight: 700; }
 .csc-card a { margin-top: auto; padding-top: 6px; font-weight: 800; text-decoration: none; }
 .chips small { color: var(--c-muted); font-weight: 600; }
+table.compact th, table.compact td { padding: 8px 8px; font-size: 0.88rem; }
+.cell-note { display: block; margin-top: 4px; color: var(--c-muted); font-size: 0.82rem; }
