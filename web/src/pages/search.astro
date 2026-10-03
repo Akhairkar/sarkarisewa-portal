@@ -1,0 +1,142 @@
+---
+// Site search. Results come from /search-index.json ([url, title] of every
+// indexable page), built at deploy time by scripts/assemble.mjs.
+import Base from "../layouts/Base.astro";
+import SearchBox from "../components/SearchBox.astro";
+import TaskList from "../components/TaskList.astro";
+import { POPULAR_TASKS } from "../data/site";
+---
+<Base
+  title="खोजें: सरकारी सेवाएं, योजनाएं और टूल्स | SarkariSewa India"
+  description="SarkariSewa India पर दस्तावेज़, योजनाएं, नौकरियां, CSC सेंटर और टूल्स खोजें।"
+  schemaType="WebPage"
+  noindex
+>
+  <section class="hero">
+    <h1>खोजें</h1>
+    <SearchBox />
+    <p class="sr-status" id="search-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="block" id="results-block" hidden>
+    <div class="results" id="results"></div>
+    <button class="more-btn" id="more" type="button" hidden>और नतीजे दिखाएं</button>
+  </section>
+
+  <section class="block" id="empty-block">
+    <div class="block-head"><h2>लोग सबसे ज़्यादा यह खोज रहे हैं</h2></div>
+    <TaskList items={POPULAR_TASKS} />
+  </section>
+
+  <script is:inline>
+  (function () {
+    var input = document.getElementById("q");
+    var statusEl = document.getElementById("search-status");
+    var resultsEl = document.getElementById("results");
+    var block = document.getElementById("results-block");
+    var empty = document.getElementById("empty-block");
+    var moreBtn = document.getElementById("more");
+    var INDEX = null, shown = 0, matches = [];
+    var PAGE = 20;
+
+    // Common Hinglish / English words -> Hindi spelling used in titles (and back).
+    var SYN = {
+      ration: "राशन", labour: "लेबर", labor: "लेबर", pension: "पेंशन", tax: "टैक्स", card: "कार्ड",
+      senior: "सीनियर", citizen: "सिटीजन", voter: "वोटर", birth: "जन्म", death: "मृत्यु", caste: "जाति",
+      income: "आय", domicile: "निवास", certificate: "प्रमाण", yojana: "योजना", scheme: "योजना",
+      naukri: "नौकरी", job: "नौकरी", jobs: "भर्ती", bharti: "भर्ती", scholarship: "छात्रवृत्ति",
+      aadhaar: "आधार", aadhar: "आधार", pan: "पैन", kisan: "किसान", ayushman: "आयुष्मान",
+      dawa: "दवा", medicine: "दवा", janaushadhi: "औषधि", aushadhi: "औषधि", exam: "परीक्षा",
+      bijli: "बिजली", gas: "गैस", pm: "प्रधानमंत्री", status: "स्टेटस", apply: "आवेदन", list: "लिस्ट"
+    };
+    Object.keys(SYN).forEach(function (k) { SYN[SYN[k]] = SYN[SYN[k]] || k; });
+    // State short forms people type.
+    var ABBR = {
+      mp: "madhya pradesh", up: "uttar pradesh", uk: "uttarakhand", hp: "himachal pradesh", wb: "west bengal",
+      ap: "andhra pradesh", jk: "jammu", cg: "chhattisgarh", mh: "maharashtra", tn: "tamil nadu", ts: "telangana",
+      rj: "rajasthan", br: "bihar", jh: "jharkhand", gj: "gujarat", pb: "punjab", hr: "haryana", ka: "karnataka", od: "odisha"
+    };
+
+    function norm(s) { return s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim(); }
+    function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+    function section(url) {
+      if (/\/csc-locator\//.test(url)) return "CSC सेंटर";
+      if (/\/jan-aushadhi\//.test(url)) return "जन औषधि";
+      if (/^\/states\//.test(url)) return "राज्य गाइड";
+      if (/^\/(jobs|exams)\//.test(url)) return "नौकरी / Exam";
+      if (/^\/tools\//.test(url) || /calculator/.test(url)) return "टूल";
+      if (/^\/blog\//.test(url)) return "लेख";
+      if (/^\/en\//.test(url)) return "English";
+      return "गाइड";
+    }
+
+    function search(q) {
+      var words = norm(q).split(" ").filter(Boolean).map(function (w) { return ABBR[w] || w; });
+      if (!words.length) return [];
+      var res = [];
+      for (var i = 0; i < INDEX.length; i++) {
+        var url = INDEX[i][0], title = INDEX[i][1];
+        var hay = norm(title + " " + url.replace(/[\/\-.]/g, " "));
+        var score = 0, ok = true;
+        for (var j = 0; j < words.length; j++) {
+          var w = words[j], alt = SYN[w];
+          var hit = hay.indexOf(w) !== -1 || (alt && hay.indexOf(alt) !== -1);
+          if (!hit) { ok = false; break; }
+          var t = norm(title);
+          if (t.indexOf(w) !== -1 || (alt && t.indexOf(alt) !== -1)) score += 3; else score += 1;
+        }
+        if (!ok) continue;
+        if (norm(title).indexOf(norm(q)) !== -1) score += 5;
+        // Prefer guides over the many CSC / Jan Aushadhi listing pages.
+        if (/\/(csc-locator|jan-aushadhi)\//.test(url) && !/csc|सीएससी|औषधि|aushadhi|kendra|केंद्र/i.test(q)) score -= 2;
+        if (/^\/en\//.test(url)) score -= 1;
+        score -= url.split("/").length * 0.1;
+        res.push({ url: url, title: title, score: score });
+      }
+      return res.sort(function (a, b) { return b.score - a.score; });
+    }
+
+    function render(reset) {
+      if (reset) { resultsEl.innerHTML = ""; shown = 0; }
+      var next = matches.slice(shown, shown + PAGE);
+      resultsEl.insertAdjacentHTML("beforeend", next.map(function (m) {
+        return '<a class="result" href="' + esc(m.url) + '"><span class="result-tag">' + section(m.url) + '</span><strong>' + esc(m.title) + '</strong><small>sarkarisewaindia.com' + esc(m.url) + '</small></a>';
+      }).join(""));
+      shown += next.length;
+      moreBtn.hidden = shown >= matches.length;
+    }
+
+    function run(q) {
+      q = (q || "").trim();
+      if (!q) { block.hidden = true; empty.hidden = false; statusEl.textContent = ""; return; }
+      matches = search(q);
+      block.hidden = false;
+      empty.hidden = matches.length > 0;
+      statusEl.textContent = matches.length
+        ? "“" + q + "” के लिए " + matches.length + " नतीजे"
+        : "“" + q + "” के लिए कुछ नहीं मिला। छोटा या दूसरा शब्द आज़माएं, जैसे “राशन” या “pension”।";
+      render(true);
+    }
+
+    var params = new URLSearchParams(location.search);
+    var initial = params.get("q") || "";
+    input.value = initial;
+    statusEl.textContent = initial ? "खोज रहे हैं…" : "";
+
+    fetch("/search-index.json").then(function (r) { return r.json(); }).then(function (data) {
+      INDEX = data;
+      run(initial);
+    }).catch(function () { statusEl.textContent = "अभी खोज नहीं हो पा रही, थोड़ी देर बाद कोशिश करें।"; });
+
+    input.form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var q = input.value.trim();
+      history.replaceState(null, "", q ? "?q=" + encodeURIComponent(q) : location.pathname);
+      if (INDEX) run(q);
+    });
+    var t;
+    input.addEventListener("input", function () { clearTimeout(t); t = setTimeout(function () { if (INDEX) run(input.value); }, 200); });
+    moreBtn.addEventListener("click", function () { render(false); });
+  })();
+  </script>
+</Base>

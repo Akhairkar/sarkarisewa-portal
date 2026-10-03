@@ -472,3 +472,13 @@ table { width: 100%; border-collapse: collapse; }
 }
 .bottom-nav a { min-width: 0; padding: 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 359px) { .bottom-nav a { font-size: 0.64rem; } }
+
+/* ---------- Search results ---------- */
+.sr-status { color: var(--c-muted); font-weight: 600; margin: 4px 0 0; }
+.results { display: grid; gap: 8px; }
+.result { display: block; padding: 12px 14px; border-radius: var(--radius-sm); border: 1px solid var(--c-line); background: var(--c-surface); text-decoration: none; color: var(--c-ink); overflow-wrap: anywhere; }
+.result:hover { border-color: var(--c-brand); color: var(--c-ink); }
+.result strong { display: block; line-height: 1.35; }
+.result small { display: block; color: var(--c-green); font-size: 0.78rem; margin-top: 2px; }
+.result-tag { display: inline-block; font-size: 0.7rem; font-weight: 800; color: var(--c-brand); background: var(--c-brand-50); padding: 1px 8px; border-radius: 999px; margin-bottom: 4px; }
+.more-btn { margin-top: 12px; width: 100%; height: 46px; border-radius: 12px; border: 1px solid var(--c-line); background: var(--c-surface); color: var(--c-brand); font: inherit; font-weight: 800; cursor: pointer; }

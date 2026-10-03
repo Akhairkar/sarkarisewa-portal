@@ -90,4 +90,20 @@ sm = sm.replace(/  <url>\s*<loc>([^<]*)<\/loc>[\s\S]*?<\/url>\n/g, (block, loc) 
   return block;
 });
 fs.writeFileSync(smPath, sm);
-console.log(`assembled ${OUT}: sitemap refreshed ${refreshed}, added ${added}, dropped ${dropped}`);
+// Search index for /search.html: [url, title] of every indexable page.
+const SKIP_SEARCH = /^(admin|private|partials|account|google|404|search\.html)/;
+const index = [];
+for (const rel of listHtml(OUT)) {
+  if (SKIP_SEARCH.test(rel)) continue;
+  const head = fs.readFileSync(path.join(OUT, rel), "utf8").slice(0, 8000);
+  if (/name="robots" content="noindex/i.test(head)) continue;
+  const canon = head.match(/rel="canonical" href="https:\/\/sarkarisewaindia\.com(\/[^"]*)"/)?.[1];
+  const url = "/" + rel.replace(/(^|\/)index\.html$/, "$1");
+  if (canon && canon !== url) continue; // duplicates point elsewhere
+  const title = (head.match(/<title>([^<]*)<\/title>/i)?.[1] ?? "")
+    .replace(/&amp;/g, "&").replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"')
+    .replace(/\s*[|—–-]\s*SarkariSewa.*$/i, "").trim();
+  if (title) index.push([url, title]);
+}
+fs.writeFileSync(path.join(OUT, "search-index.json"), JSON.stringify(index));
+console.log(`assembled ${OUT}: sitemap refreshed ${refreshed}, added ${added}, dropped ${dropped}; search index ${index.length} pages`);
