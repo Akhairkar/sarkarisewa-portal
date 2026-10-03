@@ -1383,6 +1383,12 @@ html[lang='hi'] [data-lang-show='en'], html[lang='en'] [data-lang-show='hi'] { d
 
 
 
-/* SarkariSewa India brand logo */
-.brand-mark { overflow: hidden; background: transparent; }
+/* SarkariSewa India brand logo (2026-10 rebrand): the mark comes from one SVG
+   file, so old pages that still print a letter inside .brand-mark show the
+   new logo too. */
+.brand-mark {
+  overflow: hidden;
+  background: url("../img/sarkarisewa-mark.svg") center / contain no-repeat;
+  color: transparent; font-size: 0; border-radius: 0;
+}
 .brand-logo-mark { width: 100%; height: 100%; display: block; object-fit: contain; }
