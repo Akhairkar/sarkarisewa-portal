@@ -8,10 +8,14 @@ import Faq from "./Faq.astro";
 import CardGrid from "./CardGrid.astro";
 import StateGrid from "./StateGrid.astro";
 import Explore from "./Explore.astro";
+import PromoBox from "./PromoBox.astro";
 import type { DocGuide } from "../guides/doc/types";
+import { langOf } from "../i18n";
 
 interface Props { g: DocGuide; canonical?: string }
 const { g, canonical } = Astro.props;
+const en = langOf(Astro.url) === "en";
+const L = (hi: string, e: string) => (en ? e : hi);
 const crumbs = g.crumbs ?? [
   { label: "होम", href: "/" },
   { label: "राज्य सेवाएं", href: "/states/" },
@@ -24,15 +28,16 @@ const crumbs = g.crumbs ?? [
   <div class="page has-aside">
     <article>
       <h1>{g.h1}</h1>
-      <div class="meta-row"><span class="verified">✓ जानकारी जांची गई: {g.verified}</span></div>
+      <div class="meta-row"><span class="verified">✓ {L("जानकारी जांची गई", "Information checked")}: {g.verified}</span></div>
 
       <section class="answer" aria-labelledby="answer-title">
-        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-title" id="answer-title">{L("सीधा जवाब", "Quick answer")}</p>
         <p class="answer-lead">{g.lead}</p>
         <dl class="facts">{g.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}</dl>
       </section>
 
       {g.notice && <div class="callout warn"><p set:html={g.notice} /></div>}
+      {g.promo && <PromoBox p={g.promo} />}
 
       {g.sections.map((s, i) => (
         <>
@@ -57,18 +62,19 @@ const crumbs = g.crumbs ?? [
       ))}
 
       <OfficialLinks verified={g.verified} links={g.official} />
+      {g.promo && <PromoBox p={g.promo} compact />}
       <Faq items={g.faq} />
-      <CardGrid title="इनसे जुड़ी जानकारी" cards={g.related} id="related" />
+      <CardGrid title={L("इनसे जुड़ी जानकारी", "Related guides")} cards={g.related} id="related" />
       {g.doc && <StateGrid doc={g.doc} current={g.state?.slug} title={g.otherStatesTitle ?? `दूसरे राज्यों में ${g.docHi}`} />}
       <Explore />
     </article>
 
     <aside class="page-aside">
       <section class="section toc">
-        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <h2 style="font-size:1rem">{L("इस पेज पर", "On this page")}</h2>
         <ol>
           {g.sections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
-          <li><a href="#faq">सवाल-जवाब</a></li>
+          <li><a href="#faq">{L("सवाल-जवाब", "FAQ")}</a></li>
         </ol>
         {g.aside.map((a, i) => <a class={`cta${i ? " secondary" : ""}`} href={a.href}>{a.label}</a>)}
       </section>

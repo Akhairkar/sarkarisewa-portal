@@ -32,4 +32,16 @@ export type DocGuide = {
   related: { href: string; emoji: string; title: string; text: string }[];
   otherStatesTitle?: string;
   aside: { href: string; label: string }[]; // buttons under the table of contents
+  promo?: Promo; // paid tool box after the answer and before the FAQ
+};
+
+// A paid tool the guide points to (GSTIN report, RC challan report).
+export type Promo = {
+  emoji: string;
+  title: string;
+  text: string; // html
+  points?: string[];
+  href: string;
+  cta: string;
+  price: string; // e.g. "₹20 per GSTIN"
 };

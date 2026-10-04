@@ -1,0 +1,15 @@
+---
+// Box that points a guide's reader to one of our paid tools.
+import type { Promo } from "../guides/doc/types";
+interface Props { p: Promo; compact?: boolean }
+const { p, compact = false } = Astro.props;
+---
+<aside class={`promo${compact ? " compact" : ""}`} aria-label={p.title}>
+  <div class="promo-head">
+    <span class="promo-emoji" aria-hidden="true">{p.emoji}</span>
+    <div><strong class="promo-title">{p.title}</strong><span class="promo-price">{p.price}</span></div>
+  </div>
+  {!compact && <p set:html={p.text} />}
+  {!compact && p.points && <ul class="checklist">{p.points.map((x) => <li set:html={x} />)}</ul>}
+  <a class="cta" href={p.href}>{p.cta}</a>
+</aside>

@@ -4,7 +4,11 @@
 export type Lang = "hi" | "en";
 export type Text = string | { hi: string; en: string };
 
-export const langOf = (url: URL): Lang => (url.pathname === "/en" || url.pathname.startsWith("/en/") ? "en" : "hi");
+// Sections written only in English (they rank for English searches).
+const EN_ONLY = ["/gst/"];
+
+export const langOf = (url: URL): Lang =>
+  url.pathname === "/en" || url.pathname.startsWith("/en/") || EN_ONLY.some((p) => url.pathname.startsWith(p)) ? "en" : "hi";
 
 /** Pick the string for a language. Plain strings are the same in both. */
 export const t = (v: Text, lang: Lang): string => (typeof v === "string" ? v : v[lang]);
