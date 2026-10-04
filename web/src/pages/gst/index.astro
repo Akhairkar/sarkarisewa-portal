@@ -1,0 +1,53 @@
+---
+// GST hub (/gst/): every GSTIN guide grouped by task, plus the paid report.
+// /gst/ paths render in English (i18n EN_ONLY).
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import Faq from "../../components/Faq.astro";
+import OfficialLinks from "../../components/OfficialLinks.astro";
+import PromoBox from "../../components/PromoBox.astro";
+import Explore from "../../components/Explore.astro";
+import { CARDS, MODIFIED, OFFICIAL, promo, SEARCH_TP, VERIFIED } from "../../guides/gst/shared";
+
+const crumbs = [{ label: "Home", href: "/" }, { label: "GST Guides" }];
+const pick = (...s: string[]) => s.map((k) => CARDS[k]);
+const groups = [
+  { id: "find", title: "Find and verify a GSTIN", lead: "Look up any GST number on the official portal and read the result.", cards: pick("gst-number-search", "how-to-verify-gst-number", "gstin-verification-online") },
+  { id: "status", title: "Active, suspended or cancelled", lead: "What each status means and what to do when a GSTIN is not active.", cards: pick("gstin-status-check", "gstin-active-cancelled-check") },
+  { id: "business", title: "Checks for invoices, payments and suppliers", lead: "Practical checklists for accounts teams and small business owners.", cards: pick("gst-number-check-online", "how-to-verify-gstin-on-invoice", "how-to-check-gstin-of-supplier") },
+  { id: "understand", title: "Understand the GSTIN", lead: "The 15 characters, the state codes, and how a GSTIN relates to registration.", cards: pick("gstin-format-structure", "gstin-vs-gst-registration") },
+];
+const box = promo("Get the main registration details of any GSTIN in one clean, time-stamped report you can save as PDF or share.");
+const faq = [
+  { q: "Where can I check a GST number for free?", a: "On the official GST portal's Search Taxpayer page at services.gst.gov.in. Enter the GSTIN and the captcha; no login or fee is needed." },
+  { q: "What does a GSTIN search show?", a: "The registered business behind the number: legal name, trade name, effective date of registration, constitution of business, taxpayer type, jurisdiction and status, with the cancellation date where applicable." },
+  { q: "What is the 20 rupee GSTIN report?", a: "An optional SarkariSewa India service. It checks the GSTIN format for free, then for 20 rupees shows the status, legal and trade name, registration date, taxpayer type, constitution and place of business in a report you can save as PDF. It is not a government fee or certificate." },
+  { q: "How many characters does a GSTIN have?", a: "15: a 2-digit state code, the 10-character PAN, a 2-character entity code and 1 checksum character, as set out in rule 10 of the CGST Rules, 2017." },
+  { q: "Is SarkariSewa India a government website?", a: "No. SarkariSewa India is an independent information portal. The official GST portal is the final reference for GST records." },
+];
+---
+<Base
+  title="GST Guides: GSTIN Search, Verification & Status | SarkariSewa India"
+  description="Free guides to search and verify a GST number (GSTIN): official GST portal steps, active or cancelled status, invoice and supplier checks, GSTIN format and state codes, plus a ₹20 GSTIN report."
+  breadcrumbs={crumbs}
+  faq={faq}
+  modified={MODIFIED}
+  schemaType="WebPage"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">🧾 Plain-English GST help for small businesses</span>
+    <h1>GST Guides: <em>search, verify and understand any GSTIN</em></h1>
+    <p class="page-intro">Check a supplier's GST number before you pay, read what the official search result means, and know what to do when a GSTIN is cancelled. The official <a href={SEARCH_TP} target="_blank" rel="noopener nofollow">GST Search Taxpayer</a> page is free; our guides show you how to use it well.</p>
+  </section>
+
+  <PromoBox p={box} />
+
+  {groups.map((g) => <CardGrid title={g.title} lead={g.lead} cards={g.cards} id={g.id} />)}
+
+  <OfficialLinks verified={VERIFIED} links={[OFFICIAL.searchtp, OFFICIAL.searchpan, OFFICIAL.portal, OFFICIAL.regRules, OFFICIAL.invoiceRules, OFFICIAL.cbic]} />
+  <Faq items={faq} />
+  <p class="notice">SarkariSewa India is an independent website, not the GST portal or a government department. GST information here was checked against the CGST Act, the CGST Rules and official GST sources on {VERIFIED}.</p>
+  <Explore />
+</Base>
