@@ -1,0 +1,37 @@
+name: Deploy RC Challan Worker
+
+# Deploys cloudflare/rc-challan-api to the Worker "sarkarisewa-rc-challan-api".
+# Secrets (RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, APISATHI_API_KEY) are set in
+# the Cloudflare dashboard and are kept across deploys.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "cloudflare/rc-challan-api/**"
+      - ".github/workflows/deploy-rc-challan-worker.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check worker syntax
+        run: node --check cloudflare/rc-challan-api/worker.js
+
+      - name: Install Wrangler
+        run: npm install --global wrangler@latest
+
+      - name: Deploy Worker
+        run: wrangler deploy --config cloudflare/rc-challan-api/wrangler.toml
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
