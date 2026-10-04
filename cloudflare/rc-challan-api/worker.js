@@ -5,7 +5,7 @@
 //
 // Secrets (set with `wrangler secret put`, never in code or the website):
 //   RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, APISATHI_API_KEY
-// Vars (wrangler.toml): RC_CHALLAN_PRICE (paise), CURRENCY, APISATHI_URL
+// Vars (wrangler.toml): RC_CHALLAN_PRICE (paise), CURRENCY
 const ALLOWED_ORIGINS = [
   "https://sarkarisewaindia.com",
   "https://www.sarkarisewaindia.com"
@@ -41,13 +41,13 @@ function json(data, status, headers) {
   return new Response(JSON.stringify(data), { status, headers });
 }
 
-// Indian registration numbers: state code, RTO number, series, number
-// (e.g. MH01AB1234, DL3CAB1234) and BH series (e.g. 22BH1234AB).
+// Registration numbers the API accepts: state code, RTO number, series,
+// 4-digit number (e.g. MH01AB1234, DL3CAB1234). BH series is not supported.
 function normalizeRC(rc) {
   return String(rc || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
 }
 function isValidRC(rc) {
-  return /^[A-Z]{2}[0-9]{1,2}[A-Z]{0,3}[0-9]{4}$/.test(rc) || /^[0-9]{2}BH[0-9]{4}[A-Z]{1,2}$/.test(rc);
+  return /^[A-Z]{2}[0-9]{1,2}[A-Z]{0,3}[0-9]{4}$/.test(rc);
 }
 
 function bytesToHex(buffer) {
@@ -163,77 +163,87 @@ function verificationIsFresh(timestamp) {
   return Date.now() - value < 2 * 60 * 1000;
 }
 
-// API Sathi rc-challan. The request and response field names below follow
-// the API Sathi docs for the rc-challan API (check them before going live).
-function pick(obj, keys) {
-  for (const k of keys) if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== "") return obj[k];
-  return "";
-}
+// API Sathi rc-challan (https://apisathi.in/docs/products/rc-challan/):
+// POST https://apisathi.in/gw/v1/rc-challan/ (trailing slash required),
+// header X-API-Key, body { rc_number } only. result_code 101 = challans
+// found, 103 = no pending challans; 102/106 are charged "not found" answers.
+// 502/503/504 are upstream failures: not charged, safe to retry.
+const APISATHI_URL = "https://apisathi.in/gw/v1/rc-challan/";
 
-function mapChallans(payload) {
-  const root = payload?.data ?? payload?.result ?? payload ?? {};
-  const list = Array.isArray(root) ? root : (root.challans ?? root.challan_details ?? root.challan ?? []);
+function mapChallans(list) {
   return (Array.isArray(list) ? list : []).map((c) => ({
-    challan_no: String(pick(c, ["challan_no", "challan_number", "challanNo", "challanNumber"])),
-    amount: pick(c, ["amount", "fine_amount", "challan_amount", "amount_payable"]),
-    status: String(pick(c, ["status", "challan_status", "payment_status"])),
-    date: String(pick(c, ["challan_date", "date", "offence_date", "challan_date_time"])),
-    offence: String(pick(c, ["offence", "offense", "offence_details", "violation"])),
-    place: String(pick(c, ["place", "location", "challan_place"])),
-    state: String(pick(c, ["state", "state_code"]))
+    challan_no: String(c?.challan_no ?? ""),
+    date: String(c?.challan_date ?? ""),
+    amount: String(c?.amount ?? ""),
+    status: String(c?.challan_status ?? ""),
+    offence: String(c?.offence ?? ""),
+    state: String(c?.state ?? "")
   }));
 }
 
-async function callChallanApi(rc, env) {
-  if (!env.APISATHI_API_KEY || !env.APISATHI_URL) {
+async function callChallanApi(rc, idempotencyKey, env) {
+  if (!env.APISATHI_API_KEY) {
     return { success: false, status: 503, error: "Challan service is not configured" };
   }
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 20000);
+  // Retry only upstream failures (not charged); the idempotency key stops a
+  // retry from being billed twice.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (attempt) await new Promise((r) => setTimeout(r, 1500 * attempt));
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 25000);
+    try {
+      const response = await fetch(env.APISATHI_URL || APISATHI_URL, {
+        method: "POST",
+        headers: {
+          "X-API-Key": env.APISATHI_API_KEY,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Idempotency-Key": idempotencyKey
+        },
+        body: JSON.stringify({ rc_number: rc }),
+        signal: controller.signal
+      });
+      let payload;
+      try { payload = JSON.parse(await response.text()); } catch { payload = {}; }
 
-  try {
-    const response = await fetch(env.APISATHI_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.APISATHI_API_KEY}`,
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({ rc_number: rc }),
-      signal: controller.signal
-    });
-
-    const text = await response.text();
-    let payload;
-    try { payload = JSON.parse(text); } catch { payload = {}; }
-
-    if (!response.ok || payload?.success === false) {
-      return { success: false, status: response.status || 502, error: "Challan check failed. Please retry." };
-    }
-
-    const challans = mapChallans(payload);
-    return {
-      success: true,
-      status: 200,
-      data: {
-        rc_number: rc,
-        total: challans.length,
-        pending: challans.filter((c) => /pend|unpaid|due/i.test(c.status)).length,
-        challans,
-        call_id: String(pick(payload, ["call_id", "request_id", "id"])),
-        checked_at: new Date().toISOString()
+      if ([502, 503, 504].includes(response.status)) continue;
+      if (!response.ok) {
+        return { success: false, status: response.status === 422 ? 400 : 502, error: response.status === 422 ? "Invalid RC number" : "Challan check failed" };
       }
-    };
-  } catch (error) {
-    return {
-      success: false,
-      status: 504,
-      error: error?.name === "AbortError" ? "Challan service timed out. Please retry." : "Challan service unavailable. Please retry."
-    };
-  } finally {
-    clearTimeout(timeout);
+
+      const code = Number(payload.result_code);
+      if (code !== 101 && code !== 103) {
+        return { success: false, status: 404, error: "No vehicle record found for this RC number" };
+      }
+      const challans = code === 101 ? mapChallans(payload.challans) : [];
+      return {
+        success: true,
+        status: 200,
+        data: {
+          rc_number: String(payload.rc_number || rc),
+          total: Number(payload.echallan_count ?? challans.length) || challans.length,
+          pending: Number(payload.echallan_count ?? challans.length) || challans.length,
+          challans,
+          checked_at: new Date().toISOString()
+        }
+      };
+    } catch (error) {
+      if (error?.name !== "AbortError") return { success: false, status: 503, error: "Challan service unavailable" };
+    } finally {
+      clearTimeout(timeout);
+    }
   }
+  return { success: false, status: 504, error: "Challan service is busy" };
+}
+
+// Money back when the customer paid but got no report.
+async function refundPayment(paymentId, env) {
+  const result = await razorpayRequest(`/payments/${encodeURIComponent(paymentId)}/refund`, env, {
+    method: "POST",
+    body: JSON.stringify({ speed: "normal", notes: { reason: "RC challan report could not be generated" } })
+  });
+  return result.response.ok;
 }
 
 async function verifyPaymentAndGetChallans(body, env) {
@@ -367,7 +377,7 @@ async function verifyPaymentAndGetChallans(body, env) {
   }
 
   // Each API call is billed, so one payment gives one report.
-  if (existingState === "completed") {
+  if (existingState === "completed" || existingState === "refunded") {
     return {
       success: false,
       status: 409,
@@ -434,7 +444,7 @@ async function verifyPaymentAndGetChallans(body, env) {
     };
   }
 
-  const apiResult = await callChallanApi(normalizedRC, env);
+  const apiResult = await callChallanApi(normalizedRC, razorpay_payment_id, env);
 
   const finalNotes = {
     ...processingNotes,
@@ -443,11 +453,18 @@ async function verifyPaymentAndGetChallans(body, env) {
     verification_updated_at: String(Date.now())
   };
 
-  await updatePaymentNotes(razorpay_payment_id, finalNotes, env);
-
   if (!apiResult.success) {
-    return apiResult;
+    const refunded = await refundPayment(razorpay_payment_id, env).catch(() => false);
+    finalNotes.verification_state = refunded ? "refunded" : "failed";
+    await updatePaymentNotes(razorpay_payment_id, finalNotes, env);
+    return {
+      ...apiResult,
+      error: `${apiResult.error}. ${refunded ? "Your payment has been refunded." : "Please contact us for a refund."}`,
+      refunded
+    };
   }
+
+  await updatePaymentNotes(razorpay_payment_id, finalNotes, env);
 
   return apiResult;
 }

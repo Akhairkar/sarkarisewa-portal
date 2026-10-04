@@ -15,8 +15,9 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "Paid Services", hre
 const faq = [
   { q: "क्या ई-चालान फ्री में भी देख सकते हैं?", a: "हां। परिवहन विभाग की official वेबसाइट echallan.parivahan.gov.in पर गाड़ी नंबर से चालान फ्री में देखे और भरे जा सकते हैं। हमारी ₹49 की सेवा एक सुविधा है: एक क्लिक में साफ रिपोर्ट, जिसे आप सेव या शेयर कर सकते हैं।" },
   { q: "₹49 किस बात के हैं?", a: "यह हमारी सेवा का शुल्क है, कोई सरकारी फीस या चालान की राशि नहीं। चालान का भुगतान हमेशा official पोर्टल पर ही करें।" },
-  { q: "भुगतान कट गया पर रिपोर्ट नहीं आई तो?", a: "पेज बंद न करें और दोबारा 'रिपोर्ट दिखाएं' दबाएं। फिर भी न आए तो भुगतान ID के साथ हमें संपर्क करें; जांच के बाद पैसा वापस किया जाता है।" },
-  { q: "रिपोर्ट में कौन सी जानकारी आती है?", a: "गाड़ी नंबर पर दर्ज चालान: चालान नंबर, राशि और स्थिति (बकाया/भरा हुआ), और स्रोत से मिलने पर तारीख, जगह और नियम उल्लंघन।" },
+  { q: "भुगतान कट गया पर रिपोर्ट नहीं आई तो?", a: "अगर गाड़ी नंबर का रिकॉर्ड नहीं मिला या चालान सेवा उस समय उपलब्ध नहीं थी, तो ₹49 अपने आप उसी खाते में रिफंड हो जाते हैं (बैंक के हिसाब से 5-7 कामकाजी दिन)। भुगतान ID संभालकर रखें।" },
+  { q: "रिपोर्ट में कौन सी जानकारी आती है?", a: "VAHAN/परिवहन रिकॉर्ड के अनुसार गाड़ी पर बकाया (pending) ई-चालान: चालान नंबर, तारीख, राशि, नियम उल्लंघन और राज्य। कोई बकाया चालान न हो तो रिपोर्ट में यही लिखा आता है।" },
+  { q: "BH सीरीज़ की गाड़ी का चालान देख सकते हैं?", a: "अभी नहीं। यह सेवा अभी राज्य वाले नंबर (जैसे MH01AB1234) के लिए है; BH नंबर के लिए echallan.parivahan.gov.in पर देखें।" },
   { q: "चालान गलत लगे तो क्या करें?", a: "echallan.parivahan.gov.in पर चालान की जानकारी देखें और वहीं दिए विकल्प से शिकायत करें, या चालान पर लिखे ट्रैफिक पुलिस/वर्चुअल कोर्ट के तरीके से आपत्ति दर्ज करें।" },
 ];
 ---
@@ -45,7 +46,7 @@ const faq = [
       <p class="rc-msg" role="status" aria-live="polite"></p>
     </form>
     <div class="rc-result" hidden></div>
-    <p class="rc-note">भुगतान Razorpay से सुरक्षित होता है। एक भुगतान पर एक रिपोर्ट मिलती है। ₹{PRICE} हमारी सेवा का शुल्क है, सरकारी फीस नहीं।</p>
+    <p class="rc-note">भुगतान Razorpay से सुरक्षित होता है। एक भुगतान पर एक रिपोर्ट मिलती है; रिपोर्ट न बन सके तो पैसा अपने आप वापस। ₹{PRICE} हमारी सेवा का शुल्क है, सरकारी फीस नहीं।</p>
   </section>
 
   <section class="section" id="free">
@@ -73,18 +74,18 @@ const faq = [
     var msg = box.querySelector(".rc-msg"), out = box.querySelector(".rc-result");
     var label = btn.textContent;
     function norm(v) { return String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
-    function valid(v) { return /^[A-Z]{2}[0-9]{1,2}[A-Z]{0,3}[0-9]{4}$/.test(v) || /^[0-9]{2}BH[0-9]{4}[A-Z]{1,2}$/.test(v); }
+    function valid(v) { return /^[A-Z]{2}[0-9]{1,2}[A-Z]{0,3}[0-9]{4}$/.test(v); }
     function esc(s) { var d = document.createElement("div"); d.textContent = s == null || s === "" ? "—" : String(s); return d.innerHTML; }
     function busy(t) { btn.disabled = !!t; btn.textContent = t || label; }
     function show(d) {
       var rows = (d.challans || []).map(function (c) {
         var pend = /pend|unpaid|due/i.test(c.status);
-        return "<tr><td>" + esc(c.challan_no) + (c.date ? "<small>" + esc(c.date) + "</small>" : "") + (c.offence ? "<small>" + esc(c.offence) + "</small>" : "") +
+        return "<tr><td>" + esc(c.challan_no) + (c.date ? "<small>" + esc(c.date) + "</small>" : "") + (c.offence ? "<small>" + esc(c.offence) + "</small>" : "") + (c.state ? "<small>" + esc(c.state) + "</small>" : "") +
           "</td><td>₹" + esc(c.amount) + "</td><td><span class=\"rc-st " + (pend ? "pend" : "paid") + "\">" + esc(c.status) + "</span></td></tr>";
       }).join("");
-      out.innerHTML = "<h2>" + esc(d.rc_number) + ": " + (d.total ? d.total + " चालान, " + d.pending + " बकाया" : "कोई चालान नहीं मिला") + "</h2>" +
+      out.innerHTML = "<h2>" + esc(d.rc_number) + ": " + (d.total ? d.total + " बकाया चालान" : "कोई बकाया चालान नहीं") + "</h2>" +
         (d.total ? "<div class=\"table-wrap\"><table><thead><tr><th>चालान</th><th>राशि</th><th>स्थिति</th></tr></thead><tbody>" + rows + "</tbody></table></div>" : "") +
-        "<p class=\"rc-note\">जांच का समय: " + esc(new Date(d.checked_at).toLocaleString("hi-IN")) + (d.call_id ? " · रिपोर्ट ID: " + esc(d.call_id) : "") +
+        "<p class=\"rc-note\">जांच का समय: " + esc(new Date(d.checked_at).toLocaleString("hi-IN")) + "" +
         ". बकाया चालान <a href=\"https://echallan.parivahan.gov.in/\" target=\"_blank\" rel=\"noopener nofollow\">echallan.parivahan.gov.in</a> पर भरें।</p>" +
         "<button type=\"button\" class=\"more-btn rc-print\">रिपोर्ट प्रिंट / PDF सेव करें</button>";
       out.hidden = false;
@@ -117,7 +118,8 @@ const faq = [
               if (!v.ok || !res.success) throw new Error(res.error || "रिपोर्ट नहीं मिल सकी।");
               show(res.data);
             } catch (err) {
-              msg.textContent = (err.message || "रिपोर्ट नहीं मिल सकी।") + " भुगतान ID: " + p.razorpay_payment_id + " (इसे सेव कर लें)";
+              var t = err.message || "";
+              msg.textContent = (/refunded/i.test(t) ? "रिपोर्ट नहीं बन सकी (" + (/record/i.test(t) ? "इस नंबर का रिकॉर्ड नहीं मिला" : /Invalid/i.test(t) ? "गाड़ी नंबर सही नहीं है" : "चालान सेवा अभी उपलब्ध नहीं") + ")। आपका ₹" + box.dataset.price + " रिफंड कर दिया गया है।" : "रिपोर्ट नहीं मिल सकी। हमसे संपर्क करें।") + " भुगतान ID: " + p.razorpay_payment_id;
             } finally { busy(""); }
           }
         });
