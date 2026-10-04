@@ -85,6 +85,7 @@ const faq = [
       }).join("");
       out.innerHTML = "<h2>" + esc(d.rc_number) + ": " + (d.total ? d.total + " बकाया चालान" : "कोई बकाया चालान नहीं") + "</h2>" +
         (d.total ? "<div class=\"table-wrap\"><table><thead><tr><th>चालान</th><th>राशि</th><th>स्थिति</th></tr></thead><tbody>" + rows + "</tbody></table></div>" : "") +
+        (d.total ? "" : "<p class=\"rc-note\">यह नतीजा VAHAN/परिवहन रिकॉर्ड में दर्ज बकाया ई-चालान पर आधारित है। भरे जा चुके चालान इसमें नहीं आते। पक्का करने के लिए official पोर्टल पर भी देख लें।</p>") +
         "<p class=\"rc-note\">जांच का समय: " + esc(new Date(d.checked_at).toLocaleString("hi-IN")) + "" +
         ". बकाया चालान <a href=\"https://echallan.parivahan.gov.in/\" target=\"_blank\" rel=\"noopener nofollow\">echallan.parivahan.gov.in</a> पर भरें।</p>" +
         "<button type=\"button\" class=\"more-btn rc-print\">रिपोर्ट प्रिंट / PDF सेव करें</button>";
