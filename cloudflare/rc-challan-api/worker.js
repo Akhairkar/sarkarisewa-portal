@@ -170,14 +170,21 @@ function verificationIsFresh(timestamp) {
 // 502/503/504 are upstream failures: not charged, safe to retry.
 const APISATHI_URL = "https://apisathi.in/gw/v1/rc-challan/";
 
+// Field names per the docs, plus the alternatives the sandbox uses.
+function first(c, keys) {
+  for (const k of keys) if (c && c[k] !== undefined && c[k] !== null && c[k] !== "") return String(c[k]);
+  return "";
+}
+
 function mapChallans(list) {
   return (Array.isArray(list) ? list : []).map((c) => ({
-    challan_no: String(c?.challan_no ?? ""),
-    date: String(c?.challan_date ?? ""),
-    amount: String(c?.amount ?? ""),
-    status: String(c?.challan_status ?? ""),
-    offence: String(c?.offence ?? ""),
-    state: String(c?.state ?? "")
+    challan_no: first(c, ["challan_no", "challan_number", "challanNo"]),
+    date: first(c, ["challan_date", "date", "challan_date_time", "offence_date"]),
+    amount: first(c, ["amount", "fine_amount", "challan_amount"]),
+    // This API returns pending challans only, so an empty status means pending.
+    status: first(c, ["challan_status", "status", "payment_status"]) || "Pending",
+    offence: first(c, ["offence", "offense", "offence_details", "violation"]),
+    state: first(c, ["state", "state_name"])
   }));
 }
 

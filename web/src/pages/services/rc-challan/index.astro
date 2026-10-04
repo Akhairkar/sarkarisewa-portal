@@ -79,9 +79,10 @@ const faq = [
     function busy(t) { btn.disabled = !!t; btn.textContent = t || label; }
     function show(d) {
       var rows = (d.challans || []).map(function (c) {
-        var pend = /pend|unpaid|due/i.test(c.status);
+        var pend = !c.status || /pend|unpaid|due/i.test(c.status);
+        var st = pend ? "बकाया" : /paid|disposed/i.test(c.status) ? "भरा हुआ" : c.status;
         return "<tr><td>" + esc(c.challan_no) + (c.date ? "<small>" + esc(c.date) + "</small>" : "") + (c.offence ? "<small>" + esc(c.offence) + "</small>" : "") + (c.state ? "<small>" + esc(c.state) + "</small>" : "") +
-          "</td><td>₹" + esc(c.amount) + "</td><td><span class=\"rc-st " + (pend ? "pend" : "paid") + "\">" + esc(c.status) + "</span></td></tr>";
+          "</td><td>₹" + esc(c.amount) + "</td><td><span class=\"rc-st " + (pend ? "pend" : "paid") + "\">" + esc(st) + "</span></td></tr>";
       }).join("");
       out.innerHTML = "<h2>" + esc(d.rc_number) + ": " + (d.total ? d.total + " बकाया चालान" : "कोई बकाया चालान नहीं") + "</h2>" +
         (d.total ? "<div class=\"table-wrap\"><table><thead><tr><th>चालान</th><th>राशि</th><th>स्थिति</th></tr></thead><tbody>" + rows + "</tbody></table></div>" : "") +
