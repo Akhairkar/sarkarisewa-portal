@@ -104,7 +104,7 @@ const faq = [
       try {
         var r = await fetch(W + "/create-order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ rc_number: rc }) });
         var order = await r.json();
-        if (!r.ok || !order.success) throw new Error(order.error || "भुगतान शुरू नहीं हो सका।");
+        if (!r.ok || !order.success) throw new Error((order.error || "भुगतान शुरू नहीं हो सका।") + (order.provider_error ? " (" + order.provider_status + ": " + order.provider_error + ")" : ""));
         var rz = new Razorpay({
           key: order.key_id, amount: order.amount, currency: order.currency || "INR", order_id: order.order_id,
           name: "SarkariSewa India", description: "RC e-Challan Check", notes: { service: "RC e-Challan Check", rc_number: rc },

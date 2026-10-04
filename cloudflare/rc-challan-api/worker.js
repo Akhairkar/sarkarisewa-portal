@@ -86,13 +86,17 @@ async function generateRazorpaySignature(orderId, paymentId, secret) {
   return bytesToHex(signature);
 }
 
+// Secrets pasted in the dashboard often carry a stray space or newline.
+const keyId = (env) => String(env.RAZORPAY_KEY_ID || "").trim();
+const keySecret = (env) => String(env.RAZORPAY_KEY_SECRET || "").trim();
+
 async function razorpayRequest(path, env, options = {}) {
-  if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
+  if (!keyId(env) || !keySecret(env)) {
     throw new Error("Razorpay credentials are not configured");
   }
 
   const credentials = btoa(
-    `${env.RAZORPAY_KEY_ID}:${env.RAZORPAY_KEY_SECRET}`
+    `${keyId(env)}:${keySecret(env)}`
   );
 
   const response = await fetch(
@@ -291,7 +295,7 @@ async function verifyPaymentAndGetChallans(body, env) {
   const expectedSignature = await generateRazorpaySignature(
     razorpay_order_id,
     razorpay_payment_id,
-    env.RAZORPAY_KEY_SECRET
+    keySecret(env)
   );
 
   if (!timingSafeEqual(expectedSignature, razorpay_signature)) {
@@ -515,14 +519,15 @@ export default {
       try {
         const body = await request.json();
         const order = await createOrder(env, body.rc_number);
-        return json({ success: true, key_id: env.RAZORPAY_KEY_ID, order_id: order.id, amount: getPrice(env), currency: getCurrency(env) }, 200, headers);
+        return json({ success: true, key_id: keyId(env), order_id: order.id, amount: getPrice(env), currency: getCurrency(env) }, 200, headers);
       } catch (error) {
         const bad = error.message === "Invalid RC number";
         return json({
           success: false,
           error: bad ? error.message
             : error.message === "Razorpay credentials are not configured" ? "Payment service credentials are not configured"
-            : "Unable to create payment order"
+            : "Unable to create payment order",
+          ...(error.razorpay_status ? { provider_status: error.razorpay_status, provider_error: error.message } : {})
         }, bad ? 400 : 502, headers);
       }
     }
