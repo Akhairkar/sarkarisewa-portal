@@ -352,6 +352,25 @@ async function verifyPaymentAndGetChallans(body, env) {
     };
   }
 
+  // Accounts without auto-capture (Razorpay test mode by default) leave the
+  // payment "authorized"; capture it here for the exact order amount.
+  if (payment.status === "authorized") {
+    const capture = await razorpayRequest(
+      `/payments/${encodeURIComponent(razorpay_payment_id)}/capture`,
+      env,
+      { method: "POST", body: JSON.stringify({ amount: getPrice(env), currency: getCurrency(env) }) }
+    );
+    if (!capture.response.ok || capture.data?.status !== "captured") {
+      return {
+        success: false,
+        status: 400,
+        error: "Payment could not be captured"
+      };
+    }
+    payment.status = "captured";
+    payment.notes = capture.data.notes ?? payment.notes;
+  }
+
   if (payment.status !== "captured") {
     return {
       success: false,

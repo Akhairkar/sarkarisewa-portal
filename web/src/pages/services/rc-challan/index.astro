@@ -119,7 +119,7 @@ const faq = [
               show(res.data);
             } catch (err) {
               var t = err.message || "";
-              msg.textContent = (/refunded/i.test(t) ? "रिपोर्ट नहीं बन सकी (" + (/record/i.test(t) ? "इस नंबर का रिकॉर्ड नहीं मिला" : /Invalid/i.test(t) ? "गाड़ी नंबर सही नहीं है" : "चालान सेवा अभी उपलब्ध नहीं") + ")। आपका ₹" + box.dataset.price + " रिफंड कर दिया गया है।" : "रिपोर्ट नहीं मिल सकी। हमसे संपर्क करें।") + " भुगतान ID: " + p.razorpay_payment_id;
+              msg.textContent = (/refunded/i.test(t) ? "रिपोर्ट नहीं बन सकी (" + (/record/i.test(t) ? "इस नंबर का रिकॉर्ड नहीं मिला" : /Invalid/i.test(t) ? "गाड़ी नंबर सही नहीं है" : "चालान सेवा अभी उपलब्ध नहीं") + ")। आपका ₹" + box.dataset.price + " रिफंड कर दिया गया है।" : "रिपोर्ट नहीं मिल सकी। हमसे संपर्क करें। (" + t + ")") + " भुगतान ID: " + p.razorpay_payment_id;
             } finally { busy(""); }
           }
         });
