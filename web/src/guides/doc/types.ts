@@ -13,8 +13,9 @@ export type Section = {
 };
 
 export type DocGuide = {
-  state: { slug: string; hi: string };
-  doc: string; // e.g. "employment-exchange"; links the other states' pages
+  state?: { slug: string; hi: string }; // omitted for national guides
+  crumbs?: { label: string; href?: string }[]; // overrides the state breadcrumb
+  doc?: string; // e.g. "employment-exchange"; links the other states' pages
   docHi: string; // breadcrumb label, e.g. "रोज़गार कार्यालय"
   title: string; // keep the ranking title unless it is wrong
   description: string;

@@ -12,10 +12,10 @@ import type { DocGuide } from "../guides/doc/types";
 
 interface Props { g: DocGuide; canonical?: string }
 const { g, canonical } = Astro.props;
-const crumbs = [
+const crumbs = g.crumbs ?? [
   { label: "होम", href: "/" },
   { label: "राज्य सेवाएं", href: "/states/" },
-  { label: g.state.hi, href: `/states/${g.state.slug}.html` },
+  { label: g.state!.hi, href: `/states/${g.state!.slug}.html` },
   { label: g.docHi },
 ];
 ---
@@ -59,7 +59,7 @@ const crumbs = [
       <OfficialLinks verified={g.verified} links={g.official} />
       <Faq items={g.faq} />
       <CardGrid title="इनसे जुड़ी जानकारी" cards={g.related} id="related" />
-      <StateGrid doc={g.doc} current={g.state.slug} title={g.otherStatesTitle ?? `दूसरे राज्यों में ${g.docHi}`} />
+      {g.doc && <StateGrid doc={g.doc} current={g.state?.slug} title={g.otherStatesTitle ?? `दूसरे राज्यों में ${g.docHi}`} />}
       <Explore />
     </article>
 
