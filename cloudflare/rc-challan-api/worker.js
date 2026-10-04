@@ -212,18 +212,27 @@ async function callChallanApi(rc, idempotencyKey, env) {
         return { success: false, status: response.status === 422 ? 400 : 502, error: response.status === 422 ? "Invalid RC number" : "Challan check failed" };
       }
 
-      const code = Number(payload.result_code);
-      if (code !== 101 && code !== 103) {
-        return { success: false, status: 404, error: "No vehicle record found for this RC number" };
+      // Docs: fields at the top level. Also accept a { data } / { result }
+      // wrapper and sandbox replies without result_code but with challans.
+      const body = payload?.data && typeof payload.data === "object" && !Array.isArray(payload.data) ? payload.data
+        : payload?.result && typeof payload.result === "object" && !Array.isArray(payload.result) ? payload.result
+        : payload;
+      const code = Number(body.result_code ?? payload.result_code);
+      const hasList = Array.isArray(body.challans) || body.echallan_count !== undefined;
+      const found = code === 101 || code === 103 || (!Number.isFinite(code) && hasList);
+      if (!found) {
+        const why = [Number.isFinite(code) ? `code ${code}` : "", String(body.message ?? payload.message ?? "")].filter(Boolean).join(", ");
+        return { success: false, status: 404, error: `No vehicle record found for this RC number${why ? ` (${why.slice(0, 80)})` : ""}` };
       }
-      const challans = code === 101 ? mapChallans(payload.challans) : [];
+      const challans = code === 103 ? [] : mapChallans(body.challans);
+      const count = Number(body.echallan_count);
       return {
         success: true,
         status: 200,
         data: {
-          rc_number: String(payload.rc_number || rc),
-          total: Number(payload.echallan_count ?? challans.length) || challans.length,
-          pending: Number(payload.echallan_count ?? challans.length) || challans.length,
+          rc_number: String(body.rc_number || rc),
+          total: Number.isFinite(count) ? count : challans.length,
+          pending: Number.isFinite(count) ? count : challans.length,
           challans,
           checked_at: new Date().toISOString()
         }
