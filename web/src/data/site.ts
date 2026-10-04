@@ -30,6 +30,7 @@ export type Card = { href: string; emoji: string; title: Text; text: Text; badge
 // themselves by href; the component shows the first N that remain.
 export const EXPLORE: Card[] = [
   { href: "/services/gstin-verification/", emoji: "🧾", title: { hi: "GST नंबर असली है या नकली?", en: "Is this GST number real?" }, text: { hi: "किसी भी GSTIN की पूरी जानकारी तुरंत देखें", en: "Instant details of any GSTIN" }, badge: "₹20" },
+  { href: "/services/rc-challan/", emoji: "🚗", title: { hi: "गाड़ी पर कितने चालान बकाया?", en: "Pending challans on your vehicle?" }, text: { hi: "गाड़ी नंबर से ई-चालान की पूरी रिपोर्ट", en: "E-challan report by vehicle number" }, badge: "₹49" },
   { href: "/jobs/index.html", emoji: "🎯", title: { hi: "आपके लिए सरकारी नौकरी", en: "Government jobs for you" }, text: { hi: "नई भर्तियां, योग्यता और आखिरी तारीख", en: "New vacancies, eligibility, last dates" }, badge: "NEW" },
   { href: "/tools/age-calculator.html", emoji: "⏳", title: { hi: "Exam के लिए आपकी उम्र", en: "Your age for exams" }, text: { hi: "किसी भी तारीख पर सही उम्र निकालें", en: "Exact age on any cut-off date" } },
   { href: "/tools/csc-locator.html", emoji: "📍", title: { hi: "नज़दीकी CSC सेंटर", en: "Nearest CSC centre" }, text: { hi: "अपने ज़िले के जन सेवा केंद्र खोजें", en: "Find Common Service Centres in your district" } },
@@ -47,6 +48,8 @@ export const FOOTER: { title: Text; links: { href: string; label: Text }[] }[] =
       { href: "/service/aadhaar-card.html", label: "Aadhaar" },
       { href: "/states/", label: { hi: "राज्य अनुसार सेवाएं", en: "Services by state" } },
       { href: "/support/helpline-directory.html", label: { hi: "Helpline नंबर", en: "Helpline numbers" } },
+      { href: "/challan/", label: { hi: "ट्रैफिक चालान गाइड", en: "Traffic challan guides" } },
+      { href: "/gst/", label: "GST Guides" },
     ],
   },
   {

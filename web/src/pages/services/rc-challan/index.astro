@@ -5,6 +5,7 @@ import Base from "../../../layouts/Base.astro";
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import Faq from "../../../components/Faq.astro";
 import CardGrid from "../../../components/CardGrid.astro";
+import { CARDS } from "../../../guides/challan/common";
 
 const LIVE = true;
 const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
@@ -17,7 +18,7 @@ const faq = [
   { q: "भुगतान कट गया पर रिपोर्ट नहीं आई तो?", a: `अगर गाड़ी नंबर का रिकॉर्ड नहीं मिला या चालान सेवा उस समय उपलब्ध नहीं थी, तो ₹${PRICE} अपने आप उसी खाते में रिफंड हो जाते हैं (बैंक के हिसाब से 5-7 कामकाजी दिन)। भुगतान ID संभालकर रखें।` },
   { q: "रिपोर्ट में कौन सी जानकारी आती है?", a: "VAHAN/परिवहन रिकॉर्ड के अनुसार गाड़ी पर बकाया (pending) ई-चालान: चालान नंबर, तारीख, राशि, नियम उल्लंघन और राज्य। कोई बकाया चालान न हो तो रिपोर्ट में यही लिखा आता है।" },
   { q: "BH सीरीज़ की गाड़ी का चालान देख सकते हैं?", a: "अभी नहीं। यह सेवा अभी राज्य वाले नंबर (जैसे MH01AB1234) के लिए है; BH नंबर के लिए echallan.parivahan.gov.in पर देखें।" },
-  { q: "चालान गलत लगे तो क्या करें?", a: "echallan.parivahan.gov.in पर चालान की जानकारी देखें और वहीं दिए विकल्प से शिकायत करें, या चालान पर लिखे ट्रैफिक पुलिस/वर्चुअल कोर्ट के तरीके से आपत्ति दर्ज करें।" },
+  { q: "चालान गलत लगे तो क्या करें?", a: "echallan.parivahan.gov.in पर चालान की जानकारी देखें और वहीं दिए विकल्प से शिकायत करें, या चालान पर लिखे ट्रैफिक पुलिस/वर्चुअल कोर्ट के तरीके से आपत्ति दर्ज करें। पूरा तरीका हमारी गलत चालान की शिकायत वाली गाइड में है।" },
 ];
 ---
 <Base
@@ -58,6 +59,7 @@ const faq = [
     <div class="callout info"><p>चालान का पैसा <strong>सिर्फ official परिवहन/पुलिस पोर्टल</strong> पर भरें। चालान के नाम पर SMS या WhatsApp से आए अनजान लिंक पर भुगतान न करें।</p></div>
   </section>
 
+  <CardGrid title="ट्रैफिक चालान गाइड" id="guides" more={{ href: "/challan/", label: "सभी गाइड ›" }} cards={["status", "pay", "court", "fines", "lokAdalat", "wrong", "delhi", "maharashtra", "telangana"].map((k) => CARDS[k])} />
   <Faq items={faq} />
   <CardGrid title="गाड़ी से जुड़ी और सेवाएं" id="related" cards={[
     { href: "/challan/", emoji: "🚦", title: { hi: "ट्रैफिक चालान गाइड", en: "Traffic challan guides" }, text: { hi: "चेक, भुगतान, जुर्माना लिस्ट, शिकायत", en: "Check, pay, fines, disputes" } },
