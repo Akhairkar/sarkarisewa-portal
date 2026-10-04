@@ -166,7 +166,7 @@ export const PAID_SERVICES: PaidService[] = [
     ],
   },
   {
-    href: "/private/rc-challan/", emoji: "🚗", title: "RC e-Challan Report", price: "₹49", unit: { hi: "प्रति गाड़ी", en: "per vehicle" }, live: false,
+    href: "/services/rc-challan/", emoji: "🚗", title: "RC e-Challan Report", price: "₹49", unit: { hi: "प्रति गाड़ी", en: "per vehicle" }, live: true,
     text: { hi: "गाड़ी नंबर डालें और सभी pending traffic challan एक रिपोर्ट में देखें।", en: "Enter a vehicle number and see all pending traffic challans in one report." },
     points: [
       { hi: "Pending challan की गिनती", en: "Number of pending challans" },

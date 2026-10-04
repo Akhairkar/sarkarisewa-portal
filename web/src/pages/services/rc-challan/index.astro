@@ -1,15 +1,14 @@
 ---
 // Paid RC e-Challan check. Flow: Razorpay order from the rc-challan worker ->
 // checkout -> worker verifies the payment on the server and calls API Sathi.
-// Keep `LIVE` false (noindex, not linked) until the worker has its secrets.
 import Base from "../../../layouts/Base.astro";
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import Faq from "../../../components/Faq.astro";
 import CardGrid from "../../../components/CardGrid.astro";
 
-const LIVE = false;
+const LIVE = true;
 const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
-const PRICE = 7; // temporary low price while testing live payments; set back to 49 with RC_CHALLAN_PRICE
+const PRICE = 49; // keep in step with RC_CHALLAN_PRICE in the worker's wrangler.toml
 
 const crumbs = [{ label: "होम", href: "/" }, { label: "Paid Services", href: "/paid-services/" }, { label: "RC e-Challan Check" }];
 const faq = [
