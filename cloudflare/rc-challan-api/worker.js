@@ -11,7 +11,7 @@ const ALLOWED_ORIGINS = [
   "https://www.sarkarisewaindia.com"
 ];
 
-const DEFAULT_PRICE = 4900; // paise (₹49)
+const DEFAULT_PRICE = 4900; // paise (Rs 49)
 const DEFAULT_CURRENCY = "INR";
 
 function getPrice(env) {
