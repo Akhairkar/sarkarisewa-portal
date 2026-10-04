@@ -530,3 +530,18 @@ table.compact th, table.compact td { padding: 8px 8px; font-size: 0.88rem; }
 .job-date em { font-style: normal; color: var(--c-muted); }
 .job-empty { text-align: center; color: var(--c-muted); }
 .job-card .tag { font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--c-brand-50); color: var(--c-brand); }
+
+/* RC challan paid service */
+.rc-box label { display: block; margin-bottom: 6px; }
+.rc-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.rc-row input { flex: 1 1 200px; min-width: 0; height: 50px; padding: 0 14px; font: inherit; font-size: 1.1rem; letter-spacing: 0.04em; text-transform: uppercase; border: 2px solid var(--c-line); border-radius: 12px; background: var(--c-surface); color: var(--c-ink); }
+.rc-row input:focus { outline: none; border-color: var(--c-brand); }
+.rc-row .cta { border: 0; font: inherit; font-weight: 800; cursor: pointer; flex: 0 0 auto; }
+.rc-msg:not(:empty) { margin: 10px 0 0; color: var(--c-red); font-weight: 700; }
+.rc-result { margin-top: 16px; }
+.rc-result td small { display: block; color: var(--c-muted); }
+.rc-st { font-weight: 800; }
+.rc-st.pend { color: var(--c-red); }
+.rc-st.paid { color: var(--c-green); }
+.rc-note { color: var(--c-muted); font-size: 0.9rem; margin: 12px 0 0; }
+@media print { .site-header, .bottom-nav, .site-footer, .rc-form, .updates, .faq, #free, #related, .breadcrumbs, .hero { display: none !important; } }

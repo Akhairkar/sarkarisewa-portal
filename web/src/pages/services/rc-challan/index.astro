@@ -1,0 +1,130 @@
+---
+// Paid RC e-Challan check. Flow: Razorpay order from the rc-challan worker ->
+// checkout -> worker verifies the payment on the server and calls API Sathi.
+// Keep `LIVE` false (noindex, not linked) until the worker has its secrets.
+import Base from "../../../layouts/Base.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import Faq from "../../../components/Faq.astro";
+import CardGrid from "../../../components/CardGrid.astro";
+
+const LIVE = false;
+const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
+const PRICE = 49;
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "Paid Services", href: "/paid-services/" }, { label: "RC e-Challan Check" }];
+const faq = [
+  { q: "क्या ई-चालान फ्री में भी देख सकते हैं?", a: "हां। परिवहन विभाग की official वेबसाइट echallan.parivahan.gov.in पर गाड़ी नंबर से चालान फ्री में देखे और भरे जा सकते हैं। हमारी ₹49 की सेवा एक सुविधा है: एक क्लिक में साफ रिपोर्ट, जिसे आप सेव या शेयर कर सकते हैं।" },
+  { q: "₹49 किस बात के हैं?", a: "यह हमारी सेवा का शुल्क है, कोई सरकारी फीस या चालान की राशि नहीं। चालान का भुगतान हमेशा official पोर्टल पर ही करें।" },
+  { q: "भुगतान कट गया पर रिपोर्ट नहीं आई तो?", a: "पेज बंद न करें और दोबारा 'रिपोर्ट दिखाएं' दबाएं। फिर भी न आए तो भुगतान ID के साथ हमें संपर्क करें; जांच के बाद पैसा वापस किया जाता है।" },
+  { q: "रिपोर्ट में कौन सी जानकारी आती है?", a: "गाड़ी नंबर पर दर्ज चालान: चालान नंबर, राशि और स्थिति (बकाया/भरा हुआ), और स्रोत से मिलने पर तारीख, जगह और नियम उल्लंघन।" },
+  { q: "चालान गलत लगे तो क्या करें?", a: "echallan.parivahan.gov.in पर चालान की जानकारी देखें और वहीं दिए विकल्प से शिकायत करें, या चालान पर लिखे ट्रैफिक पुलिस/वर्चुअल कोर्ट के तरीके से आपत्ति दर्ज करें।" },
+];
+---
+<Base
+  title="RC e-Challan Check: गाड़ी नंबर से चालान रिपोर्ट | SarkariSewa India"
+  description="गाड़ी नंबर (RC) से ई-चालान की रिपोर्ट: चालान नंबर, राशि और बकाया स्थिति। ₹49 की सुविधा सेवा; चालान official परिवहन पोर्टल पर फ्री में भी देखे जा सकते हैं।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  noindex={!LIVE}
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">🚗 Paid Service · ₹{PRICE} प्रति रिपोर्ट</span>
+    <h1>RC e-Challan Check: <em>गाड़ी नंबर से चालान रिपोर्ट</em></h1>
+    <p class="page-intro">गाड़ी का रजिस्ट्रेशन नंबर डालें, ₹{PRICE} का भुगतान करें और उस गाड़ी पर दर्ज ई-चालान की रिपोर्ट तुरंत देखें।</p>
+  </section>
+
+  <section class="section rc-box" data-worker={WORKER} data-price={PRICE}>
+    <form class="rc-form" novalidate>
+      <label for="rc-no"><strong>गाड़ी नंबर (RC Number)</strong></label>
+      <div class="rc-row">
+        <input id="rc-no" name="rc" inputmode="text" autocomplete="off" autocapitalize="characters" maxlength="14" placeholder="जैसे MH01AB1234" />
+        <button type="submit" class="cta">₹{PRICE} में रिपोर्ट देखें</button>
+      </div>
+      <p class="rc-msg" role="status" aria-live="polite"></p>
+    </form>
+    <div class="rc-result" hidden></div>
+    <p class="rc-note">भुगतान Razorpay से सुरक्षित होता है। एक भुगतान पर एक रिपोर्ट मिलती है। ₹{PRICE} हमारी सेवा का शुल्क है, सरकारी फीस नहीं।</p>
+  </section>
+
+  <section class="section" id="free">
+    <h2>फ्री में चालान कैसे देखें (official तरीका)</h2>
+    <ol class="steps">
+      <li><a href="https://echallan.parivahan.gov.in/" target="_blank" rel="noopener nofollow">echallan.parivahan.gov.in</a> खोलें और "Check Online Services → Check Challan Status" चुनें।</li>
+      <li>चालान नंबर, गाड़ी नंबर या ड्राइविंग लाइसेंस नंबर में से एक चुनें। गाड़ी नंबर से खोजने पर चेसिस या इंजन नंबर भी मांगा जाता है (RC पर लिखा होता है)। कैप्चा भरकर "Get Detail" दबाएं।</li>
+      <li>चालान दिखने पर वहीं "Pay Now" से ऑनलाइन भुगतान करें। भुगतान की रसीद ज़रूर सेव करें।</li>
+    </ol>
+    <div class="callout info"><p>चालान का पैसा <strong>सिर्फ official परिवहन/पुलिस पोर्टल</strong> पर भरें। चालान के नाम पर SMS या WhatsApp से आए अनजान लिंक पर भुगतान न करें।</p></div>
+  </section>
+
+  <Faq items={faq} />
+  <CardGrid title="गाड़ी से जुड़ी और सेवाएं" id="related" cards={[
+    { href: "/paid-services/", emoji: "🧾", title: { hi: "सभी Paid Services", en: "All paid services" }, text: { hi: "GSTIN Verification और अन्य", en: "GSTIN Verification and more" } },
+    { href: "/documents/#driving-licence", emoji: "🚗", title: { hi: "ड्राइविंग लाइसेंस", en: "Driving licence" }, text: { hi: "लर्नर, पक्का लाइसेंस, रिन्यूअल", en: "Learner, permanent, renewal" } },
+    { href: "/support/helpline-directory.html", emoji: "📞", title: { hi: "हेल्पलाइन नंबर", en: "Helplines" }, text: { hi: "सभी विभागों के टोल-फ्री नंबर", en: "Toll-free numbers" } },
+  ]} />
+
+  <script is:inline src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+  <script is:inline>
+  (function () {
+    var box = document.querySelector(".rc-box"), W = box.dataset.worker;
+    var form = box.querySelector("form"), input = box.querySelector("#rc-no"), btn = form.querySelector("button");
+    var msg = box.querySelector(".rc-msg"), out = box.querySelector(".rc-result");
+    var label = btn.textContent;
+    function norm(v) { return String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
+    function valid(v) { return /^[A-Z]{2}[0-9]{1,2}[A-Z]{0,3}[0-9]{4}$/.test(v) || /^[0-9]{2}BH[0-9]{4}[A-Z]{1,2}$/.test(v); }
+    function esc(s) { var d = document.createElement("div"); d.textContent = s == null || s === "" ? "—" : String(s); return d.innerHTML; }
+    function busy(t) { btn.disabled = !!t; btn.textContent = t || label; }
+    function show(d) {
+      var rows = (d.challans || []).map(function (c) {
+        var pend = /pend|unpaid|due/i.test(c.status);
+        return "<tr><td>" + esc(c.challan_no) + (c.date ? "<small>" + esc(c.date) + "</small>" : "") + (c.offence ? "<small>" + esc(c.offence) + "</small>" : "") +
+          "</td><td>₹" + esc(c.amount) + "</td><td><span class=\"rc-st " + (pend ? "pend" : "paid") + "\">" + esc(c.status) + "</span></td></tr>";
+      }).join("");
+      out.innerHTML = "<h2>" + esc(d.rc_number) + ": " + (d.total ? d.total + " चालान, " + d.pending + " बकाया" : "कोई चालान नहीं मिला") + "</h2>" +
+        (d.total ? "<div class=\"table-wrap\"><table><thead><tr><th>चालान</th><th>राशि</th><th>स्थिति</th></tr></thead><tbody>" + rows + "</tbody></table></div>" : "") +
+        "<p class=\"rc-note\">जांच का समय: " + esc(new Date(d.checked_at).toLocaleString("hi-IN")) + (d.call_id ? " · रिपोर्ट ID: " + esc(d.call_id) : "") +
+        ". बकाया चालान <a href=\"https://echallan.parivahan.gov.in/\" target=\"_blank\" rel=\"noopener nofollow\">echallan.parivahan.gov.in</a> पर भरें।</p>" +
+        "<button type=\"button\" class=\"more-btn rc-print\">रिपोर्ट प्रिंट / PDF सेव करें</button>";
+      out.hidden = false;
+      out.querySelector(".rc-print").onclick = function () { window.print(); };
+      try { sessionStorage.setItem("rc-report", JSON.stringify(d)); } catch (e) {}
+    }
+    try { var saved = JSON.parse(sessionStorage.getItem("rc-report") || "null"); if (saved) show(saved); } catch (e) {}
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var rc = norm(input.value); input.value = rc; msg.textContent = "";
+      if (!valid(rc)) { msg.textContent = "सही गाड़ी नंबर डालें, जैसे MH01AB1234 (आखिर में 4 अंक; कम हों तो आगे 0 लगाएं, जैसे MH12A0123)।"; return; }
+      if (!window.Razorpay) { msg.textContent = "भुगतान लोड हो रहा है, कुछ सेकंड बाद फिर कोशिश करें।"; return; }
+      busy("भुगतान शुरू हो रहा है…");
+      try {
+        var r = await fetch(W + "/create-order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ rc_number: rc }) });
+        var order = await r.json();
+        if (!r.ok || !order.success) throw new Error(order.error || "भुगतान शुरू नहीं हो सका।");
+        var rz = new Razorpay({
+          key: order.key_id, amount: order.amount, currency: order.currency || "INR", order_id: order.order_id,
+          name: "SarkariSewa India", description: "RC e-Challan Check", notes: { service: "RC e-Challan Check", rc_number: rc },
+          theme: { color: "#1d4ed8" },
+          modal: { ondismiss: function () { busy(""); } },
+          handler: async function (p) {
+            busy("रिपोर्ट निकाल रहे हैं…");
+            try {
+              var v = await fetch(W + "/verify-payment", { method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ razorpay_order_id: p.razorpay_order_id, razorpay_payment_id: p.razorpay_payment_id, razorpay_signature: p.razorpay_signature, rc_number: rc }) });
+              var res = await v.json();
+              if (!v.ok || !res.success) throw new Error(res.error || "रिपोर्ट नहीं मिल सकी।");
+              show(res.data);
+            } catch (err) {
+              msg.textContent = (err.message || "रिपोर्ट नहीं मिल सकी।") + " भुगतान ID: " + p.razorpay_payment_id + " (इसे सेव कर लें)";
+            } finally { busy(""); }
+          }
+        });
+        rz.on("payment.failed", function (resp) { msg.textContent = (resp.error && resp.error.description) || "भुगतान नहीं हो सका।"; busy(""); });
+        rz.open();
+      } catch (err) { msg.textContent = err.message || "भुगतान शुरू नहीं हो सका।"; busy(""); }
+    });
+  })();
+  </script>
+</Base>
