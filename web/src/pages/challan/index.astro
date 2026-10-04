@@ -1,0 +1,67 @@
+---
+// Hub for the traffic challan guides. Data: src/guides/challan/hub.ts.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import PromoBox from "../../components/PromoBox.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import OfficialLinks from "../../components/OfficialLinks.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { hub } from "../../guides/challan/hub";
+import { promo, VERIFIED, PUBLISHED, MODIFIED } from "../../guides/challan/common";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "ट्रैफिक चालान" }];
+---
+<Base title={hub.title} description={hub.description} breadcrumbs={crumbs} faq={hub.faq} published={PUBLISHED} modified={MODIFIED}>
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{hub.h1}</h1>
+      <div class="meta-row"><span class="verified">✓ जानकारी जांची गई: {VERIFIED}</span></div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">{hub.lead}</p>
+        <dl class="facts">{hub.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}</dl>
+      </section>
+
+      <PromoBox p={promo} />
+      <CardGrid title="चालान से जुड़ी सभी गाइड" cards={hub.guides} id="guides" />
+
+      {hub.sections.map((s) => (
+        <section class="section" id={s.id}>
+          <h2>{s.title}</h2>
+          {s.intro && <p set:html={s.intro} />}
+          {s.steps && <ol class="steps">{s.steps.map((x) => <li set:html={x} />)}</ol>}
+          {s.list && <ul class="checklist">{s.list.map((x) => <li set:html={x} />)}</ul>}
+          {s.table && (
+            <div class="table-wrap">
+              <table>
+                <thead><tr>{s.table.head.map((h) => <th>{h}</th>)}</tr></thead>
+                <tbody>{s.table.rows.map((r) => <tr>{r.map((c) => <td set:html={c} />)}</tr>)}</tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      ))}
+
+      <OfficialLinks verified={VERIFIED} links={hub.official} />
+      <PromoBox p={promo} compact />
+      <Faq items={hub.faq} />
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          <li><a href="#guides">सभी गाइड</a></li>
+          {hub.sections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+          <li><a href="#faq">सवाल-जवाब</a></li>
+        </ol>
+        <a class="cta" href="https://echallan.parivahan.gov.in/" target="_blank" rel="noopener nofollow">🔍 Official ई-चालान पोर्टल</a>
+        <a class="cta secondary" href="/services/rc-challan/">🚗 ₹49 में चालान रिपोर्ट</a>
+      </section>
+    </aside>
+  </div>
+</Base>
