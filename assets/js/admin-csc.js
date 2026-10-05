@@ -63,7 +63,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   function verifyLink(c) {
     const m = digits(c.owner_mobile);
     if (!m) return "";
-    const text = encodeURIComponent(`नमस्ते ${c.owner_name}, SarkariSewa India से बात कर रहे हैं। आपने "${c.centre_name}" को हमारी साइट पर फ्री में जोड़ने का आवेदन (${c.application_id}) भेजा है। जांच के लिए कृपया केंद्र के बोर्ड की एक फोटो और CSC/VLE ID (हो तो) भेजें।`);
+    const text = encodeURIComponent([
+      `नमस्ते ${c.owner_name} जी,`,
+      "मैं SarkariSewa India (sarkarisewaindia.com) से बात कर रहा हूं।",
+      `आपने अपना केंद्र "${c.centre_name}" हमारी वेबसाइट पर फ्री लिस्टिंग के लिए भेजा है। आवेदन नंबर: ${c.application_id}`,
+      "जांच के लिए कृपया ये भेजें:",
+      "",
+      "1. केंद्र के बोर्ड की एक फोटो, जिसमें केंद्र का नाम दिखे",
+      "2. CSC ID / VLE ID या कोई प्रमाण (जैसे CSC सर्टिफिकेट या पोर्टल का स्क्रीनशॉट), अगर हो तो",
+      '3. केंद्र की Google Maps लोकेशन (WhatsApp पर "Location" भेज दें)',
+      "",
+      'जांच के बाद आपका केंद्र आपके ज़िले के CSC पेज पर "✓ सत्यापित केंद्र" में सबसे ऊपर दिखेगा, कॉल और WhatsApp बटन के साथ।',
+      "यह सेवा अभी पूरी तरह फ्री है। हम कभी कोई OTP, पासवर्ड या पैसा नहीं मांगते।",
+      "धन्यवाद,",
+      "टीम SarkariSewa India",
+    ].join("\n"));
     return `<a href="${waLink(m, text)}" target="_blank" rel="noopener">💬 WhatsApp verify</a> · <a href="tel:+91${m}">📞 Call</a>`;
   }
 
