@@ -81,3 +81,7 @@ alter table public.csc_claims add column if not exists edit_code_hash text, add 
 alter table public.csc_claims add column if not exists photo_url text check (photo_url is null or (length(photo_url) <= 300 and photo_url like 'https://yjxsgkqspmhxndvhnjcd.supabase.co/storage/v1/object/public/csc-photos/%'));
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types) values ('csc-photos','csc-photos', true, 600000, array['image/jpeg','image/webp']) on conflict (id) do nothing;
 -- csc_public_centres and csc_owner_get now also return photo_url.
+
+-- Owner stats (2026-10-05): csc_owner_stats(p_app, p_mobile, p_code) -> jsonb
+-- {views30, calls30, wa30, map30, views, contacts} from csc_leads, only when
+-- csc_owner_get accepts the login. SECURITY DEFINER; execute granted to anon.
