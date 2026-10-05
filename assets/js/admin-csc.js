@@ -259,7 +259,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (error) throw error;
         c.edit_code_hash = "set";
       }
-      const live = "https://sarkarisewaindia.com/" + (c.profile_url || `csc-centre.html?id=${encodeURIComponent(c.application_id)}`);
+      const live = pageUrl(c); // the centre's own page once built, else the live ?id= page
       const edit = `https://sarkarisewaindia.com/csc-edit.html?id=${encodeURIComponent(c.application_id)}`;
       const lines = resetPassword
         ? [`नमस्ते ${c.owner_name} जी,`, `आपके केंद्र "${c.centre_name}" का नया पासवर्ड: ${code}`, "पुराना पासवर्ड अब काम नहीं करेगा।", `जानकारी बदलने का पेज: ${edit}`, `आवेदन नंबर: ${c.application_id}`, "(पासवर्ड किसी से साझा न करें)", "टीम SarkariSewa India"]
