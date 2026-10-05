@@ -129,6 +129,17 @@ const faq = [
         lo.textContent = "✓ लोकेशन जुड़ गई (" + f.latitude.value + ", " + f.longitude.value + ")";
       }, function () { lo.textContent = "लोकेशन नहीं मिली। पता ठीक से लिखें, यह भी काफी है।"; }, { enableHighAccuracy: true, timeout: 15000 });
     });
+    function fail(msg, field) {
+      out.textContent = "⚠️ " + msg;
+      out.style.color = "var(--c-red)";
+      var el = field || (/मोबाइल/.test(msg) && /संचालक/.test(msg) ? f.owner_mobile : /PIN/.test(msg) ? f.pincode : /पता/.test(msg) ? f.full_address : /राज्य|ज़िला|शहर/.test(msg) ? (f.state.value ? (f.district.value.trim() ? f.city : f.district) : f.state) : /ग्राहकों/.test(msg) ? f.public_whatsapp : /पुष्टि/.test(msg) ? f.consent : /नाम/.test(msg) ? (f.centre_name.value.trim() ? f.owner_name : f.centre_name) : null);
+      if (el && el.focus) { el.scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(function () { el.focus(); }, 400); }
+      else out.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    // Same number for WhatsApp by default; the owner can change it.
+    f.owner_mobile.addEventListener("change", function () {
+      if (!f.public_whatsapp.value.trim()) f.public_whatsapp.value = f.owner_mobile.value.replace(/\D/g, "").slice(-10);
+    });
     var mob = function (v) { var d = String(v || "").replace(/\D/g, ""); return d.length > 10 ? d.slice(-10) : d; };
     f.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -143,8 +154,8 @@ const faq = [
       else if ((pp && !/^[6-9]\d{9}$/.test(pp)) || (pw && !/^[6-9]\d{9}$/.test(pw))) err = "ग्राहकों वाले नंबर 10 अंकों के सही नंबर हों।";
       else if (!pp && !pw) err = "ग्राहकों के लिए कम से कम एक नंबर (कॉल या WhatsApp) भरें।";
       else if (!f.consent.checked) err = "पुष्टि वाले बॉक्स पर टिक करें।";
-      else if (Date.now() - started < 15000) err = "कृपया जानकारी जांच लें और कुछ सेकंड बाद फिर भेजें।";
-      if (err) { out.textContent = err; return; }
+      else if (Date.now() - started < 4000) err = "कृपया जानकारी एक बार जांच लें, फिर दोबारा भेजें।";
+      if (err) { fail(err); return; }
       var all = function (n) { return [].map.call(f.querySelectorAll('input[name="' + n + '"]:checked'), function (x) { return x.value; }); };
       var appId = "CSC-" + new Date().getFullYear() + "-" + Math.floor(100000 + Math.random() * 900000);
       var row = {
@@ -160,7 +171,7 @@ const faq = [
         public_phone: pp || null, public_whatsapp: pw || null,
         show_address: f.show_address.checked, show_hours: f.show_hours.checked, consent_given: true, status: "pending",
       };
-      var btn = f.querySelector("button[type=submit]"); btn.disabled = true; out.textContent = "भेजा जा रहा है…";
+      var btn = f.querySelector("button[type=submit]"); btn.disabled = true; out.style.color = ""; out.textContent = "भेजा जा रहा है…";
       fetch(url + "/rest/v1/csc_claims", {
         method: "POST",
         headers: { apikey: key, Authorization: "Bearer " + key, "Content-Type": "application/json", Prefer: "return=minimal" },
@@ -173,12 +184,13 @@ const faq = [
           return;
         }
         return r.text().then(function (t) {
+          out.style.color = "var(--c-red)";
           out.textContent = t.indexOf("DUPLICATE_PENDING_CLAIM") !== -1
             ? "इस मोबाइल नंबर से एक आवेदन पहले से जांच में है। जांच पूरी होने तक इंतज़ार करें, या sarkarisewaindia@gmail.com पर मेल करें।"
             : "आवेदन नहीं भेजा जा सका। जानकारी जांचकर फिर कोशिश करें।";
           btn.disabled = false;
         });
-      }).catch(function () { out.textContent = "इंटरनेट की समस्या। थोड़ी देर बाद फिर भेजें।"; btn.disabled = false; });
+      }).catch(function () { fail("इंटरनेट की समस्या। थोड़ी देर बाद फिर भेजें।"); btn.disabled = false; });
     });
   })();
   </script>
