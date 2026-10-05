@@ -72,6 +72,7 @@ export const FOOTER: { title: Text; links: { href: string; label: Text }[] }[] =
       { href: "/contact.html", label: { hi: "संपर्क करें", en: "Contact" } },
       { href: "/privacy-policy.html", label: "Privacy Policy" },
       { href: "/disclaimer.html", label: "Disclaimer" },
+      { href: "/refund-policy.html", label: { hi: "रिफंड नीति", en: "Refund policy" } },
     ],
   },
 ];

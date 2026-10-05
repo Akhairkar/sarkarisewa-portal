@@ -10,6 +10,7 @@ import CardGrid from "../../../../components/CardGrid.astro";
 import Explore from "../../../../components/Explore.astro";
 import JaList from "../../../../components/JaList.astro";
 import JaInfo from "../../../../components/JaInfo.astro";
+import PaidTools from "../../../../components/PaidTools.astro";
 import { jaStates, nearbyDistricts, nearbyKendras, mapLink, oldTitle, type JaDistrict, type JaState } from "../../../../lib/ja";
 import { exists } from "../../../../lib/repo";
 
@@ -149,6 +150,7 @@ const faq = [
         { href: "/support/helpline-directory.html", emoji: "📞", title: { hi: "सरकारी हेल्पलाइन नंबर", en: "Helpline numbers" }, text: { hi: "सभी विभागों के टोल-फ्री नंबर", en: "Toll-free numbers" } },
       ].filter((c) => exists(c.href.slice(1)))} />
 
+      <PaidTools />
       <OfficialLinks verified={verified} links={[
         { href: "https://janaushadhi.gov.in/", title: "PMBI / जन औषधि (official)", note: "केंद्र खोजें, Kendra Code जांचें, दवा सूची" },
         { href: "https://play.google.com/store/apps/details?id=in.gov.pmbjp", title: "JanAushadhi Sugam ऐप", note: "Google Play" },

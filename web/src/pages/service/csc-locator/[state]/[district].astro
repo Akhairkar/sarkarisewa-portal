@@ -10,6 +10,7 @@ import CardGrid from "../../../../components/CardGrid.astro";
 import Explore from "../../../../components/Explore.astro";
 import CscTool from "../../../../components/CscTool.astro";
 import CscInfo from "../../../../components/CscInfo.astro";
+import PaidTools from "../../../../components/PaidTools.astro";
 import {
   cscPages, nearbyPages, cscServices, oldCentres, oldMeta, stateOf, cscStateHref, janAushadhiHref, type CscPage,
 } from "../../../../lib/csc";
@@ -154,6 +155,7 @@ const faq = [
         { href: "/support/helpline-directory.html", emoji: "📞", title: { hi: "सरकारी हेल्पलाइन नंबर", en: "Helpline numbers" }, text: { hi: "सभी विभागों के टोल-फ्री नंबर", en: "Toll-free numbers" } },
       ].filter((c) => exists(c.href.slice(1)))} />
 
+      <PaidTools />
       <OfficialLinks verified={verified} links={[
         { href: "https://locator.csccloud.in/", title: "CSC Locator (official)", note: "राज्य, ज़िला और ब्लॉक से CSC खोजें" },
         { href: "https://csc.gov.in/", title: "CSC e-Governance Services India" },

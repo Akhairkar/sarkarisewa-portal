@@ -3,6 +3,7 @@
 import Base from "../layouts/Base.astro";
 import Breadcrumbs from "./Breadcrumbs.astro";
 import OfficialLinks from "./OfficialLinks.astro";
+import PaidTools from "./PaidTools.astro";
 import Faq from "./Faq.astro";
 import CardGrid from "./CardGrid.astro";
 import StateGrid from "./StateGrid.astro";
@@ -127,6 +128,7 @@ const toc = [
         <div class="callout info"><p><strong>दलालों से बचें:</strong> लेबर कार्ड बनवाने के लिए बोर्ड की तय फीस के अलावा किसी को पैसे न दें। फॉर्म भरवाना हो तो <a href={g.csc}>नज़दीकी CSC</a> पर रसीद के साथ भरवाएं।</p></div>
       </section>
 
+      <PaidTools />
       <OfficialLinks verified={g.verified} links={g.official} />
       <Faq items={g.faq} />
       <CardGrid title="इनसे जुड़ी जानकारी" cards={g.related} id="related" />

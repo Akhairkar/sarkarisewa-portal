@@ -1,0 +1,95 @@
+---
+// Refund, cancellation and paid-service terms for the paid tools. Keep it in
+// step with what the workers really do: the RC challan worker refunds itself
+// when no report can be made; GSTIN refunds are handled on request.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import { PAID_SERVICES } from "../data/site";
+
+const live = PAID_SERVICES.filter((s) => s.live);
+const crumbs = [{ label: "होम", href: "/" }, { label: "Paid Services", href: "/paid-services/" }, { label: "रिफंड नीति" }];
+const faq = [
+  { q: "भुगतान कट गया पर रिपोर्ट नहीं मिली तो क्या करें?", a: "RC e-Challan रिपोर्ट न बन सके तो पैसा अपने आप उसी खाते में लौटाया जाता है। GSTIN रिपोर्ट न मिले तो भुगतान ID के साथ sarkarisewaindia@gmail.com पर 7 दिन के अंदर मेल करें; जांच के बाद पूरा पैसा उसी खाते में लौटाया जाएगा।" },
+  { q: "रिफंड कितने दिन में आता है?", a: "रिफंड उसी तरीके (UPI, कार्ड, नेट बैंकिंग) में भेजा जाता है जिससे भुगतान हुआ था। Razorpay से रिफंड शुरू होने के बाद बैंक के हिसाब से आम तौर पर 5-7 कामकाजी दिन लगते हैं।" },
+  { q: "रिपोर्ट मिल गई, क्या फिर भी रिफंड मिलेगा?", a: "रिपोर्ट डिजिटल है और भुगतान के बाद तुरंत दिख जाती है, इसलिए रिपोर्ट मिलने के बाद रिफंड नहीं होता। अपवाद: एक ही रिपोर्ट के लिए दो बार पैसा कटा हो, या तकनीकी गलती से रिपोर्ट खाली/अधूरी आई हो।" },
+  { q: "क्या यह सरकारी फीस है?", a: "नहीं। SarkariSewa India एक निजी वेबसाइट है और किसी सरकारी विभाग से जुड़ी नहीं है। यह शुल्क हमारी रिपोर्ट सेवा का है। यही जानकारी संबंधित official पोर्टल पर फ्री में देखी जा सकती है।" },
+];
+---
+<Base
+  title="रिफंड और सेवा शर्तें (Refund Policy) | SarkariSewa India"
+  description="SarkariSewa India की पेड सेवाओं (RC e-Challan, GSTIN रिपोर्ट) की रिफंड, कैंसलेशन और सेवा शर्तें: कब पैसा लौटता है, कितने दिन में, और कैसे मांगें।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-05"
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>रिफंड, कैंसलेशन और पेड सेवा की शर्तें</h1>
+      <p class="page-intro">यह नीति SarkariSewa India की पेड सेवाओं पर लागू है। भुगतान से पहले हर सेवा की राशि साफ दिखाई जाती है। अपडेट: 5 अक्टूबर 2026।</p>
+
+      <div class="callout warn"><p><strong>ज़रूरी:</strong> SarkariSewa India एक निजी वेबसाइट है। हम किसी सरकारी विभाग से जुड़े नहीं हैं, कोई सरकारी प्रमाण पत्र जारी नहीं करते और कोई सरकारी आवेदन नहीं भरते। हमारी पेड रिपोर्ट में जो जानकारी है, वही संबंधित official पोर्टल पर फ्री में भी देखी जा सकती है।</p></div>
+
+      <section class="section" id="sevayen">
+        <h2>कौन सी सेवाएं और शुल्क</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>सेवा</th><th>शुल्क</th><th>रिपोर्ट न बन सके तो</th><th>फ्री official विकल्प</th></tr></thead>
+            <tbody>
+              {live.map((s) => (
+                <tr>
+                  <td><a href={s.href}>{s.title}</a></td>
+                  <td>{s.price} {typeof s.unit === "string" ? s.unit : s.unit.hi}</td>
+                  <td>{s.href.includes("rc-challan") ? "पैसा अपने आप उसी खाते में वापस" : "भुगतान ID के साथ मेल करें, जांच के बाद पूरा पैसा वापस"}</td>
+                  <td>{s.href.includes("rc-challan") ? "echallan.parivahan.gov.in" : "services.gst.gov.in (Search Taxpayer)"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>शुल्क में कोई सरकारी फीस या चालान/टैक्स की राशि शामिल नहीं है। चालान या टैक्स का भुगतान हमेशा official पोर्टल पर ही करें।</p>
+      </section>
+
+      <section class="section" id="refund">
+        <h2>रिफंड कब मिलता है</h2>
+        <ul class="checklist">
+          <li><strong>रिपोर्ट नहीं बनी:</strong> रिकॉर्ड न मिलने, स्रोत सेवा बंद होने या तकनीकी गलती से रिपोर्ट नहीं बनी तो पूरा पैसा वापस। RC e-Challan में यह अपने आप होता है; GSTIN में भुगतान ID के साथ मेल करें।</li>
+          <li><strong>दो बार पैसा कटा:</strong> एक ही रिपोर्ट के लिए दो भुगतान हुए तो दूसरा भुगतान वापस।</li>
+          <li><strong>पैसा कटा पर भुगतान फेल दिखा:</strong> ऐसा भुगतान बैंक/Razorpay के नियम से अपने आप वापस हो जाता है; न हो तो हमें भुगतान ID भेजें।</li>
+        </ul>
+        <h3>रिफंड नहीं मिलता</h3>
+        <ul class="checklist">
+          <li>रिपोर्ट सफलतापूर्वक दिख जाने के बाद, क्योंकि यह डिजिटल सेवा है और तुरंत पूरी हो जाती है।</li>
+          <li>गलत गाड़ी नंबर या GSTIN डालने पर बनी सही रिपोर्ट के लिए। भुगतान से पहले नंबर जांच लें।</li>
+          <li>स्रोत रिकॉर्ड (सरकारी/अधिकृत डेटा) में जो लिखा है, उससे असहमति होने पर। रिकॉर्ड की गलती संबंधित विभाग ही ठीक कर सकता है।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>रिफंड कैसे मांगें</h2>
+        <ol class="steps">
+          <li>भुगतान के 7 दिन के अंदर <a href="mailto:sarkarisewaindia@gmail.com">sarkarisewaindia@gmail.com</a> पर मेल करें।</li>
+          <li>मेल में Razorpay भुगतान ID (pay_ से शुरू), तारीख, राशि और सेवा का नाम लिखें। गाड़ी नंबर या GSTIN भी लिखें।</li>
+          <li>जांच के बाद रिफंड उसी तरीके से भेजा जाता है जिससे भुगतान हुआ था। बैंक के हिसाब से आम तौर पर 5-7 कामकाजी दिन लगते हैं।</li>
+        </ol>
+        <p>कभी भी अपना OTP, UPI PIN, कार्ड का CVV या पासवर्ड किसी को न दें। हम रिफंड के लिए ये कभी नहीं मांगते।</p>
+      </section>
+
+      <section class="section" id="sharten">
+        <h2>पेड सेवा की शर्तें</h2>
+        <ul class="checklist">
+          <li>रिपोर्ट सरकारी रिकॉर्ड या अधिकृत डेटा प्रदाता से उसी समय मिली जानकारी पर आधारित है। हम स्रोत का डेटा नहीं बदलते और उसकी पूर्णता की गारंटी नहीं देते।</li>
+          <li>रिपोर्ट सिर्फ जानकारी के लिए है। यह कोई सरकारी प्रमाण पत्र या कानूनी दस्तावेज़ नहीं है; आधिकारिक पुष्टि संबंधित सरकारी पोर्टल से करें।</li>
+          <li>भुगतान Razorpay के ज़रिए होता है। आपका कार्ड या बैंक विवरण हमारे पास नहीं आता।</li>
+          <li>डाला गया नंबर (गाड़ी नंबर / GSTIN) सिर्फ रिपोर्ट बनाने और भुगतान के रिकॉर्ड के लिए इस्तेमाल होता है। अधिक जानकारी: <a href="/privacy-policy.html">Privacy Policy</a>, <a href="/terms.html">Terms</a>, <a href="/disclaimer.html">Disclaimer</a>।</li>
+          <li>शुल्क या शर्तों में बदलाव इस पेज पर दिखाया जाएगा; भुगतान के समय दिखी राशि ही लागू होती है।</li>
+        </ul>
+        <p>संपर्क: <a href="mailto:sarkarisewaindia@gmail.com">sarkarisewaindia@gmail.com</a> · <a href="/contact.html">Contact</a></p>
+      </section>
+
+      <Faq items={faq} />
+    </div>
+  </article>
+</Base>

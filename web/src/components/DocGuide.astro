@@ -9,6 +9,7 @@ import CardGrid from "./CardGrid.astro";
 import StateGrid from "./StateGrid.astro";
 import Explore from "./Explore.astro";
 import PromoBox from "./PromoBox.astro";
+import PaidTools from "./PaidTools.astro";
 import type { DocGuide } from "../guides/doc/types";
 import { langOf } from "../i18n";
 
@@ -62,6 +63,7 @@ const crumbs = g.crumbs ?? [
       ))}
 
       <OfficialLinks verified={g.verified} links={g.official} />
+      <PaidTools exclude={g.promo ? [g.promo.href] : []} />
       {g.promo && <PromoBox p={g.promo} compact />}
       <Faq items={g.faq} />
       <CardGrid title={L("इनसे जुड़ी जानकारी", "Related guides")} cards={g.related} id="related" />

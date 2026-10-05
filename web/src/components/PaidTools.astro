@@ -1,0 +1,38 @@
+---
+// Grid of our live paid tools, shown on guide and locator pages. Every card
+// says it is a service fee and that the official check is free; the note links
+// the refund policy. Pages that already promote one tool pass `exclude`.
+import { PAID_SERVICES } from "../data/site";
+import { langOf, t } from "../i18n";
+interface Props { exclude?: string[]; title?: string }
+const { exclude = [], title } = Astro.props;
+const lang = langOf(Astro.url);
+const L = (hi: string, en: string) => (lang === "en" ? en : hi);
+const tools = PAID_SERVICES.filter((s) => s.live && !exclude.includes(s.href));
+const FREE: Record<string, { hi: string; en: string }> = {
+  "/services/gstin-verification/": { hi: "GST पोर्टल पर फ्री भी देख सकते हैं", en: "Also free on the GST portal" },
+  "/services/rc-challan/": { hi: "echallan.parivahan.gov.in पर फ्री भी देख सकते हैं", en: "Also free on echallan.parivahan.gov.in" },
+};
+---
+{tools.length > 0 && (
+  <section class="section paid-tools" id="paid-tools">
+    <h2>{title ?? L("एक क्लिक में रिपोर्ट: हमारी पेड सेवाएं", "One-click reports: our paid tools")}</h2>
+    <div class="paid-grid">
+      {tools.map((s) => (
+        <a class="paid-card" href={s.href}>
+          <span class="paid-top"><span aria-hidden="true">{s.emoji}</span><strong>{s.title}</strong><span class="promo-price">{s.price} {t(s.unit, lang)}</span></span>
+          <span class="paid-text">{t(s.text, lang)}</span>
+          {FREE[s.href] && <small>{t(FREE[s.href], lang)}</small>}
+          <span class="paid-cta">{L("रिपोर्ट देखें →", "Get report →")}</span>
+        </a>
+      ))}
+    </div>
+    <p class="paid-note">
+      {L(
+        "SarkariSewa India एक निजी वेबसाइट है, किसी सरकारी विभाग से जुड़ी नहीं। ऊपर की राशि हमारी सेवा का शुल्क है, कोई सरकारी फीस नहीं; यही जानकारी official पोर्टल पर फ्री भी मिलती है।",
+        "SarkariSewa India is a private website, not linked to any government department. The amount is our service fee, not a government fee; the same information is free on the official portal.",
+      )}{" "}
+      <a href="/refund-policy.html">{L("रिफंड और सेवा शर्तें", "Refund and service terms")}</a>
+    </p>
+  </section>
+)}
