@@ -42,8 +42,14 @@ jobs:
         run: |
           BEFORE="${{ github.event.before }}"
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            # Daily rebuild: nothing changed in the repo, so ping nothing.
-            : > web/changed-files.txt
+            # Scheduled rebuild: the repo did not change; ping only CSC centre
+            # pages that are new since the live sitemap (newly approved claims).
+            curl -fsS https://sarkarisewaindia.com/sitemap.xml -o /tmp/live-sm.xml || : > /tmp/live-sm.xml
+            for f in web/dist/csc-centre/*.html; do
+              [ -e "$f" ] || continue
+              rel="csc-centre/$(basename "$f")"
+              grep -q "/$rel<" /tmp/live-sm.xml || echo "$rel"
+            done > web/changed-files.txt
           elif [ -n "$BEFORE" ] && git cat-file -e "$BEFORE" 2>/dev/null; then
             git diff --name-only "$BEFORE" "${{ github.sha }}" > web/changed-files.txt
           else

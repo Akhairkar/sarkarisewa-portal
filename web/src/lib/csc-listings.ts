@@ -6,6 +6,7 @@
 // simply build no listing pages.
 import fs from "node:fs";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "./supabase-public";
+import { cscPages } from "./csc";
 
 export type Listing = {
   application_id: string; centre_name: string; centre_type: string | null; years_of_operation: number | null;
@@ -14,7 +15,7 @@ export type Listing = {
   online_services: string[] | null; offline_services: string[] | null; custom_services: string[] | null; remote_services?: string[] | null;
   working_hours: Record<string, unknown> | null; home_visit: boolean | null; appointment_required: boolean | null;
   public_phone: string | null; public_whatsapp: string | null; public_email: string | null;
-  approved_at: string | null; about: string | null; updated_at: string | null;
+  approved_at: string | null; about: string | null; updated_at: string | null; photo_url?: string | null;
 };
 
 let cache: Listing[] | null = null;
@@ -48,6 +49,13 @@ const slugify = (s: string) => s.toLowerCase().normalize("NFKD").replace(/[^a-z0
 /** Stable page slug: centre name + district + the number part of the application id. */
 export const listingSlug = (c: Listing) =>
   [slugify(c.centre_name ?? ""), slugify(c.district ?? ""), (c.application_id.match(/\d{4,}$/)?.[0] ?? slugify(c.application_id))].filter(Boolean).join("-");
+
+const norm = (s: string | null | undefined) => String(s ?? "").toLowerCase().replace(/district|जिला|ज़िला|[^a-zऀ-ॿ]/g, "");
+/** The district CSC page that shows this centre at the top, if we have one. */
+export function listingDistrictPage(c: Listing) {
+  const dn = norm(c.district);
+  return dn ? cscPages().find((p) => !p.canonical && (p.d.names.some((n) => norm(n) === dn) || norm(p.name) === dn)) : undefined;
+}
 
 export const digits = (s: string | null | undefined) => { const d = String(s ?? "").replace(/\D/g, ""); return d.length > 10 ? d.slice(-10) : d; };
 

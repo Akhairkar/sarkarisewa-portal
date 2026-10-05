@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const day = (d) => (d ? new Date(d).toLocaleDateString("en-IN") : "");
   const list = (v) => (Array.isArray(v) ? v : []);
   let byId = {};
+  // Live pages per application id, from the last site build (/csc-centre/listings.json).
+  let listed = {};
+  const SITE = "https://sarkarisewaindia.com";
+  const LISTED_AFTER = 6 * 3600 * 1000;
 
   // Admin messages go from the SarkariSewa India WhatsApp Business account:
   // on Android the link opens WhatsApp Business directly (package
@@ -33,6 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const client = await getSupabaseClient();
       if (!client) throw new Error("Could not initialize Supabase.");
 
+      listed = await fetch("/csc-centre/listings.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : { rows: [] })).then((j) => Object.fromEntries((j.rows || []).map((x) => [x.id, x]))).catch(() => ({}));
       const [claims, leads, feedback] = await Promise.all([
         client.from("csc_claims").select("*").order("submitted_at", { ascending: false }),
         client.from("csc_leads").select("application_id,action,created_at").order("created_at", { ascending: false }).limit(5000),
@@ -111,14 +116,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     approvedList.innerHTML = centers.map((c) => {
       const s = stats[c.application_id] || { call: 0, whatsapp: 0, map: 0, profile: 0, recent: 0 };
       const url = c.profile_url || `csc-centre.html?id=${encodeURIComponent(c.application_id)}`;
+      const L = listed[c.application_id];
       return `<tr>
         <td>${day(c.approved_at || c.submitted_at)}</td>
         <td style="font-weight:600;">${esc(c.centre_name)}<br><small>${esc(c.owner_name)} · <code>${esc(c.owner_mobile)}</code></small></td>
         <td><code>${esc(c.application_id)}</code></td>
-        <td>${esc([c.city, c.district].filter(Boolean).join(", "))}<br><a href="../${esc(url)}" target="_blank" style="font-size:0.85rem; color:#10b981;">View Live Page</a></td>
+        <td>${esc([c.city, c.district].filter(Boolean).join(", "))}<br><a href="${esc(L ? L.page : "../" + url)}" target="_blank" style="font-size:0.85rem; color:#10b981;">View Live Page</a><br>${listedInfo(c, L)}${c.photo_url ? `<br><a href="${esc(c.photo_url)}" target="_blank" rel="noopener"><img src="${esc(c.photo_url)}" alt="" style="width:90px;height:60px;object-fit:cover;border-radius:6px;margin-top:4px"></a> <button class="logout-btn" style="font-size:0.75rem" onclick="removePhoto('${esc(c.id)}')">Remove photo</button>` : ""}</td>
         <td><strong>${s.recent}</strong> in 30 days<br><small>📞 ${s.call} · 💬 ${s.whatsapp} · 🗺️ ${s.map} · 👁 ${s.profile} views</small></td>
         <td>
           <button class="theme-toggle-btn" style="background:#3b82f6; color:#fff; border:none; margin-bottom:4px;" onclick="shareProfile('${esc(c.id)}')">💬 Send link${c.edit_code_hash ? "" : " + password"}</button><br>
+          ${listedButton(c, L)}
+          <button class="theme-toggle-btn" style="margin-bottom:4px;" onclick="sharePage('${esc(c.id)}')">📤 Share page</button>
+          <button class="theme-toggle-btn" style="margin-bottom:4px;" onclick="copyPage('${esc(c.id)}')">📋 Copy link</button><br>
           <button class="theme-toggle-btn" style="margin-bottom:4px;" onclick="resetPassword('${esc(c.id)}')">🔑 New password</button>
           <small style="display:block;margin-bottom:4px;color:var(--admin-text-muted)">${c.edit_code_hash ? "Password set" : "No password yet"}</small>
           <button class="logout-btn" onclick="rejectCSC('${esc(c.id)}')">Revoke</button>
@@ -126,6 +135,82 @@ document.addEventListener("DOMContentLoaded", async () => {
       </tr>`;
     }).join("");
   }
+
+  // Where the centre shows on the site (own page, district page, sitemap).
+  function listedPages(L) {
+    if (!L) return [];
+    return [{ name: "अपना पेज", href: SITE + L.page }].concat(L.district ? [{ name: `${L.district.name} के CSC पेज पर सबसे ऊपर`, href: SITE + L.district.href }] : []);
+  }
+  function listedInfo(c, L) {
+    if (!L) return '<small style="color:#f59e0b">⏳ Own page not built yet (site rebuilds every 3 hours)</small>';
+    const n = listedPages(L).length;
+    return `<small style="color:#10b981">✓ Listed on ${n} page${n > 1 ? "s" : ""}${L.district ? ` (own + ${esc(L.district.name)} district)` : " (own page)"} + sitemap / Google</small>`;
+  }
+  function listedButton(c, L) {
+    const due = new Date(c.approved_at || 0).getTime() + LISTED_AFTER;
+    const sent = c.admin_notes && /\[listed-msg\]/.test(c.admin_notes);
+    if (!L) return '<small style="display:block;margin-bottom:4px;color:var(--admin-text-muted)">📣 Listing message: after the page is built</small>';
+    if (Date.now() < due) return `<small style="display:block;margin-bottom:4px;color:var(--admin-text-muted)">📣 Listing message from ${new Date(due).toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" })}</small>`;
+    return `<button class="theme-toggle-btn" style="background:${sent ? "#64748b" : "#f59e0b"}; color:#fff; border:none; margin-bottom:4px;" onclick="sendListed('${esc(c.id)}')">📣 Listing message${sent ? " (sent)" : ""}</button><br>`;
+  }
+
+  // "Your centre is listed" message, about 6 hours after approval when the
+  // pages are built and in the sitemap.
+  window.sendListed = async (id) => {
+    const c = byId[id], L = c && listed[c.application_id];
+    if (!c || !L) return;
+    const pages = listedPages(L);
+    const lines = [
+      `नमस्ते ${c.owner_name} जी 🙏`,
+      "",
+      `खुशखबरी! आपका केंद्र *${c.centre_name}* अब SarkariSewa India पर ${pages.length} जगह लिस्ट हो गया है:`,
+      "",
+      ...pages.map((p, i) => `${i + 1}. ${p.name}:\n${p.href}`),
+      "",
+      "✅ आपका पेज Google के लिए sitemap में जोड़ दिया गया है, इसलिए लोग Google पर खोजकर भी आप तक पहुंचेंगे (इसमें कुछ दिन लगते हैं)।",
+      "",
+      "ज़्यादा ग्राहकों के लिए 3 आसान काम:",
+      "1. अपना पेज WhatsApp स्टेटस और ग्रुप में शेयर करें (पेज पर \"शेयर\" बटन है)।",
+      "2. अपने केंद्र की एक साफ फोटो लगाएं और सारी सेवाएं चुनें:",
+      `${SITE}/csc-edit.html?id=${encodeURIComponent(c.application_id)}`,
+      "3. ग्राहक \"SarkariSewa India पर देखा\" लिखकर आएं तो उसी पेज पर हमें बताएं।",
+      "",
+      "यह सेवा अभी पूरी तरह फ्री है। कोई सवाल हो तो इसी नंबर पर लिखें।",
+      "धन्यवाद,",
+      "टीम SarkariSewa India",
+    ];
+    const link = waLink(digits(c.owner_mobile), encodeURIComponent(lines.join("\n")));
+    window.open(link, "_blank") || (window.location.href = link);
+    try {
+      const client = await getSupabaseClient();
+      await client.from("csc_claims").update({ admin_notes: `${c.admin_notes ? c.admin_notes + "\n" : ""}[listed-msg] ${new Date().toISOString()}` }).eq("id", id);
+      loadCSCData();
+    } catch (e) { /* the message itself was opened; marking is best effort */ }
+  };
+
+  // Owner photos go live at once; remove one that is not a real centre photo.
+  window.removePhoto = async (id) => {
+    if (!confirm("Remove this photo from the centre page?")) return;
+    const client = await getSupabaseClient();
+    const { error } = await client.from("csc_claims").update({ photo_url: null, updated_at: new Date().toISOString() }).eq("id", id);
+    if (error) alert("Could not remove: " + error.message); else loadCSCData();
+  };
+
+  const pageUrl = (c) => (listed[c.application_id] ? SITE + listed[c.application_id].page : `${SITE}/${c.profile_url || `csc-centre.html?id=${encodeURIComponent(c.application_id)}`}`);
+  window.sharePage = (id) => {
+    const c = byId[id];
+    if (!c) return;
+    const url = pageUrl(c);
+    const text = `${c.centre_name} (${[c.city, c.district].filter(Boolean).join(", ")}): सरकारी ऑनलाइन सेवाएं, समय और संपर्क`;
+    if (navigator.share) { navigator.share({ title: c.centre_name, text, url }).catch(() => {}); return; }
+    window.open(`https://wa.me/?text=${encodeURIComponent(text + "\n" + url)}`, "_blank");
+  };
+  window.copyPage = (id) => {
+    const c = byId[id];
+    if (!c) return;
+    const url = pageUrl(c);
+    (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => alert("Copied: " + url), () => prompt("Copy:", url));
+  };
 
   function renderFeedback(rows, claims) {
     if (!feedbackList) return;

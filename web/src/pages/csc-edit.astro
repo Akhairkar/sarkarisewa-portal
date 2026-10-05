@@ -85,6 +85,18 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         <p class="hint">सेव होते ही आपके केंद्र का पेज अपने आप खुलेगा और उस पर नई जानकारी दिखेगी।</p>
       </form>
 
+      <form class="claim-form" id="photo" hidden novalidate>
+        <fieldset>
+          <legend>केंद्र की फोटो (वैकल्पिक)</legend>
+          <p class="hint">केंद्र के बाहर से एक साफ फोटो लगाएं, जिसमें बोर्ड/नाम दिखे। फोटो लगते ही आपके पेज पर दिख जाएगी। गलत या किसी और की फोटो हटा दी जाएगी।</p>
+          <img id="ph-img" class="csc-photo" alt="केंद्र की फोटो" hidden />
+          <label class="more-btn" for="ph-file" style="display:inline-block;cursor:pointer">📷 फोटो चुनें / खींचें</label>
+          <input type="file" id="ph-file" accept="image/*" hidden />
+          <button type="button" class="more-btn" id="ph-del" hidden>🗑️ फोटो हटाएं</button>
+          <p class="claim-msg" id="ph-out" role="status" aria-live="polite"></p>
+        </fieldset>
+      </form>
+
       <form class="claim-form" id="fb" hidden novalidate>
         <fieldset>
           <legend>SarkariSewa से ग्राहक मिले?</legend>
@@ -155,7 +167,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         }
         cred = c0; rec = c;
         if (remember) { try { localStorage.setItem(KEY, JSON.stringify(c0)); } catch (e) {} }
-        fill(c); login.hidden = true; edit.hidden = false; fb.hidden = false;
+        fill(c); login.hidden = true; edit.hidden = false; fb.hidden = false; photoForm.hidden = false; showPhoto(c.photo_url);
         var who = document.getElementById("who");
         who.innerHTML = "";
         who.appendChild(document.createTextNode("✓ लॉगिन: " + (c.centre_name || c0.p_app) + " (" + c0.p_app + ") · "));
@@ -163,7 +175,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         a.addEventListener("click", function (e) {
           e.preventDefault();
           try { localStorage.removeItem(KEY); } catch (er) {}
-          cred = rec = null; edit.hidden = fb.hidden = who.hidden = true; login.hidden = false;
+          cred = rec = null; edit.hidden = fb.hidden = who.hidden = photoForm.hidden = true; login.hidden = false;
           login.querySelector("#l-code").value = ""; out.textContent = "";
         });
         who.appendChild(a); who.hidden = false;
@@ -183,6 +195,47 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       login.hidden = true;
       open(saved, false);
     }
+
+    // Photo: resized in the browser to a small JPEG, sent with the login to
+    // the csc-photo function, which checks the password and stores it.
+    var photoForm = document.getElementById("photo"), phImg = document.getElementById("ph-img"), phOut = document.getElementById("ph-out"), phDel = document.getElementById("ph-del");
+    function showPhoto(u) { phImg.hidden = !u; if (u) phImg.src = u; phDel.hidden = !u; }
+    function sendPhoto(body) {
+      return fetch(url + "/functions/v1/csc-photo", { method: "POST", headers: H, body: JSON.stringify(Object.assign({ app: cred.p_app, mobile: cred.p_mobile, code: cred.p_code }, body)) })
+        .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || r.status); return j; }); });
+    }
+    function shrink(file) {
+      return new Promise(function (ok, bad) {
+        var img = new Image(), u = URL.createObjectURL(file);
+        img.onload = function () {
+          URL.revokeObjectURL(u);
+          var s = Math.min(1, 1200 / Math.max(img.width, img.height)), cv = document.createElement("canvas");
+          cv.width = Math.round(img.width * s); cv.height = Math.round(img.height * s);
+          cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+          var q = 0.82, d = cv.toDataURL("image/jpeg", q);
+          while (d.length > 700000 && q > 0.4) { q -= 0.12; d = cv.toDataURL("image/jpeg", q); }
+          ok(d);
+        };
+        img.onerror = function () { URL.revokeObjectURL(u); bad(new Error("image")); };
+        img.src = u;
+      });
+    }
+    document.getElementById("ph-file").addEventListener("change", function (e) {
+      var f = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (!f || !cred) return;
+      if (!/^image\//.test(f.type)) { phOut.textContent = "सिर्फ फोटो चुनें।"; return; }
+      phOut.textContent = "फोटो लग रही है…";
+      shrink(f).then(function (d) { return sendPhoto({ image: d }); })
+        .then(function (j) { showPhoto(j.photo_url); phOut.textContent = "✓ फोटो लग गई। आपके पेज पर दिख रही है।"; })
+        .catch(function () { phOut.textContent = "फोटो नहीं लग सकी। दूसरी फोटो से या थोड़ी देर बाद कोशिश करें।"; });
+    });
+    phDel.addEventListener("click", function () {
+      if (!cred || !confirm("फोटो हटा दें?")) return;
+      phOut.textContent = "हटाई जा रही है…";
+      sendPhoto({ remove: true }).then(function () { showPhoto(null); phOut.textContent = "✓ फोटो हटा दी गई।"; })
+        .catch(function () { phOut.textContent = "अभी हटाई नहीं जा सकी।"; });
+    });
 
     document.getElementById("e-gps").addEventListener("click", function () {
       var o = document.getElementById("e-gps-out");

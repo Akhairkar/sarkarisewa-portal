@@ -95,7 +95,9 @@
     var map = c.latitude && c.longitude ? "https://www.google.com/maps?q=" + c.latitude + "," + c.longitude : c.full_address ? "https://www.google.com/maps/search/" + encodeURIComponent(c.full_address + " " + (c.pincode || "")) : "";
     var li = function (a) { return '<ul class="checklist">' + a.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>"; };
     var waLink = wa ? "https://wa.me/91" + wa + "?text=" + waText : "";
-    return '<section class="answer"><p class="answer-title">केंद्र की जानकारी</p><p class="answer-lead">'
+    var photo = /^https:\/\/[a-z0-9]+\.supabase\.co\/storage\/v1\/object\/public\/csc-photos\//.test(c.photo_url || "")
+      ? '<img class="csc-photo" src="' + esc(c.photo_url) + '" alt="' + esc(c.centre_name) + '" width="1200" height="800" decoding="async" />' : "";
+    return '<section class="answer"><p class="answer-title">केंद्र की जानकारी</p>' + photo + '<p class="answer-lead">'
       + esc(c.centre_name) + " " + esc(place) + " में एक " + esc(type) + " है" + (sn ? ", जो " + sn : "") + "।"
       + (all.length ? " यहां " + esc(all.slice(0, 5).join(", ")) + (all.length > 5 ? " और दूसरी" : "") + " सेवाएं मिलती हैं।" : "")
       + (rem.length ? " " + rem.length + " सेवाएं घर बैठे WhatsApp/फोन से भी हो जाती हैं।" : "")

@@ -73,3 +73,11 @@ alter table public.csc_claims add column if not exists edit_code_hash text, add 
 -- csc_owner_update(p_app, p_mobile, p_code, p_data jsonb) -> boolean are
 -- SECURITY DEFINER, execute granted to anon/authenticated; see the live
 -- definitions in the database (pg_get_functiondef) for the exact field rules.
+
+-- Owner photo (2026-10-05). Public bucket csc-photos (jpeg/webp, 600 KB max,
+-- no anon storage policies). Uploads go only through the csc-photo edge
+-- function (supabase/functions/csc-photo), which checks the owner password
+-- with csc_owner_get and writes photo_url with the service role.
+alter table public.csc_claims add column if not exists photo_url text check (photo_url is null or (length(photo_url) <= 300 and photo_url like 'https://yjxsgkqspmhxndvhnjcd.supabase.co/storage/v1/object/public/csc-photos/%'));
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types) values ('csc-photos','csc-photos', true, 600000, array['image/jpeg','image/webp']) on conflict (id) do nothing;
+-- csc_public_centres and csc_owner_get now also return photo_url.
