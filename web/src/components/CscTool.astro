@@ -19,7 +19,7 @@ const live = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY, state: dbState, names,
   <button class="cta csc-near" type="button">📍 मेरे पास के CSC दिखाएं</button>
   <form class="csc-form" role="search">
     <label class="sr-only" for="csc-q">PIN कोड या केंद्र का नाम</label>
-    <input id="csc-q" name="q" type="search" inputmode="search" autocomplete="off" placeholder={`PIN कोड (जैसे ${pin}) या VLE का नाम`} />
+    <input id="csc-q" name="q" type="search" inputmode="search" autocomplete="off" placeholder={dbState ? `PIN कोड (जैसे ${pin}) या VLE का नाम` : `6 अंकों का PIN कोड, जैसे ${pin}`} />
     <button type="submit">खोजें</button>
   </form>
   <p class="sr-status csc-status" role="status" aria-live="polite"></p>
@@ -103,6 +103,7 @@ const live = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY, state: dbState, names,
       e.preventDefault();
       const q = input.value.trim();
       if (/^\d{6}$/.test(q)) byPin(q);
+      else if (!cfg.state) status.textContent = "पूरे भारत में खोजने के लिए 6 अंकों का PIN कोड लिखें, या नीचे अपना राज्य चुनें (वहां नाम से भी खोज सकते हैं)।";
       else if (q.length >= 3) byName(q);
       else status.textContent = "6 अंकों का PIN कोड या कम से कम 3 अक्षर का नाम लिखें।";
     });

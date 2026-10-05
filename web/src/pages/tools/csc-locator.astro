@@ -1,0 +1,113 @@
+---
+// National CSC locator (same URL as the old tool): nearest centres by the
+// visitor's location or by PIN code across India, then state and district
+// pages. Counts come from the csc_centers table export (src/data/csc-districts.txt).
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import OfficialLinks from "../../components/OfficialLinks.astro";
+import Explore from "../../components/Explore.astro";
+import PaidTools from "../../components/PaidTools.astro";
+import CscTool from "../../components/CscTool.astro";
+import CscInfo from "../../components/CscInfo.astro";
+import { STATES } from "../../data/site";
+import { CSC_STATE, stateTotals, cscPages, cscServices } from "../../lib/csc";
+import { exists } from "../../lib/repo";
+
+const alt: Record<string, string[]> = {
+  "andaman-nicobar": ["andaman-nicobar", "andaman-and-nicobar"],
+  "jammu-kashmir": ["jammu-and-kashmir", "jammu-kashmir"],
+  "dadra-nagar-haveli-daman-diu": ["dadra-nagar-haveli-daman-diu", "dadra-and-nagar-haveli-and-daman-and-diu", "dnh-dd"],
+};
+const pick = (slug: string) => (alt[slug] ?? [slug]).map((s) => `service/csc-locator/${s}.html`).find(exists);
+const states = STATES.map((s) => ({ ...s, href: pick(s.slug) })).filter((s) => s.href);
+const total = [...new Set(Object.values(CSC_STATE))].reduce((n, st) => n + stateTotals(st).total, 0);
+const totalText = `${Math.floor(total / 100000)} लाख+`;
+const big = cscPages().filter((p) => !p.canonical).sort((a, b) => b.d.count - a.d.count).slice(0, 24);
+const { services } = cscServices({ slug: "__india", hi: "भारत" });
+const verified = "5 अक्टूबर 2026";
+const crumbs = [{ label: "होम", href: "/" }, { label: "आपके पास", href: "/near-me/" }, { label: "CSC लोकेटर" }];
+const faq = [
+  { q: "मेरे पास का CSC सेंटर कैसे खोजें?", a: `इस पेज पर "मेरे पास के CSC दिखाएं" बटन दबाएं और लोकेशन की अनुमति दें, आपके सबसे पास के 20 केंद्र दूरी के साथ दिखेंगे। या अपना 6 अंकों का PIN कोड डालें। हमारे डेटा में पूरे भारत के ${totalText} CSC रिकॉर्ड हैं।` },
+  { q: "CSC और जन सेवा केंद्र में क्या फर्क है?", a: "कोई फर्क नहीं। Common Service Centre (CSC) को अलग-अलग राज्यों में जन सेवा केंद्र, ई-मित्र, वसुधा केंद्र या डिजिटल सेवा केंद्र भी कहते हैं। ये Digital India योजना के तहत गांव और शहर में सरकारी ऑनलाइन सेवाएं देते हैं।" },
+  { q: "क्या यहां CSC का फोन नंबर मिलेगा?", a: "CSC के सार्वजनिक रिकॉर्ड में संचालक का फोन नंबर नहीं होता। जिन संचालकों ने हमारी साइट पर अपना केंद्र जोड़कर सत्यापित कराया है, उनका फोन और WhatsApp उनके ज़िले के पेज पर सबसे ऊपर दिखता है।" },
+  { q: "CSC पर आधार अपडेट की फीस कितनी है?", a: "UIDAI के अनुसार नाम, पता, जन्मतिथि जैसा demographic अपडेट ₹75 और फोटो/फिंगरप्रिंट वाला biometric अपडेट ₹125 का है। नया आधार बनवाना मुफ्त है। आधार सेवा हर CSC पर नहीं होती।" },
+  { q: "मैं CSC चलाता हूं, अपना केंद्र कैसे जोड़ूं?", a: "\"फ्री में केंद्र जोड़ें\" फॉर्म भरें। हम आपके मोबाइल/WhatsApp पर जांच करते हैं, फिर आपका केंद्र आपके ज़िले के पेज पर सबसे ऊपर कॉल और WhatsApp बटन के साथ दिखता है। अभी यह पूरी तरह फ्री है।" },
+];
+---
+<Base
+  title="CSC Center Locator 2026: Find Nearest Jan Seva Kendra in 1-Click"
+  description={`भारत के ${totalText} CSC / जन सेवा केंद्र खोजें: अपनी लोकेशन या PIN कोड से नज़दीकी केंद्र, पता और Google Maps रास्ता। राज्य और ज़िले के अनुसार लिस्ट।`}
+  breadcrumbs={crumbs}
+  faq={faq}
+  modified="2026-10-05"
+>
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>CSC लोकेटर: अपना नज़दीकी CSC / जन सेवा केंद्र खोजें</h1>
+      <div class="meta-row"><span class="verified">✓ डेटा अपडेट: {verified}</span><span>{totalText} केंद्र, {states.length} राज्य/UT</span></div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">
+          नीचे <strong>"📍 मेरे पास के CSC दिखाएं"</strong> दबाएं, आपके सबसे पास के केंद्र दूरी के साथ दिखेंगे। या अपना 6 अंकों का PIN कोड डालें।
+          हर केंद्र के साथ Google Maps पर रास्ता देखने का बटन है।
+        </p>
+        <dl class="facts">
+          <div><dt>CSC रिकॉर्ड</dt><dd>{totalText}</dd></div>
+          <div><dt>राज्य / UT</dt><dd>{states.length}</dd></div>
+          <div><dt>CSC हेल्पलाइन</dt><dd><a href="tel:18001213468">1800-121-3468</a></dd></div>
+        </dl>
+      </section>
+
+      <CscTool title="भारत में कहीं भी नज़दीकी CSC खोजें" dbState="" names={[]} area="भारत" total={total} pin="110001" />
+
+      <div class="claim-cta">
+        <p><strong>क्या आप CSC / जन सेवा केंद्र चलाते हैं?</strong> अपना केंद्र फ्री में जोड़ें। जांच के बाद आपका नाम, WhatsApp, सेवाएं और समय आपके ज़िले के पेज पर सबसे ऊपर दिखेंगे।</p>
+        <a class="cta" href="/claim-your-csc.html">फ्री में केंद्र जोड़ें</a>
+      </div>
+
+      <section class="section" id="rajya">
+        <h2>राज्य चुनें</h2>
+        <p>राज्य के पेज पर ज़िलेवार लिस्ट है, और वहां केंद्र के नाम से भी खोज सकते हैं।</p>
+        <div class="state-grid">{states.map((s) => <a href={"/" + s.href}>{s.hi}<small>{s.name}</small></a>)}</div>
+      </section>
+
+      <section class="section" id="bade-zile">
+        <h2>सबसे ज़्यादा CSC वाले ज़िले</h2>
+        <ul class="chips">{big.map((p) => <li><a href={p.href}>{p.name} <small>{p.d.count.toLocaleString("en-IN")}</small></a></li>)}</ul>
+      </section>
+
+      <div class="ad-slot" aria-hidden="true"></div>
+
+      <CscInfo name="भारत" services={services} />
+
+      <OfficialLinks verified={verified} links={[
+        { href: "https://locator.csccloud.in/", title: "CSC Locator (official)", note: "राज्य, ज़िला और ब्लॉक से CSC खोजें" },
+        { href: "https://csc.gov.in/", title: "CSC e-Governance Services India" },
+        { href: "https://uidai.gov.in/", title: "UIDAI: आधार केंद्र और फीस" },
+        { href: "tel:18001213468", title: "CSC हेल्पलाइन", note: "1800-121-3468 (टोल-फ्री)" },
+      ]} />
+      <PaidTools />
+      <Faq items={faq} />
+      <Explore exclude={["/tools/csc-locator.html"]} />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          <li><a href="#khojen">नज़दीकी CSC खोजें</a></li>
+          <li><a href="#rajya">राज्य चुनें</a></li>
+          <li><a href="#bade-zile">बड़े ज़िले</a></li>
+          <li><a href="#sevayen">कौन सी सेवाएं</a></li>
+          <li><a href="#fees">फीस</a></li>
+          <li><a href="#faq">सवाल-जवाब</a></li>
+        </ol>
+        <a class="cta" href="/claim-your-csc.html">अपना केंद्र जोड़ें (फ्री)</a>
+        <a class="cta secondary" href="/service/jan-aushadhi-store-locator.html">💊 जन औषधि केंद्र</a>
+      </section>
+    </aside>
+  </div>
+</Base>
