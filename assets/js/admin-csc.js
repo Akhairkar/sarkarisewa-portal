@@ -17,6 +17,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const list = (v) => (Array.isArray(v) ? v : []);
   let byId = {};
 
+  // Admin messages go from the SarkariSewa India WhatsApp Business account:
+  // on Android the link opens WhatsApp Business directly (package
+  // com.whatsapp.w4b); elsewhere wa.me opens whichever WhatsApp is set up.
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const waLink = (mobile, text) => isAndroid
+    ? `intent://send/?phone=91${mobile}&text=${text}#Intent;scheme=whatsapp;package=com.whatsapp.w4b;S.browser_fallback_url=${encodeURIComponent(`https://wa.me/91${mobile}?text=${text}`)};end`
+    : `https://wa.me/91${mobile}?text=${text}`;
+
   async function loadCSCData() {
     pendingList.innerHTML = '<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>';
     approvedList.innerHTML = '<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>';
@@ -56,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const m = digits(c.owner_mobile);
     if (!m) return "";
     const text = encodeURIComponent(`नमस्ते ${c.owner_name}, SarkariSewa India से बात कर रहे हैं। आपने "${c.centre_name}" को हमारी साइट पर फ्री में जोड़ने का आवेदन (${c.application_id}) भेजा है। जांच के लिए कृपया केंद्र के बोर्ड की एक फोटो और CSC/VLE ID (हो तो) भेजें।`);
-    return `<a href="https://wa.me/91${m}?text=${text}" target="_blank" rel="noopener">💬 WhatsApp verify</a> · <a href="tel:+91${m}">📞 Call</a>`;
+    return `<a href="${waLink(m, text)}" target="_blank" rel="noopener">💬 WhatsApp verify</a> · <a href="tel:+91${m}">📞 Call</a>`;
   }
 
   function renderPending(centers) {
@@ -130,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!c) return;
     const url = "https://sarkarisewaindia.com/" + (c.profile_url || `csc-centre.html?id=${encodeURIComponent(c.application_id)}`);
     const text = encodeURIComponent(`नमस्ते ${c.owner_name}, आपका केंद्र "${c.centre_name}" SarkariSewa India पर सत्यापित होकर लाइव है (फ्री): ${url}\nहमारी साइट से आने वाले ग्राहक WhatsApp पर "SarkariSewa India पर देखा" लिखकर आएंगे। ग्राहक मिलें तो इसी पेज पर "भेजें" फॉर्म से हमें बताएं।`);
-    window.open(`https://wa.me/91${digits(c.owner_mobile)}?text=${text}`, "_blank", "noopener");
+    window.open(waLink(digits(c.owner_mobile), text), "_blank", "noopener");
   };
 
   window.approveCSC = async (id) => {
