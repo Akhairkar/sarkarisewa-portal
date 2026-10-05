@@ -70,6 +70,7 @@ const ld = {
       <h1>{c.centre_name}: {type}, {c.city || c.district}</h1>
       <div class="meta-row"><span class="verified">✓ SarkariSewa पर सत्यापित केंद्र</span><span>{where}</span></div>
 
+      <div id="c-live" data-app={c.application_id} data-updated={c.updated_at ?? ""} data-type={type}>
       <section class="answer" aria-labelledby="answer-title">
         <p class="answer-title" id="answer-title">केंद्र की जानकारी</p>
         <p class="answer-lead">
@@ -108,6 +109,7 @@ const ld = {
           <p class="cell-note">सेवाओं की जानकारी केंद्र के संचालक ने दी है। जाने से पहले फोन या WhatsApp पर पूछ लें।</p>
         </section>
       )}
+      </div>
 
       {guides.length > 0 && (
         <section class="section" id="taiyari">
@@ -137,6 +139,7 @@ const ld = {
       <Faq items={faq} />
 
       <p class="notice">SarkariSewa India एक निजी वेबसाइट है। केंद्र की जानकारी संचालक ने दी है; हम संचालक से बात करके इसे जांचते हैं, पर केंद्र की सेवा, फीस या व्यवहार की ज़िम्मेदारी हमारी नहीं है। अपना केंद्र जोड़ना है? <a href="/claim-your-csc.html">फ्री में जोड़ें</a></p>
+      <p class="hint" style="text-align:right"><a href={`/csc-edit.html?id=${encodeURIComponent(c.application_id)}`} rel="nofollow">संचालक: जानकारी बदलें</a></p>
       <Explore />
     </article>
 
@@ -151,7 +154,16 @@ const ld = {
   </div>
   <script is:inline src="/assets/js/csc-listing.js"></script>
   <script is:inline define:vars={{ app: c.application_id }}>
+    // Owner edits show at once: if the live record is newer than this build,
+    // redraw the info, services and contact parts from it.
     if (window.SSCsc) {
+      var live = document.getElementById("c-live");
+      SSCsc.one(app).then(function (row) {
+        if (row && row.updated_at && row.updated_at !== live.dataset.updated) {
+          live.innerHTML = SSCsc.full(row, live.dataset.type);
+          var h1 = document.querySelector("h1"); if (h1) h1.textContent = row.centre_name + ": " + live.dataset.type + ", " + (row.city || row.district || "");
+        }
+      }).catch(function () {});
       SSCsc.log(app, "profile");
       document.addEventListener("click", function (e) {
         var a = e.target.closest && e.target.closest("a[data-act]");

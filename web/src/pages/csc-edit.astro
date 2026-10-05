@@ -32,6 +32,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         </fieldset>
       </form>
 
+      <p class="hint" id="who" hidden></p>
       <form class="claim-form" id="edit" hidden novalidate>
         <fieldset>
           <legend>केंद्र</legend>
@@ -81,7 +82,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         </fieldset>
         <button type="submit" class="cta">बदलाव सेव करें</button>
         <p class="claim-msg" id="e-out" role="status" aria-live="polite"></p>
-        <p class="hint">सेव होते ही बदलाव आपके केंद्र के पेज पर दिखने लगते हैं (कुछ जगह 24 घंटे तक लग सकते हैं)।</p>
+        <p class="hint">सेव होते ही आपके केंद्र का पेज अपने आप खुलेगा और उस पर नई जानकारी दिखेगी।</p>
       </form>
 
       <form class="claim-form" id="fb" hidden novalidate>
@@ -105,10 +106,15 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
     var rpc = function (fn, body) { return fetch(url + "/rest/v1/rpc/" + fn, { method: "POST", headers: H, body: JSON.stringify(body) }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
     var mob = function (v) { var d = String(v || "").replace(/\D/g, ""); return d.length > 10 ? d.slice(-10) : d; };
     var login = document.getElementById("login"), edit = document.getElementById("edit"), fb = document.getElementById("fb");
-    var cred = null;
+    var cred = null, rec = null;
+    var KEY = "ss_csc_owner";
     var q = new URLSearchParams(location.search);
     if (q.get("id")) login.querySelector("#l-app").value = q.get("id");
     if (q.get("code")) login.querySelector("#l-code").value = q.get("code");
+    var slug = function (t) { return String(t || "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60); };
+    // Login is remembered on this phone, so the owner types the password only once.
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
 
     function addBox(groupId, name, value) {
       var g = document.getElementById(groupId);
@@ -138,18 +144,45 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       f.dataset.lat = c.latitude || ""; f.dataset.lng = c.longitude || "";
     }
 
+    function open(c0, remember) {
+      var out = document.getElementById("l-out");
+      out.textContent = "जांच हो रही है…";
+      return rpc("csc_owner_get", c0).then(function (c) {
+        if (!c) {
+          try { localStorage.removeItem(KEY); } catch (e) {}
+          login.hidden = false;
+          out.textContent = "जानकारी मेल नहीं खाई। आवेदन नंबर, मोबाइल और पासवर्ड दोबारा जांचें।"; return;
+        }
+        cred = c0; rec = c;
+        if (remember) { try { localStorage.setItem(KEY, JSON.stringify(c0)); } catch (e) {} }
+        fill(c); login.hidden = true; edit.hidden = false; fb.hidden = false;
+        var who = document.getElementById("who");
+        who.innerHTML = "";
+        who.appendChild(document.createTextNode("✓ लॉगिन: " + (c.centre_name || c0.p_app) + " (" + c0.p_app + ") · "));
+        var a = document.createElement("a"); a.href = "#"; a.textContent = "दूसरे नंबर/पासवर्ड से लॉगिन करें";
+        a.addEventListener("click", function (e) {
+          e.preventDefault();
+          try { localStorage.removeItem(KEY); } catch (er) {}
+          cred = rec = null; edit.hidden = fb.hidden = who.hidden = true; login.hidden = false;
+          login.querySelector("#l-code").value = ""; out.textContent = "";
+        });
+        who.appendChild(a); who.hidden = false;
+        out.textContent = "";
+      }).catch(function () { login.hidden = false; out.textContent = "अभी जांच नहीं हो सकी। थोड़ी देर बाद कोशिश करें।"; });
+    }
+
     login.addEventListener("submit", function (e) {
       e.preventDefault();
       var out = document.getElementById("l-out");
       var app = login.querySelector("#l-app").value.trim(), m = mob(login.querySelector("#l-mob").value), code = login.querySelector("#l-code").value.trim().toUpperCase();
       if (!app || !/^[6-9]\d{9}$/.test(m) || code.length < 4) { out.textContent = "आवेदन नंबर, 10 अंकों का मोबाइल और पासवर्ड भरें।"; return; }
-      out.textContent = "जांच हो रही है…";
-      rpc("csc_owner_get", { p_app: app, p_mobile: m, p_code: code }).then(function (c) {
-        if (!c) { out.textContent = "जानकारी मेल नहीं खाई। आवेदन नंबर, मोबाइल और पासवर्ड दोबारा जांचें।"; return; }
-        cred = { p_app: app, p_mobile: m, p_code: code };
-        fill(c); login.hidden = true; edit.hidden = false; fb.hidden = false;
-      }).catch(function () { out.textContent = "अभी जांच नहीं हो सकी। थोड़ी देर बाद कोशिश करें।"; });
+      open({ p_app: app, p_mobile: m, p_code: code }, true);
     });
+
+    if (saved && saved.p_app && saved.p_mobile && saved.p_code && (!q.get("id") || q.get("id") === saved.p_app)) {
+      login.hidden = true;
+      open(saved, false);
+    }
 
     document.getElementById("e-gps").addEventListener("click", function () {
       var o = document.getElementById("e-gps-out");
@@ -181,7 +214,14 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       };
       out.textContent = "सेव हो रहा है…";
       rpc("csc_owner_update", Object.assign({ p_data: data }, cred)).then(function (ok) {
-        out.textContent = ok ? "✓ बदलाव सेव हो गए।" : "सेव नहीं हुआ। दोबारा लॉगिन करके कोशिश करें।";
+        if (!ok) { out.textContent = "सेव नहीं हुआ। दोबारा लॉगिन करके कोशिश करें।"; return; }
+        // Open the centre's page; it redraws itself from the live data.
+        var num = (cred.p_app.match(/\d{4,}$/) || [slug(cred.p_app)])[0];
+        var page = "/csc-centre/" + [slug(data.centre_name), slug(rec && rec.district), num].filter(Boolean).join("-") + ".html";
+        var dyn = "/csc-centre.html?id=" + encodeURIComponent(cred.p_app);
+        out.innerHTML = '✓ बदलाव सेव हो गए। आपका पेज खुल रहा है… <a href="' + dyn + '">पेज देखें</a>';
+        var go = function (u) { setTimeout(function () { location.href = u + (u.indexOf("?") === -1 ? "?" : "&") + "t=" + Date.now(); }, 1200); };
+        fetch(page, { method: "HEAD", cache: "no-store" }).then(function (r) { go(r.ok ? page : dyn); }).catch(function () { go(dyn); });
       }).catch(function () { out.textContent = "सेव नहीं हो सका। थोड़ी देर बाद कोशिश करें।"; });
     });
 

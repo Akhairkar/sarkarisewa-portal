@@ -63,7 +63,63 @@
     });
   }
 
+
+  // ---- Full centre view (same layout as the built page) for live updates ----
+  var SVC_HI = { "PAN related assistance": "PAN कार्ड सहायता", "Certificate applications": "प्रमाण पत्र आवेदन", "Bill payment": "बिल भुगतान",
+    "Banking-related services": "बैंकिंग सेवाएं", "Insurance-related services": "बीमा सेवाएं", "Government applications": "सरकारी आवेदन",
+    "Online forms": "ऑनलाइन फॉर्म", "Exam/application assistance": "परीक्षा / आवेदन फॉर्म", "Education services": "शिक्षा सेवाएं",
+    Printing: "प्रिंटिंग", Photocopy: "फोटोकॉपी", Scanning: "स्कैनिंग", Lamination: "लैमिनेशन", "Passport photo": "पासपोर्ट फोटो", "Document assistance": "डॉक्यूमेंट सहायता" };
+  function svc(a) { return list(a).filter(Boolean).map(function (s) { return SVC_HI[s] || s; }); }
+  function since(y) { var n = new Date().getFullYear(); return !y ? "" : y >= 1950 && y <= n ? y + " से चल रहा है" : y > 0 && y <= 60 ? y + " साल से चल रहा है" : ""; }
+  function span(a, b) { return a && b && a !== b ? a + " - " + b : a ? a + " से (बंद होने का समय फोन पर पूछें)" : ""; }
+  function hoursFull(h) {
+    if (!h || typeof h !== "object") return "";
+    if (h.open || h.close) return span(h.open, h.close) + (h.days ? " (" + h.days + ")" : "");
+    var days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"], hi = { monday: "सोम", tuesday: "मंगल", wednesday: "बुध", thursday: "गुरु", friday: "शुक्र", saturday: "शनि", sunday: "रवि" };
+    var rows = days.map(function (d) { var v = h[d] || h[d[0].toUpperCase() + d.slice(1)]; return v && typeof v === "object" ? [d, /closed/i.test(v.status || "") ? "बंद" : span(v.open, v.close) || "खुला"] : null; }).filter(Boolean);
+    if (!rows.length) return "";
+    var open = rows.filter(function (r) { return r[1] !== "बंद"; });
+    if (open.length && open.every(function (r) { return r[1] === open[0][1]; })) {
+      var closed = rows.filter(function (r) { return r[1] === "बंद"; }).map(function (r) { return hi[r[0]]; });
+      return (open.length === 7 ? "हर दिन" : open.map(function (r) { return hi[r[0]]; }).join(", ")) + ": " + open[0][1] + (closed.length ? "; " + closed.join(", ") + " बंद" : "");
+    }
+    return rows.map(function (r) { return hi[r[0]] + ": " + r[1]; }).join(", ");
+  }
+  function full(c, type) {
+    var ph = digits(c.public_phone), wa = digits(c.public_whatsapp);
+    var waText = encodeURIComponent("नमस्ते, मैंने आपका केंद्र SarkariSewa India (sarkarisewaindia.com) पर देखा। मुझे इस काम के लिए मदद चाहिए: ");
+    var on = svc(c.online_services), off = svc(c.offline_services), cu = svc(c.custom_services), rem = svc(c.remote_services);
+    var all = on.concat(off, cu, rem).filter(function (x, i, a) { return a.indexOf(x) === i; });
+    var place = [c.locality, c.city, c.district].filter(function (x, i, a) { return x && a.indexOf(x) === i; }).join(", ");
+    var hrs = hoursFull(c.working_hours), sn = since(c.years_of_operation);
+    var map = c.latitude && c.longitude ? "https://www.google.com/maps?q=" + c.latitude + "," + c.longitude : c.full_address ? "https://www.google.com/maps/search/" + encodeURIComponent(c.full_address + " " + (c.pincode || "")) : "";
+    var li = function (a) { return '<ul class="checklist">' + a.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>"; };
+    var waLink = wa ? "https://wa.me/91" + wa + "?text=" + waText : "";
+    return '<section class="answer"><p class="answer-title">केंद्र की जानकारी</p><p class="answer-lead">'
+      + esc(c.centre_name) + " " + esc(place) + " में एक " + esc(type) + " है" + (sn ? ", जो " + sn : "") + "।"
+      + (all.length ? " यहां " + esc(all.slice(0, 5).join(", ")) + (all.length > 5 ? " और दूसरी" : "") + " सेवाएं मिलती हैं।" : "")
+      + (rem.length ? " " + rem.length + " सेवाएं घर बैठे WhatsApp/फोन से भी हो जाती हैं।" : "")
+      + (c.home_visit ? " केंद्र घर पर आकर भी सेवा देता है।" : "") + "</p><dl class=\"facts\">"
+      + (c.full_address ? "<div><dt>पता</dt><dd>" + esc(c.full_address) + (c.pincode ? ", PIN " + esc(c.pincode) : "") + "</dd></div>" : "")
+      + (hrs ? "<div><dt>समय</dt><dd>" + esc(hrs) + "</dd></div>" : "")
+      + (ph ? '<div><dt>फोन</dt><dd><a href="tel:+91' + ph + '" data-act="call">' + ph.slice(0, 5) + " " + ph.slice(5) + "</a></dd></div>" : "")
+      + (wa ? '<div><dt>WhatsApp</dt><dd><a href="' + waLink + '" data-act="whatsapp" target="_blank" rel="noopener nofollow">' + wa.slice(0, 5) + " " + wa.slice(5) + "</a></dd></div>" : "")
+      + '</dl><div class="ja-actions" style="margin-top:12px">'
+      + (ph ? '<a class="cta" href="tel:+91' + ph + '" data-act="call">📞 कॉल करें</a>' : "")
+      + (wa ? '<a class="cta secondary" href="' + waLink + '" data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 WhatsApp करें</a>' : "")
+      + (map ? '<a href="' + map + '" data-act="map" target="_blank" rel="noopener nofollow">🗺️ रास्ता देखें ↗</a>' : "")
+      + "</div></section>"
+      + (c.about ? '<section class="section" id="parichay"><h2>केंद्र के बारे में</h2><p style="white-space:pre-line">' + esc(c.about) + "</p></section>" : "")
+      + (all.length ? '<section class="section" id="sevayen"><h2>' + esc(c.centre_name) + " पर मिलने वाली सेवाएं</h2>"
+        + (rem.length ? "<h3>🏠 घर बैठे (WhatsApp/फोन से कागज़ भेजकर)</h3>" + li(rem) : "")
+        + (on.length ? "<h3>🏢 केंद्र पर आकर: सरकारी सेवाएं</h3>" + li(on) : "")
+        + (off.length || cu.length ? "<h3>🏢 केंद्र पर: दूसरी सेवाएं</h3>" + li(off.concat(cu)) : "")
+        + (rem.length && wa ? '<p><a class="cta secondary" href="' + waLink + '" data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 घर बैठे काम के लिए WhatsApp करें</a></p>' : "")
+        + '<p class="cell-note">सेवाओं की जानकारी केंद्र के संचालक ने दी है। जाने से पहले फोन या WhatsApp पर पूछ लें।</p></section>' : "");
+  }
+
   window.SSCsc = {
+    full: full,
     card: card, wire: wire, log: log, esc: esc,
     // Approved centres of a district: matched by district name or PIN.
     district: function (root, cfg) {
