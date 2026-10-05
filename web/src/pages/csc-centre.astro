@@ -4,6 +4,9 @@
 // one dynamic page. The owner can report customers they got through the site.
 import Base from "../layouts/Base.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { listings, listingSlug } from "../lib/csc-listings";
+// Centres that already have a static page: id -> page, so the redirect is instant.
+const pages = Object.fromEntries((await listings()).map((c) => [c.application_id, `/csc-centre/${listingSlug(c)}.html`]));
 const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर", href: "/tools/csc-locator.html" }, { label: "केंद्र की जानकारी" }];
 ---
 <Base title="CSC केंद्र की जानकारी | SarkariSewa India" description="SarkariSewa पर सत्यापित CSC / जन सेवा केंद्र: पता, सेवाएं, समय और संपर्क।" breadcrumbs={crumbs} noindex schemaType="WebPage">
@@ -27,6 +30,9 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       <p class="notice">SarkariSewa India एक निजी वेबसाइट है। केंद्र की जानकारी संचालक ने खुद दी है; हम संचालक से बात करके इसे जांचते हैं, पर केंद्र की सेवा, फीस या व्यवहार की ज़िम्मेदारी हमारी नहीं है। सरकारी फीस से ज़्यादा पैसा मांगा जाए तो रसीद लें और शिकायत करें।</p>
     </div>
   </article>
+  <script is:inline define:vars={{ pages }}>
+    (function () { var id = new URLSearchParams(location.search).get("id"); if (id && pages[id]) location.replace(pages[id]); })();
+  </script>
   <script is:inline src="/assets/js/csc-listing.js"></script>
   <script is:inline>
   (function () {
