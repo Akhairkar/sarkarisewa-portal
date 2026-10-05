@@ -190,13 +190,19 @@
     card: card, wire: wire, log: log, esc: esc,
     // Approved centres of a district: matched by district name or PIN.
     district: function (root, cfg) {
-      var names = (cfg.names || []).map(norm).filter(Boolean), pins = cfg.pins || [], st = norm(cfg.state);
+      // Exact district name (a trailing state name ignored: "North East Delhi" = "North East");
+      // PIN is used only when the centre gave no district. Loose matching put
+      // centres on wrong pages ("North East Delhi" contains "East" and "North").
+      var st = norm(cfg.state);
+      var strip = function (x) { return st && x.length > st.length && x.slice(-st.length) === st ? x.slice(0, -st.length) : x; };
+      var names = (cfg.names || []).map(norm).filter(Boolean).map(strip), pins = cfg.pins || [];
       return get("csc_public_centres?select=*&order=approved_at.desc&limit=500").then(function (rows) {
         var mine = rows.filter(function (c) {
           if (cfg.exclude && c.application_id === cfg.exclude) return false;
           if (kindOf(c) !== (cfg.kind || "csc")) return false;
-          var d = norm(c.district), sOk = !st || !norm(c.state) || norm(c.state) === st;
-          return sOk && (names.some(function (n) { return d && (d.indexOf(n) !== -1 || n.indexOf(d) !== -1); }) || pins.indexOf(String(c.pincode || "").trim()) !== -1);
+          if (st && norm(c.state) && norm(c.state) !== st) return false;
+          var d = strip(norm(c.district));
+          return d ? names.indexOf(d) !== -1 : pins.indexOf(String(c.pincode || "").trim()) !== -1;
         });
         if (!mine.length) return 0;
         root.querySelector(".v-list").innerHTML = mine.map(function (c) { return card(c); }).join("");
