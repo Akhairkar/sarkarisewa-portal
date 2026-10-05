@@ -137,14 +137,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Where the centre shows on the site (own page, district page, sitemap).
+  // Public pages that show the centre, with what each one does for the owner.
   function listedPages(L) {
     if (!L) return [];
-    return [{ name: "अपना पेज", href: SITE + L.page }].concat(L.district ? [{ name: `${L.district.name} ज़िले के पेज पर सबसे ऊपर`, href: SITE + L.district.href }] : []);
+    const ja = L.kind === "ja";
+    const out = [{ name: "आपका अपना पेज", why: "आपकी सेवाएं, समय, फोटो, नक्शा, कॉल और WhatsApp बटन; Google पर आपके केंद्र के नाम से खोजने वालों को यही मिलेगा", href: SITE + L.page }];
+    if (L.district) out.push({ name: `${L.district.name} ज़िले के ${ja ? "जन औषधि" : "CSC"} पेज पर सबसे ऊपर`, why: `ज़िले में ${ja ? "जन औषधि केंद्र" : "CSC / जन सेवा केंद्र"} खोजने वाले हर व्यक्ति को सबसे पहले आपका "✓ सत्यापित" केंद्र दिखेगा`, href: SITE + L.district.href });
+    if (L.state) out.push({ name: `${L.state.name} के ${ja ? "जन औषधि" : "CSC"} पेज पर "सत्यापित केंद्र" में`, why: "पूरे राज्य के पेज पर भी आपका केंद्र दिखेगा", href: SITE + L.state.href });
+    return out;
+  }
+  // WhatsApp lines: numbered pages with links and benefits.
+  function placementLines(c, L) {
+    const pages = listedPages(L);
+    if (!pages.length) return ["आपका पेज और ज़िले के पेज पर लिस्टिंग अगले कुछ घंटों में तैयार हो जाएगी, हम लिंक भेज देंगे।"];
+    const top = pages.filter((p) => /सबसे ऊपर/.test(p.name)).length;
+    return [
+      `📍 आपका केंद्र अभी SarkariSewa India के *${pages.length} पब्लिक पेज* पर लाइव है${top ? ` (${top} पर सबसे ऊपर)` : ""}:`,
+      "",
+      ...pages.flatMap((p, i) => [`*${i + 1}. ${p.name}*`, p.why, p.href, ""]),
+      "✅ आपका पेज Google के sitemap में जोड़ दिया गया है; कुछ दिनों में Google पर भी दिखने लगेगा।",
+      "",
+      "*इससे आपको क्या फायदा:*",
+      "• पास के लोग सीधे आपको कॉल/WhatsApp करेंगे, बीच में कोई नहीं",
+      "• \"✓ सत्यापित\" बैज से ग्राहक भरोसा करते हैं",
+      "• 24 घंटे ऑनलाइन, दुकान बंद हो तब भी लोग आपका नंबर और सेवाएं देख सकते हैं",
+      "• यह अभी पूरी तरह फ्री है",
+      "",
+      "👉 ऊपर के सभी लिंक एक बार खोलकर देख लें कि जानकारी सही है।",
+    ];
   }
   function listedInfo(c, L) {
     if (!L) return '<small style="color:#f59e0b">⏳ Own page not built yet (site rebuilds every 3 hours)</small>';
     const n = listedPages(L).length;
-    return `<small style="color:#10b981">✓ Listed on ${n} page${n > 1 ? "s" : ""}${L.district ? ` (own + ${esc(L.district.name)} district)` : " (own page)"} + sitemap / Google</small>`;
+    return `<small style="color:#10b981">✓ Listed on ${n} page${n > 1 ? "s" : ""}${L.district ? ` (own + ${esc(L.district.name)} district${L.state ? " + state" : ""})` : " (own page)"} + sitemap / Google</small>`;
   }
   function listedButton(c, L) {
     const due = new Date(c.approved_at || 0).getTime() + LISTED_AFTER;
@@ -159,23 +184,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.sendListed = async (id) => {
     const c = byId[id], L = c && listed[c.application_id];
     if (!c || !L) return;
-    const pages = listedPages(L);
     const lines = [
       `नमस्ते ${c.owner_name} जी 🙏`,
       "",
-      `खुशखबरी! आपका केंद्र *${c.centre_name}* अब SarkariSewa India पर ${pages.length} जगह लिस्ट हो गया है:`,
+      `खुशखबरी! आपका केंद्र *${c.centre_name}* अब SarkariSewa India पर लाइव है।`,
       "",
-      ...pages.map((p, i) => `${i + 1}. ${p.name}:\n${p.href}`),
+      ...placementLines(c, L),
       "",
-      "✅ आपका पेज Google के लिए sitemap में जोड़ दिया गया है, इसलिए लोग Google पर खोजकर भी आप तक पहुंचेंगे (इसमें कुछ दिन लगते हैं)।",
-      "",
-      "ज़्यादा ग्राहकों के लिए 3 आसान काम:",
+      "*ज़्यादा ग्राहकों के लिए 3 आसान काम:*",
       "1. अपना पेज WhatsApp स्टेटस और ग्रुप में शेयर करें (पेज पर \"शेयर\" बटन है)।",
-      "2. अपने केंद्र की एक साफ फोटो लगाएं और सारी सेवाएं चुनें:",
+      "2. अपने केंद्र की एक साफ फोटो लगाएं और सारी सेवाएं चुनें; वहीं आपको दिखेगा कि कितने लोगों ने पेज देखा और कॉल/WhatsApp किया:",
       `${SITE}/csc-edit.html?id=${encodeURIComponent(c.application_id)}`,
       "3. ग्राहक \"SarkariSewa India पर देखा\" लिखकर आएं तो उसी पेज पर हमें बताएं।",
       "",
-      "यह सेवा अभी पूरी तरह फ्री है। कोई सवाल हो तो इसी नंबर पर लिखें।",
+      "कोई सवाल हो तो इसी नंबर पर लिखें।",
       "धन्यवाद,",
       "टीम SarkariSewa India",
     ];
@@ -265,8 +287,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         ? [`नमस्ते ${c.owner_name} जी,`, `आपके केंद्र "${c.centre_name}" का नया पासवर्ड: ${code}`, "पुराना पासवर्ड अब काम नहीं करेगा।", `जानकारी बदलने का पेज: ${edit}`, `आवेदन नंबर: ${c.application_id}`, "(पासवर्ड किसी से साझा न करें)", "टीम SarkariSewa India"]
         : [
           `नमस्ते ${c.owner_name} जी,`,
-          `बधाई हो! आपका केंद्र "${c.centre_name}" SarkariSewa India पर सत्यापित होकर लाइव है (फ्री):`,
-          live,
+          `बधाई हो! आपका केंद्र "${c.centre_name}" SarkariSewa India पर सत्यापित होकर लाइव है (फ्री)।`,
+          "",
+          ...(listed[c.application_id] ? placementLines(c, listed[c.application_id]) : ["आपका पेज:", live, "(ज़िले के पेज पर लिस्टिंग अगले कुछ घंटों में दिखेगी)"]),
           "",
           "अपनी सेवाएं, समय और संपर्क आप खुद बदल सकते हैं, कोई कोडिंग नहीं, बस बटन दबाकर:",
           edit,

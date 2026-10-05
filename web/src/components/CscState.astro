@@ -71,6 +71,16 @@ const faq = [
         <a class="cta" href={`/claim-your-csc.html?state=${encodeURIComponent(st.name)}`}>फ्री में केंद्र जोड़ें</a>
       </div>
 
+      <section class="section" id="verified" hidden>
+        <h2>{st.hi} के सत्यापित केंद्र</h2>
+        <p>इन केंद्रों के संचालकों ने खुद अपनी जानकारी दी है और SarkariSewa ने उनसे बात करके जांचा है। सीधे कॉल या WhatsApp करें।</p>
+        <ul class="csc-list v-list"></ul>
+      </section>
+      <script is:inline src="/assets/js/csc-listing.js"></script>
+      <script is:inline define:vars={{ vcfg: { state: st.name, all: true, kind: "csc" } }}>
+        window.SSCsc && window.SSCsc.district(document.getElementById("verified"), vcfg);
+      </script>
+
       <CscTool title={`${st.hi} में नज़दीकी CSC खोजें`} dbState={sp.dbState} names={[]} area={st.hi} total={tot.total} pin={pin} />
 
       <section class="section" id="zile">

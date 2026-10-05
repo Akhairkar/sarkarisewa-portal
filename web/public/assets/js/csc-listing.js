@@ -201,6 +201,7 @@
           if (cfg.exclude && c.application_id === cfg.exclude) return false;
           if (kindOf(c) !== (cfg.kind || "csc")) return false;
           if (st && norm(c.state) && norm(c.state) !== st) return false;
+          if (cfg.all) return true;
           var d = strip(norm(c.district));
           return d ? names.indexOf(d) !== -1 : pins.indexOf(String(c.pincode || "").trim()) !== -1;
         });

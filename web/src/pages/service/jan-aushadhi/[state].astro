@@ -62,6 +62,16 @@ const faq = [
 
       {nd > 1 && <JaPicker districts={s.districts} title={`${s.hi} में अपना नज़दीकी जन औषधि केंद्र खोजें`} />}
 
+      <section class="section" id="verified" hidden>
+        <h2>{s.hi} के सत्यापित जन औषधि केंद्र</h2>
+        <p>इन केंद्रों के संचालकों ने खुद अपनी जानकारी दी है और SarkariSewa ने उनसे बात करके जांचा है। दवा की उपलब्धता के लिए सीधे कॉल या WhatsApp करें।</p>
+        <ul class="csc-list v-list"></ul>
+      </section>
+      <script is:inline src="/assets/js/csc-listing.js"></script>
+      <script is:inline define:vars={{ vcfg: { state: s.name, all: true, kind: "ja" } }}>
+        window.SSCsc && window.SSCsc.district(document.getElementById("verified"), vcfg);
+      </script>
+
       <section class="section" id="zile">
         <h2>{s.hi} के ज़िलेवार जन औषधि केंद्र</h2>
         <div class="table-wrap">
