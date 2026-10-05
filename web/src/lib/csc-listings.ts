@@ -55,15 +55,41 @@ export const digits = (s: string | null | undefined) => { const d = String(s ?? 
 export function hoursText(h: Listing["working_hours"]): string {
   if (!h || typeof h !== "object") return "";
   const o = h as Record<string, any>;
-  if (o.open && o.close) return `${o.open} - ${o.close}${o.days ? ` (${o.days})` : ""}`;
+  const span = (a: string, b: string) => (a && b && a !== b ? `${a} - ${b}` : a ? `${a} से (बंद होने का समय फोन पर पूछें)` : "");
+  if (o.open || o.close) return `${span(o.open, o.close)}${o.days ? ` (${o.days})` : ""}`;
   const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
   const hi: Record<string, string> = { monday: "सोम", tuesday: "मंगल", wednesday: "बुध", thursday: "गुरु", friday: "शुक्र", saturday: "शनि", sunday: "रवि" };
-  const parts = days
+  const rows = days
     .map((d) => [d, o[d] ?? o[d[0].toUpperCase() + d.slice(1)]] as const)
     .filter(([, v]) => v && typeof v === "object")
-    .map(([d, v]) => `${hi[d]}: ${v.status === "closed" ? "बंद" : v.open && v.close ? `${v.open}-${v.close}` : "खुला"}`);
-  return parts.join(", ");
+    .map(([d, v]) => [d, /closed/i.test(v.status ?? "") ? "बंद" : span(v.open, v.close) || "खुला"] as const);
+  if (!rows.length) return "";
+  const open = rows.filter(([, t]) => t !== "बंद");
+  if (open.length && open.every(([, t]) => t === open[0][1])) {
+    const closed = rows.filter(([, t]) => t === "बंद").map(([d]) => hi[d]);
+    return `${open.length === 7 ? "हर दिन" : open.map(([d]) => hi[d]).join(", ")}: ${open[0][1]}${closed.length ? `; ${closed.join(", ")} बंद` : ""}`;
+  }
+  return rows.map(([d, t]) => `${hi[d]}: ${t}`).join(", ");
 }
+
+/** "Years of operation": some owners typed the start year instead. */
+export function sinceText(y: number | null | undefined): string {
+  if (!y) return "";
+  const now = new Date().getFullYear();
+  if (y >= 1950 && y <= now) return `${y} से चल रहा है`;
+  if (y > 0 && y <= 60) return `${y} साल से चल रहा है`;
+  return "";
+}
+
+// Service names from the first claim form were in English; show them in Hindi.
+const SERVICE_HI: Record<string, string> = {
+  "PAN related assistance": "PAN कार्ड सहायता", "Certificate applications": "प्रमाण पत्र आवेदन", "Bill payment": "बिल भुगतान",
+  "Banking-related services": "बैंकिंग सेवाएं", "Insurance-related services": "बीमा सेवाएं", "Government applications": "सरकारी आवेदन",
+  "Online forms": "ऑनलाइन फॉर्म", "Exam/application assistance": "परीक्षा / आवेदन फॉर्म", "Education services": "शिक्षा सेवाएं",
+  Printing: "प्रिंटिंग", Photocopy: "फोटोकॉपी", Scanning: "स्कैनिंग", Lamination: "लैमिनेशन", "Passport photo": "पासपोर्ट फोटो",
+  "Document assistance": "डॉक्यूमेंट सहायता",
+};
+export const serviceHi = (s: string) => SERVICE_HI[s] ?? s;
 
 // Our guides for common CSC services, matched on words in the service names.
 const GUIDES: [RegExp, string, string][] = [

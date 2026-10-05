@@ -21,7 +21,6 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         <h2>मिलने वाली सेवाएं</h2>
         <ul class="checklist" id="c-services"></ul>
       </section>
-      <p id="c-edit" hidden><a href="#">इस केंद्र के संचालक हैं? जानकारी बदलें →</a></p>
 
       <div class="claim-cta">
         <p><strong>आप भी CSC / जन सेवा केंद्र चलाते हैं?</strong> अपना केंद्र SarkariSewa पर फ्री में जोड़ें।</p>
@@ -59,7 +58,6 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         document.getElementById("c-services").innerHTML = sv.map(function (x) { return "<li>" + SSCsc.esc(x) + "</li>"; }).join("");
         document.getElementById("sevayen").hidden = false;
       }
-      var ed = document.getElementById("c-edit"); ed.querySelector("a").href = "/csc-edit.html?id=" + encodeURIComponent(id); ed.hidden = false;
     }).catch(function () { status.textContent = "जानकारी लोड नहीं हो सकी। थोड़ी देर बाद फिर कोशिश करें।"; });
 
   })();

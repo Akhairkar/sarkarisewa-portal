@@ -9,7 +9,7 @@ import Faq from "../../components/Faq.astro";
 import CardGrid from "../../components/CardGrid.astro";
 import Explore from "../../components/Explore.astro";
 import PaidTools from "../../components/PaidTools.astro";
-import { listings, listingSlug, digits, hoursText, guideLinks, type Listing } from "../../lib/csc-listings";
+import { listings, listingSlug, digits, hoursText, guideLinks, sinceText, serviceHi, type Listing } from "../../lib/csc-listings";
 import { cscPages } from "../../lib/csc";
 import { POPULAR_TASKS } from "../../data/site";
 
@@ -20,10 +20,10 @@ const { c } = Astro.props as { c: Listing };
 const norm = (s: string | null | undefined) => String(s ?? "").toLowerCase().replace(/district|जिला|ज़िला|[^a-zऀ-ॿ]/g, "");
 const dn = norm(c.district);
 const districtPage = dn ? cscPages().find((p) => !p.canonical && (p.d.names.some((n) => norm(n) === dn) || norm(p.name) === dn)) : undefined;
-const online = (c.online_services ?? []).filter(Boolean);
-const offline = (c.offline_services ?? []).filter(Boolean);
-const custom = (c.custom_services ?? []).filter(Boolean);
-const remote = (c.remote_services ?? []).filter(Boolean);
+const online = (c.online_services ?? []).filter(Boolean).map(serviceHi);
+const offline = (c.offline_services ?? []).filter(Boolean).map(serviceHi);
+const custom = (c.custom_services ?? []).filter(Boolean).map(serviceHi);
+const remote = (c.remote_services ?? []).filter(Boolean).map(serviceHi);
 const all = [...new Set([...online, ...offline, ...custom, ...remote])];
 const guides = guideLinks(all);
 const hours = hoursText(c.working_hours);
@@ -73,7 +73,7 @@ const ld = {
       <section class="answer" aria-labelledby="answer-title">
         <p class="answer-title" id="answer-title">केंद्र की जानकारी</p>
         <p class="answer-lead">
-          {c.centre_name} {place || where} में एक {type} है{c.years_of_operation ? `, जो ${c.years_of_operation} साल से चल रहा है` : ""}।
+          {c.centre_name} {place || where} में एक {type} है{sinceText(c.years_of_operation) ? `, जो ${sinceText(c.years_of_operation)}` : ""}।
           {all.length > 0 && <> यहां {all.slice(0, 5).join(", ")}{all.length > 5 ? " और दूसरी" : ""} सेवाएं मिलती हैं।</>}
           {remote.length > 0 && ` ${remote.length} सेवाएं घर बैठे WhatsApp/फोन से भी हो जाती हैं।`}
           {c.home_visit && " केंद्र घर पर आकर भी सेवा देता है।"}
@@ -136,10 +136,6 @@ const ld = {
       <PaidTools />
       <Faq items={faq} />
 
-      <div class="claim-cta">
-        <p><strong>क्या आप इस केंद्र के संचालक हैं?</strong> अपनी सेवाएं, समय और संपर्क खुद बदलें, या हमें बताएं कि साइट से ग्राहक मिले।</p>
-        <a class="cta secondary" href={`/csc-edit.html?id=${encodeURIComponent(c.application_id)}`}>जानकारी बदलें</a>
-      </div>
       <p class="notice">SarkariSewa India एक निजी वेबसाइट है। केंद्र की जानकारी संचालक ने दी है; हम संचालक से बात करके इसे जांचते हैं, पर केंद्र की सेवा, फीस या व्यवहार की ज़िम्मेदारी हमारी नहीं है। अपना केंद्र जोड़ना है? <a href="/claim-your-csc.html">फ्री में जोड़ें</a></p>
       <Explore />
     </article>
