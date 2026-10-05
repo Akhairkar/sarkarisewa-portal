@@ -1,0 +1,71 @@
+---
+// DigiLocker hub, rebuilt at the old URL /service/digilocker.html.
+// Data: src/guides/digilocker/hub.ts; guides live at /digilocker/*.html.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import OfficialLinks from "../../components/OfficialLinks.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { hub } from "../../guides/digilocker/hub";
+import { VERIFIED, MODIFIED, cards } from "../../guides/digilocker/common";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "दस्तावेज़", href: "/documents/" }, { label: "DigiLocker" }];
+const more = cards("aadhaarGuide", "panGuide", "dlGuide", "mparivahan", "abha", "voter");
+---
+<Base title={hub.title} description={hub.description} breadcrumbs={crumbs} faq={hub.faq} modified={MODIFIED}>
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{hub.h1}</h1>
+      <div class="meta-row"><span class="verified">✓ जानकारी जांची गई: {VERIFIED}</span></div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">{hub.lead}</p>
+        <dl class="facts">{hub.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}</dl>
+      </section>
+
+      <CardGrid title="DigiLocker से दस्तावेज़ कैसे निकालें: सभी गाइड" cards={hub.guides} id="guides" />
+
+      {hub.sections.map((s, i) => (
+        <>
+          <section class="section" id={s.id}>
+            <h2>{s.title}</h2>
+            {s.intro && <p set:html={s.intro} />}
+            {s.steps && <ol class="steps">{s.steps.map((x) => <li set:html={x} />)}</ol>}
+            {s.list && <ul class="checklist">{s.list.map((x) => <li set:html={x} />)}</ul>}
+            {s.table && (
+              <div class="table-wrap">
+                <table>
+                  <thead><tr>{s.table.head.map((h) => <th>{h}</th>)}</tr></thead>
+                  <tbody>{s.table.rows.map((r) => <tr>{r.map((c) => <td set:html={c} />)}</tr>)}</tbody>
+                </table>
+              </div>
+            )}
+            {s.callout && <div class={`callout ${s.callout.kind}`}><p set:html={s.callout.html} /></div>}
+          </section>
+          {i === 2 && <div class="ad-slot" aria-hidden="true"></div>}
+        </>
+      ))}
+
+      <OfficialLinks verified={VERIFIED} links={hub.official} />
+      <Faq items={hub.faq} />
+      <CardGrid title="इनसे जुड़ी जानकारी" cards={more} id="related" />
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          <li><a href="#guides">सभी गाइड</a></li>
+          {hub.sections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+          <li><a href="#faq">सवाल-जवाब</a></li>
+        </ol>
+        <a class="cta" href="https://www.digilocker.gov.in/" target="_blank" rel="noopener nofollow">🔐 DigiLocker खोलें</a>
+        <a class="cta secondary" href="https://support.digilocker.gov.in/" target="_blank" rel="noopener nofollow">🛟 DigiLocker सपोर्ट</a>
+      </section>
+    </aside>
+  </div>
+</Base>

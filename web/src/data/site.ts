@@ -50,6 +50,7 @@ export const FOOTER: { title: Text; links: { href: string; label: Text }[] }[] =
       { href: "/support/helpline-directory.html", label: { hi: "Helpline नंबर", en: "Helpline numbers" } },
       { href: "/challan/", label: { hi: "ट्रैफिक चालान गाइड", en: "Traffic challan guides" } },
       { href: "/gst/", label: "GST Guides" },
+      { href: "/service/digilocker.html", label: { hi: "DigiLocker गाइड", en: "DigiLocker guides" } },
       { href: "/rent-agreement/", label: { hi: "रेंट एग्रीमेंट गाइड", en: "Rent agreement guide" } },
       { href: "/affidavit/", label: { hi: "एफिडेविट फॉर्मेट", en: "Affidavit formats" } },
     ],
