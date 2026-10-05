@@ -105,6 +105,19 @@ const faq = [
         <p class="claim-msg" id="claim-out" role="status" aria-live="polite"></p>
       </form>
 
+      <section class="section claim-done" id="claim-done" hidden tabindex="-1">
+        <h2>✅ आपका आवेदन मिल गया!</h2>
+        <p>आपका आवेदन नंबर: <strong id="done-id"></strong> (इसे संभालकर रखें)</p>
+        <ol class="steps">
+          <li><strong>जांच (2-3 दिन):</strong> SarkariSewa India की टीम आपके मोबाइल/WhatsApp पर संपर्क करेगी और केंद्र के बोर्ड की फोटो, CSC/VLE ID (हो तो) और लोकेशन मांगेगी।</li>
+          <li><strong>आपका अपना पेज:</strong> सत्यापन के बाद आपके केंद्र का अपना पेज बनेगा, जिसका लिंक आपको WhatsApp पर भेजा जाएगा। उस पेज पर आपकी सेवाएं, समय, पता, कॉल और WhatsApp बटन होंगे।</li>
+          <li><strong>ज़िले के पेज पर सबसे ऊपर:</strong> आपका केंद्र आपके ज़िले के CSC पेज पर "✓ सत्यापित केंद्र" में सबसे ऊपर दिखेगा, ताकि पास के लोग सीधे आपसे संपर्क करें।</li>
+          <li><strong>जानकारी खुद बदलें:</strong> WhatsApp पर एक पासवर्ड भी मिलेगा, जिससे आप बाद में अपनी सेवाएं और समय खुद बदल सकेंगे।</li>
+        </ol>
+        <p>यह सेवा अभी पूरी तरह <strong>फ्री</strong> है। हम कभी OTP, पासवर्ड या पैसा नहीं मांगते; ऐसा कोई कहे तो सावधान रहें।</p>
+        <p><a class="cta secondary" href="/tools/csc-locator.html">CSC लोकेटर देखें</a></p>
+      </section>
+
       <Faq items={faq} />
     </div>
   </article>
@@ -179,8 +192,11 @@ const faq = [
       }).then(function (r) {
         if (r.ok) {
           f.hidden = true;
-          out.innerHTML = "✓ धन्यवाद! आपका आवेदन नंबर <strong>" + appId + "</strong> है। हम 2-3 दिन में आपके मोबाइल/WhatsApp पर जांच के लिए संपर्क करेंगे। सत्यापन के बाद आपका केंद्र ज़िले के पेज पर दिखेगा।";
-          out.scrollIntoView({ behavior: "smooth", block: "center" });
+          var done = document.getElementById("claim-done");
+          document.getElementById("done-id").textContent = appId;
+          done.hidden = false;
+          done.scrollIntoView({ behavior: "smooth", block: "start" });
+          done.focus({ preventScroll: true });
           return;
         }
         return r.text().then(function (t) {
