@@ -118,7 +118,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${esc([c.city, c.district].filter(Boolean).join(", "))}<br><a href="../${esc(url)}" target="_blank" style="font-size:0.85rem; color:#10b981;">View Live Page</a></td>
         <td><strong>${s.recent}</strong> in 30 days<br><small>📞 ${s.call} · 💬 ${s.whatsapp} · 🗺️ ${s.map} · 👁 ${s.profile} views</small></td>
         <td>
-          <button class="theme-toggle-btn" style="background:#3b82f6; color:#fff; border:none; margin-bottom:4px;" title="Sends live page, edit page and a new password" onclick="shareProfile('${esc(c.id)}')">💬 Send link + password</button><br>
+          <button class="theme-toggle-btn" style="background:#3b82f6; color:#fff; border:none; margin-bottom:4px;" onclick="shareProfile('${esc(c.id)}')">💬 Send link${c.edit_code_hash ? "" : " + password"}</button><br>
+          <button class="theme-toggle-btn" style="margin-bottom:4px;" onclick="resetPassword('${esc(c.id)}')">🔑 New password</button>
+          <small style="display:block;margin-bottom:4px;color:var(--admin-text-muted)">${c.edit_code_hash ? "Password set" : "No password yet"}</small>
           <button class="logout-btn" onclick="rejectCSC('${esc(c.id)}')">Revoke</button>
         </td>
       </tr>`;
@@ -154,43 +156,54 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
   const sha256 = async (t) => Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t))), (b) => b.toString(16).padStart(2, "0")).join("");
 
-  // Send the operator their live page, edit page and a fresh password on
-  // WhatsApp. Each send makes a new password (the old one stops working).
-  window.shareProfile = async (id) => {
+  // Send the operator their live page and edit page on WhatsApp. A password
+  // is made only the first time (or when admin presses "New password"); after
+  // that the same password keeps working, so the owner is not confused.
+  async function sendLinks(id, resetPassword) {
     const c = byId[id];
     if (!c) return;
-    if (!confirm(`Send live page + a NEW edit password to ${c.owner_name}? Any old password will stop working.`)) return;
+    const makeCode = resetPassword || !c.edit_code_hash;
+    if (resetPassword && !confirm(`Make a NEW password for ${c.owner_name}? The old password will stop working.`)) return;
     const win = window.open("about:blank", "_blank");
     try {
-      const code = newCode();
-      const client = await getSupabaseClient();
-      const { error } = await client.from("csc_claims").update({ edit_code_hash: await sha256(code) }).eq("id", id);
-      if (error) throw error;
+      let code = "";
+      if (makeCode) {
+        code = newCode();
+        const client = await getSupabaseClient();
+        const { error } = await client.from("csc_claims").update({ edit_code_hash: await sha256(code) }).eq("id", id);
+        if (error) throw error;
+        c.edit_code_hash = "set";
+      }
       const live = "https://sarkarisewaindia.com/" + (c.profile_url || `csc-centre.html?id=${encodeURIComponent(c.application_id)}`);
       const edit = `https://sarkarisewaindia.com/csc-edit.html?id=${encodeURIComponent(c.application_id)}`;
-      const text = encodeURIComponent([
-        `नमस्ते ${c.owner_name} जी,`,
-        `बधाई हो! आपका केंद्र "${c.centre_name}" SarkariSewa India पर सत्यापित होकर लाइव है (फ्री):`,
-        live,
-        "",
-        "अपनी सेवाएं, समय, फोटो वाली जानकारी और संपर्क आप खुद बदल सकते हैं, कोई कोडिंग नहीं, बस बटन दबाकर:",
-        edit,
-        `आवेदन नंबर: ${c.application_id}`,
-        `मोबाइल: वही जो फॉर्म में दिया था`,
-        `पासवर्ड: ${code}`,
-        "(पासवर्ड किसी से साझा न करें)",
-        "",
-        'हमारी साइट से आने वाले ग्राहक WhatsApp पर "SarkariSewa India पर देखा" लिखकर आएंगे। ग्राहक मिलें तो ऊपर वाले पेज पर हमें बताएं।',
-        "धन्यवाद,",
-        "टीम SarkariSewa India",
-      ].join("\n"));
-      const link = waLink(digits(c.owner_mobile), text);
+      const lines = resetPassword
+        ? [`नमस्ते ${c.owner_name} जी,`, `आपके केंद्र "${c.centre_name}" का नया पासवर्ड: ${code}`, "पुराना पासवर्ड अब काम नहीं करेगा।", `जानकारी बदलने का पेज: ${edit}`, `आवेदन नंबर: ${c.application_id}`, "(पासवर्ड किसी से साझा न करें)", "टीम SarkariSewa India"]
+        : [
+          `नमस्ते ${c.owner_name} जी,`,
+          `बधाई हो! आपका केंद्र "${c.centre_name}" SarkariSewa India पर सत्यापित होकर लाइव है (फ्री):`,
+          live,
+          "",
+          "अपनी सेवाएं, समय और संपर्क आप खुद बदल सकते हैं, कोई कोडिंग नहीं, बस बटन दबाकर:",
+          edit,
+          `आवेदन नंबर: ${c.application_id}`,
+          "मोबाइल: वही जो फॉर्म में दिया था",
+          makeCode ? `पासवर्ड: ${code}` : "पासवर्ड: वही जो पहले भेजा था (भूल गए हों तो बताएं, नया भेज देंगे)",
+          "(पासवर्ड किसी से साझा न करें, इसे संभालकर रखें)",
+          "",
+          'हमारी साइट से आने वाले ग्राहक WhatsApp पर "SarkariSewa India पर देखा" लिखकर आएंगे। ग्राहक मिलें तो ऊपर वाले पेज पर हमें बताएं।',
+          "धन्यवाद,",
+          "टीम SarkariSewa India",
+        ];
+      const link = waLink(digits(c.owner_mobile), encodeURIComponent(lines.join("\n")));
       if (win) win.location.href = link; else window.location.href = link;
+      loadCSCData();
     } catch (err) {
       if (win) win.close();
-      alert("Could not create password: " + err.message);
+      alert("Could not send: " + err.message);
     }
-  };
+  }
+  window.shareProfile = (id) => sendLinks(id, false);
+  window.resetPassword = (id) => sendLinks(id, true);
 
   window.approveCSC = async (id) => {
     const c = byId[id];
