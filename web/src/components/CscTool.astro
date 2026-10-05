@@ -51,7 +51,8 @@ const live = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY, state: dbState, names,
       : `https://www.google.com/maps/search/${encodeURIComponent(`${r.address} ${r.pincode}`)}`;
     const card = (r: Row) => `<li class="csc-card"><strong>${esc(r.vle_name)}</strong><span>${esc(r.address)}</span>`
       + `<span class="pin">PIN ${esc(r.pincode)}${r.km != null ? ` · ${r.km < 1 ? Math.round(r.km * 1000) + " मीटर" : r.km.toFixed(1) + " km"}` : ""}${r.district && r.district !== cfg.names[0] && r.km != null ? ` · ${esc(r.district)}` : ""}</span>`
-      + `<a href="${map(r)}" target="_blank" rel="noopener nofollow">रास्ता देखें ↗</a></li>`;
+      + `<a href="${map(r)}" target="_blank" rel="noopener nofollow">रास्ता देखें ↗</a>`
+      + `<a class="claim-link" href="/claim-your-csc.html?${new URLSearchParams({ name: r.vle_name ?? "", pin: r.pincode ?? "", district: r.district ?? cfg.names[0] ?? "", state: cfg.state })}">यह आपका केंद्र है? फ्री में Claim करें</a></li>`;
 
     async function get(path: string, init?: RequestInit): Promise<Row[]> {
       const res = await fetch(`${cfg.url}/rest/v1/${path}`, { ...init, headers: { ...head, ...(init?.headers ?? {}) } });

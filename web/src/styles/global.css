@@ -572,3 +572,21 @@ table.compact th, table.compact td { padding: 8px 8px; font-size: 0.88rem; }
 .paid-card small { color: var(--c-muted); }
 .paid-cta { margin-top: auto; font-weight: 800; color: var(--c-brand); }
 .paid-note { margin: 10px 0 0; font-size: 0.85rem; color: var(--c-muted); }
+.csc-card a.claim-link { padding-top: 2px; margin-top: 0; font-size: 0.82rem; font-weight: 700; color: var(--c-muted); }
+.claim-cta { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; background: var(--c-green-50); border: 1px solid var(--c-line); border-radius: var(--radius); padding: 16px; margin: 0 0 20px; }
+.claim-cta p { margin: 0; flex: 1 1 260px; }
+.vcard { border-color: var(--c-green) !important; }
+.vbadge { align-self: flex-start; font-size: 0.72rem; font-weight: 800; color: var(--c-green); background: var(--c-green-50); padding: 2px 9px; border-radius: 999px; }
+.claim-form fieldset { border: 1px solid var(--c-line); border-radius: var(--radius); padding: 16px; margin: 0 0 16px; background: var(--c-surface); }
+.claim-form legend { font-weight: 800; color: var(--c-ink); padding: 0 6px; }
+.claim-form label { display: block; font-weight: 700; margin: 10px 0 4px; color: var(--c-ink); font-size: 0.95rem; }
+.claim-form input[type=text], .claim-form input[type=tel], .claim-form input[type=email], .claim-form input[type=number], .claim-form select, .claim-form textarea { width: 100%; min-height: 46px; padding: 10px 12px; border: 2px solid var(--c-line); border-radius: 10px; background: var(--c-surface); color: var(--c-text); font: inherit; box-sizing: border-box; }
+.claim-form textarea { min-height: 80px; }
+.claim-form .grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 14px; }
+@media (min-width: 640px) { .claim-form .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.claim-form .checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px 12px; }
+.claim-form .checks label, .claim-form .inline { display: flex; gap: 8px; align-items: flex-start; font-weight: 600; margin: 4px 0; }
+.claim-form .hint { font-size: 0.82rem; color: var(--c-muted); font-weight: 400; }
+.claim-form .hp { position: absolute; left: -9999px; }
+.claim-form button[type=submit] { border: 0; font: inherit; font-weight: 800; cursor: pointer; width: 100%; height: 50px; }
+.claim-msg:not(:empty) { margin-top: 12px; font-weight: 700; }

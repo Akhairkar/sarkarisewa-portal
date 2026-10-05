@@ -97,6 +97,17 @@ const faq = [
         </dl>
       </section>
 
+      <section class="section" id="verified" hidden>
+        <h2>{p.name} के सत्यापित केंद्र</h2>
+        <p>इन केंद्रों के संचालकों ने खुद अपनी जानकारी दी है और SarkariSewa ने उनसे बात करके जांचा है। सीधे कॉल या WhatsApp करें।</p>
+        <ul class="csc-list v-list"></ul>
+      </section>
+
+      <div class="claim-cta">
+        <p><strong>क्या आप {area} में CSC / जन सेवा केंद्र चलाते हैं?</strong> अपना केंद्र फ्री में जोड़ें। जांच के बाद आपका नाम, WhatsApp, सेवाएं और समय इसी पेज पर सबसे ऊपर दिखेंगे और ग्राहक सीधे संपर्क करेंगे।</p>
+        <a class="cta" href={`/claim-your-csc.html?${new URLSearchParams({ district: p.d.names[0] ?? p.name, state: st.name })}`}>फ्री में केंद्र जोड़ें</a>
+      </div>
+
       <CscTool title={`${p.name} में अपना नज़दीकी CSC खोजें`} dbState={p.d.dbState} names={p.d.names} area={area} total={p.d.count}
         pin={topPin?.[0] ?? "110001"} allLabel={`${area} के सभी ${n} केंद्र देखें`} />
 
@@ -165,6 +176,11 @@ const faq = [
       <Faq items={faq} />
       <Explore />
     </article>
+
+    <script is:inline src="/assets/js/csc-listing.js"></script>
+    <script is:inline define:vars={{ vcfg: { names: [...p.d.names, p.name], pins: p.top.map((t) => t[0]), state: st.name } }}>
+      window.SSCsc && window.SSCsc.district(document.getElementById("verified"), vcfg);
+    </script>
 
     <aside class="page-aside">
       <section class="section toc">

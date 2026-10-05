@@ -1,0 +1,178 @@
+---
+// Free CSC / Jan Seva Kendra listing claim. Saves to csc_claims (status
+// pending) with the same columns the admin approval page reads. One open claim
+// per mobile is enforced in the database (trigger csc_claims_no_duplicate).
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import { STATES } from "../data/site";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+
+const ONLINE = ["Aadhaar सेवा", "PAN कार्ड", "आयुष्मान कार्ड", "प्रमाण पत्र (जाति/आय/निवास)", "राशन कार्ड", "पेंशन / योजना फॉर्म", "बिजली/पानी बिल", "बैंकिंग / पैसा भेजना", "बीमा", "नौकरी / परीक्षा फॉर्म", "ई-श्रम / लेबर कार्ड", "PM-Kisan", "पासपोर्ट / ड्राइविंग लाइसेंस आवेदन", "GST / ITR"];
+const OFFLINE = ["फोटोकॉपी", "प्रिंटिंग", "स्कैनिंग", "लैमिनेशन", "पासपोर्ट फोटो", "टाइपिंग / डॉक्यूमेंट सहायता"];
+const TYPES: [string, string][] = [["CSC", "CSC (Common Service Centre)"], ["Jan Seva Kendra", "जन सेवा केंद्र"], ["E-Mitra", "ई-मित्र"], ["Maha E Seva", "महा ई-सेवा केंद्र"], ["Vasudha Kendra", "वसुधा केंद्र"], ["Other", "अन्य सेवा केंद्र / साइबर कैफे"]];
+const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर", href: "/tools/csc-locator.html" }, { label: "केंद्र जोड़ें" }];
+const faq = [
+  { q: "क्या केंद्र जोड़ना फ्री है?", a: "हां, अभी केंद्र जोड़ना और दिखना पूरी तरह फ्री है। कोई पैसा न दें; SarkariSewa के नाम पर पैसा मांगने वाले से सावधान रहें।" },
+  { q: "मेरा केंद्र कब और कहां दिखेगा?", a: "आपका फॉर्म मिलने के बाद हम आपके मोबाइल या WhatsApp पर बात करके जानकारी जांचते हैं। सही पाए जाने पर आपका केंद्र आपके ज़िले के CSC पेज पर 'सत्यापित केंद्र' में सबसे ऊपर और अपने अलग पेज पर दिखेगा, कॉल और WhatsApp बटन के साथ।" },
+  { q: "जांच कैसे होती है?", a: "हम दिए गए नंबर पर कॉल या WhatsApp करते हैं और ज़रूरत हो तो केंद्र की फोटो, CSC ID या VLE प्रमाण मांगते हैं। गलत, नकली या किसी और के केंद्र की जानकारी वाले फॉर्म रद्द कर दिए जाते हैं।" },
+  { q: "मुझे कैसे पता चलेगा कि ग्राहक SarkariSewa से आया?", a: "हमारी साइट से WhatsApp करने वाले ग्राहक का पहला संदेश 'SarkariSewa India पर देखा' से शुरू होता है। आप अपने केंद्र के पेज पर 'मुझे ग्राहक मिले' फॉर्म से हमें बता भी सकते हैं।" },
+  { q: "मेरा निजी नंबर सबको दिखेगा?", a: "नहीं। मालिक का नाम और निजी मोबाइल सिर्फ जांच के लिए है। साइट पर वही नंबर दिखेगा जो आप 'ग्राहकों के लिए' वाले खाने में भरेंगे और दिखाने की अनुमति देंगे।" },
+];
+---
+<Base
+  title="Claim Your CSC Center: Update Details & WhatsApp Link Free"
+  description="CSC / जन सेवा केंद्र चलाते हैं? अपना केंद्र SarkariSewa India पर फ्री में जोड़ें: WhatsApp और कॉल बटन, सेवाएं और समय आपके ज़िले के पेज पर सबसे ऊपर।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-05"
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>अपना CSC / जन सेवा केंद्र फ्री में जोड़ें</h1>
+      <p class="page-intro">आपके ज़िले के लोग हर दिन SarkariSewa पर नज़दीकी CSC खोजते हैं। केंद्र जोड़ें, जांच के बाद आपका नाम, WhatsApp, सेवाएं और समय ज़िले के पेज पर सबसे ऊपर दिखेंगे।</p>
+      <ul class="checklist">
+        <li><strong>फ्री:</strong> अभी कोई शुल्क नहीं।</li>
+        <li><strong>सत्यापित बैज:</strong> हम आपसे बात करके जांचते हैं, इसलिए ग्राहक भरोसा करते हैं।</li>
+        <li><strong>सीधे ग्राहक:</strong> कॉल और WhatsApp बटन; ग्राहक का संदेश "SarkariSewa India पर देखा" से शुरू होगा।</li>
+      </ul>
+
+      <form class="claim-form" id="claim" novalidate>
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <fieldset>
+          <legend>1. केंद्र और संचालक</legend>
+          <div class="grid2">
+            <div><label for="centre_name">केंद्र का नाम *</label><input type="text" id="centre_name" name="centre_name" maxlength="200" required /></div>
+            <div><label for="centre_type">केंद्र का प्रकार *</label><select id="centre_type" name="centre_type">{TYPES.map(([v, l]) => <option value={v}>{l}</option>)}</select></div>
+            <div><label for="owner_name">संचालक (VLE) का नाम *</label><input type="text" id="owner_name" name="owner_name" maxlength="120" required /></div>
+            <div><label for="owner_mobile">संचालक का मोबाइल * <span class="hint">(जांच के लिए, सबको नहीं दिखेगा)</span></label><input type="tel" id="owner_mobile" name="owner_mobile" inputmode="numeric" maxlength="10" required /></div>
+            <div><label for="csc_id">CSC ID / VLE ID <span class="hint">(हो तो ज़रूर भरें, जल्दी सत्यापन)</span></label><input type="text" id="csc_id" name="csc_id" maxlength="40" /></div>
+            <div><label for="years">कितने साल से चल रहा है</label><input type="number" id="years" name="years_of_operation" min="0" max="60" /></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>2. पता</legend>
+          <div class="grid2">
+            <div><label for="state">राज्य *</label><select id="state" name="state" required><option value="">चुनें</option>{STATES.map((s) => <option value={s.name}>{s.hi} ({s.name})</option>)}</select></div>
+            <div><label for="district">ज़िला *</label><input type="text" id="district" name="district" maxlength="120" required /></div>
+            <div><label for="city">शहर / गांव *</label><input type="text" id="city" name="city" maxlength="120" required /></div>
+            <div><label for="pincode">PIN कोड *</label><input type="text" id="pincode" name="pincode" inputmode="numeric" maxlength="6" required /></div>
+          </div>
+          <label for="full_address">पूरा पता (दुकान, गली, लैंडमार्क) *</label>
+          <textarea id="full_address" name="full_address" maxlength="600" required></textarea>
+          <button type="button" class="more-btn" id="loc-btn">📍 अभी केंद्र पर हूं: नक्शे की लोकेशन जोड़ें</button>
+          <p class="hint" id="loc-out"></p>
+          <input type="hidden" name="latitude" /><input type="hidden" name="longitude" />
+        </fieldset>
+
+        <fieldset>
+          <legend>3. सेवाएं और समय</legend>
+          <div class="checks">{ONLINE.map((s) => <label><input type="checkbox" name="online_services" value={s} /> {s}</label>)}</div>
+          <div class="checks" style="margin-top:8px">{OFFLINE.map((s) => <label><input type="checkbox" name="offline_services" value={s} /> {s}</label>)}</div>
+          <label for="custom">और कोई सेवा (कॉमा से अलग करें)</label>
+          <input type="text" id="custom" name="custom" maxlength="300" />
+          <div class="grid2">
+            <div><label for="open">खुलने का समय</label><input type="text" id="open" name="open" placeholder="जैसे 9:00 AM" maxlength="20" /></div>
+            <div><label for="close">बंद होने का समय</label><input type="text" id="close" name="close" placeholder="जैसे 7:00 PM" maxlength="20" /></div>
+          </div>
+          <label for="days">किन दिनों खुला</label><input type="text" id="days" name="days" placeholder="जैसे सोमवार-शनिवार" maxlength="60" />
+          <label class="inline"><input type="checkbox" name="home_visit" /> घर पर जाकर सेवा देते हैं</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>4. ग्राहकों के लिए संपर्क</legend>
+          <div class="grid2">
+            <div><label for="public_phone">कॉल के लिए नंबर</label><input type="tel" id="public_phone" name="public_phone" inputmode="numeric" maxlength="10" /></div>
+            <div><label for="public_whatsapp">WhatsApp नंबर</label><input type="tel" id="public_whatsapp" name="public_whatsapp" inputmode="numeric" maxlength="10" /></div>
+          </div>
+          <p class="hint">खाली छोड़ेंगे तो वह बटन नहीं दिखेगा। कम से कम एक नंबर भरें, तभी ग्राहक संपर्क कर पाएंगे।</p>
+          <label class="inline"><input type="checkbox" name="show_address" checked /> पूरा पता और नक्शा दिखाएं</label>
+          <label class="inline"><input type="checkbox" name="show_hours" checked /> समय दिखाएं</label>
+          <label class="inline"><input type="checkbox" name="consent" required /> मैं इस केंद्र का संचालक हूं, जानकारी सही है, और SarkariSewa India मुझसे जांच के लिए संपर्क कर सकता है। ऊपर दिए 'ग्राहकों के लिए' नंबर साइट पर दिखाए जा सकते हैं।</label>
+        </fieldset>
+
+        <button type="submit" class="cta">फ्री में केंद्र जोड़ें</button>
+        <p class="claim-msg" id="claim-out" role="status" aria-live="polite"></p>
+      </form>
+
+      <Faq items={faq} />
+    </div>
+  </article>
+
+  <script is:inline define:vars={{ url: SUPABASE_URL, key: SUPABASE_ANON_KEY }}>
+  (function () {
+    var f = document.getElementById("claim"), out = document.getElementById("claim-out"), started = Date.now();
+    var q = new URLSearchParams(location.search);
+    if (q.get("name")) f.centre_name.value = q.get("name").slice(0, 200);
+    if (q.get("district")) f.district.value = q.get("district").slice(0, 120);
+    if (q.get("pin") && /^\d{6}$/.test(q.get("pin"))) f.pincode.value = q.get("pin");
+    if (q.get("state")) {
+      var want = q.get("state").toLowerCase().replace(/[^a-z]/g, "");
+      [].forEach.call(f.state.options, function (o) { if (o.value && o.value.toLowerCase().replace(/[^a-z]/g, "") === want) f.state.value = o.value; });
+    }
+    document.getElementById("loc-btn").addEventListener("click", function () {
+      var lo = document.getElementById("loc-out");
+      if (!navigator.geolocation) { lo.textContent = "इस फोन/ब्राउज़र में लोकेशन उपलब्ध नहीं है।"; return; }
+      lo.textContent = "लोकेशन ली जा रही है…";
+      navigator.geolocation.getCurrentPosition(function (p) {
+        f.latitude.value = p.coords.latitude.toFixed(6); f.longitude.value = p.coords.longitude.toFixed(6);
+        lo.textContent = "✓ लोकेशन जुड़ गई (" + f.latitude.value + ", " + f.longitude.value + ")";
+      }, function () { lo.textContent = "लोकेशन नहीं मिली। पता ठीक से लिखें, यह भी काफी है।"; }, { enableHighAccuracy: true, timeout: 15000 });
+    });
+    var mob = function (v) { var d = String(v || "").replace(/\D/g, ""); return d.length > 10 ? d.slice(-10) : d; };
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (f.website.value) return; // bot
+      var err = "";
+      var om = mob(f.owner_mobile.value), pp = mob(f.public_phone.value), pw = mob(f.public_whatsapp.value);
+      if (!f.centre_name.value.trim() || !f.owner_name.value.trim()) err = "केंद्र और संचालक का नाम भरें।";
+      else if (!/^[6-9]\d{9}$/.test(om)) err = "संचालक का 10 अंकों का सही मोबाइल नंबर भरें।";
+      else if (!f.state.value || !f.district.value.trim() || !f.city.value.trim()) err = "राज्य, ज़िला और शहर/गांव भरें।";
+      else if (!/^[1-9]\d{5}$/.test(f.pincode.value.trim())) err = "6 अंकों का सही PIN कोड भरें।";
+      else if (f.full_address.value.trim().length < 10) err = "पूरा पता लिखें (कम से कम 10 अक्षर)।";
+      else if ((pp && !/^[6-9]\d{9}$/.test(pp)) || (pw && !/^[6-9]\d{9}$/.test(pw))) err = "ग्राहकों वाले नंबर 10 अंकों के सही नंबर हों।";
+      else if (!pp && !pw) err = "ग्राहकों के लिए कम से कम एक नंबर (कॉल या WhatsApp) भरें।";
+      else if (!f.consent.checked) err = "पुष्टि वाले बॉक्स पर टिक करें।";
+      else if (Date.now() - started < 15000) err = "कृपया जानकारी जांच लें और कुछ सेकंड बाद फिर भेजें।";
+      if (err) { out.textContent = err; return; }
+      var all = function (n) { return [].map.call(f.querySelectorAll('input[name="' + n + '"]:checked'), function (x) { return x.value; }); };
+      var appId = "CSC-" + new Date().getFullYear() + "-" + Math.floor(100000 + Math.random() * 900000);
+      var row = {
+        application_id: appId, owner_name: f.owner_name.value.trim().slice(0, 120), owner_mobile: om,
+        centre_name: f.centre_name.value.trim().slice(0, 200), csc_id: f.csc_id.value.trim().slice(0, 40) || null,
+        centre_type: f.centre_type.value, years_of_operation: f.years_of_operation.value ? Math.min(60, parseInt(f.years_of_operation.value, 10) || 0) : null,
+        full_address: f.full_address.value.trim().slice(0, 600), city: f.city.value.trim(), district: f.district.value.trim(), state: f.state.value, pincode: f.pincode.value.trim(),
+        latitude: f.latitude.value ? parseFloat(f.latitude.value) : null, longitude: f.longitude.value ? parseFloat(f.longitude.value) : null,
+        online_services: all("online_services"), offline_services: all("offline_services"),
+        custom_services: f.custom.value.split(",").map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 10),
+        working_hours: { open: f.open.value.trim(), close: f.close.value.trim(), days: f.days.value.trim() },
+        home_visit: f.home_visit.checked, appointment_required: false,
+        public_phone: pp || null, public_whatsapp: pw || null,
+        show_address: f.show_address.checked, show_hours: f.show_hours.checked, consent_given: true, status: "pending",
+      };
+      var btn = f.querySelector("button[type=submit]"); btn.disabled = true; out.textContent = "भेजा जा रहा है…";
+      fetch(url + "/rest/v1/csc_claims", {
+        method: "POST",
+        headers: { apikey: key, Authorization: "Bearer " + key, "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify(row),
+      }).then(function (r) {
+        if (r.ok) {
+          f.hidden = true;
+          out.innerHTML = "✓ धन्यवाद! आपका आवेदन नंबर <strong>" + appId + "</strong> है। हम 2-3 दिन में आपके मोबाइल/WhatsApp पर जांच के लिए संपर्क करेंगे। सत्यापन के बाद आपका केंद्र ज़िले के पेज पर दिखेगा।";
+          out.scrollIntoView({ behavior: "smooth", block: "center" });
+          return;
+        }
+        return r.text().then(function (t) {
+          out.textContent = t.indexOf("DUPLICATE_PENDING_CLAIM") !== -1
+            ? "इस मोबाइल नंबर से एक आवेदन पहले से जांच में है। जांच पूरी होने तक इंतज़ार करें, या sarkarisewaindia@gmail.com पर मेल करें।"
+            : "आवेदन नहीं भेजा जा सका। जानकारी जांचकर फिर कोशिश करें।";
+          btn.disabled = false;
+        });
+      }).catch(function () { out.textContent = "इंटरनेट की समस्या। थोड़ी देर बाद फिर भेजें।"; btn.disabled = false; });
+    });
+  })();
+  </script>
+</Base>
