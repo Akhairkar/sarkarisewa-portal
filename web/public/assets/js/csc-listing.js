@@ -34,6 +34,7 @@
     var wa = digits(c.public_whatsapp), ph = digits(c.public_phone);
     var msg = encodeURIComponent("नमस्ते, मैंने आपका केंद्र SarkariSewa India (sarkarisewaindia.com) पर देखा। मुझे इस काम के लिए मदद चाहिए: ");
     var services = list(c.online_services).concat(list(c.offline_services), list(c.custom_services)).slice(0, 8);
+    var remote = list(c.remote_services);
     var map = c.latitude && c.longitude ? "https://www.google.com/maps?q=" + c.latitude + "," + c.longitude
       : c.full_address ? "https://www.google.com/maps/search/" + encodeURIComponent(c.full_address + " " + (c.pincode || "")) : "";
     var h = hours(c.working_hours);
@@ -43,7 +44,8 @@
       + (c.full_address ? "<span>" + esc(c.full_address) + "</span>" : "<span>" + esc([c.locality, c.city].filter(Boolean).join(", ")) + "</span>")
       + '<span class="pin">' + esc([c.district, c.pincode ? "PIN " + c.pincode : ""].filter(Boolean).join(" · ")) + "</span>"
       + (h ? "<span>समय: " + esc(h) + "</span>" : "")
-      + (services.length ? "<span>सेवाएं: " + esc(services.join(", ")) + "</span>" : "")
+      + (services.length ? "<span>🏢 केंद्र पर: " + esc(services.join(", ")) + "</span>" : "")
+      + (remote.length ? "<span>🏠 घर बैठे: " + esc(remote.slice(0, 5).join(", ")) + "</span>" : "")
       + (c.home_visit ? "<span>घर पर सेवा उपलब्ध</span>" : "")
       + '<span class="ja-actions">'
       + (ph ? '<a data-act="call" href="tel:+91' + ph + '">📞 कॉल करें</a>' : "")

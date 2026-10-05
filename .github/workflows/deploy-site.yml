@@ -7,6 +7,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Daily rebuild so newly approved CSC listings get their own static page.
+  schedule:
+    - cron: "17 0 * * *"
 
 permissions:
   contents: read
@@ -38,7 +41,10 @@ jobs:
       - name: List changed files for IndexNow
         run: |
           BEFORE="${{ github.event.before }}"
-          if [ -n "$BEFORE" ] && git cat-file -e "$BEFORE" 2>/dev/null; then
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            # Daily rebuild: nothing changed in the repo, so ping nothing.
+            : > web/changed-files.txt
+          elif [ -n "$BEFORE" ] && git cat-file -e "$BEFORE" 2>/dev/null; then
             git diff --name-only "$BEFORE" "${{ github.sha }}" > web/changed-files.txt
           else
             echo "web/" > web/changed-files.txt

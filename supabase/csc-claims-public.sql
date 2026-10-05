@@ -63,3 +63,13 @@ create policy "anon can send csc feedback" on public.csc_feedback for insert to 
 create policy "admin reads csc feedback" on public.csc_feedback for select to authenticated using ((select is_admin()));
 grant insert on public.csc_leads, public.csc_feedback to anon, authenticated;
 grant select on public.csc_leads, public.csc_feedback to authenticated;
+
+-- Owner self-edit (2026-10-05). Admin sets edit_code_hash (sha256 hex of an
+-- upper-case code sent to the owner on WhatsApp). The owner edits public
+-- fields with application id + own mobile + code; district/state stay fixed.
+alter table public.csc_claims add column if not exists edit_code_hash text, add column if not exists about text, add column if not exists updated_at timestamptz;
+-- csc_public_centres now also exposes about, updated_at (see view above).
+-- Functions csc_owner_get(p_app, p_mobile, p_code) -> jsonb and
+-- csc_owner_update(p_app, p_mobile, p_code, p_data jsonb) -> boolean are
+-- SECURITY DEFINER, execute granted to anon/authenticated; see the live
+-- definitions in the database (pg_get_functiondef) for the exact field rules.

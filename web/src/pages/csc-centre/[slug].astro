@@ -1,0 +1,166 @@
+---
+// Indexable page of one verified CSC / Jan Seva Kendra (approved claim):
+// services with links to our guides, hours, address and map, Call/WhatsApp
+// buttons (clicks are counted for the admin), the district's CSC page, an
+// owner edit link and the site's main services to explore.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import Explore from "../../components/Explore.astro";
+import PaidTools from "../../components/PaidTools.astro";
+import { listings, listingSlug, digits, hoursText, guideLinks, type Listing } from "../../lib/csc-listings";
+import { cscPages } from "../../lib/csc";
+import { POPULAR_TASKS } from "../../data/site";
+
+export async function getStaticPaths() {
+  return (await listings()).map((c) => ({ params: { slug: listingSlug(c) }, props: { c } }));
+}
+const { c } = Astro.props as { c: Listing };
+const norm = (s: string | null | undefined) => String(s ?? "").toLowerCase().replace(/district|जिला|ज़िला|[^a-zऀ-ॿ]/g, "");
+const dn = norm(c.district);
+const districtPage = dn ? cscPages().find((p) => !p.canonical && (p.d.names.some((n) => norm(n) === dn) || norm(p.name) === dn)) : undefined;
+const online = (c.online_services ?? []).filter(Boolean);
+const offline = (c.offline_services ?? []).filter(Boolean);
+const custom = (c.custom_services ?? []).filter(Boolean);
+const remote = (c.remote_services ?? []).filter(Boolean);
+const all = [...new Set([...online, ...offline, ...custom, ...remote])];
+const guides = guideLinks(all);
+const hours = hoursText(c.working_hours);
+const ph = digits(c.public_phone), wa = digits(c.public_whatsapp);
+const uniq = (a: (string | null)[]) => a.filter((x, i) => x && a.findIndex((y) => (y ?? "").trim().toLowerCase() === x.trim().toLowerCase()) === i).join(", ");
+const place = uniq([c.locality, c.city, c.district]);
+const where = uniq([c.city, c.district, c.state]);
+const map = c.latitude && c.longitude
+  ? `https://www.google.com/maps?q=${c.latitude},${c.longitude}`
+  : c.full_address ? `https://www.google.com/maps/search/${encodeURIComponent(`${c.full_address} ${c.pincode ?? ""}`)}` : "";
+const waText = encodeURIComponent("नमस्ते, मैंने आपका केंद्र SarkariSewa India (sarkarisewaindia.com) पर देखा। मुझे इस काम के लिए मदद चाहिए: ");
+const typeHi: Record<string, string> = { CSC: "CSC (कॉमन सर्विस सेंटर)", "Jan Seva Kendra": "जन सेवा केंद्र", "E-Mitra": "ई-मित्र", "Maha E Seva": "महा ई-सेवा केंद्र", "Vasudha Kendra": "वसुधा केंद्र", Other: "सेवा केंद्र" };
+const type = typeHi[c.centre_type ?? ""] ?? c.centre_type ?? "सेवा केंद्र";
+const title = `${c.centre_name}, ${c.city || c.district}: ${c.centre_type === "CSC" ? "CSC सेंटर" : "जन सेवा केंद्र"} | SarkariSewa India`;
+const description = `${c.centre_name} (${where}): ${all.slice(0, 4).join(", ") || "सरकारी ऑनलाइन सेवाएं"}। पता, समय, फोन और WhatsApp। SarkariSewa पर सत्यापित केंद्र।`;
+const crumbs = [
+  { label: "होम", href: "/" },
+  { label: "CSC सेंटर", href: "/tools/csc-locator.html" },
+  ...(districtPage ? [{ label: `${districtPage.name} CSC`, href: districtPage.href }] : []),
+  { label: c.centre_name },
+];
+const faq = [
+  { q: `${c.centre_name} कहां है?`, a: `${c.centre_name} ${c.full_address ? `${c.full_address}, ` : ""}${where}${c.pincode ? ` (PIN ${c.pincode})` : ""} में है। ऊपर "रास्ता देखें" से Google Maps पर रास्ता देखें।` },
+  ...(all.length ? [{ q: `${c.centre_name} पर कौन सी सेवाएं मिलती हैं?`, a: `केंद्र के संचालक के अनुसार यहां ये सेवाएं मिलती हैं: ${all.join(", ")}। सेवा और फीस जाने से पहले फोन या WhatsApp पर पूछ लें।` }] : []),
+  ...(hours ? [{ q: `${c.centre_name} कितने बजे खुलता है?`, a: `संचालक के अनुसार समय: ${hours}। त्योहार या छुट्टी पर समय बदल सकता है।` }] : []),
+  { q: "CSC पर सरकारी फीस से ज़्यादा पैसा मांगा जाए तो?", a: "सरकारी फीस के अलावा CSC अपना सेवा शुल्क लेता है। काम शुरू होने से पहले कुल राशि पूछें और रसीद लें। मनमानी वसूली की शिकायत CSC हेल्पलाइन 1800-121-3468 या helpdesk@csc.gov.in पर करें।" },
+];
+const ld = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: c.centre_name,
+  description: `${type}${all.length ? `: ${all.join(", ")}` : ""}`,
+  address: { "@type": "PostalAddress", streetAddress: c.full_address ?? undefined, addressLocality: c.city ?? undefined, addressRegion: c.state ?? undefined, postalCode: c.pincode ?? undefined, addressCountry: "IN" },
+  ...(ph ? { telephone: `+91${ph}` } : {}),
+  ...(c.latitude && c.longitude ? { geo: { "@type": "GeoCoordinates", latitude: c.latitude, longitude: c.longitude } } : {}),
+  ...(map ? { hasMap: map } : {}),
+};
+---
+<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} modified={(c.updated_at ?? c.approved_at ?? "").slice(0, 10) || undefined} schemaType="WebPage">
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{c.centre_name}: {type}, {c.city || c.district}</h1>
+      <div class="meta-row"><span class="verified">✓ SarkariSewa पर सत्यापित केंद्र</span><span>{where}</span></div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">केंद्र की जानकारी</p>
+        <p class="answer-lead">
+          {c.centre_name} {place || where} में एक {type} है{c.years_of_operation ? `, जो ${c.years_of_operation} साल से चल रहा है` : ""}।
+          {all.length > 0 && <> यहां {all.slice(0, 5).join(", ")}{all.length > 5 ? " और दूसरी" : ""} सेवाएं मिलती हैं।</>}
+          {remote.length > 0 && ` ${remote.length} सेवाएं घर बैठे WhatsApp/फोन से भी हो जाती हैं।`}
+          {c.home_visit && " केंद्र घर पर आकर भी सेवा देता है।"}
+        </p>
+        <dl class="facts">
+          {c.full_address && <div><dt>पता</dt><dd>{c.full_address}{c.pincode && `, PIN ${c.pincode}`}</dd></div>}
+          {hours && <div><dt>समय</dt><dd>{hours}</dd></div>}
+          {ph && <div><dt>फोन</dt><dd><a href={`tel:+91${ph}`} data-act="call">{ph.slice(0, 5)} {ph.slice(5)}</a></dd></div>}
+          {wa && <div><dt>WhatsApp</dt><dd><a href={`https://wa.me/91${wa}?text=${waText}`} data-act="whatsapp" target="_blank" rel="noopener nofollow">{wa.slice(0, 5)} {wa.slice(5)}</a></dd></div>}
+        </dl>
+        <div class="ja-actions" data-app={c.application_id} style="margin-top:12px">
+          {ph && <a class="cta" href={`tel:+91${ph}`} data-act="call">📞 कॉल करें</a>}
+          {wa && <a class="cta secondary" href={`https://wa.me/91${wa}?text=${waText}`} data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 WhatsApp करें</a>}
+          {map && <a href={map} data-act="map" target="_blank" rel="noopener nofollow">🗺️ रास्ता देखें ↗</a>}
+        </div>
+      </section>
+
+      {c.about && (
+        <section class="section" id="parichay">
+          <h2>केंद्र के बारे में</h2>
+          <p style="white-space:pre-line">{c.about}</p>
+        </section>
+      )}
+
+      {all.length > 0 && (
+        <section class="section" id="sevayen">
+          <h2>{c.centre_name} पर मिलने वाली सेवाएं</h2>
+          {remote.length > 0 && <><h3>🏠 घर बैठे (WhatsApp/फोन से कागज़ भेजकर)</h3><ul class="checklist">{remote.map((s) => <li>{s}</li>)}</ul></>}
+          {online.length > 0 && <><h3>🏢 केंद्र पर आकर: सरकारी सेवाएं</h3><ul class="checklist">{online.map((s) => <li>{s}</li>)}</ul></>}
+          {(offline.length > 0 || custom.length > 0) && <><h3>🏢 केंद्र पर: दूसरी सेवाएं</h3><ul class="checklist">{[...offline, ...custom].map((s) => <li>{s}</li>)}</ul></>}
+          {remote.length > 0 && wa && <p><a class="cta secondary" href={`https://wa.me/91${wa}?text=${waText}`} data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 घर बैठे काम के लिए WhatsApp करें</a></p>}
+          <p class="cell-note">सेवाओं की जानकारी केंद्र के संचालक ने दी है। जाने से पहले फोन या WhatsApp पर पूछ लें।</p>
+        </section>
+      )}
+
+      {guides.length > 0 && (
+        <section class="section" id="taiyari">
+          <h2>केंद्र जाने से पहले: ज़रूरी कागज़ और प्रक्रिया</h2>
+          <p>इन सेवाओं के लिए कौन से कागज़ लगते हैं और सरकारी फीस कितनी है, हमारी गाइड में देखें, ताकि एक ही बार में काम हो जाए:</p>
+          <ul class="chips">{guides.map((g) => <li><a href={g.href}>{g.label}</a></li>)}</ul>
+        </section>
+      )}
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान रखें</h2>
+        <ul class="checklist">
+          <li>काम शुरू होने से पहले सरकारी फीस और केंद्र का सेवा शुल्क पूछ लें, और रसीद लें।</li>
+          <li>अपना OTP, ATM PIN या पासवर्ड किसी को न बताएं; OTP सिर्फ अपने सामने, अपने काम के लिए डलवाएं।</li>
+          <li>शिकायत: CSC हेल्पलाइन <a href="tel:18001213468">1800-121-3468</a> या helpdesk@csc.gov.in।</li>
+        </ul>
+      </section>
+
+      {districtPage && (
+        <CardGrid title="आसपास और क्या है" id="related" cards={[
+          { href: districtPage.href, emoji: "📍", title: { hi: `${districtPage.name} के सभी CSC सेंटर`, en: `All CSC centres in ${districtPage.name}` }, text: { hi: "पता, PIN और नक्शा", en: "Address, PIN, map" } },
+          { href: "/service/jan-aushadhi-store-locator.html", emoji: "💊", title: { hi: "नज़दीकी जन औषधि केंद्र", en: "Jan Aushadhi Kendra" }, text: { hi: "50-80% सस्ती दवा", en: "Cheaper medicines" } },
+        ]} />
+      )}
+      <CardGrid title="SarkariSewa पर लोकप्रिय सेवाएं" id="popular" cards={POPULAR_TASKS.slice(0, 6)} />
+      <PaidTools />
+      <Faq items={faq} />
+
+      <div class="claim-cta">
+        <p><strong>क्या आप इस केंद्र के संचालक हैं?</strong> अपनी सेवाएं, समय और संपर्क खुद बदलें, या हमें बताएं कि साइट से ग्राहक मिले।</p>
+        <a class="cta secondary" href={`/csc-edit.html?id=${encodeURIComponent(c.application_id)}`}>जानकारी बदलें</a>
+      </div>
+      <p class="notice">SarkariSewa India एक निजी वेबसाइट है। केंद्र की जानकारी संचालक ने दी है; हम संचालक से बात करके इसे जांचते हैं, पर केंद्र की सेवा, फीस या व्यवहार की ज़िम्मेदारी हमारी नहीं है। अपना केंद्र जोड़ना है? <a href="/claim-your-csc.html">फ्री में जोड़ें</a></p>
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc" data-app={c.application_id}>
+        <h2 style="font-size:1rem">संपर्क करें</h2>
+        {ph && <a class="cta" href={`tel:+91${ph}`} data-act="call">📞 कॉल करें</a>}
+        {wa && <a class="cta secondary" href={`https://wa.me/91${wa}?text=${waText}`} data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 WhatsApp</a>}
+        {districtPage && <a class="cta secondary" href={districtPage.href}>{districtPage.name} के सभी CSC</a>}
+      </section>
+    </aside>
+  </div>
+  <script is:inline src="/assets/js/csc-listing.js"></script>
+  <script is:inline define:vars={{ app: c.application_id }}>
+    if (window.SSCsc) {
+      SSCsc.log(app, "profile");
+      document.addEventListener("click", function (e) {
+        var a = e.target.closest && e.target.closest("a[data-act]");
+        if (a) SSCsc.log(app, a.dataset.act);
+      });
+    }
+  </script>
+</Base>

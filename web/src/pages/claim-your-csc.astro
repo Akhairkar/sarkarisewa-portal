@@ -9,6 +9,9 @@ import { STATES } from "../data/site";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
 
 const ONLINE = ["Aadhaar सेवा", "PAN कार्ड", "आयुष्मान कार्ड", "प्रमाण पत्र (जाति/आय/निवास)", "राशन कार्ड", "पेंशन / योजना फॉर्म", "बिजली/पानी बिल", "बैंकिंग / पैसा भेजना", "बीमा", "नौकरी / परीक्षा फॉर्म", "ई-श्रम / लेबर कार्ड", "PM-Kisan", "पासपोर्ट / ड्राइविंग लाइसेंस आवेदन", "GST / ITR"];
+// Services that can be done without visiting (documents sent on WhatsApp/phone).
+// Aadhaar biometric work always needs the person at the centre, so it is not offered here.
+const REMOTE = ONLINE.filter((s) => !s.startsWith("Aadhaar"));
 const OFFLINE = ["फोटोकॉपी", "प्रिंटिंग", "स्कैनिंग", "लैमिनेशन", "पासपोर्ट फोटो", "टाइपिंग / डॉक्यूमेंट सहायता"];
 const TYPES: [string, string][] = [["CSC", "CSC (Common Service Centre)"], ["Jan Seva Kendra", "जन सेवा केंद्र"], ["E-Mitra", "ई-मित्र"], ["Maha E Seva", "महा ई-सेवा केंद्र"], ["Vasudha Kendra", "वसुधा केंद्र"], ["Other", "अन्य सेवा केंद्र / साइबर कैफे"]];
 const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर", href: "/tools/csc-locator.html" }, { label: "केंद्र जोड़ें" }];
@@ -70,8 +73,12 @@ const faq = [
 
         <fieldset>
           <legend>3. सेवाएं और समय</legend>
+          <p class="hint">बटन दबाकर चुनें। जो चुनेंगे वही आपके पेज पर दिखेगा।</p>
+          <label>🏢 केंद्र पर आकर होने वाली सेवाएं</label>
           <div class="checks">{ONLINE.map((s) => <label><input type="checkbox" name="online_services" value={s} /> {s}</label>)}</div>
           <div class="checks" style="margin-top:8px">{OFFLINE.map((s) => <label><input type="checkbox" name="offline_services" value={s} /> {s}</label>)}</div>
+          <label>🏠 घर बैठे होने वाली सेवाएं <span class="hint">(ग्राहक WhatsApp/फोन पर कागज़ भेजे, आप ऑनलाइन काम कर दें)</span></label>
+          <div class="checks">{REMOTE.map((s) => <label><input type="checkbox" name="remote_services" value={s} /> {s}</label>)}</div>
           <label for="custom">और कोई सेवा (कॉमा से अलग करें)</label>
           <input type="text" id="custom" name="custom" maxlength="300" />
           <div class="grid2">
@@ -146,7 +153,7 @@ const faq = [
         centre_type: f.centre_type.value, years_of_operation: f.years_of_operation.value ? Math.min(60, parseInt(f.years_of_operation.value, 10) || 0) : null,
         full_address: f.full_address.value.trim().slice(0, 600), city: f.city.value.trim(), district: f.district.value.trim(), state: f.state.value, pincode: f.pincode.value.trim(),
         latitude: f.latitude.value ? parseFloat(f.latitude.value) : null, longitude: f.longitude.value ? parseFloat(f.longitude.value) : null,
-        online_services: all("online_services"), offline_services: all("offline_services"),
+        online_services: all("online_services"), offline_services: all("offline_services"), remote_services: all("remote_services"),
         custom_services: f.custom.value.split(",").map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 10),
         working_hours: { open: f.open.value.trim(), close: f.close.value.trim(), days: f.days.value.trim() },
         home_visit: f.home_visit.checked, appointment_required: false,

@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${esc([c.city, c.district].filter(Boolean).join(", "))}<br><a href="../${esc(url)}" target="_blank" style="font-size:0.85rem; color:#10b981;">View Live Page</a></td>
         <td><strong>${s.recent}</strong> in 30 days<br><small>📞 ${s.call} · 💬 ${s.whatsapp} · 🗺️ ${s.map} · 👁 ${s.profile} views</small></td>
         <td>
-          <button class="theme-toggle-btn" style="background:#3b82f6; color:#fff; border:none; margin-bottom:4px;" onclick="shareProfile('${esc(c.id)}')">💬 Send link</button><br>
+          <button class="theme-toggle-btn" style="background:#3b82f6; color:#fff; border:none; margin-bottom:4px;" title="Sends live page, edit page and a new password" onclick="shareProfile('${esc(c.id)}')">💬 Send link + password</button><br>
           <button class="logout-btn" onclick="rejectCSC('${esc(c.id)}')">Revoke</button>
         </td>
       </tr>`;
@@ -146,13 +146,50 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).join("");
   }
 
-  // Send the operator their live page on WhatsApp.
-  window.shareProfile = (id) => {
+  // New owner password: 8 easy-to-read characters; only its SHA-256 is stored.
+  const newCode = () => {
+    const abc = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+    const r = crypto.getRandomValues(new Uint32Array(8));
+    return Array.from(r, (n) => abc[n % abc.length]).join("");
+  };
+  const sha256 = async (t) => Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t))), (b) => b.toString(16).padStart(2, "0")).join("");
+
+  // Send the operator their live page, edit page and a fresh password on
+  // WhatsApp. Each send makes a new password (the old one stops working).
+  window.shareProfile = async (id) => {
     const c = byId[id];
     if (!c) return;
-    const url = "https://sarkarisewaindia.com/" + (c.profile_url || `csc-centre.html?id=${encodeURIComponent(c.application_id)}`);
-    const text = encodeURIComponent(`नमस्ते ${c.owner_name}, आपका केंद्र "${c.centre_name}" SarkariSewa India पर सत्यापित होकर लाइव है (फ्री): ${url}\nहमारी साइट से आने वाले ग्राहक WhatsApp पर "SarkariSewa India पर देखा" लिखकर आएंगे। ग्राहक मिलें तो इसी पेज पर "भेजें" फॉर्म से हमें बताएं।`);
-    window.open(waLink(digits(c.owner_mobile), text), "_blank", "noopener");
+    if (!confirm(`Send live page + a NEW edit password to ${c.owner_name}? Any old password will stop working.`)) return;
+    const win = window.open("about:blank", "_blank");
+    try {
+      const code = newCode();
+      const client = await getSupabaseClient();
+      const { error } = await client.from("csc_claims").update({ edit_code_hash: await sha256(code) }).eq("id", id);
+      if (error) throw error;
+      const live = "https://sarkarisewaindia.com/" + (c.profile_url || `csc-centre.html?id=${encodeURIComponent(c.application_id)}`);
+      const edit = `https://sarkarisewaindia.com/csc-edit.html?id=${encodeURIComponent(c.application_id)}`;
+      const text = encodeURIComponent([
+        `नमस्ते ${c.owner_name} जी,`,
+        `बधाई हो! आपका केंद्र "${c.centre_name}" SarkariSewa India पर सत्यापित होकर लाइव है (फ्री):`,
+        live,
+        "",
+        "अपनी सेवाएं, समय, फोटो वाली जानकारी और संपर्क आप खुद बदल सकते हैं, कोई कोडिंग नहीं, बस बटन दबाकर:",
+        edit,
+        `आवेदन नंबर: ${c.application_id}`,
+        `मोबाइल: वही जो फॉर्म में दिया था`,
+        `पासवर्ड: ${code}`,
+        "(पासवर्ड किसी से साझा न करें)",
+        "",
+        'हमारी साइट से आने वाले ग्राहक WhatsApp पर "SarkariSewa India पर देखा" लिखकर आएंगे। ग्राहक मिलें तो ऊपर वाले पेज पर हमें बताएं।',
+        "धन्यवाद,",
+        "टीम SarkariSewa India",
+      ].join("\n"));
+      const link = waLink(digits(c.owner_mobile), text);
+      if (win) win.location.href = link; else window.location.href = link;
+    } catch (err) {
+      if (win) win.close();
+      alert("Could not create password: " + err.message);
+    }
   };
 
   window.approveCSC = async (id) => {

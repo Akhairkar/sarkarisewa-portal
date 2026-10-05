@@ -14,20 +14,11 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       <p class="csc-status" id="c-status">जानकारी लोड हो रही है…</p>
       <ul class="csc-list" id="c-card" style="grid-template-columns:minmax(0,1fr)"></ul>
 
-      <section class="section" id="owner" hidden>
-        <h2>क्या आप इस केंद्र के संचालक हैं?</h2>
-        <p>SarkariSewa India से ग्राहक आए हों तो हमें बताएं। इससे हम आपके इलाके में और लोगों तक आपका केंद्र पहुंचा पाएंगे। ग्राहक WhatsApp पर "SarkariSewa India पर देखा" लिखकर आते हैं।</p>
-        <form class="claim-form" id="fb-form" novalidate>
-          <div class="grid2">
-            <div><label for="fb-mobile">आपका मोबाइल नंबर (जो claim में दिया था)</label><input id="fb-mobile" name="mobile" type="tel" inputmode="numeric" maxlength="10" required /></div>
-            <div><label for="fb-n">इस हफ्ते/महीने कितने ग्राहक हमारी साइट से आए?</label><input id="fb-n" name="customers" type="number" min="0" max="10000" /></div>
-          </div>
-          <label for="fb-msg">कोई बात बताना चाहें (जानकारी बदलनी हो, सुझाव)</label>
-          <textarea id="fb-msg" name="message" maxlength="1000"></textarea>
-          <button type="submit" class="cta" style="margin-top:12px">भेजें</button>
-          <p class="claim-msg" id="fb-out" role="status"></p>
-        </form>
+      <section class="section" id="sevayen" hidden>
+        <h2>मिलने वाली सेवाएं</h2>
+        <ul class="checklist" id="c-services"></ul>
       </section>
+      <p id="c-edit" hidden><a href="#">इस केंद्र के संचालक हैं? जानकारी बदलें →</a></p>
 
       <div class="claim-cta">
         <p><strong>आप भी CSC / जन सेवा केंद्र चलाते हैं?</strong> अपना केंद्र SarkariSewa पर फ्री में जोड़ें।</p>
@@ -42,7 +33,13 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
     var id = new URLSearchParams(location.search).get("id") || "";
     var status = document.getElementById("c-status");
     if (!/^[A-Za-z0-9-]{4,50}$/.test(id)) { status.textContent = "केंद्र नहीं मिला। CSC लोकेटर से खोजें।"; return; }
+    var slug = function (t) { return String(t || "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60); };
     SSCsc.one(id).then(function (c) {
+      if (c) {
+        var num = (id.match(/\d{4,}$/) || [slug(id)])[0];
+        var page = "/csc-centre/" + [slug(c.centre_name), slug(c.district), num].filter(Boolean).join("-") + ".html";
+        fetch(page, { method: "HEAD" }).then(function (r) { if (r.ok) location.replace(page); }).catch(function () {});
+      }
       if (!c) { status.textContent = "यह केंद्र अभी सत्यापित नहीं है या हटाया जा चुका है।"; return; }
       document.getElementById("c-title").textContent = c.centre_name + (c.district ? ", " + c.district : "");
       document.title = c.centre_name + " | SarkariSewa India";
@@ -51,19 +48,14 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       ul.innerHTML = SSCsc.card(c, { profile: false });
       SSCsc.wire(ul);
       SSCsc.log(id, "profile");
-      document.getElementById("owner").hidden = false;
+      var sv = [].concat((c.remote_services || []).map(function (x) { return "🏠 घर बैठे: " + x; }), c.online_services || [], c.offline_services || [], c.custom_services || []).filter(Boolean);
+      if (sv.length) {
+        document.getElementById("c-services").innerHTML = sv.map(function (x) { return "<li>" + SSCsc.esc(x) + "</li>"; }).join("");
+        document.getElementById("sevayen").hidden = false;
+      }
+      var ed = document.getElementById("c-edit"); ed.querySelector("a").href = "/csc-edit.html?id=" + encodeURIComponent(id); ed.hidden = false;
     }).catch(function () { status.textContent = "जानकारी लोड नहीं हो सकी। थोड़ी देर बाद फिर कोशिश करें।"; });
 
-    document.getElementById("fb-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      var out = document.getElementById("fb-out"), f = e.target;
-      var m = f.mobile.value.replace(/\D/g, "");
-      if (!/^[6-9]\d{9}$/.test(m)) { out.textContent = "10 अंकों का सही मोबाइल नंबर डालें।"; return; }
-      var n = f.customers.value === "" ? null : Math.max(0, Math.min(10000, parseInt(f.customers.value, 10) || 0));
-      SSCsc.feedback({ application_id: id, mobile: m, customers: n, message: f.message.value.slice(0, 1000) || null })
-        .then(function () { out.textContent = "धन्यवाद! आपकी जानकारी हमें मिल गई।"; f.reset(); })
-        .catch(function () { out.textContent = "भेजा नहीं जा सका। sarkarisewaindia@gmail.com पर मेल करें।"; });
-    });
   })();
   </script>
 </Base>

@@ -1,0 +1,200 @@
+---
+// Owner edit for a verified CSC listing. Login = application id + owner mobile
+// + edit code (sent by SarkariSewa on WhatsApp). Reads/writes only through the
+// csc_owner_get / csc_owner_update database functions, which check the code.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+
+const ONLINE = ["Aadhaar सेवा", "PAN कार्ड", "आयुष्मान कार्ड", "प्रमाण पत्र (जाति/आय/निवास)", "राशन कार्ड", "पेंशन / योजना फॉर्म", "बिजली/पानी बिल", "बैंकिंग / पैसा भेजना", "बीमा", "नौकरी / परीक्षा फॉर्म", "ई-श्रम / लेबर कार्ड", "PM-Kisan", "पासपोर्ट / ड्राइविंग लाइसेंस आवेदन", "GST / ITR"];
+const REMOTE = ONLINE.filter((s) => !s.startsWith("Aadhaar"));
+const OFFLINE = ["फोटोकॉपी", "प्रिंटिंग", "स्कैनिंग", "लैमिनेशन", "पासपोर्ट फोटो", "टाइपिंग / डॉक्यूमेंट सहायता"];
+const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर", href: "/tools/csc-locator.html" }, { label: "केंद्र की जानकारी बदलें" }];
+---
+<Base title="अपने केंद्र की जानकारी बदलें | SarkariSewa India" description="SarkariSewa पर सत्यापित CSC / जन सेवा केंद्र के संचालक अपनी सेवाएं, समय और संपर्क खुद बदलें।" breadcrumbs={crumbs} noindex schemaType="WebPage">
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>अपने केंद्र की जानकारी बदलें</h1>
+      <p class="page-intro">यह पेज सिर्फ केंद्र के संचालक के लिए है। पासवर्ड आपको SarkariSewa India के WhatsApp पर भेजा गया है। इसे किसी से साझा न करें। नीचे बस बटन दबाकर अपनी सेवाएं चुनें और बॉक्स में जानकारी लिखें।</p>
+
+      <form class="claim-form" id="login" novalidate>
+        <fieldset>
+          <legend>लॉगिन</legend>
+          <div class="grid2">
+            <div><label for="l-app">आवेदन नंबर</label><input type="text" id="l-app" placeholder="CSC-2026-123456" maxlength="50" /></div>
+            <div><label for="l-mob">संचालक का मोबाइल (जो फॉर्म में दिया था)</label><input type="tel" id="l-mob" inputmode="numeric" maxlength="10" /></div>
+          </div>
+          <label for="l-code">पासवर्ड (WhatsApp पर मिला)</label><input type="text" id="l-code" maxlength="20" autocomplete="off" autocapitalize="characters" />
+          <button type="submit" class="cta" style="margin-top:12px">खोलें</button>
+          <p class="claim-msg" id="l-out" role="status"></p>
+          <p class="hint">पासवर्ड नहीं है या भूल गए? SarkariSewa India के WhatsApp पर अपना आवेदन नंबर भेजें या sarkarisewaindia@gmail.com पर मेल करें।</p>
+        </fieldset>
+      </form>
+
+      <form class="claim-form" id="edit" hidden novalidate>
+        <fieldset>
+          <legend>केंद्र</legend>
+          <div class="grid2">
+            <div><label for="e-name">केंद्र का नाम</label><input type="text" id="e-name" name="centre_name" maxlength="200" /></div>
+            <div><label for="e-years">कितने साल से चल रहा है</label><input type="number" id="e-years" name="years_of_operation" min="0" max="60" /></div>
+          </div>
+          <label for="e-about">केंद्र के बारे में (ग्राहकों के लिए 2-4 लाइन: क्या खास है, कौन से काम करते हैं)</label>
+          <textarea id="e-about" name="about" maxlength="1000"></textarea>
+        </fieldset>
+        <fieldset>
+          <legend>पता</legend>
+          <p class="hint" id="e-where"></p>
+          <label for="e-addr">पूरा पता</label><textarea id="e-addr" name="full_address" maxlength="600"></textarea>
+          <div class="grid2">
+            <div><label for="e-loc">मोहल्ला / इलाका</label><input type="text" id="e-loc" name="locality" maxlength="150" /></div>
+            <div><label for="e-city">शहर / गांव</label><input type="text" id="e-city" name="city" maxlength="120" /></div>
+            <div><label for="e-pin">PIN कोड</label><input type="text" id="e-pin" name="pincode" inputmode="numeric" maxlength="6" /></div>
+          </div>
+          <button type="button" class="more-btn" id="e-gps">📍 अभी केंद्र पर हूं: नक्शे की लोकेशन अपडेट करें</button>
+          <p class="hint" id="e-gps-out"></p>
+          <label class="inline"><input type="checkbox" name="show_address" /> पूरा पता और नक्शा दिखाएं</label>
+        </fieldset>
+        <fieldset>
+          <legend>सेवाएं और समय</legend>
+          <label>🏢 केंद्र पर आकर होने वाली सेवाएं</label>
+          <div class="checks" id="e-online">{ONLINE.map((s) => <label><input type="checkbox" name="online_services" value={s} /> {s}</label>)}</div>
+          <div class="checks" id="e-offline" style="margin-top:8px">{OFFLINE.map((s) => <label><input type="checkbox" name="offline_services" value={s} /> {s}</label>)}</div>
+          <label>🏠 घर बैठे होने वाली सेवाएं <span class="hint">(WhatsApp/फोन पर कागज़ लेकर)</span></label>
+          <div class="checks" id="e-remote">{REMOTE.map((s) => <label><input type="checkbox" name="remote_services" value={s} /> {s}</label>)}</div>
+          <label for="e-custom">और सेवाएं (कॉमा से अलग)</label><input type="text" id="e-custom" name="custom" maxlength="300" />
+          <div class="grid2">
+            <div><label for="e-open">खुलने का समय</label><input type="text" id="e-open" name="open" maxlength="20" placeholder="9:00 AM" /></div>
+            <div><label for="e-close">बंद होने का समय</label><input type="text" id="e-close" name="close" maxlength="20" placeholder="7:00 PM" /></div>
+          </div>
+          <label for="e-days">किन दिनों खुला</label><input type="text" id="e-days" name="days" maxlength="60" placeholder="सोमवार-शनिवार" />
+          <label class="inline"><input type="checkbox" name="show_hours" /> समय दिखाएं</label>
+          <label class="inline"><input type="checkbox" name="home_visit" /> घर पर जाकर सेवा देते हैं</label>
+        </fieldset>
+        <fieldset>
+          <legend>ग्राहकों के लिए संपर्क</legend>
+          <div class="grid2">
+            <div><label for="e-ph">कॉल नंबर</label><input type="tel" id="e-ph" name="public_phone" inputmode="numeric" maxlength="10" /></div>
+            <div><label for="e-wa">WhatsApp नंबर</label><input type="tel" id="e-wa" name="public_whatsapp" inputmode="numeric" maxlength="10" /></div>
+          </div>
+          <label for="e-mail">ईमेल (वैकल्पिक)</label><input type="email" id="e-mail" name="public_email" maxlength="254" />
+        </fieldset>
+        <button type="submit" class="cta">बदलाव सेव करें</button>
+        <p class="claim-msg" id="e-out" role="status" aria-live="polite"></p>
+        <p class="hint">सेव होते ही बदलाव आपके केंद्र के पेज पर दिखने लगते हैं (कुछ जगह 24 घंटे तक लग सकते हैं)।</p>
+      </form>
+
+      <form class="claim-form" id="fb" hidden novalidate>
+        <fieldset>
+          <legend>SarkariSewa से ग्राहक मिले?</legend>
+          <p>हमें बताएं कि हमारी साइट से कितने लोग आए। ग्राहक WhatsApp पर "SarkariSewa India पर देखा" लिखकर आते हैं।</p>
+          <div class="grid2">
+            <div><label for="fb-n">इस हफ्ते/महीने कितने ग्राहक आए</label><input type="number" id="fb-n" min="0" max="10000" /></div>
+          </div>
+          <label for="fb-msg">कुछ और कहना हो</label><textarea id="fb-msg" maxlength="1000"></textarea>
+          <button type="submit" class="cta secondary" style="margin-top:12px">भेजें</button>
+          <p class="claim-msg" id="fb-out" role="status"></p>
+        </fieldset>
+      </form>
+    </div>
+  </article>
+
+  <script is:inline define:vars={{ url: SUPABASE_URL, key: SUPABASE_ANON_KEY }}>
+  (function () {
+    var H = { apikey: key, Authorization: "Bearer " + key, "Content-Type": "application/json" };
+    var rpc = function (fn, body) { return fetch(url + "/rest/v1/rpc/" + fn, { method: "POST", headers: H, body: JSON.stringify(body) }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
+    var mob = function (v) { var d = String(v || "").replace(/\D/g, ""); return d.length > 10 ? d.slice(-10) : d; };
+    var login = document.getElementById("login"), edit = document.getElementById("edit"), fb = document.getElementById("fb");
+    var cred = null;
+    var q = new URLSearchParams(location.search);
+    if (q.get("id")) login.querySelector("#l-app").value = q.get("id");
+    if (q.get("code")) login.querySelector("#l-code").value = q.get("code");
+
+    function addBox(groupId, name, value) {
+      var g = document.getElementById(groupId);
+      var exists = [].some.call(g.querySelectorAll("input"), function (i) { return i.value === value; });
+      if (exists || !value) return;
+      var l = document.createElement("label"), i = document.createElement("input");
+      i.type = "checkbox"; i.name = name; i.value = value; l.appendChild(i); l.appendChild(document.createTextNode(" " + value)); g.appendChild(l);
+    }
+    function fill(c) {
+      var f = edit;
+      f.centre_name.value = c.centre_name || ""; f.years_of_operation.value = c.years_of_operation == null ? "" : c.years_of_operation;
+      f.about.value = c.about || ""; f.full_address.value = c.full_address || ""; f.locality.value = c.locality || "";
+      f.city.value = c.city || ""; f.pincode.value = c.pincode || "";
+      document.getElementById("e-where").textContent = "ज़िला: " + (c.district || "") + ", राज्य: " + (c.state || "") + " (ज़िला/राज्य बदलना हो तो हमें WhatsApp करें)";
+      f.show_address.checked = c.show_address !== false; f.show_hours.checked = c.show_hours !== false; f.home_visit.checked = !!c.home_visit;
+      (c.online_services || []).forEach(function (s) { addBox("e-online", "online_services", s); });
+      (c.offline_services || []).forEach(function (s) { addBox("e-offline", "offline_services", s); });
+      (c.remote_services || []).forEach(function (s) { addBox("e-remote", "remote_services", s); });
+      [].forEach.call(f.querySelectorAll('input[name="remote_services"]'), function (i) { i.checked = (c.remote_services || []).indexOf(i.value) !== -1; });
+      [].forEach.call(f.querySelectorAll('input[name="online_services"],input[name="offline_services"]'), function (i) {
+        i.checked = (c.online_services || []).concat(c.offline_services || []).indexOf(i.value) !== -1;
+      });
+      f.custom.value = (c.custom_services || []).join(", ");
+      var h = c.working_hours || {};
+      f.open.value = h.open || ""; f.close.value = h.close || ""; f.days.value = h.days || "";
+      f.public_phone.value = c.public_phone || ""; f.public_whatsapp.value = c.public_whatsapp || ""; f.public_email.value = c.public_email || "";
+      f.dataset.lat = c.latitude || ""; f.dataset.lng = c.longitude || "";
+    }
+
+    login.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var out = document.getElementById("l-out");
+      var app = login.querySelector("#l-app").value.trim(), m = mob(login.querySelector("#l-mob").value), code = login.querySelector("#l-code").value.trim().toUpperCase();
+      if (!app || !/^[6-9]\d{9}$/.test(m) || code.length < 4) { out.textContent = "आवेदन नंबर, 10 अंकों का मोबाइल और पासवर्ड भरें।"; return; }
+      out.textContent = "जांच हो रही है…";
+      rpc("csc_owner_get", { p_app: app, p_mobile: m, p_code: code }).then(function (c) {
+        if (!c) { out.textContent = "जानकारी मेल नहीं खाई। आवेदन नंबर, मोबाइल और पासवर्ड दोबारा जांचें।"; return; }
+        cred = { p_app: app, p_mobile: m, p_code: code };
+        fill(c); login.hidden = true; edit.hidden = false; fb.hidden = false;
+      }).catch(function () { out.textContent = "अभी जांच नहीं हो सकी। थोड़ी देर बाद कोशिश करें।"; });
+    });
+
+    document.getElementById("e-gps").addEventListener("click", function () {
+      var o = document.getElementById("e-gps-out");
+      if (!navigator.geolocation) { o.textContent = "लोकेशन उपलब्ध नहीं।"; return; }
+      o.textContent = "लोकेशन ली जा रही है…";
+      navigator.geolocation.getCurrentPosition(function (p) {
+        edit.dataset.lat = p.coords.latitude.toFixed(6); edit.dataset.lng = p.coords.longitude.toFixed(6);
+        o.textContent = "✓ नई लोकेशन: " + edit.dataset.lat + ", " + edit.dataset.lng + " (सेव करना न भूलें)";
+      }, function () { o.textContent = "लोकेशन नहीं मिली।"; }, { enableHighAccuracy: true, timeout: 15000 });
+    });
+
+    edit.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var f = edit, out = document.getElementById("e-out");
+      var pp = mob(f.public_phone.value), pw = mob(f.public_whatsapp.value);
+      if ((pp && !/^[6-9]\d{9}$/.test(pp)) || (pw && !/^[6-9]\d{9}$/.test(pw))) { out.textContent = "फोन/WhatsApp 10 अंकों का सही नंबर हो।"; return; }
+      if (!pp && !pw) { out.textContent = "कम से कम एक संपर्क नंबर रखें।"; return; }
+      if (f.pincode.value && !/^[1-9]\d{5}$/.test(f.pincode.value.trim())) { out.textContent = "6 अंकों का सही PIN कोड भरें।"; return; }
+      var all = function (n) { return [].map.call(f.querySelectorAll('input[name="' + n + '"]:checked'), function (x) { return x.value; }); };
+      var data = {
+        centre_name: f.centre_name.value, years_of_operation: f.years_of_operation.value, about: f.about.value,
+        full_address: f.full_address.value, locality: f.locality.value, city: f.city.value, pincode: f.pincode.value.trim(),
+        latitude: f.dataset.lat || "", longitude: f.dataset.lng || "",
+        online_services: all("online_services"), offline_services: all("offline_services"), remote_services: all("remote_services"),
+        custom_services: f.custom.value.split(",").map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 15),
+        working_hours: { open: f.open.value.trim(), close: f.close.value.trim(), days: f.days.value.trim() },
+        home_visit: f.home_visit.checked, show_address: f.show_address.checked, show_hours: f.show_hours.checked,
+        public_phone: pp, public_whatsapp: pw, public_email: f.public_email.value.trim(),
+      };
+      out.textContent = "सेव हो रहा है…";
+      rpc("csc_owner_update", Object.assign({ p_data: data }, cred)).then(function (ok) {
+        out.textContent = ok ? "✓ बदलाव सेव हो गए।" : "सेव नहीं हुआ। दोबारा लॉगिन करके कोशिश करें।";
+      }).catch(function () { out.textContent = "सेव नहीं हो सका। थोड़ी देर बाद कोशिश करें।"; });
+    });
+
+    fb.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var out = document.getElementById("fb-out");
+      var n = fb.querySelector("#fb-n").value;
+      fetch(url + "/rest/v1/csc_feedback", {
+        method: "POST", headers: Object.assign({ Prefer: "return=minimal" }, H),
+        body: JSON.stringify({ application_id: cred.p_app, mobile: cred.p_mobile, customers: n === "" ? null : Math.max(0, Math.min(10000, parseInt(n, 10) || 0)), message: fb.querySelector("#fb-msg").value.slice(0, 1000) || null }),
+      }).then(function (r) { if (!r.ok) throw 0; out.textContent = "धन्यवाद! जानकारी मिल गई।"; fb.reset(); })
+        .catch(function () { out.textContent = "भेजा नहीं जा सका।"; });
+    });
+  })();
+  </script>
+</Base>
