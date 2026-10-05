@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Where the centre shows on the site (own page, district page, sitemap).
   function listedPages(L) {
     if (!L) return [];
-    return [{ name: "अपना पेज", href: SITE + L.page }].concat(L.district ? [{ name: `${L.district.name} के CSC पेज पर सबसे ऊपर`, href: SITE + L.district.href }] : []);
+    return [{ name: "अपना पेज", href: SITE + L.page }].concat(L.district ? [{ name: `${L.district.name} ज़िले के पेज पर सबसे ऊपर`, href: SITE + L.district.href }] : []);
   }
   function listedInfo(c, L) {
     if (!L) return '<small style="color:#f59e0b">⏳ Own page not built yet (site rebuilds every 3 hours)</small>';

@@ -1,10 +1,12 @@
 // Which approved centres have a live page in this build, and on which pages
 // they are listed. Read by the admin panel (listing status, "listed" message).
-import { listings, listingSlug, listingDistrictPage } from "../../lib/csc-listings";
+import { listings, listingSlug, listingDistrictPage, nearbyJa } from "../../lib/csc-listings";
+import { typeOf } from "../../lib/centre-types";
 
 export async function GET() {
   const rows = (await listings()).map((c) => {
-    const d = listingDistrictPage(c);
+    const j = typeOf(c.centre_type).kind === "ja" ? nearbyJa(c) : null;
+    const d = j ? { href: j.href, name: j.name } : listingDistrictPage(c);
     return { id: c.application_id, page: `/csc-centre/${listingSlug(c)}.html`, district: d ? { href: d.href, name: d.name } : null };
   });
   return new Response(JSON.stringify({ built: new Date().toISOString(), rows }), { headers: { "Content-Type": "application/json" } });

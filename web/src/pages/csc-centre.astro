@@ -39,6 +39,15 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         <p><a class="cta secondary" id="c-district-link" href="/tools/csc-locator.html"></a></p>
       </section>
 
+      <section class="section" id="ja-info" hidden>
+        <h2>जन औषधि केंद्र से दवा लेने से पहले</h2>
+        <ul class="checklist">
+          <li>यहां ब्रांड की जगह उसी साल्ट (generic name) की दवा मिलती है। PMBI के अनुसार ये ब्रांडेड दवाओं से <strong>50-80% तक सस्ती</strong> हैं।</li>
+          <li>योजना में 2,100 से ज़्यादा दवाएं और 300 सर्जिकल सामान हैं। डॉक्टर की पर्ची साथ ले जाएं।</li>
+          <li>शिकायत या जानकारी: PMBI टोल-फ्री <a href="tel:18001808080">1800-180-8080</a>।</li>
+        </ul>
+      </section>
+
       <section class="section" id="dhyan">
         <h2>ध्यान रखें</h2>
         <ul class="checklist">
@@ -87,7 +96,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
     if (!/^[A-Za-z0-9-]{4,50}$/.test(id)) { status.textContent = "केंद्र नहीं मिला। CSC लोकेटर से खोजें।"; return; }
     var slug = function (t) { return String(t || "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60); };
     var norm = function (s) { return String(s || "").toLowerCase().replace(/district|जिला|ज़िला|[^a-zऀ-ॿ]/g, ""); };
-    var TYPE = { CSC: "CSC (कॉमन सर्विस सेंटर)", "Jan Seva Kendra": "जन सेवा केंद्र", "E-Mitra": "ई-मित्र", "Maha E Seva": "महा ई-सेवा केंद्र", "Vasudha Kendra": "वसुधा केंद्र", Other: "सेवा केंद्र" };
+    var TYPE = { "Jan Aushadhi Kendra": "प्रधानमंत्री भारतीय जन औषधि केंद्र", CSC: "CSC (कॉमन सर्विस सेंटर)", "Jan Seva Kendra": "जन सेवा केंद्र", "E-Mitra": "ई-मित्र", "Maha E Seva": "महा ई-सेवा केंद्र", "Vasudha Kendra": "वसुधा केंद्र", Other: "सेवा केंद्र" };
     SSCsc.one(id).then(function (c) {
       if (!c) { status.textContent = "यह केंद्र अभी सत्यापित नहीं है या हटाया जा चुका है।"; return; }
       var num = (id.match(/\d{4,}$/) || [slug(id)])[0];
@@ -119,9 +128,16 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         $("c-guides").innerHTML = g.map(function (x) { return '<a class="card" href="' + x.href + '"><span class="emoji" aria-hidden="true">📄</span><strong>' + esc(x.label) + "</strong><small>" + esc(x.text) + " →</small></a>"; }).join("");
         $("taiyari").hidden = false;
       }
-      if (c.district) {
+      if (SSCsc.kindOf(c) === "ja") {
+        $("dhyan").hidden = true;
+        $("ja-info").hidden = false;
+        var jl = $("c-district-link"); jl.href = "/service/jan-aushadhi-store-locator.html"; jl.textContent = "पास के दूसरे जन औषधि केंद्र खोजें →";
+        $("c-district").querySelector("h2").textContent = "और जन औषधि केंद्र";
+        $("c-district").hidden = false;
+        if (c.district) { $("v-others-title").textContent = c.district + " में और सत्यापित केंद्र"; SSCsc.district($("v-others"), { names: [c.district], state: c.state, exclude: id, kind: "ja" }); }
+      } else if (c.district) {
         $("v-others-title").textContent = c.district + " में और सत्यापित केंद्र";
-        SSCsc.district($("v-others"), { names: [c.district], state: c.state, exclude: id });
+        SSCsc.district($("v-others"), { names: [c.district], state: c.state, exclude: id, kind: SSCsc.kindOf(c) });
         fetch("/csc-centre/districts.json").then(function (r) { return r.json(); }).then(function (rows) {
           var d = norm(c.district), hit = rows.filter(function (r) { return r[0].indexOf(d) !== -1; })[0];
           var a = $("c-district-link");

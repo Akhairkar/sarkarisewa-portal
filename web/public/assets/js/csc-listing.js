@@ -24,6 +24,8 @@
   }
   // Non-empty values, case-insensitive duplicates removed ("Nagpur, nagpur" -> "Nagpur").
   function uniq(a) { var seen = {}; return a.filter(function (x) { var k = String(x || "").trim().toLowerCase(); if (!k || seen[k]) return false; seen[k] = 1; return true; }).join(", "); }
+  // Jan Aushadhi Kendras have their own format; every other type is a CSC-type centre.
+  function kindOf(c) { return c && c.centre_type === "Jan Aushadhi Kendra" ? "ja" : "csc"; }
   function list(v) { return Array.isArray(v) ? v : []; }
   function hours(h) {
     if (!h || typeof h !== "object") return "";
@@ -149,7 +151,7 @@
   function allServices(c) { return svc(c.online_services).concat(svc(c.offline_services), svc(c.custom_services), svc(c.remote_services)).filter(function (x, i, a) { return a.indexOf(x) === i; }); }
 
   function full(c, type) {
-    var ph = digits(c.public_phone), wa = digits(c.public_whatsapp), name = nice(c.centre_name);
+    var ph = digits(c.public_phone), wa = digits(c.public_whatsapp), name = nice(c.centre_name), ja = kindOf(c) === "ja";
     var waText = encodeURIComponent("नमस्ते, मैंने आपका केंद्र SarkariSewa India (sarkarisewaindia.com) पर देखा। मुझे इस काम के लिए मदद चाहिए: ");
     var on = svc(c.online_services), off = svc(c.offline_services), cu = svc(c.custom_services), rem = svc(c.remote_services);
     var all = on.concat(off, cu, rem).filter(function (x, i, a) { return a.indexOf(x) === i; });
@@ -175,16 +177,16 @@
       + (map ? '<a href="' + map + '" data-act="map" target="_blank" rel="noopener nofollow">🗺️ रास्ता देखें ↗</a>' : "")
       + "</div></section>"
       + (c.about ? '<section class="section" id="parichay"><h2>केंद्र के बारे में</h2><p style="white-space:pre-line">' + esc(c.about) + "</p></section>" : "")
-      + (all.length ? '<section class="section" id="sevayen"><h2>' + esc(name) + " पर मिलने वाली सेवाएं</h2>"
-        + (rem.length ? "<h3>🏠 घर बैठे (WhatsApp/फोन से कागज़ भेजकर)</h3>" + li(rem) : "")
-        + (on.length ? "<h3>🏢 केंद्र पर आकर: सरकारी सेवाएं</h3>" + li(on) : "")
-        + (off.length || cu.length ? "<h3>🏢 केंद्र पर: दूसरी सेवाएं</h3>" + li(off.concat(cu)) : "")
-        + (rem.length && wa ? '<p><a class="cta secondary" href="' + waLink + '" data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 घर बैठे काम के लिए WhatsApp करें</a></p>' : "")
+      + (all.length ? '<section class="section" id="sevayen"><h2>' + esc(name) + (ja ? " पर मिलने वाली दवाएं और सुविधाएं</h2>" : " पर मिलने वाली सेवाएं</h2>")
+        + (rem.length ? (ja ? "<h3>🏠 घर बैठे (WhatsApp / होम डिलीवरी)</h3>" : "<h3>🏠 घर बैठे (WhatsApp/फोन से कागज़ भेजकर)</h3>") + li(rem) : "")
+        + (on.length ? (ja ? "<h3>💊 केंद्र पर मिलने वाली दवाएं और सामान</h3>" : "<h3>🏢 केंद्र पर आकर: सरकारी सेवाएं</h3>") + li(on) : "")
+        + (off.length || cu.length ? (ja ? "<h3>🏪 दूसरी सुविधाएं</h3>" : "<h3>🏢 केंद्र पर: दूसरी सेवाएं</h3>") + li(off.concat(cu)) : "")
+        + (rem.length && wa ? '<p><a class="cta secondary" href="' + waLink + '" data-act="whatsapp" target="_blank" rel="noopener nofollow">' + (ja ? "💬 दवा के लिए WhatsApp करें" : "💬 घर बैठे काम के लिए WhatsApp करें") + "</a></p>" : "")
         + '<p class="cell-note">सेवाओं की जानकारी केंद्र के संचालक ने दी है। जाने से पहले फोन या WhatsApp पर पूछ लें।</p></section>' : "");
   }
 
   window.SSCsc = {
-    full: full, uniq: uniq, nice: nice, openNow: openNow, guides: guides, allServices: allServices, hoursFull: hoursFull, since: since,
+    full: full, kindOf: kindOf, uniq: uniq, nice: nice, openNow: openNow, guides: guides, allServices: allServices, hoursFull: hoursFull, since: since,
     card: card, wire: wire, log: log, esc: esc,
     // Approved centres of a district: matched by district name or PIN.
     district: function (root, cfg) {
@@ -192,6 +194,7 @@
       return get("csc_public_centres?select=*&order=approved_at.desc&limit=500").then(function (rows) {
         var mine = rows.filter(function (c) {
           if (cfg.exclude && c.application_id === cfg.exclude) return false;
+          if (kindOf(c) !== (cfg.kind || "csc")) return false;
           var d = norm(c.district), sOk = !st || !norm(c.state) || norm(c.state) === st;
           return sOk && (names.some(function (n) { return d && (d.indexOf(n) !== -1 || n.indexOf(d) !== -1); }) || pins.indexOf(String(c.pincode || "").trim()) !== -1);
         });

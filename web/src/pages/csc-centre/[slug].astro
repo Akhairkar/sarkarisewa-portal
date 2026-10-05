@@ -12,13 +12,16 @@ import PaidTools from "../../components/PaidTools.astro";
 import { listings, listingSlug, listingDistrictPage, niceName, nearbyJa, digits, hoursText, guideLinks, sinceText, serviceHi, type Listing } from "../../lib/csc-listings";
 import { POPULAR_TASKS } from "../../data/site";
 import { nearbyPages } from "../../lib/csc";
+import { typeOf } from "../../lib/centre-types";
 
 export async function getStaticPaths() {
   return (await listings()).map((c) => ({ params: { slug: listingSlug(c) }, props: { c } }));
 }
 const { c } = Astro.props as { c: Listing };
 const name = niceName(c.centre_name);
-const districtPage = listingDistrictPage(c);
+const T = typeOf(c.centre_type);
+const isJa = T.kind === "ja";
+const districtPage = isJa ? undefined : listingDistrictPage(c);
 const online = (c.online_services ?? []).filter(Boolean).map(serviceHi);
 const offline = (c.offline_services ?? []).filter(Boolean).map(serviceHi);
 const custom = (c.custom_services ?? []).filter(Boolean).map(serviceHi);
@@ -35,35 +38,41 @@ const map = c.latitude && c.longitude
   : c.full_address ? `https://www.google.com/maps/search/${encodeURIComponent(`${c.full_address} ${c.pincode ?? ""}`)}` : "";
 const photo = /^https:\/\/[a-z0-9]+\.supabase\.co\/storage\/v1\/object\/public\/csc-photos\//.test(c.photo_url ?? "") ? c.photo_url! : "";
 const ja = nearbyJa(c);
-const nearDistricts = districtPage ? nearbyPages(districtPage, 6) : [];
+const nearDistricts = isJa ? (ja?.near ?? []) : districtPage ? nearbyPages(districtPage, 6).map((p) => ({ href: p.href, name: p.name, count: p.d.count })) : [];
 const since = sinceText(c.years_of_operation);
 const embed = c.latitude && c.longitude ? `https://maps.google.com/maps?q=${c.latitude},${c.longitude}&z=16&output=embed` : "";
 const pageUrl = `https://sarkarisewaindia.com/csc-centre/${listingSlug(c)}.html`;
 const shareText = encodeURIComponent(`${name} (${c.city || c.district}): सेवाएं, समय और संपर्क\n${pageUrl}`);
 const waText = encodeURIComponent("नमस्ते, मैंने आपका केंद्र SarkariSewa India (sarkarisewaindia.com) पर देखा। मुझे इस काम के लिए मदद चाहिए: ");
-const typeHi: Record<string, string> = { CSC: "CSC (कॉमन सर्विस सेंटर)", "Jan Seva Kendra": "जन सेवा केंद्र", "E-Mitra": "ई-मित्र", "Maha E Seva": "महा ई-सेवा केंद्र", "Vasudha Kendra": "वसुधा केंद्र", Other: "सेवा केंद्र" };
+const typeHi: Record<string, string> = { "Jan Aushadhi Kendra": "प्रधानमंत्री भारतीय जन औषधि केंद्र", CSC: "CSC (कॉमन सर्विस सेंटर)", "Jan Seva Kendra": "जन सेवा केंद्र", "E-Mitra": "ई-मित्र", "Maha E Seva": "महा ई-सेवा केंद्र", "Vasudha Kendra": "वसुधा केंद्र", Other: "सेवा केंद्र" };
 const type = typeHi[c.centre_type ?? ""] ?? c.centre_type ?? "सेवा केंद्र";
 const area = uniq([c.locality, c.city || c.district]);
 const top = all.filter((x) => !/फोटो|प्रिंट|स्कैन|लैमि|photo|print|scan|lamin/i.test(x)).slice(0, 2);
-const title = `${name}, ${area}: ${c.centre_type === "CSC" ? "CSC सेंटर" : "जन सेवा केंद्र"}${top.length ? ` (${top.join(", ")})` : ""} | SarkariSewa India`;
-const description = `${name} (${where}): ${all.slice(0, 4).join(", ") || "सरकारी ऑनलाइन सेवाएं"}। पता, समय, फोन और WhatsApp। SarkariSewa पर सत्यापित केंद्र।`;
+const title = `${name}, ${area}: ${T.short}${top.length ? ` (${top.join(", ")})` : ""} | SarkariSewa India`;
+const description = `${name} (${where}): ${all.slice(0, 4).join(", ") || (isJa ? "सस्ती जेनेरिक दवाएं" : "सरकारी ऑनलाइन सेवाएं")}। पता, समय, फोन और WhatsApp। SarkariSewa पर सत्यापित केंद्र।`;
 const crumbs = [
   { label: "होम", href: "/" },
-  { label: "CSC सेंटर", href: "/tools/csc-locator.html" },
-  ...(districtPage ? [{ label: `${districtPage.name} CSC`, href: districtPage.href }] : []),
+  ...(isJa
+    ? [{ label: "जन औषधि केंद्र", href: "/service/jan-aushadhi-store-locator.html" }, ...(ja ? [{ label: `${ja.name} जन औषधि`, href: ja.href }] : [])]
+    : [{ label: "CSC सेंटर", href: "/tools/csc-locator.html" }, ...(districtPage ? [{ label: `${districtPage.name} CSC`, href: districtPage.href }] : [])]),
   { label: name },
 ];
 const faq = [
   { q: `${name} कहां है?`, a: `${name} ${c.full_address ? `${c.full_address}, ` : ""}${where}${c.pincode ? ` (PIN ${c.pincode})` : ""} में है। ऊपर "रास्ता देखें" से Google Maps पर रास्ता देखें।` },
   ...(all.length ? [{ q: `${name} पर कौन सी सेवाएं मिलती हैं?`, a: `केंद्र के संचालक के अनुसार यहां ये सेवाएं मिलती हैं: ${all.join(", ")}। सेवा और फीस जाने से पहले फोन या WhatsApp पर पूछ लें।` }] : []),
   ...(hours ? [{ q: `${name} कितने बजे खुलता है?`, a: `संचालक के अनुसार समय: ${hours}। त्योहार या छुट्टी पर समय बदल सकता है।` }] : []),
-  ...(remote.length ? [{ q: `क्या ${name} पर घर बैठे काम हो जाता है?`, a: `हां, संचालक के अनुसार ये सेवाएं WhatsApp या फोन पर कागज़ भेजकर घर बैठे हो जाती हैं: ${remote.join(", ")}। आधार जैसे बायोमेट्रिक काम के लिए केंद्र पर जाना ज़रूरी है।` }] : []),
-  ...(ja ? [{ q: `${name} के पास जन औषधि केंद्र कहां है?`, a: `${ja.name} ज़िले में ${ja.count} प्रधानमंत्री भारतीय जन औषधि केंद्र हैं, जहां दवाएं ब्रांडेड दवाओं से 50-80% तक सस्ती मिलती हैं। सबसे पास वाले केंद्र इस पेज पर नीचे दिए हैं।` }] : []),
+  ...(remote.length ? [{ q: `क्या ${name} पर घर बैठे काम हो जाता है?`, a: isJa ? `हां, संचालक के अनुसार: ${remote.join(", ")}। दवा के लिए डॉक्टर की पर्ची की फोटो WhatsApp पर भेजें और उपलब्धता पूछ लें।` : `हां, संचालक के अनुसार ये सेवाएं WhatsApp या फोन पर कागज़ भेजकर घर बैठे हो जाती हैं: ${remote.join(", ")}। आधार जैसे बायोमेट्रिक काम के लिए केंद्र पर जाना ज़रूरी है।` }] : []),
+  ...(ja && !isJa ? [{ q: `${name} के पास जन औषधि केंद्र कहां है?`, a: `${ja.name} ज़िले में ${ja.count} प्रधानमंत्री भारतीय जन औषधि केंद्र हैं, जहां दवाएं ब्रांडेड दवाओं से 50-80% तक सस्ती मिलती हैं। सबसे पास वाले केंद्र इस पेज पर नीचे दिए हैं।` }] : []),
+  ...(isJa ? [
+    { q: "जन औषधि केंद्र पर दवाएं सस्ती क्यों होती हैं?", a: "यहां ब्रांड के नाम की जगह उसी साल्ट (generic name) की दवाएं मिलती हैं, जो PMBI (Pharmaceuticals & Medical Devices Bureau of India) के अनुसार ब्रांडेड दवाओं से 50-80% तक सस्ती हैं। योजना में 2,100 से ज़्यादा दवाएं और 300 सर्जिकल सामान शामिल हैं। डॉक्टर की पर्ची साथ ले जाएं और दवा का साल्ट मिलाकर लें।" },
+    { q: "जन औषधि की शिकायत या जानकारी कहां मिलेगी?", a: "PMBI का टोल-फ्री नंबर 1800-180-8080 है। दवा की कीमत और नज़दीकी केंद्र JanAushadhi Sugam ऐप पर भी देख सकते हैं।" },
+  ] : [
   { q: "CSC पर सरकारी फीस से ज़्यादा पैसा मांगा जाए तो?", a: "सरकारी फीस के अलावा CSC अपना सेवा शुल्क लेता है। काम शुरू होने से पहले कुल राशि पूछें और रसीद लें। मनमानी वसूली की शिकायत CSC हेल्पलाइन 1800-121-3468 या helpdesk@csc.gov.in पर करें।" },
+  ]),
 ];
 const ld = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": isJa ? "Pharmacy" : "LocalBusiness",
   name: name,
   description: `${type}${all.length ? `: ${all.join(", ")}` : ""}`,
   address: { "@type": "PostalAddress", streetAddress: c.full_address ?? undefined, addressLocality: c.city ?? undefined, addressRegion: c.state ?? undefined, postalCode: c.pincode ?? undefined, addressCountry: "IN" },
@@ -120,11 +129,11 @@ const ld = {
 
       {all.length > 0 && (
         <section class="section" id="sevayen">
-          <h2>{name} पर मिलने वाली सेवाएं</h2>
-          {remote.length > 0 && <><h3>🏠 घर बैठे (WhatsApp/फोन से कागज़ भेजकर)</h3><ul class="checklist">{remote.map((s) => <li>{s}</li>)}</ul></>}
-          {online.length > 0 && <><h3>🏢 केंद्र पर आकर: सरकारी सेवाएं</h3><ul class="checklist">{online.map((s) => <li>{s}</li>)}</ul></>}
-          {(offline.length > 0 || custom.length > 0) && <><h3>🏢 केंद्र पर: दूसरी सेवाएं</h3><ul class="checklist">{[...offline, ...custom].map((s) => <li>{s}</li>)}</ul></>}
-          {remote.length > 0 && wa && <p><a class="cta secondary" href={`https://wa.me/91${wa}?text=${waText}`} data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 घर बैठे काम के लिए WhatsApp करें</a></p>}
+          <h2>{name} पर मिलने वाली {isJa ? "दवाएं और सुविधाएं" : "सेवाएं"}</h2>
+          {remote.length > 0 && <><h3>{isJa ? "🏠 घर बैठे (WhatsApp / होम डिलीवरी)" : "🏠 घर बैठे (WhatsApp/फोन से कागज़ भेजकर)"}</h3><ul class="checklist">{remote.map((s) => <li>{s}</li>)}</ul></>}
+          {online.length > 0 && <><h3>{isJa ? "💊 केंद्र पर मिलने वाली दवाएं और सामान" : "🏢 केंद्र पर आकर: सरकारी सेवाएं"}</h3><ul class="checklist">{online.map((s) => <li>{s}</li>)}</ul></>}
+          {(offline.length > 0 || custom.length > 0) && <><h3>{isJa ? "🏪 दूसरी सुविधाएं" : "🏢 केंद्र पर: दूसरी सेवाएं"}</h3><ul class="checklist">{[...offline, ...custom].map((s) => <li>{s}</li>)}</ul></>}
+          {remote.length > 0 && wa && <p><a class="cta secondary" href={`https://wa.me/91${wa}?text=${waText}`} data-act="whatsapp" target="_blank" rel="noopener nofollow">{isJa ? "💬 दवा के लिए WhatsApp करें" : "💬 घर बैठे काम के लिए WhatsApp करें"}</a></p>}
           <p class="cell-note">सेवाओं की जानकारी केंद्र के संचालक ने दी है। जाने से पहले फोन या WhatsApp पर पूछ लें।</p>
         </section>
       )}
@@ -138,9 +147,21 @@ const ld = {
         </section>
       )}
 
+      {isJa && (
+        <section class="section" id="jan-aushadhi-info">
+          <h2>जन औषधि केंद्र से दवा लेने से पहले</h2>
+          <ul class="checklist">
+            <li>यहां ब्रांड की जगह उसी साल्ट (generic name) की दवा मिलती है। PMBI के अनुसार ये ब्रांडेड दवाओं से <strong>50-80% तक सस्ती</strong> हैं।</li>
+            <li>योजना में 2,100 से ज़्यादा दवाएं और 300 सर्जिकल सामान हैं। डॉक्टर की पर्ची साथ ले जाएं; दवा न हो तो पूछें कि कब तक मंगवा सकते हैं।</li>
+            <li>दवा की कीमत और नज़दीकी केंद्र <a href="https://play.google.com/store/apps/details?id=in.gov.pmbjp" target="_blank" rel="noopener">JanAushadhi Sugam ऐप</a> पर भी देख सकते हैं।</li>
+            <li>शिकायत या जानकारी: PMBI टोल-फ्री <a href="tel:18001808080">1800-180-8080</a>।</li>
+          </ul>
+        </section>
+      )}
+
       {ja && (
         <section class="section" id="jan-aushadhi">
-          <h2>पास के जन औषधि केंद्र: 50-80% सस्ती दवा</h2>
+          <h2>{isJa ? "पास के दूसरे जन औषधि केंद्र" : "पास के जन औषधि केंद्र: 50-80% सस्ती दवा"}</h2>
           <p>{ja.name} ज़िले में {ja.count} प्रधानमंत्री भारतीय जन औषधि केंद्र हैं{ja.kendras[0]?.km != null ? `; ${name} से सबसे पास वाले` : "; इनमें से कुछ"}:</p>
           <ul class="csc-list">
             {ja.kendras.map((k) => (
@@ -161,14 +182,20 @@ const ld = {
         <ul class="csc-list v-list"></ul>
       </section>
 
-      <section class="section" id="dhyan">
+      {!isJa && <section class="section" id="dhyan">
         <h2>ध्यान रखें</h2>
         <ul class="checklist">
           <li>काम शुरू होने से पहले सरकारी फीस और केंद्र का सेवा शुल्क पूछ लें, और रसीद लें।</li>
           <li>अपना OTP, ATM PIN या पासवर्ड किसी को न बताएं; OTP सिर्फ अपने सामने, अपने काम के लिए डलवाएं।</li>
           <li>शिकायत: CSC हेल्पलाइन <a href="tel:18001213468">1800-121-3468</a> या helpdesk@csc.gov.in।</li>
         </ul>
-      </section>
+      </section>}
+      {isJa && ja && (
+        <CardGrid title="आसपास और क्या है" id="related" cards={[
+          { href: ja.href, emoji: "💊", title: { hi: `${ja.name} के सभी जन औषधि केंद्र`, en: `All Jan Aushadhi Kendras in ${ja.name}` }, text: { hi: `${ja.count} केंद्र, पता और नक्शा`, en: "Address, map" } },
+          { href: "/tools/csc-locator.html", emoji: "🏢", title: { hi: "नज़दीकी CSC / जन सेवा केंद्र", en: "Nearest CSC" }, text: { hi: "आधार, PAN, प्रमाण पत्र", en: "Aadhaar, PAN, certificates" } },
+        ]} />
+      )}
 
       {districtPage && (
         <CardGrid title="आसपास और क्या है" id="related" cards={[
@@ -178,8 +205,8 @@ const ld = {
       )}
       {nearDistricts.length > 0 && (
         <section class="section" id="aaspaas">
-          <h2>आसपास के ज़िलों के CSC सेंटर</h2>
-          <ul class="chips">{nearDistricts.map((p) => <li><a href={p.href}>{p.name} <small>{p.d.count.toLocaleString("en-IN")}</small></a></li>)}</ul>
+          <h2>{isJa ? "आसपास के ज़िलों के जन औषधि केंद्र" : "आसपास के ज़िलों के CSC सेंटर"}</h2>
+          <ul class="chips">{nearDistricts.map((p) => <li><a href={p.href}>{p.name} <small>{p.count.toLocaleString("en-IN")}</small></a></li>)}</ul>
         </section>
       )}
       <CardGrid title="SarkariSewa पर लोकप्रिय सेवाएं" id="popular" cards={POPULAR_TASKS.slice(0, 6)} />
@@ -197,6 +224,7 @@ const ld = {
         {ph && <a class="cta" href={`tel:+91${ph}`} data-act="call">📞 कॉल करें</a>}
         {wa && <a class="cta secondary" href={`https://wa.me/91${wa}?text=${waText}`} data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 WhatsApp</a>}
         {districtPage && <a class="cta secondary" href={districtPage.href}>{districtPage.name} के सभी CSC</a>}
+        {isJa && ja && <a class="cta secondary" href={ja.href}>{ja.name} के सभी जन औषधि केंद्र</a>}
       </section>
       <section class="section toc" id="c-map" hidden={!embed}>
         <h2 style="font-size:1rem">नक्शे पर केंद्र</h2>
@@ -212,7 +240,7 @@ const ld = {
     </aside>
   </div>
   <script is:inline src="/assets/js/csc-listing.js"></script>
-  <script is:inline define:vars={{ app: c.application_id, district: c.district ?? "", state: c.state ?? "" }}>
+  <script is:inline define:vars={{ app: c.application_id, district: c.district ?? "", state: c.state ?? "", kind: T.kind }}>
     // Owner edits show at once: if the live record is newer than this build,
     // redraw the info, services and contact parts from it.
     if (window.SSCsc) {
@@ -233,7 +261,7 @@ const ld = {
         var on = SSCsc.openNow(JSON.parse(bd.dataset.hours || "null"));
         if (on) { var sp = document.createElement("span"); sp.className = on.open ? "b-open" : "b-closed"; sp.textContent = (on.open ? "🟢 " : "🔴 ") + on.label; bd.insertBefore(sp, bd.children[1] || null); }
       } catch (e) {}
-      SSCsc.district(document.getElementById("v-others"), { names: [district], state: state, exclude: app });
+      SSCsc.district(document.getElementById("v-others"), { names: [district], state: state, exclude: app, kind: kind });
       SSCsc.log(app, "profile");
       var sh = document.getElementById("c-share");
       if (sh) sh.addEventListener("click", function () {

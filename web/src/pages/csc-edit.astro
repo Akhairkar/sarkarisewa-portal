@@ -5,10 +5,9 @@
 import Base from "../layouts/Base.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+import { SERVICE_CHOICES } from "../lib/centre-types";
 
-const ONLINE = ["Aadhaar सेवा", "PAN कार्ड", "आयुष्मान कार्ड", "प्रमाण पत्र (जाति/आय/निवास)", "राशन कार्ड", "पेंशन / योजना फॉर्म", "बिजली/पानी बिल", "बैंकिंग / पैसा भेजना", "बीमा", "नौकरी / परीक्षा फॉर्म", "ई-श्रम / लेबर कार्ड", "PM-Kisan", "पासपोर्ट / ड्राइविंग लाइसेंस आवेदन", "GST / ITR"];
-const REMOTE = ONLINE.filter((s) => !s.startsWith("Aadhaar"));
-const OFFLINE = ["फोटोकॉपी", "प्रिंटिंग", "स्कैनिंग", "लैमिनेशन", "पासपोर्ट फोटो", "टाइपिंग / डॉक्यूमेंट सहायता"];
+const KINDS = Object.entries(SERVICE_CHOICES) as [string, (typeof SERVICE_CHOICES)["csc"]][];
 const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर", href: "/tools/csc-locator.html" }, { label: "केंद्र की जानकारी बदलें" }];
 ---
 <Base title="अपने केंद्र की जानकारी बदलें | SarkariSewa India" description="SarkariSewa पर सत्यापित CSC / जन सेवा केंद्र के संचालक अपनी सेवाएं, समय और संपर्क खुद बदलें।" breadcrumbs={crumbs} noindex schemaType="WebPage">
@@ -76,11 +75,16 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         </fieldset>
         <fieldset>
           <legend>सेवाएं और समय</legend>
-          <label>🏢 केंद्र पर आकर होने वाली सेवाएं</label>
-          <div class="checks" id="e-online">{ONLINE.map((s) => <label><input type="checkbox" name="online_services" value={s} /> {s}</label>)}</div>
-          <div class="checks" id="e-offline" style="margin-top:8px">{OFFLINE.map((s) => <label><input type="checkbox" name="offline_services" value={s} /> {s}</label>)}</div>
-          <label>🏠 घर बैठे होने वाली सेवाएं <span class="hint">(WhatsApp/फोन पर कागज़ लेकर)</span></label>
-          <div class="checks" id="e-remote">{REMOTE.map((s) => <label><input type="checkbox" name="remote_services" value={s} /> {s}</label>)}</div>
+          {KINDS.map(([kind, k]) => (
+            <div data-kind={kind} hidden={kind !== "csc"}>
+              <label>{k.mainLabel}</label>
+              <div class="checks" id={`e-online-${kind}`}>{k.main.map((x) => <label><input type="checkbox" name="online_services" value={x} /> {x}</label>)}</div>
+              <label>{k.otherLabel}</label>
+              <div class="checks" id={`e-offline-${kind}`}>{k.other.map((x) => <label><input type="checkbox" name="offline_services" value={x} /> {x}</label>)}</div>
+              <label>{k.remoteLabel}</label>
+              <div class="checks" id={`e-remote-${kind}`}>{k.remote.map((x) => <label><input type="checkbox" name="remote_services" value={x} /> {x}</label>)}</div>
+            </div>
+          ))}
           <label for="e-custom">और सेवाएं (कॉमा से अलग)</label><input type="text" id="e-custom" name="custom" maxlength="300" />
           <div class="grid2">
             <div><label for="e-open">खुलने का समय</label><input type="text" id="e-open" name="open" maxlength="20" placeholder="9:00 AM" /></div>
@@ -160,9 +164,14 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       f.city.value = c.city || ""; f.pincode.value = c.pincode || "";
       document.getElementById("e-where").textContent = "ज़िला: " + (c.district || "") + ", राज्य: " + (c.state || "") + " (ज़िला/राज्य बदलना हो तो हमें WhatsApp करें)";
       f.show_address.checked = c.show_address !== false; f.show_hours.checked = c.show_hours !== false; f.home_visit.checked = !!c.home_visit;
-      (c.online_services || []).forEach(function (s) { addBox("e-online", "online_services", s); });
-      (c.offline_services || []).forEach(function (s) { addBox("e-offline", "offline_services", s); });
-      (c.remote_services || []).forEach(function (s) { addBox("e-remote", "remote_services", s); });
+      var kind = c.centre_type === "Jan Aushadhi Kendra" ? "ja" : "csc";
+      [].forEach.call(f.querySelectorAll("div[data-kind]"), function (d) {
+        d.hidden = d.dataset.kind !== kind;
+        [].forEach.call(d.querySelectorAll("input"), function (i) { i.disabled = d.hidden; });
+      });
+      (c.online_services || []).forEach(function (s) { addBox("e-online-" + kind, "online_services", s); });
+      (c.offline_services || []).forEach(function (s) { addBox("e-offline-" + kind, "offline_services", s); });
+      (c.remote_services || []).forEach(function (s) { addBox("e-remote-" + kind, "remote_services", s); });
       [].forEach.call(f.querySelectorAll('input[name="remote_services"]'), function (i) { i.checked = (c.remote_services || []).indexOf(i.value) !== -1; });
       [].forEach.call(f.querySelectorAll('input[name="online_services"],input[name="offline_services"]'), function (i) {
         i.checked = (c.online_services || []).concat(c.offline_services || []).indexOf(i.value) !== -1;
@@ -195,7 +204,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       var setLinks = function (u) {
         var full = "https://sarkarisewaindia.com" + u;
         document.getElementById("op-view").href = u;
-        document.getElementById("op-wa").href = "https://wa.me/?text=" + encodeURIComponent((c.centre_name || "") + ": सरकारी ऑनलाइन काम (आधार, PAN, प्रमाण पत्र, बिल आदि) के लिए संपर्क करें 👇\n" + full);
+        document.getElementById("op-wa").href = "https://wa.me/?text=" + encodeURIComponent((c.centre_name || "") + (c.centre_type === "Jan Aushadhi Kendra" ? ": सस्ती जेनेरिक दवाओं (जन औषधि) के लिए संपर्क करें 👇\n" : ": सरकारी ऑनलाइन काम (आधार, PAN, प्रमाण पत्र, बिल आदि) के लिए संपर्क करें 👇\n") + full);
       };
       setLinks("/csc-centre.html?id=" + encodeURIComponent(c0.p_app));
       fetch(page, { method: "HEAD", cache: "no-store" }).then(function (r) { if (r.ok) setLinks(page); }).catch(function () {});
@@ -306,7 +315,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       if ((pp && !/^[6-9]\d{9}$/.test(pp)) || (pw && !/^[6-9]\d{9}$/.test(pw))) { out.textContent = "फोन/WhatsApp 10 अंकों का सही नंबर हो।"; return; }
       if (!pp && !pw) { out.textContent = "कम से कम एक संपर्क नंबर रखें।"; return; }
       if (f.pincode.value && !/^[1-9]\d{5}$/.test(f.pincode.value.trim())) { out.textContent = "6 अंकों का सही PIN कोड भरें।"; return; }
-      var all = function (n) { return [].map.call(f.querySelectorAll('input[name="' + n + '"]:checked'), function (x) { return x.value; }); };
+      var all = function (n) { return [].map.call(f.querySelectorAll('input[name="' + n + '"]:checked:not(:disabled)'), function (x) { return x.value; }); };
       var data = {
         centre_name: f.centre_name.value, years_of_operation: f.years_of_operation.value, about: f.about.value,
         full_address: f.full_address.value, locality: f.locality.value, city: f.city.value, pincode: f.pincode.value.trim(),

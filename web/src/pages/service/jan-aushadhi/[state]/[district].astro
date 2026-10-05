@@ -90,7 +90,22 @@ const faq = [
         </dl>
       </section>
 
+      <section class="section" id="verified" hidden>
+        <h2>{place} के सत्यापित जन औषधि केंद्र</h2>
+        <p>इन केंद्रों के संचालकों ने खुद अपनी जानकारी दी है और SarkariSewa ने उनसे बात करके जांचा है। दवा की उपलब्धता के लिए सीधे कॉल या WhatsApp करें।</p>
+        <ul class="csc-list v-list"></ul>
+      </section>
+
       <JaList kendras={d.kendras} place={place} />
+
+      <div class="claim-cta">
+        <p><strong>क्या आप {place} में जन औषधि केंद्र चलाते हैं?</strong> अपना केंद्र फ्री में जोड़ें। जांच के बाद आपका WhatsApp, दवाएं, होम डिलीवरी और समय इसी पेज पर सबसे ऊपर दिखेंगे।</p>
+        <a class="cta" href={`/claim-your-csc.html?${new URLSearchParams({ type: "ja", district: d.name, state: s.name })}`}>फ्री में केंद्र जोड़ें</a>
+      </div>
+      <script is:inline src="/assets/js/csc-listing.js"></script>
+      <script is:inline define:vars={{ vcfg: { names: [d.name], pins: d.pins.slice(0, 30).map((x) => x[0]), state: s.name, kind: "ja" } }}>
+        window.SSCsc && window.SSCsc.district(document.getElementById("verified"), vcfg);
+      </script>
 
       {extra.length > 0 && (
         <section class="section" id="paas-ke">

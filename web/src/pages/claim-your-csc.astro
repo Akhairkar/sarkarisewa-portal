@@ -7,13 +7,12 @@ import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Faq from "../components/Faq.astro";
 import { STATES } from "../data/site";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+import { CENTRE_TYPES, SERVICE_CHOICES } from "../lib/centre-types";
 
-const ONLINE = ["Aadhaar सेवा", "PAN कार्ड", "आयुष्मान कार्ड", "प्रमाण पत्र (जाति/आय/निवास)", "राशन कार्ड", "पेंशन / योजना फॉर्म", "बिजली/पानी बिल", "बैंकिंग / पैसा भेजना", "बीमा", "नौकरी / परीक्षा फॉर्म", "ई-श्रम / लेबर कार्ड", "PM-Kisan", "पासपोर्ट / ड्राइविंग लाइसेंस आवेदन", "GST / ITR"];
-// Services that can be done without visiting (documents sent on WhatsApp/phone).
-// Aadhaar biometric work always needs the person at the centre, so it is not offered here.
-const REMOTE = ONLINE.filter((s) => !s.startsWith("Aadhaar"));
-const OFFLINE = ["फोटोकॉपी", "प्रिंटिंग", "स्कैनिंग", "लैमिनेशन", "पासपोर्ट फोटो", "टाइपिंग / डॉक्यूमेंट सहायता"];
-const TYPES: [string, string][] = [["CSC", "CSC (Common Service Centre)"], ["Jan Seva Kendra", "जन सेवा केंद्र"], ["E-Mitra", "ई-मित्र"], ["Maha E Seva", "महा ई-सेवा केंद्र"], ["Vasudha Kendra", "वसुधा केंद्र"], ["Other", "अन्य सेवा केंद्र / साइबर कैफे"]];
+// Service buttons per kind of centre (CSC-type centres or Jan Aushadhi Kendra).
+// Aadhaar biometric work always needs the person at the centre, so it is not a "from home" choice.
+const TYPES = CENTRE_TYPES;
+const KINDS = Object.entries(SERVICE_CHOICES) as [string, (typeof SERVICE_CHOICES)["csc"]][];
 const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर", href: "/tools/csc-locator.html" }, { label: "केंद्र जोड़ें" }];
 const faq = [
   { q: "क्या केंद्र जोड़ना फ्री है?", a: "हां, अभी केंद्र जोड़ना और दिखना पूरी तरह फ्री है। कोई पैसा न दें; SarkariSewa के नाम पर पैसा मांगने वाले से सावधान रहें।" },
@@ -35,7 +34,7 @@ const faq = [
   <article class="page">
     <div>
       <h1>अपना CSC / जन सेवा केंद्र फ्री में जोड़ें</h1>
-      <p class="page-intro">आपके ज़िले के लोग हर दिन SarkariSewa पर नज़दीकी CSC खोजते हैं। केंद्र जोड़ें, जांच के बाद आपका नाम, WhatsApp, सेवाएं और समय ज़िले के पेज पर सबसे ऊपर दिखेंगे।</p>
+      <p class="page-intro">CSC, जन सेवा केंद्र, ई-मित्र, महा ई-सेवा केंद्र, वसुधा केंद्र या जन औषधि केंद्र चलाते हैं? आपके ज़िले के लोग हर दिन SarkariSewa पर नज़दीकी केंद्र खोजते हैं। केंद्र जोड़ें, जांच के बाद आपका नाम, WhatsApp, सेवाएं और समय ज़िले के पेज पर सबसे ऊपर दिखेंगे।</p>
       <ul class="checklist">
         <li><strong>फ्री:</strong> अभी कोई शुल्क नहीं।</li>
         <li><strong>सत्यापित बैज:</strong> हम आपसे बात करके जांचते हैं, इसलिए ग्राहक भरोसा करते हैं।</li>
@@ -48,10 +47,10 @@ const faq = [
           <legend>1. केंद्र और संचालक</legend>
           <div class="grid2">
             <div><label for="centre_name">केंद्र का नाम *</label><input type="text" id="centre_name" name="centre_name" maxlength="200" required /></div>
-            <div><label for="centre_type">केंद्र का प्रकार *</label><select id="centre_type" name="centre_type">{TYPES.map(([v, l]) => <option value={v}>{l}</option>)}</select></div>
+            <div><label for="centre_type">केंद्र का प्रकार *</label><select id="centre_type" name="centre_type">{TYPES.map((t) => <option value={t.value} data-kind={t.kind}>{t.label}</option>)}</select></div>
             <div><label for="owner_name">संचालक (VLE) का नाम *</label><input type="text" id="owner_name" name="owner_name" maxlength="120" required /></div>
             <div><label for="owner_mobile">संचालक का मोबाइल * <span class="hint">(जांच के लिए, सबको नहीं दिखेगा)</span></label><input type="tel" id="owner_mobile" name="owner_mobile" inputmode="numeric" maxlength="10" required /></div>
-            <div><label for="csc_id">CSC ID / VLE ID <span class="hint">(हो तो ज़रूर भरें, जल्दी सत्यापन)</span></label><input type="text" id="csc_id" name="csc_id" maxlength="40" /></div>
+            <div><label for="csc_id" id="csc_id_label">CSC ID / VLE ID <span class="hint">(हो तो ज़रूर भरें, जल्दी सत्यापन)</span></label><input type="text" id="csc_id" name="csc_id" maxlength="40" /></div>
             <div><label for="years">कितने साल से चल रहा है</label><input type="number" id="years" name="years_of_operation" min="0" max="60" /></div>
           </div>
         </fieldset>
@@ -74,11 +73,16 @@ const faq = [
         <fieldset>
           <legend>3. सेवाएं और समय</legend>
           <p class="hint">बटन दबाकर चुनें। जो चुनेंगे वही आपके पेज पर दिखेगा।</p>
-          <label>🏢 केंद्र पर आकर होने वाली सेवाएं</label>
-          <div class="checks">{ONLINE.map((s) => <label><input type="checkbox" name="online_services" value={s} /> {s}</label>)}</div>
-          <div class="checks" style="margin-top:8px">{OFFLINE.map((s) => <label><input type="checkbox" name="offline_services" value={s} /> {s}</label>)}</div>
-          <label>🏠 घर बैठे होने वाली सेवाएं <span class="hint">(ग्राहक WhatsApp/फोन पर कागज़ भेजे, आप ऑनलाइन काम कर दें)</span></label>
-          <div class="checks">{REMOTE.map((s) => <label><input type="checkbox" name="remote_services" value={s} /> {s}</label>)}</div>
+          {KINDS.map(([kind, k]) => (
+            <div data-kind={kind} hidden={kind !== "csc"}>
+              <label>{k.mainLabel}</label>
+              <div class="checks">{k.main.map((x) => <label><input type="checkbox" name="online_services" value={x} /> {x}</label>)}</div>
+              <label>{k.otherLabel}</label>
+              <div class="checks">{k.other.map((x) => <label><input type="checkbox" name="offline_services" value={x} /> {x}</label>)}</div>
+              <label>{k.remoteLabel} {kind === "csc" && <span class="hint">(ग्राहक WhatsApp/फोन पर कागज़ भेजे, आप ऑनलाइन काम कर दें)</span>}</label>
+              <div class="checks">{k.remote.map((x) => <label><input type="checkbox" name="remote_services" value={x} /> {x}</label>)}</div>
+            </div>
+          ))}
           <label for="custom">और कोई सेवा (कॉमा से अलग करें)</label>
           <input type="text" id="custom" name="custom" maxlength="300" />
           <div class="grid2">
@@ -126,6 +130,19 @@ const faq = [
   (function () {
     var f = document.getElementById("claim"), out = document.getElementById("claim-out"), started = Date.now();
     var q = new URLSearchParams(location.search);
+    // Jan Aushadhi Kendra gets its own service buttons; hidden ones are cleared.
+    function setKind() {
+      var kind = (f.centre_type.selectedOptions[0] || {}).dataset ? f.centre_type.selectedOptions[0].dataset.kind : "csc";
+      [].forEach.call(f.querySelectorAll("[data-kind]"), function (d) {
+        if (d.tagName === "OPTION") return;
+        d.hidden = d.dataset.kind !== kind;
+        if (d.hidden) [].forEach.call(d.querySelectorAll("input"), function (i) { i.checked = false; });
+      });
+      document.getElementById("csc_id_label").firstChild.textContent = kind === "ja" ? "जन औषधि स्टोर कोड (PMBJK…) " : "CSC ID / VLE ID ";
+    }
+    f.centre_type.addEventListener("change", setKind);
+    if (q.get("type") === "ja") f.centre_type.value = "Jan Aushadhi Kendra";
+    setKind();
     if (q.get("name")) f.centre_name.value = q.get("name").slice(0, 200);
     if (q.get("district")) f.district.value = q.get("district").slice(0, 120);
     if (q.get("pin") && /^\d{6}$/.test(q.get("pin"))) f.pincode.value = q.get("pin");

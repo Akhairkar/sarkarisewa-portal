@@ -7,7 +7,7 @@
 import fs from "node:fs";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "./supabase-public";
 import { cscPages } from "./csc";
-import { jaDistricts, mapLink } from "./ja";
+import { jaDistricts, mapLink, nearbyDistricts } from "./ja";
 import { STATES } from "../data/site";
 
 export type Listing = {
@@ -151,5 +151,5 @@ export function nearbyJa(c: Listing, n = 4) {
     .sort((a, b) => a.km - b.km)
     .slice(0, n)
     .map(({ k, km }) => ({ ...k, km: here && Number.isFinite(km) && km < 100 ? Math.round(km * 10) / 10 : null, map: mapLink(k) }));
-  return { href: `/${d.rel}`, name: d.name, count: d.kendras.length, kendras };
+  return { href: `/${d.rel}`, name: d.name, count: d.kendras.length, kendras, near: nearbyDistricts(d, 6) };
 }
