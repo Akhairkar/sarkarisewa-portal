@@ -23,6 +23,7 @@ const ja = STATES.map((s) => ({ ...s, href: pick("jan-aushadhi", s.slug) })).fil
 const quick = [
   { href: "/tools/csc-locator.html", emoji: "📍", title: "CSC Locator", text: L("PIN code या ज़िले से नज़दीकी CSC खोजें", "Find the nearest CSC by PIN code or district") },
   { href: "/service/jan-aushadhi-store-locator.html", emoji: "💊", title: L("जन औषधि केंद्र खोजें", "Find Jan Aushadhi Kendra"), text: L("50-80% सस्ती जेनेरिक दवाएं", "Generic medicines 50-80% cheaper") },
+  { href: "/claim-your-csc.html", emoji: "🏪", title: L("अपना CSC केंद्र फ्री में जोड़ें", "Add your CSC centre free"), text: L("VLE/संचालक: WhatsApp और सेवाएं ज़िले के पेज पर सबसे ऊपर", "Operators: your WhatsApp and services at the top of your district page") },
   { href: "/support/helpline-directory.html", emoji: "📞", title: L("सरकारी हेल्पलाइन", "Government helplines"), text: L("सभी विभागों के टोल-फ्री नंबर", "Toll-free numbers of all departments") },
 ];
 const crumbs = [{ label: t(UI.home, lang), href: localize("/", lang) }, { label: L("आपके पास", "Near me") }];
@@ -52,6 +53,10 @@ const faq = lang === "en" ? [
     <p class="page-intro">{L("ऑनलाइन फॉर्म खुद नहीं भर पा रहे? पास के CSC सेंटर जाएं। सस्ती दवा चाहिए? जन औषधि केंद्र खोजें। अपना राज्य चुनें, फिर ज़िला।", "Can't fill an online form yourself? Visit a nearby CSC. Need cheaper medicines? Find a Jan Aushadhi Kendra. Choose your state, then district.")}</p>
   </section>
   <section class="block"><TaskList items={quick} /></section>
+  <div class="claim-cta">
+    <p><strong>{L("क्या आप CSC / जन सेवा केंद्र चलाते हैं?", "Do you run a CSC / Jan Seva Kendra?")}</strong> {L("अपना केंद्र फ्री में जोड़ें। जांच के बाद आपका नाम, WhatsApp, सेवाएं और समय आपके ज़िले के पेज पर सबसे ऊपर दिखेंगे और ग्राहक सीधे संपर्क करेंगे।", "Add your centre for free. After verification your name, WhatsApp, services and hours show at the top of your district page.")}</p>
+    <a class="cta" href="/claim-your-csc.html">{L("फ्री में केंद्र जोड़ें", "Add centre free")}</a>
+  </div>
   <section class="block" id="csc">
     <div class="block-head"><h2>{L("CSC / जन सेवा केंद्र: राज्य चुनें", "CSC / Jan Seva Kendra: choose state")}</h2></div>
     <div class="state-grid">{csc.map((s) => <a href={"/" + s.href}>{lang === "en" ? s.name : s.hi}<small>{lang === "en" ? s.hi : s.name}</small></a>)}</div>
