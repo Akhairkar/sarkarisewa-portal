@@ -22,6 +22,8 @@
       });
     } catch (e) {}
   }
+  // Non-empty values, case-insensitive duplicates removed ("Nagpur, nagpur" -> "Nagpur").
+  function uniq(a) { var seen = {}; return a.filter(function (x) { var k = String(x || "").trim().toLowerCase(); if (!k || seen[k]) return false; seen[k] = 1; return true; }).join(", "); }
   function list(v) { return Array.isArray(v) ? v : []; }
   function hours(h) {
     if (!h || typeof h !== "object") return "";
@@ -40,7 +42,7 @@
     var h = hours(c.working_hours);
     return '<li class="csc-card vcard" data-app="' + esc(c.application_id) + '">'
       + '<span class="vbadge">✓ SarkariSewa पर सत्यापित</span>'
-      + "<strong>" + esc(c.centre_name) + "</strong>"
+      + "<strong>" + esc(nice(c.centre_name)) + "</strong>"
       + (c.full_address ? "<span>" + esc(c.full_address) + "</span>" : "<span>" + esc([c.locality, c.city].filter(Boolean).join(", ")) + "</span>")
       + '<span class="pin">' + esc([c.district, c.pincode ? "PIN " + c.pincode : ""].filter(Boolean).join(" · ")) + "</span>"
       + (h ? "<span>समय: " + esc(h) + "</span>" : "")
@@ -85,20 +87,81 @@
     }
     return rows.map(function (r) { return hi[r[0]] + ": " + r[1]; }).join(", ");
   }
+
+  // Names typed in ALL CAPS read better in title case ("POOJA DIGITAL SEVA" -> "Pooja Digital Seva").
+  function nice(n) { n = String(n || "").trim(); return /[a-z]/.test(n) || !/[A-Z]{3}/.test(n) ? n : n.toLowerCase().replace(/(^|[\s(\-\/&.])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); }); }
+
+  // "Open now" from the owner's hours, in Indian time. Returns null when the
+  // hours cannot be read reliably (then nothing is shown).
+  function mins(t, isClose) {
+    var m = String(t || "").trim().toLowerCase().match(/^(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm|बजे)?/);
+    if (!m) return null;
+    var h = +m[1], mi = +(m[2] || 0);
+    if (h > 23 || mi > 59) return null;
+    if (m[3] === "pm" && h < 12) h += 12;
+    if (m[3] === "am" && h === 12) h = 0;
+    // "7" or "7:00" as a closing time means 7 PM; "07:00" is 24-hour time.
+    if ((!m[3] || m[3] === "बजे") && isClose && h <= 9 && m[1].length === 1) h += 12;
+    return h * 60 + mi;
+  }
+  function openNow(h) {
+    if (!h || typeof h !== "object") return null;
+    var now = new Date(Date.now() + 330 * 60000), day = now.getUTCDay(), t = now.getUTCHours() * 60 + now.getUTCMinutes();
+    var names = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    var o, c, closedToday = false;
+    if (h.open || h.close) {
+      o = mins(h.open, false); c = mins(h.close, true);
+      var d = String(h.days || "").toLowerCase();
+      if (day === 0 && /(सोम|mon)/.test(d) && /(शनि|sat)/.test(d) && !/(रवि|sun|all|हर|सभी|daily)/.test(d)) closedToday = true;
+    } else {
+      var v = h[names[day]] || h[names[day][0].toUpperCase() + names[day].slice(1)];
+      if (!v || typeof v !== "object") return null;
+      if (/closed/i.test(v.status || "")) closedToday = true;
+      o = mins(v.open, false); c = mins(v.close, true);
+    }
+    if (closedToday) return { open: false, label: "आज बंद" };
+    if (o == null || c == null || o === c) return null;
+    var fmt = function (x) { var hh = Math.floor(x / 60), mm = x % 60, ap = hh >= 12 ? "PM" : "AM"; hh = hh % 12 || 12; return hh + (mm ? ":" + (mm < 10 ? "0" : "") + mm : "") + " " + ap; };
+    var isOpen = c > o ? t >= o && t < c : t >= o || t < c;
+    return isOpen ? { open: true, label: "अभी खुला है · " + fmt(c) + " तक" } : { open: false, label: "अभी बंद · " + fmt(o) + " पर खुलेगा" };
+  }
+
+  // Our guides for common CSC services (same list as the built pages).
+  var GUIDES = [
+    [/aadhaar|आधार/i, "/service/aadhaar-card.html", "आधार कार्ड", "अपडेट, फीस, ज़रूरी कागज़"],
+    [/\bpan\b|पैन/i, "/service/pan-card.html", "PAN कार्ड", "नया PAN, सुधार, e-PAN"],
+    [/ayushman|आयुष्मान/i, "/service/ayushman-bharat.html", "आयुष्मान कार्ड", "पात्रता, कार्ड डाउनलोड"],
+    [/ration|राशन/i, "/service/ration-card.html", "राशन कार्ड", "नया कार्ड, नाम जोड़ना, e-KYC"],
+    [/certificate|प्रमाण/i, "/service/income-certificate.html", "आय / जाति / निवास प्रमाण पत्र", "कागज़, फीस, कितने दिन"],
+    [/kisan|किसान/i, "/service/pm-kisan.html", "PM-Kisan", "e-KYC, किस्त स्टेटस"],
+    [/shram|labour|लेबर/i, "/service/e-shram-card.html", "ई-श्रम / लेबर कार्ड", "रजिस्ट्रेशन, फायदे"],
+    [/passport|पासपोर्ट/i, "/service/passport.html", "पासपोर्ट", "आवेदन, फीस, अपॉइंटमेंट"],
+    [/driving|licen|लाइसेंस/i, "/service/driving-licence.html", "ड्राइविंग लाइसेंस", "लर्नर, टेस्ट, फीस"],
+    [/job|exam|नौकरी|परीक्षा/i, "/jobs/index.html", "सरकारी नौकरी फॉर्म", "नई भर्तियां, आखिरी तारीख"],
+    [/gst|itr|tax/i, "/gst/", "GST / ITR", "रजिस्ट्रेशन, रिटर्न"],
+    [/voter|वोटर/i, "/service/voter-id-card.html", "वोटर ID", "नया कार्ड, सुधार"],
+  ];
+  function guides(all) {
+    var seen = {}, out = [];
+    all.forEach(function (s) { GUIDES.forEach(function (g) { if (g[0].test(s) && !seen[g[1]]) { seen[g[1]] = 1; out.push({ href: g[1], label: g[2], text: g[3] }); } }); });
+    return out;
+  }
+  function allServices(c) { return svc(c.online_services).concat(svc(c.offline_services), svc(c.custom_services), svc(c.remote_services)).filter(function (x, i, a) { return a.indexOf(x) === i; }); }
+
   function full(c, type) {
-    var ph = digits(c.public_phone), wa = digits(c.public_whatsapp);
+    var ph = digits(c.public_phone), wa = digits(c.public_whatsapp), name = nice(c.centre_name);
     var waText = encodeURIComponent("नमस्ते, मैंने आपका केंद्र SarkariSewa India (sarkarisewaindia.com) पर देखा। मुझे इस काम के लिए मदद चाहिए: ");
     var on = svc(c.online_services), off = svc(c.offline_services), cu = svc(c.custom_services), rem = svc(c.remote_services);
     var all = on.concat(off, cu, rem).filter(function (x, i, a) { return a.indexOf(x) === i; });
-    var place = [c.locality, c.city, c.district].filter(function (x, i, a) { return x && a.indexOf(x) === i; }).join(", ");
+    var place = uniq([c.locality, c.city, c.district]);
     var hrs = hoursFull(c.working_hours), sn = since(c.years_of_operation);
     var map = c.latitude && c.longitude ? "https://www.google.com/maps?q=" + c.latitude + "," + c.longitude : c.full_address ? "https://www.google.com/maps/search/" + encodeURIComponent(c.full_address + " " + (c.pincode || "")) : "";
     var li = function (a) { return '<ul class="checklist">' + a.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>"; };
     var waLink = wa ? "https://wa.me/91" + wa + "?text=" + waText : "";
     var photo = /^https:\/\/[a-z0-9]+\.supabase\.co\/storage\/v1\/object\/public\/csc-photos\//.test(c.photo_url || "")
-      ? '<img class="csc-photo" src="' + esc(c.photo_url) + '" alt="' + esc(c.centre_name) + '" width="1200" height="800" decoding="async" />' : "";
+      ? '<img class="csc-photo" src="' + esc(c.photo_url) + '" alt="' + esc(name) + '" width="1200" height="800" decoding="async" />' : "";
     return '<section class="answer"><p class="answer-title">केंद्र की जानकारी</p>' + photo + '<p class="answer-lead">'
-      + esc(c.centre_name) + " " + esc(place) + " में एक " + esc(type) + " है" + (sn ? ", जो " + sn : "") + "।"
+      + esc(name) + " " + esc(place) + " में एक " + esc(type) + " है" + (sn ? ", जो " + sn : "") + "।"
       + (all.length ? " यहां " + esc(all.slice(0, 5).join(", ")) + (all.length > 5 ? " और दूसरी" : "") + " सेवाएं मिलती हैं।" : "")
       + (rem.length ? " " + rem.length + " सेवाएं घर बैठे WhatsApp/फोन से भी हो जाती हैं।" : "")
       + (c.home_visit ? " केंद्र घर पर आकर भी सेवा देता है।" : "") + "</p><dl class=\"facts\">"
@@ -112,7 +175,7 @@
       + (map ? '<a href="' + map + '" data-act="map" target="_blank" rel="noopener nofollow">🗺️ रास्ता देखें ↗</a>' : "")
       + "</div></section>"
       + (c.about ? '<section class="section" id="parichay"><h2>केंद्र के बारे में</h2><p style="white-space:pre-line">' + esc(c.about) + "</p></section>" : "")
-      + (all.length ? '<section class="section" id="sevayen"><h2>' + esc(c.centre_name) + " पर मिलने वाली सेवाएं</h2>"
+      + (all.length ? '<section class="section" id="sevayen"><h2>' + esc(name) + " पर मिलने वाली सेवाएं</h2>"
         + (rem.length ? "<h3>🏠 घर बैठे (WhatsApp/फोन से कागज़ भेजकर)</h3>" + li(rem) : "")
         + (on.length ? "<h3>🏢 केंद्र पर आकर: सरकारी सेवाएं</h3>" + li(on) : "")
         + (off.length || cu.length ? "<h3>🏢 केंद्र पर: दूसरी सेवाएं</h3>" + li(off.concat(cu)) : "")
@@ -121,13 +184,14 @@
   }
 
   window.SSCsc = {
-    full: full,
+    full: full, uniq: uniq, nice: nice, openNow: openNow, guides: guides, allServices: allServices, hoursFull: hoursFull, since: since,
     card: card, wire: wire, log: log, esc: esc,
     // Approved centres of a district: matched by district name or PIN.
     district: function (root, cfg) {
       var names = (cfg.names || []).map(norm).filter(Boolean), pins = cfg.pins || [], st = norm(cfg.state);
       return get("csc_public_centres?select=*&order=approved_at.desc&limit=500").then(function (rows) {
         var mine = rows.filter(function (c) {
+          if (cfg.exclude && c.application_id === cfg.exclude) return false;
           var d = norm(c.district), sOk = !st || !norm(c.state) || norm(c.state) === st;
           return sOk && (names.some(function (n) { return d && (d.indexOf(n) !== -1 || n.indexOf(d) !== -1); }) || pins.indexOf(String(c.pincode || "").trim()) !== -1);
         });

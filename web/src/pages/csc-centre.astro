@@ -1,9 +1,14 @@
 ---
-// Public profile of an approved CSC claim: /csc-centre.html?id=<application id>.
-// Filled in the browser from the public view; noindex because each profile is
-// one dynamic page. The owner can report customers they got through the site.
+// Live page of an approved CSC claim: /csc-centre.html?id=<application id>.
+// A centre with a built page (/csc-centre/<slug>.html) is sent there at once;
+// a newly approved one is drawn here from the public view with the same
+// sections, until the next site build gives it its own indexable page.
 import Base from "../layouts/Base.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CardGrid from "../components/CardGrid.astro";
+import Explore from "../components/Explore.astro";
+import PaidTools from "../components/PaidTools.astro";
+import { POPULAR_TASKS } from "../data/site";
 import { listings, listingSlug } from "../lib/csc-listings";
 // Centres that already have a static page: id -> page, so the redirect is instant.
 const pages = Object.fromEntries((await listings()).map((c) => [c.application_id, `/csc-centre/${listingSlug(c)}.html`]));
@@ -11,24 +16,65 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
 ---
 <Base title="CSC केंद्र की जानकारी | SarkariSewa India" description="SarkariSewa पर सत्यापित CSC / जन सेवा केंद्र: पता, सेवाएं, समय और संपर्क।" breadcrumbs={crumbs} noindex schemaType="WebPage">
   <Breadcrumbs items={crumbs} />
-  <article class="page">
-    <div>
+  <div class="page has-aside">
+    <article>
       <h1 id="c-title">CSC केंद्र की जानकारी</h1>
+      <div class="csc-badges" id="c-badges"></div>
       <p class="csc-status" id="c-status">जानकारी लोड हो रही है…</p>
-      <ul class="csc-list" id="c-card" style="grid-template-columns:minmax(0,1fr)"></ul>
+      <div id="c-live"></div>
 
-      <section class="section" id="sevayen" hidden>
-        <h2>मिलने वाली सेवाएं</h2>
-        <ul class="checklist" id="c-services"></ul>
+      <section class="section" id="taiyari" hidden>
+        <h2>केंद्र जाने से पहले: ज़रूरी कागज़ और सरकारी फीस</h2>
+        <p>इन सेवाओं के लिए कौन से कागज़ लगते हैं और सरकारी फीस कितनी है, हमारी गाइड में देखें, ताकि एक ही बार में काम हो जाए:</p>
+        <div class="card-grid" id="c-guides"></div>
       </section>
+
+      <section class="section" id="v-others" hidden>
+        <h2 id="v-others-title">इस ज़िले में और सत्यापित केंद्र</h2>
+        <ul class="csc-list v-list"></ul>
+      </section>
+
+      <section class="section" id="c-district" hidden>
+        <h2>पूरे ज़िले के CSC सेंटर</h2>
+        <p><a class="cta secondary" id="c-district-link" href="/tools/csc-locator.html"></a></p>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान रखें</h2>
+        <ul class="checklist">
+          <li>काम शुरू होने से पहले सरकारी फीस और केंद्र का सेवा शुल्क पूछ लें, और रसीद लें।</li>
+          <li>अपना OTP, ATM PIN या पासवर्ड किसी को न बताएं; OTP सिर्फ अपने सामने, अपने काम के लिए डलवाएं।</li>
+          <li>शिकायत: CSC हेल्पलाइन <a href="tel:18001213468">1800-121-3468</a> या helpdesk@csc.gov.in।</li>
+        </ul>
+      </section>
+
+      <CardGrid title="SarkariSewa पर लोकप्रिय सेवाएं" id="popular" cards={POPULAR_TASKS.slice(0, 6)} />
+      <PaidTools />
 
       <div class="claim-cta">
         <p><strong>आप भी CSC / जन सेवा केंद्र चलाते हैं?</strong> अपना केंद्र SarkariSewa पर फ्री में जोड़ें।</p>
         <a class="cta" href="/claim-your-csc.html">फ्री में केंद्र जोड़ें</a>
       </div>
       <p class="notice">SarkariSewa India एक निजी वेबसाइट है। केंद्र की जानकारी संचालक ने खुद दी है; हम संचालक से बात करके इसे जांचते हैं, पर केंद्र की सेवा, फीस या व्यवहार की ज़िम्मेदारी हमारी नहीं है। सरकारी फीस से ज़्यादा पैसा मांगा जाए तो रसीद लें और शिकायत करें।</p>
-    </div>
-  </article>
+      <Explore />
+    </article>
+
+    <aside class="page-aside" id="c-side" hidden>
+      <section class="section toc" id="c-contact">
+        <h2 style="font-size:1rem">संपर्क करें</h2>
+      </section>
+      <section class="section toc" id="c-map" hidden>
+        <h2 style="font-size:1rem">नक्शे पर केंद्र</h2>
+        <iframe class="csc-map" title="नक्शा" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </section>
+      <section class="section toc">
+        <h2 style="font-size:1rem">यह पेज शेयर करें</h2>
+        <a class="cta secondary" id="c-wa-share" href="#" target="_blank" rel="noopener nofollow">💬 WhatsApp पर शेयर</a>
+        <button type="button" class="cta secondary" id="c-share">🔗 दूसरे ऐप / लिंक कॉपी</button>
+        <p class="hint"><a id="c-edit" href="/csc-edit.html" rel="nofollow">✏️ संचालक: सेवाएं / फोटो अपडेट करें</a></p>
+      </section>
+    </aside>
+  </div>
   <script is:inline define:vars={{ pages }}>
     (function () { var id = new URLSearchParams(location.search).get("id"); if (id && pages[id]) location.replace(pages[id]); })();
   </script>
@@ -37,29 +83,72 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
   (function () {
     var id = new URLSearchParams(location.search).get("id") || "";
     var status = document.getElementById("c-status");
+    var $ = function (x) { return document.getElementById(x); };
     if (!/^[A-Za-z0-9-]{4,50}$/.test(id)) { status.textContent = "केंद्र नहीं मिला। CSC लोकेटर से खोजें।"; return; }
     var slug = function (t) { return String(t || "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60); };
+    var norm = function (s) { return String(s || "").toLowerCase().replace(/district|जिला|ज़िला|[^a-zऀ-ॿ]/g, ""); };
+    var TYPE = { CSC: "CSC (कॉमन सर्विस सेंटर)", "Jan Seva Kendra": "जन सेवा केंद्र", "E-Mitra": "ई-मित्र", "Maha E Seva": "महा ई-सेवा केंद्र", "Vasudha Kendra": "वसुधा केंद्र", Other: "सेवा केंद्र" };
     SSCsc.one(id).then(function (c) {
-      if (c) {
-        var num = (id.match(/\d{4,}$/) || [slug(id)])[0];
-        var page = "/csc-centre/" + [slug(c.centre_name), slug(c.district), num].filter(Boolean).join("-") + ".html";
-        fetch(page, { method: "HEAD" }).then(function (r) { if (r.ok) location.replace(page); }).catch(function () {});
-      }
       if (!c) { status.textContent = "यह केंद्र अभी सत्यापित नहीं है या हटाया जा चुका है।"; return; }
-      document.getElementById("c-title").textContent = c.centre_name + (c.district ? ", " + c.district : "");
-      document.title = c.centre_name + " | SarkariSewa India";
-      status.textContent = "";
-      var ul = document.getElementById("c-card");
-      ul.innerHTML = SSCsc.card(c, { profile: false });
-      SSCsc.wire(ul);
-      SSCsc.log(id, "profile");
-      var sv = [].concat((c.remote_services || []).map(function (x) { return "🏠 घर बैठे: " + x; }), c.online_services || [], c.offline_services || [], c.custom_services || []).filter(Boolean);
-      if (sv.length) {
-        document.getElementById("c-services").innerHTML = sv.map(function (x) { return "<li>" + SSCsc.esc(x) + "</li>"; }).join("");
-        document.getElementById("sevayen").hidden = false;
-      }
-    }).catch(function () { status.textContent = "जानकारी लोड नहीं हो सकी। थोड़ी देर बाद फिर कोशिश करें।"; });
+      var num = (id.match(/\d{4,}$/) || [slug(id)])[0];
+      var page = "/csc-centre/" + [slug(c.centre_name), slug(c.district), num].filter(Boolean).join("-") + ".html";
+      fetch(page, { method: "HEAD" }).then(function (r) { if (r.ok) location.replace(page); }).catch(function () {});
 
+      var name = SSCsc.nice(c.centre_name), type = TYPE[c.centre_type] || c.centre_type || "सेवा केंद्र", esc = SSCsc.esc;
+      var where = SSCsc.uniq([c.city, c.district]);
+      $("c-title").textContent = name + ": " + type + (c.city || c.district ? ", " + (c.city || c.district) : "");
+      document.title = name + ", " + where + " | SarkariSewa India";
+      status.hidden = true;
+
+      // Badges
+      var b = ['<span class="b-ok">✓ SarkariSewa पर सत्यापित</span>'], on = SSCsc.openNow(c.working_hours), sn = SSCsc.since(c.years_of_operation);
+      if (on) b.push('<span class="' + (on.open ? "b-open" : "b-closed") + '">' + (on.open ? "🟢 " : "🔴 ") + esc(on.label) + "</span>");
+      if (sn) b.push("<span>🗓️ " + esc(sn) + "</span>");
+      if ((c.remote_services || []).length) b.push("<span>🏠 घर बैठे सेवा</span>");
+      if (c.home_visit) b.push("<span>🚶 घर पर आकर सेवा</span>");
+      if (where) b.push("<span>📍 " + esc(where) + "</span>");
+      $("c-badges").innerHTML = b.join("");
+
+      var live = $("c-live");
+      live.innerHTML = SSCsc.full(c, type);
+      live.setAttribute("data-app", id);
+      SSCsc.wire(live);
+
+      var g = SSCsc.guides(SSCsc.allServices(c));
+      if (g.length) {
+        $("c-guides").innerHTML = g.map(function (x) { return '<a class="card" href="' + x.href + '"><span class="emoji" aria-hidden="true">📄</span><strong>' + esc(x.label) + "</strong><small>" + esc(x.text) + " →</small></a>"; }).join("");
+        $("taiyari").hidden = false;
+      }
+      if (c.district) {
+        $("v-others-title").textContent = c.district + " में और सत्यापित केंद्र";
+        SSCsc.district($("v-others"), { names: [c.district], state: c.state, exclude: id });
+        fetch("/csc-centre/districts.json").then(function (r) { return r.json(); }).then(function (rows) {
+          var d = norm(c.district), hit = rows.filter(function (r) { return r[0].indexOf(d) !== -1; })[0];
+          var a = $("c-district-link");
+          if (hit) { a.href = hit[1]; a.textContent = hit[2] + " के सभी CSC सेंटर देखें →"; }
+          else a.textContent = "अपनी लोकेशन या PIN से नज़दीकी CSC खोजें →";
+          $("c-district").hidden = false;
+        }).catch(function () {});
+      }
+
+      // Sidebar: contact, map, share
+      var ph = String(c.public_phone || "").replace(/\D/g, "").slice(-10), wa = String(c.public_whatsapp || "").replace(/\D/g, "").slice(-10);
+      var waText = encodeURIComponent("नमस्ते, मैंने आपका केंद्र SarkariSewa India (sarkarisewaindia.com) पर देखा। मुझे इस काम के लिए मदद चाहिए: ");
+      var side = $("c-contact");
+      side.setAttribute("data-app", id);
+      side.insertAdjacentHTML("beforeend", (ph ? '<a class="cta" href="tel:+91' + ph + '" data-act="call">📞 कॉल करें</a>' : "") + (wa ? '<a class="cta secondary" href="https://wa.me/91' + wa + "?text=" + waText + '" data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 WhatsApp</a>' : ""));
+      SSCsc.wire(side);
+      if (c.latitude && c.longitude) { $("c-map").querySelector("iframe").src = "https://maps.google.com/maps?q=" + c.latitude + "," + c.longitude + "&z=16&output=embed"; $("c-map").hidden = false; }
+      var url = "https://sarkarisewaindia.com/csc-centre.html?id=" + encodeURIComponent(id);
+      $("c-wa-share").href = "https://wa.me/?text=" + encodeURIComponent(name + " (" + where + "): सेवाएं, समय और संपर्क\n" + url);
+      $("c-share").addEventListener("click", function () {
+        if (navigator.share) { navigator.share({ title: name, url: url }).catch(function () {}); return; }
+        (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () { $("c-share").textContent = "✓ लिंक कॉपी हो गया"; }, function () { prompt("लिंक कॉपी करें:", url); });
+      });
+      $("c-edit").href = "/csc-edit.html?id=" + encodeURIComponent(id);
+      $("c-side").hidden = false;
+      SSCsc.log(id, "profile");
+    }).catch(function () { status.textContent = "जानकारी लोड नहीं हो सकी। थोड़ी देर बाद फिर कोशिश करें।"; });
   })();
   </script>
 </Base>

@@ -7,6 +7,8 @@
 import fs from "node:fs";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "./supabase-public";
 import { cscPages } from "./csc";
+import { jaDistricts, mapLink } from "./ja";
+import { STATES } from "../data/site";
 
 export type Listing = {
   application_id: string; centre_name: string; centre_type: string | null; years_of_operation: number | null;
@@ -119,4 +121,35 @@ export function guideLinks(services: string[]): { href: string; label: string }[
   const out: { href: string; label: string }[] = [];
   for (const s of services) for (const [re, href, label] of GUIDES) if (re.test(s) && !seen.has(href)) { seen.add(href); out.push({ href, label }); }
   return out;
+}
+
+/** Names typed in ALL CAPS read better in title case. */
+export const niceName = (n: string | null | undefined) => {
+  const t = String(n ?? "").trim();
+  return /[a-z]/.test(t) || !/[A-Z]{3}/.test(t) ? t : t.toLowerCase().replace(/(^|[\s(\-/&.])([a-z])/g, (_, a, b) => a + b.toUpperCase());
+};
+
+const dist = (a: { lat: number; lng: number }, b: { lat: number | null; lng: number | null }) => {
+  if (b.lat == null || b.lng == null) return Infinity;
+  const r = Math.PI / 180, dLat = (b.lat - a.lat) * r, dLng = (b.lng - a.lng) * r;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLng / 2) ** 2;
+  return 12742 * Math.asin(Math.sqrt(h));
+};
+const plain = (s: string | null | undefined) => String(s ?? "").toLowerCase().replace(/district|[^a-z]/g, "");
+
+/** Jan Aushadhi kendras near a centre (same district; nearest first when the centre has a location, else same PIN first). */
+export function nearbyJa(c: Listing, n = 4) {
+  const st = STATES.find((s) => plain(s.name) === plain(c.state))?.slug;
+  if (!st) return null;
+  const ds = jaDistricts().filter((d) => d.state === st);
+  const pin = String(c.pincode ?? "").trim(), dn = plain(c.district);
+  const d = ds.find((x) => x.pins.some(([p]) => p === pin)) ?? ds.find((x) => { const xn = plain(x.name); return !!xn && !!dn && (xn.includes(dn) || dn.includes(xn)); });
+  if (!d || !d.kendras.length) return null;
+  const here = c.latitude != null && c.longitude != null ? { lat: Number(c.latitude), lng: Number(c.longitude) } : null;
+  const kendras = d.kendras
+    .map((k) => ({ k, km: here ? dist(here, k) : k.pin === pin ? 0 : 1 }))
+    .sort((a, b) => a.km - b.km)
+    .slice(0, n)
+    .map(({ k, km }) => ({ ...k, km: here && Number.isFinite(km) && km < 100 ? Math.round(km * 10) / 10 : null, map: mapLink(k) }));
+  return { href: `/${d.rel}`, name: d.name, count: d.kendras.length, kendras };
 }

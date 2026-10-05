@@ -7,9 +7,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  # Rebuild every 3 hours so new CSC listings and owner edits reach their static pages.
+  # Rebuild every 2 hours so new CSC listings and owner edits reach their static pages.
   schedule:
-    - cron: "17 */3 * * *"
+    - cron: "17 */2 * * *"
 
 permissions:
   contents: read

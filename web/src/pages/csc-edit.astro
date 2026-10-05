@@ -33,6 +33,24 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       </form>
 
       <p class="hint" id="who" hidden></p>
+      <section class="owner-panel" id="op" hidden>
+        <h2 style="margin-top:0">आपका केंद्र SarkariSewa पर</h2>
+        <p class="hint">पिछले 30 दिन में आपके पेज पर:</p>
+        <div class="owner-stats">
+          <div><b id="st-v">-</b>पेज देखा</div>
+          <div><b id="st-c">-</b>📞 कॉल</div>
+          <div><b id="st-w">-</b>💬 WhatsApp</div>
+          <div><b id="st-m">-</b>🗺️ रास्ता देखा</div>
+        </div>
+        <p><strong>प्रोफाइल <span id="pc-n">0</span>% पूरी</strong></p>
+        <div class="meter"><i id="pc-bar" style="width:0"></i></div>
+        <ul id="pc-todo" style="padding-left:1.1em"></ul>
+        <p class="hint">पूरी प्रोफाइल वाले केंद्र ज़्यादा भरोसेमंद लगते हैं और Google पर भी बेहतर दिखते हैं।</p>
+        <div class="ja-actions">
+          <a class="cta" id="op-view" href="#" target="_blank" rel="noopener">👁 अपना पेज देखें</a>
+          <a class="cta secondary" id="op-wa" href="#" target="_blank" rel="noopener">💬 WhatsApp स्टेटस/ग्रुप में शेयर करें</a>
+        </div>
+      </section>
       <form class="claim-form" id="edit" hidden novalidate>
         <fieldset>
           <legend>केंद्र</legend>
@@ -156,6 +174,39 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       f.dataset.lat = c.latitude || ""; f.dataset.lng = c.longitude || "";
     }
 
+    // Owner panel: visits/contacts from the site, profile score with what to
+    // add next, and a share link for WhatsApp status and groups.
+    function panel(c, c0) {
+      var todo = [
+        [!!c.photo_url, "केंद्र की फोटो लगाएं (नीचे \"केंद्र की फोटो\")"],
+        [String(c.about || "").length >= 40, "\"केंद्र के बारे में\" में 2-4 लाइन लिखें"],
+        [!!(c.latitude && c.longitude), "केंद्र पर खड़े होकर 📍 लोकेशन बटन दबाएं (पेज पर नक्शा दिखेगा)"],
+        [!!(c.working_hours && (c.working_hours.open || c.working_hours.monday || c.working_hours.Monday)), "खुलने और बंद होने का समय भरें"],
+        [(c.online_services || []).length + (c.offline_services || []).length >= 4, "कम से कम 4 सेवाएं चुनें"],
+        [(c.remote_services || []).length > 0, "घर बैठे होने वाली सेवाएं चुनें (ज़्यादा ग्राहक WhatsApp से आते हैं)"],
+        [!!c.public_whatsapp, "ग्राहकों के लिए WhatsApp नंबर भरें"],
+      ];
+      var done = todo.filter(function (t) { return t[0]; }).length, pc = Math.round(done * 100 / todo.length);
+      document.getElementById("pc-n").textContent = pc;
+      document.getElementById("pc-bar").style.width = pc + "%";
+      document.getElementById("pc-todo").innerHTML = todo.filter(function (t) { return !t[0]; }).map(function (t) { return "<li>➕ " + t[1].replace(/</g, "&lt;") + "</li>"; }).join("") || "<li style=\"list-style:none\">✓ बढ़िया! आपकी प्रोफाइल पूरी है।</li>";
+      var num = (c0.p_app.match(/\d{4,}$/) || [slug(c0.p_app)])[0];
+      var page = "/csc-centre/" + [slug(c.centre_name), slug(c.district), num].filter(Boolean).join("-") + ".html";
+      var setLinks = function (u) {
+        var full = "https://sarkarisewaindia.com" + u;
+        document.getElementById("op-view").href = u;
+        document.getElementById("op-wa").href = "https://wa.me/?text=" + encodeURIComponent((c.centre_name || "") + ": सरकारी ऑनलाइन काम (आधार, PAN, प्रमाण पत्र, बिल आदि) के लिए संपर्क करें 👇\n" + full);
+      };
+      setLinks("/csc-centre.html?id=" + encodeURIComponent(c0.p_app));
+      fetch(page, { method: "HEAD", cache: "no-store" }).then(function (r) { if (r.ok) setLinks(page); }).catch(function () {});
+      rpc("csc_owner_stats", c0).then(function (st) {
+        if (!st) return;
+        document.getElementById("st-v").textContent = st.views30; document.getElementById("st-c").textContent = st.calls30;
+        document.getElementById("st-w").textContent = st.wa30; document.getElementById("st-m").textContent = st.map30;
+      }).catch(function () {});
+      document.getElementById("op").hidden = false;
+    }
+
     function open(c0, remember) {
       var out = document.getElementById("l-out");
       out.textContent = "जांच हो रही है…";
@@ -167,6 +218,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         }
         cred = c0; rec = c;
         if (remember) { try { localStorage.setItem(KEY, JSON.stringify(c0)); } catch (e) {} }
+        panel(c, c0);
         fill(c); login.hidden = true; edit.hidden = false; fb.hidden = false; photoForm.hidden = false; showPhoto(c.photo_url);
         var who = document.getElementById("who");
         who.innerHTML = "";
@@ -175,7 +227,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
         a.addEventListener("click", function (e) {
           e.preventDefault();
           try { localStorage.removeItem(KEY); } catch (er) {}
-          cred = rec = null; edit.hidden = fb.hidden = who.hidden = photoForm.hidden = true; login.hidden = false;
+          cred = rec = null; edit.hidden = fb.hidden = who.hidden = photoForm.hidden = document.getElementById("op").hidden = true; login.hidden = false;
           login.querySelector("#l-code").value = ""; out.textContent = "";
         });
         who.appendChild(a); who.hidden = false;
@@ -227,7 +279,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       if (!/^image\//.test(f.type)) { phOut.textContent = "सिर्फ फोटो चुनें।"; return; }
       phOut.textContent = "फोटो लग रही है…";
       shrink(f).then(function (d) { return sendPhoto({ image: d }); })
-        .then(function (j) { showPhoto(j.photo_url); phOut.textContent = "✓ फोटो लग गई। आपके पेज पर दिख रही है।"; })
+        .then(function (j) { showPhoto(j.photo_url); if (rec) { rec.photo_url = j.photo_url; panel(rec, cred); } phOut.textContent = "✓ फोटो लग गई। आपके पेज पर दिख रही है।"; })
         .catch(function () { phOut.textContent = "फोटो नहीं लग सकी। दूसरी फोटो से या थोड़ी देर बाद कोशिश करें।"; });
     });
     phDel.addEventListener("click", function () {

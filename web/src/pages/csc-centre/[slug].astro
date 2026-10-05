@@ -9,13 +9,15 @@ import Faq from "../../components/Faq.astro";
 import CardGrid from "../../components/CardGrid.astro";
 import Explore from "../../components/Explore.astro";
 import PaidTools from "../../components/PaidTools.astro";
-import { listings, listingSlug, listingDistrictPage, digits, hoursText, guideLinks, sinceText, serviceHi, type Listing } from "../../lib/csc-listings";
+import { listings, listingSlug, listingDistrictPage, niceName, nearbyJa, digits, hoursText, guideLinks, sinceText, serviceHi, type Listing } from "../../lib/csc-listings";
 import { POPULAR_TASKS } from "../../data/site";
+import { nearbyPages } from "../../lib/csc";
 
 export async function getStaticPaths() {
   return (await listings()).map((c) => ({ params: { slug: listingSlug(c) }, props: { c } }));
 }
 const { c } = Astro.props as { c: Listing };
+const name = niceName(c.centre_name);
 const districtPage = listingDistrictPage(c);
 const online = (c.online_services ?? []).filter(Boolean).map(serviceHi);
 const offline = (c.offline_services ?? []).filter(Boolean).map(serviceHi);
@@ -32,30 +34,37 @@ const map = c.latitude && c.longitude
   ? `https://www.google.com/maps?q=${c.latitude},${c.longitude}`
   : c.full_address ? `https://www.google.com/maps/search/${encodeURIComponent(`${c.full_address} ${c.pincode ?? ""}`)}` : "";
 const photo = /^https:\/\/[a-z0-9]+\.supabase\.co\/storage\/v1\/object\/public\/csc-photos\//.test(c.photo_url ?? "") ? c.photo_url! : "";
+const ja = nearbyJa(c);
+const nearDistricts = districtPage ? nearbyPages(districtPage, 6) : [];
+const since = sinceText(c.years_of_operation);
 const embed = c.latitude && c.longitude ? `https://maps.google.com/maps?q=${c.latitude},${c.longitude}&z=16&output=embed` : "";
 const pageUrl = `https://sarkarisewaindia.com/csc-centre/${listingSlug(c)}.html`;
-const shareText = encodeURIComponent(`${c.centre_name} (${c.city || c.district}): सेवाएं, समय और संपर्क\n${pageUrl}`);
+const shareText = encodeURIComponent(`${name} (${c.city || c.district}): सेवाएं, समय और संपर्क\n${pageUrl}`);
 const waText = encodeURIComponent("नमस्ते, मैंने आपका केंद्र SarkariSewa India (sarkarisewaindia.com) पर देखा। मुझे इस काम के लिए मदद चाहिए: ");
 const typeHi: Record<string, string> = { CSC: "CSC (कॉमन सर्विस सेंटर)", "Jan Seva Kendra": "जन सेवा केंद्र", "E-Mitra": "ई-मित्र", "Maha E Seva": "महा ई-सेवा केंद्र", "Vasudha Kendra": "वसुधा केंद्र", Other: "सेवा केंद्र" };
 const type = typeHi[c.centre_type ?? ""] ?? c.centre_type ?? "सेवा केंद्र";
-const title = `${c.centre_name}, ${c.city || c.district}: ${c.centre_type === "CSC" ? "CSC सेंटर" : "जन सेवा केंद्र"} | SarkariSewa India`;
-const description = `${c.centre_name} (${where}): ${all.slice(0, 4).join(", ") || "सरकारी ऑनलाइन सेवाएं"}। पता, समय, फोन और WhatsApp। SarkariSewa पर सत्यापित केंद्र।`;
+const area = uniq([c.locality, c.city || c.district]);
+const top = all.filter((x) => !/फोटो|प्रिंट|स्कैन|लैमि|photo|print|scan|lamin/i.test(x)).slice(0, 2);
+const title = `${name}, ${area}: ${c.centre_type === "CSC" ? "CSC सेंटर" : "जन सेवा केंद्र"}${top.length ? ` (${top.join(", ")})` : ""} | SarkariSewa India`;
+const description = `${name} (${where}): ${all.slice(0, 4).join(", ") || "सरकारी ऑनलाइन सेवाएं"}। पता, समय, फोन और WhatsApp। SarkariSewa पर सत्यापित केंद्र।`;
 const crumbs = [
   { label: "होम", href: "/" },
   { label: "CSC सेंटर", href: "/tools/csc-locator.html" },
   ...(districtPage ? [{ label: `${districtPage.name} CSC`, href: districtPage.href }] : []),
-  { label: c.centre_name },
+  { label: name },
 ];
 const faq = [
-  { q: `${c.centre_name} कहां है?`, a: `${c.centre_name} ${c.full_address ? `${c.full_address}, ` : ""}${where}${c.pincode ? ` (PIN ${c.pincode})` : ""} में है। ऊपर "रास्ता देखें" से Google Maps पर रास्ता देखें।` },
-  ...(all.length ? [{ q: `${c.centre_name} पर कौन सी सेवाएं मिलती हैं?`, a: `केंद्र के संचालक के अनुसार यहां ये सेवाएं मिलती हैं: ${all.join(", ")}। सेवा और फीस जाने से पहले फोन या WhatsApp पर पूछ लें।` }] : []),
-  ...(hours ? [{ q: `${c.centre_name} कितने बजे खुलता है?`, a: `संचालक के अनुसार समय: ${hours}। त्योहार या छुट्टी पर समय बदल सकता है।` }] : []),
+  { q: `${name} कहां है?`, a: `${name} ${c.full_address ? `${c.full_address}, ` : ""}${where}${c.pincode ? ` (PIN ${c.pincode})` : ""} में है। ऊपर "रास्ता देखें" से Google Maps पर रास्ता देखें।` },
+  ...(all.length ? [{ q: `${name} पर कौन सी सेवाएं मिलती हैं?`, a: `केंद्र के संचालक के अनुसार यहां ये सेवाएं मिलती हैं: ${all.join(", ")}। सेवा और फीस जाने से पहले फोन या WhatsApp पर पूछ लें।` }] : []),
+  ...(hours ? [{ q: `${name} कितने बजे खुलता है?`, a: `संचालक के अनुसार समय: ${hours}। त्योहार या छुट्टी पर समय बदल सकता है।` }] : []),
+  ...(remote.length ? [{ q: `क्या ${name} पर घर बैठे काम हो जाता है?`, a: `हां, संचालक के अनुसार ये सेवाएं WhatsApp या फोन पर कागज़ भेजकर घर बैठे हो जाती हैं: ${remote.join(", ")}। आधार जैसे बायोमेट्रिक काम के लिए केंद्र पर जाना ज़रूरी है।` }] : []),
+  ...(ja ? [{ q: `${name} के पास जन औषधि केंद्र कहां है?`, a: `${ja.name} ज़िले में ${ja.count} प्रधानमंत्री भारतीय जन औषधि केंद्र हैं, जहां दवाएं ब्रांडेड दवाओं से 50-80% तक सस्ती मिलती हैं। सबसे पास वाले केंद्र इस पेज पर नीचे दिए हैं।` }] : []),
   { q: "CSC पर सरकारी फीस से ज़्यादा पैसा मांगा जाए तो?", a: "सरकारी फीस के अलावा CSC अपना सेवा शुल्क लेता है। काम शुरू होने से पहले कुल राशि पूछें और रसीद लें। मनमानी वसूली की शिकायत CSC हेल्पलाइन 1800-121-3468 या helpdesk@csc.gov.in पर करें।" },
 ];
 const ld = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  name: c.centre_name,
+  name: name,
   description: `${type}${all.length ? `: ${all.join(", ")}` : ""}`,
   address: { "@type": "PostalAddress", streetAddress: c.full_address ?? undefined, addressLocality: c.city ?? undefined, addressRegion: c.state ?? undefined, postalCode: c.pincode ?? undefined, addressCountry: "IN" },
   ...(ph ? { telephone: `+91${ph}` } : {}),
@@ -70,15 +79,21 @@ const ld = {
   <Breadcrumbs items={crumbs} />
   <div class="page has-aside">
     <article>
-      <h1>{c.centre_name}: {type}, {c.city || c.district}</h1>
-      <div class="meta-row"><span class="verified">✓ SarkariSewa पर सत्यापित केंद्र</span><span>{where}</span></div>
+      <h1>{name}: {type}, {c.city || c.district}</h1>
+      <div class="csc-badges" id="c-badges" data-hours={JSON.stringify(c.working_hours ?? null)}>
+        <span class="b-ok">✓ SarkariSewa पर सत्यापित</span>
+        {since && <span>🗓️ {since}</span>}
+        {remote.length > 0 && <span>🏠 घर बैठे सेवा</span>}
+        {c.home_visit && <span>🚶 घर पर आकर सेवा</span>}
+        <span>📍 {where}</span>
+      </div>
 
       <div id="c-live" data-app={c.application_id} data-updated={c.updated_at ?? ""} data-type={type}>
       <section class="answer" aria-labelledby="answer-title">
         <p class="answer-title" id="answer-title">केंद्र की जानकारी</p>
-        {photo && <img class="csc-photo" src={photo} alt={c.centre_name} width="1200" height="800" decoding="async" />}
+        {photo && <img class="csc-photo" src={photo} alt={name} width="1200" height="800" decoding="async" />}
         <p class="answer-lead">
-          {c.centre_name} {place || where} में एक {type} है{sinceText(c.years_of_operation) ? `, जो ${sinceText(c.years_of_operation)}` : ""}।
+          {name} {place || where} में एक {type} है{sinceText(c.years_of_operation) ? `, जो ${sinceText(c.years_of_operation)}` : ""}।
           {all.length > 0 && <> यहां {all.slice(0, 5).join(", ")}{all.length > 5 ? " और दूसरी" : ""} सेवाएं मिलती हैं।</>}
           {remote.length > 0 && ` ${remote.length} सेवाएं घर बैठे WhatsApp/फोन से भी हो जाती हैं।`}
           {c.home_visit && " केंद्र घर पर आकर भी सेवा देता है।"}
@@ -105,7 +120,7 @@ const ld = {
 
       {all.length > 0 && (
         <section class="section" id="sevayen">
-          <h2>{c.centre_name} पर मिलने वाली सेवाएं</h2>
+          <h2>{name} पर मिलने वाली सेवाएं</h2>
           {remote.length > 0 && <><h3>🏠 घर बैठे (WhatsApp/फोन से कागज़ भेजकर)</h3><ul class="checklist">{remote.map((s) => <li>{s}</li>)}</ul></>}
           {online.length > 0 && <><h3>🏢 केंद्र पर आकर: सरकारी सेवाएं</h3><ul class="checklist">{online.map((s) => <li>{s}</li>)}</ul></>}
           {(offline.length > 0 || custom.length > 0) && <><h3>🏢 केंद्र पर: दूसरी सेवाएं</h3><ul class="checklist">{[...offline, ...custom].map((s) => <li>{s}</li>)}</ul></>}
@@ -117,11 +132,34 @@ const ld = {
 
       {guides.length > 0 && (
         <section class="section" id="taiyari">
-          <h2>केंद्र जाने से पहले: ज़रूरी कागज़ और प्रक्रिया</h2>
-          <p>इन सेवाओं के लिए कौन से कागज़ लगते हैं और सरकारी फीस कितनी है, हमारी गाइड में देखें, ताकि एक ही बार में काम हो जाए:</p>
-          <ul class="chips">{guides.map((g) => <li><a href={g.href}>{g.label}</a></li>)}</ul>
+          <h2>केंद्र जाने से पहले: ज़रूरी कागज़ और सरकारी फीस</h2>
+          <p>{name} पर मिलने वाली इन सेवाओं के लिए कौन से कागज़ लगते हैं और सरकारी फीस कितनी है, हमारी गाइड में देखें, ताकि एक ही बार में काम हो जाए:</p>
+          <div class="card-grid">{guides.map((g) => <a class="card" href={g.href}><span class="emoji" aria-hidden="true">📄</span><strong>{g.label}</strong><small>कागज़, फीस और प्रक्रिया →</small></a>)}</div>
         </section>
       )}
+
+      {ja && (
+        <section class="section" id="jan-aushadhi">
+          <h2>पास के जन औषधि केंद्र: 50-80% सस्ती दवा</h2>
+          <p>{ja.name} ज़िले में {ja.count} प्रधानमंत्री भारतीय जन औषधि केंद्र हैं{ja.kendras[0]?.km != null ? `; ${name} से सबसे पास वाले` : "; इनमें से कुछ"}:</p>
+          <ul class="csc-list">
+            {ja.kendras.map((k) => (
+              <li class="csc-card">
+                <strong>जन औषधि केंद्र {k.code && <small>({k.code})</small>}</strong>
+                <span>{k.addr}</span>
+                <span class="pin">PIN {k.pin}{k.km != null && ` · लगभग ${k.km} km`}</span>
+                <span class="ja-actions"><a href={k.map} target="_blank" rel="noopener nofollow">रास्ता ↗</a></span>
+              </li>
+            ))}
+          </ul>
+          <p><a href={ja.href}>{ja.name} के सभी {ja.count} जन औषधि केंद्र →</a></p>
+        </section>
+      )}
+
+      <section class="section" id="v-others" hidden>
+        <h2>{c.district} में और सत्यापित केंद्र</h2>
+        <ul class="csc-list v-list"></ul>
+      </section>
 
       <section class="section" id="dhyan">
         <h2>ध्यान रखें</h2>
@@ -137,6 +175,12 @@ const ld = {
           { href: districtPage.href, emoji: "📍", title: { hi: `${districtPage.name} के सभी CSC सेंटर`, en: `All CSC centres in ${districtPage.name}` }, text: { hi: "पता, PIN और नक्शा", en: "Address, PIN, map" } },
           { href: "/service/jan-aushadhi-store-locator.html", emoji: "💊", title: { hi: "नज़दीकी जन औषधि केंद्र", en: "Jan Aushadhi Kendra" }, text: { hi: "50-80% सस्ती दवा", en: "Cheaper medicines" } },
         ]} />
+      )}
+      {nearDistricts.length > 0 && (
+        <section class="section" id="aaspaas">
+          <h2>आसपास के ज़िलों के CSC सेंटर</h2>
+          <ul class="chips">{nearDistricts.map((p) => <li><a href={p.href}>{p.name} <small>{p.d.count.toLocaleString("en-IN")}</small></a></li>)}</ul>
+        </section>
       )}
       <CardGrid title="SarkariSewa पर लोकप्रिय सेवाएं" id="popular" cards={POPULAR_TASKS.slice(0, 6)} />
       <PaidTools />
@@ -156,19 +200,19 @@ const ld = {
       </section>
       <section class="section toc" id="c-map" hidden={!embed}>
         <h2 style="font-size:1rem">नक्शे पर केंद्र</h2>
-        <iframe class="csc-map" src={embed || undefined} data-src={embed} title={`${c.centre_name} नक्शा`} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe class="csc-map" src={embed || undefined} data-src={embed} title={`${name} नक्शा`} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         {map && <a href={map} data-act="map" target="_blank" rel="noopener nofollow">🗺️ Google Maps में खोलें ↗</a>}
       </section>
       <section class="section toc">
         <h2 style="font-size:1rem">यह पेज शेयर करें</h2>
         <a class="cta secondary" href={`https://wa.me/?text=${shareText}`} target="_blank" rel="noopener nofollow">💬 WhatsApp पर शेयर</a>
-        <button type="button" class="cta secondary" id="c-share" data-url={pageUrl} data-title={c.centre_name}>🔗 दूसरे ऐप / लिंक कॉपी</button>
+        <button type="button" class="cta secondary" id="c-share" data-url={pageUrl} data-title={name}>🔗 दूसरे ऐप / लिंक कॉपी</button>
         <p class="hint"><a href={`/csc-edit.html?id=${encodeURIComponent(c.application_id)}`} rel="nofollow">✏️ संचालक: सेवाएं / फोटो अपडेट करें</a></p>
       </section>
     </aside>
   </div>
   <script is:inline src="/assets/js/csc-listing.js"></script>
-  <script is:inline define:vars={{ app: c.application_id }}>
+  <script is:inline define:vars={{ app: c.application_id, district: c.district ?? "", state: c.state ?? "" }}>
     // Owner edits show at once: if the live record is newer than this build,
     // redraw the info, services and contact parts from it.
     if (window.SSCsc) {
@@ -176,7 +220,7 @@ const ld = {
       SSCsc.one(app).then(function (row) {
         if (row && row.updated_at && row.updated_at !== live.dataset.updated) {
           live.innerHTML = SSCsc.full(row, live.dataset.type);
-          var h1 = document.querySelector("h1"); if (h1) h1.textContent = row.centre_name + ": " + live.dataset.type + ", " + (row.city || row.district || "");
+          var h1 = document.querySelector("h1"); if (h1) h1.textContent = SSCsc.nice(row.centre_name) + ": " + live.dataset.type + ", " + (row.city || row.district || "");
           var m = document.getElementById("c-map"), fr = m && m.querySelector("iframe");
           if (fr) {
             var src = row.latitude && row.longitude ? "https://maps.google.com/maps?q=" + row.latitude + "," + row.longitude + "&z=16&output=embed" : "";
@@ -184,6 +228,12 @@ const ld = {
           }
         }
       }).catch(function () {});
+      var bd = document.getElementById("c-badges");
+      try {
+        var on = SSCsc.openNow(JSON.parse(bd.dataset.hours || "null"));
+        if (on) { var sp = document.createElement("span"); sp.className = on.open ? "b-open" : "b-closed"; sp.textContent = (on.open ? "🟢 " : "🔴 ") + on.label; bd.insertBefore(sp, bd.children[1] || null); }
+      } catch (e) {}
+      SSCsc.district(document.getElementById("v-others"), { names: [district], state: state, exclude: app });
       SSCsc.log(app, "profile");
       var sh = document.getElementById("c-share");
       if (sh) sh.addEventListener("click", function () {
