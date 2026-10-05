@@ -1,0 +1,70 @@
+---
+// Every kendra of a district as crawlable cards, with a filter by PIN/area and
+// a "near me" sort that runs in the browser on the cards' coordinates.
+import { mapLink, type Kendra } from "../lib/ja";
+interface Props { kendras: Kendra[]; place: string }
+const { kendras, place } = Astro.props;
+const fmtPhone = (p: string) => `${p.slice(0, 5)} ${p.slice(5)}`;
+---
+<section class="section ja-finder" id="khojen">
+  <h2>{place} के सभी {kendras.length} जन औषधि केंद्र</h2>
+  <p>PIN कोड या इलाके का नाम लिखें, या "मेरे पास" दबाकर सबसे नज़दीकी केंद्र सबसे ऊपर देखें। फोन करके दवा का स्टॉक पूछ लें।</p>
+  <div class="csc-form" role="search">
+    <label class="sr-only" for="ja-q">PIN कोड या इलाका</label>
+    <input id="ja-q" type="search" inputmode="search" placeholder="PIN कोड या इलाका, जैसे 800001" autocomplete="off" />
+    <button type="button" class="ja-near">📍 मेरे पास</button>
+  </div>
+  <p class="csc-status ja-status" role="status" aria-live="polite"></p>
+  <ul class="csc-list ja-list">
+    {kendras.map((k) => (
+      <li class="csc-card" data-q={`${k.addr} ${k.pin} ${k.code}`.toLowerCase()} data-lat={k.lat ?? undefined} data-lng={k.lng ?? undefined}>
+        <strong>{k.addr || `जन औषधि केंद्र ${k.code}`}</strong>
+        {k.pin && <span class="pin">PIN {k.pin}</span>}
+        <span>कोड: {k.code}{k.person && ` · संचालक: ${k.person}`}</span>
+        <span class="ja-km" hidden></span>
+        <span class="ja-actions">
+          {k.phone && <a href={`tel:+91${k.phone}`}>📞 {fmtPhone(k.phone)}</a>}
+          <a href={mapLink(k)} target="_blank" rel="noopener nofollow">रास्ता देखें ↗</a>
+        </span>
+      </li>
+    ))}
+  </ul>
+  <p class="ja-empty" hidden>इस खोज से कोई केंद्र नहीं मिला। PIN के पहले 3 अंक लिखकर देखें, या नीचे आसपास के ज़िले देखें।</p>
+</section>
+
+<script is:inline>
+(function () {
+  var box = document.querySelector(".ja-finder");
+  if (!box) return;
+  var list = box.querySelector(".ja-list"), cards = [].slice.call(list.children);
+  var q = box.querySelector("#ja-q"), status = box.querySelector(".ja-status"), empty = box.querySelector(".ja-empty");
+  function filter() {
+    var t = (q.value || "").trim().toLowerCase(), shown = 0;
+    cards.forEach(function (c) { var ok = !t || c.dataset.q.indexOf(t) !== -1; c.hidden = !ok; if (ok) shown++; });
+    empty.hidden = shown > 0;
+    status.textContent = t ? shown + " केंद्र मिले" : "";
+  }
+  q.addEventListener("input", filter);
+  var pre = new URLSearchParams(location.search).get("pin");
+  if (pre && /^\d{6}$/.test(pre)) { q.value = pre; filter(); }
+  box.querySelector(".ja-near").addEventListener("click", function () {
+    if (!navigator.geolocation) { status.textContent = "इस ब्राउज़र में लोकेशन उपलब्ध नहीं है। PIN कोड से खोजें।"; return; }
+    status.textContent = "आपकी लोकेशन ली जा रही है…";
+    navigator.geolocation.getCurrentPosition(function (p) {
+      var la = p.coords.latitude, ln = p.coords.longitude, r = Math.PI / 180;
+      cards.forEach(function (c) {
+        var a = parseFloat(c.dataset.lat), b = parseFloat(c.dataset.lng);
+        if (isNaN(a)) { c._d = Infinity; return; }
+        var dLa = (a - la) * r, dLn = (b - ln) * r;
+        var h = Math.sin(dLa / 2) * Math.sin(dLa / 2) + Math.cos(la * r) * Math.cos(a * r) * Math.sin(dLn / 2) * Math.sin(dLn / 2);
+        c._d = 12742 * Math.asin(Math.sqrt(h));
+        var s = c.querySelector(".ja-km"); s.hidden = false; s.textContent = "आपसे लगभग " + (c._d < 10 ? c._d.toFixed(1) : Math.round(c._d)) + " km";
+      });
+      cards.sort(function (x, y) { return x._d - y._d; }).forEach(function (c) { list.appendChild(c); });
+      q.value = ""; filter();
+      var near = cards[0] && cards[0]._d;
+      status.textContent = near > 60 ? "आप इस ज़िले से दूर लगते हैं; नीचे आसपास के ज़िले भी देखें। सबसे पास वाले केंद्र ऊपर हैं।" : "सबसे नज़दीकी केंद्र सबसे ऊपर हैं।";
+    }, function () { status.textContent = "लोकेशन नहीं मिली। PIN कोड से खोजें।"; }, { timeout: 12000, maximumAge: 300000 });
+  });
+})();
+</script>

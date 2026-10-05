@@ -1,0 +1,120 @@
+---
+// Jan Aushadhi hub: national numbers from the PMBJP kendra list, a PIN /
+// near-me picker over every district page, and the state-wise table.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import OfficialLinks from "../../components/OfficialLinks.astro";
+import Faq from "../../components/Faq.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import Explore from "../../components/Explore.astro";
+import JaPicker from "../../components/JaPicker.astro";
+import JaInfo from "../../components/JaInfo.astro";
+import { jaStates, jaDistricts, jaTotal } from "../../lib/ja";
+
+const states = [...jaStates()].sort((a, b) => b.total - a.total);
+const n = jaTotal();
+const nf = n.toLocaleString("en-IN");
+const nd = jaDistricts().length;
+const topDistricts = [...jaDistricts()].sort((a, b) => b.kendras.length - a.kendras.length).slice(0, 10);
+const verified = "4 अक्टूबर 2026";
+const crumbs = [{ label: "होम", href: "/" }, { label: "आपके पास", href: "/near-me/" }, { label: "जन औषधि केंद्र" }];
+const faq = [
+  { q: "भारत में कितने जन औषधि केंद्र हैं?", a: `PMBJP की स्टोर सूची में ${nf} चालू जन औषधि केंद्र दर्ज हैं, जो ${states.length} राज्यों/केंद्र शासित प्रदेशों के ${nd} ज़िलों में हैं। सबसे ज़्यादा केंद्र ${states.slice(0, 3).map((s) => `${s.hi} (${s.total.toLocaleString("en-IN")})`).join(", ")} में हैं।` },
+  { q: "मेरे पास का जन औषधि केंद्र कैसे खोजें?", a: "इस पेज पर अपना PIN कोड डालें या \"मेरे पास\" बटन दबाएं, आपके ज़िले का पेज खुलेगा। वहां हर केंद्र का पता, PMBJK कोड, फोन नंबर और नक्शा है। PMBI का JanAushadhi Sugam ऐप भी नक्शे पर नज़दीकी केंद्र दिखाता है।" },
+  { q: "जन औषधि की दवा कितनी सस्ती है?", a: "PMBI के अनुसार जन औषधि दवाओं की कीमत खुले बाज़ार की ब्रांडेड दवाओं से 50% से 80% तक कम है। किसी दवा की MRP और बचत JanAushadhi Sugam ऐप में देख सकते हैं।" },
+  { q: "क्या जेनेरिक दवा ब्रांडेड जितनी असरदार होती है?", a: "PMBI के अनुसार जेनेरिक दवा का असर और चिकित्सीय मूल्य ब्रांडेड दवा जैसा ही होता है। जन औषधि की दवाएं WHO-GMP प्रमाणित निर्माताओं से ली जाती हैं और हर बैच NABL लैब में जांचा जाता है। दवा बदलने से पहले अपने डॉक्टर से बात करें।" },
+  { q: "जन औषधि केंद्र कितने बजे खुलते हैं?", a: "PMBI के अनुसार केंद्र आम तौर पर सुबह 8 से रात 8 बजे तक खुलते हैं। किसी केंद्र का समय अलग हो सकता है।" },
+  { q: "जन औषधि केंद्र की शिकायत या जानकारी के लिए नंबर?", a: "PMBI का टोल-फ्री नंबर 1800-180-8080 है। केंद्र की शिकायत करते समय उसका PMBJK कोड बताएं, जो हमारे हर ज़िले के पेज पर दिया है।" },
+];
+---
+<Base
+  title="प्रधानमंत्री जन औषधि केंद्र (PM Jan Aushadhi Kendra) | SarkariSewa India"
+  description={`भारत के ${nf} प्रधानमंत्री जन औषधि केंद्रों की राज्य और ज़िलेवार सूची: पता, फोन, नक्शा। PIN कोड से नज़दीकी केंद्र खोजें, 50-80% सस्ती जेनेरिक दवा।`}
+  breadcrumbs={crumbs}
+  faq={faq}
+  modified="2026-10-04"
+>
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>जन औषधि केंद्र: भारत के {nf} केंद्रों की राज्य और ज़िलेवार सूची</h1>
+      <div class="meta-row"><span class="verified">✓ जानकारी जांची गई: {verified}</span></div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">
+          प्रधानमंत्री भारतीय जनऔषधि केंद्रों पर जेनेरिक दवाएं ब्रांडेड से <strong>50-80% तक सस्ती</strong> मिलती हैं। PMBJP की स्टोर सूची में
+          <strong>{nf} केंद्र</strong> {nd} ज़िलों में दर्ज हैं। अपना PIN कोड डालें या "मेरे पास" दबाएं, आपके ज़िले के हर केंद्र का पता, फोन और नक्शा मिलेगा।
+        </p>
+        <dl class="facts">
+          <div><dt>कुल केंद्र</dt><dd>{nf}</dd></div>
+          <div><dt>ज़िले</dt><dd>{nd}</dd></div>
+          <div><dt>दवाएं / सर्जिकल</dt><dd>2,100 / 300</dd></div>
+          <div><dt>समय (आम तौर पर)</dt><dd>सुबह 8 से रात 8</dd></div>
+          <div><dt>PMBI टोल-फ्री</dt><dd><a href="tel:18001808080">1800-180-8080</a></dd></div>
+        </dl>
+      </section>
+
+      <JaPicker districts={jaDistricts()} title="अपना नज़दीकी जन औषधि केंद्र खोजें" />
+
+      <section class="section" id="rajya">
+        <h2>राज्यवार जन औषधि केंद्र</h2>
+        <div class="table-wrap">
+          <table class="compact">
+            <thead><tr><th>राज्य / UT</th><th>केंद्र</th><th>ज़िले</th></tr></thead>
+            <tbody>
+              {states.map((s) => (
+                <tr><td><a href={`/${s.rel}`}><strong>{s.hi}</strong></a></td><td>{s.total.toLocaleString("en-IN")}</td><td>{s.districts.length}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="top">
+        <h2>सबसे ज़्यादा जन औषधि केंद्र वाले ज़िले</h2>
+        <ul class="chips">
+          {topDistricts.map((d) => <li><a href={`/${d.rel}`}>{d.name} <small>{d.kendras.length} केंद्र</small></a></li>)}
+        </ul>
+      </section>
+
+      <div class="ad-slot" aria-hidden="true"></div>
+
+      <JaInfo place="अपने इलाके" />
+
+      <CardGrid title="इनसे जुड़ी जानकारी" id="related" cards={[
+        { href: "/tools/csc-locator.html", emoji: "🏢", title: { hi: "नज़दीकी CSC सेंटर", en: "Nearest CSC" }, text: { hi: "आधार, PAN, आयुष्मान कार्ड", en: "Aadhaar, PAN, Ayushman" } },
+        { href: "/near-me/", emoji: "📍", title: { hi: "आपके पास की सरकारी सेवाएं", en: "Services near you" }, text: { hi: "CSC, जन औषधि और ज़्यादा", en: "CSC, Jan Aushadhi and more" } },
+        { href: "/documents/", emoji: "📄", title: { hi: "सरकारी दस्तावेज़", en: "Documents" }, text: { hi: "राज्य अनुसार गाइड", en: "State-wise guides" } },
+        { href: "/support/helpline-directory.html", emoji: "📞", title: { hi: "सरकारी हेल्पलाइन नंबर", en: "Helpline numbers" }, text: { hi: "सभी विभागों के टोल-फ्री नंबर", en: "Toll-free numbers" } },
+      ]} />
+
+      <OfficialLinks verified={verified} links={[
+        { href: "https://janaushadhi.gov.in/", title: "PMBI / जन औषधि (official)", note: "केंद्र खोजें, Kendra Code जांचें, दवा सूची, Apply for Kendra" },
+        { href: "https://play.google.com/store/apps/details?id=in.gov.pmbjp", title: "JanAushadhi Sugam ऐप", note: "Google Play" },
+        { href: "https://apps.apple.com/in/app/jan-aushadhi-sugam-pmbi/id1476574620", title: "JanAushadhi Sugam ऐप", note: "App Store" },
+        { href: "tel:18001808080", title: "PMBI टोल-फ्री हेल्पलाइन", note: "1800-180-8080" },
+      ]} />
+      <Faq items={faq} />
+      <p class="notice">केंद्रों की सूची PMBJP (PMBI) के स्टोर लोकेटर डेटा से है। कोई केंद्र बंद या स्थानांतरित हो सकता है; जाने से पहले फोन कर लें या janaushadhi.gov.in पर देखें।</p>
+      <Explore exclude={["/service/jan-aushadhi-store-locator.html"]} />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          <li><a href="#khojen">नज़दीकी केंद्र खोजें</a></li>
+          <li><a href="#rajya">राज्यवार सूची</a></li>
+          <li><a href="#top">बड़े ज़िले</a></li>
+          <li><a href="#kya-hai">जन औषधि क्या है</a></li>
+          <li><a href="#kaise-khariden">दवा कैसे खरीदें</a></li>
+          <li><a href="#asli-kendra">असली केंद्र पहचानें</a></li>
+          <li><a href="#kendra-kholen">केंद्र कैसे खोलें</a></li>
+          <li><a href="#faq">सवाल-जवाब</a></li>
+        </ol>
+        {states.slice(0, 3).map((s, i) => <a class={`cta${i ? " secondary" : ""}`} href={`/${s.rel}`}>{s.hi} ({s.total.toLocaleString("en-IN")})</a>)}
+      </section>
+    </aside>
+  </div>
+</Base>

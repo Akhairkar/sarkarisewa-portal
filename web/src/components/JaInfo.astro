@@ -1,0 +1,61 @@
+---
+// Shared Jan Aushadhi facts for the locator pages. Every fact here is from
+// PMBI's own website (janaushadhi.gov.in, About/FAQ/Sugam app text), checked
+// 4 Oct 2026: prices 50%-80% below branded MRP, WHO-GMP suppliers, NABL testing
+// of every batch, 2100 drugs + 300 surgical items, 8 AM-8 PM normal hours,
+// toll-free 1800-180-8080, JanAushadhi Sugam app, kendra opening rules.
+interface Props { place: string; compact?: boolean }
+const { place, compact = false } = Astro.props;
+---
+<section class="section" id="kya-hai">
+  <h2>जन औषधि केंद्र क्या है और यहां दवा सस्ती क्यों है</h2>
+  <p>प्रधानमंत्री भारतीय जनऔषधि परियोजना (PMBJP) भारत सरकार के फार्मास्यूटिकल्स विभाग की योजना है, जिसे PMBI (Pharmaceuticals &amp; Medical Devices Bureau of India) चलाता है। इसके केंद्रों पर ब्रांडेड दवा की जगह उसी साल्ट (salt) की जेनेरिक दवा मिलती है।</p>
+  <ul class="checklist">
+    <li>PMBI के अनुसार जन औषधि दवाओं की कीमत खुले बाज़ार की ब्रांडेड दवाओं से <strong>50% से 80% तक कम</strong> है।</li>
+    <li>दवाएं सिर्फ <strong>WHO-GMP</strong> प्रमाणित निर्माताओं से खरीदी जाती हैं और हर बैच की जांच <strong>NABL</strong> मान्यता वाली लैब में होती है, फिर केंद्र तक भेजी जाती है।</li>
+    <li>PMBJP की सूची में <strong>2,100 दवाएं और 300 सर्जिकल आइटम</strong> हैं। हर केंद्र पर हर दवा मिले, ज़रूरी नहीं; जाने से पहले फोन करके पूछ लें।</li>
+    <li>केंद्र आम तौर पर <strong>सुबह 8 से रात 8 बजे</strong> तक खुलते हैं। किसी केंद्र का समय अलग हो सकता है।</li>
+  </ul>
+</section>
+
+{!compact && (
+  <section class="section" id="kaise-khariden">
+    <h2>{place} में जन औषधि से दवा कैसे खरीदें</h2>
+    <ol class="steps">
+      <li>डॉक्टर की पर्ची पर लिखी दवा का <strong>साल्ट (generic) नाम और ताकत</strong> देखें, जैसे Paracetamol 500 mg। ब्रांड का नाम काफी नहीं है।</li>
+      <li>ऊपर की लिस्ट से अपना नज़दीकी केंद्र चुनें और फोन करके पूछ लें कि वह दवा स्टॉक में है या नहीं।</li>
+      <li>केंद्र पर पर्ची दिखाएं। जिन दवाओं के लिए पर्ची ज़रूरी है, वे बिना पर्ची के नहीं मिलतीं, जैसे किसी भी मेडिकल स्टोर पर।</li>
+      <li>बिल ज़रूर लें। बिल पर केंद्र का नाम और PMBJK कोड होता है।</li>
+      <li>दवा बदलने से पहले अपने डॉक्टर से पूछें, खासकर लंबी चलने वाली दवा (BP, शुगर, थायरॉइड) में।</li>
+    </ol>
+    <div class="callout info"><p><strong>JanAushadhi Sugam ऐप</strong> (PMBI का official ऐप, 2019 से): इसमें नक्शे पर नज़दीकी केंद्र, जेनेरिक दवा की खोज और ब्रांडेड बनाम जेनेरिक दवा की MRP व बचत की तुलना मिलती है। ऐप Google Play और App Store पर है।</p></div>
+  </section>
+)}
+
+<section class="section" id="asli-kendra">
+  <h2>असली जन औषधि केंद्र कैसे पहचानें</h2>
+  <ul class="checklist">
+    <li>हर असली केंद्र का एक <strong>PMBJK कोड</strong> होता है (जैसे PMBJK00012)। ऊपर लिस्ट में हर केंद्र का कोड दिया है; यही कोड janaushadhi.gov.in पर "Kendra Code" खोज से भी जांच सकते हैं।</li>
+    <li>दुकान पर "प्रधानमंत्री भारतीय जनऔषधि केंद्र" का बोर्ड होता है और ड्रग लाइसेंस इसी नाम से होता है।</li>
+    <li>जन औषधि की दवा के नाम पर ब्रांडेड दवा बेची जाए, ज़्यादा MRP ली जाए या बिल न मिले, तो PMBI के टोल-फ्री नंबर <a href="tel:18001808080">1800-180-8080</a> पर शिकायत करें।</li>
+  </ul>
+</section>
+
+{!compact && (
+  <section class="section" id="kendra-kholen">
+    <h2>{place} में जन औषधि केंद्र कैसे खोलें</h2>
+    <p>PMBI के FAQ के अनुसार कोई व्यक्ति (proprietor), पार्टनरशिप, चैरिटेबल अस्पताल, NGO/ट्रस्ट/सोसाइटी या सरकारी/सरकार द्वारा नामित एजेंसी केंद्र खोल सकती है। आवेदन janaushadhi.gov.in पर "Apply for Kendra" से होता है।</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ज़रूरत (निजी आवेदक)</th><th>मिलने वाला लाभ</th></tr></thead>
+        <tbody>
+          <tr><td>अपनी जगह, या किराये की जगह सही लीज़ एग्रीमेंट के साथ; PMBI के मानक जितनी जगह</td><td>हर दवा की MRP (टैक्स छोड़कर) पर 20% मार्जिन</td></tr>
+          <tr><td>आवेदक के नाम रिटेल ड्रग लाइसेंस, "प्रधानमंत्री जनऔषधि केंद्र" के नाम से</td><td>महिला, दिव्यांग, SC/ST, पूर्व सैनिक, या आकांक्षी ज़िले/हिमालयी/द्वीप/पूर्वोत्तर में केंद्र खोलने पर ₹2 लाख का एकमुश्त विशेष प्रोत्साहन (₹1.5 लाख फर्नीचर, ₹0.5 लाख कंप्यूटर आदि; असली बिल पर)</td></tr>
+          <tr><td>रजिस्टर्ड फार्मासिस्ट का प्रमाण</td><td></td></tr>
+          <tr><td>वित्तीय क्षमता के कागज़ (ITR, बैंक स्टेटमेंट, PAN/आधार)</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.9rem;color:var(--c-muted)">शर्तें और राशि बदल सकती हैं; आवेदन से पहले janaushadhi.gov.in पर ताज़ा दिशानिर्देश पढ़ें।</p>
+  </section>
+)}

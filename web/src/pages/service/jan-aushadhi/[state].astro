@@ -1,0 +1,118 @@
+---
+// Jan Aushadhi state page: kendras per district from the PMBJP list, a PIN /
+// near-me picker, and the shared buying/verifying/opening guide.
+import Base from "../../../layouts/Base.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import OfficialLinks from "../../../components/OfficialLinks.astro";
+import Faq from "../../../components/Faq.astro";
+import CardGrid from "../../../components/CardGrid.astro";
+import Explore from "../../../components/Explore.astro";
+import JaPicker from "../../../components/JaPicker.astro";
+import JaInfo from "../../../components/JaInfo.astro";
+import { jaStates, jaTotal, oldTitle, type JaState } from "../../../lib/ja";
+import { exists } from "../../../lib/repo";
+
+export function getStaticPaths() {
+  return jaStates().map((s) => ({ params: { state: s.slug }, props: { s } }));
+}
+const { s } = Astro.props as { s: JaState };
+const n = s.total;
+const nd = s.districts.length;
+const top = s.districts.slice(0, 5);
+const pinAreas = new Set(s.districts.flatMap((d) => d.pins.map((p) => p[0]))).size;
+const verified = "4 अक्टूबर 2026";
+const meta = oldTitle(s.rel);
+const title = meta.title || `${s.name} Jan Aushadhi Kendra 2026 | SarkariSewa India`;
+const description = `${s.hi} में ${n} प्रधानमंत्री जन औषधि केंद्र, ${nd} ज़िलों में: ज़िलेवार सूची, पता, फोन और नक्शा। PIN कोड से नज़दीकी केंद्र खोजें, 50-80% सस्ती दवा।`;
+const share = ((n / jaTotal()) * 100).toFixed(1);
+const crumbs = [
+  { label: "होम", href: "/" },
+  { label: "जन औषधि केंद्र", href: "/service/jan-aushadhi-store-locator.html" },
+  { label: s.hi },
+];
+const faq = [
+  { q: `${s.hi} में कितने जन औषधि केंद्र हैं?`, a: `PMBJP की स्टोर सूची में ${s.hi} के ${n} जन औषधि केंद्र दर्ज हैं, जो ${nd} ज़िलों में हैं। यह देश के कुल दर्ज केंद्रों का लगभग ${share}% है। सबसे ज़्यादा केंद्र ${top.map((d) => `${d.name} (${d.kendras.length})`).join(", ")} में हैं।` },
+  { q: `${s.hi} में नज़दीकी जन औषधि केंद्र कैसे खोजें?`, a: `इस पेज पर अपना PIN कोड डालें या "मेरे पास" बटन दबाएं, आपके ज़िले का पेज खुलेगा। वहां हर केंद्र का पता, PMBJK कोड, फोन नंबर और नक्शा है, और "मेरे पास" से सबसे नज़दीकी केंद्र सबसे ऊपर आ जाता है।` },
+  { q: "जन औषधि केंद्र कितने बजे खुलते हैं?", a: "PMBI के अनुसार केंद्र आम तौर पर सुबह 8 से रात 8 बजे तक खुलते हैं। किसी केंद्र का समय अलग हो सकता है, इसलिए जाने से पहले फोन कर लें।" },
+  { q: "जन औषधि केंद्र पर कौन सी दवाएं मिलती हैं?", a: "PMBJP की सूची में 2,100 दवाएं और 300 सर्जिकल आइटम हैं। हर केंद्र पर हर दवा हो, ज़रूरी नहीं। दवा का साल्ट नाम बताकर फोन पर स्टॉक पूछें। दवाओं की सूची और MRP janaushadhi.gov.in और JanAushadhi Sugam ऐप में है।" },
+  { q: `${s.hi} में जन औषधि केंद्र कैसे खोलें?`, a: "janaushadhi.gov.in पर \"Apply for Kendra\" से आवेदन होता है। निजी आवेदक के लिए अपनी या लीज़ वाली जगह, रिटेल ड्रग लाइसेंस, रजिस्टर्ड फार्मासिस्ट और वित्तीय क्षमता के कागज़ चाहिए। केंद्र को हर दवा की MRP (टैक्स छोड़कर) पर 20% मार्जिन मिलता है, और कुछ वर्गों व इलाकों के लिए ₹2 लाख का एकमुश्त विशेष प्रोत्साहन है।" },
+  { q: "जन औषधि केंद्र की शिकायत कहां करें?", a: "PMBI के टोल-फ्री नंबर 1800-180-8080 पर। केंद्र का PMBJK कोड बताएं, जो हर ज़िले के पेज पर केंद्र के साथ दिया है।" },
+];
+---
+<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} modified="2026-10-04">
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{s.hi} जन औषधि केंद्र: {nd} ज़िलों के {n} केंद्रों की सूची</h1>
+      <div class="meta-row"><span class="verified">✓ जानकारी जांची गई: {verified}</span></div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">
+          PMBJP की स्टोर सूची के अनुसार {s.hi} में <strong>{n} प्रधानमंत्री जन औषधि केंद्र</strong> हैं, जो {nd} ज़िलों और {pinAreas} PIN कोड इलाकों में हैं।
+          अपने ज़िले पर दबाएं या PIN कोड डालें, हर केंद्र का पता, फोन और नक्शा मिलेगा।
+        </p>
+        <dl class="facts">
+          <div><dt>कुल केंद्र</dt><dd>{n}</dd></div>
+          <div><dt>ज़िले</dt><dd>{nd}</dd></div>
+          {top[0] && <div><dt>सबसे ज़्यादा केंद्र</dt><dd>{top[0].name} ({top[0].kendras.length})</dd></div>}
+          <div><dt>PMBI टोल-फ्री</dt><dd><a href="tel:18001808080">1800-180-8080</a></dd></div>
+        </dl>
+      </section>
+
+      {nd > 1 && <JaPicker districts={s.districts} title={`${s.hi} में अपना नज़दीकी जन औषधि केंद्र खोजें`} />}
+
+      <section class="section" id="zile">
+        <h2>{s.hi} के ज़िलेवार जन औषधि केंद्र</h2>
+        <div class="table-wrap">
+          <table class="compact">
+            <thead><tr><th>ज़िला</th><th>केंद्र</th><th>PIN इलाके</th></tr></thead>
+            <tbody>
+              {s.districts.map((d) => (
+                <tr><td><a href={`/${d.rel}`}><strong>{d.name}</strong></a></td><td>{d.kendras.length}</td><td>{d.pins.length}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="ad-slot" aria-hidden="true"></div>
+
+      <JaInfo place={s.hi} />
+
+      <CardGrid title="इनसे जुड़ी जानकारी" id="related" cards={[
+        { href: "/service/jan-aushadhi-store-locator.html", emoji: "💊", title: { hi: "भारत के सभी जन औषधि केंद्र", en: "All Jan Aushadhi Kendras" }, text: { hi: "राज्य के हिसाब से", en: "By state" } },
+        ...(exists(`states/${s.slug}.html`) ? [{ href: `/states/${s.slug}.html`, emoji: "🏛️", title: { hi: `${s.hi} की सरकारी सेवाएं`, en: `${s.name} services` }, text: { hi: "प्रमाण पत्र, कार्ड और योजनाएं", en: "Certificates, cards, schemes" } }] : []),
+        ...(exists(`states/${s.slug}-senior-citizen-card.html`) ? [{ href: `/states/${s.slug}-senior-citizen-card.html`, emoji: "👴", title: { hi: `${s.hi} सीनियर सिटीजन कार्ड`, en: "Senior citizen card" }, text: { hi: "पेंशन और लाभ", en: "Pension and benefits" } }] : []),
+        ...(exists("service/ayushman-bharat.html") ? [{ href: "/service/ayushman-bharat.html", emoji: "🏥", title: { hi: "आयुष्मान भारत कार्ड", en: "Ayushman Bharat card" }, text: { hi: "मुफ्त इलाज का कार्ड", en: "Health cover card" } }] : []),
+        { href: "/tools/csc-locator.html", emoji: "🏢", title: { hi: "नज़दीकी CSC सेंटर", en: "Nearest CSC" }, text: { hi: "आधार, PAN, आयुष्मान कार्ड", en: "Aadhaar, PAN, Ayushman" } },
+        { href: "/support/helpline-directory.html", emoji: "📞", title: { hi: "सरकारी हेल्पलाइन नंबर", en: "Helpline numbers" }, text: { hi: "सभी विभागों के टोल-फ्री नंबर", en: "Toll-free numbers" } },
+      ].filter((c) => exists(c.href.slice(1)))} />
+
+      <OfficialLinks verified={verified} links={[
+        { href: "https://janaushadhi.gov.in/", title: "PMBI / जन औषधि (official)", note: "केंद्र खोजें, Kendra Code जांचें, दवा सूची" },
+        { href: "https://play.google.com/store/apps/details?id=in.gov.pmbjp", title: "JanAushadhi Sugam ऐप", note: "Google Play" },
+        { href: "tel:18001808080", title: "PMBI टोल-फ्री हेल्पलाइन", note: "1800-180-8080" },
+      ]} />
+      <Faq items={faq} />
+      <p class="notice">केंद्रों की सूची PMBJP (PMBI) के स्टोर लोकेटर डेटा से है। कोई केंद्र बंद या स्थानांतरित हो सकता है; जाने से पहले फोन कर लें।</p>
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          {nd > 1 && <li><a href="#khojen">नज़दीकी केंद्र खोजें</a></li>}
+          <li><a href="#zile">ज़िलेवार सूची</a></li>
+          <li><a href="#kya-hai">जन औषधि क्या है</a></li>
+          <li><a href="#kaise-khariden">दवा कैसे खरीदें</a></li>
+          <li><a href="#asli-kendra">असली केंद्र पहचानें</a></li>
+          <li><a href="#kendra-kholen">केंद्र कैसे खोलें</a></li>
+          <li><a href="#faq">सवाल-जवाब</a></li>
+        </ol>
+        {top.slice(0, 3).map((d, i) => <a class={`cta${i ? " secondary" : ""}`} href={`/${d.rel}`}>{d.name} ({d.kendras.length})</a>)}
+      </section>
+    </aside>
+  </div>
+</Base>

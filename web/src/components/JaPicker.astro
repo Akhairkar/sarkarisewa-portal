@@ -1,0 +1,70 @@
+---
+// Finds the right district page by PIN code or by the visitor's location.
+// Data is small and inline: PIN -> district page, and each district's centre.
+import type { JaDistrict } from "../lib/ja";
+interface Props { districts: JaDistrict[]; title: string }
+const { districts, title } = Astro.props;
+const pins: Record<string, number> = {};
+const best: Record<string, number> = {};
+districts.forEach((d, i) => d.pins.forEach(([p, c]) => { if (!(p in best) || c > best[p]) { best[p] = c; pins[p] = i; } }));
+const data = {
+  d: districts.map((d) => [`/${d.rel}`, d.name, d.lat == null ? null : +d.lat.toFixed(3), d.lng == null ? null : +d.lng.toFixed(3), d.kendras.length]),
+  p: pins,
+};
+---
+<section class="section ja-picker" id="khojen">
+  <h2>{title}</h2>
+  <p>अपना 6 अंकों का PIN कोड लिखें या "मेरे पास" दबाएं। आपके ज़िले का पेज खुलेगा, जहां हर केंद्र का पता, फोन और नक्शा है।</p>
+  <form class="csc-form" role="search">
+    <label class="sr-only" for="ja-pin">PIN कोड</label>
+    <input id="ja-pin" type="text" inputmode="numeric" maxlength="6" placeholder="PIN कोड, जैसे 110001" autocomplete="postal-code" />
+    <button type="submit">खोजें</button>
+  </form>
+  <button type="button" class="cta ja-near" style="width:100%;border:0;font:inherit;font-weight:800;cursor:pointer">📍 मेरे पास के जन औषधि केंद्र</button>
+  <p class="csc-status ja-status" role="status" aria-live="polite"></p>
+  <ul class="chips ja-out" hidden></ul>
+  <script type="application/json" class="ja-data" set:html={JSON.stringify(data)} />
+</section>
+
+<script is:inline>
+(function () {
+  var box = document.querySelector(".ja-picker");
+  if (!box) return;
+  var data = JSON.parse(box.querySelector(".ja-data").textContent);
+  var status = box.querySelector(".ja-status"), out = box.querySelector(".ja-out");
+  function show(list, msg) {
+    status.textContent = msg;
+    out.innerHTML = "";
+    list.forEach(function (x) {
+      var li = document.createElement("li"), a = document.createElement("a");
+      a.href = x.d[0]; a.textContent = x.d[1] + " ";
+      var s = document.createElement("small"); s.textContent = x.d[4] + " केंद्र" + (x.km != null ? " · ~" + Math.round(x.km) + " km" : "");
+      a.appendChild(s); li.appendChild(a); out.appendChild(li);
+    });
+    out.hidden = !list.length;
+  }
+  box.querySelector("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var pin = box.querySelector("#ja-pin").value.replace(/\D/g, "");
+    if (pin.length !== 6) { show([], "6 अंकों का सही PIN कोड लिखें।"); return; }
+    var i = data.p[pin];
+    if (i != null) { location.href = data.d[i][0] + "?pin=" + pin + "#khojen"; return; }
+    var pre = pin.slice(0, 3), seen = {}, list = [];
+    Object.keys(data.p).forEach(function (p) { if (p.slice(0, 3) === pre && !seen[data.p[p]]) { seen[data.p[p]] = 1; list.push({ d: data.d[data.p[p]] }); } });
+    show(list.slice(0, 8), list.length ? "इस PIN पर केंद्र दर्ज नहीं है। आसपास के इलाकों वाले ज़िले:" : "इस PIN के आसपास केंद्र नहीं मिला। \"मेरे पास\" बटन से खोजें।");
+  });
+  box.querySelector(".ja-near").addEventListener("click", function () {
+    if (!navigator.geolocation) { show([], "इस ब्राउज़र में लोकेशन उपलब्ध नहीं है। PIN कोड से खोजें।"); return; }
+    status.textContent = "आपकी लोकेशन ली जा रही है…";
+    navigator.geolocation.getCurrentPosition(function (p) {
+      var la = p.coords.latitude, ln = p.coords.longitude, r = Math.PI / 180;
+      var list = data.d.filter(function (d) { return d[2] != null; }).map(function (d) {
+        var dLa = (d[2] - la) * r, dLn = (d[3] - ln) * r;
+        var h = Math.sin(dLa / 2) * Math.sin(dLa / 2) + Math.cos(la * r) * Math.cos(d[2] * r) * Math.sin(dLn / 2) * Math.sin(dLn / 2);
+        return { d: d, km: 12742 * Math.asin(Math.sqrt(h)) };
+      }).sort(function (a, b) { return a.km - b.km; });
+      show(list.slice(0, 6), "आपके सबसे पास के ज़िले (ज़िले के बीच से दूरी)। ज़िले के पेज पर \"मेरे पास\" दबाकर सबसे नज़दीकी केंद्र देखें:");
+    }, function () { show([], "लोकेशन नहीं मिली। PIN कोड से खोजें।"); }, { timeout: 12000, maximumAge: 300000 });
+  });
+})();
+</script>

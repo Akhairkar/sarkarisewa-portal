@@ -1,0 +1,185 @@
+---
+// Jan Aushadhi district page: every PMBJP kendra in the district (address,
+// PIN, phone, code, map), PIN spread, nearest kendras/districts around it, and
+// how to buy, verify and open a kendra.
+import Base from "../../../../layouts/Base.astro";
+import Breadcrumbs from "../../../../components/Breadcrumbs.astro";
+import OfficialLinks from "../../../../components/OfficialLinks.astro";
+import Faq from "../../../../components/Faq.astro";
+import CardGrid from "../../../../components/CardGrid.astro";
+import Explore from "../../../../components/Explore.astro";
+import JaList from "../../../../components/JaList.astro";
+import JaInfo from "../../../../components/JaInfo.astro";
+import { jaStates, nearbyDistricts, nearbyKendras, mapLink, oldTitle, type JaDistrict, type JaState } from "../../../../lib/ja";
+import { exists } from "../../../../lib/repo";
+
+export function getStaticPaths() {
+  return jaStates().flatMap((s) => s.districts.map((d) => ({ params: { state: s.slug, district: d.slug }, props: { d, s } })));
+}
+const { d, s } = Astro.props as { d: JaDistrict; s: JaState };
+const n = d.kendras.length;
+const place = d.name;
+const near = nearbyDistricts(d, 8);
+const extra = n < 6 ? nearbyKendras(d, 8) : [];
+const withPhone = d.kendras.filter((k) => k.phone).length;
+const top = d.pins[0];
+const verified = "4 अक्टूबर 2026";
+const meta = oldTitle(d.rel);
+const title = meta.title || `${place} Jan Aushadhi Kendra 2026 | SarkariSewa India`;
+const description = `${place} (${s.name}) में ${n} प्रधानमंत्री जन औषधि केंद्र: पूरा पता, PIN, फोन नंबर और नक्शा। 50-80% सस्ती जेनेरिक दवा, नज़दीकी केंद्र खोजें।`;
+const cscDir = { "andaman-nicobar": "andaman-and-nicobar", "jammu-kashmir": "jammu-and-kashmir" }[s.slug] ?? s.slug;
+const csc = [`service/csc-locator/${cscDir}/${d.slug}.html`].find((r) => exists(r));
+
+const crumbs = [
+  { label: "होम", href: "/" },
+  { label: "जन औषधि केंद्र", href: "/service/jan-aushadhi-store-locator.html" },
+  { label: `${s.hi}`, href: `/${s.rel}` },
+  { label: place },
+];
+const faq = [
+  { q: `${place} में कितने जन औषधि केंद्र हैं?`, a: `PMBJP की स्टोर सूची में ${place} (${s.name}) के ${n} जन औषधि केंद्र दर्ज हैं${d.pins.length ? `, जो ${d.pins.length} PIN कोड इलाकों में हैं` : ""}।${top ? ` सबसे ज़्यादा केंद्र PIN ${top[0]} में हैं (${top[1]})।` : ""} हर केंद्र का पता, कोड और नक्शा इस पेज पर है।` },
+  { q: `${place} में मेरे पास का जन औषधि केंद्र कैसे खोजें?`, a: `इस पेज पर "मेरे पास" बटन दबाएं और लोकेशन की अनुमति दें, सबसे नज़दीकी केंद्र दूरी के साथ सबसे ऊपर आ जाएगा। या अपना PIN कोड या इलाके का नाम लिखें। PMBI का JanAushadhi Sugam ऐप भी नक्शे पर केंद्र दिखाता है।` },
+  { q: "जन औषधि केंद्र कितने बजे खुलते हैं?", a: "PMBI के अनुसार केंद्र आम तौर पर सुबह 8 से रात 8 बजे तक खुलते हैं। किसी केंद्र का समय अलग हो सकता है, इसलिए जाने से पहले फोन कर लें।" },
+  { q: "क्या जन औषधि की दवा ब्रांडेड जितनी असरदार है?", a: "PMBI के अनुसार जेनेरिक दवा का असर और चिकित्सीय मूल्य ब्रांडेड दवा जैसा ही होता है। दवाएं WHO-GMP प्रमाणित निर्माताओं से ली जाती हैं और हर बैच NABL लैब में जांचा जाता है। फिर भी दवा बदलने से पहले अपने डॉक्टर से पूछें।" },
+  { q: "जन औषधि केंद्र पर दवा कितनी सस्ती मिलती है?", a: "PMBI के अनुसार जन औषधि दवाओं की कीमत खुले बाज़ार की ब्रांडेड दवाओं से 50% से 80% तक कम है। किसी दवा की MRP और बचत JanAushadhi Sugam ऐप में देख सकते हैं।" },
+  { q: "जन औषधि केंद्र की शिकायत कहां करें?", a: "ज़्यादा MRP, बिल न देना या जन औषधि के नाम पर ब्रांडेड दवा बेचने की शिकायत PMBI के टोल-फ्री नंबर 1800-180-8080 पर करें। केंद्र का PMBJK कोड बताएं, जो इस पेज की लिस्ट में हर केंद्र के साथ दिया है।" },
+];
+---
+<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} modified="2026-10-04">
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `Jan Aushadhi Kendras in ${place}, ${s.name}`,
+    numberOfItems: n,
+    itemListElement: d.kendras.slice(0, 50).map((k, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Pharmacy",
+        name: `Pradhan Mantri Bhartiya Janaushadhi Kendra ${k.code}`,
+        address: { "@type": "PostalAddress", streetAddress: k.addr, postalCode: k.pin || undefined, addressLocality: place, addressRegion: s.name, addressCountry: "IN" },
+        ...(k.phone ? { telephone: `+91${k.phone}` } : {}),
+        ...(k.lat != null ? { geo: { "@type": "GeoCoordinates", latitude: k.lat, longitude: k.lng } } : {}),
+        hasMap: mapLink(k),
+      },
+    })),
+  })} />
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{place} जन औषधि केंद्र: सभी {n} केंद्रों का पता, फोन और नक्शा</h1>
+      <div class="meta-row">
+        <span class="verified">✓ जानकारी जांची गई: {verified}</span>
+        <span>{s.hi}</span>
+      </div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">
+          PMBJP की स्टोर सूची के अनुसार {place} ({s.hi}) में <strong>{n} प्रधानमंत्री जन औषधि केंद्र</strong> हैं{d.pins.length > 1 && <>, जो {d.pins.length} PIN कोड इलाकों में फैले हैं</>}।
+          यहां जेनेरिक दवाएं ब्रांडेड से 50-80% तक सस्ती मिलती हैं। नीचे हर केंद्र का पता, फोन और नक्शा है।
+        </p>
+        <dl class="facts">
+          <div><dt>कुल केंद्र</dt><dd>{n}</dd></div>
+          {d.pins.length > 0 && <div><dt>PIN कोड इलाके</dt><dd>{d.pins.length}</dd></div>}
+          {top && n > 2 && <div><dt>सबसे ज़्यादा केंद्र</dt><dd>PIN {top[0]} ({top[1]})</dd></div>}
+          <div><dt>समय (आम तौर पर)</dt><dd>सुबह 8 से रात 8</dd></div>
+          <div><dt>PMBI टोल-फ्री</dt><dd><a href="tel:18001808080">1800-180-8080</a></dd></div>
+          {withPhone > 0 && <div><dt>फोन नंबर वाले केंद्र</dt><dd>{withPhone} / {n}</dd></div>}
+        </dl>
+      </section>
+
+      <JaList kendras={d.kendras} place={place} />
+
+      {extra.length > 0 && (
+        <section class="section" id="paas-ke">
+          <h2>{place} के पास के और जन औषधि केंद्र</h2>
+          <p>{place} में केंद्र कम हैं, इसलिए आसपास के ज़िलों के सबसे नज़दीकी केंद्र भी दिए हैं (ज़िले के बीच से सीधी दूरी)।</p>
+          <ul class="csc-list">
+            {extra.map((x) => (
+              <li class="csc-card">
+                <strong>{x.k.addr || `जन औषधि केंद्र ${x.k.code}`}</strong>
+                <span class="pin">{x.district}{x.k.pin && ` · PIN ${x.k.pin}`} · ~{x.km} km</span>
+                <span>कोड: {x.k.code}</span>
+                <span class="ja-actions">
+                  {x.k.phone && <a href={`tel:+91${x.k.phone}`}>📞 {x.k.phone}</a>}
+                  <a href={mapLink(x.k)} target="_blank" rel="noopener nofollow">रास्ता देखें ↗</a>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {d.pins.length > 2 && (
+        <section class="section" id="pin-code">
+          <h2>PIN कोड के हिसाब से {place} के जन औषधि केंद्र</h2>
+          <div class="table-wrap">
+            <table class="compact">
+              <thead><tr><th>PIN कोड</th><th>केंद्र</th><th></th></tr></thead>
+              <tbody>
+                {d.pins.slice(0, 15).map(([pin, c]) => (
+                  <tr><td><strong>{pin}</strong></td><td>{c}</td><td><a class="ja-pin" href="#khojen" data-pin={pin}>देखें →</a></td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
+      <div class="ad-slot" aria-hidden="true"></div>
+
+      <JaInfo place={place} />
+
+      {near.length > 0 && (
+        <section class="section" id="aas-paas">
+          <h2>आसपास के ज़िलों के जन औषधि केंद्र</h2>
+          <ul class="chips">
+            {near.map((o) => <li><a href={o.href}>{o.name} <small>{o.count} केंद्र · ~{o.km} km</small></a></li>)}
+          </ul>
+        </section>
+      )}
+
+      <CardGrid title={`${place} में और क्या पास है`} id="related" cards={[
+        ...(csc ? [{ href: `/${csc}`, emoji: "🏢", title: { hi: `${place} CSC सेंटर`, en: `CSC centres in ${place}` }, text: { hi: "आधार, PAN, आयुष्मान कार्ड", en: "Aadhaar, PAN, Ayushman" } }] : []),
+        { href: `/${s.rel}`, emoji: "🗺️", title: { hi: `${s.hi} के सभी ज़िले`, en: `${s.name} districts` }, text: { hi: `${s.total} जन औषधि केंद्र`, en: `${s.total} kendras` } },
+        ...(exists(`states/${s.slug}.html`) ? [{ href: `/states/${s.slug}.html`, emoji: "🏛️", title: { hi: `${s.hi} की सरकारी सेवाएं`, en: `${s.name} services` }, text: { hi: "प्रमाण पत्र, कार्ड और योजनाएं", en: "Certificates, cards, schemes" } }] : []),
+        ...(exists("service/ayushman-bharat.html") ? [{ href: "/service/ayushman-bharat.html", emoji: "🏥", title: { hi: "आयुष्मान भारत कार्ड", en: "Ayushman Bharat card" }, text: { hi: "₹5 लाख तक मुफ्त इलाज", en: "Free treatment cover" } }] : []),
+        { href: "/service/jan-aushadhi-store-locator.html", emoji: "💊", title: { hi: "भारत के सभी जन औषधि केंद्र", en: "All Jan Aushadhi Kendras" }, text: { hi: "राज्य के हिसाब से खोजें", en: "Search by state" } },
+        { href: "/support/helpline-directory.html", emoji: "📞", title: { hi: "सरकारी हेल्पलाइन नंबर", en: "Helpline numbers" }, text: { hi: "सभी विभागों के टोल-फ्री नंबर", en: "Toll-free numbers" } },
+      ].filter((c) => exists(c.href.slice(1)))} />
+
+      <OfficialLinks verified={verified} links={[
+        { href: "https://janaushadhi.gov.in/", title: "PMBI / जन औषधि (official)", note: "केंद्र खोजें, Kendra Code जांचें, दवा सूची" },
+        { href: "https://play.google.com/store/apps/details?id=in.gov.pmbjp", title: "JanAushadhi Sugam ऐप", note: "Google Play" },
+        { href: "tel:18001808080", title: "PMBI टोल-फ्री हेल्पलाइन", note: "1800-180-8080" },
+      ]} />
+      <Faq items={faq} />
+      <p class="notice">केंद्रों की सूची PMBJP (PMBI) के स्टोर लोकेटर डेटा से है। कोई केंद्र बंद या स्थानांतरित हो सकता है; जाने से पहले फोन कर लें या janaushadhi.gov.in पर देखें।</p>
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          <li><a href="#khojen">सभी केंद्र और खोज</a></li>
+          {extra.length > 0 && <li><a href="#paas-ke">पास के और केंद्र</a></li>}
+          {d.pins.length > 2 && <li><a href="#pin-code">PIN कोड के हिसाब से</a></li>}
+          <li><a href="#kya-hai">जन औषधि क्या है</a></li>
+          <li><a href="#kaise-khariden">दवा कैसे खरीदें</a></li>
+          <li><a href="#asli-kendra">असली केंद्र पहचानें</a></li>
+          <li><a href="#kendra-kholen">केंद्र कैसे खोलें</a></li>
+          <li><a href="#faq">सवाल-जवाब</a></li>
+        </ol>
+        <a class="cta" href={`/${s.rel}`}>{s.hi} के सभी ज़िले</a>
+        {csc && <a class="cta secondary" href={`/${csc}`}>{place} CSC सेंटर</a>}
+      </section>
+    </aside>
+  </div>
+  <script is:inline>
+  document.querySelectorAll(".ja-pin").forEach(function (a) {
+    a.addEventListener("click", function () { var q = document.getElementById("ja-q"); q.value = a.dataset.pin; q.dispatchEvent(new Event("input")); });
+  });
+  </script>
+</Base>
