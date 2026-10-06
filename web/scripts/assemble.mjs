@@ -71,6 +71,8 @@ for (const rel of listHtml(DIST)) {
 const today = new Date().toISOString().slice(0, 10);
 const smPath = path.join(OUT, "sitemap.xml");
 let sm = fs.readFileSync(smPath, "utf8");
+// Entries without a <loc> are invalid (Search Console reports them as errors).
+sm = sm.replace(/  <url>(?:(?!<\/url>)[\s\S])*?<\/url>\n/g, (b) => (b.includes("<loc>") ? b : ""));
 let added = 0, refreshed = 0;
 for (const rel of listHtml(DIST)) {
   const html = fs.readFileSync(path.join(DIST, rel), "utf8");
@@ -114,6 +116,24 @@ sm = sm.replace(/  <url>\s*<loc>([^<]*)<\/loc>[\s\S]*?<\/url>\n/g, (block, loc) 
   }
   return block;
 });
+// Older static pages that are indexable, self-canonical and missing from the
+// sitemap (e.g. the GSTIN tool) are added too. Script-filled detail templates
+// are left out.
+const NOT_LISTED = /^(admin|private|partials|account|google|404|search\.html|deadline-detail\.html|csc-centre\.html|csc-edit\.html)/;
+const listed = new Set([...sm.matchAll(/<loc>([^<]*)<\/loc>/g)].map((m) => m[1]));
+for (const rel of listHtml(OUT)) {
+  if (NOT_LISTED.test(rel)) continue;
+  const loc = `${SITE}/${rel.replace(/(^|\/)index\.html$/, "$1")}`;
+  if (listed.has(loc) || listed.has(`${SITE}/${rel}`)) continue;
+  const head = fs.readFileSync(path.join(OUT, rel), "utf8").slice(0, 12000);
+  if (/name="robots" content="[^"]*noindex/i.test(head) || /content="[^"]*noindex[^"]*" name="robots"/i.test(head)) continue;
+  const canon = head.match(/rel="canonical" href="([^"]*)"/)?.[1] ?? head.match(/href="([^"]*)" rel="canonical"/)?.[1];
+  if (canon !== loc) continue;
+  if (disallow.some((d) => loc.slice(SITE.length).startsWith(d))) continue;
+  sm = sm.replace("</urlset>", `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n</urlset>`);
+  listed.add(loc);
+  added++;
+}
 fs.writeFileSync(smPath, sm);
 // Search index for /search.html: [url, title] of every indexable page.
 const SKIP_SEARCH = /^(admin|private|partials|account|google|404|search\.html)/;
