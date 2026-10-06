@@ -8,6 +8,7 @@
 //      SITE (default https://sarkarisewaindia.com), DRY_RUN=1 to only print,
 //      PICK_DAY to test another day.
 import fs from "node:fs";
+import { jobLastDate, isClosedPage } from "./job-dates.mjs";
 
 const SITE = (process.env.SITE || "https://sarkarisewaindia.com").replace(/\/$/, "");
 const LIVE = "https://sarkarisewaindia.com";
@@ -35,19 +36,11 @@ const SECTIONS = [
 // Jobs come up twice in each round (they are the most asked-for posts).
 SECTIONS.splice(3, 0, ["सरकारी नौकरी", "jobs"]);
 
-// Open job pages: not marked expired and mentioning a date that is still ahead.
-const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11, जनवरी: 0, फरवरी: 1, मार्च: 2, अप्रैल: 3, मई: 4, जून: 5, जुलाई: 6, अगस्त: 7, सितंबर: 8, अक्टूबर: 9, नवंबर: 10, दिसंबर: 11 };
+// Open job pages: no "Application Closed" notice and last date not passed.
 function openUntil(html) {
-  const t = text(html);
-  if (/समाप्त हो चुकी|आवेदन बंद|applications? (are )?closed|expired/i.test(t.slice(0, 4000))) return null;
-  let best = null;
-  for (const m of t.matchAll(/(\d{1,2})(?:st|nd|rd|th)?[\s.-]+([A-Za-zऀ-ॿ]{3,9})[\s.,-]+(20\d\d)/g)) {
-    const key = Object.keys(MONTHS).find((k) => m[2].toLowerCase().startsWith(k));
-    if (key === undefined) continue;
-    const d = new Date(Date.UTC(+m[3], MONTHS[key], +m[1]));
-    if (!best || d > best) best = d;
-  }
-  return best && best >= new Date(Date.now() - 864e5) ? best : null;
+  if (isClosedPage(html)) return null;
+  const d = jobLastDate(html);
+  return d && d >= new Date(Date.now() - 864e5) ? d : null;
 }
 async function openJobs(urls) {
   const out = [];

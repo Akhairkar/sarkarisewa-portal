@@ -8,6 +8,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import crypto from "node:crypto";
+import { jobLastDate, isClosedPage } from "./job-dates.mjs";
 
 const WEB = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ROOT = path.resolve(WEB, "..");
@@ -66,6 +67,27 @@ for (const rel of listHtml(DIST)) {
   if (!rel.endsWith(".html") || rel.endsWith("index.html") || fs.existsSync(path.join(DIST, rel.slice(0, -5), "index.html")) || !fs.existsSync(idx)) continue;
   const canon = fs.readFileSync(idx, "utf8").slice(0, 8000).match(/rel="canonical" href="([^"]*)"/)?.[1];
   if (canon === `${SITE}/${rel}`) fs.copyFileSync(path.join(DIST, rel), idx);
+}
+
+// Job pages close themselves: once the last date (Indian time) has passed, a
+// page without the "Application Closed" notice gets it under the heading.
+{
+  const todayIst = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
+  const BANNER = '<div class="job-expired-banner" role="status" style="margin:16px auto;max-width:1100px;padding:14px 18px;border:1px solid #f59e0b;background:rgba(245,158,11,.10);border-radius:12px;color:var(--color-text);"><strong>⏳ आवेदन बंद / Application Closed</strong><br><span style="font-size:.92rem;">इस भर्ती की आवेदन अंतिम तिथि समाप्त हो चुकी है। नीचे दी गई जानकारी केवल संदर्भ के लिए है। नई भर्तियों के लिए <a href="/jobs/index.html" style="font-weight:700;">Job Alerts</a> देखें।</span></div>';
+  const jobsDir = path.join(OUT, "jobs");
+  let closed = 0;
+  if (fs.existsSync(jobsDir)) for (const f of fs.readdirSync(jobsDir)) {
+    if (!f.endsWith(".html") || /^(index|post|expired)\.html$/.test(f)) continue;
+    const file = path.join(jobsDir, f);
+    const html = fs.readFileSync(file, "utf8");
+    const last = jobLastDate(html);
+    if (!last || isClosedPage(html) || last.toISOString().slice(0, 10) >= todayIst) continue;
+    const at = html.search(/<\/h1>/i);
+    if (at === -1) continue;
+    fs.writeFileSync(file, html.slice(0, at + 5) + BANNER + html.slice(at + 5));
+    closed++;
+  }
+  console.log(`[assemble] job pages marked closed: ${closed}`);
 }
 
 // Sitemap: keep the existing one, refresh entries for rebuilt pages, add new ones.
