@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&display=swap');
 /* =========================================================
    SarkariSewa Portal — Design Tokens
    Palette: deep indigo (trust/authority) + muted saffron &
@@ -1392,3 +1393,40 @@ html[lang='hi'] [data-lang-show='en'], html[lang='en'] [data-lang-show='hi'] { d
   color: transparent; font-size: 0; border-radius: 0;
 }
 .brand-logo-mark { width: 100%; height: 100%; display: block; object-fit: contain; }
+
+
+/* =========================================================
+   New design skin (Oct 2026). Older pages keep their HTML and
+   content; these overrides give them the same colours, font,
+   light sky-blue background and card style as the new pages.
+   ========================================================= */
+:root:not([data-theme="dark"]) {
+  --color-bg: #eef6fc;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f1f5f9;
+  --color-bg-alt: #f1f5f9;
+  --color-primary: #1e3a8a;
+  --color-primary-light: #1d4ed8;
+  --color-accent-saffron: #b45309;
+  --color-accent-green: #047857;
+  --color-text: #1e293b;
+  --color-text-muted: #475569;
+  --color-border: #e2e8f0;
+  --color-link: #1d4ed8;
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.05), 0 6px 20px rgb(15 23 42 / 0.06);
+  --color-brand: #1d4ed8;
+  --color-brand-hover: #1e40af;
+}
+:root {
+  --font-display: "Mukta", "Noto Sans Devanagari", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Mukta", "Noto Sans Devanagari", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --radius: 14px;
+}
+:root:not([data-theme="dark"]) .site-header { background: linear-gradient(90deg, #1e3a8a, #1d4ed8); }
+h1, h2, h3, .section-title, .brand-title { font-family: var(--font-display); font-weight: 700; letter-spacing: 0; }
+h1, h2, h3 { overflow-wrap: anywhere; }
+.card, .service-card, .state-card, .job-card, .exam-card, .support-card, .blog-card, .calc-card {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+a { text-underline-offset: 2px; }
