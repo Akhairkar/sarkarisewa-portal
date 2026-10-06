@@ -165,6 +165,14 @@ def content_boxes(main, out):
             out["sections"].append({"id": f"part-{n}", "title": title, "html": body})
 
 
+def tidy(t):
+    """Drop overclaiming words ("100% मुफ्त", "रियल-लाइफ", "पक्का समाधान")."""
+    t = re.sub(r"100%\s*मुफ्त", "मुफ्त", t)
+    t = re.sub(r"100%\s*Free", "Free", t)
+    t = re.sub(r"रियल-लाइफ\s*", "", t)
+    return re.sub(r"पक्का समाधान", "समाधान", t)
+
+
 def main(suffixes):
     done, thin = [], []
     for f in sorted((ROOT / "states").glob("*.html")):
@@ -179,7 +187,7 @@ def main(suffixes):
         if words < 150:
             thin.append(f"{slug} ({words} words)")
             continue
-        (OUT / f"{slug}.json").write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+        (OUT / f"{slug}.json").write_text(tidy(json.dumps(d, ensure_ascii=False, indent=1)), encoding="utf-8")
         done.append(slug)
     print(f"converted {len(done)}; skipped {len(thin)}: {thin}")
 

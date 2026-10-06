@@ -14,6 +14,8 @@ import Explore from "../../components/Explore.astro";
 import PaidTools from "../../components/PaidTools.astro";
 import { STATES, DOCS } from "../../data/site";
 import { exists } from "../../lib/repo";
+import { DOC_COMMON } from "../../data/doc-common";
+import OfficialLinks from "../../components/OfficialLinks.astro";
 
 type Legacy = { title: string; description: string; h1: string; intro: string; sections: { id: string; title: string; html: string }[]; faqs: { q: string; a: string }[] };
 export function getStaticPaths() {
@@ -38,6 +40,7 @@ const others = doc ? STATES.filter((s) => s !== st && exists(`states/${s.slug}-$
 const sameState = st ? DOCS.filter((x) => x !== doc && exists(`states/${st.slug}-${x.slug}.html`)).slice(0, 6).map((x) => ({
   href: `/states/${st.slug}-${x.slug}.html`, emoji: x.emoji, title: { hi: `${st.hi} ${x.title.hi}`, en: `${st.name} ${x.title.en}` }, text: x.text,
 })) : [];
+const common = doc ? DOC_COMMON[doc.slug] : undefined;
 const lead = d.sections.find((s) => s.id === "overview");
 const rest = d.sections.filter((s) => s !== lead);
 ---
@@ -63,9 +66,23 @@ const rest = d.sections.filter((s) => s !== lead);
         </section>
       ))}
 
+      {common && doc && (
+        <section class="section" id="sabhi-rajya">
+          <h2>⚖️ {doc.title.hi}: पूरे भारत में लागू ज़रूरी बातें</h2>
+          <ul class="checklist">{common.points.map((x) => <li>{x}</li>)}</ul>
+        </section>
+      )}
+      {common && common.links.length > 0 && <OfficialLinks verified="6 अक्टूबर 2026" links={common.links} />}
+
       {doc?.national && exists(doc.national.slice(1)) && (
         <p class="notice">पूरे भारत के लिए {doc.title.hi} की सामान्य जानकारी: <a href={doc.national}>{doc.title.hi} गाइड</a>। फीस और प्रक्रिया बदल सकती है; आवेदन से पहले राज्य के आधिकारिक पोर्टल पर जांच लें।</p>
       )}
+
+      <div class="claim-cta">
+        <p><strong>खुद ऑनलाइन आवेदन नहीं कर पा रहे?</strong> नज़दीकी CSC / जन सेवा केंद्र पर यही आवेदन कराया जा सकता है। साथ में ऊपर लिखे सभी दस्तावेज़ ले जाएं, सरकारी फीस और केंद्र का सेवा शुल्क पहले पूछ लें, और रसीद लें।</p>
+        <a class="cta" href="/tools/csc-locator.html">नज़दीकी CSC खोजें</a>
+      </div>
+      <p class="notice">यह जानकारी राज्य के आधिकारिक पोर्टल और नियमों के आधार पर लिखी गई है। फीस, समय और प्रक्रिया राज्य सरकार बदल सकती है; आवेदन से पहले राज्य के आधिकारिक पोर्टल पर ज़रूर जांच लें। SarkariSewa India एक निजी वेबसाइट है, सरकारी नहीं।</p>
 
       {sameState.length > 0 && st && <CardGrid title={`${st.hi} के दूसरे दस्तावेज़`} id="aur" cards={sameState} />}
       {others.length > 0 && doc && (
@@ -84,6 +101,7 @@ const rest = d.sections.filter((s) => s !== lead);
         <h2 style="font-size:1rem">इस पेज पर</h2>
         <ol>
           {rest.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+          {common && <li><a href="#sabhi-rajya">पूरे भारत के नियम</a></li>}
           {d.faqs.length > 0 && <li><a href="#faq">सवाल-जवाब</a></li>}
         </ol>
         {hub && st && <a class="cta secondary" href={hub}>{st.hi} की सभी सेवाएं</a>}
