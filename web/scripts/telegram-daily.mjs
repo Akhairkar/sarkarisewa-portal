@@ -21,7 +21,6 @@ const SECTIONS = [
   ["राज्य के दस्तावेज़", /\/states\/[a-z-]+-(certificate|card|licence|exchange)\.html$/],
   ["GST", /\/gst\/.+\.html$/],
   ["ट्रैफिक चालान", /\/challan\/.+\.html$/],
-  ["CSC सेंटर", /\/csc-centre\/.+\.html$/],
   ["DigiLocker", /\/digilocker\/.+\.html$/],
   ["किरायानामा / शपथ पत्र", /\/(rent-agreement|affidavit)\/.+\.html$/],
   ["जन औषधि", /\/service\/jan-aushadhi\/[a-z-]+\/[a-z-]+\.html$/],
