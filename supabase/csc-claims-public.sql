@@ -85,3 +85,9 @@ insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_typ
 -- Owner stats (2026-10-05): csc_owner_stats(p_app, p_mobile, p_code) -> jsonb
 -- {views30, calls30, wa30, map30, views, contacts} from csc_leads, only when
 -- csc_owner_get accepts the login. SECURITY DEFINER; execute granted to anon.
+
+-- Solar leads (2026-10-06): public.solar_leads holds PM Surya Ghar quote
+-- requests from /solar/ pages (name, mobile, address, PIN, state, DISCOM,
+-- bill, roof, need, consent, source_page, referrer, utm, status). RLS: anon
+-- and authenticated may only insert (status 'new', no admin notes); admins
+-- (is_admin()) select and update. Viewed in admin/solar.html.

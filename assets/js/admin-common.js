@@ -9,6 +9,7 @@
     ["comments.html", "💬 Comments"],
     ["subscribers.html", "📬 Subscribers"],
     ["csc.html", "🏬 CSC Claims"],
+    ["solar.html", "☀️ Solar Leads"],
     ["data.html", "🗂️ Content Data"],
   ];
 

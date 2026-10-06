@@ -1,0 +1,6 @@
+---
+import SolarGuide from "../../components/SolarGuide.astro";
+import { SOLAR_PAGES } from "../../guides/solar/pages";
+const p = SOLAR_PAGES.find((x) => x.slug === "index")!;
+---
+<SolarGuide p={p} />

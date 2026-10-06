@@ -1,0 +1,9 @@
+---
+import SolarGuide from "../../components/SolarGuide.astro";
+import { SOLAR_PAGES, type SolarPage } from "../../guides/solar/pages";
+export function getStaticPaths() {
+  return SOLAR_PAGES.filter((p) => p.slug !== "index").map((p) => ({ params: { page: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: SolarPage };
+---
+<SolarGuide p={p} />

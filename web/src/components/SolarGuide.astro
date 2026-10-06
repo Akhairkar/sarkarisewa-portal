@@ -1,0 +1,65 @@
+---
+// One PM Surya Ghar page (/solar/): answer box, optional calculator, sections,
+// quote form (leads go to Supabase solar_leads), other solar pages, FAQ.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import Faq from "./Faq.astro";
+import OfficialLinks from "./OfficialLinks.astro";
+import Explore from "./Explore.astro";
+import SolarCalc from "./SolarCalc.astro";
+import SolarLead from "./SolarLead.astro";
+import { SOLAR_PAGES, type SolarPage } from "../guides/solar/pages";
+interface Props { p: SolarPage }
+const { p } = Astro.props;
+const href = (x: SolarPage) => (x.slug === "index" ? "/solar/" : `/solar/${x.slug}.html`);
+const crumbs = [{ label: "होम", href: "/" }, ...(p.slug === "index" ? [{ label: "PM सूर्य घर योजना" }] : [{ label: "PM सूर्य घर योजना", href: "/solar/" }, { label: p.h1.split(":")[0] }])];
+const others = SOLAR_PAGES.filter((x) => x !== p);
+const verified = "6 अक्टूबर 2026";
+---
+<Base title={p.title} description={p.description} breadcrumbs={crumbs} faq={p.faq} modified="2026-10-06">
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{p.h1}</h1>
+      <div class="meta-row"><span class="verified">✓ जानकारी जांची गई: {verified}</span></div>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">{p.lead}</p>
+        <dl class="facts">{p.facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+        <p style="margin-top:12px"><a class="cta" href="#quote">फ्री कोटेशन पाएं</a></p>
+      </section>
+      {p.calc && <SolarCalc />}
+      {p.sections.map((s) => (
+        <section class="section" id={s.id}>
+          <h2>{s.h2}</h2>
+          <div class="prose" set:html={s.html} />
+        </section>
+      ))}
+      <SolarLead title={p.formTitle} />
+      <section class="section" id="aur">
+        <h2>PM सूर्य घर: और जानकारी</h2>
+        <ul class="chips">{others.map((x) => <li><a href={href(x)}>{x.h1.split(":")[0]}</a></li>)}</ul>
+      </section>
+      <OfficialLinks verified={verified} links={[
+        { href: "https://pmsuryaghar.gov.in/", title: "PM सूर्य घर राष्ट्रीय पोर्टल", note: "आवेदन, स्टेटस, वेंडर लिस्ट" },
+        { href: "https://www.jansamarth.in/", title: "Jan Samarth", note: "सोलर लोन" },
+        { href: "https://mnre.gov.in/", title: "नवीन और नवीकरणीय ऊर्जा मंत्रालय (MNRE)" },
+      ]} />
+      <Faq items={p.faq} />
+      <p class="notice">SarkariSewa India एक निजी वेबसाइट है, सरकार या किसी सोलर कंपनी से जुड़ी नहीं। सब्सिडी की राशि और नियम सरकार बदल सकती है; आवेदन से पहले pmsuryaghar.gov.in पर जांच लें।</p>
+      <Explore />
+    </article>
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          {p.calc && <li><a href="#calculator">सब्सिडी कैलकुलेटर</a></li>}
+          {p.sections.map((s) => <li><a href={`#${s.id}`}>{s.h2}</a></li>)}
+          <li><a href="#quote">फ्री कोटेशन</a></li>
+          <li><a href="#faq">सवाल-जवाब</a></li>
+        </ol>
+        <a class="cta" href="#quote">☀️ फ्री कोटेशन पाएं</a>
+      </section>
+    </aside>
+  </div>
+</Base>

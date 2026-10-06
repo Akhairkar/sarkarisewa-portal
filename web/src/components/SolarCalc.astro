@@ -1,0 +1,35 @@
+---
+// PM Surya Ghar central subsidy: ₹30,000/kW for the first 2 kW and ₹18,000
+// for the 3rd kW (max ₹78,000); special-category states and UTs get 10% more
+// (max ₹85,800). Generation is a rough average (about 120 units a month per kW).
+---
+<section class="section" id="calculator">
+  <h2>🧮 सब्सिडी और बचत कैलकुलेटर</h2>
+  <div class="grid2 calc-grid">
+    <div><label for="c-units">महीने की बिजली खपत (यूनिट, बिल पर लिखी)</label><input id="c-units" type="number" min="0" max="5000" placeholder="जैसे 250" /></div>
+    <div><label for="c-kw">या सीधे सोलर का साइज़ चुनें</label><select id="c-kw"><option value="">खपत से तय करें</option><option value="1">1 kW</option><option value="2">2 kW</option><option value="3">3 kW</option><option value="4">4 kW</option><option value="5">5 kW</option></select></div>
+    <div><label for="c-cat">राज्य</label><select id="c-cat"><option value="normal">सामान्य राज्य</option><option value="special">पूर्वोत्तर / पहाड़ी राज्य (HP, उत्तराखंड, J&K, लद्दाख) / अंडमान-निकोबार, लक्षद्वीप</option></select></div>
+  </div>
+  <div class="calc-out" id="c-out" aria-live="polite"></div>
+  <p class="cell-note">यह अनुमान है। असली सब्सिडी पोर्टल पर स्वीकृत क्षमता के हिसाब से मिलती है; बिजली उत्पादन धूप, दिशा और छाया पर निर्भर करता है।</p>
+</section>
+<script is:inline>
+(function () {
+  var u = document.getElementById("c-units"), k = document.getElementById("c-kw"), c = document.getElementById("c-cat"), o = document.getElementById("c-out");
+  var inr = function (n) { return "₹" + Math.round(n).toLocaleString("en-IN"); };
+  function run() {
+    var units = parseFloat(u.value) || 0, kw = parseFloat(k.value) || (units ? Math.min(10, Math.max(1, Math.ceil(units / 120))) : 0);
+    if (!kw) { o.innerHTML = "<p>अपनी महीने की यूनिट डालें या सोलर का साइज़ चुनें।</p>"; return; }
+    var sp = c.value === "special", a = sp ? 33000 : 30000, b = sp ? 19800 : 18000;
+    var sub = Math.min(kw, 2) * a + (kw > 2 ? Math.min(kw - 2, 1) * b : 0);
+    var gen = kw * 120;
+    o.innerHTML = '<dl class="facts"><div><dt>सुझाया गया सोलर</dt><dd>' + kw + ' kW</dd></div><div><dt>केंद्र की सब्सिडी</dt><dd>' + inr(sub) + "</dd></div><div><dt>महीने में बिजली (लगभग)</dt><dd>" + gen + " यूनिट</dd></div><div><dt>छत पर जगह (लगभग)</dt><dd>" + kw * 100 + " वर्ग फुट</dd></div></dl>"
+      + '<p><a class="cta" href="#quote" id="c-go">इस साइज़ का फ्री कोटेशन पाएं</a></p>';
+    o.dataset.kw = kw;
+  }
+  // One delegated listener: the button is redrawn on every change.
+  o.addEventListener("click", function (e) { if (e.target.closest("#c-go")) window.dispatchEvent(new CustomEvent("solar-kw", { detail: Number(o.dataset.kw) })); });
+  [u, k, c].forEach(function (x) { x.addEventListener("input", run); x.addEventListener("change", run); });
+  run();
+})();
+</script>

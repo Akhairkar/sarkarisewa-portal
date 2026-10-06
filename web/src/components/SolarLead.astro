@@ -1,0 +1,104 @@
+---
+// Free quotation request for rooftop solar (PM Surya Ghar). Saves to the
+// Supabase table solar_leads (anon can only insert; admins read it in
+// admin/solar.html) with the page and the visitor's first referrer, so we see
+// which page and which site each lead came from.
+import { STATES } from "../data/site";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+interface Props { title?: string }
+const { title = "फ्री सोलर कोटेशन और सब्सिडी मदद" } = Astro.props;
+---
+<section class="section" id="quote">
+  <h2>☀️ {title}</h2>
+  <p>अपनी जानकारी भरें। SarkariSewa की टीम आपसे बात करके आपके इलाके के <strong>DISCOM में पंजीकृत (empanelled) वेंडर</strong> से कोटेशन दिलाने और सब्सिडी के आवेदन में मदद करेगी। यह सेवा आपके लिए फ्री है।</p>
+  <form class="claim-form" id="solar-form" novalidate>
+    <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <fieldset>
+      <legend>आपकी जानकारी</legend>
+      <div class="grid2">
+        <div><label for="s-name">नाम *</label><input id="s-name" name="name" maxlength="120" required /></div>
+        <div><label for="s-mobile">मोबाइल नंबर *</label><input id="s-mobile" name="mobile" type="tel" inputmode="numeric" maxlength="10" required /></div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>पता (जहां सोलर लगना है)</legend>
+      <label for="s-address">पूरा पता (मकान नंबर, गली, मोहल्ला/गांव) *</label>
+      <textarea id="s-address" name="address" maxlength="500" required></textarea>
+      <div class="grid2">
+        <div><label for="s-state">राज्य *</label><select id="s-state" name="state" required><option value="">चुनें</option>{STATES.map((s) => <option value={s.name}>{s.hi}</option>)}</select></div>
+        <div><label for="s-district">ज़िला *</label><input id="s-district" name="district" maxlength="120" required /></div>
+        <div><label for="s-city">शहर / गांव</label><input id="s-city" name="city" maxlength="120" /></div>
+        <div><label for="s-pin">PIN कोड *</label><input id="s-pin" name="pincode" inputmode="numeric" maxlength="6" required /></div>
+      </div>
+      <label for="s-discom">बिजली कंपनी (DISCOM) <span class="hint">(बिल पर लिखा होता है)</span></label>
+      <input id="s-discom" name="discom" maxlength="150" />
+    </fieldset>
+    <fieldset>
+      <legend>घर और बिजली</legend>
+      <div class="grid2">
+        <div><label for="s-bill">महीने का बिजली बिल (₹ लगभग)</label><input id="s-bill" name="monthly_bill" type="number" min="0" max="1000000" /></div>
+        <div><label for="s-kw">कितने kW चाहिए</label><select id="s-kw" name="kw_wanted"><option value="">पता नहीं</option><option value="1">1 kW</option><option value="2">2 kW</option><option value="3">3 kW</option><option value="4">4 kW</option><option value="5">5 kW या ज़्यादा</option></select></div>
+        <div><label for="s-own">घर</label><select id="s-own" name="own_house"><option value="">चुनें</option><option value="true">अपना घर</option><option value="false">किराये का</option></select></div>
+        <div><label for="s-roof">छत</label><select id="s-roof" name="roof_type"><option value="">चुनें</option><option>पक्की (RCC)</option><option>टीन / शेड</option><option>कच्ची / अन्य</option></select></div>
+        <div><label for="s-area">छत पर खाली जगह (लगभग)</label><select id="s-area" name="roof_area"><option value="">पता नहीं</option><option>100 वर्ग फुट तक</option><option>100-300 वर्ग फुट</option><option>300 वर्ग फुट से ज़्यादा</option></select></div>
+        <div><label for="s-need">आपको क्या चाहिए</label><select id="s-need" name="need"><option>नया सोलर + सब्सिडी</option><option>सिर्फ कोटेशन</option><option>सोलर लोन की जानकारी</option><option>लगे सोलर की सब्सिडी नहीं आई</option></select></div>
+      </div>
+      <label class="inline"><input type="checkbox" name="consent" required /> मैं सहमत हूं कि SarkariSewa India मुझसे संपर्क करे और कोटेशन के लिए मेरा नाम, नंबर और पता अधिकतम 3 पंजीकृत सोलर वेंडर को दे सके।</label>
+    </fieldset>
+    <button type="submit" class="cta">फ्री कोटेशन पाएं</button>
+    <p class="claim-msg" id="solar-out" role="status" aria-live="polite"></p>
+    <p class="hint">SarkariSewa India एक निजी वेबसाइट है, सरकारी नहीं। हम आपसे कोई पैसा नहीं लेते; सब्सिडी सरकार सीधे आपके बैंक खाते में देती है। कोई सब्सिडी "पक्की" कराने के नाम पर पैसे मांगे तो सावधान रहें।</p>
+  </form>
+  <section class="section claim-done" id="solar-done" hidden tabindex="-1">
+    <h2>✅ आपकी जानकारी मिल गई!</h2>
+    <p>हमारी टीम 1-2 दिन में आपके मोबाइल/WhatsApp पर संपर्क करेगी। तब तक अपना बिजली बिल (कंज़्यूमर नंबर वाला) और आधार से जुड़े बैंक खाते की जानकारी तैयार रखें।</p>
+    <p><a class="cta secondary" href="/solar/pm-surya-ghar-online-apply.html">आवेदन के स्टेप देखें</a></p>
+  </section>
+</section>
+<script is:inline define:vars={{ url: SUPABASE_URL, key: SUPABASE_ANON_KEY }}>
+(function () {
+  // First external referrer and utm of this visit, kept for the whole session.
+  try {
+    if (!sessionStorage.getItem("ss_ref")) {
+      var r = document.referrer && document.referrer.indexOf(location.host) === -1 ? document.referrer : "direct";
+      sessionStorage.setItem("ss_ref", r.slice(0, 300));
+      var q = new URLSearchParams(location.search), u = ["utm_source", "utm_medium", "utm_campaign"].map(function (k) { return q.get(k) ? k.slice(4) + "=" + q.get(k) : ""; }).filter(Boolean).join("&");
+      if (u) sessionStorage.setItem("ss_utm", u.slice(0, 300));
+    }
+  } catch (e) {}
+  var f = document.getElementById("solar-form"), out = document.getElementById("solar-out"), started = Date.now();
+  if (!f) return;
+  var kwFromCalc = function (e) { if (e.detail && f.kw_wanted) { var v = Math.min(5, Math.max(1, Math.round(e.detail))); f.kw_wanted.value = String(v); } };
+  window.addEventListener("solar-kw", kwFromCalc);
+  function fail(msg, el) { out.textContent = msg; out.style.color = "#b91c1c"; if (el) { el.scrollIntoView({ block: "center" }); el.focus(); } }
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    out.style.color = "";
+    if (f.website.value) return;
+    var mob = f.mobile.value.replace(/\D/g, "").slice(-10), pin = f.pincode.value.trim();
+    if (f.name.value.trim().length < 2) return fail("अपना नाम भरें।", f.name);
+    if (!/^[6-9]\d{9}$/.test(mob)) return fail("10 अंकों का सही मोबाइल नंबर भरें।", f.mobile);
+    if (f.address.value.trim().length < 8) return fail("पूरा पता भरें।", f.address);
+    if (!f.state.value) return fail("राज्य चुनें।", f.state);
+    if (f.district.value.trim().length < 2) return fail("ज़िला भरें।", f.district);
+    if (!/^[1-9]\d{5}$/.test(pin)) return fail("6 अंकों का सही PIN कोड भरें।", f.pincode);
+    if (!f.consent.checked) return fail("आगे बढ़ने के लिए सहमति वाला बॉक्स चुनें।", f.consent);
+    if (Date.now() - started < 3000) return fail("कृपया एक पल रुककर फिर भेजें।");
+    var ss = function (k) { try { return sessionStorage.getItem(k) || null; } catch (er) { return null; } };
+    var row = {
+      name: f.name.value.trim().slice(0, 120), mobile: mob, address: f.address.value.trim().slice(0, 500),
+      state: f.state.value, district: f.district.value.trim().slice(0, 120), city: f.city.value.trim().slice(0, 120) || null, pincode: pin,
+      discom: f.discom.value.trim().slice(0, 150) || null,
+      monthly_bill: f.monthly_bill.value ? Math.min(1000000, Math.max(0, parseInt(f.monthly_bill.value, 10) || 0)) : null,
+      kw_wanted: f.kw_wanted.value ? Number(f.kw_wanted.value) : null,
+      own_house: f.own_house.value === "" ? null : f.own_house.value === "true",
+      roof_type: f.roof_type.value || null, roof_area: f.roof_area.value || null, need: f.need.value || null,
+      consent: true, source_page: location.pathname.slice(0, 300), referrer: ss("ss_ref"), utm: ss("ss_utm"),
+    };
+    out.textContent = "भेजा जा रहा है…";
+    fetch(url + "/rest/v1/solar_leads", { method: "POST", headers: { apikey: key, Authorization: "Bearer " + key, "Content-Type": "application/json", Prefer: "return=minimal" }, body: JSON.stringify(row) })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); f.hidden = true; var d = document.getElementById("solar-done"); d.hidden = false; d.focus(); d.scrollIntoView({ block: "start" }); })
+      .catch(function () { fail("अभी भेजा नहीं जा सका। थोड़ी देर बाद फिर कोशिश करें।"); });
+  });
+})();
+</script>
