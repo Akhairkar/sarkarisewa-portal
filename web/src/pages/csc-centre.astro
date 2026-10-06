@@ -154,7 +154,9 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
       side.setAttribute("data-app", id);
       side.insertAdjacentHTML("beforeend", (ph ? '<a class="cta" href="tel:+91' + ph + '" data-act="call">📞 कॉल करें</a>' : "") + (wa ? '<a class="cta secondary" href="https://wa.me/91' + wa + "?text=" + waText + '" data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 WhatsApp</a>' : ""));
       SSCsc.wire(side);
-      if (c.latitude && c.longitude) { $("c-map").querySelector("iframe").src = "https://maps.google.com/maps?q=" + c.latitude + "," + c.longitude + "&z=16&output=embed"; $("c-map").hidden = false; }
+      var aq = c.full_address ? [c.full_address, c.city, c.district, c.state, c.pincode].filter(Boolean).join(", ") : "";
+      var msrc = c.latitude && c.longitude ? "https://maps.google.com/maps?q=" + c.latitude + "," + c.longitude + "&z=16&output=embed" : aq ? "https://maps.google.com/maps?q=" + encodeURIComponent(aq) + "&z=15&output=embed" : "";
+      if (msrc) { $("c-map").querySelector("iframe").src = msrc; $("c-map").hidden = false; if (!(c.latitude && c.longitude)) $("c-map").insertAdjacentHTML("beforeend", '<p class="hint">पते के हिसाब से अनुमानित जगह; सही रास्ते के लिए केंद्र को कॉल करें।</p>'); }
       var url = "https://sarkarisewaindia.com/csc-centre.html?id=" + encodeURIComponent(id);
       $("c-wa-share").href = "https://wa.me/?text=" + encodeURIComponent(name + " (" + where + "): सेवाएं, समय और संपर्क\n" + url);
       $("c-share").addEventListener("click", function () {

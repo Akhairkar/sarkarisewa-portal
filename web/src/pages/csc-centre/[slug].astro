@@ -40,7 +40,12 @@ const photo = /^https:\/\/[a-z0-9]+\.supabase\.co\/storage\/v1\/object\/public\/
 const ja = nearbyJa(c);
 const nearDistricts = isJa ? (ja?.near ?? []) : districtPage ? nearbyPages(districtPage, 6).map((p) => ({ href: p.href, name: p.name, count: p.d.count })) : [];
 const since = sinceText(c.years_of_operation);
-const embed = c.latitude && c.longitude ? `https://maps.google.com/maps?q=${c.latitude},${c.longitude}&z=16&output=embed` : "";
+// Exact pin when the owner saved the location; otherwise an approximate map
+// from the written address and PIN (marked as approximate on the page).
+const addrQ = c.full_address ? [c.full_address, c.city, c.district, c.state, c.pincode].filter(Boolean).join(", ") : "";
+const exact = !!(c.latitude && c.longitude);
+const embed = exact ? `https://maps.google.com/maps?q=${c.latitude},${c.longitude}&z=16&output=embed`
+  : addrQ ? `https://maps.google.com/maps?q=${encodeURIComponent(addrQ)}&z=15&output=embed` : "";
 const pageUrl = `https://sarkarisewaindia.com/csc-centre/${listingSlug(c)}.html`;
 const shareText = encodeURIComponent(`${name} (${c.city || c.district}): सेवाएं, समय और संपर्क\n${pageUrl}`);
 const waText = encodeURIComponent("नमस्ते, मैंने आपका केंद्र SarkariSewa India (sarkarisewaindia.com) पर देखा। मुझे इस काम के लिए मदद चाहिए: ");
@@ -229,6 +234,7 @@ const ld = {
       <section class="section toc" id="c-map" hidden={!embed}>
         <h2 style="font-size:1rem">नक्शे पर केंद्र</h2>
         <iframe class="csc-map" src={embed || undefined} data-src={embed} title={`${name} नक्शा`} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {!exact && embed && <p class="hint">पते के हिसाब से अनुमानित जगह; सही रास्ते के लिए केंद्र को कॉल करें।</p>}
         {map && <a href={map} data-act="map" target="_blank" rel="noopener nofollow">🗺️ Google Maps में खोलें ↗</a>}
       </section>
       <section class="section toc">
@@ -251,7 +257,8 @@ const ld = {
           var h1 = document.querySelector("h1"); if (h1) h1.textContent = SSCsc.nice(row.centre_name) + ": " + live.dataset.type + ", " + (row.city || row.district || "");
           var m = document.getElementById("c-map"), fr = m && m.querySelector("iframe");
           if (fr) {
-            var src = row.latitude && row.longitude ? "https://maps.google.com/maps?q=" + row.latitude + "," + row.longitude + "&z=16&output=embed" : "";
+            var aq = row.full_address ? [row.full_address, row.city, row.district, row.state, row.pincode].filter(Boolean).join(", ") : "";
+            var src = row.latitude && row.longitude ? "https://maps.google.com/maps?q=" + row.latitude + "," + row.longitude + "&z=16&output=embed" : aq ? "https://maps.google.com/maps?q=" + encodeURIComponent(aq) + "&z=15&output=embed" : "";
             if (src !== fr.dataset.src) { fr.dataset.src = src; if (src) fr.src = src; m.hidden = !src; }
           }
         }
