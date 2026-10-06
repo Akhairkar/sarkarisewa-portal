@@ -1,0 +1,94 @@
+---
+// Older state document guides in the new design. Their Hindi text comes from
+// the old page (extracted by scripts/legacy_states.py into
+// src/data/legacy-states/<slug>.json) and is kept as written; the old title,
+// description and URL are unchanged. Pages rebuilt by hand
+// (src/pages/states/<slug>.astro) take precedence and are never extracted.
+import fs from "node:fs";
+import path from "node:path";
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import Explore from "../../components/Explore.astro";
+import PaidTools from "../../components/PaidTools.astro";
+import { STATES, DOCS } from "../../data/site";
+import { exists } from "../../lib/repo";
+
+type Legacy = { title: string; description: string; h1: string; intro: string; sections: { id: string; title: string; html: string }[]; faqs: { q: string; a: string }[] };
+export function getStaticPaths() {
+  const DIR = path.join(process.cwd(), "src/data/legacy-states");
+  return fs.readdirSync(DIR).filter((f) => f.endsWith(".json")).map((f) => {
+    const slug = f.slice(0, -5);
+    return { params: { legacy: slug }, props: { slug, d: JSON.parse(fs.readFileSync(path.join(DIR, f), "utf8")) as Legacy } };
+  });
+}
+const { slug, d } = Astro.props as { slug: string; d: Legacy };
+const st = [...STATES].sort((a, b) => b.slug.length - a.slug.length).find((s) => slug.startsWith(s.slug + "-"));
+const doc = DOCS.find((x) => slug.endsWith("-" + x.slug));
+const hub = st && exists(`states/${st.slug}.html`) ? `/states/${st.slug}.html` : null;
+const crumbs = [
+  { label: "होम", href: "/" },
+  ...(st && hub ? [{ label: st.hi, href: hub }] : []),
+  { label: doc ? doc.title.hi : d.h1 },
+];
+const ICON: Record<string, string> = { overview: "📌", eligibility: "✅", benefits: "🎁", "check-list": "☑️", documents: "📄", forms: "📝", "apply-online": "💻", apply: "💻", voterlist: "📋" };
+// Same document in other states, and this state's other documents.
+const others = doc ? STATES.filter((s) => s !== st && exists(`states/${s.slug}-${doc.slug}.html`)).map((s) => ({ href: `/states/${s.slug}-${doc.slug}.html`, name: s.hi })) : [];
+const sameState = st ? DOCS.filter((x) => x !== doc && exists(`states/${st.slug}-${x.slug}.html`)).slice(0, 6).map((x) => ({
+  href: `/states/${st.slug}-${x.slug}.html`, emoji: x.emoji, title: { hi: `${st.hi} ${x.title.hi}`, en: `${st.name} ${x.title.en}` }, text: x.text,
+})) : [];
+const lead = d.sections.find((s) => s.id === "overview");
+const rest = d.sections.filter((s) => s !== lead);
+---
+<Base title={d.title} description={d.description} breadcrumbs={crumbs} faq={d.faqs}>
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article class="legacy">
+      <h1>{d.h1}</h1>
+      {st && <div class="meta-row"><span>{st.hi} ({st.name})</span>{doc && <span>{doc.title.hi}</span>}</div>}
+
+      {(d.intro || lead) && (
+        <section class="answer" aria-labelledby="answer-title">
+          <p class="answer-title" id="answer-title">{lead?.title || "संक्षिप्त जानकारी"}</p>
+          {d.intro && <div class="answer-lead" set:html={d.intro} />}
+          {lead && <Fragment set:html={lead.html} />}
+        </section>
+      )}
+
+      {rest.map((s) => (
+        <section class="section" id={s.id}>
+          <h2>{ICON[s.id] ?? "📌"} {s.title}</h2>
+          <div class="prose" set:html={s.html} />
+        </section>
+      ))}
+
+      {doc?.national && exists(doc.national.slice(1)) && (
+        <p class="notice">पूरे भारत के लिए {doc.title.hi} की सामान्य जानकारी: <a href={doc.national}>{doc.title.hi} गाइड</a>। फीस और प्रक्रिया बदल सकती है; आवेदन से पहले राज्य के आधिकारिक पोर्टल पर जांच लें।</p>
+      )}
+
+      {sameState.length > 0 && st && <CardGrid title={`${st.hi} के दूसरे दस्तावेज़`} id="aur" cards={sameState} />}
+      {others.length > 0 && doc && (
+        <section class="section" id="dusre-rajya">
+          <h2>दूसरे राज्यों में {doc.title.hi}</h2>
+          <ul class="chips">{others.map((o) => <li><a href={o.href}>{o.name}</a></li>)}</ul>
+        </section>
+      )}
+      <PaidTools />
+      {d.faqs.length > 0 && <Faq items={d.faqs} />}
+      <Explore />
+    </article>
+
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          {rest.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+          {d.faqs.length > 0 && <li><a href="#faq">सवाल-जवाब</a></li>}
+        </ol>
+        {hub && st && <a class="cta secondary" href={hub}>{st.hi} की सभी सेवाएं</a>}
+        <a class="cta" href="/tools/csc-locator.html">नज़दीकी CSC केंद्र</a>
+      </section>
+    </aside>
+  </div>
+</Base>
