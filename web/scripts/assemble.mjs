@@ -7,6 +7,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import crypto from "node:crypto";
 
 const WEB = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ROOT = path.resolve(WEB, "..");
@@ -69,6 +70,33 @@ for (const rel of listHtml(DIST)) {
 
 // Sitemap: keep the existing one, refresh entries for rebuilt pages, add new ones.
 const today = new Date().toISOString().slice(0, 10);
+// Honest <lastmod>: a rebuilt page keeps its previous date unless its content
+// changed. The live site publishes lastmod.json ({url: [hash, date]}); the
+// hash covers the page's main content, not the shared header/footer.
+// changed-urls.txt lists new and changed URLs for IndexNow.
+let prevMod = {};
+if (process.env.LASTMOD_FILE) {
+  try { prevMod = JSON.parse(fs.readFileSync(process.env.LASTMOD_FILE, "utf8")); } catch (e) {}
+} else if (!process.env.NO_LASTMOD_FETCH) {
+  try {
+    const r = await fetch(`${SITE}/lastmod.json`, { signal: AbortSignal.timeout(15000) });
+    if (r.ok) prevMod = await r.json();
+  } catch (e) { console.warn(`[assemble] no previous lastmod.json: ${e.message}`); }
+}
+const nextMod = {};
+const changedUrls = [];
+const contentHash = (html) => {
+  const main = html.match(/<article[\s\S]*<\/article>/)?.[0] ?? html.match(/<main[\s\S]*<\/main>/)?.[0] ?? html;
+  const t = main.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  return crypto.createHash("sha1").update(t).digest("hex").slice(0, 16);
+};
+const modDate = (loc, html) => {
+  const h = contentHash(html), prev = prevMod[loc];
+  const d = prev && prev[0] === h ? prev[1] : today;
+  if (!prev || prev[0] !== h) changedUrls.push(loc);
+  nextMod[loc] = [h, d];
+  return d;
+};
 const smPath = path.join(OUT, "sitemap.xml");
 let sm = fs.readFileSync(smPath, "utf8");
 // Entries without a <loc> are invalid (Search Console reports them as errors).
@@ -94,10 +122,11 @@ for (const rel of listHtml(DIST)) {
     const dup = new RegExp(`  <url>\\s*<loc>${(loc + "index.html").replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>[\\s\\S]*?</url>\\n`);
     sm = sm.replace(dup, "");
   }
+  const lm = modDate(loc, html);
   const entry = new RegExp(`(<loc>${loc.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>\\s*<lastmod>)[^<]*(</lastmod>)`);
-  if (entry.test(sm)) { sm = sm.replace(entry, `$1${today}$2`); refreshed++; }
+  if (entry.test(sm)) { sm = sm.replace(entry, `$1${lm}$2`); refreshed++; }
   else {
-    sm = sm.replace("</urlset>", `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n</urlset>`);
+    sm = sm.replace("</urlset>", `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lm}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n</urlset>`);
     added++;
   }
 }
@@ -135,6 +164,11 @@ for (const rel of listHtml(OUT)) {
   added++;
 }
 fs.writeFileSync(smPath, sm);
+fs.writeFileSync(path.join(OUT, "lastmod.json"), JSON.stringify(nextMod));
+// No previous file (first run): this build is the baseline, nothing to ping.
+if (!Object.keys(prevMod).length) changedUrls.length = 0;
+fs.writeFileSync(path.join(WEB, "changed-urls.txt"), changedUrls.join("\n") + (changedUrls.length ? "\n" : ""));
+console.log(`[assemble] content changed or new: ${changedUrls.length} page(s)`);
 // Search index for /search.html: [url, title] of every indexable page.
 const SKIP_SEARCH = /^(admin|private|partials|account|google|404|search\.html)/;
 const index = [];

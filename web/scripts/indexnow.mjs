@@ -35,7 +35,13 @@ const indexable = (rel) => {
   return !/name="robots" content="noindex/i.test(head) && !rel.startsWith("admin/") && !rel.startsWith("private/");
 };
 
-if (changed.some((f) => f.startsWith("web/"))) {
+// Rebuilt pages: only those whose content changed or that are new, as found
+// by assemble.mjs (indexnow-urls.txt from the deploy build). Without that
+// list, fall back to every rebuilt page when web/ changed.
+const listFile = path.join(WEB, "indexnow-urls.txt");
+if (fs.existsSync(listFile)) {
+  for (const u of fs.readFileSync(listFile, "utf8").split("\n").map((x) => x.trim()).filter((x) => x.startsWith(`https://${HOST}/`))) urls.add(u);
+} else if (changed.some((f) => f.startsWith("web/"))) {
   for (const rel of listHtml(path.join(WEB, "dist"))) if (indexable(rel)) urls.add(toUrl(rel));
 }
 for (const f of changed) {

@@ -56,6 +56,9 @@ jobs:
             echo "web/" > web/changed-files.txt
           fi
           wc -l web/changed-files.txt
+          # Pages whose content changed or are new (from assemble.mjs).
+          cp web/changed-urls.txt web/indexnow-urls.txt 2>/dev/null || : > web/indexnow-urls.txt
+          wc -l web/indexnow-urls.txt
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web/_site
@@ -64,6 +67,7 @@ jobs:
           name: indexnow-input
           path: |
             web/changed-files.txt
+            web/indexnow-urls.txt
           retention-days: 1
 
   deploy:
