@@ -1,0 +1,48 @@
+name: Telegram daily post
+
+# Every day one page from the live sitemap (newer sections first) is posted to
+# the Telegram channel with its title, summary, what is on the page, the link
+# and a screenshot. Secrets: TELEGRAM_BOT_TOKEN, and TELEGRAM_CHANNEL
+# (optional, default @sarkarisewaindia). "Run workflow" posts now; set
+# dry_run to only see the caption in the log.
+on:
+  schedule:
+    - cron: "47 3 * * *" # 9:17 AM IST
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only print, do not send"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: telegram-daily
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: web/scripts
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright (screenshot)
+        working-directory: web/scripts
+        run: |
+          npm init -y >/dev/null
+          npm install --no-save playwright@1
+          npx playwright install --with-deps chromium
+      - name: Post to Telegram
+        working-directory: web/scripts
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: node telegram-daily.mjs
