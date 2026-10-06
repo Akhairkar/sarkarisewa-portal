@@ -91,3 +91,10 @@ insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_typ
 -- bill, roof, need, consent, source_page, referrer, utm, status). RLS: anon
 -- and authenticated may only insert (status 'new', no admin notes); admins
 -- (is_admin()) select and update. Viewed in admin/solar.html.
+
+-- RC challan report log (2026-10-07): public.rc_reports (rc_number,
+-- payment_id unique, outcome report/refunded/failed, result_code,
+-- challan_count, pending_amount, challans jsonb, error). Written only through
+-- rc_report_log(p jsonb) (SECURITY DEFINER, validates payment id and RC,
+-- execute granted to anon, called by the RC challan Worker). Admins read it
+-- in admin/rc-reports.html; anon has no table access.

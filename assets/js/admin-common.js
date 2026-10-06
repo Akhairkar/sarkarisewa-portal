@@ -10,6 +10,7 @@
     ["subscribers.html", "📬 Subscribers"],
     ["csc.html", "🏬 CSC Claims"],
     ["solar.html", "☀️ Solar Leads"],
+    ["rc-reports.html", "🚗 RC Challan Reports"],
     ["data.html", "🗂️ Content Data"],
   ];
 

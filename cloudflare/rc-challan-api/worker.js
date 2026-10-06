@@ -242,6 +242,7 @@ async function callChallanApi(rc, idempotencyKey, env) {
         status: 200,
         data: {
           rc_number: String(body.rc_number || rc),
+          result_code: Number.isFinite(code) ? code : null,
           total: Number.isFinite(count) ? count : challans.length,
           pending: Number.isFinite(count) ? count : challans.length,
           challans,
@@ -256,6 +257,24 @@ async function callChallanApi(rc, idempotencyKey, env) {
   }
   return { success: false, status: 504, error: "Challan service is busy" };
 }
+
+// Every paid report is logged to Supabase (public.rc_reports, via the
+// rc_report_log function; the anon key is public and can only call that
+// function), so the admin panel shows what each customer received.
+const SUPABASE_URL = "https://yjxsgkqspmhxndvhnjcd.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqeHNna3FzcG1oeG5kdmhuamNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4NTMyMTIsImV4cCI6MjEwMDQyOTIxMn0.f9FDnaMGzIUalBCigoiOY8Nfl9rl5qewBXFy9AdLY4I";
+async function logReport(row) {
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/rpc/rc_report_log`, {
+      method: "POST",
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ p: row })
+    });
+  } catch {
+    // Logging must never affect the customer's report.
+  }
+}
+const toRupees = (v) => { const n = Number(String(v ?? "").replace(/[^0-9.]/g, "")); return Number.isFinite(n) ? n : 0; };
 
 // Money back when the customer paid but got no report.
 async function refundPayment(paymentId, env) {
@@ -496,6 +515,10 @@ async function verifyPaymentAndGetChallans(body, env) {
     const refunded = await refundPayment(razorpay_payment_id, env).catch(() => false);
     finalNotes.verification_state = refunded ? "refunded" : "failed";
     await updatePaymentNotes(razorpay_payment_id, finalNotes, env);
+    await logReport({
+      payment_id: razorpay_payment_id, order_id: razorpay_order_id, rc_number: normalizedRC,
+      outcome: refunded ? "refunded" : "failed", error: String(apiResult.error || "").slice(0, 300)
+    });
     return {
       ...apiResult,
       error: `${apiResult.error}. ${refunded ? "Your payment has been refunded." : "Please contact us for a refund."}`,
@@ -504,6 +527,13 @@ async function verifyPaymentAndGetChallans(body, env) {
   }
 
   await updatePaymentNotes(razorpay_payment_id, finalNotes, env);
+  const ch = apiResult.data.challans || [];
+  await logReport({
+    payment_id: razorpay_payment_id, order_id: razorpay_order_id, rc_number: normalizedRC, outcome: "report",
+    result_code: apiResult.data.result_code, challan_count: apiResult.data.total,
+    pending_amount: Math.round(ch.reduce((n, c) => n + toRupees(c.amount), 0)),
+    challans: ch.slice(0, 50).map((c) => ({ challan_no: c.challan_no, date: c.date, amount: c.amount, status: c.status, offence: c.offence, state: c.state }))
+  });
 
   return apiResult;
 }
