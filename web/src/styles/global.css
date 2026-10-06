@@ -622,3 +622,13 @@ table.compact th, table.compact td { padding: 8px 8px; font-size: 0.88rem; }
 .legacy .answer .facts { margin-top: 10px; }
 .calc-out { margin-top: 12px; }
 .calc-grid select, .calc-grid input { width: 100%; }
+/* Telegram invite under the answer box */
+.tg-inline { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; padding: 12px 14px; border-radius: var(--radius); background: #e8f4fd; border: 1px solid #b6dcf7; color: #0b3b5c; text-decoration: none; }
+.tg-inline:hover { filter: brightness(0.98); }
+.tg-inline strong { display: block; font-size: 0.98rem; }
+.tg-inline small { display: block; color: #31627f; }
+.tg-inline .tg-ico { font-size: 1.5rem; }
+.tg-inline .tg-go { margin-left: auto; background: #229ed9; color: #fff; font-weight: 800; padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
+:root[data-theme="dark"] .tg-inline { background: #0f2a3d; border-color: #1d4b6b; color: #dbeefa; }
+:root[data-theme="dark"] .tg-inline small { color: #9cc7e2; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tg-inline { background: #0f2a3d; border-color: #1d4b6b; color: #dbeefa; } :root:not([data-theme="light"]) .tg-inline small { color: #9cc7e2; } }
