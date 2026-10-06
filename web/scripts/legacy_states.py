@@ -102,7 +102,7 @@ def extract(path):
     }
     art = main.find("article") or main
     first = art.find("section", id=False)
-    if first and not first.find("h2"):
+    if first and not first.find("h2") and main.find("section", id="overview"):
         out["intro"] = clean(first)
     for sid in SECTIONS:
         sec = main.find("section", id=sid)
@@ -115,6 +115,8 @@ def extract(path):
         body = clean(sec)
         if len(re.sub(r"<[^>]+>", " ", body).split()) >= 8:
             out["sections"].append({"id": sid, "title": title, "html": body})
+    if not out["sections"]:
+        content_boxes(main, out)
     faq = main.find("section", id="faqs")
     if faq:
         for d in faq.find_all("details"):
@@ -125,6 +127,42 @@ def extract(path):
             if q and a:
                 out["faqs"].append({"q": q, "a": a})
     return out
+
+
+def content_boxes(main, out):
+    """Second old layout (income pages): stat cards, section.content-box, details FAQ."""
+    facts = []
+    for c in main.select(".stat-card"):
+        divs = [d for d in c.find_all("div", recursive=False)]
+        lab, val = (text(divs[1]) if len(divs) > 1 else ""), text(c.find("strong"))
+        if lab and val:
+            facts.append(f"<div><dt>{lab}</dt><dd>{val}</dd></div>")
+    head = main.find("header")
+    if head and head.find("p"):
+        out["intro"] = "<p>" + text(head.find("p")) + "</p>"
+    if facts:
+        out["sections"].append({"id": "overview", "title": "संक्षिप्त जानकारी", "html": '<dl class="facts">' + "".join(facts) + "</dl>"})
+    n = 0
+    for box in main.select("section.content-box"):
+        h2 = box.find("h2")
+        title = re.sub(r"^[^\wऀ-ॿ(]+", "", text(h2)) if h2 else ""
+        if box.select("details"):
+            for d in box.select("details"):
+                sm = d.find("summary")
+                q = re.sub(r"^Problem\s*#\d+:\s*", "", text(sm)) if sm else ""
+                if sm:
+                    sm.decompose()
+                a = re.sub(r"^💡\s*समाधान\s*\(Hindi Solution\):\s*", "", text(d))
+                if q and a:
+                    out["faqs"].append({"q": q, "a": a})
+            continue
+        if not title or re.search(r"अन्य महत्वपूर्ण सेवाएं|Related|Checklist", title):
+            continue
+        h2.decompose()
+        body = clean(box)
+        if len(re.sub(r"<[^>]+>", " ", body).split()) >= 8:
+            n += 1
+            out["sections"].append({"id": f"part-{n}", "title": title, "html": body})
 
 
 def main(suffixes):
