@@ -15,16 +15,47 @@ const TOKEN = (process.env.TELEGRAM_BOT_TOKEN || "").trim();
 const CHANNEL = (process.env.TELEGRAM_CHANNEL || "@sarkarisewaindia").trim();
 const DRY = !!process.env.DRY_RUN || !TOKEN;
 
-// Sections to rotate through (one per day), newest work first.
+// Sections to rotate through (one per day), plus open all-India job
+// listings twice per round. Only all-India pages: the
+// channel has readers from every state, so state-specific guides stay out.
+const NATIONAL = ["aadhaar-card", "pan-card", "passport", "ayushman-bharat", "e-shram-card", "digilocker", "ration-card", "voter-id-card",
+  "birth-certificate", "death-certificate", "caste-certificate", "income-certificate", "domicile-certificate", "driving-licence",
+  "senior-citizen-card", "labour-card-construction-workers", "udid-disability-card-download", "jan-aushadhi-store-locator", "pm-kisan"];
+const STATE_WORDS = /delhi|maharashtra|telangana|gujarat|uttar-pradesh|bihar|rajasthan|karnataka|punjab|haryana|kerala|tamil|bengal|upsssc|bpsc|rpsc|mppsc|hssc|ladakh|odisha|assam|jharkhand|uttarakhand|chhattisgarh|madhya-pradesh/;
 const SECTIONS = [
   ["सोलर सब्सिडी", /\/solar\//],
-  ["राज्य के दस्तावेज़", /\/states\/[a-z-]+-(certificate|card|licence|exchange)\.html$/],
-  ["GST", /\/gst\/.+\.html$/],
-  ["ट्रैफिक चालान", /\/challan\/.+\.html$/],
+  ["सरकारी दस्तावेज़", new RegExp(`/service/(${NATIONAL.join("|")})\\.html$`)],
   ["DigiLocker", /\/digilocker\/.+\.html$/],
-  ["किरायानामा / शपथ पत्र", /\/(rent-agreement|affidavit)\/.+\.html$/],
-  ["जन औषधि", /\/service\/jan-aushadhi\/[a-z-]+\/[a-z-]+\.html$/],
+  ["GST", /\/gst\/.+\.html$/],
+  ["ट्रैफिक चालान", (u) => /\/challan\/.+\.html$/.test(u) && !STATE_WORDS.test(u)],
+  ["शपथ पत्र / किरायानामा", (u) => /\/(affidavit|rent-agreement)\/.+\.html$/.test(u) && !STATE_WORDS.test(u)],
+  ["पेड टूल", /\/services\/(rc-challan|gstin-verification)\/$/],
+  ["सरकारी नौकरी", "jobs"],
 ];
+// Jobs come up twice in each round (they are the most asked-for posts).
+SECTIONS.splice(3, 0, ["सरकारी नौकरी", "jobs"]);
+
+// Open job pages: not marked expired and mentioning a date that is still ahead.
+const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11, जनवरी: 0, फरवरी: 1, मार्च: 2, अप्रैल: 3, मई: 4, जून: 5, जुलाई: 6, अगस्त: 7, सितंबर: 8, अक्टूबर: 9, नवंबर: 10, दिसंबर: 11 };
+function openUntil(html) {
+  const t = text(html);
+  if (/समाप्त हो चुकी|आवेदन बंद|applications? (are )?closed|expired/i.test(t.slice(0, 4000))) return null;
+  let best = null;
+  for (const m of t.matchAll(/(\d{1,2})(?:st|nd|rd|th)?[\s.-]+([A-Za-zऀ-ॿ]{3,9})[\s.,-]+(20\d\d)/g)) {
+    const key = Object.keys(MONTHS).find((k) => m[2].toLowerCase().startsWith(k));
+    if (key === undefined) continue;
+    const d = new Date(Date.UTC(+m[3], MONTHS[key], +m[1]));
+    if (!best || d > best) best = d;
+  }
+  return best && best >= new Date(Date.now() - 864e5) ? best : null;
+}
+async function openJobs(urls) {
+  const out = [];
+  for (const u of urls.filter((x) => /\/jobs\/[a-z0-9-]+\.html$/.test(x) && !/\/(index|post|expired)\.html$/.test(x) && !STATE_WORDS.test(x))) {
+    try { if (openUntil(await get(u))) out.push(u); } catch (e) {}
+  }
+  return out;
+}
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const text = (h) => h.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, " ").trim();
@@ -35,17 +66,20 @@ async function get(url) {
   return r.text();
 }
 
-function pick(urls, day) {
+function pick(urls, day, jobs) {
   // Fixed shuffled order (hash of the path) so states and topics are mixed.
   const h = (u) => [...new URL(u).pathname].reduce((a, c) => (a * 33 + c.charCodeAt(0)) >>> 0, 5381);
-  const groups = SECTIONS.map(([name, re]) => [name, urls.filter((u) => re.test(u)).sort((a, b) => h(a) - h(b))]).filter(([, l]) => l.length);
+  const groups = SECTIONS.map(([name, re]) => [name, (re === "jobs" ? jobs : urls.filter((u) => (typeof re === "function" ? re(u) : re.test(u)))).sort((a, b) => h(a) - h(b))]).filter(([, l]) => l.length);
   const [name, list] = groups[day % groups.length];
   return { section: name, url: list[Math.floor(day / groups.length) % list.length] };
 }
 
 function describe(html) {
   const meta = (n) => html.match(new RegExp(`<meta[^>]+(?:name|property)="${n}"[^>]+content="([^"]*)"`, "i"))?.[1] ?? html.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+(?:name|property)="${n}"`, "i"))?.[1];
-  const title = text(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1] ?? html.match(/<title>([^<]*)/i)?.[1] ?? "").replace(/\s*\|\s*SarkariSewa.*$/i, "");
+  // Bilingual headings: keep the Hindi part.
+  const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1] ?? "";
+  const hiPart = h1.match(/data-lang-show="hi"[^>]*>([\s\S]*?)<\/span>/i)?.[1];
+  const title = text(hiPart ?? (h1 || (html.match(/<title>([^<]*)/i)?.[1] ?? ""))).replace(/\s*\|\s*SarkariSewa.*$/i, "");
   const desc = text(meta("description") || meta("og:description") || "");
   const skip = /सवाल-जवाब|पूछे जाने वाले|FAQ|Official links|और जानकारी|लोकप्रिय|Explore|इस पेज पर|पेड सेवाएं|paid|दूसरे राज्यों|के दूसरे दस्तावेज़/i;
   const h2 = [...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/gi)].map((m) => text(m[1]).replace(/^[^\wऀ-ॿ₹]+/, "")).filter((t) => t && t.length < 90 && !skip.test(t));
@@ -60,6 +94,7 @@ function caption({ section, url }, d) {
     esc(d.desc.length > 300 ? d.desc.slice(0, 297) + "…" : d.desc),
     ...(d.points.length ? ["", "📌 <b>इस पेज पर:</b>", ...d.points.map((p) => "• " + esc(p))] : []),
     "",
+    ...(section === "सरकारी नौकरी" ? ["⏰ आखिरी तारीख और योग्यता पेज पर देखें; आवेदन सिर्फ आधिकारिक वेबसाइट से करें, किसी को पैसे न दें।", ""] : []),
     `👉 <b>पूरी जानकारी:</b> ${live}`,
     "",
     `#${section.replace(/[^\wऀ-ॿ]+/g, "_")} #SarkariSewa`,
@@ -99,7 +134,7 @@ async function tg(method, body) {
 const day = process.env.PICK_DAY ? Number(process.env.PICK_DAY) : Math.floor(Date.now() / 864e5);
 const xml = await get(`${SITE}/sitemap.xml`);
 const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].replace(LIVE, SITE));
-const p = pick(urls, day);
+const p = pick(urls, day, await openJobs(urls));
 const d = describe(await get(p.url));
 const cap = caption(p, d);
 console.log(`Day ${day}: ${p.section} -> ${p.url}\n---\n${cap}\n---`);
