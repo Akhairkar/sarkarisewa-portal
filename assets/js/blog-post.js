@@ -152,12 +152,17 @@
       }
       renderStaticChrome(post, category, relatedService);
       if (typeof applyLanguage === "function") applyLanguage(typeof getLang === "function" ? getLang() : "hi");
+      let reapplying = false;
       onLangChange(() => {
+        // applyLanguage() fires this event again; skip that nested call.
+        if (reapplying) return;
         renderStaticChrome(post, category, relatedService);
         // renderStaticChrome() recreates bilingual title/hero nodes, so
         // re-apply the language after every toggle to those new nodes too.
         if (typeof applyLanguage === "function") {
-          applyLanguage(typeof getLang === "function" ? getLang() : "hi");
+          reapplying = true;
+          try { applyLanguage(typeof getLang === "function" ? getLang() : "hi"); }
+          finally { reapplying = false; }
         }
       });
     } catch (err) {
