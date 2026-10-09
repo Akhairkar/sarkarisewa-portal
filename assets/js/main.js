@@ -230,8 +230,12 @@ function wireHeaderControls() {
     langBtn.addEventListener("click", () => {
       // Older guides are written only in Hindi: switching would change the
       // menu but not the page, so say so and point to the English pages.
-      if (SITE.hindiOnly && SITE.lang === "hi") { showHindiOnlyNotice(); return; }
-      applyLanguage(SITE.lang === "hi" ? "en" : "hi");
+      if (SITE.lang === "hi") {
+        applyLanguage("en");
+        if (mainStillHindi()) { applyLanguage("hi"); setStorage("ss_lang", "en"); showHindiOnlyNotice(); }
+        return;
+      }
+      applyLanguage("hi");
     });
   }
   const navToggle = document.getElementById("nav-toggle");
@@ -266,12 +270,11 @@ function wireHeaderControls() {
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 }
 
-// True when the main content is mostly Devanagari and has no English
-// variant blocks, i.e. the language toggle cannot translate the page.
-function isHindiOnlyPage() {
+// True when, in the current language, the main content is still mostly
+// Devanagari, i.e. switching to English did not translate the page.
+function mainStillHindi() {
   const main = document.querySelector("main");
   if (!main) return false;
-  if (main.querySelector('[data-lang-show="en"], .content-en')) return false;
   const text = main.innerText || main.textContent || "";
   const hi = (text.match(/[\u0900-\u097F]/g) || []).length;
   const en = (text.match(/[A-Za-z]/g) || []).length;
@@ -310,14 +313,12 @@ async function initSite() {
   wireHeaderControls();
   cleanupDuplicateSiteChrome();
   ensureOfficialPortalLink();
-  SITE.hindiOnly = isHindiOnlyPage();
-  if (SITE.hindiOnly && SITE.lang === "en") {
+  applyLanguage(SITE.lang);
+  if (SITE.lang === "en" && mainStillHindi()) {
     // Keep the visitor's English choice for other pages, but show this
-    // Hindi page with a Hindi menu.
+    // Hindi-only page with a Hindi menu.
     applyLanguage("hi");
     setStorage("ss_lang", "en");
-  } else {
-    applyLanguage(SITE.lang);
   }
 
   document.dispatchEvent(new CustomEvent("ss:ready"));

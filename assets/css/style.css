@@ -1430,3 +1430,15 @@ h1, h2, h3 { overflow-wrap: anywhere; }
   box-shadow: var(--shadow-card);
 }
 a { text-underline-offset: 2px; }
+
+/* English mode on small phones (Oct 2026): longer English labels pushed the
+   old header and calculator cards past the screen edge. */
+@media (max-width: 480px) {
+  .site-header .header-inner { min-width: 0; }
+  .site-header .brand, .site-header .brand-text { min-width: 0 !important; overflow: hidden; flex-shrink: 1 !important; }
+  .site-header .brand-title { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .calc-card, .calc-form, .calc-card .form-group { min-width: 0; max-width: 100%; box-sizing: border-box; }
+  .calc-card input, .calc-card select { max-width: 100%; box-sizing: border-box; }
+  #ss-wa-close { right: 0 !important; }
+  .salary-metric { min-width: 0; overflow-wrap: anywhere; }
+}
