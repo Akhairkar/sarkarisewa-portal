@@ -45,6 +45,35 @@ Ye repo ka **ek hi** doc hai. Har session isi file se shuru hoga aur isi file me
 | RC / challan | Agli API service |
 | PAN, Aadhaar etc. | Baad mein decide hoga |
 
+## 4a. Future goals: kamai (research 2026-10-09)
+Abhi shuru nahi karna; traffic aur indexing ke baad uthana hai. Poori research reports repo mein commit nahi hain (local `reports/`); saar yahan hai.
+
+**1. Karmachari Yojana Desk (sabse bada future goal)**
+- **Kya:** company/builder/thekedar/factory/NGO/MFI paisa dete hain, aur hum unke mazdooron ko yojana (labour card BOCW, e-Shram, Ayushman, pension) se jodte hain. Mazdoor se koi paisa nahi.
+- **Kaise:**
+  1. Client ke naam ka checker link/QR (`/desk/<client>`).
+  2. Mazdoor Hindi mein eligibility check kare.
+  3. Directory ke partner CSC wale camp lagakar form bharein; unhe client ke paise se per form payment.
+  4. Client ko mahine ki report, sirf ginti: kitne check, kitne eligible, kitne form, anumanit fayda ₹.
+- **Saboot:**
+  - Haqdarshak ka revenue FY25 mein ₹40.1 Cr tha, zyadatar CSR/corporate se. Unke founder ke shabdon mein, citizen se fees "kaam nahi kiya".
+  - UK ka entitledto white-label calculator £2,550–15,300 saal mein bechta hai.
+- **Daam (anumaan, validate karna hai):** pilot ₹15,000 (150 mazdoor tak); baad mein ₹100–150 per mazdoor + ₹50 per form.
+- **Site par banana hoga:** client tag wala checker link + QR, DPDP consent checkbox, sirf ginti wala report page, aur checker run par anumanit fayda (₹) record karna.
+- **Dhyan rahe:**
+  - CSC ki fixed fees se upar kuch nahi lena.
+  - "Sarkari nahi" disclaimer har jagah.
+  - CSR ka paisa seedha lene ke liye NGO partner ya Section 8 company chahiye ho sakti hai (CA se poochhna).
+- **Pehla kadam:** ek jaan-pehchaan wale builder/NGO ke saath 30–50 mazdooron ka free/sasta pilot. Report aur photo ko agle client ke liye saboot banana.
+
+**2. Featured Kendra listing (user pehle se karega):** CSC/cyber cafe ko district page par top + "Featured (paid)" badge + mahine ki click report. Daam ₹499/saal (pehle 25), phir ₹999/saal. Pages index hone ke baad.
+
+**3. Baaki options (baad mein):**
+- **SarkariSewa Pro:** CSC/NGO field workers ke liye ₹99–199/mahina (bulk check, printable checklist, form/deadline alert).
+- **Spice Money/PayNearby distributor:** "CSC kaise khole" traffic se. Commission rate public nahi hai. Yeh affiliate rule mein aata hai ya nahi, decide karna hai.
+- **CBC (DAVP) Category E govt ad empanelment:** site 1 saal purani hone ke baad.
+- **YouTube:** brand ke liye. Pure auto-generated video par July 2025 se monetization band ho sakta hai, isliye real voiceover chahiye.
+
 ## 5. Phases
 - [x] Phase 0: Targets discuss karna, purane docs hatana
 - [x] Phase 1: GSC data analysis (section 6 dekho)
