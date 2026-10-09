@@ -69,6 +69,58 @@ for (const rel of listHtml(DIST)) {
   if (canon === `${SITE}/${rel}`) fs.copyFileSync(path.join(DIST, rel), idx);
 }
 
+// Repair internal links that point to pages that never existed (older pages
+// used other spellings, or /service/<state>-<doc>.html for guides that live
+// under /states/), and point two short state-hub duplicates to the main hub.
+// Unresolvable links are left as they are.
+{
+  const ALIAS = {
+    "/service/ayushman-bharat-card.html": "/service/ayushman-bharat.html",
+    "/service/driving-license.html": "/service/driving-licence.html",
+    "/service/pm-fasal-bima.html": "/service/pm-fasal-bima-yojana.html",
+    "/service/csc-locator/tools/status-troubleshooter.html": "/tools/status-troubleshooter.html",
+  };
+  const CANON = { "states/hp.html": "states/himachal-pradesh.html", "states/arunachal.html": "states/arunachal-pradesh.html" };
+  const has = (p) => { const f = path.join(OUT, decodeURI(p).replace(/^\//, "")); return fs.existsSync(f) && fs.statSync(f).isFile(); };
+  // State abbreviations from older /service/<abbr>-<doc>.html pages whose canonical is /states/<state>-<doc>.html.
+  const abbr = { dn: "dadra-nagar-haveli-daman-diu" };
+  for (const f of fs.readdirSync(path.join(OUT, "service"))) {
+    const m = f.match(/^([a-z]{2,3})-([a-z-]+)\.html$/);
+    if (!m) continue;
+    const c = fs.readFileSync(path.join(OUT, "service", f), "utf8").slice(0, 8000).match(/rel="canonical" href="https:\/\/sarkarisewaindia\.com\/states\/([a-z-]+)-([a-z]+-[a-z-]+)\.html"/);
+    if (c && c[2] === m[2]) abbr[m[1]] = c[1];
+  }
+  const fix = (abs) => {
+    if (ALIAS[abs] && has(ALIAS[abs])) return ALIAS[abs];
+    const m = abs.match(/^\/service\/([a-z-]+?)-((?:birth|death|caste|income|domicile)-certificate|ration-card|voter-id-card|driving-licence|labour-card|senior-citizen-card|employment-exchange)\.html$/);
+    if (m) {
+      for (const st of [m[1], abbr[m[1]]].filter(Boolean)) if (has(`/states/${st}-${m[2]}.html`)) return `/states/${st}-${m[2]}.html`;
+    }
+    return null;
+  };
+  let fixed = 0;
+  for (const rel of listHtml(OUT)) {
+    if (/^(admin|private|partials)\//.test(rel)) continue;
+    const file = path.join(OUT, rel);
+    let html = fs.readFileSync(file, "utf8");
+    let changed = false;
+    html = html.replace(/href="([^"#?:]+\.html)([#?][^"]*)?"/g, (all, href, rest) => {
+      const abs = href.startsWith("/") ? href : "/" + path.posix.normalize(path.posix.join(path.posix.dirname(rel), href));
+      if (abs.startsWith("/..") || has(abs)) return all;
+      const to = fix(abs);
+      if (!to) return all;
+      changed = true; fixed++;
+      return `href="${to}${rest ?? ""}"`;
+    });
+    if (CANON[rel] && has("/" + CANON[rel])) {
+      html = html.replace(/(rel="canonical" href=")[^"]*(")/, `$1${SITE}/${CANON[rel]}$2`).replace(/(href=")[^"]*(" rel="canonical")/, `$1${SITE}/${CANON[rel]}$2`);
+      changed = true;
+    }
+    if (changed) fs.writeFileSync(file, html);
+  }
+  console.log(`[assemble] internal links repaired: ${fixed}`);
+}
+
 // Job pages close themselves: once the last date (Indian time) has passed, a
 // page without the "Application Closed" notice gets it under the heading.
 {
