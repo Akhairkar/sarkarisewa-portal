@@ -26,7 +26,12 @@ const withPhone = d.kendras.filter((k) => k.phone).length;
 const top = d.pins[0];
 const verified = "4 अक्टूबर 2026";
 const meta = oldTitle(d.rel);
-const title = meta.title || `${place} Jan Aushadhi Kendra 2026 | SarkariSewa India`;
+// A district name used in two states (Hamirpur, Bilaspur, Pratapgarh…) gets
+// the state in its title; otherwise both pages had the same title.
+const shared = jaStates().filter((x) => x.districts.some((y) => y.name.toLowerCase() === place.toLowerCase())).length > 1;
+const title = shared
+  ? `${place} (${s.name}) Jan Aushadhi Kendra 2026 | SarkariSewa India`
+  : meta.title || `${place} Jan Aushadhi Kendra 2026 | SarkariSewa India`;
 const description = `${place} (${s.name}) में ${n} प्रधानमंत्री जन औषधि केंद्र: पूरा पता, PIN, फोन नंबर और नक्शा। 50-80% सस्ती जेनेरिक दवा, नज़दीकी केंद्र खोजें।`;
 const cscDir = { "andaman-nicobar": "andaman-and-nicobar", "jammu-kashmir": "jammu-and-kashmir" }[s.slug] ?? s.slug;
 const csc = [`service/csc-locator/${cscDir}/${d.slug}.html`].find((r) => exists(r));

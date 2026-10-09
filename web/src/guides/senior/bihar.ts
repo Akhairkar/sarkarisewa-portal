@@ -41,7 +41,7 @@ export const bihar: SeniorGuide = {
   reject: [["पहले से कोई दूसरी पेंशन मिल रही है", "वृद्धजन पेंशन दूसरी सरकारी पेंशन के साथ नहीं मिलती। प्रखंड कार्यालय में पूछें कि आपके लिए कौन सी योजना बेहतर है।"], ...commonReject],
   official: [
     { href: "https://sspmis.bihar.gov.in/", title: "SSPMIS बिहार (सामाजिक सुरक्षा पेंशन)", note: "वृद्धजन पेंशन आवेदन और स्टेटस" },
-    { href: "https://serviceonline.gov.in/bihar/", title: "RTPS बिहार (ServicePlus)", note: "प्रमाण पत्र और लोक सेवाएं" },
+    { href: "https://serviceonline.bihar.gov.in/", title: "RTPS बिहार (ServicePlus)", note: "प्रमाण पत्र और लोक सेवाएं" },
     ...elderlineLinks,
   ],
   faq: [
