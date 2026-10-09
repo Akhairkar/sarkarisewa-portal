@@ -75,6 +75,10 @@ const faq = [
     var form = box.querySelector("form"), input = box.querySelector("#rc-no"), btn = form.querySelector("button");
     var msg = box.querySelector(".rc-msg"), out = box.querySelector(".rc-result");
     var label = btn.textContent;
+    // GA4 funnel: tool_view -> begin_checkout -> purchase (or cancel/fail/refund).
+    function ev(n, p) { try { if (window.gtag) gtag("event", n, Object.assign({ tool: "rc_challan" }, p || {})); } catch (e) {} }
+    var price = Number(box.dataset.price) || 49;
+    window.addEventListener("load", function () { setTimeout(function () { ev("tool_view"); }, 1500); });
     function norm(v) { return String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
     function valid(v) { return /^[A-Z]{2}[0-9]{1,2}[A-Z]{0,3}[0-9]{4}$/.test(v); }
     function esc(s) { var d = document.createElement("div"); d.textContent = s == null || s === "" ? "—" : String(s); return d.innerHTML; }
@@ -101,7 +105,7 @@ const faq = [
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
       var rc = norm(input.value); input.value = rc; msg.textContent = "";
-      if (!valid(rc)) { msg.textContent = "सही गाड़ी नंबर डालें, जैसे MH01AB1234 (आखिर में 4 अंक; कम हों तो आगे 0 लगाएं, जैसे MH12A0123)।"; return; }
+      if (!valid(rc)) { ev("tool_input_invalid"); msg.textContent = "सही गाड़ी नंबर डालें, जैसे MH01AB1234 (आखिर में 4 अंक; कम हों तो आगे 0 लगाएं, जैसे MH12A0123)।"; return; }
       if (!window.Razorpay) { msg.textContent = "भुगतान लोड हो रहा है, कुछ सेकंड बाद फिर कोशिश करें।"; return; }
       busy("भुगतान शुरू हो रहा है…");
       try {
@@ -112,7 +116,7 @@ const faq = [
           key: order.key_id, amount: order.amount, currency: order.currency || "INR", order_id: order.order_id,
           name: "SarkariSewa India", description: "RC e-Challan Check", notes: { service: "RC e-Challan Check", rc_number: rc },
           theme: { color: "#1d4ed8" },
-          modal: { ondismiss: function () { busy(""); } },
+          modal: { ondismiss: function () { ev("checkout_cancel"); busy(""); } },
           handler: async function (p) {
             busy("रिपोर्ट निकाल रहे हैं…");
             try {
@@ -121,13 +125,16 @@ const faq = [
               var res = await v.json();
               if (!v.ok || !res.success) throw new Error(res.error || "रिपोर्ट नहीं मिल सकी।");
               show(res.data);
+              ev("purchase", { transaction_id: p.razorpay_payment_id, value: price, currency: "INR", items: [{ item_id: "rc_challan", item_name: "RC e-Challan report", price: price, quantity: 1 }], challan_count: Number(res.data && res.data.total) || 0 });
             } catch (err) {
               var t = err.message || "";
+              ev(/refunded/i.test(t) ? "report_refunded" : "report_error", { reason: t.slice(0, 90) });
               msg.textContent = (/refunded/i.test(t) ? "रिपोर्ट नहीं बन सकी (" + (/record/i.test(t) ? "इस नंबर का रिकॉर्ड नहीं मिला" + ((t.match(/\(([^)]*)\)/) || [])[1] ? " – " + t.match(/\(([^)]*)\)/)[1] : "") : /Invalid/i.test(t) ? "गाड़ी नंबर सही नहीं है" : "चालान सेवा अभी उपलब्ध नहीं") + ")। आपका ₹" + box.dataset.price + " रिफंड कर दिया गया है।" : "रिपोर्ट नहीं मिल सकी। हमसे संपर्क करें। (" + t + ")") + " भुगतान ID: " + p.razorpay_payment_id;
             } finally { busy(""); }
           }
         });
-        rz.on("payment.failed", function (resp) { msg.textContent = (resp.error && resp.error.description) || "भुगतान नहीं हो सका।"; busy(""); });
+        rz.on("payment.failed", function (resp) { ev("payment_failed", { reason: String((resp.error && resp.error.description) || "").slice(0, 90) }); msg.textContent = (resp.error && resp.error.description) || "भुगतान नहीं हो सका।"; busy(""); });
+        ev("begin_checkout", { value: price, currency: "INR", items: [{ item_id: "rc_challan", item_name: "RC e-Challan report", price: price, quantity: 1 }] });
         rz.open();
       } catch (err) { msg.textContent = err.message || "भुगतान शुरू नहीं हो सका।"; busy(""); }
     });

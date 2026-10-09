@@ -102,7 +102,7 @@ SarkariSewa India एक स्वतंत्र निजी प्लेट�
 </main>
 <section class="ss-more" aria-label="ये भी देखें"><h2>ये भी देखें 👀</h2><div class="g"><a href="/gst/">📚 सभी GST गाइड<small>GSTIN जांच, स्टेटस, फॉर्मेट</small></a><a href="/gst/how-to-verify-gst-number.html">📘 GST नंबर कैसे जांचें<small>फ्री तरीका, स्टेप बाय स्टेप</small></a><a href="/gst/gstin-format-structure.html">🔢 GSTIN का फॉर्मेट<small>15 अंकों का मतलब</small></a><a href="/tools/income-tax-calculator.html">🧮 Income Tax Calculator<small>नई vs पुरानी व्यवस्था</small></a><a href="/students/">🎯 सरकारी नौकरी<small>भर्ती और exam calendar</small></a><a href="/tools/csc-locator.html">📍 नज़दीकी CSC<small>जन सेवा केंद्र खोजें</small></a><a href="/documents/">📄 सरकारी दस्तावेज़<small>राज्य अनुसार गाइड</small></a></div></section>
 <footer class="ss-footer"><p><a href="/about.html">हमारे बारे में</a><a href="/contact.html">संपर्क</a><a href="/privacy-policy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/disclaimer.html">Disclaimer</a></p><p>SarkariSewa India एक स्वतंत्र जानकारी पोर्टल है, किसी सरकारी विभाग से जुड़ा नहीं।</p></footer><nav class="ss-bottom" aria-label="मोबाइल मेनू"><a href="/"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>होम</a><a href="/documents/"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7 0v5h5M9 13h6M9 17h4"/></svg>दस्तावेज़</a><a href="/students/"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5zM6 11v5c3 2 9 2 12 0v-5M22 9v6"/></svg>Students</a><a href="/tools/"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>Tools</a><a class="on" href="/paid-services/"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>Services</a></nav>
-<script>window.SS_ROOT="/";</script><script defer src="/assets/js/analytics-track.js"></script>
+<script>window.SS_ROOT="/";</script><script defer src="/assets/js/analytics-track.js"></script><script defer src="/assets/js/consent.js"></script>
 <script>
 const input=document.getElementById('gstin');
 const result=document.getElementById('result');
@@ -112,6 +112,9 @@ const validation=document.getElementById('validation');
 const WORKER_BASE='https://sarkarisewa-gstin-api.khairkar92.workers.dev';
 const CREATE_ORDER_ENDPOINT=WORKER_BASE+'/create-order';
 const VERIFY_PAYMENT_ENDPOINT=WORKER_BASE+'/verify-payment';
+const SS_PRICE=20;
+function ssEv(n,p){try{if(window.gtag)gtag('event',n,Object.assign({tool:'gstin_verification'},p||{}));}catch(e){}}
+const SS_ITEM=[{item_id:'gstin_verification',item_name:'GSTIN verification report',price:SS_PRICE,quantity:1}];
 
 const fields={
  legal:document.getElementById('legal'),
@@ -254,6 +257,7 @@ async function runVerification(){
    theme:{color:'#0b5cab'},
    modal:{
     ondismiss:function(){
+     ssEv('checkout_cancel');
      setButton('Verify GSTIN<br><span style="font-size:11px;font-weight:600">GSTIN सत्यापित करें</span>',false);
     }
    },
@@ -262,7 +266,9 @@ async function runVerification(){
      setButton('Verifying payment…<br><span style="font-size:11px;font-weight:600">भुगतान सत्यापित हो रहा है</span>');
      const body=await verifyPayment(response,v);
      showResult(body);
+     ssEv('purchase',{transaction_id:response.razorpay_payment_id,value:SS_PRICE,currency:'INR',items:SS_ITEM});
     }catch(err){
+     ssEv('report_error',{reason:String(err.message||'').slice(0,90)});
      showValidation(err.message||'Payment verification failed. Please contact support if your payment was deducted.');
     }finally{
      setButton('Verify GSTIN<br><span style="font-size:11px;font-weight:600">GSTIN सत्यापित करें</span>',false);
@@ -272,9 +278,11 @@ async function runVerification(){
 
   const razorpay=new Razorpay(options);
   razorpay.on('payment.failed',function(response){
+   ssEv('payment_failed',{reason:String(response.error?.description||'').slice(0,90)});
    showValidation(response.error?.description||'Payment failed. Please try again.');
    setButton('Verify GSTIN<br><span style="font-size:11px;font-weight:600">GSTIN सत्यापित करें</span>',false);
   });
+  ssEv('begin_checkout',{value:SS_PRICE,currency:'INR',items:SS_ITEM});
   razorpay.open();
 
  }catch(err){
@@ -284,6 +292,8 @@ async function runVerification(){
 }
 
 verify.addEventListener('click',runVerification);
+// GA4 funnel: tool_view -> begin_checkout -> purchase (or cancel/fail).
+window.addEventListener('load',()=>setTimeout(()=>ssEv('tool_view'),1500));
 
 input.addEventListener('input',()=>{
  input.value=input.value.toUpperCase().replace(/\s/g,'');
