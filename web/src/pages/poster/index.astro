@@ -1,0 +1,97 @@
+---
+// Daily government-info posters for WhatsApp Status. Posters are written and
+// published from admin/posters.html (Supabase table daily_posters). Each one
+// is drawn in the browser in four designs, optionally with the visitor's own
+// name, line and photo, which stay on their phone (localStorage). Shares and
+// downloads are counted through the poster_log() function for the admin panel.
+// The text of the posters is also rendered here at build time so the page has
+// real content without JavaScript.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../../lib/supabase-public";
+
+type Poster = { id: string; publish_date: string; category: string; title: string; body: string; highlight: string | null; source_label: string | null; source_url: string | null; page_url: string | null };
+let posters: Poster[] = [];
+try {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/daily_posters?select=id,publish_date,category,title,body,highlight,source_label,source_url,page_url&status=eq.published&order=publish_date.desc,sort.asc&limit=30`, {
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+    signal: AbortSignal.timeout(15000),
+  });
+  if (res.ok) posters = await res.json();
+} catch (e) {
+  console.warn(`[poster] no posters this build: ${(e as Error).message}`);
+}
+const CAT: Record<string, string> = { naukri: "सरकारी नौकरी", yojana: "सरकारी योजना", deadline: "आखिरी तारीख", document: "दस्तावेज़", alert: "ज़रूरी सूचना" };
+const MONTHS = ["जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
+const dateHi = (iso: string) => { const d = new Date(iso + "T00:00:00"); return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`; };
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "आज के पोस्टर" }];
+const faq = [
+  { q: "पोस्टर WhatsApp Status पर कैसे लगाएं?", a: "पोस्टर के नीचे \"Status पर लगाएं\" दबाएं। फोन का शेयर मेन्यू खुलेगा, उसमें WhatsApp और फिर \"My Status\" चुनें। अगर शेयर का विकल्प न दिखे तो \"Download\" दबाएं और गैलरी से Status पर लगाएं।" },
+  { q: "क्या पोस्टर पर अपना नाम और फोटो लगा सकते हैं?", a: "हां, बिल्कुल फ्री। \"मेरी जानकारी\" में अपना या अपनी दुकान/संस्थान का नाम, मोबाइल नंबर या पता और फोटो/लोगो डालें। यह जानकारी सिर्फ आपके फोन में सेव रहती है, हमारे सर्वर पर नहीं जाती।" },
+  { q: "क्या पोस्टर का मैटर बदल सकते हैं?", a: "नहीं। पोस्टर की जानकारी official स्रोत से जांचकर लिखी जाती है, ताकि गलत खबर न फैले। आप सिर्फ अपना नाम, लाइन और फोटो जोड़ सकते हैं और 4 में से कोई भी डिज़ाइन चुन सकते हैं।" },
+  { q: "नए पोस्टर कब आते हैं?", a: "हर दिन नई भर्ती, योजना, आखिरी तारीख या ज़रूरी सूचना के पोस्टर डाले जाते हैं। रोज़ अपडेट पाने के लिए हमारा Telegram चैनल जॉइन करें।" },
+  { q: "क्या यह सरकारी पोस्टर है?", a: "नहीं। SarkariSewa India एक निजी जानकारी सेवा है, किसी सरकारी विभाग से जुड़ी नहीं। हर पोस्टर पर जानकारी का स्रोत लिखा होता है; आवेदन हमेशा official वेबसाइट पर ही करें।" },
+];
+---
+<Base title="आज के सरकारी अपडेट पोस्टर: WhatsApp Status के लिए फ्री | SarkariSewa India" description="रोज़ नई सरकारी भर्ती, योजना और ज़रूरी तारीखों के पोस्टर, WhatsApp Status के लिए फ्री। अपना या संस्थान का नाम और फोटो जोड़ें, 4 डिज़ाइन में से चुनें।" breadcrumbs={crumbs} faq={faq} schemaType="WebPage">
+  <Breadcrumbs items={crumbs} />
+  <article class="page poster-page" data-url={SUPABASE_URL} data-key={SUPABASE_ANON_KEY}>
+    <div>
+      <h1>आज के सरकारी अपडेट पोस्टर, WhatsApp Status के लिए फ्री</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">कैसे इस्तेमाल करें</p>
+        <ol class="steps">
+          <li>नीचे "मेरी जानकारी" में अपना या संस्थान का नाम, नंबर और फोटो डालें (चाहें तो)।</li>
+          <li>हर पोस्टर 4 डिज़ाइन में है; जो पसंद आए उसके नीचे <strong>"Status पर लगाएं"</strong> दबाएं।</li>
+          <li>फोन के शेयर मेन्यू में WhatsApp → <strong>My Status</strong> चुनें। हो गया!</li>
+        </ol>
+      </section>
+
+      <section class="section poster-me" aria-labelledby="me-title">
+        <h2 id="me-title">👤 मेरी जानकारी (पोस्टर पर दिखेगी)</h2>
+        <div class="pm-grid">
+          <label>नाम / दुकान / संस्थान<input id="pm-name" maxlength="40" placeholder="जैसे: पूजा डिजिटल सेवा" /></label>
+          <label>दूसरी लाइन (नंबर या पता)<input id="pm-line" maxlength="40" placeholder="जैसे: 📞 98xxxxxx10, मेन रोड" /></label>
+        </div>
+        <div class="pm-photo">
+          <img id="pm-photo-prev" alt="" hidden />
+          <label class="cta secondary">फोटो / लोगो चुनें<input id="pm-photo" type="file" accept="image/*" hidden /></label>
+          <button type="button" class="pm-clear" id="pm-clear">जानकारी हटाएं</button>
+        </div>
+        <label class="pm-check"><input type="checkbox" id="pm-on" checked /> पोस्टर पर मेरी जानकारी दिखाएं</label>
+        <p class="muted">🔒 आपका नाम और फोटो सिर्फ आपके फोन में सेव रहते हैं, हमारे सर्वर पर नहीं जाते।</p>
+        <div class="pm-size" role="group" aria-label="पोस्टर का साइज़">
+          <button type="button" class="on" data-size="status">Status (लंबा)</button>
+          <button type="button" data-size="square">चौकोर (ग्रुप/Facebook)</button>
+        </div>
+      </section>
+
+      <div id="poster-list">
+        {posters.length === 0 && <p class="notice">आज के पोस्टर जल्द आ रहे हैं। तब तक <a href="/jobs/">ताज़ा भर्तियां</a> देखें।</p>}
+        {posters.map((p) => (
+          <section class="section poster-item" data-id={p.id} data-post={JSON.stringify(p)}>
+            <p class="poster-meta"><span class="chip">{CAT[p.category] ?? "सरकारी जानकारी"}</span> {dateHi(p.publish_date)}</p>
+            <h2>{p.title}</h2>
+            <p>{p.body}</p>
+            {p.highlight && <p><strong>{p.highlight}</strong></p>}
+            <p class="muted">
+              {p.source_label && <>स्रोत: {p.source_url ? <a href={p.source_url} target="_blank" rel="noopener nofollow">{p.source_label}</a> : p.source_label}. </>}
+              {p.page_url && <a href={p.page_url}>पूरी जानकारी पढ़ें ›</a>}
+            </p>
+            <div class="poster-designs" aria-label="डिज़ाइन चुनें"></div>
+          </section>
+        ))}
+      </div>
+
+      <p class="notice">पोस्टर की जानकारी official स्रोत से जांचकर लिखी जाती है। SarkariSewa India एक निजी जानकारी सेवा है, सरकारी वेबसाइट नहीं; आवेदन हमेशा official वेबसाइट पर करें।</p>
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+  <script is:inline src="/assets/js/vendor-qrcode.js"></script>
+  <script is:inline src="/assets/js/poster-draw.js"></script>
+  <script is:inline src="/assets/js/poster-page.js"></script>
+</Base>

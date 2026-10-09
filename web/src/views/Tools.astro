@@ -18,6 +18,7 @@ const groups = [
     T("/tools/self-declaration-builder.html", "📝", "Self Declaration Builder", "स्व-घोषणा पत्र तैयार करें", "Create a self-declaration"),
     T("/tools/document-checklist.html", "📋", "Document Checklist", "किस काम में कौन सा कागज़", "Which papers for which task"),
     T("/tools/typing-speed-test.html", "⌨️", "Typing Speed Test", "हिंदी/English टाइपिंग टेस्ट", "Hindi/English typing test"),
+    T("/poster/", "🖼️", "WhatsApp Status पोस्टर", "रोज़ के सरकारी अपडेट, अपने नाम के साथ", "Daily govt update posters"),
   ]},
   { id: "eligibility", title: L("पात्रता और उम्र", "Eligibility and age"), cards: [
     T("/tools/age-calculator.html", "⏳", "Age Calculator", "किसी भी तारीख पर सही उम्र", "Exact age on any date"),
@@ -43,7 +44,7 @@ const groups = [
     T("/tools/medicine-price-checker.html", "💊", "Medicine Price Checker", "ब्रांडेड vs जन औषधि दाम", "Branded vs Jan Aushadhi price"),
     T("/tools/csc-locator.html", "📍", "CSC Locator", "नज़दीकी जन सेवा केंद्र", "Nearest Jan Seva Kendra"),
   ]},
-].map((g) => ({ ...g, cards: g.cards.filter((c) => exists(c.href)) }));
+].map((g) => ({ ...g, cards: g.cards.filter((c) => c.href === "/poster/" || exists(c.href)) }));
 const total = groups.reduce((n, g) => n + g.cards.length, 0);
 
 const crumbs = [{ label: t(UI.home, lang), href: localize("/", lang) }, { label: "Tools" }];

@@ -11,6 +11,7 @@
     ["csc.html", "🏬 CSC Claims"],
     ["solar.html", "☀️ Solar Leads"],
     ["rc-reports.html", "🚗 RC Challan Reports"],
+    ["posters.html", "🖼️ Daily Posters"],
     ["data.html", "🗂️ Content Data"],
   ];
 

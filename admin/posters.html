@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../favicon.ico" rel="icon"/>
+<link href="../manifest.json" rel="manifest"/>
+<title>Daily Posters — SarkariSewa Admin</title>
+<meta content="noindex, nofollow" name="robots"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Mukta:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/css/style.css" rel="stylesheet"/>
+<link href="../assets/css/admin-theme.css?v=3" rel="stylesheet"/>
+<script defer src="../assets/js/admin-theme-toggle.js"></script>
+<link rel="canonical" href="https://sarkarisewaindia.com/admin/posters.html"></head>
+<body>
+<div class="admin-layout" hidden="" id="dash-wrap">
+<aside class="admin-sidebar">
+<div class="admin-sidebar-brand">
+<div class="admin-sidebar-logo">S</div>
+<div>
+<div class="admin-sidebar-title">SarkariSewa</div>
+<div class="admin-sidebar-subtitle">Admin Console</div>
+</div>
+</div>
+<nav class="admin-nav"></nav>
+<div class="admin-sidebar-footer">
+<button class="theme-toggle-btn" type="button">☀️ Light Mode</button>
+<div id="whoami" style="font-size:0.78rem; color:var(--admin-text-muted);">Loading identity…</div>
+<button class="logout-btn" id="logout" style="width:100%;">Log out</button>
+</div>
+</aside>
+<main class="admin-main">
+<div class="admin-topbar">
+<div class="admin-page-title">
+<h1>🖼️ Daily Posters (WhatsApp Status)</h1>
+<p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Write, preview and publish the posters shown on <a href="/poster/" target="_blank">/poster/</a>. Only published posters are public. Write only checked facts with a source.</p>
+</div>
+</div>
+<div id="pa-stats" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:16px;"></div>
+<div class="dash-card">
+<h3 style="margin-top:0;" id="pa-form-title">New poster</h3>
+<div style="display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:18px; align-items:start;" class="pa-grid">
+<form id="pa-form" style="display:grid; gap:10px;">
+<input type="hidden" name="id">
+<div style="display:grid; grid-template-columns:1fr 1fr 90px; gap:10px;">
+<label>Date<input type="date" name="publish_date" required class="pa-in"></label>
+<label>Category<select name="category" class="pa-in"><option value="naukri">सरकारी नौकरी</option><option value="yojana">सरकारी योजना</option><option value="deadline">आखिरी तारीख</option><option value="document">दस्तावेज़</option><option value="alert">ज़रूरी सूचना</option></select></label>
+<label>Order<input type="number" name="sort" value="0" class="pa-in"></label>
+</div>
+<label>Title (max 90) <small id="pa-c-title"></small><input name="title" maxlength="90" required class="pa-in" placeholder="जैसे: RRB NTPC भर्ती 2026: 11,558 पद"></label>
+<label>Body (max 320) <small id="pa-c-body"></small><textarea name="body" maxlength="320" rows="4" required class="pa-in" placeholder="2-3 लाइन की जांची हुई जानकारी"></textarea></label>
+<label>Highlight (max 60, optional)<input name="highlight" maxlength="60" class="pa-in" placeholder="जैसे: आखिरी तारीख: 20 अक्टूबर"></label>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+<label>Source label<input name="source_label" maxlength="80" class="pa-in" placeholder="जैसे: rrbapply.gov.in"></label>
+<label>Source URL (https)<input name="source_url" maxlength="300" class="pa-in" placeholder="https://..."></label>
+</div>
+<label>Our page for "full info" (starts with /)<input name="page_url" maxlength="200" class="pa-in" placeholder="/jobs/rrb-ntpc-recruitment-2026.html"></label>
+<div style="display:flex; gap:8px; flex-wrap:wrap;">
+<button type="submit" class="theme-toggle-btn" data-status="draft">💾 Save draft</button>
+<button type="submit" class="theme-toggle-btn" data-status="published" style="background:#16a34a;color:#fff;">✅ Publish</button>
+<button type="button" class="theme-toggle-btn" id="pa-reset">✖ Clear</button>
+<button type="button" class="theme-toggle-btn" id="pa-jobs">💼 Draft from closing jobs</button>
+</div>
+<p id="pa-msg" style="margin:0; font-size:0.9rem;"></p>
+<div id="pa-jobs-list"></div>
+</form>
+<div>
+<div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;" id="pa-designs"></div>
+<canvas id="pa-preview" style="width:100%; border-radius:10px; box-shadow:0 4px 18px rgba(0,0,0,.15);"></canvas>
+</div>
+</div>
+</div>
+<div class="dash-card">
+<div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+<h3 style="margin:0;">All posters</h3>
+<button class="theme-toggle-btn" id="pa-refresh">↻ Refresh</button>
+</div>
+<div style="overflow-x:auto;">
+<table class="admin-table" style="width:100%;">
+<thead><tr><th>Date</th><th>Poster</th><th>Status</th><th>Views</th><th>Shares</th><th>Downloads</th><th>Actions</th></tr></thead>
+<tbody id="pa-list"><tr><td colspan="7">Loading…</td></tr></tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<div id="dash-loading"><p class="loading">Checking login…</p></div>
+<style>.pa-in{display:block;width:100%;margin-top:4px;padding:8px;border:1px solid var(--admin-border,#d1d5db);border-radius:8px;font:inherit;box-sizing:border-box;background:var(--admin-surface,#fff);color:inherit}@media(max-width:800px){.pa-grid{grid-template-columns:1fr!important}}</style>
+
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script>adminGuard();</script>
+<script src="../assets/js/vendor-qrcode.js"></script>
+<script src="../assets/js/poster-draw.js"></script>
+<script src="../assets/js/admin-posters.js"></script>
+</body>
+</html>
