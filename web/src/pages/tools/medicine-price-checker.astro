@@ -1,0 +1,109 @@
+---
+// Jan Aushadhi savings calculator. Replaces the old page, whose "price list"
+// was a hard-coded mock table presented as real Jan Aushadhi prices. Here the
+// visitor enters the MRP printed on the strip (or shown in the official
+// Janaushadhi Sugam app), so every number on screen is theirs. Same URL,
+// title and description as before.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { jaStates } from "../../lib/ja";
+
+const states = jaStates();
+const kendras = states.reduce((n, s) => n + s.districts.reduce((m, d) => m + d.kendras.length, 0), 0);
+const kendraText = kendras.toLocaleString("en-IN");
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "जन औषधि दवा बचत" }];
+const faq = [
+  { q: "जन औषधि दवा का असली दाम कहां देखें?", a: "दवा की पट्टी या डिब्बे पर छपा MRP ही असली दाम है। घर बैठे दाम देखने के लिए PMBI का official 'Janaushadhi Sugam' मोबाइल ऐप इस्तेमाल करें, जिसमें दवा खोजकर उसका MRP और नज़दीकी केंद्र दिखता है। किसी वेबसाइट की बनी-बनाई सूची पर भरोसा न करें, दाम बदलते रहते हैं।" },
+  { q: "क्या जेनेरिक दवा ब्रांडेड जितनी असरदार होती है?", a: "जेनेरिक दवा में वही साल्ट (active ingredient) उसी मात्रा में होता है। PMBI के अनुसार जन औषधि की दवाएं WHO-GMP प्रमाणित निर्माताओं से खरीदी जाती हैं और हर बैच NABL मान्यता प्राप्त लैब में जांचा जाता है। दवा बदलने से पहले अपने डॉक्टर से ज़रूर पूछें।" },
+  { q: "डॉक्टर ब्रांड का नाम लिखें तो क्या करें?", a: "पर्चे पर लिखी दवा का साल्ट नाम और ताकत (जैसे Metformin 500 mg) देखें और जन औषधि केंद्र पर उसी साल्ट की दवा मांगें। शक हो तो डॉक्टर से साल्ट नाम लिखवा लें।" },
+  { q: "जन औषधि की शिकायत या जानकारी के लिए कहां संपर्क करें?", a: "PMBI का टोल-फ्री नंबर 1800-180-8080 है। केंद्र पर MRP से ज़्यादा पैसे मांगे जाएं, बिल न मिले या दवा उपलब्ध न हो तो यहां शिकायत कर सकते हैं।" },
+  { q: `नज़दीकी जन औषधि केंद्र कैसे खोजें?`, a: `हमारे जन औषधि लोकेटर में ${kendraText} चालू केंद्रों का पता, PIN, फोन और नक्शा ज़िले के हिसाब से है (यह सूची PMBI के आधिकारिक डेटा से बनी है)।` },
+];
+---
+<Base title="Jan Aushadhi Medicine Price Checker 2026 | SarkariSewa India" description="Search generic medicine prices at Pradhan Mantri Jan Aushadhi Kendra vs branded MRP. Compare prices for diabetes, BP, cardiac & daily medicines." breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>जन औषधि बनाम ब्रांडेड दवा: आपकी कितनी बचत होगी</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">अपनी हर दवा का ब्रांडेड MRP और जन औषधि MRP डालें (दोनों पट्टी पर छपे होते हैं, या official Janaushadhi Sugam ऐप में दिखते हैं)। यह टूल बताएगा कि हर महीने और साल में कितने पैसे बचेंगे। हम कोई अनुमानित दाम नहीं दिखाते; गणना सिर्फ आपके डाले दाम पर होती है।</p>
+      </section>
+
+      <section class="section med-calc" aria-labelledby="calc-title">
+        <h2 id="calc-title">💊 बचत कैलकुलेटर</h2>
+        <div class="med-head" aria-hidden="true"><span>दवा (साल्ट)</span><span>ब्रांडेड MRP ₹</span><span>जन औषधि MRP ₹</span><span>महीने में पत्ते</span><span></span></div>
+        <div id="med-rows"></div>
+        <button type="button" class="cta secondary" id="med-add">+ और दवा जोड़ें</button>
+        <div class="med-result" id="med-result" aria-live="polite"></div>
+        <p class="notice" style="margin-top:12px">दाम एक ही ताकत और एक जैसी मात्रा (जैसे 10 गोली का पत्ता) के लिए डालें, तभी तुलना सही होगी।</p>
+      </section>
+
+      <section class="section" id="dam-kaise">
+        <h2>जन औषधि दवा का असली दाम कैसे पता करें</h2>
+        <ol class="steps">
+          <li><strong>पट्टी/डिब्बे का MRP:</strong> जन औषधि की हर दवा पर MRP छपा होता है। केंद्र उससे ज़्यादा नहीं ले सकता। बिल ज़रूर लें।</li>
+          <li><strong>Janaushadhi Sugam ऐप:</strong> PMBI (Pharmaceuticals &amp; Medical Devices Bureau of India) का official ऐप। इसमें दवा का नाम खोजकर उसका MRP और नज़दीकी केंद्र देख सकते हैं।</li>
+          <li><strong>केंद्र पर पूछें:</strong> पर्चा दिखाकर उसी साल्ट और ताकत की दवा और उसका MRP पूछें।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>दवा बदलने से पहले ध्यान रखें</h2>
+        <ul class="checklist">
+          <li>साल्ट, ताकत (mg) और खुराक बिल्कुल वही हो जो पर्चे में है।</li>
+          <li>लंबी चलने वाली दवा (BP, शुगर, थायरॉइड, दिल) बदलने से पहले डॉक्टर से पूछें।</li>
+          <li>एक्सपायरी तारीख और पैकिंग देखें; हर खरीद का बिल लें।</li>
+          <li>दवा न मिले या MRP से ज़्यादा पैसे मांगे जाएं तो PMBI टोल-फ्री <strong>1800-180-8080</strong> पर शिकायत करें।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="kendra">
+        <h2>नज़दीकी जन औषधि केंद्र</h2>
+        <p>देश भर में {kendraText} चालू जन औषधि केंद्रों की ज़िलेवार सूची (पता, PIN, फोन, नक्शा) हमारे लोकेटर में है।</p>
+        <a class="cta" href="/service/jan-aushadhi-store-locator.html">जन औषधि केंद्र खोजें</a>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<script is:inline>
+(function () {
+  var rows = document.getElementById("med-rows"), out = document.getElementById("med-result");
+  var ex = [["जैसे Metformin 500mg", "", "", "1"]];
+  function inr(n) { return "₹" + Math.round(n).toLocaleString("en-IN"); }
+  function add(v) {
+    v = v || ["", "", "", "1"];
+    var d = document.createElement("div"); d.className = "med-row";
+    d.innerHTML = '<input type="text" aria-label="दवा का नाम" placeholder="' + (v[0] || "दवा / साल्ट") + '">' +
+      '<input type="number" inputmode="decimal" min="0" step="0.5" aria-label="ब्रांडेड MRP" placeholder="ब्रांडेड ₹">' +
+      '<input type="number" inputmode="decimal" min="0" step="0.5" aria-label="जन औषधि MRP" placeholder="जन औषधि ₹">' +
+      '<input type="number" inputmode="numeric" min="1" step="1" value="' + v[3] + '" aria-label="महीने में कितने पत्ते">' +
+      '<button type="button" class="med-del" aria-label="हटाएं">✕</button>';
+    d.querySelector(".med-del").onclick = function () { d.remove(); calc(); };
+    d.querySelectorAll("input").forEach(function (i) { i.addEventListener("input", calc); });
+    rows.appendChild(d);
+  }
+  function calc() {
+    var b = 0, g = 0, n = 0;
+    rows.querySelectorAll(".med-row").forEach(function (r) {
+      var i = r.querySelectorAll("input"), bp = parseFloat(i[1].value), gp = parseFloat(i[2].value), q = parseFloat(i[3].value) || 1;
+      if (bp > 0 && gp >= 0) { b += bp * q; g += gp * q; n++; }
+    });
+    if (!n) { out.innerHTML = ""; return; }
+    var s = b - g, pct = b ? Math.round(s * 100 / b) : 0;
+    out.innerHTML = s > 0
+      ? '<div class="med-sum"><div><span>हर महीने बचत</span><strong>' + inr(s) + '</strong></div><div><span>साल भर में बचत</span><strong>' + inr(s * 12) + '</strong></div><div><span>कितना सस्ता</span><strong>' + pct + '%</strong></div></div><p class="muted">ब्रांडेड: ' + inr(b) + '/महीना · जन औषधि: ' + inr(g) + '/महीना</p>'
+      : '<p class="muted">आपके डाले दाम में जन औषधि दवा सस्ती नहीं दिख रही। दाम एक ही ताकत और मात्रा के लिए डाले हैं, यह जांच लें।</p>';
+    try { if (window.gtag && !calc.sent) { calc.sent = 1; gtag("event", "tool_usage", { tool: "medicine_savings" }); } } catch (e) {}
+  }
+  ex.forEach(add); add();
+  document.getElementById("med-add").onclick = function () { add(); };
+})();
+</script>

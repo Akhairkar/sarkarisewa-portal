@@ -642,3 +642,21 @@ table.compact th, table.compact td { padding: 8px 8px; font-size: 0.88rem; }
 .t-passage .ok { color: #047857; }
 .t-passage .bad { color: #b91c1c; text-decoration: underline wavy; }
 .typing textarea { font-size: 1.05rem; line-height: 1.6; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--c-line); background: var(--c-surface); color: var(--c-text); }
+
+/* Jan Aushadhi savings calculator (tools/medicine-price-checker) */
+.med-head, .med-row { display: grid; grid-template-columns: 2fr 1fr 1fr .8fr auto; gap: 8px; align-items: center; }
+.med-head { font-size: .8rem; color: var(--c-muted); margin-bottom: 6px; }
+.med-row { margin-bottom: 8px; }
+.med-row input { width: 100%; min-width: 0; padding: 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.med-del { border: 0; background: none; font-size: 1.1rem; cursor: pointer; color: var(--c-muted); padding: 6px; }
+.med-sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+.med-sum div { background: var(--c-brand-50); border-radius: 10px; padding: 12px; text-align: center; }
+.med-sum span { display: block; font-size: .8rem; color: var(--c-muted); }
+.med-sum strong { font-size: 1.3rem; }
+@media (max-width: 560px) {
+  .med-head { display: none; }
+  .med-row { grid-template-columns: 1fr 1fr; padding: 10px; border: 1px solid var(--c-line); border-radius: 10px; }
+  .med-row input:first-child { grid-column: 1 / -1; }
+  .med-del { grid-column: 2; justify-self: end; }
+  .med-sum { grid-template-columns: 1fr; }
+}
