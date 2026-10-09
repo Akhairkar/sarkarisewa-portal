@@ -7,7 +7,9 @@ name: Telegram daily post
 # dry_run to only see the caption in the log.
 on:
   schedule:
-    - cron: "47 3 * * *" # 9:17 AM IST
+    # GitHub often starts scheduled jobs hours late (6-7 h seen), so this is
+    # set early (4:17 AM IST) for the post to land in the morning.
+    - cron: "47 22 * * *"
   workflow_dispatch:
     inputs:
       dry_run:

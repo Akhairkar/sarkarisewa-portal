@@ -74,7 +74,7 @@ function describe(html) {
   const hiPart = h1.match(/data-lang-show="hi"[^>]*>([\s\S]*?)<\/span>/i)?.[1];
   const title = text(hiPart ?? (h1 || (html.match(/<title>([^<]*)/i)?.[1] ?? ""))).replace(/\s*\|\s*SarkariSewa.*$/i, "");
   const desc = text(meta("description") || meta("og:description") || "");
-  const skip = /सवाल-जवाब|पूछे जाने वाले|FAQ|Official links|और जानकारी|लोकप्रिय|Explore|इस पेज पर|पेड सेवाएं|paid|दूसरे राज्यों|के दूसरे दस्तावेज़/i;
+  const skip = /सवाल-जवाब|पूछे जाने वाले|खबर सबसे पहले|FAQ|Official links|और जानकारी|लोकप्रिय|Explore|इस पेज पर|पेड सेवाएं|paid|दूसरे राज्यों|के दूसरे दस्तावेज़/i;
   const h2 = [...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/gi)].map((m) => text(m[1]).replace(/^[^\wऀ-ॿ₹]+/, "")).filter((t) => t && t.length < 90 && !skip.test(t));
   return { title, desc, points: [...new Set(h2)].slice(0, 4) };
 }
