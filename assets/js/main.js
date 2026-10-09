@@ -228,6 +228,9 @@ function wireHeaderControls() {
   const langBtn = document.getElementById("lang-toggle");
   if (langBtn) {
     langBtn.addEventListener("click", () => {
+      // Older guides are written only in Hindi: switching would change the
+      // menu but not the page, so say so and point to the English pages.
+      if (SITE.hindiOnly && SITE.lang === "hi") { showHindiOnlyNotice(); return; }
       applyLanguage(SITE.lang === "hi" ? "en" : "hi");
     });
   }
@@ -263,6 +266,31 @@ function wireHeaderControls() {
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 }
 
+// True when the main content is mostly Devanagari and has no English
+// variant blocks, i.e. the language toggle cannot translate the page.
+function isHindiOnlyPage() {
+  const main = document.querySelector("main");
+  if (!main) return false;
+  if (main.querySelector('[data-lang-show="en"], .content-en')) return false;
+  const text = main.innerText || main.textContent || "";
+  const hi = (text.match(/[\u0900-\u097F]/g) || []).length;
+  const en = (text.match(/[A-Za-z]/g) || []).length;
+  return hi > 200 && hi > en;
+}
+
+function showHindiOnlyNotice() {
+  if (document.getElementById("ss-hindi-only")) return;
+  const bar = document.createElement("div");
+  bar.id = "ss-hindi-only";
+  bar.setAttribute("role", "status");
+  bar.style.cssText = "margin:12px auto;max-width:1100px;padding:12px 14px;border:1px solid var(--color-border,#dbe3ec);border-left:4px solid var(--color-primary,#0b5cab);border-radius:10px;background:var(--color-surface,#fff);font-size:.95rem;line-height:1.5;";
+  bar.innerHTML = '<strong>This page is available in Hindi only for now.</strong> यह पेज अभी सिर्फ हिंदी में है। <a href="' + ROOT + 'en/">English pages →</a> <button type="button" aria-label="Close" style="float:right;border:0;background:none;font-size:1.1rem;cursor:pointer">✕</button>';
+  bar.querySelector("button").onclick = () => bar.remove();
+  const main = document.querySelector("main");
+  if (main) main.insertBefore(bar, main.firstChild);
+  bar.scrollIntoView({ block: "nearest" });
+}
+
 function ensureMainId() {
   const main = document.querySelector("main");
   if (main && !main.id) main.id = "main-content";
@@ -282,7 +310,15 @@ async function initSite() {
   wireHeaderControls();
   cleanupDuplicateSiteChrome();
   ensureOfficialPortalLink();
-  applyLanguage(SITE.lang);
+  SITE.hindiOnly = isHindiOnlyPage();
+  if (SITE.hindiOnly && SITE.lang === "en") {
+    // Keep the visitor's English choice for other pages, but show this
+    // Hindi page with a Hindi menu.
+    applyLanguage("hi");
+    setStorage("ss_lang", "en");
+  } else {
+    applyLanguage(SITE.lang);
+  }
 
   document.dispatchEvent(new CustomEvent("ss:ready"));
   loadAnalyticsTracking();
