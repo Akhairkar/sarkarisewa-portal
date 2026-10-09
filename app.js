@@ -260,6 +260,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 8th Pay Projection Logic
     function calculate8thPay(currentBasic) {
+        // The 8th Pay projection block is not on every calculator page.
+        if (!fitmentFactorSelect || !cpc8BasicVal || !cpc8GrossVal) return;
         const fitment = parseFloat(fitmentFactorSelect.value) || 2.86;
         const cpc8Basic = Math.round(currentBasic * fitment);
         const cpc8Gross = Math.round(cpc8Basic * 1.30); // 30% projected HRA & allowances
@@ -289,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
     govtQuarterChk.addEventListener("change", calculateSalary);
     taCitySelect.addEventListener("change", calculateSalary);
     govtTypeSelect.addEventListener("change", calculateSalary);
-    fitmentFactorSelect.addEventListener("change", () => {
+    if (fitmentFactorSelect) fitmentFactorSelect.addEventListener("change", () => {
         const basic = parseFloat(basicPaySelect.value) || 18000;
         calculate8thPay(basic);
     });

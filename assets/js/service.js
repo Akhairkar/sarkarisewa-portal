@@ -18,7 +18,9 @@
   // GUARD: Pre-rendered static pages already contain HTML content.
   // Do NOT wipe or dynamically overwrite pre-rendered content on static pages.
   const isDynamicShell = window.location.pathname.endsWith("service.html") || window.location.pathname.endsWith("service.html/");
-  if (!isDynamicShell && sectionsEl && sectionsEl.children.length > 0) {
+  if (!isDynamicShell && (!sectionsEl || sectionsEl.children.length > 0)) {
+    // Static page: its content is already in the HTML (some static pages
+    // have no render targets at all).
     return;
   }
 
