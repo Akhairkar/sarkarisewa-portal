@@ -16,7 +16,10 @@
   function log(app, action) {
     try {
       fetch(URL + "csc_leads", {
-        method: "POST", keepalive: true,
+        // No keepalive: a keepalive request that needs a CORS preflight is
+        // dropped by some browsers, and every contact link opens a new app or
+        // tab, so the page stays open long enough for a normal request.
+        method: "POST",
         headers: Object.assign({ "Content-Type": "application/json", Prefer: "return=minimal" }, HEAD),
         body: JSON.stringify({ application_id: app, action: action, page: location.pathname.slice(0, 300) }),
       });
