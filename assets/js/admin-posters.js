@@ -146,6 +146,69 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   document.getElementById("pa-refresh").addEventListener("click", load);
 
+
+  // ---- Fill the form from one of our own pages ----------------------------
+  // Title from the H1, text from the page's quick answer (or its meta
+  // description), source from its first official .gov.in/.nic.in link.
+  const pagesBox = document.getElementById("pa-page");
+  let pages = [];
+  fetch("/search-index.json").then((r) => r.json()).then((rows) => {
+    pages = rows;
+    document.getElementById("pa-pages").innerHTML = rows.map(([u, t]) => `<option value="${esc(u)}">${esc(t)}</option>`).join("");
+  }).catch(() => {});
+
+  const cut = (text, max) => {
+    text = String(text || "").replace(/\s+/g, " ").trim();
+    if (text.length <= max) return text;
+    const part = text.slice(0, max);
+    const end = Math.max(part.lastIndexOf("।"), part.lastIndexOf(". "));
+    return end > max * 0.5 ? part.slice(0, end + 1) : part.slice(0, part.lastIndexOf(" ")) + "…";
+  };
+  const guessCat = (u) => (/^\/jobs\//.test(u) ? "naukri" : /yojana|scheme|solar|kisan|ayushman/.test(u) ? "yojana" : /states\/|service\/|documents|certificate|card|licence/.test(u) ? "document" : "alert");
+
+  async function fillFromPage(raw, keep) {
+    const fm = document.getElementById("pa-fill-msg");
+    let url = String(raw || "").trim();
+    if (!url) { fm.textContent = "Page chunein ya URL likhein."; return; }
+    if (!url.startsWith("/")) {
+      const m = url.match(/sarkarisewaindia\.com(\/[^\s?#]*)/);
+      const hit = pages.find(([u, t]) => t.toLowerCase().includes(url.toLowerCase()));
+      url = m ? m[1] : hit ? hit[0] : url;
+    }
+    if (!url.startsWith("/")) { fm.textContent = "Yeh page nahi mila. List se chunein."; return; }
+    fm.textContent = "Page padh raha hoon…";
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const doc = new DOMParser().parseFromString(await res.text(), "text/html");
+      const main = doc.querySelector("main") || doc.body;
+      const h1 = (main.querySelector("h1") || doc.querySelector("h1"));
+      const title = h1 ? h1.textContent : (doc.title || "").split("|")[0];
+      const lead = main.querySelector(".answer-lead, .page-intro, .service-hero__desc, .page-hero__desc");
+      const meta = doc.querySelector('meta[name="description"]');
+      const body = (lead && lead.textContent.trim().length > 40 ? lead.textContent : meta && meta.content) || "";
+      // The page's "official links" box first, else any .gov.in / .nic.in link.
+      const listed = main.querySelector("ul.official a[href^='https://']");
+      const official = listed ? listed.href : [...main.querySelectorAll("a[href^='https://']")].map((a) => a.href)
+        .find((h) => { try { return /(\.gov\.in|\.nic\.in)$/.test(new URL(h).hostname); } catch (e) { return false; } });
+      const canon = doc.querySelector('link[rel="canonical"]');
+      let path = url;
+      try { if (canon) path = new URL(canon.href).pathname; } catch (e) {}
+      if (!keep || !keep.title) form.title.value = cut(title, 90);
+      form.body.value = cut(body, 320);
+      if (official) { form.source_url.value = official.slice(0, 300); form.source_label.value = new URL(official).hostname.replace(/^www\./, ""); }
+      else { form.source_url.value = ""; form.source_label.value = ""; }
+      form.page_url.value = path;
+      if (!keep || !keep.category) form.category.value = guessCat(path);
+      fm.textContent = official ? "✅ Bhar diya. Jaankari padh kar chhoti/saaf kar lein, phir Publish." : "Bhar diya, par page par official .gov.in link nahi mila; source khud likhein.";
+      preview();
+    } catch (e) {
+      fm.textContent = "Page nahi khula: " + e.message;
+    }
+  }
+  document.getElementById("pa-fill").addEventListener("click", () => fillFromPage(pagesBox.value));
+  pagesBox.addEventListener("change", () => { if (pagesBox.value.startsWith("/")) fillFromPage(pagesBox.value); });
+
   // Drafts from vacancies closing in the next three weeks (built with the site).
   document.getElementById("pa-jobs").addEventListener("click", async () => {
     const box = document.getElementById("pa-jobs-list");
@@ -162,11 +225,11 @@ document.addEventListener("DOMContentLoaded", () => {
         reset();
         form.category.value = "deadline";
         form.title.value = j.title.slice(0, 90);
-        form.body.value = "";
         form.highlight.value = `आखिरी तारीख: ${hi(j.last_date)}`;
         form.page_url.value = j.url;
-        msg.textContent = "Write 2-3 lines of checked facts in Body and add the official source, then publish.";
-        preview();
+        pagesBox.value = j.url;
+        fillFromPage(j.url, { title: true, category: true });
+        msg.textContent = "Job page se bhar diya. Jaankari check karke Publish karein.";
       };
     } catch (e) {
       box.textContent = "Could not load drafts: " + e.message;

@@ -45,6 +45,11 @@
 <h3 style="margin-top:0;" id="pa-form-title">New poster</h3>
 <div style="display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:18px; align-items:start;" class="pa-grid">
 <form id="pa-form" style="display:grid; gap:10px;">
+<div style="background:rgba(99,102,241,.08);border:1px dashed rgba(99,102,241,.5);border-radius:10px;padding:10px;">
+<label>📄 Site ke kisi page se bharein (naam ya URL likhein)<input id="pa-page" list="pa-pages" class="pa-in" placeholder="जैसे: senior citizen card, RRB NTPC, /jobs/..."></label>
+<datalist id="pa-pages"></datalist>
+<div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;"><button type="button" class="theme-toggle-btn" id="pa-fill">⚡ Auto-fill</button><small id="pa-fill-msg" style="align-self:center;opacity:.8">Title, jaankari, official source aur page link page se aa jayenge; publish se pehle padh lein.</small></div>
+</div>
 <input type="hidden" name="id">
 <div style="display:grid; grid-template-columns:1fr 1fr 90px; gap:10px;">
 <label>Date<input type="date" name="publish_date" required class="pa-in"></label>
