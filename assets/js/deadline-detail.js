@@ -261,19 +261,6 @@
       },
     ];
 
-    if (row.deadline_type === "exam_date") {
-      graph.push({
-        "@type": "Event",
-        name: name,
-        description: desc,
-        startDate: row.deadline_date,
-        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-        eventStatus: "https://schema.org/EventScheduled",
-        organizer: { "@type": "Organization", name: row.source_name || "Government of India" },
-        location: { "@type": "Place", name: "India" },
-      });
-    }
-
     const faqPairs = parseFaq(pick(row, "faq"));
     if (faqPairs.length) {
       graph.push({

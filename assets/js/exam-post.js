@@ -177,16 +177,8 @@
     const schema = {
       "@context": "https://schema.org",
       "@graph": [
-        {
-          "@type": "Event",
-          name: name,
-          description: desc,
-          startDate: exam.exam_date || exam.last_date,
-          eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-          eventStatus: "https://schema.org/EventScheduled",
-          organizer: { "@type": "Organization", name: exam.organisation_en || "Government of India" },
-          location: { "@type": "Place", name: "India" },
-        },
+        // No Event markup: an exam is not a public event in Google's sense
+        // (no performer, tickets or image), and Search Console flags it.
         {
           "@type": "BreadcrumbList",
           itemListElement: [
