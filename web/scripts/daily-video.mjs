@@ -149,7 +149,7 @@ console.log(`Video: ${video} (${dur(video).toFixed(1)} s, ${(fs.statSync(video).
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const caption = [`📢 <b>आज की ${posts.length} ज़रूरी सरकारी जानकारी</b>`, "", ...posts.map((p, i) => `${i + 1}. ${esc(p.title)}`), "",
   `👉 पूरी जानकारी, अपने नाम वाला पोस्टर और official लिंक: https://sarkarisewaindia.com/poster/`,
-  "WhatsApp Status पर लगाने के लिए वीडियो सेव करें।"].join("\n").slice(0, 1000);
+  "✅ यह वीडियो फ्री है: अपने WhatsApp Status, YouTube Shorts, Instagram Reels या Facebook पर बेझिझक लगाएं। बस वीडियो में SarkariSewa India का नाम और लिंक रहने दें।"].join("\n").slice(0, 1000);
 if (DRY) {
   console.log(TOKEN ? "DRY_RUN: not sending." : "TELEGRAM_BOT_TOKEN not set: not sending.");
   console.log(caption);
