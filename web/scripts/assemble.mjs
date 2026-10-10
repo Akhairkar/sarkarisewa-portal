@@ -142,6 +142,67 @@ for (const rel of listHtml(DIST)) {
   console.log(`[assemble] job pages marked closed: ${closed}`);
 }
 
+// Old URLs that Google still requests and that now 404: /service/<state>-<doc>.html
+// guides moved to /states/<state>-<doc>.html, plus a few renamed pages. GitHub
+// Pages has no server redirects, so each gets a small redirect page (meta
+// refresh + canonical), like the older redirect pages in the repo. Pages that
+// exist are never overwritten.
+{
+  const stub = (to) => `<!DOCTYPE html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Moved | SarkariSewa India</title><link rel="canonical" href="${SITE}${to}"><meta http-equiv="refresh" content="0; url=${to}"><script>location.replace(${JSON.stringify(to)}+location.hash)</script></head><body><p>यह पेज यहां चला गया है: <a href="${to}">${SITE}${to}</a></p></body></html>`;
+  const moves = { "servicehub/index.html": "/services/", "tools/gstin-verification.html": "/services/gstin-verification/" };
+  for (const f of fs.readdirSync(path.join(OUT, "states"))) {
+    if (/^[a-z-]+-[a-z]+(-[a-z]+)*\.html$/.test(f) && f.includes("-")) moves[`service/${f}`] = `/states/${f}`;
+  }
+  const isFile = (rel) => { const f = path.join(OUT, rel); return fs.existsSync(f) && fs.statSync(f).isFile(); };
+  const stateFiles = fs.readdirSync(path.join(OUT, "states")).filter((f) => f.endsWith(".html")).map((f) => f.slice(0, -5));
+  // State hubs: states/<hub>.html that also has states/<hub>-<doc>.html pages.
+  const hubs = stateFiles.filter((h) => stateFiles.some((x) => x.startsWith(h + "-")));
+  // Older state x document links for guides we never had per state: send them
+  // to the national guide (or, for pensions, the state's hub page).
+  const NATIONAL = {
+    "disability-certificate": "/service/disability-certificate.html", "marriage-certificate": "/service/marriage-certificate.html",
+    "pan-card-apply": "/service/pan-card.html", "e-shram-card": "/service/e-shram-card.html",
+    "ayushman-card": "/service/ayushman-bharat.html", "ayushman-bharat": "/service/ayushman-bharat.html",
+    "pm-kisan": "/service/pm-kisan.html", "pm-kisan-samman-nidhi": "/service/pm-kisan.html",
+    "legal-heir-certificate": "/service/legal-heir-certificate.html", "pm-awas-yojana": "/service/pm-awas-yojana.html",
+    "old-age-pension": "HUB",
+  };
+  for (const h of hubs) for (const [d, to] of Object.entries(NATIONAL)) {
+    if (!isFile(`states/${h}-${d}.html`)) moves[`states/${h}-${d}.html`] = to === "HUB" ? `/states/${h}.html` : to;
+  }
+  // Short or old state slugs: dadra-nagar-haveli, and two-letter codes used by
+  // older /service/<abbr>-<doc>.html pages (their canonical names the state).
+  const short = { "dadra-nagar-haveli": "dadra-nagar-haveli-daman-diu" };
+  for (const f of fs.readdirSync(path.join(OUT, "service"))) {
+    const m = f.match(/^([a-z]{2,3})-([a-z-]+)\.html$/);
+    if (!m) continue;
+    const c = fs.readFileSync(path.join(OUT, "service", f), "utf8").slice(0, 8000).match(/rel="canonical" href="https:\/\/sarkarisewaindia\.com\/states\/([a-z-]+)-([a-z]+-[a-z-]+)\.html"/);
+    if (c && c[2] === m[2]) short[m[1]] = c[1];
+  }
+  for (const [a, st] of Object.entries(short)) {
+    for (const x of stateFiles) if (x.startsWith(st + "-")) moves[`states/${a}${x.slice(st.length)}.html`] = `/states/${x}.html`;
+    for (const [d, to] of Object.entries(NATIONAL)) if (!moves[`states/${a}-${d}.html`]) moves[`states/${a}-${d}.html`] = to === "HUB" ? `/states/${st}.html` : to;
+  }
+  moves["states/aadhaar-card.html"] = "/service/aadhaar-card.html";
+  // Hand-listed moves from Search Console's 404 report (scripts/moved-urls.json).
+  try { Object.assign(moves, JSON.parse(fs.readFileSync(path.join(WEB, "scripts", "moved-urls.json"), "utf8"))); } catch (e) {}
+
+  let made = 0;
+  for (const [from, to] of Object.entries(moves)) {
+    const file = path.join(OUT, from);
+    if (fs.existsSync(file) || !fs.existsSync(path.join(OUT, to.endsWith("/") ? to + "index.html" : to))) continue;
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, stub(to));
+    made++;
+  }
+  // The old dynamic state page (states/state.html?state=<slug>).
+  if (!isFile("states/state.html")) {
+    fs.writeFileSync(path.join(OUT, "states", "state.html"), `<!DOCTYPE html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>राज्य सेवाएं | SarkariSewa India</title><link rel="canonical" href="${SITE}/states/"><meta name="robots" content="noindex, follow"><script>var s=(new URLSearchParams(location.search).get("state")||"").toLowerCase().replace(/[^a-z-]/g,"");location.replace(s?"/states/"+s+".html":"/states/");</script></head><body><p><a href="/states/">सभी राज्यों की सेवाएं</a></p></body></html>`);
+    made++;
+  }
+  console.log(`[assemble] redirect pages for moved URLs: ${made}`);
+}
+
 // Sitemap: keep the existing one, refresh entries for rebuilt pages, add new ones.
 const today = new Date().toISOString().slice(0, 10);
 // Honest <lastmod>: a rebuilt page keeps its previous date unless its content
