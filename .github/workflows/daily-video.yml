@@ -1,0 +1,62 @@
+name: Daily poster video
+
+# Every evening the posters published for the day in the admin panel
+# (admin/posters.html) are turned into a short vertical video and sent to the
+# Telegram channel. No posters that day: nothing is sent.
+# Secrets: TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL (optional, default
+# @sarkarisewaindia), ELEVENLABS_API_KEY (optional: adds a Hindi voiceover;
+# without it the video is silent). "Run workflow" builds and sends now; set a
+# date to send another day's posters, or dry_run to only build.
+on:
+  schedule:
+    # 6:44 PM IST. GitHub often starts scheduled jobs late; the script still
+    # picks the right day until 6 AM IST.
+    - cron: "14 13 * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Posters of this date (YYYY-MM-DD); empty = today"
+        type: string
+        default: ""
+      dry_run:
+        description: "Only build, do not send"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daily-video
+  cancel-in-progress: false
+
+jobs:
+  video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            web/scripts
+            web/public/assets/js
+            web/src/lib
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright and ffmpeg
+        working-directory: web/scripts
+        run: |
+          npm init -y >/dev/null
+          npm install --no-save playwright@1
+          npx playwright install --with-deps chromium
+          command -v ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+      - name: Build and send the video
+        working-directory: web/scripts
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          VIDEO_DATE: ${{ inputs.date }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: node daily-video.mjs
