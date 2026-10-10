@@ -141,6 +141,21 @@ for (const rel of listHtml(DIST)) {
   }
   console.log(`[assemble] job pages marked closed: ${closed}`);
 
+  // Held pages (scripts/job-hold.json): a "check the official notice" banner.
+  let held = {};
+  try { held = JSON.parse(fs.readFileSync(path.join(WEB, "scripts", "job-hold.json"), "utf8")); } catch (e) {}
+  for (const [rel, official] of Object.entries(held)) {
+    if (!rel.startsWith("jobs/")) continue;
+    const file = path.join(OUT, rel);
+    if (!fs.existsSync(file)) continue;
+    const html = fs.readFileSync(file, "utf8");
+    if (/job-hold-banner/.test(html) || isClosedPage(html)) continue;
+    const at = html.search(/<\/h1>/i);
+    if (at === -1) continue;
+    const box = `<div class="job-hold-banner" role="alert" style="margin:16px auto;max-width:1100px;padding:14px 18px;border:1px solid #dc2626;background:rgba(220,38,38,.08);border-radius:12px;color:var(--color-text);"><strong>⚠️ जानकारी की दोबारा जांच चल रही है</strong><br><span style="font-size:.92rem;">इस पेज पर दी गई तारीखें और पदों की संख्या दूसरी प्रकाशित जानकारी से मेल नहीं खा रहीं। आवेदन से पहले official वेबसाइट <a href="${official}" target="_blank" rel="noopener nofollow" style="font-weight:700;">${official.replace(/^https?:\/\//, "").replace(/\/$/, "")}</a> पर नोटिफिकेशन ज़रूर देखें।</span></div>`;
+    fs.writeFileSync(file, html.slice(0, at + 5) + box + html.slice(at + 5));
+  }
+
   // Google's job results must not carry vacancies that are closed, and
   // jobs/post.html is a template, not a vacancy: drop their JobPosting data.
   const dropJobPosting = (html) => html.replace(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g, (tag, body) => {
@@ -161,7 +176,7 @@ for (const rel of listHtml(DIST)) {
     const html = fs.readFileSync(file, "utf8");
     if (!/"JobPosting"/.test(html)) continue;
     const last = jobLastDate(html);
-    const over = f === "post.html" || isClosedPage(html) || (last && last.toISOString().slice(0, 10) < todayIst);
+    const over = f === "post.html" || isClosedPage(html) || /job-hold-banner/.test(html) || (last && last.toISOString().slice(0, 10) < todayIst);
     if (!over) continue;
     const out = dropJobPosting(html);
     if (out !== html) { fs.writeFileSync(file, out); stripped++; }

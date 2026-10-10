@@ -25,3 +25,7 @@ export function jobLastDate(html) {
 }
 
 export const isClosedPage = (html) => /job-expired-banner|आवेदन बंद \/ Application Closed/.test(html);
+
+// Pages held for re-checking (scripts/job-hold.json): assemble.mjs adds a
+// banner with this class; such pages are not promoted as open vacancies.
+export const isHeldPage = (html) => /job-hold-banner/.test(html);

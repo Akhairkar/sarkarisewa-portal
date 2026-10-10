@@ -11,11 +11,12 @@ export function GET() {
   const today = new Date(); today.setUTCHours(0, 0, 0, 0);
   const limit = new Date(today.getTime() + 21 * 864e5);
   const seen = new Set<string>();
+  const held = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, "web", "scripts", "job-hold.json"), "utf8"));
   const out: { title: string; last_date: string; url: string }[] = [];
   for (const f of fs.readdirSync(dir)) {
     if (!f.endsWith(".html") || f === "index.html" || f === "expired.html") continue;
     const html = fs.readFileSync(path.join(dir, f), "utf8");
-    if (isClosedPage(html)) continue;
+    if (isClosedPage(html) || held[`jobs/${f}`]) continue;
     const canon = html.match(/rel="canonical" href="https:\/\/sarkarisewaindia\.com(\/[^"]+)"/)?.[1] ?? `/jobs/${f}`;
     if (seen.has(canon)) continue;
     const d = jobLastDate(html);

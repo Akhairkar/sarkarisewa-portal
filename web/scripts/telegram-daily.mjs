@@ -8,7 +8,7 @@
 //      SITE (default https://sarkarisewaindia.com), DRY_RUN=1 to only print,
 //      PICK_DAY to test another day.
 import fs from "node:fs";
-import { jobLastDate, isClosedPage } from "./job-dates.mjs";
+import { jobLastDate, isClosedPage, isHeldPage } from "./job-dates.mjs";
 
 const SITE = (process.env.SITE || "https://sarkarisewaindia.com").replace(/\/$/, "");
 const LIVE = "https://sarkarisewaindia.com";
@@ -38,7 +38,7 @@ SECTIONS.splice(3, 0, ["सरकारी नौकरी", "jobs"]);
 
 // Open job pages: no "Application Closed" notice and last date not passed.
 function openUntil(html) {
-  if (isClosedPage(html)) return null;
+  if (isClosedPage(html) || isHeldPage(html)) return null;
   const d = jobLastDate(html);
   return d && d >= new Date(Date.now() - 864e5) ? d : null;
 }
