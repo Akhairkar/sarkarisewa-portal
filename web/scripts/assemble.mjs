@@ -203,6 +203,35 @@ for (const rel of listHtml(DIST)) {
   console.log(`[assemble] redirect pages for moved URLs: ${made}`);
 }
 
+// Internal links that point at a duplicate page (one whose canonical names
+// another page) now point at the canonical page, so crawlers spend their
+// time on the pages we want indexed. Only the href changes.
+{
+  const canonOf = {};
+  const all = listHtml(OUT).filter((r) => !/^(admin|private|partials)\//.test(r));
+  for (const rel of all) {
+    const head = fs.readFileSync(path.join(OUT, rel), "utf8").slice(0, 8000);
+    if (/http-equiv="refresh"/i.test(head)) continue;
+    const c = head.match(/rel="canonical" href="https:\/\/sarkarisewaindia\.com(\/[^"]*)"/)?.[1];
+    const self = "/" + rel, selfDir = self.replace(/index\.html$/, "");
+    if (c && c !== self && c !== selfDir) canonOf[self] = c;
+  }
+  let moved = 0;
+  for (const rel of all) {
+    const file = path.join(OUT, rel);
+    let html = fs.readFileSync(file, "utf8"), changed = false;
+    html = html.replace(/href="([^"#?:]+\.html)"/g, (all2, href) => {
+      const abs = href.startsWith("/") ? href : "/" + path.posix.normalize(path.posix.join(path.posix.dirname(rel), href));
+      const to = canonOf[abs];
+      if (!to || to === "/" + rel) return all2;
+      changed = true; moved++;
+      return `href="${to}"`;
+    });
+    if (changed) fs.writeFileSync(file, html);
+  }
+  console.log(`[assemble] links pointed at canonical pages: ${moved}`);
+}
+
 // Sitemap: keep the existing one, refresh entries for rebuilt pages, add new ones.
 const today = new Date().toISOString().slice(0, 10);
 // Honest <lastmod>: a rebuilt page keeps its previous date unless its content
