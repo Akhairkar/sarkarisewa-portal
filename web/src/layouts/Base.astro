@@ -125,6 +125,27 @@ if (faq.length) {
       a.insertAdjacentHTML("afterend", '<a class="tg-inline" href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener"><span class="tg-ico" aria-hidden="true">✈️</span><span><strong>' + (hi ? "नई भर्ती, योजना और आखिरी तारीखें सबसे पहले" : "New jobs, schemes and deadlines first") + "</strong><small>" + (hi ? "SarkariSewa के Telegram चैनल से फ्री जुड़ें" : "Join SarkariSewa on Telegram, free") + '</small></span><span class="tg-go">' + (hi ? "Join करें" : "Join") + "</span></a>");
     })();
   </script>
+  <script is:inline>
+    // Floating "join Telegram" button (the older pages had one and it brought
+    // most of the channel's members). Shows after a few seconds or a little
+    // scrolling; closing it hides it for 3 days, joining hides it for 30.
+    (function () {
+      var K = "ss_tg_float", now = Date.now();
+      try { if (Number(localStorage.getItem(K) || 0) > now) return; } catch (e) {}
+      var hi = document.documentElement.lang !== "en", shown = false;
+      function hide(days) { try { localStorage.setItem(K, String(now + days * 864e5)); } catch (e) {} var el = document.querySelector(".tg-float"); if (el) el.remove(); }
+      function show() {
+        if (shown) return; shown = true;
+        var d = document.createElement("div"); d.className = "tg-float";
+        d.innerHTML = '<a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener"><span aria-hidden="true">✈️</span>' + (hi ? "Telegram पर फ्री अपडेट पाएं" : "Free updates on Telegram") + '</a><button type="button" aria-label="' + (hi ? "बंद करें" : "Close") + '">✕</button>';
+        d.querySelector("a").addEventListener("click", function () { setTimeout(function () { hide(30); }, 300); });
+        d.querySelector("button").addEventListener("click", function () { hide(3); });
+        document.body.appendChild(d);
+      }
+      setTimeout(show, 4000);
+      addEventListener("scroll", function () { if (scrollY > innerHeight * 0.4) show(); }, { passive: true });
+    })();
+  </script>
   <script is:inline>window.SS_ROOT = "/";</script>
   <script is:inline defer src="/assets/js/analytics-track.js"></script>
   <!-- GA4 (G-KERK8GPCCX) and its click events, same file as the older pages. -->

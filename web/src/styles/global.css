@@ -684,3 +684,10 @@ table.compact th, table.compact td { padding: 8px 8px; font-size: 0.88rem; }
 .poster-designs .pd-dl { border: 1px solid var(--c-line); background: var(--c-surface); color: var(--c-text); border-radius: 8px; padding: 6px; font: inherit; font-size: .85rem; cursor: pointer; }
 @media (max-width: 520px) { .poster-me .pm-grid { grid-template-columns: 1fr; } }
 .poster-page .muted, .med-calc .muted { color: var(--c-muted); font-size: .9rem; }
+
+/* Floating Telegram join button (Base.astro) */
+.tg-float { position: fixed; right: 12px; bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom) + 12px); z-index: 45; display: flex; align-items: center; background: #229ed9; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,.22); animation: tgIn .35s ease-out; max-width: calc(100vw - 24px); }
+.tg-float a { display: flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; font-weight: 700; font-size: .95rem; padding: 10px 6px 10px 16px; white-space: nowrap; }
+.tg-float button { border: 0; background: rgba(255,255,255,.2); color: #fff; width: 26px; height: 26px; border-radius: 50%; margin-right: 8px; cursor: pointer; font-size: .8rem; line-height: 1; }
+@media (min-width: 900px) { .tg-float { bottom: 20px; right: 20px; } }
+@keyframes tgIn { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
