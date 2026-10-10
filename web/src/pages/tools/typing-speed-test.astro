@@ -7,19 +7,8 @@ import Base from "../../layouts/Base.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Faq from "../../components/Faq.astro";
 import Explore from "../../components/Explore.astro";
+import TypingTest from "../../components/TypingTest.astro";
 
-const EN = [
-  "The Government of India runs many schemes for citizens. A person can apply for a ration card, a caste certificate or a pension through the official portal of the state or at a nearby common service centre. Before applying, it is wise to keep all documents ready, such as the Aadhaar card, a recent photograph and proof of address. Most portals send a message with an application number, which should be saved carefully. The status of the application can be checked online at any time. If the work is not done within the time limit, the citizen may file an appeal with the officer named on the portal.",
-  "Typing is a skill that improves only with regular practice. Sit straight, keep both feet on the floor and place the fingers on the home row of the keyboard. Look at the screen and not at the keys. In the beginning, aim for accuracy and do not worry about speed. Once the fingers learn the position of every key, the speed will increase on its own. Practise for at least thirty minutes every day and take a short break after each test. Many candidates fail the skill test because of mistakes, not because of slow speed, so read the passage carefully while typing.",
-  "Digital services have changed the way people deal with offices. Bills can be paid from a mobile phone, certificates can be downloaded from DigiLocker and many forms can be filled at home. Still, a large number of people in villages depend on common service centres for this work. The operator of such a centre helps them fill forms, upload documents and pay fees. It is important to ask for a receipt for every payment and to check that only the official fee has been charged. A little awareness can save both time and money for every family.",
-  "Railways carry millions of passengers across the country every day. Trains connect small towns with large cities and help farmers send their produce to distant markets. Booking a ticket online has become simple, and passengers can check the running status of their train on the phone. Stations are being modernised with better waiting rooms, clean drinking water and lifts for elderly people. Travellers should keep their identity card with them and follow the safety instructions announced at the station. Responsible behaviour by every passenger makes the journey pleasant for all.",
-];
-const HI = [
-  "भारत सरकार नागरिकों के लिए कई योजनाएं चलाती है। कोई भी व्यक्ति राशन कार्ड, जाति प्रमाण पत्र या पेंशन के लिए राज्य के आधिकारिक पोर्टल पर या नज़दीकी जन सेवा केंद्र पर आवेदन कर सकता है। आवेदन से पहले सभी ज़रूरी कागज़ जैसे आधार कार्ड, हाल की फोटो और पते का प्रमाण तैयार रखना चाहिए। ज़्यादातर पोर्टल आवेदन संख्या का संदेश भेजते हैं, जिसे संभालकर रखना चाहिए। आवेदन की स्थिति कभी भी ऑनलाइन देखी जा सकती है। तय समय में काम न होने पर नागरिक पोर्टल पर बताए गए अधिकारी के पास अपील कर सकता है।",
-  "टाइपिंग का कौशल नियमित अभ्यास से ही बढ़ता है। सीधे बैठें, दोनों पैर ज़मीन पर रखें और उंगलियों को कीबोर्ड की बीच वाली पंक्ति पर रखें। नज़र स्क्रीन पर रखें, कीबोर्ड पर नहीं। शुरुआत में गति की जगह शुद्धता पर ध्यान दें। जब उंगलियां हर कुंजी की जगह सीख लेती हैं, तब गति अपने आप बढ़ जाती है। हर दिन कम से कम आधा घंटा अभ्यास करें और हर टेस्ट के बाद थोड़ा आराम करें। कई उम्मीदवार धीमी गति से नहीं, बल्कि गलतियों के कारण कौशल परीक्षा में असफल होते हैं।",
-  "डिजिटल सेवाओं ने दफ्तरों के काम करने का तरीका बदल दिया है। बिल अब मोबाइल से भरे जा सकते हैं, प्रमाण पत्र डिजिलॉकर से डाउनलोड हो सकते हैं और कई फॉर्म घर बैठे भरे जा सकते हैं। फिर भी गांवों में बहुत से लोग इन कामों के लिए जन सेवा केंद्रों पर निर्भर हैं। केंद्र का संचालक फॉर्म भरने, कागज़ अपलोड करने और फीस जमा करने में मदद करता है। हर भुगतान की रसीद लेना और यह देखना ज़रूरी है कि केवल सरकारी फीस ही ली गई है। थोड़ी सी जागरूकता हर परिवार का समय और पैसा बचा सकती है।",
-  "रेलवे हर दिन देश भर में लाखों यात्रियों को एक जगह से दूसरी जगह ले जाती है। रेलगाड़ियां छोटे कस्बों को बड़े शहरों से जोड़ती हैं और किसानों को अपनी उपज दूर के बाज़ारों तक भेजने में मदद करती हैं। अब ऑनलाइन टिकट बुक करना आसान हो गया है और यात्री फोन पर अपनी गाड़ी की स्थिति देख सकते हैं। स्टेशनों पर बेहतर प्रतीक्षालय, साफ पीने का पानी और बुज़ुर्गों के लिए लिफ्ट जैसी सुविधाएं बढ़ाई जा रही हैं। हर यात्री का ज़िम्मेदार व्यवहार यात्रा को सबके लिए सुखद बनाता है।",
-];
 const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "टाइपिंग स्पीड टेस्ट" }];
 const faq = [
   { q: "SSC टाइपिंग टेस्ट में कितनी स्पीड चाहिए?", a: "SSC CHSL जैसी परीक्षाओं के टाइपिंग टेस्ट में आम तौर पर अंग्रेज़ी में 35 शब्द प्रति मिनट और हिंदी में 30 शब्द प्रति मिनट की गति मांगी जाती है। हर भर्ती की अधिसूचना में दी गई शर्त ही अंतिम मानें।" },
@@ -38,18 +27,8 @@ const faq = [
         <p class="answer-lead">भाषा और समय चुनें, "टेस्ट शुरू करें" दबाएं और नीचे दिया पैराग्राफ टाइप करें। समय खत्म होते ही आपकी Gross WPM, Net WPM, शुद्धता और KDPH दिखेगी। SSC जैसी परीक्षाओं में आम तौर पर अंग्रेज़ी 35 और हिंदी 30 शब्द प्रति मिनट मांगे जाते हैं।</p>
       </section>
 
-      <section class="section typing" id="test">
-        <h2>⌨️ टाइपिंग टेस्ट</h2>
-        <div class="grid2">
-          <div><label for="t-lang">भाषा</label><select id="t-lang"><option value="en">English</option><option value="hi">हिंदी (यूनिकोड / मंगल)</option></select></div>
-          <div><label for="t-min">समय</label><select id="t-min"><option value="1">1 मिनट</option><option value="2" selected>2 मिनट</option><option value="5">5 मिनट</option><option value="10">10 मिनट</option></select></div>
-        </div>
-        <label class="inline"><input type="checkbox" id="t-noback" /> Backspace बंद रखें (कुछ परीक्षाओं जैसा)</label>
-        <div class="t-bar"><button type="button" class="cta" id="t-start">टेस्ट शुरू करें</button><span class="t-timer" id="t-timer">2:00</span></div>
-        <div class="t-passage" id="t-passage" aria-label="टाइप करने वाला पैराग्राफ"></div>
-        <textarea id="t-input" rows="6" placeholder="यहां टाइप करें…" disabled autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
-        <div class="t-result" id="t-result" hidden></div>
-      </section>
+      <TypingTest />
+      <p class="muted">🔗 यह टाइपिंग टेस्ट अपनी वेबसाइट या ब्लॉग पर फ्री लगाएं: <a href="/embed/#typing">Embed कोड पाएं</a></p>
 
       <section class="section" id="jaankari">
         <h2>सरकारी परीक्षाओं के लिए टाइपिंग</h2>
@@ -66,69 +45,4 @@ const faq = [
       <Explore />
     </div>
   </article>
-  <script is:inline define:vars={{ EN, HI }}>
-  (function () {
-    var $ = function (id) { return document.getElementById(id); };
-    var lang = $("t-lang"), min = $("t-min"), noBack = $("t-noback"), start = $("t-start"), timer = $("t-timer"), passage = $("t-passage"), input = $("t-input"), result = $("t-result");
-    var target = "", words = [], t0 = 0, total = 0, tick = null, keys = 0, running = false;
-    function pick() {
-      var list = lang.value === "hi" ? HI : EN, n = Math.floor(Math.random() * list.length), out = [];
-      for (var i = 0; i < Number(min.value) + 1; i++) out.push(list[(n + i) % list.length]);
-      target = out.join(" ");
-      words = target.split(/\s+/);
-      render(0, []);
-    }
-    function esc(s) { return s.replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
-    function render(cur, typed) {
-      var html = [], from = Math.max(0, cur - 12), to = Math.min(words.length, cur + 60);
-      for (var i = from; i < to; i++) {
-        var cls = i < cur ? (typed[i] === words[i] ? "ok" : "bad") : i === cur ? "cur" : "";
-        html.push('<span class="' + cls + '">' + esc(words[i]) + "</span>");
-      }
-      passage.innerHTML = html.join(" ");
-    }
-    function fmt(s) { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
-    function stats() {
-      var typedText = input.value, typed = typedText.trim().split(/\s+/).filter(Boolean);
-      var mins = Math.max((Date.now() - t0) / 60000, 1 / 60);
-      var correct = 0, correctChars = 0;
-      typed.forEach(function (w, i) { if (w === words[i]) { correct++; correctChars += w.length + 1; } });
-      return {
-        gross: Math.round(typedText.length / 5 / mins), net: Math.round(correctChars / 5 / mins),
-        acc: typed.length ? Math.round((correct * 100) / typed.length) : 0, words: typed.length, wrong: typed.length - correct,
-        kdph: Math.round((keys / mins) * 60), mins: mins,
-      };
-    }
-    function finish() {
-      clearInterval(tick); running = false; input.disabled = true; start.textContent = "फिर से टेस्ट दें";
-      var s = stats();
-      result.innerHTML = '<dl class="facts"><div><dt>Net WPM (शुद्ध गति)</dt><dd>' + s.net + '</dd></div><div><dt>Gross WPM</dt><dd>' + s.gross + '</dd></div><div><dt>शुद्धता</dt><dd>' + s.acc + '%</dd></div><div><dt>KDPH (अनुमान)</dt><dd>' + s.kdph.toLocaleString("en-IN") + '</dd></div></dl>'
-        + "<p>" + s.words + " शब्द टाइप किए, " + s.wrong + " गलत। " + (lang.value === "hi" ? (s.net >= 30 ? "✅ हिंदी के लिए आम 30 WPM की ज़रूरत पूरी।" : "हिंदी में आम ज़रूरत 30 WPM है; अभ्यास जारी रखें।") : (s.net >= 35 ? "✅ अंग्रेज़ी के लिए आम 35 WPM की ज़रूरत पूरी।" : "अंग्रेज़ी में आम ज़रूरत 35 WPM है; अभ्यास जारी रखें।")) + "</p>";
-      result.hidden = false;
-      try { if (window.gtag) gtag("event", "tool_usage", { tool_name: "typing-speed-test", lang: lang.value, minutes: Number(min.value), net_wpm: s.net }); } catch (e) {}
-    }
-    start.addEventListener("click", function () {
-      pick(); input.value = ""; keys = 0; result.hidden = true; input.disabled = false; input.focus();
-      total = Number(min.value) * 60; t0 = 0; running = true; timer.textContent = fmt(total); start.textContent = "टाइप करना शुरू करें…";
-    });
-    input.addEventListener("keydown", function (e) {
-      if (!running) return;
-      if (noBack.checked && (e.key === "Backspace" || e.key === "Delete")) { e.preventDefault(); return; }
-      if (e.key.length === 1 || e.key === "Backspace" || e.key === "Enter") keys++;
-    });
-    input.addEventListener("input", function () {
-      if (!running) return;
-      if (!t0) {
-        t0 = Date.now(); start.textContent = "टेस्ट चल रहा है";
-        tick = setInterval(function () { var left = total - (Date.now() - t0) / 1000; timer.textContent = fmt(left); if (left <= 0) finish(); }, 250);
-      }
-      var typed = input.value.split(/\s+/), cur = input.value.trim() ? typed.length - (/\s$/.test(input.value) ? 1 : 1) : 0;
-      if (/\s$/.test(input.value)) cur = input.value.trim().split(/\s+/).length;
-      render(cur, input.value.trim().split(/\s+/));
-      if (input.value.trim().split(/\s+/).length >= words.length) finish();
-    });
-    [lang, min].forEach(function (x) { x.addEventListener("change", function () { if (!running) { pick(); timer.textContent = fmt(Number(min.value) * 60); } }); });
-    pick();
-  })();
-  </script>
 </Base>

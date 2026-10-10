@@ -1,0 +1,39 @@
+---
+// Exact age (years, months, days) on any date, for exam age limits. Used in
+// the embeddable /embed/age-calculator.html.
+---
+<section class="section agecalc">
+  <h2>⏳ आयु कैलकुलेटर (परीक्षा की आयु सीमा के लिए)</h2>
+  <div class="grid2">
+    <div><label for="ac-dob">जन्म तिथि</label><input type="date" id="ac-dob" /></div>
+    <div><label for="ac-on">किस तारीख को उम्र (कट-ऑफ तारीख)</label><input type="date" id="ac-on" /></div>
+  </div>
+  <p class="muted">कट-ऑफ तारीख भर्ती की अधिसूचना में लिखी होती है, जैसे "1 जनवरी 2026 को"। खाली छोड़ें तो आज की तारीख ली जाएगी।</p>
+  <button type="button" class="cta" id="ac-go">उम्र निकालें</button>
+  <div id="ac-out" hidden></div>
+  <script is:inline>
+  (function () {
+    var $ = function (id) { return document.getElementById(id); };
+    var M = ["जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
+    function parse(v) { var p = (v || "").split("-").map(Number); return p.length === 3 && p[0] ? new Date(Date.UTC(p[0], p[1] - 1, p[2])) : null; }
+    function hi(d) { return d.getUTCDate() + " " + M[d.getUTCMonth()] + " " + d.getUTCFullYear(); }
+    function days(y, m) { return new Date(Date.UTC(y, m + 1, 0)).getUTCDate(); }
+    $("ac-go").addEventListener("click", function () {
+      var out = $("ac-out"), b = parse($("ac-dob").value), t = new Date(), on = parse($("ac-on").value) || new Date(Date.UTC(t.getFullYear(), t.getMonth(), t.getDate()));
+      out.hidden = false;
+      if (!b) { out.innerHTML = '<p class="notice">कृपया जन्म तिथि भरें।</p>'; return; }
+      if (b > on) { out.innerHTML = '<p class="notice">जन्म तिथि कट-ऑफ तारीख के बाद की है।</p>'; return; }
+      var y = on.getUTCFullYear() - b.getUTCFullYear(), m = on.getUTCMonth() - b.getUTCMonth(), d = on.getUTCDate() - b.getUTCDate();
+      if (d < 0) { m--; d += days(on.getUTCFullYear(), on.getUTCMonth() - 1); }
+      if (m < 0) { y--; m += 12; }
+      var total = Math.round((on - b) / 864e5);
+      var next = new Date(Date.UTC(on.getUTCFullYear(), b.getUTCMonth(), b.getUTCDate()));
+      if (next <= on) next = new Date(Date.UTC(on.getUTCFullYear() + 1, b.getUTCMonth(), b.getUTCDate()));
+      out.innerHTML = '<p class="ac-big">' + hi(on) + ' को उम्र: <strong>' + y + ' वर्ष ' + m + ' महीने ' + d + ' दिन</strong></p>'
+        + '<dl class="facts"><div><dt>पूरे वर्ष</dt><dd>' + y + '</dd></div><div><dt>कुल महीने</dt><dd>' + (y * 12 + m) + '</dd></div><div><dt>कुल दिन</dt><dd>' + total.toLocaleString("en-IN") + '</dd></div><div><dt>अगला जन्मदिन</dt><dd>' + hi(next) + '</dd></div></dl>'
+        + '<p class="muted">आयु सीमा ("जन्म इस तारीख से पहले न हुआ हो") और SC/ST/OBC/दिव्यांग की छूट हर अधिसूचना में अलग लिखी होती है; आवेदन से पहले वहीं से मिलाएं।</p>';
+      try { if (window.gtag) gtag("event", "tool_usage", { tool_name: "age-calculator-embed" }); } catch (e) {}
+    });
+  })();
+  </script>
+</section>

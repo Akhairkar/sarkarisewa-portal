@@ -1,0 +1,34 @@
+---
+// HRA exemption under section 10(13A) of the Income-tax Act, rule 2A: the
+// least of (a) HRA received, (b) rent paid minus 10% of salary, (c) 50% of
+// salary in Delhi, Mumbai, Kolkata, Chennai, else 40%. Salary = basic + DA
+// (forming part of retirement benefits). Only in the old tax regime.
+---
+<section class="section hracalc">
+  <h2>🏠 HRA छूट कैलकुलेटर</h2>
+  <div class="grid2">
+    <div><label for="hr-basic">बेसिक + DA (महीने का)</label><input type="number" min="0" inputmode="numeric" id="hr-basic" placeholder="जैसे 40000" /></div>
+    <div><label for="hr-hra">मिलने वाला HRA (महीने का)</label><input type="number" min="0" inputmode="numeric" id="hr-hra" placeholder="जैसे 16000" /></div>
+    <div><label for="hr-rent">दिया गया किराया (महीने का)</label><input type="number" min="0" inputmode="numeric" id="hr-rent" placeholder="जैसे 15000" /></div>
+    <div><label for="hr-city">शहर</label><select id="hr-city"><option value="0.4">दूसरे शहर (40%)</option><option value="0.5">दिल्ली, मुंबई, कोलकाता, चेन्नई (50%)</option></select></div>
+  </div>
+  <button type="button" class="cta" id="hr-go">HRA छूट निकालें</button>
+  <div id="hr-out" hidden></div>
+  <p class="muted">HRA छूट सिर्फ पुरानी टैक्स व्यवस्था (old regime) में मिलती है; नई व्यवस्था में यह छूट नहीं है।</p>
+  <script is:inline>
+  (function () {
+    var $ = function (id) { return document.getElementById(id); };
+    var r = function (n) { return "₹" + Math.round(n).toLocaleString("en-IN"); };
+    $("hr-go").addEventListener("click", function () {
+      var b = Number($("hr-basic").value) * 12, h = Number($("hr-hra").value) * 12, rent = Number($("hr-rent").value) * 12, pct = Number($("hr-city").value);
+      var out = $("hr-out"); out.hidden = false;
+      if (!b || !h) { out.innerHTML = '<p class="notice">बेसिक + DA और HRA भरें।</p>'; return; }
+      var a = h, c = Math.max(0, rent - 0.1 * b), d = pct * b, ex = Math.min(a, c, d);
+      out.innerHTML = '<p class="ac-big">साल की HRA छूट: <strong>' + r(ex) + '</strong>, टैक्स वाला HRA: <strong>' + r(h - ex) + '</strong></p>'
+        + '<dl class="facts"><div><dt>मिला HRA (साल)</dt><dd>' + r(a) + '</dd></div><div><dt>किराया − 10% वेतन</dt><dd>' + r(c) + '</dd></div><div><dt>' + (pct * 100) + '% वेतन</dt><dd>' + r(d) + '</dd></div><div><dt>छूट (तीनों में सबसे कम)</dt><dd>' + r(ex) + '</dd></div></dl>'
+        + (rent * 1 > 100000 ? '<p class="muted">साल का किराया ₹1 लाख से ज़्यादा है, इसलिए मकान मालिक का PAN देना होगा।</p>' : "");
+      try { if (window.gtag) gtag("event", "tool_usage", { tool_name: "hra-calculator-embed" }); } catch (e) {}
+    });
+  })();
+  </script>
+</section>

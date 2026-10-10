@@ -1,0 +1,46 @@
+---
+// Bare page for a tool that other websites show in an iframe (see /embed/).
+// No header, footer or pop-ups; noindex so it never competes with the full
+// tool page, which is its canonical. A small credit links back to that page.
+import "../styles/global.css";
+import { SITE } from "../data/site";
+
+interface Props { title: string; full: string; credit?: string }
+const { title, full, credit = "पूरा टूल और जानकारी" } = Astro.props;
+const fullUrl = new URL(full, SITE.url).href;
+---
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title} | SarkariSewa India</title>
+  <meta name="robots" content="noindex,follow" />
+  <link rel="canonical" href={fullUrl} />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <base target="_blank" />
+</head>
+<body class="embed">
+  <main class="embed-main">
+    <slot />
+  </main>
+  <p class="embed-credit">
+    <a href={`${fullUrl}?utm_source=embed`} rel="noopener"><strong>SarkariSewa India</strong></a> · <a href={`${fullUrl}?utm_source=embed`} rel="noopener">{credit} ›</a>
+  </p>
+  <script is:inline>
+    // Tell the host page our height so its iframe can fit the tool (the embed
+    // code carries a small listener; without it the iframe keeps its height).
+    (function () {
+      if (parent === window || !window.ResizeObserver) return;
+      var last = 0;
+      new ResizeObserver(function () {
+        var h = Math.ceil(document.body.getBoundingClientRect().height) + 4;
+        if (Math.abs(h - last) > 2) { last = h; parent.postMessage({ ssEmbedH: h }, "*"); }
+      }).observe(document.body);
+    })();
+  </script>
+</body>
+</html>

@@ -691,3 +691,20 @@ table.compact th, table.compact td { padding: 8px 8px; font-size: 0.88rem; }
 .tg-float button { border: 0; background: rgba(255,255,255,.2); color: #fff; width: 26px; height: 26px; border-radius: 50%; margin-right: 8px; cursor: pointer; font-size: .8rem; line-height: 1; }
 @media (min-width: 900px) { .tg-float { bottom: 20px; right: 20px; } }
 @keyframes tgIn { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* Embeddable tools (/embed/*.html, shown in other sites' iframes) */
+body.embed { background: var(--c-bg); margin: 0; padding-bottom: 0; }
+.embed-main { padding: 10px; }
+.embed-main .section { margin-bottom: 8px; }
+.embed-main h2 { margin-top: 0; font-size: 1.2rem; }
+.embed-main input, .embed-main select { width: 100%; }
+.embed-main .cta { margin: 10px 0; }
+.embed-credit { margin: 0; padding: 6px 12px 10px; font-size: 0.85rem; color: var(--c-muted); }
+.ac-big { font-size: 1.1rem; margin: 8px 0 10px; }
+.embed-item iframe { width: 100%; border: 1px solid var(--c-line); border-radius: var(--radius-sm); background: #fff; }
+.embed-item textarea { width: 100%; font: 0.8rem/1.4 ui-monospace, monospace; padding: 8px; border: 1px solid var(--c-line); border-radius: var(--radius-sm); background: var(--c-surface-2); color: var(--c-text); }
+.agecalc .grid2, .hracalc .grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px 14px; }
+@media (min-width: 560px) { .agecalc .grid2, .hracalc .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.agecalc label, .hracalc label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: 4px; }
+.agecalc input, .hracalc input, .hracalc select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.agecalc .muted, .hracalc .muted, .embed-page .muted { color: var(--c-muted); font-size: .9rem; }

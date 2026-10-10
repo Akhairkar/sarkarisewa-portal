@@ -1,0 +1,80 @@
+---
+// Free tools that schools, coaching centres, CSC operators and bloggers can
+// put on their own websites. Each embed code is an iframe of a bare tool page
+// (/embed/*.html, noindex) plus a plain credit link back to the full tool.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { SITE } from "../../data/site";
+
+const tools = [
+  { id: "typing", file: "typing-test", full: "/tools/typing-speed-test.html", name: "टाइपिंग स्पीड टेस्ट", h: 900,
+    text: "हिंदी (मंगल/यूनिकोड) और अंग्रेज़ी टाइपिंग टेस्ट, 1 से 10 मिनट, Net/Gross WPM, शुद्धता और KDPH के साथ। टाइपिंग इंस्टीट्यूट, कंप्यूटर सेंटर और SSC/कोर्ट क्लर्क की तैयारी वाली साइट्स के लिए।" },
+  { id: "age", file: "age-calculator", full: "/tools/age-calculator.html", name: "आयु कैलकुलेटर (परीक्षा कट-ऑफ तारीख पर)", h: 620,
+    text: "जन्म तिथि और भर्ती की कट-ऑफ तारीख डालकर उम्र वर्ष, महीने और दिन में। सरकारी नौकरी की खबरें देने वाले ब्लॉग और कोचिंग की साइट्स के लिए।" },
+  { id: "hra", file: "hra-calculator", full: "/tools/hra-calculator.html", name: "HRA छूट कैलकुलेटर", h: 680,
+    text: "धारा 10(13A) के नियम से HRA की टैक्स छूट: मिला HRA, किराया − 10% वेतन और 50%/40% वेतन में सबसे कम। टैक्स, CA और कर्मचारियों की जानकारी वाली साइट्स के लिए।" },
+];
+// Optional listener that fits the iframe to the tool's height.
+const FIT = `<script>addEventListener("message",function(e){if(e.origin!=="${SITE.url}"||!e.data||!e.data.ssEmbedH)return;document.querySelectorAll("iframe").forEach(function(f){if(f.contentWindow===e.source)f.style.height=e.data.ssEmbedH+"px"})})</` + `script>`;
+const code = (t: (typeof tools)[number]) =>
+  `<iframe src="${SITE.url}/embed/${t.file}.html" title="${t.name}" width="100%" height="${t.h}" style="border:1px solid #e5e7eb;border-radius:12px;max-width:760px" loading="lazy"></iframe>\n<p style="font-size:13px;margin:4px 0 16px">फ्री टूल: <a href="${SITE.url}${t.full}">SarkariSewa India</a></p>\n${FIT}`;
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "अपनी वेबसाइट पर टूल लगाएं" }];
+const faq = [
+  { q: "क्या ये टूल लगाने के पैसे लगते हैं?", a: "नहीं, पूरी तरह फ्री है। कोई रजिस्ट्रेशन या लॉगिन नहीं चाहिए। बस कोड के साथ आया SarkariSewa India का छोटा लिंक लगा रहने दें।" },
+  { q: "कोड कहां लगाएं?", a: "Blogger में पोस्ट या पेज को HTML view में खोलकर, या Layout में 'HTML/JavaScript' gadget में कोड पेस्ट करें। WordPress में 'Custom HTML' ब्लॉक में पेस्ट करें। Wix, Google Sites जैसी साइट्स में 'Embed code' का विकल्प चुनें।" },
+  { q: "क्या टूल हमारे विज़िटर का डेटा लेता है?", a: "नहीं। टाइपिंग, उम्र और HRA का हिसाब विज़िटर के ब्राउज़र में ही होता है। टूल में कोई विज्ञापन या पॉप-अप नहीं है।" },
+  { q: "टूल में नियम बदले तो?", a: "टूल हमारी साइट से लोड होता है, इसलिए कोई सुधार या नियम बदलने पर आपकी साइट पर भी अपने आप अपडेट हो जाता है।" },
+];
+---
+<Base title="अपनी वेबसाइट पर फ्री सरकारी टूल लगाएं: टाइपिंग टेस्ट, आयु और HRA कैलकुलेटर | SarkariSewa India" description="टाइपिंग स्पीड टेस्ट, आयु कैलकुलेटर और HRA छूट कैलकुलेटर अपने ब्लॉग, कोचिंग या CSC की वेबसाइट पर फ्री लगाएं। कोड कॉपी करें और Blogger या WordPress में पेस्ट करें।" breadcrumbs={crumbs} faq={faq} schemaType="WebPage">
+  <Breadcrumbs items={crumbs} />
+  <article class="page embed-page">
+    <div>
+      <h1>अपनी वेबसाइट पर फ्री टूल लगाएं</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">कैसे लगाएं</p>
+        <ol class="steps">
+          <li>नीचे से टूल चुनें और उसका कोड "कोड कॉपी करें" से कॉपी करें।</li>
+          <li>Blogger में HTML view या "HTML/JavaScript" gadget में, WordPress में "Custom HTML" ब्लॉक में पेस्ट करें।</li>
+          <li>पेज सेव करें। टूल आपकी साइट पर चलने लगेगा, बिल्कुल फ्री।</li>
+        </ol>
+      </section>
+
+      {tools.map((t) => (
+        <section class="section embed-item" id={t.id}>
+          <h2>{t.name}</h2>
+          <p>{t.text}</p>
+          <label for={`code-${t.id}`}><strong>Embed कोड</strong></label>
+          <textarea id={`code-${t.id}`} rows="5" readonly>{code(t)}</textarea>
+          <p><button type="button" class="cta embed-copy" data-for={`code-${t.id}`}>कोड कॉपी करें</button> <a href={t.full}>पूरा टूल देखें ›</a></p>
+          <details>
+            <summary>प्रीव्यू देखें</summary>
+            <iframe src={`/embed/${t.file}.html`} title={t.name} height={t.h} loading="lazy"></iframe>
+          </details>
+        </section>
+      ))}
+
+      <p class="notice">शर्त सिर्फ एक: कोड के साथ आया "SarkariSewa India" का लिंक न हटाएं। SarkariSewa India एक निजी जानकारी सेवा है, सरकारी वेबसाइट नहीं।</p>
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+  <script is:inline>
+    addEventListener("message", function (e) {
+      if (e.origin !== location.origin || !e.data || !e.data.ssEmbedH) return;
+      document.querySelectorAll(".embed-item iframe").forEach(function (f) { if (f.contentWindow === e.source) f.style.height = e.data.ssEmbedH + "px"; });
+    });
+    document.querySelectorAll(".embed-copy").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var ta = document.getElementById(b.dataset.for), done = function () { b.textContent = "✓ कॉपी हो गया"; setTimeout(function () { b.textContent = "कोड कॉपी करें"; }, 2000); };
+        ta.select();
+        if (navigator.clipboard) navigator.clipboard.writeText(ta.value).then(done, function () { document.execCommand("copy"); done(); });
+        else { document.execCommand("copy"); done(); }
+        try { if (window.gtag) gtag("event", "embed_copy", { tool_name: b.dataset.for }); } catch (e) {}
+      });
+    });
+  </script>
+</Base>
