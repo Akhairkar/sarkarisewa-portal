@@ -140,6 +140,33 @@ for (const rel of listHtml(DIST)) {
     closed++;
   }
   console.log(`[assemble] job pages marked closed: ${closed}`);
+
+  // Google's job results must not carry vacancies that are closed, and
+  // jobs/post.html is a template, not a vacancy: drop their JobPosting data.
+  const dropJobPosting = (html) => html.replace(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g, (tag, body) => {
+    if (!/"JobPosting"/.test(body)) return tag;
+    try {
+      const d = JSON.parse(body);
+      if (d && Array.isArray(d["@graph"])) {
+        d["@graph"] = d["@graph"].filter((x) => x["@type"] !== "JobPosting");
+        return d["@graph"].length ? `<script type="application/ld+json">${JSON.stringify(d)}</script>` : "";
+      }
+      return d && d["@type"] === "JobPosting" ? "" : tag;
+    } catch (e) { return tag; }
+  });
+  let stripped = 0;
+  if (fs.existsSync(jobsDir)) for (const f of fs.readdirSync(jobsDir)) {
+    if (!f.endsWith(".html")) continue;
+    const file = path.join(jobsDir, f);
+    const html = fs.readFileSync(file, "utf8");
+    if (!/"JobPosting"/.test(html)) continue;
+    const last = jobLastDate(html);
+    const over = f === "post.html" || isClosedPage(html) || (last && last.toISOString().slice(0, 10) < todayIst);
+    if (!over) continue;
+    const out = dropJobPosting(html);
+    if (out !== html) { fs.writeFileSync(file, out); stripped++; }
+  }
+  console.log(`[assemble] JobPosting data removed from closed/template job pages: ${stripped}`);
 }
 
 // Old URLs that Google still requests and that now 404: /service/<state>-<doc>.html
