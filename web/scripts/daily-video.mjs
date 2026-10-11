@@ -9,12 +9,14 @@
 //      ELEVENLABS_API_KEY (optional: Hindi voiceover; without it the video
 //      is silent), ELEVENLABS_VOICE_ID (default: Ritu Rathore),
 //      VIDEO_DATE (YYYY-MM-DD, default today in IST), DRY_RUN=1 to only build,
-//      POSTERS_FILE / VIDEO_COPY_TO for local tests.
+//      POSTERS_FILE / VIDEO_COPY_TO for local tests, FB_PAGE_ID + FB_PAGE_TOKEN
+//      (optional: also upload the video to the Facebook Page).
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { fbVideo, plain } from "./fb-page.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const JS = path.join(HERE, "..", "public", "assets", "js");
@@ -167,4 +169,5 @@ if (DRY) {
   const j = await r.json();
   if (!j.ok) throw new Error(`Telegram: ${j.description}`);
   console.log("Sent video to", CHANNEL);
+  await fbVideo(fs.readFileSync(video), plain(caption), `आज की ${posts.length} ज़रूरी सरकारी जानकारी`);
 }

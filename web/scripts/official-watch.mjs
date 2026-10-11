@@ -9,10 +9,12 @@
 // items per source and MAX_TOTAL items per run are posted; the rest wait.
 //
 // Env: TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL (default @sarkarisewaindia),
+//      FB_PAGE_ID + FB_PAGE_TOKEN (optional: also post to the Facebook Page),
 //      STATE_FILE (default .watch-state.json), DRY_RUN=1 to only print,
 //      PROBE=1 to list what every source shows now. Neither saves state.
 import fs from "node:fs";
 import crypto from "node:crypto";
+import { fbText, plain } from "./fb-page.mjs";
 
 const TOKEN = (process.env.TELEGRAM_BOT_TOKEN || "").trim();
 const CHANNEL = (process.env.TELEGRAM_CHANNEL || "@sarkarisewaindia").trim();
@@ -152,6 +154,7 @@ for (const src of SOURCES) {
     console.log(`--- ${src.id}\n${text}\n`);
     if (!DRY) {
       try { await send(text); } catch (e) { console.log(`send failed: ${e.message}`); break; }
+      await fbText(plain(text), it.url);
       await new Promise((r) => setTimeout(r, 1500));
     }
     seen.push(it.key);

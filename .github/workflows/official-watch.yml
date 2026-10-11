@@ -60,6 +60,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           DRY_RUN: ${{ inputs.mode == 'dry_run' && '1' || '' }}
           PROBE: ${{ inputs.mode == 'probe' && '1' || '' }}
           NODE_EXTRA_CA_CERTS: /tmp/extra-ca.pem

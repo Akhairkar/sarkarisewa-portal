@@ -5,10 +5,12 @@
 // every page of a section has been posted.
 //
 // Env: TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL (default @sarkarisewaindia),
+//      FB_PAGE_ID + FB_PAGE_TOKEN (optional: same post on the Facebook Page),
 //      SITE (default https://sarkarisewaindia.com), DRY_RUN=1 to only print,
 //      PICK_DAY to test another day.
 import fs from "node:fs";
 import { jobLastDate, isClosedPage, isHeldPage } from "./job-dates.mjs";
+import { fbPhoto, fbText, plain } from "./fb-page.mjs";
 
 const SITE = (process.env.SITE || "https://sarkarisewaindia.com").replace(/\/$/, "");
 const LIVE = "https://sarkarisewaindia.com";
@@ -142,6 +144,7 @@ if (DRY) {
   form.append("parse_mode", "HTML");
   form.append("photo", new Blob([fs.readFileSync(img)], { type: "image/png" }), "page.png");
   await tg("sendPhoto", form);
+  await fbPhoto(fs.readFileSync(img), plain(cap));
   console.log("Sent photo post to", CHANNEL);
 } else {
   const form = new FormData();
@@ -149,5 +152,6 @@ if (DRY) {
   form.append("text", cap);
   form.append("parse_mode", "HTML");
   await tg("sendMessage", form);
+  await fbText(plain(cap), p.url);
   console.log("Sent text post to", CHANNEL);
 }
