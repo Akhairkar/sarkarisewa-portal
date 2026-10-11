@@ -31,7 +31,6 @@ const SOURCES = process.env.SOURCES_FILE ? JSON.parse(fs.readFileSync(process.en
   { id: "ibps", name: "IBPS", url: "https://www.ibps.in/" },
   { id: "aiims", name: "AIIMS", url: "https://www.aiimsexams.ac.in/" },
   { id: "rrb", name: "RRB (Railway)", url: "https://www.rrbcdg.gov.in/" },
-  { id: "rrc", name: "RRC (Railway Group D)", url: "https://www.rrcrecruit.co.in/" },
   { id: "ctet", name: "CTET", url: "https://ctet.nic.in/" },
   { id: "rbi", name: "RBI", url: "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx" },
   { id: "sbi", name: "SBI", url: "https://sbi.co.in/web/careers/current-openings" },

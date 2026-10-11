@@ -42,6 +42,19 @@ jobs:
           path: web/scripts/.watch-state.json
           key: official-watch-${{ github.run_id }}
           restore-keys: official-watch-
+      # Some sites (IBPS, NIELIT) send their certificate without the
+      # intermediate CA. Fetch it from the address the certificate itself
+      # names (Authority Information Access) so TLS checks stay on.
+      - name: Add missing intermediate certificates
+        run: |
+          : > /tmp/extra-ca.pem
+          for h in www.ibps.in www.nielit.gov.in; do
+            leaf=$(echo | timeout 20 openssl s_client -connect "$h:443" -servername "$h" 2>/dev/null | openssl x509 2>/dev/null) || continue
+            uri=$(echo "$leaf" | openssl x509 -noout -ext authorityInfoAccess 2>/dev/null | grep -o 'CA Issuers - URI:[^ ]*' | head -1 | cut -d: -f2-)
+            [ -n "$uri" ] || continue
+            curl -fsSL --max-time 20 "$uri" -o /tmp/ca.bin || continue
+            (openssl x509 -inform DER -in /tmp/ca.bin 2>/dev/null || openssl x509 -in /tmp/ca.bin) >> /tmp/extra-ca.pem && echo "added intermediate for $h"
+          done
       - name: Check official sites and post
         working-directory: web/scripts
         env:
@@ -49,6 +62,7 @@ jobs:
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
           DRY_RUN: ${{ inputs.mode == 'dry_run' && '1' || '' }}
           PROBE: ${{ inputs.mode == 'probe' && '1' || '' }}
+          NODE_EXTRA_CA_CERTS: /tmp/extra-ca.pem
         run: node official-watch.mjs
       - name: Save seen notices
         if: always() && hashFiles('web/scripts/.watch-state.json') != ''
