@@ -64,6 +64,14 @@ async function get(url) {
   }
 }
 
+// Login links carry per-visit ids and PDFs a cache-buster (?appid=, ?t=);
+// these are left out of the key so the same notice is not posted twice.
+function stable(url) {
+  const u = new URL(url);
+  for (const k of [...u.searchParams.keys()]) if (/^(appid|t|token|sid|session|_|v|ver|timestamp)$/i.test(k)) u.searchParams.delete(k);
+  return u.href;
+}
+
 // Every link on the page whose text reads like an update.
 function links(html, base) {
   const out = new Map();
@@ -75,7 +83,7 @@ function links(html, base) {
     let url;
     try { url = new URL(decode(m[1]).trim(), base).href; } catch { continue; }
     if (!/^https?:/.test(url)) continue;
-    const key = sha(url + "|" + text.toLowerCase());
+    const key = sha(stable(url) + "|" + text.toLowerCase());
     if (!out.has(key)) out.set(key, { key, text, url });
   }
   return [...out.values()];
@@ -122,7 +130,7 @@ for (const src of SOURCES) {
     const { html, final } = await get(src.url);
     items = links(html, final);
   } catch (e) {
-    report.push(`✗ ${src.id}: ${e.message}`);
+    report.push(`✗ ${src.id}: ${e.message}${e.cause ? ` (${e.cause.code || e.cause.message})` : ""}`);
     continue;
   }
   if (PROBE) {
