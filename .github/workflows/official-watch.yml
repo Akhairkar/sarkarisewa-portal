@@ -50,7 +50,7 @@ jobs:
           : > /tmp/extra-ca.pem
           for h in www.ibps.in www.nielit.gov.in; do
             leaf=$(echo | timeout 20 openssl s_client -connect "$h:443" -servername "$h" 2>/dev/null | openssl x509 2>/dev/null) || continue
-            uri=$(echo "$leaf" | openssl x509 -noout -ext authorityInfoAccess 2>/dev/null | grep -o 'CA Issuers - URI:[^ ]*' | head -1 | cut -d: -f2-)
+            uri=$(echo "$leaf" | openssl x509 -noout -ext authorityInfoAccess 2>/dev/null | grep -o 'CA Issuers - URI:[^ ]*' | head -1 | cut -d: -f2- || true)
             [ -n "$uri" ] || continue
             curl -fsSL --max-time 20 "$uri" -o /tmp/ca.bin || continue
             (openssl x509 -inform DER -in /tmp/ca.bin 2>/dev/null || openssl x509 -in /tmp/ca.bin) >> /tmp/extra-ca.pem && echo "added intermediate for $h"
