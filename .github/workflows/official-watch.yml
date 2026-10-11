@@ -1,0 +1,58 @@
+name: Official update watcher
+
+# Every 2 hours from about 6 AM to 10 PM IST, checks the notice pages of UPSC,
+# SSC, NTA, IBPS, AIIMS, RRB and others (web/scripts/official-watch.mjs) and
+# posts each new result, admit card, answer key or notification to the
+# Telegram channel with its official link. What has been seen is kept in the
+# Actions cache; if the cache is lost, the next run records the current
+# notices silently instead of posting them again.
+# Secrets: TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL (optional).
+on:
+  schedule:
+    - cron: "41 0-16/2 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "send = post new items; dry_run = only print; probe = list what each site shows now"
+        type: choice
+        options: [send, dry_run, probe]
+        default: send
+
+permissions:
+  contents: read
+
+concurrency:
+  group: official-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: web/scripts
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Restore seen notices
+        uses: actions/cache/restore@v4
+        with:
+          path: web/scripts/.watch-state.json
+          key: official-watch-${{ github.run_id }}
+          restore-keys: official-watch-
+      - name: Check official sites and post
+        working-directory: web/scripts
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          DRY_RUN: ${{ inputs.mode == 'dry_run' && '1' || '' }}
+          PROBE: ${{ inputs.mode == 'probe' && '1' || '' }}
+        run: node official-watch.mjs
+      - name: Save seen notices
+        if: always() && hashFiles('web/scripts/.watch-state.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: web/scripts/.watch-state.json
+          key: official-watch-${{ github.run_id }}
