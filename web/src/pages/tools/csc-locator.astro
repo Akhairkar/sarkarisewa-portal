@@ -13,6 +13,8 @@ import CscInfo from "../../components/CscInfo.astro";
 import { STATES } from "../../data/site";
 import { CSC_STATE, stateTotals, cscPages, cscServices } from "../../lib/csc";
 import { exists } from "../../lib/repo";
+import { listings, listingSlug, listingDistrictPage, niceName } from "../../lib/csc-listings";
+import { typeOf } from "../../lib/centre-types";
 
 const alt: Record<string, string[]> = {
   "andaman-nicobar": ["andaman-nicobar", "andaman-and-nicobar"],
@@ -34,6 +36,9 @@ const faq = [
   { q: "CSC पर आधार अपडेट की फीस कितनी है?", a: "UIDAI के अनुसार नाम, पता, जन्मतिथि जैसा demographic अपडेट ₹75 और फोटो/फिंगरप्रिंट वाला biometric अपडेट ₹125 का है। नया आधार बनवाना मुफ्त है। आधार सेवा हर CSC पर नहीं होती।" },
   { q: "मैं CSC चलाता हूं, अपना केंद्र कैसे जोड़ूं?", a: "\"फ्री में केंद्र जोड़ें\" फॉर्म भरें। हम आपके मोबाइल/WhatsApp पर जांच करते हैं, फिर आपका केंद्र आपके ज़िले के पेज पर सबसे ऊपर कॉल और WhatsApp बटन के साथ दिखता है। अभी यह पूरी तरह फ्री है।" },
 ];
+// Every approved (verified) centre, as plain links, so their own pages are
+// reachable from this busy hub, not only from the sitemap.
+const verifiedCentres = (await listings()).filter((c) => typeOf(c.centre_type).kind !== "ja");
 ---
 <Base
   title="CSC Center Locator 2026: Find Nearest Jan Seva Kendra in 1-Click"
@@ -78,6 +83,14 @@ const faq = [
         <h2>सबसे ज़्यादा CSC वाले ज़िले</h2>
         <ul class="chips">{big.map((p) => <li><a href={p.href}>{p.name} <small>{p.d.count.toLocaleString("en-IN")}</small></a></li>)}</ul>
       </section>
+
+      {verifiedCentres.length > 0 && (
+        <section class="section" id="satyapit">
+          <h2>SarkariSewa पर सत्यापित केंद्र</h2>
+          <p>इन केंद्रों के संचालकों ने खुद अपनी जानकारी दी है और जांच के बाद जोड़ा गया है। सेवाएं, समय और सीधा फोन/WhatsApp उनके पेज पर देखें।</p>
+          <ul class="checklist">{verifiedCentres.map((c) => { const d = listingDistrictPage(c); return <li><a href={`/csc-centre/${listingSlug(c)}.html`}>{niceName(c.centre_name)}</a>{`, ${niceName(c.district)}, ${String(c.state ?? "").trim()}`}{d && <> · <a href={d.href}>{d.name} के सभी CSC</a></>}</li>; })}</ul>
+        </section>
+      )}
 
       <div class="ad-slot" aria-hidden="true"></div>
 

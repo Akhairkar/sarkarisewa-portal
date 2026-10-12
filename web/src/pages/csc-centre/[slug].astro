@@ -51,7 +51,12 @@ const shareText = encodeURIComponent(`${name} (${c.city || c.district}): से�
 const waText = encodeURIComponent("नमस्ते, मैंने आपका केंद्र SarkariSewa India (sarkarisewaindia.com) पर देखा। मुझे इस काम के लिए मदद चाहिए: ");
 const typeHi: Record<string, string> = { "Jan Aushadhi Kendra": "प्रधानमंत्री भारतीय जन औषधि केंद्र", CSC: "CSC (कॉमन सर्विस सेंटर)", "Jan Seva Kendra": "जन सेवा केंद्र", "E-Mitra": "ई-मित्र", "Maha E Seva": "महा ई-सेवा केंद्र", "Vasudha Kendra": "वसुधा केंद्र", Other: "सेवा केंद्र" };
 const type = typeHi[c.centre_type ?? ""] ?? c.centre_type ?? "सेवा केंद्र";
-const area = uniq([c.locality, c.city || c.district]);
+// A short place name for the title and H1: the locality or town if it is a
+// real name (owners sometimes type a whole postal address or a number there),
+// plus the district, e.g. "Harsh Vihar (North East Delhi)".
+const shortOk = (x: string | null | undefined) => !!x && x.trim().length >= 3 && x.trim().length <= 28 && !/^\d+$/.test(x.trim());
+const town = niceName([c.locality, c.city].find(shortOk)?.trim() ?? "");
+const area = town && c.district && town.toLowerCase() !== c.district.trim().toLowerCase() ? `${town} (${niceName(c.district)})` : (town || niceName(c.district) || c.city || "");
 const top = all.filter((x) => !/फोटो|प्रिंट|स्कैन|लैमि|photo|print|scan|lamin/i.test(x)).slice(0, 2);
 const title = `${name}, ${area}: ${T.short}${top.length ? ` (${top.join(", ")})` : ""} | SarkariSewa India`;
 const description = `${name} (${where}): ${all.slice(0, 4).join(", ") || (isJa ? "सस्ती जेनेरिक दवाएं" : "सरकारी ऑनलाइन सेवाएं")}। पता, समय, फोन और WhatsApp। SarkariSewa पर सत्यापित केंद्र।`;
@@ -93,7 +98,7 @@ const ld = {
   <Breadcrumbs items={crumbs} />
   <div class="page has-aside">
     <article>
-      <h1>{name}: {type}, {c.city || c.district}</h1>
+      <h1>{name}: {type}, {area}</h1>
       <div class="csc-badges" id="c-badges" data-hours={JSON.stringify(c.working_hours ?? null)}>
         <span class="b-ok">✓ SarkariSewa पर सत्यापित</span>
         {since && <span>🗓️ {since}</span>}
