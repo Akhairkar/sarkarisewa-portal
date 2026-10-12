@@ -74,6 +74,25 @@ Abhi shuru nahi karna; traffic aur indexing ke baad uthana hai. Poori research r
 - **CBC (DAVP) Category E govt ad empanelment:** site 1 saal purani hone ke baad.
 - **YouTube:** brand ke liye. Pure auto-generated video par July 2025 se monetization band ho sakta hai, isliye real voiceover chahiye.
 
+## 4b. Senior citizen + labour card: agle pages (plan, 2026-10-12)
+
+Data: page_views, pichle 28 din, Google se visits. Har state ka page pehle se hai; 10 senior aur 9 labour naye detailed guide hain, baaki purane pages hain.
+Naye guide sabse achha chal rahe hain (Jharkhand senior 241, MP senior 165, Uttarakhand senior 152, Bihar senior 130, Delhi labour 110, Delhi senior 103).
+
+Niyam: har page official source se check karke (pension rashi, portal, helpline); URL, title same rahega; jahan official site na khule wahan page nahi badlega.
+
+Batch 1 (bade rajya, purana page, traffic lagbhag 0, ranking ka koi risk nahi):
+- Senior: Maharashtra (6), Gujarat (7), Karnataka (5), Tamil Nadu (16), Andhra Pradesh (5), Telangana (4), West Bengal (34), Haryana (9), Odisha (0), Assam (1)
+- Labour: Gujarat (5), Karnataka (8), Andhra Pradesh (7), Tamil Nadu (0 visits), Odisha (1), Assam (3)
+
+Batch 2 (purana page jo pehle se traffic la raha hai; dhyan se, ek-ek karke, 2 hafte dekh ke):
+- Labour: Uttarakhand (133), West Bengal (108), Jharkhand (96), Telangana (35)
+- Senior: Kerala (59)
+
+Batch 3 (chhote rajya/UT): baaki NE states, Goa, J&K, Ladakh, UTs.
+
+Har batch ke baad 3-4 hafte page_views/GSC dekhna; jo pattern chale wahi aage.
+
 ## 5. Phases
 - [x] Phase 0: Targets discuss karna, purane docs hatana
 - [x] Phase 1: GSC data analysis (section 6 dekho)
