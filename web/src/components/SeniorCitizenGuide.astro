@@ -5,6 +5,7 @@ import Base from "../layouts/Base.astro";
 import Breadcrumbs from "./Breadcrumbs.astro";
 import OfficialLinks from "./OfficialLinks.astro";
 import PaidTools from "./PaidTools.astro";
+import CscHelp from "./CscHelp.astro";
 import Faq from "./Faq.astro";
 import CardGrid from "./CardGrid.astro";
 import StateGrid from "./StateGrid.astro";
@@ -49,6 +50,7 @@ const toc = [
           {g.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}
         </dl>
       </section>
+      <CscHelp state={g.state} doc="वरिष्ठ नागरिक कार्ड" href={g.csc} />
 
       <section class="section" id="kaun-sa-card">
         <h2>पहले समझें: आपको कौन सा कार्ड चाहिए?</h2>

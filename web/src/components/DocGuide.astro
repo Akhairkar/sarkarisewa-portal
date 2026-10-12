@@ -10,6 +10,7 @@ import StateGrid from "./StateGrid.astro";
 import Explore from "./Explore.astro";
 import PromoBox from "./PromoBox.astro";
 import PaidTools from "./PaidTools.astro";
+import CscHelp from "./CscHelp.astro";
 import type { DocGuide } from "../guides/doc/types";
 import { langOf } from "../i18n";
 
@@ -36,6 +37,7 @@ const crumbs = g.crumbs ?? [
         <p class="answer-lead">{g.lead}</p>
         <dl class="facts">{g.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}</dl>
       </section>
+      <CscHelp state={g.state} doc={g.docHi} />
 
       {g.notice && <div class="callout warn"><p set:html={g.notice} /></div>}
       {g.promo && <PromoBox p={g.promo} />}

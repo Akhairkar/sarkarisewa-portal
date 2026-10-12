@@ -12,6 +12,7 @@ import Faq from "../../components/Faq.astro";
 import CardGrid from "../../components/CardGrid.astro";
 import Explore from "../../components/Explore.astro";
 import PaidTools from "../../components/PaidTools.astro";
+import CscHelp from "../../components/CscHelp.astro";
 import { STATES, DOCS } from "../../data/site";
 import { exists } from "../../lib/repo";
 import { DOC_COMMON } from "../../data/doc-common";
@@ -58,6 +59,7 @@ const rest = d.sections.filter((s) => s !== lead);
           {lead && <Fragment set:html={lead.html} />}
         </section>
       )}
+      {st && <CscHelp state={{ slug: st.slug, hi: st.hi }} doc={doc ? doc.title.hi : undefined} />}
 
       {rest.map((s) => (
         <section class="section" id={s.id}>

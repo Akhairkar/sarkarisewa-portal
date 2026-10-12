@@ -708,3 +708,15 @@ body.embed { background: var(--c-bg); margin: 0; padding-bottom: 0; }
 .agecalc label, .hracalc label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: 4px; }
 .agecalc input, .hracalc input, .hracalc select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
 .agecalc .muted, .hracalc .muted, .embed-page .muted { color: var(--c-muted); font-size: .9rem; }
+
+/* "Get it done at a CSC" box under the quick answer on state guides */
+.csc-help { background: #fff7ed; border: 1px solid #fdba74; border-radius: var(--radius); padding: 16px 18px; margin: 0 0 16px; color: #1f2937; }
+.csc-help-title { font-weight: 800; font-size: 1.08rem; margin: 0 0 6px; color: #9a3412; }
+.csc-help p { margin: 0 0 8px; }
+.csc-help ul { margin: 0 0 10px; padding-left: 20px; }
+.csc-help li { margin: 2px 0; }
+.csc-help-cta { display: flex; flex-wrap: wrap; gap: 8px; }
+.csc-help-cta .cta { margin: 0; }
+:root[data-theme="dark"] .csc-help { background: #2a1a0e; border-color: #9a3412; color: var(--c-text); }
+:root[data-theme="dark"] .csc-help-title { color: #fdba74; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .csc-help { background: #2a1a0e; border-color: #9a3412; color: var(--c-text); } :root:not([data-theme="light"]) .csc-help-title { color: #fdba74; } }

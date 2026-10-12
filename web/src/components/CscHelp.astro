@@ -1,0 +1,29 @@
+---
+// "Can't apply online yourself? Get it done at a CSC" box, shown right under
+// the quick answer on state guides. Most readers of the senior citizen,
+// labour and ration card pages are elderly people, workers and families who
+// often cannot fill the online form themselves; this points them to the
+// state's CSC list and the location-based locator.
+interface Props { state?: { slug: string; hi: string }; doc?: string; href?: string }
+const { state, doc, href } = Astro.props;
+const list = href || (state ? `/service/csc-locator/${state.slug}.html` : "/tools/csc-locator.html");
+---
+<section class="csc-help" aria-labelledby="csc-help-title">
+  <p class="csc-help-title" id="csc-help-title">🏪 खुद ऑनलाइन फॉर्म नहीं भर पा रहे?</p>
+  <p>{doc ? `${doc} का` : "यह"} फॉर्म नज़दीकी <strong>CSC (जन सेवा केंद्र)</strong> पर भरवा सकते हैं। ऑपरेटर ऑनलाइन आवेदन करके रसीद दे देता है।</p>
+  <ul>
+    <li>आधार कार्ड, आधार से जुड़ा मोबाइल (OTP के लिए) और इस पेज पर बताए कागज़ साथ ले जाएं।</li>
+    <li>पहले पूछें: सरकारी फीस कितनी है और CSC का सेवा शुल्क कितना। हर भुगतान की रसीद लें।</li>
+  </ul>
+  <div class="csc-help-cta">
+    <a class="cta" href={list} data-csc-help="list">📍 {state ? `${state.hi} के` : "नज़दीकी"} CSC सेंटर देखें</a>
+    {state && <a class="cta secondary" href="/tools/csc-locator.html" data-csc-help="near">अपने पास का CSC खोजें</a>}
+  </div>
+</section>
+<script is:inline>
+  document.querySelectorAll("[data-csc-help]").forEach(function (a) {
+    a.addEventListener("click", function () {
+      try { if (window.gtag) gtag("event", "csc_help_click", { kind: a.dataset.cscHelp, page: location.pathname }); } catch (e) {}
+    });
+  });
+</script>
