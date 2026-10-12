@@ -6,7 +6,7 @@ const SARAL = "<a href=\"https://saralharyana.gov.in/\" target=\"_blank\" rel=\"
 export const haryana: SeniorGuide = {
   state: { slug: "haryana", hi: "हरियाणा" },
   title: "Haryana Senior Citizen Card 2026: Apply & Status",
-  description: "हरियाणा सीनियर सिटीजन कार्ड SARAL पोर्टल से कैसे बनता है, ज़रूरी दस्तावेज़, बुढ़ापा सम्मान भत्ता ₹3,200, परिवार पहचान पत्र से अपने-आप पेंशन और 70+ के लिए वय वंदना कार्ड।",
+  description: "हरियाणा सीनियर सिटीजन कार्ड SARAL पोर्टल से कैसे बनता है, ज़रूरी दस्तावेज़, बुढ़ापा सम्मान भत्ता ₹3,200, PPP से अपने-आप पेंशन और 70+ के लिए वय वंदना कार्ड।",
   published: "2026-08-01",
   modified: "2026-10-12",
   verified: "12 अक्टूबर 2026",

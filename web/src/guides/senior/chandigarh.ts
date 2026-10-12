@@ -4,7 +4,7 @@ import { commonFaq, commonReject, elderlineLinks, baseDocuments, relatedFor } fr
 export const chandigarh: SeniorGuide = {
   state: { slug: "chandigarh", hi: "चंडीगढ़" },
   title: "Chandigarh Senior Citizen Card 2026: Apply & Status",
-  description: "चंडीगढ़ में सीनियर सिटीजन कार्ड Sampark केंद्र और समाज कल्याण विभाग से कैसे बनता है, ज़रूरी दस्तावेज़, वृद्धावस्था पेंशन की शर्तें और 70+ के लिए आयुष्मान वय वंदना कार्ड।",
+  description: "चंडीगढ़ में सीनियर सिटीजन कार्ड Sampark केंद्र और समाज कल्याण विभाग से कैसे बनता है, ज़रूरी दस्तावेज़, पेंशन की शर्तें और 70+ के लिए वय वंदना कार्ड।",
   published: "2026-08-01",
   modified: "2026-10-12",
   verified: "12 अक्टूबर 2026",

@@ -6,7 +6,7 @@ const JANSUGAM = "<a href=\"https://jansugam.jk.gov.in/\" target=\"_blank\" rel=
 export const jammuKashmir: SeniorGuide = {
   state: { slug: "jammu-kashmir", hi: "जम्मू-कश्मीर" },
   title: "Jammu & Kashmir Senior Citizen Card 2026",
-  description: "जम्मू-कश्मीर में सीनियर सिटीजन कार्ड कहाँ बनता है, ज़रूरी दस्तावेज़, ISSS वृद्धावस्था पेंशन (60-79 साल ₹1,500, 80+ ₹2,000) का आवेदन और 70+ के लिए आयुष्मान वय वंदना कार्ड।",
+  description: "जम्मू-कश्मीर में सीनियर सिटीजन कार्ड कहाँ बनता है, ज़रूरी दस्तावेज़, ISSS वृद्धावस्था पेंशन (60-79 साल ₹1,500, 80+ ₹2,000) और 70+ के लिए वय वंदना कार्ड।",
   published: "2026-08-01",
   modified: "2026-10-12",
   verified: "12 अक्टूबर 2026",
