@@ -152,10 +152,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // description), source from its first official .gov.in/.nic.in link.
   const pagesBox = document.getElementById("pa-page");
   let pages = [];
-  fetch("/search-index.json").then((r) => r.json()).then((rows) => {
-    pages = rows;
-    document.getElementById("pa-pages").innerHTML = rows.map(([u, t]) => `<option value="${esc(u)}">${esc(t)}</option>`).join("");
-  }).catch(() => {});
+  fetch("/search-index.json").then((r) => r.json()).then((rows) => { pages = rows; }).catch(() => {});
+
+  // Our own suggestion list (a <datalist> with 2,500 pages does not open on
+  // most phones). Every typed word must appear in the title or the URL.
+  const sug = document.getElementById("pa-suggest");
+  function suggest() {
+    const words = pagesBox.value.toLowerCase().split(/\s+/).filter(Boolean);
+    if (!words.length || !pages.length) { sug.hidden = true; return; }
+    const hits = pages.filter(([u, t]) => { const s = (t + " " + u).toLowerCase(); return words.every((w) => s.includes(w)); }).slice(0, 15);
+    sug.innerHTML = hits.length
+      ? hits.map(([u, t]) => `<button type="button" data-u="${esc(u)}" style="display:block;width:100%;text-align:left;padding:8px 10px;border:0;border-bottom:1px solid rgba(99,102,241,.15);background:none;color:inherit;font:inherit;cursor:pointer;">${esc(t)}<br><small style="opacity:.65">${esc(u)}</small></button>`).join("")
+      : `<div style="padding:8px 10px;opacity:.7">Koi page nahi mila. Doosra shabd likhein.</div>`;
+    sug.hidden = false;
+  }
+  pagesBox.addEventListener("input", suggest);
+  pagesBox.addEventListener("focus", suggest);
+  sug.addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-u]");
+    if (!b) return;
+    pagesBox.value = b.dataset.u;
+    sug.hidden = true;
+    fillFromPage(b.dataset.u);
+  });
+  document.addEventListener("click", (e) => { if (e.target !== pagesBox && !sug.contains(e.target)) sug.hidden = true; });
 
   const cut = (text, max) => {
     text = String(text || "").replace(/\s+/g, " ").trim();
@@ -207,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   document.getElementById("pa-fill").addEventListener("click", () => fillFromPage(pagesBox.value));
-  pagesBox.addEventListener("change", () => { if (pagesBox.value.startsWith("/")) fillFromPage(pagesBox.value); });
 
   // Drafts from vacancies closing in the next three weeks (built with the site).
   document.getElementById("pa-jobs").addEventListener("click", async () => {

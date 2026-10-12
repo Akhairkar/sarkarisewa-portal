@@ -526,3 +526,21 @@ p, li, blockquote, td, .stat-label {
     }
   }
 }
+
+/* Phones and small tablets: the sidebar becomes a top bar with a sideways
+   scrolling menu, and the content takes the full width. */
+@media (max-width: 900px) {
+  .admin-layout { flex-direction: column; }
+  .admin-sidebar { position: static; width: auto; padding: 10px 12px; border-right: 0; border-bottom: 1px solid var(--admin-border); overflow: visible; }
+  .admin-sidebar-brand { margin-bottom: 8px; padding-bottom: 0; border-bottom: 0; }
+  .admin-nav { flex-direction: row; overflow-x: auto; gap: 6px; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+  .admin-nav-item { white-space: nowrap; padding: 8px 12px; }
+  .admin-sidebar-footer { flex-direction: row; flex-wrap: wrap; padding-top: 8px; }
+  .admin-main { margin-left: 0; padding: 16px 12px 48px; max-width: 100%; min-width: 0; }
+  .admin-topbar { flex-wrap: wrap; gap: 10px; }
+  .pa-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  #pa-form > div[style*="90px"] { grid-template-columns: 1fr 1fr !important; }
+  .admin-main table { display: block; max-width: 100%; overflow-x: auto; }
+  .admin-main * { min-width: 0; overflow-wrap: anywhere; }
+  .sub-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}

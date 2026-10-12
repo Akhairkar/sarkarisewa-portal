@@ -46,8 +46,8 @@
 <div style="display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:18px; align-items:start;" class="pa-grid">
 <form id="pa-form" style="display:grid; gap:10px;">
 <div style="background:rgba(99,102,241,.08);border:1px dashed rgba(99,102,241,.5);border-radius:10px;padding:10px;">
-<label>📄 Site ke kisi page se bharein (naam ya URL likhein)<input id="pa-page" list="pa-pages" class="pa-in" placeholder="जैसे: senior citizen card, RRB NTPC, /jobs/..."></label>
-<datalist id="pa-pages"></datalist>
+<label>📄 Site ke kisi page se bharein (naam ya URL likhein)<input id="pa-page" class="pa-in" autocomplete="off" placeholder="जैसे: senior citizen card, RRB NTPC, /jobs/..."></label>
+<div id="pa-suggest" role="listbox" hidden style="margin-top:4px;max-height:260px;overflow:auto;border:1px solid rgba(99,102,241,.4);border-radius:8px;background:var(--admin-surface,#121520);"></div>
 <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;"><button type="button" class="theme-toggle-btn" id="pa-fill">⚡ Auto-fill</button><small id="pa-fill-msg" style="align-self:center;opacity:.8">Title, jaankari, official source aur page link page se aa jayenge; publish se pehle padh lein.</small></div>
 </div>
 <input type="hidden" name="id">
