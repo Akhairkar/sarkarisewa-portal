@@ -15,6 +15,7 @@ import {
   cscPages, nearbyPages, cscServices, oldCentres, oldMeta, stateOf, cscStateHref, janAushadhiHref, type CscPage,
 } from "../../../../lib/csc";
 import { exists } from "../../../../lib/repo";
+import { listings, listingSlug, listingDistrictPage, niceName } from "../../../../lib/csc-listings";
 
 export function getStaticPaths() {
   return cscPages().map((p) => ({ params: { state: p.stateDir, district: p.slug }, props: { p } }));
@@ -30,6 +31,10 @@ const stateHref = cscStateHref(p.stateDir);
 const jaHref = janAushadhiHref(p.stateDir, p.slug);
 const topPin = p.top[0];
 const verified = "3 अक्टूबर 2026";
+// Approved centres of this district, written into the HTML so search
+// engines can follow the links (csc-listing.js later replaces them with
+// full cards).
+const mine = (await listings()).filter((c) => { const d = listingDistrictPage(c); return d && d.stateDir === p.stateDir && d.slug === p.slug; });
 // City pages show the numbers of the whole district the city is in.
 const town = p.d.town;
 const area = town ? `${town} ज़िले` : p.name;
@@ -97,10 +102,10 @@ const faq = [
         </dl>
       </section>
 
-      <section class="section" id="verified" hidden>
+      <section class="section" id="verified" hidden={mine.length === 0}>
         <h2>{p.name} के सत्यापित केंद्र</h2>
         <p>इन केंद्रों के संचालकों ने खुद अपनी जानकारी दी है और SarkariSewa ने उनसे बात करके जांचा है। सीधे कॉल या WhatsApp करें।</p>
-        <ul class="csc-list v-list"></ul>
+        <ul class="csc-list v-list">{mine.map((c) => <li><a href={`/csc-centre/${listingSlug(c)}.html`}>{niceName(c.centre_name)}</a>{c.locality || c.city ? `, ${c.locality || c.city}` : ""}</li>)}</ul>
       </section>
 
       <div class="claim-cta">
