@@ -4,9 +4,12 @@
 // labour and ration card pages are elderly people, workers and families who
 // often cannot fill the online form themselves; this points them to the
 // state's CSC list and the location-based locator.
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
 interface Props { state?: { slug: string; hi: string }; doc?: string; href?: string }
 const { state, doc, href } = Astro.props;
 const list = href || (state ? `/service/csc-locator/${state.slug}.html` : "/tools/csc-locator.html");
+// Wording of the consent the visitor ticks; stored with each request.
+const CONSENT_V = "v1-2026-10";
 ---
 <section class="csc-help" aria-labelledby="csc-help-title">
   <p class="csc-help-title" id="csc-help-title">🏪 खुद ऑनलाइन फॉर्म नहीं भर पा रहे?</p>
@@ -19,7 +22,69 @@ const list = href || (state ? `/service/csc-locator/${state.slug}.html` : "/tool
     <a class="cta" href={list} data-csc-help="list">📍 {state ? `${state.hi} के` : "नज़दीकी"} CSC सेंटर देखें</a>
     {state && <a class="cta secondary" href="/tools/csc-locator.html" data-csc-help="near">अपने पास का CSC खोजें</a>}
   </div>
+
+  <div class="svc-ask" data-url={SUPABASE_URL} data-key={SUPABASE_ANON_KEY} data-state={state?.hi ?? ""} data-service={doc ?? ""} data-consent={CONSENT_V}>
+    <p class="svc-q"><strong>क्या आप यह काम घर बैठे किसी सत्यापित CSC संचालक से करवाना चाहेंगे?</strong> <small>(उनका सेवा शुल्क लगेगा, सरकारी फीस अलग)</small></p>
+    <div class="svc-choice">
+      <button type="button" class="cta" data-choice="yes">हाँ, मुझे चाहिए</button>
+      <button type="button" class="svc-no" data-choice="no">नहीं, खुद कर लूंगा</button>
+    </div>
+    <form class="svc-form" hidden>
+      <label>आपका नाम<input name="name" required minlength="2" maxlength="60" autocomplete="name" /></label>
+      <label>मोबाइल नंबर (WhatsApp हो तो बेहतर)<input name="phone" required inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10 अंक" autocomplete="tel-national" /></label>
+      <label>आपका ज़िला<input name="district" required minlength="2" maxlength="60" /></label>
+      <label>आपको कौन सा काम करवाना है? <small>(अपने शब्दों में लिखें, चाहें तो)</small><textarea name="details" rows="2" maxlength="400" placeholder={doc ? `जैसे: ${doc} नया बनवाना है, या स्टेटस देखना है` : "जैसे: नया आवेदन, सुधार, स्टेटस"}></textarea></label>
+      <label class="svc-consent"><input type="checkbox" name="consent" required /> <span>मैं सहमत हूँ कि SarkariSewa India मेरा नाम, नंबर और ज़िला <strong>सिर्फ इस काम के लिए</strong> किसी सत्यापित CSC संचालक को दे सकता है और इसके लिए मुझसे फोन/WhatsApp पर संपर्क कर सकता है। जानकारी 6 महीने बाद हटा दी जाती है; पहले हटवाने के लिए sarkarisewaindia@gmail.com पर लिखें। <a href="/privacy-policy.html" target="_blank">गोपनीयता नीति</a></span></label>
+      <button type="submit" class="cta">अनुरोध भेजें</button>
+      <p class="svc-note">SarkariSewa India एक निजी सेवा है, सरकारी विभाग नहीं। आपके इलाके में सत्यापित CSC मिलने पर ही संपर्क होगा। किसी को भी OTP न बताएं और काम से पहले पूरा शुल्क न दें।</p>
+    </form>
+    <p class="svc-msg" role="status"></p>
+  </div>
 </section>
+<script is:inline>
+  (function () {
+    var box = document.querySelector(".svc-ask");
+    if (!box) return;
+    var U = box.dataset.url, K = box.dataset.key, form = box.querySelector(".svc-form"), msg = box.querySelector(".svc-msg");
+    function rpc(fn, body) {
+      return fetch(U + "/rest/v1/rpc/" + fn, { method: "POST", keepalive: true, headers: { apikey: K, Authorization: "Bearer " + K, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    }
+    var key = "ss_svc_" + location.pathname;
+    function seen() { try { return localStorage.getItem(key); } catch (e) { return null; } }
+    function mark(v) { try { localStorage.setItem(key, v); } catch (e) {} }
+    if (seen() === "sent") { box.querySelector(".svc-choice").hidden = true; msg.textContent = "✅ आपका अनुरोध हमें मिल चुका है।"; }
+    box.querySelectorAll("[data-choice]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var c = b.dataset.choice;
+        if (!seen()) { rpc("service_interest_log", { p_page: location.pathname, p_state: box.dataset.state || null, p_service: box.dataset.service || null, p_choice: c }).catch(function () {}); mark(c); }
+        try { if (window.gtag) gtag("event", "csc_service_interest", { choice: c, page: location.pathname }); } catch (e) {}
+        box.querySelector(".svc-choice").hidden = true;
+        if (c === "yes") { form.hidden = false; form.querySelector("[name=name]").focus(); }
+        else msg.textContent = "ठीक है। इस पेज पर दी गई जानकारी से आप खुद आवेदन कर सकते हैं।";
+      });
+    });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var f = form.elements, btn = form.querySelector("[type=submit]");
+      var phone = f.phone.value.replace(/\D/g, "").slice(-10);
+      if (!/^[6-9]\d{9}$/.test(phone)) { msg.textContent = "कृपया सही 10 अंकों का मोबाइल नंबर लिखें।"; return; }
+      btn.disabled = true; msg.textContent = "भेज रहे हैं…";
+      rpc("service_request_submit", { p_page: location.pathname, p_state: box.dataset.state || null, p_district: f.district.value, p_service: box.dataset.service || null, p_details: f.details.value, p_name: f.name.value, p_phone: phone, p_consent: f.consent.checked, p_consent_version: box.dataset.consent })
+        .then(function (r) { return r.ok ? r.json() : "error"; })
+        .then(function (res) {
+          if (res === "ok" || res === "dup") {
+            form.hidden = true; mark("sent");
+            msg.textContent = "✅ धन्यवाद! आपका अनुरोध मिल गया। आपके इलाके में सत्यापित CSC मिलने पर हम फोन/WhatsApp करेंगे।";
+            try { if (window.gtag) gtag("event", "csc_service_request", { page: location.pathname }); } catch (e) {}
+          } else {
+            btn.disabled = false;
+            msg.textContent = res === "limit" ? "इस नंबर से आज काफी अनुरोध आ चुके हैं। कल फिर कोशिश करें।" : res === "invalid" ? "कृपया नाम, सही मोबाइल नंबर, ज़िला भरें और सहमति पर टिक करें।" : "अभी अनुरोध नहीं भेजा जा सका। थोड़ी देर बाद फिर कोशिश करें।";
+          }
+        })
+        .catch(function () { btn.disabled = false; msg.textContent = "नेटवर्क की दिक्कत है। थोड़ी देर बाद फिर कोशिश करें।"; });
+    });
+  })();
+</script>
 <script is:inline>
   document.querySelectorAll("[data-csc-help]").forEach(function (a) {
     a.addEventListener("click", function () {

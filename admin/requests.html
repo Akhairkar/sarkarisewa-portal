@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../assets/img/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../assets/img/favicon-16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../favicon.ico" rel="icon"/>
+<link href="../manifest.json" rel="manifest"/>
+<title>Service Requests — SarkariSewa Admin</title>
+<meta content="noindex, nofollow" name="robots"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Mukta:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/css/style.css" rel="stylesheet"/>
+<link href="../assets/css/admin-theme.css?v=3" rel="stylesheet"/>
+<script defer src="../assets/js/admin-theme-toggle.js"></script>
+<link rel="canonical" href="https://sarkarisewaindia.com/admin/requests.html"></head>
+<body>
+<div class="admin-layout" hidden="" id="dash-wrap">
+<aside class="admin-sidebar">
+<div class="admin-sidebar-brand">
+<div class="admin-sidebar-logo">S</div>
+<div>
+<div class="admin-sidebar-title">SarkariSewa</div>
+<div class="admin-sidebar-subtitle">Admin Console</div>
+</div>
+</div>
+<nav class="admin-nav"></nav>
+<div class="admin-sidebar-footer">
+<button class="theme-toggle-btn" type="button">☀️ Light Mode</button>
+<div id="whoami" style="font-size:0.78rem; color:var(--admin-text-muted);">Loading identity…</div>
+<button class="logout-btn" id="logout" style="width:100%;">Log out</button>
+</div>
+</aside>
+<main class="admin-main">
+<div class="admin-topbar">
+<div class="admin-page-title">
+<h1>🙋 Service Requests (घर बैठे CSC से काम)</h1>
+<p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Visitors on state guides who asked for help through a verified CSC. Each request has consent to share name, number and district with one CSC for that task only. Delete requests older than 6 months (privacy policy).</p>
+</div>
+</div>
+<div id="rq-stats" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:16px;"></div>
+<div class="dash-card">
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+<h3 style="margin:0;flex:1">Requests</h3>
+<select id="rq-filter" class="rq-in" style="width:auto"><option value="open">Open (new / contacted / assigned)</option><option value="all">All</option><option value="new">New</option><option value="done">Done</option><option value="cancelled">Cancelled / spam</option></select>
+<button class="theme-toggle-btn" id="rq-refresh" type="button">↻ Refresh</button>
+</div>
+<table class="admin-table" style="width:100%;">
+<thead><tr><th>Date</th><th>Person</th><th>Task</th><th>Status / CSC</th><th>Actions</th></tr></thead>
+<tbody id="rq-list"><tr><td colspan="5">Loading…</td></tr></tbody>
+</table>
+</div>
+<div class="dash-card">
+<h3 style="margin-top:0">Demand: "घर बैठे करवाना चाहेंगे?" answers (last 90 days)</h3>
+<table class="admin-table" style="width:100%;">
+<thead><tr><th>Page</th><th>State</th><th>Task</th><th>Yes</th><th>No</th></tr></thead>
+<tbody id="rq-interest"><tr><td colspan="5">Loading…</td></tr></tbody>
+</table>
+</div>
+</main>
+</div>
+<div id="dash-loading"><p class="loading">Checking login…</p></div>
+<style>.rq-in{padding:6px 8px;border:1px solid var(--admin-border,#d1d5db);border-radius:8px;font:inherit;background:var(--admin-surface,#fff);color:inherit;box-sizing:border-box}</style>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script src="../assets/js/admin-requests.js"></script>
+</body>
+</html>
