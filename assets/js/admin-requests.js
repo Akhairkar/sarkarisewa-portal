@@ -25,19 +25,35 @@ document.addEventListener("DOMContentLoaded", async () => {
   const profileUrl = (c) => "https://sarkarisewaindia.com/csc-centre/" + [slugify(c.centre_name), slugify(c.district), (String(c.application_id || "").match(/\d{4,}$/) || [slugify(c.application_id)])[0]].filter(Boolean).join("-") + ".html";
   const when = (t) => (t ? new Date(t).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" }) : "");
   const card = (label, value) => `<div class="dash-card" style="margin:0;"><div style="font-size:.8rem;opacity:.75">${label}</div><div style="font-size:1.6rem;font-weight:800">${value}</div></div>`;
-  let rows = [], centres = [];
+  let rows = [], centres = [], resp = {};
+  // How each centre answered offers: replied = said yes (② sent),
+  // skipped = no reply or said no, so the offer went to the next centre.
+  function tally() {
+    resp = {};
+    const t = (id) => (resp[id] = resp[id] || { replied: 0, skipped: 0 });
+    rows.forEach((r) => {
+      (r.skipped_claim_ids || []).forEach((id) => t(id).skipped++);
+      if (r.csc_claim_id && r.csc_accepted_at) t(r.csc_claim_id).replied++;
+    });
+  }
+  const rate = (c) => { const x = resp[c.id]; return x && x.replied + x.skipped ? x.replied / (x.replied + x.skipped) : 0.5; };
+  const record = (c) => { const x = resp[c.id]; return x && x.replied + x.skipped ? ` · जवाब ${x.replied}/${x.replied + x.skipped}` : ""; };
+  const WAIT_H = 2;
 
   const stateEn = (r) => STATE_EN[r.state] || r.state || "";
   const sameState = (c, r) => norm(c.state) && norm(c.state) === norm(stateEn(r));
   const sameDistrict = (c, r) => { const a = norm(c.district), b = norm(r.district); return a && b && (a === b || a.includes(b) || b.includes(a)); };
-  // Best first: same district, then same state; within those, home visit or
-  // remote work first.
+  // Best first: same district, then same state; within those, centres that
+  // reply to offers, then home visit or remote work. Centres with leads
+  // paused, and those that already let this request go, are left out.
   function suggest(r) {
+    const skipped = r.skipped_claim_ids || [];
     return centres
-      .map((c) => ({ c, s: (sameState(c, r) ? 2 : 0) + (sameState(c, r) && sameDistrict(c, r) ? 3 : 0) + (c.home_visit ? 0.5 : 0) + ((c.remote_services || []).length ? 0.5 : 0) }))
+      .filter((c) => c.id === r.csc_claim_id || (!c.leads_paused && !skipped.includes(c.id)))
+      .map((c) => ({ c, s: (sameState(c, r) ? 2 : 0) + (sameState(c, r) && sameDistrict(c, r) ? 3 : 0) + rate(c) * 1.5 + (c.home_visit ? 0.25 : 0) + ((c.remote_services || []).length ? 0.25 : 0) }))
       .sort((a, b) => b.s - a.s);
   }
-  const label = (c, r) => `${sameState(c, r) && sameDistrict(c, r) ? "✅ " : sameState(c, r) ? "🟡 " : "⚪ "}${c.centre_name} · ${c.district || "?"}, ${String(c.state || "").trim()}${c.home_visit ? " · घर आते हैं" : ""}${(c.remote_services || []).length ? " · ऑनलाइन काम" : ""}`;
+  const label = (c, r) => `${sameState(c, r) && sameDistrict(c, r) ? "✅ " : sameState(c, r) ? "🟡 " : "⚪ "}${c.centre_name} · ${c.district || "?"}, ${String(c.state || "").trim()}${c.home_visit ? " · घर आते हैं" : ""}${(c.remote_services || []).length ? " · ऑनलाइन काम" : ""}${record(c)}`;
   const task = (r) => r.service || "सरकारी काम";
   const place = (r) => [r.district, r.state].filter(Boolean).join(", ") || "ज़िला नहीं बताया";
 
@@ -62,7 +78,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 यह काम लेने के नियम:
 ${RULES.map((t, i) => `${i + 1}. ${t}`).join("\n")}
 
-ये नियम मंज़ूर हों और आप यह काम कर सकें तो "हाँ" लिखें। तब हम ग्राहक का नाम और नंबर भेजेंगे।`;
+ये नियम मंज़ूर हों और आप यह काम कर सकें तो "हाँ" लिखें। तब हम ग्राहक का नाम और नंबर भेजेंगे। ${WAIT_H} घंटे में जवाब न आने पर यह काम किसी और CSC को दे दिया जाएगा।`;
+
+  // One-time invitation to the lead programme for each verified centre.
+  const msgJoin = (c) => `नमस्ते ${c.owner_name || ""} जी, SarkariSewa India से। आपका केंद्र "${c.centre_name}" हमारी साइट पर सत्यापित है।
+हमारी साइट पर कई लोग (ज़्यादातर बुज़ुर्ग और मज़दूर) घर बैठे CSC से काम करवाना चाहते हैं। आपके इलाके से ऐसा अनुरोध आने पर हम सबसे पहले आपको WhatsApp पर काम बताएंगे। यह अभी आपके लिए मुफ़्त है।
+
+शर्तें: विनम्र व्यवहार, तय फीस से ज़्यादा नहीं, हर भुगतान की रसीद, बायोमेट्रिक काम सिर्फ़ ग्राहक की मौजूदगी में, और ${WAIT_H} घंटे के अंदर जवाब। जो केंद्र जवाब देते हैं, उन्हें आगे ज़्यादा काम मिलेगा।
+
+ऐसे काम लेना चाहते हैं तो "हाँ" लिखें।`;
 
   const msgLead = (r) => `धन्यवाद! ग्राहक की जानकारी:
 • नाम: ${r.name || "नहीं बताया"}
@@ -85,6 +109,27 @@ ${RULES.map((t, i) => `${i + 1}. ${t}`).join("\n")}
 SarkariSewa India एक निजी सेवा है, सरकारी विभाग नहीं।`;
   };
 
+  // An offer the centre has not answered yet: how long, and a way to move on.
+  function waiting(r) {
+    if (!r.csc_told_at || r.csc_accepted_at || !OPEN.includes(r.status)) return "";
+    const h = (Date.now() - new Date(r.csc_told_at)) / 36e5;
+    const late = h >= WAIT_H;
+    return `<div class="rq-wait${late ? " late" : ""}">${late ? "⏰" : "⏳"} CSC के जवाब का इंतज़ार: ${h < 1 ? Math.max(1, Math.round(h * 60)) + " मिनट" : Math.floor(h) + " घंटे"}
+      <button type="button" class="theme-toggle-btn" data-step="skip">✖ जवाब नहीं / मना किया: अगला CSC</button></div>`;
+  }
+
+  // Verified centres: reply record and whether they get leads.
+  function renderCentres() {
+    document.getElementById("rq-centres").innerHTML = centres.length ? centres.map((c) => {
+      const x = resp[c.id] || { replied: 0, skipped: 0 };
+      return `<tr data-cid="${c.id}"><td><strong>${esc(c.centre_name)}</strong><br><small>${esc([c.district, String(c.state || "").trim()].filter(Boolean).join(", "))}</small></td>
+        <td>${x.replied}</td><td>${x.skipped}</td>
+        <td>${c.leads_paused ? "⏸ बंद" : "✅ चालू"}</td>
+        <td><a class="theme-toggle-btn" href="${wa(c.public_whatsapp || c.owner_mobile, msgJoin(c))}" target="_blank" rel="noopener">🤝 लीड प्रोग्राम संदेश</a>
+          <button type="button" class="theme-toggle-btn rq-pause">${c.leads_paused ? "▶ लीड चालू करें" : "⏸ लीड बंद करें"}</button></td></tr>`;
+    }).join("") : `<tr><td colspan="5">अभी कोई verified CSC नहीं।</td></tr>`;
+  }
+
   function render() {
     const f = filter.value;
     const shown = rows.filter((r) => f === "all" || (f === "open" ? OPEN.includes(r.status) : f === "cancelled" ? ["cancelled", "spam"].includes(r.status) : r.status === f));
@@ -102,7 +147,7 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
               <button type="button" class="theme-toggle-btn" data-step="lead" ${r.csc_told_at ? "" : "disabled title=\"पहले ① भेजें और CSC का 'हाँ' आने दें\""}>② CSC ने हाँ कहा: नंबर भेजें</button>
               <button type="button" class="theme-toggle-btn" data-step="customer" ${r.csc_accepted_at ? "" : "disabled title=\"पहले ② पूरा करें\""}>③ ग्राहक को CSC बताएं</button>
             </div>` : "<small>अभी कोई verified CSC नहीं</small>"}
-            <small class="rq-done">${steps}</small></td>
+            <small class="rq-done">${steps}</small>${waiting(r)}</td>
         <td><select class="rq-in rq-status">${STATUS.map((s) => `<option${s === r.status ? " selected" : ""}>${s}</option>`).join("")}</select>
             <select class="rq-in rq-feedback" style="margin-top:4px">${FEEDBACK.map(([v, t]) => `<option value="${v}"${v === (r.feedback || "") ? " selected" : ""}>${t}</option>`).join("")}</select>
             <input class="rq-in rq-note" placeholder="Note" value="${esc(r.admin_notes || "")}" style="margin-top:4px;width:100%">
@@ -126,10 +171,11 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
   async function load() {
     const [{ data, error }, { data: cs }] = await Promise.all([
       client.from("service_requests").select("*").order("created_at", { ascending: false }).limit(500),
-      client.from("csc_claims").select("id,application_id,centre_name,owner_name,owner_mobile,public_phone,public_whatsapp,city,district,state,home_visit,remote_services").eq("status", "approved"),
+      client.from("csc_claims").select("id,application_id,centre_name,owner_name,owner_mobile,public_phone,public_whatsapp,city,district,state,home_visit,remote_services,leads_paused").eq("status", "approved"),
     ]);
     if (error) { list.innerHTML = `<tr><td colspan="5">Could not load: ${esc(error.message)}</td></tr>`; return; }
     rows = data || [];
+    tally();
     centres = (cs || []).filter((c) => ten(c.public_whatsapp) || ten(c.owner_mobile));
     const since = new Date(Date.now() - 90 * 864e5).toISOString();
     const { data: ints } = await client.from("service_interest").select("page,state,service,choice").gte("created_at", since).limit(20000);
@@ -145,6 +191,7 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
     document.getElementById("rq-interest").innerHTML = top.length ? top.map((a) => `<tr><td><a href="${esc(a.page)}" target="_blank">${esc(a.page)}</a></td><td>${esc(a.state || "")}</td><td>${esc(a.service || "")}</td><td>${a.yes}</td><td>${a.no}</td></tr>`).join("") : `<tr><td colspan="5">No answers yet.</td></tr>`;
     render();
     renderGaps();
+    renderCentres();
   }
 
   async function save(id, patch) {
@@ -159,8 +206,9 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
     const id = tr.dataset.id, r = rows.find((x) => x.id === id);
     const step = e.target.dataset.step;
     if (step) {
-      const c = centres.find((x) => x.id === tr.querySelector(".rq-csc-pick").value);
-      if (!c) return;
+      const pick = tr.querySelector(".rq-csc-pick");
+      const c = centres.find((x) => x.id === (pick && pick.value));
+      if (!c && step !== "skip") return;
       const now = new Date().toISOString();
       if (step === "offer") {
         // Open WhatsApp first (a popup must come straight from the click).
@@ -170,6 +218,9 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
         if (r.csc_claim_id && r.csc_claim_id !== c.id && !confirm("① किसी दूसरे CSC को भेजा था। फिर भी इस CSC को नंबर भेजें?")) return;
         window.open(wa(c.public_whatsapp || c.owner_mobile, msgLead(r)), "_blank");
         await save(id, { csc_claim_id: c.id, csc_accepted_at: now, assigned_to: c.centre_name, status: "assigned" });
+      } else if (step === "skip") {
+        if (!confirm("इस CSC ने जवाब नहीं दिया या मना किया? request अगले CSC के लिए खुल जाएगी।")) return;
+        await save(id, { skipped_claim_ids: [...(r.skipped_claim_ids || []), r.csc_claim_id].filter(Boolean), csc_claim_id: null, csc_told_at: null, assigned_to: null });
       } else if (step === "customer") {
         window.open(wa(r.phone, msgCustomer(r, c)), "_blank");
         await save(id, { customer_told_at: now });
@@ -182,6 +233,12 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
       const { error } = await client.from("service_requests").delete().eq("id", id);
       if (error) alert("Not deleted: " + error.message); else load();
     }
+  });
+  document.getElementById("rq-centres").addEventListener("click", async (e) => {
+    if (!e.target.classList.contains("rq-pause")) return;
+    const c = centres.find((x) => x.id === e.target.closest("tr").dataset.cid);
+    const { error } = await client.from("csc_claims").update({ leads_paused: !c.leads_paused }).eq("id", c.id);
+    if (error) alert("Not saved: " + error.message); else load();
   });
   filter.addEventListener("change", render);
   document.getElementById("rq-refresh").addEventListener("click", load);
