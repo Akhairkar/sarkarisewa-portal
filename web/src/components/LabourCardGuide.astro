@@ -45,7 +45,7 @@ const toc = [
 
       <section class="answer" aria-labelledby="answer-title">
         <p class="answer-title" id="answer-title">सीधा जवाब</p>
-        <p class="answer-lead">{g.lead}</p>
+        <p class="answer-lead" set:html={g.lead} />
         <dl class="facts">
           {g.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}
         </dl>
