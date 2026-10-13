@@ -31,15 +31,23 @@ const switchHref = pair ? pair[other] : other === "en" ? "/en/" : "/";
 </header>
 
 <script is:inline>
-// Pages without a translation: say so instead of silently opening the other
-// language's home page; the notice links there.
+// Pages without a translation. Hindi page -> English: open the same page
+// through Google Translate (most pages are Hindi only, and readers expect
+// the button to work). English page -> Hindi: say so and link the Hindi home.
 (function () {
   var a = document.querySelector(".lang-btn[data-solo]");
   if (!a) return;
   a.addEventListener("click", function (e) {
     e.preventDefault();
-    if (document.getElementById("ss-solo")) return;
     var en = a.getAttribute("hreflang") === "en";
+    // Already inside Google Translate: go back to the original Hindi page.
+    if (/\.translate\.goog$/.test(location.hostname)) { location.href = "https://sarkarisewaindia.com" + location.pathname; return; }
+    if (en) {
+      try { if (window.gtag) gtag("event", "translate_en", { page: location.pathname }); } catch (x) {}
+      location.href = "https://translate.google.com/translate?sl=hi&tl=en&hl=en&u=" + encodeURIComponent(location.href.split("#")[0]);
+      return;
+    }
+    if (document.getElementById("ss-solo")) return;
     var bar = document.createElement("div");
     bar.id = "ss-solo"; bar.className = "callout info"; bar.setAttribute("role", "status");
     bar.style.cssText = "margin:12px 16px;display:flex;gap:10px;align-items:flex-start";
