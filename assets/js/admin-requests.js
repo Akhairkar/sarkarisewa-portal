@@ -15,10 +15,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const shown = rows.filter((r) => f === "all" || (f === "open" ? ["new", "contacted", "assigned"].includes(r.status) : f === "cancelled" ? ["cancelled", "spam"].includes(r.status) : r.status === f));
     list.innerHTML = shown.length ? shown.map((r) => {
       const d = new Date(r.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
-      const wa = `https://wa.me/91${r.phone}?text=${encodeURIComponent(`नमस्ते ${r.name} जी, SarkariSewa India से बात कर रहे हैं। आपने ${r.service || "सरकारी काम"} के लिए मदद मांगी थी।`)}`;
+      const wa = `https://wa.me/91${r.phone}?text=${encodeURIComponent(`नमस्ते${r.name ? ` ${r.name} जी` : ""}, SarkariSewa India से बात कर रहे हैं। आपने ${r.service || "सरकारी काम"} के लिए मदद मांगी थी।`)}`;
       return `<tr data-id="${r.id}">
         <td>${esc(d)}</td>
-        <td><strong>${esc(r.name)}</strong><br><a href="tel:+91${esc(r.phone)}">${esc(r.phone)}</a> · <a href="${wa}" target="_blank" rel="noopener">WhatsApp</a><br><small>${esc(r.district)}, ${esc(r.state || "")}</small></td>
+        <td><strong>${esc(r.name || "(नाम नहीं दिया)")}</strong><br><a href="tel:+91${esc(r.phone)}">${esc(r.phone)}</a> · <a href="${wa}" target="_blank" rel="noopener">WhatsApp</a><br><small>${esc([r.district, r.state].filter(Boolean).join(", ") || "—")}</small></td>
         <td>${esc(r.service || "—")}${r.details ? `<br><small>“${esc(r.details)}”</small>` : ""}<br><small><a href="${esc(r.page || "#")}" target="_blank">${esc(r.page || "")}</a></small></td>
         <td><select class="rq-in rq-status">${STATUS.map((s) => `<option${s === r.status ? " selected" : ""}>${s}</option>`).join("")}</select>
             <input class="rq-in rq-csc" placeholder="CSC / note" value="${esc(r.assigned_to || "")}" style="margin-top:4px;width:100%"></td>
