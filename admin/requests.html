@@ -37,7 +37,7 @@
 <div class="admin-topbar">
 <div class="admin-page-title">
 <h1>🙋 Service Requests (घर बैठे CSC से काम)</h1>
-<p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Visitors on state guides who asked for help through a verified CSC. Each request has consent to share name, number and district with one CSC for that task only. Delete requests older than 6 months (privacy policy).</p>
+<p style="margin:4px 0 0; font-size:0.86rem; color:var(--admin-text-muted);">Visitors on state guides who asked for help through a verified CSC. Each request has consent to share the number (and name, district if given) with one verified CSC for that task only. Delete requests older than 6 months (privacy policy).</p>
 </div>
 </div>
 <div id="rq-stats" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:16px;"></div>
@@ -47,9 +47,22 @@
 <select id="rq-filter" class="rq-in" style="width:auto"><option value="open">Open (new / contacted / assigned)</option><option value="all">All</option><option value="new">New</option><option value="done">Done</option><option value="cancelled">Cancelled / spam</option></select>
 <button class="theme-toggle-btn" id="rq-refresh" type="button">↻ Refresh</button>
 </div>
-<table class="admin-table" style="width:100%;">
-<thead><tr><th>Date</th><th>Person</th><th>Task</th><th>Status / CSC</th><th>Actions</th></tr></thead>
+<table class="admin-table rq-table" style="width:100%;">
+<thead><tr><th>Date</th><th>Person</th><th>Task</th><th>Verified CSC (WhatsApp steps)</th><th>Status / feedback</th></tr></thead>
 <tbody id="rq-list"><tr><td colspan="5">Loading…</td></tr></tbody>
+</table>
+</div>
+<div class="dash-card">
+<h3 style="margin-top:0">How a lead goes to a CSC</h3>
+<p style="margin:0 0 6px;font-size:.9rem">① sends the centre the task, place and these rules <strong>without the customer's number</strong> and asks it to reply "हाँ". Only after that, ② sends the name and number. ③ tells the customer which centre will call. ✅ = same district, 🟡 = same state, ⚪ = other state (only for work that needs no biometric).</p>
+<ol id="rq-rules" lang="hi" style="margin:0;padding-left:20px;font-size:.9rem"></ol>
+</div>
+<div class="dash-card">
+<h3 style="margin-top:0">Open requests where no verified CSC is in the district (admin only)</h3>
+<p style="margin:0 0 6px;font-size:.86rem;color:var(--admin-text-muted)">Use this to invite CSCs in these districts to claim their free listing. Never shown to visitors.</p>
+<table class="admin-table" style="width:100%;">
+<thead><tr><th>State</th><th>District</th><th>Open requests</th></tr></thead>
+<tbody id="rq-gaps"><tr><td colspan="3">Loading…</td></tr></tbody>
 </table>
 </div>
 <div class="dash-card">
@@ -62,7 +75,7 @@
 </main>
 </div>
 <div id="dash-loading"><p class="loading">Checking login…</p></div>
-<style>.rq-in{padding:6px 8px;border:1px solid var(--admin-border,#d1d5db);border-radius:8px;font:inherit;background:var(--admin-surface,#fff);color:inherit;box-sizing:border-box}</style>
+<style>@media (max-width:700px){.rq-table thead{display:none}.rq-table,.rq-table tbody,.rq-table tr,.rq-table td{display:block;width:100%;box-sizing:border-box}.rq-table tr{border:1px solid var(--admin-border,#d1d5db);border-radius:10px;margin-bottom:12px;padding:6px}.rq-table td{min-width:0!important;border:0;padding:6px 4px}}.rq-steps{display:grid;gap:4px;margin-top:6px}.rq-steps button{text-align:left;font-size:.82rem}.rq-steps button[disabled]{opacity:.45;cursor:not-allowed}.rq-done{display:block;margin-top:4px;color:var(--admin-text-muted)}.rq-in{padding:6px 8px;border:1px solid var(--admin-border,#d1d5db);border-radius:8px;font:inherit;background:var(--admin-surface,#fff);color:inherit;box-sizing:border-box}</style>
 <script src="../assets/js/supabase-client.js"></script>
 <script src="../assets/js/admin-common.js"></script>
 <script src="../assets/js/admin-requests.js"></script>

@@ -1,41 +1,142 @@
 // admin-requests.js
 // "Get it done at home through a verified CSC" requests (service_requests)
-// and the yes/no demand counts (service_interest). Admin can change status,
-// note which CSC got the task, open WhatsApp, and delete a request.
+// and the yes/no demand counts (service_interest).
+// Hand-off to a verified CSC happens through the admin's own WhatsApp in
+// three steps, each recorded on the request:
+//   1. tell the suggested centre about the task and the rules, WITHOUT the
+//      customer's number, and ask it to reply "हाँ";
+//   2. once it agrees, send it the customer's name and number;
+//   3. tell the customer which centre will call and what to watch out for.
+// The "demand without a verified CSC" table is admin-only, for inviting
+// centres in those districts to claim their listing.
 document.addEventListener("DOMContentLoaded", async () => {
   const client = await adminGuard();
   const esc = adminEsc;
   const list = document.getElementById("rq-list"), stats = document.getElementById("rq-stats"), filter = document.getElementById("rq-filter");
   const STATUS = ["new", "contacted", "assigned", "done", "cancelled", "spam"];
+  const FEEDBACK = [["", "— feedback —"], ["good", "👍 काम हुआ"], ["complaint", "👎 शिकायत"], ["no_response", "📵 जवाब नहीं"]];
+  const OPEN = ["new", "contacted", "assigned"];
+  // Requests carry the Hindi state name from the guide; claims are in English.
+  const STATE_EN = { "आंध्र प्रदेश": "Andhra Pradesh", "अरुणाचल प्रदेश": "Arunachal Pradesh", "असम": "Assam", "बिहार": "Bihar", "छत्तीसगढ़": "Chhattisgarh", "गोवा": "Goa", "गुजरात": "Gujarat", "हरियाणा": "Haryana", "हिमाचल प्रदेश": "Himachal Pradesh", "झारखंड": "Jharkhand", "कर्नाटक": "Karnataka", "केरल": "Kerala", "मध्य प्रदेश": "Madhya Pradesh", "महाराष्ट्र": "Maharashtra", "मणिपुर": "Manipur", "मेघालय": "Meghalaya", "मिज़ोरम": "Mizoram", "नागालैंड": "Nagaland", "ओडिशा": "Odisha", "पंजाब": "Punjab", "राजस्थान": "Rajasthan", "सिक्किम": "Sikkim", "तमिलनाडु": "Tamil Nadu", "तेलंगाना": "Telangana", "त्रिपुरा": "Tripura", "उत्तर प्रदेश": "Uttar Pradesh", "उत्तराखंड": "Uttarakhand", "पश्चिम बंगाल": "West Bengal", "अंडमान-निकोबार": "Andaman & Nicobar", "चंडीगढ़": "Chandigarh", "दादरा नगर हवेली, दमन-दीव": "Dadra & Nagar Haveli and Daman & Diu", "दिल्ली": "Delhi", "जम्मू-कश्मीर": "Jammu & Kashmir", "लद्दाख": "Ladakh", "लक्षद्वीप": "Lakshadweep", "पुडुचेरी": "Puducherry" };
+  const norm = (s) => String(s || "").toLowerCase().replace(/district|जिला|ज़िला|&|and|[^a-zऀ-ॿ]/g, "");
+  const ten = (s) => String(s || "").replace(/\D/g, "").slice(-10);
+  const wa = (phone, text) => `https://wa.me/91${ten(phone)}?text=${encodeURIComponent(text)}`;
+  const slugify = (s) => String(s || "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
+  const profileUrl = (c) => "https://sarkarisewaindia.com/csc-centre/" + [slugify(c.centre_name), slugify(c.district), (String(c.application_id || "").match(/\d{4,}$/) || [slugify(c.application_id)])[0]].filter(Boolean).join("-") + ".html";
+  const when = (t) => (t ? new Date(t).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" }) : "");
   const card = (label, value) => `<div class="dash-card" style="margin:0;"><div style="font-size:.8rem;opacity:.75">${label}</div><div style="font-size:1.6rem;font-weight:800">${value}</div></div>`;
-  let rows = [];
+  let rows = [], centres = [];
+
+  const stateEn = (r) => STATE_EN[r.state] || r.state || "";
+  const sameState = (c, r) => norm(c.state) && norm(c.state) === norm(stateEn(r));
+  const sameDistrict = (c, r) => { const a = norm(c.district), b = norm(r.district); return a && b && (a === b || a.includes(b) || b.includes(a)); };
+  // Best first: same district, then same state; within those, home visit or
+  // remote work first.
+  function suggest(r) {
+    return centres
+      .map((c) => ({ c, s: (sameState(c, r) ? 2 : 0) + (sameState(c, r) && sameDistrict(c, r) ? 3 : 0) + (c.home_visit ? 0.5 : 0) + ((c.remote_services || []).length ? 0.5 : 0) }))
+      .sort((a, b) => b.s - a.s);
+  }
+  const label = (c, r) => `${sameState(c, r) && sameDistrict(c, r) ? "✅ " : sameState(c, r) ? "🟡 " : "⚪ "}${c.centre_name} · ${c.district || "?"}, ${String(c.state || "").trim()}${c.home_visit ? " · घर आते हैं" : ""}${(c.remote_services || []).length ? " · ऑनलाइन काम" : ""}`;
+  const task = (r) => r.service || "सरकारी काम";
+  const place = (r) => [r.district, r.state].filter(Boolean).join(", ") || "ज़िला नहीं बताया";
+
+  // Rules sent with every lead; the same text is shown on the admin page.
+  const RULES = [
+    "ग्राहक से विनम्रता और धैर्य से बात करें। ज़्यादातर बुज़ुर्ग, मज़दूर और ऐसे लोग हैं जो खुद फॉर्म नहीं भर पाते।",
+    "सरकारी फीस जितनी है उतनी ही लें। अपना सेवा शुल्क काम शुरू करने से पहले साफ बताएं, CSC की तय दर से ज़्यादा न लें और हर भुगतान की रसीद दें।",
+    "अंगूठा, आँख या लाइव फोटो (बायोमेट्रिक) वाले काम फोन या ऑनलाइन से न करें। ग्राहक को केंद्र पर बुलाएं या घर जाकर उनकी मौजूदगी में अपने रजिस्टर्ड डिवाइस से करें।",
+    "बैंक/UPI का OTP, PIN या पासवर्ड कभी न मांगें। आधार OTP सिर्फ़ इसी काम के लिए, ग्राहक को बताकर इस्तेमाल करें।",
+    "ग्राहक का नंबर और कागज़ सिर्फ़ इसी काम के लिए हैं। किसी और को न दें, प्रचार के मैसेज न भेजें, काम के बाद कागज़ों की कॉपी न रखें।",
+    "गलत या नकली कागज़ से कोई काम न करें। काम न हो सके तो ग्राहक को साफ बताएं।",
+    "काम पूरा होने पर या न हो पाने पर हमें इसी नंबर पर बताएं।",
+  ];
+  document.getElementById("rq-rules").innerHTML = RULES.map((t) => `<li>${esc(t)}</li>`).join("");
+
+  const msgOffer = (r, c) => `नमस्ते ${c.owner_name || ""} जी, SarkariSewa India से।
+आपके इलाके से एक नया काम आया है:
+• काम: ${task(r)}${r.details ? ` (${r.details})` : ""}
+• जगह: ${place(r)}
+ग्राहक ने SarkariSewa पर अपना नंबर एक सत्यापित CSC को देने की सहमति दी है।
+
+यह काम लेने के नियम:
+${RULES.map((t, i) => `${i + 1}. ${t}`).join("\n")}
+
+ये नियम मंज़ूर हों और आप यह काम कर सकें तो "हाँ" लिखें। तब हम ग्राहक का नाम और नंबर भेजेंगे।`;
+
+  const msgLead = (r) => `धन्यवाद! ग्राहक की जानकारी:
+• नाम: ${r.name || "नहीं बताया"}
+• मोबाइल: ${r.phone}
+• जगह: ${place(r)}
+• काम: ${task(r)}${r.details ? ` (${r.details})` : ""}
+
+कृपया आज ही संपर्क करें और ऊपर के नियमों का पालन करें। फीस और सेवा शुल्क पहले बताएं, बायोमेट्रिक काम सिर्फ़ ग्राहक की मौजूदगी में करें। काम के बाद हमें बताएं।`;
+
+  const msgCustomer = (r, c) => {
+    const pub = ten(c.public_whatsapp) || ten(c.public_phone);
+    return `नमस्ते${r.name ? ` ${r.name} जी` : ""}, SarkariSewa India से।
+आपने ${task(r)} के लिए मदद मांगी थी। आपका काम ${c.centre_name} (${[c.city, c.district].map((s) => String(s || "").trim()).filter(Boolean).join(", ")}) के सत्यापित CSC संचालक ${c.owner_name || ""} करेंगे। वे आपको जल्द फोन/WhatsApp करेंगे।${pub ? `\nउनका नंबर: ${pub}\nकेंद्र की जानकारी: ${profileUrl(c)}` : ""}
+
+ध्यान रखें:
+• सरकारी फीस और CSC का सेवा शुल्क काम से पहले पूछ लें, रसीद ज़रूर लें।
+• अंगूठा/आँख वाले (बायोमेट्रिक) काम फोन से नहीं होते। इसके लिए आपको केंद्र जाना होगा या संचालक घर आएंगे।
+• बैंक का OTP, PIN या पासवर्ड किसी को न बताएं।
+• कोई ज़्यादा पैसा मांगे या परेशानी हो तो इसी नंबर पर बताएं।
+SarkariSewa India एक निजी सेवा है, सरकारी विभाग नहीं।`;
+  };
 
   function render() {
     const f = filter.value;
-    const shown = rows.filter((r) => f === "all" || (f === "open" ? ["new", "contacted", "assigned"].includes(r.status) : f === "cancelled" ? ["cancelled", "spam"].includes(r.status) : r.status === f));
+    const shown = rows.filter((r) => f === "all" || (f === "open" ? OPEN.includes(r.status) : f === "cancelled" ? ["cancelled", "spam"].includes(r.status) : r.status === f));
     list.innerHTML = shown.length ? shown.map((r) => {
-      const d = new Date(r.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
-      const wa = `https://wa.me/91${r.phone}?text=${encodeURIComponent(`नमस्ते${r.name ? ` ${r.name} जी` : ""}, SarkariSewa India से बात कर रहे हैं। आपने ${r.service || "सरकारी काम"} के लिए मदद मांगी थी।`)}`;
+      const opts = suggest(r);
+      const chosen = r.csc_claim_id || (opts[0] && opts[0].c.id) || "";
+      const steps = [r.csc_told_at && `① CSC को बताया ${when(r.csc_told_at)}`, r.csc_accepted_at && `② नंबर भेजा ${when(r.csc_accepted_at)}`, r.customer_told_at && `③ ग्राहक को बताया ${when(r.customer_told_at)}`].filter(Boolean).join("<br>");
       return `<tr data-id="${r.id}">
-        <td>${esc(d)}</td>
-        <td><strong>${esc(r.name || "(नाम नहीं दिया)")}</strong><br><a href="tel:+91${esc(r.phone)}">${esc(r.phone)}</a> · <a href="${wa}" target="_blank" rel="noopener">WhatsApp</a><br><small>${esc([r.district, r.state].filter(Boolean).join(", ") || "—")}</small></td>
-        <td>${esc(r.service || "—")}${r.details ? `<br><small>“${esc(r.details)}”</small>` : ""}<br><small><a href="${esc(r.page || "#")}" target="_blank">${esc(r.page || "")}</a></small></td>
+        <td>${esc(when(r.created_at))}</td>
+        <td><strong>${esc(r.name || "(नाम नहीं दिया)")}</strong><br><a href="tel:+91${esc(r.phone)}">${esc(r.phone)}</a><br><small>${esc(place(r))}</small></td>
+        <td>${esc(task(r))}${r.details ? `<br><small>“${esc(r.details)}”</small>` : ""}<br><small><a href="${esc(r.page || "#")}" target="_blank">${esc(r.page || "")}</a></small></td>
+        <td style="min-width:240px">${centres.length ? `<select class="rq-in rq-csc-pick" style="width:100%">${opts.map(({ c }) => `<option value="${c.id}"${c.id === chosen ? " selected" : ""}>${esc(label(c, r))}</option>`).join("")}</select>
+            <div class="rq-steps">
+              <button type="button" class="theme-toggle-btn" data-step="offer">① CSC को काम + नियम</button>
+              <button type="button" class="theme-toggle-btn" data-step="lead" ${r.csc_told_at ? "" : "disabled title=\"पहले ① भेजें और CSC का 'हाँ' आने दें\""}>② CSC ने हाँ कहा: नंबर भेजें</button>
+              <button type="button" class="theme-toggle-btn" data-step="customer" ${r.csc_accepted_at ? "" : "disabled title=\"पहले ② पूरा करें\""}>③ ग्राहक को CSC बताएं</button>
+            </div>` : "<small>अभी कोई verified CSC नहीं</small>"}
+            <small class="rq-done">${steps}</small></td>
         <td><select class="rq-in rq-status">${STATUS.map((s) => `<option${s === r.status ? " selected" : ""}>${s}</option>`).join("")}</select>
-            <input class="rq-in rq-csc" placeholder="CSC / note" value="${esc(r.assigned_to || "")}" style="margin-top:4px;width:100%"></td>
-        <td><button class="theme-toggle-btn rq-save" type="button">Save</button> <button class="logout-btn rq-del" type="button">Delete</button></td>
+            <select class="rq-in rq-feedback" style="margin-top:4px">${FEEDBACK.map(([v, t]) => `<option value="${v}"${v === (r.feedback || "") ? " selected" : ""}>${t}</option>`).join("")}</select>
+            <input class="rq-in rq-note" placeholder="Note" value="${esc(r.admin_notes || "")}" style="margin-top:4px;width:100%">
+            <div style="margin-top:4px"><button class="theme-toggle-btn rq-save" type="button">Save</button> <button class="logout-btn rq-del" type="button">Delete</button></div></td>
       </tr>`;
     }).join("") : `<tr><td colspan="5">No requests here yet.</td></tr>`;
   }
 
+  // Open requests in districts with no verified CSC (admin-only).
+  function renderGaps() {
+    const gap = {};
+    rows.filter((r) => OPEN.includes(r.status)).forEach((r) => {
+      if (centres.some((c) => sameState(c, r) && sameDistrict(c, r))) return;
+      const k = `${r.state || "?"}|${r.district || "ज़िला नहीं बताया"}`;
+      gap[k] = (gap[k] || 0) + 1;
+    });
+    const top = Object.entries(gap).sort((a, b) => b[1] - a[1]);
+    document.getElementById("rq-gaps").innerHTML = top.length ? top.map(([k, n]) => { const [s, d] = k.split("|"); return `<tr><td>${esc(s)}</td><td>${esc(d)}</td><td>${n}</td></tr>`; }).join("") : `<tr><td colspan="3">हर खुली request के ज़िले में verified CSC है।</td></tr>`;
+  }
+
   async function load() {
-    const { data, error } = await client.from("service_requests").select("*").order("created_at", { ascending: false }).limit(500);
+    const [{ data, error }, { data: cs }] = await Promise.all([
+      client.from("service_requests").select("*").order("created_at", { ascending: false }).limit(500),
+      client.from("csc_claims").select("id,application_id,centre_name,owner_name,owner_mobile,public_phone,public_whatsapp,city,district,state,home_visit,remote_services").eq("status", "approved"),
+    ]);
     if (error) { list.innerHTML = `<tr><td colspan="5">Could not load: ${esc(error.message)}</td></tr>`; return; }
     rows = data || [];
+    centres = (cs || []).filter((c) => ten(c.public_whatsapp) || ten(c.owner_mobile));
     const since = new Date(Date.now() - 90 * 864e5).toISOString();
     const { data: ints } = await client.from("service_interest").select("page,state,service,choice").gte("created_at", since).limit(20000);
     const yes = (ints || []).filter((i) => i.choice === "yes").length, no = (ints || []).length - yes;
-    stats.innerHTML = card("Open requests", rows.filter((r) => ["new", "contacted", "assigned"].includes(r.status)).length)
+    stats.innerHTML = card("Open requests", rows.filter((r) => OPEN.includes(r.status)).length)
       + card("Done", rows.filter((r) => r.status === "done").length)
+      + card("Verified CSCs", centres.length)
       + card("Said yes (90 days)", yes) + card("Said no (90 days)", no)
       + card("Yes → request", yes ? Math.round((rows.filter((r) => r.created_at >= since).length * 100) / yes) + "%" : "—");
     const agg = {};
@@ -43,15 +144,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     const top = Object.values(agg).sort((a, b) => b.yes - a.yes || b.no - a.no).slice(0, 50);
     document.getElementById("rq-interest").innerHTML = top.length ? top.map((a) => `<tr><td><a href="${esc(a.page)}" target="_blank">${esc(a.page)}</a></td><td>${esc(a.state || "")}</td><td>${esc(a.service || "")}</td><td>${a.yes}</td><td>${a.no}</td></tr>`).join("") : `<tr><td colspan="5">No answers yet.</td></tr>`;
     render();
+    renderGaps();
+  }
+
+  async function save(id, patch) {
+    const { error } = await client.from("service_requests").update({ ...patch, updated_at: new Date().toISOString() }).eq("id", id);
+    if (error) { alert("Not saved: " + error.message); return false; }
+    return true;
   }
 
   list.addEventListener("click", async (e) => {
     const tr = e.target.closest("tr[data-id]");
     if (!tr) return;
-    const id = tr.dataset.id;
-    if (e.target.classList.contains("rq-save")) {
-      const { error } = await client.from("service_requests").update({ status: tr.querySelector(".rq-status").value, assigned_to: tr.querySelector(".rq-csc").value.trim() || null, updated_at: new Date().toISOString() }).eq("id", id);
-      if (error) alert("Not saved: " + error.message); else load();
+    const id = tr.dataset.id, r = rows.find((x) => x.id === id);
+    const step = e.target.dataset.step;
+    if (step) {
+      const c = centres.find((x) => x.id === tr.querySelector(".rq-csc-pick").value);
+      if (!c) return;
+      const now = new Date().toISOString();
+      if (step === "offer") {
+        // Open WhatsApp first (a popup must come straight from the click).
+        window.open(wa(c.public_whatsapp || c.owner_mobile, msgOffer(r, c)), "_blank");
+        await save(id, { csc_claim_id: c.id, csc_told_at: now, assigned_to: c.centre_name, status: r.status === "new" ? "contacted" : r.status });
+      } else if (step === "lead") {
+        if (r.csc_claim_id && r.csc_claim_id !== c.id && !confirm("① किसी दूसरे CSC को भेजा था। फिर भी इस CSC को नंबर भेजें?")) return;
+        window.open(wa(c.public_whatsapp || c.owner_mobile, msgLead(r)), "_blank");
+        await save(id, { csc_claim_id: c.id, csc_accepted_at: now, assigned_to: c.centre_name, status: "assigned" });
+      } else if (step === "customer") {
+        window.open(wa(r.phone, msgCustomer(r, c)), "_blank");
+        await save(id, { customer_told_at: now });
+      }
+      load();
+    } else if (e.target.classList.contains("rq-save")) {
+      if (await save(id, { status: tr.querySelector(".rq-status").value, feedback: tr.querySelector(".rq-feedback").value || null, admin_notes: tr.querySelector(".rq-note").value.trim() || null })) load();
     } else if (e.target.classList.contains("rq-del")) {
       if (!confirm("Delete this request permanently?")) return;
       const { error } = await client.from("service_requests").delete().eq("id", id);
