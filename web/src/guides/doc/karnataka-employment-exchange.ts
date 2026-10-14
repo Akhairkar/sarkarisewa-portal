@@ -38,7 +38,7 @@ export const karnatakaEmploymentExchange: DocGuide = {
       id: "kya",
       title: "कर्नाटक में रोज़गार कार्यालय",
       intro: "धारवाड़ ज़िला वेबसाइट के अनुसार औद्योगिक प्रशिक्षण एवं रोज़गार विभाग बेरोज़गारों के लिए <strong>राष्ट्रीय रोज़गार सेवा योजना</strong> और युवाओं के लिए व्यावसायिक प्रशिक्षण योजना लागू करता है, जो केंद्र के DGET के मानकों पर चलती हैं। हर ज़िले में ज़िला रोज़गार कार्यालय है।",
-    },,
+    },
     {
       id: "registration",
       title: "पंजीकरण कैसे करें",
@@ -49,7 +49,7 @@ export const karnatakaEmploymentExchange: DocGuide = {
         "ऑनलाइन विकल्प के लिए <a href=\"https://www.ncs.gov.in/\" target=\"_blank\" rel=\"noopener nofollow\">ncs.gov.in</a> पर भी रजिस्ट्रेशन किया जा सकता है।",
       ],
       callout: { kind: "info", html: "पंजीकरण के सटीक चरण, फीस, कागज़ और नवीनीकरण की अवधि हमें आधिकारिक पेज पर नहीं मिली, इसलिए यहां नहीं लिखी।" },
-    },,
+    },
     {
       id: "hubballi",
       title: "एक ज़िला कार्यालय का उदाहरण",
@@ -58,7 +58,7 @@ export const karnatakaEmploymentExchange: DocGuide = {
         ["कार्यालय", "District Employment Exchange, राष्ट्रकवि कुवेंपु रोड, नवनगर, हुब्बल्ली 580025"],
         ["फोन", "0836-2225288"],
       ] },
-    },,
+    },
     {
       id: "yuvanidhi",
       title: "युवा निधि (बेरोज़गारी भत्ता): रिपोर्ट के अनुसार",
@@ -70,7 +70,7 @@ export const karnatakaEmploymentExchange: DocGuide = {
         "<strong>नौकरी की स्थिति छिपाने पर जुर्माना</strong> लग सकता है, और लाभार्थी को अपनी स्थिति की स्व-घोषणा देनी होती है।",
       ],
       callout: { kind: "warn", html: "पात्रता की शर्तें (निवास की अवधि, कौन सा बैच, आदि) और स्व-घोषणा की अवधि के बारे में स्रोत अलग-अलग बताते हैं, और आवेदन अभी खुले हैं या नहीं यह हम पुष्ट नहीं कर सके। आवेदन से पहले Seva Sindhu या नज़दीकी कर्नाटक वन केंद्र पर ताज़ा नियम देखें।" },
-    },,
+    },
     {
       id: "dikkat",
       title: "आम दिक्कतें और उनका हल",
@@ -80,7 +80,7 @@ export const karnatakaEmploymentExchange: DocGuide = {
         ["नाम/जन्मतिथि गलत भर दी", "10वीं के प्रमाण पत्र के साथ ज़िला रोज़गार कार्यालय में सुधार का अनुरोध दें"],
         ["वेबसाइट नहीं खुल रही", "कुछ देर बाद दोबारा कोशिश करें; ज़रूरी हो तो ज़िला कार्यालय जाएं"],
       ] },
-    },,
+    },
     {
       id: "naukri",
       title: "नौकरी खोजने के और सरकारी रास्ते",
@@ -89,7 +89,7 @@ export const karnatakaEmploymentExchange: DocGuide = {
         "<strong>सरकारी भर्तियां:</strong> KPSC, KEA, पुलिस भर्ती, SSC, रेलवे जैसी भर्तियों में आवेदन उनकी अपनी वेबसाइट पर होता है।",
         "<strong>नई भर्तियां:</strong> हमारे <a href=\"/jobs/index.html\">नौकरी पेज</a> और <a href=\"/exams/index.html\">Exam Calendar</a> पर देखें।",
       ],
-    },,
+    },
   ],
   official: [
     { href: "https://itiemp.karnataka.gov.in", title: "औद्योगिक प्रशिक्षण एवं रोज़गार विभाग, कर्नाटक" },

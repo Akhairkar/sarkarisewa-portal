@@ -37,7 +37,7 @@ export const gujaratEmploymentExchange: DocGuide = {
       id: "kya",
       title: "गुजरात में रोज़गार कार्यालय क्या करते हैं",
       intro: "सितंबर 2025 की समाचार रिपोर्ट के अनुसार रोज़गार कार्यालय पंजीकरण, वैकेंसी से मिलान, करियर काउंसलिंग और जॉब फेयर की सेवाएं देते हैं। ज़िला वेबसाइट के अनुसार कार्यालय औद्योगिक इलाकों में भर्ती रैलियां भी कराते हैं।",
-    },,
+    },
     {
       id: "registration",
       title: "पंजीकरण कैसे करें",
@@ -48,7 +48,7 @@ export const gujaratEmploymentExchange: DocGuide = {
         "पंजीकरण नंबर/कार्ड संभालकर रखें।",
       ],
       callout: { kind: "info", html: "फीस, ज़रूरी कागज़, वैधता और नवीनीकरण की अवधि हमें आधिकारिक पेज पर नहीं मिली, इसलिए यहां नहीं लिखी। अपने ज़िला रोज़गार कार्यालय से पूछ लें।" },
-    },,
+    },
     {
       id: "surendranagar",
       title: "ज़िला रोज़गार कार्यालय: एक उदाहरण",
@@ -57,17 +57,17 @@ export const gujaratEmploymentExchange: DocGuide = {
         ["कार्यालय", "District Employment Exchange, कलेक्टर ऑफिस कंपाउंड के सामने, सुरेंद्रनगर 363001"],
         ["फोन", "02752-282353"],
       ] },
-    },,
+    },
     {
       id: "ojas",
       title: "OJAS क्या है",
       intro: "<a href=\"https://ojas.gujarat.gov.in\" target=\"_blank\" rel=\"noopener nofollow\">ojas.gujarat.gov.in</a> गुजरात का Online Job Application System है, जहां सरकारी विज्ञापन देखे, आवेदन किए और कॉल लेटर डाउनलोड किए जाते हैं। रोज़गार कार्यालय का पंजीकरण इसकी जगह नहीं लेता।",
-    },,
+    },
     {
       id: "bhatta",
       title: "बेरोज़गारी भत्ता",
       intro: "गुजरात में रोज़गार पंजीकरण के आधार पर किसी चालू बेरोज़गारी भत्ते की पुष्टि हमें आधिकारिक पेज से नहीं मिली, इसलिए कोई राशि नहीं दी जा रही।",
-    },,
+    },
     {
       id: "dikkat",
       title: "आम दिक्कतें और उनका हल",
@@ -77,7 +77,7 @@ export const gujaratEmploymentExchange: DocGuide = {
         ["नाम/जन्मतिथि गलत भर दी", "10वीं के प्रमाण पत्र के साथ ज़िला रोज़गार कार्यालय में सुधार का अनुरोध दें"],
         ["वेबसाइट नहीं खुल रही", "कुछ देर बाद दोबारा कोशिश करें; ज़रूरी हो तो ज़िला कार्यालय जाएं"],
       ] },
-    },,
+    },
     {
       id: "naukri",
       title: "नौकरी खोजने के और सरकारी रास्ते",
@@ -86,7 +86,7 @@ export const gujaratEmploymentExchange: DocGuide = {
         "<strong>सरकारी भर्तियां:</strong> GPSC, GSSSB, पुलिस भर्ती (OJAS), SSC, रेलवे जैसी भर्तियों में आवेदन उनकी अपनी वेबसाइट पर होता है।",
         "<strong>नई भर्तियां:</strong> हमारे <a href=\"/jobs/index.html\">नौकरी पेज</a> और <a href=\"/exams/index.html\">Exam Calendar</a> पर देखें।",
       ],
-    },,
+    },
   ],
   official: [
     { href: "https://employment.gujarat.gov.in", title: "रोज़गार एवं प्रशिक्षण निदेशालय, गुजरात" },

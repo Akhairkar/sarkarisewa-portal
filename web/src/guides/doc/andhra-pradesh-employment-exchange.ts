@@ -42,7 +42,7 @@ export const andhraPradeshEmploymentExchange: DocGuide = {
         "<strong>करियर काउंसलिंग</strong>, करियर टॉक और स्वरोज़गार मार्गदर्शन।",
         "NCS कार्यक्रम के तहत निजी क्षेत्र के लिए <strong>जॉब फेयर/जॉब मेला</strong>।",
       ],
-    },,
+    },
     {
       id: "registration",
       title: "पंजीकरण कैसे करें",
@@ -53,17 +53,17 @@ export const andhraPradeshEmploymentExchange: DocGuide = {
         "ऑनलाइन विकल्प के लिए <a href=\"https://www.ncs.gov.in/\" target=\"_blank\" rel=\"noopener nofollow\">ncs.gov.in</a> पर जॉबसीकर रजिस्ट्रेशन करें।",
       ],
       callout: { kind: "info", html: "पंजीकरण की उम्र, वैधता, नवीनीकरण की अवधि और फीस हमें किसी चालू आधिकारिक पेज पर नहीं मिली, इसलिए यहां नहीं लिखी। अपने ज़िला रोज़गार अधिकारी से पूछें।" },
-    },,
+    },
     {
       id: "naipunyam",
       title: "Naipunyam पोर्टल क्या है",
       intro: "आंध्र प्रदेश कौशल विकास निगम (APSSDC) का <a href=\"https://naipunyam.ap.gov.in/\" target=\"_blank\" rel=\"noopener nofollow\">naipunyam.ap.gov.in</a> कौशल प्रशिक्षण, रिज़्यूमे और जॉब मेलों के पंजीकरण के लिए इस्तेमाल होता है। यह रोज़गार कार्यालय का पंजीकरण नहीं है; क्या यह उसकी जगह लेता है, इसकी पुष्टि हमें नहीं मिली। जॉब मेले में जाने से पहले उसके नोटिस में दिया पंजीकरण तरीका देखें।",
-    },,
+    },
     {
       id: "bhatta",
       title: "बेरोज़गारी भत्ता",
       intro: "आंध्र प्रदेश में रोज़गार कार्यालय पंजीकरण के आधार पर किसी चालू बेरोज़गारी भत्ते की पुष्टि हमें आधिकारिक पेज से नहीं मिली, इसलिए कोई राशि नहीं दी जा रही। भत्ते के नाम पर फॉर्म बेचने या पैसे मांगने वालों से बचें।",
-    },,
+    },
     {
       id: "dikkat",
       title: "आम दिक्कतें और उनका हल",
@@ -74,7 +74,7 @@ export const andhraPradeshEmploymentExchange: DocGuide = {
         ["नवीनीकरण/रिकॉर्ड अपडेट", "अपने ज़िला रोज़गार कार्यालय में मूल कागज़ों के साथ जाएं"],
         ["वेबसाइट नहीं खुल रही", "कुछ देर बाद दोबारा कोशिश करें; ज़रूरी हो तो ज़िला कार्यालय जाएं"],
       ] },
-    },,
+    },
     {
       id: "naukri",
       title: "नौकरी खोजने के और सरकारी रास्ते",
@@ -83,7 +83,7 @@ export const andhraPradeshEmploymentExchange: DocGuide = {
         "<strong>सरकारी भर्तियां:</strong> APPSC, पुलिस भर्ती, SSC, रेलवे जैसी भर्तियों में आवेदन उनकी अपनी वेबसाइट पर होता है।",
         "<strong>नई भर्तियां:</strong> हमारे <a href=\"/jobs/index.html\">नौकरी पेज</a> और <a href=\"/exams/index.html\">Exam Calendar</a> पर देखें।",
       ],
-    },,
+    },
   ],
   official: [
     { href: "https://krishna.ap.gov.in/district-employment-exchange/", title: "District Employment Exchange (ज़िला कृष्णा)" },
