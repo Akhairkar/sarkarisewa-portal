@@ -33,7 +33,7 @@ export const andamanNicobarBirthCertificate: DocGuide = {
   },
   "doc": "birth-certificate",
   "docHi": "जन्म प्रमाण पत्र",
-  "title": "Andaman & Nicobar Islands Birth",
+  "title": "Andaman & Nicobar Islands Birth Certificate 2026: Apply & Status",
   "description": "अंडमान और निकोबार जन्म प्रमाण पत्र 2026: CRS पोर्टल, कौन रजिस्ट्रार है, 21 दिन की निःशुल्क अवधि, देर से पंजीकरण के नियम और नाम जोड़ना।",
   "published": "2026-08-01",
   "modified": "2026-10-14",
