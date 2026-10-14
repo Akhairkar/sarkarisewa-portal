@@ -5,12 +5,20 @@
 // often cannot fill the online form themselves; this points them to the
 // state's CSC list and the location-based locator.
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+import { listings } from "../lib/csc-listings";
+import { STATES } from "../data/site";
 interface Props { state?: { slug: string; hi: string }; doc?: string; href?: string }
 const { state, doc, href } = Astro.props;
 const list = href || (state ? `/service/csc-locator/${state.slug}.html` : "/tools/csc-locator.html");
 // Version of the consent notice shown next to the send button; stored with
 // each request (v2: pressing the button is the consent, no checkbox).
 const CONSENT_V = "v2-2026-10";
+// Whether any verified centre is listed in this state (at build time; the site
+// rebuilds every 2 hours). Without one, the thank-you message says so plainly
+// and points to the state's CSC list instead of promising a call.
+const key = (s: string | null | undefined) => String(s ?? "").toLowerCase().replace(/&|and|[^a-z]/g, "");
+const stateEn = state ? STATES.find((s) => s.slug === state.slug)?.name : undefined;
+const covered = !!stateEn && (await listings()).some((l) => key(l.state) === key(stateEn));
 ---
 <section class="csc-help" aria-labelledby="csc-help-title">
   <p class="csc-help-title" id="csc-help-title">🏪 खुद ऑनलाइन फॉर्म नहीं भर पा रहे?</p>
@@ -24,7 +32,7 @@ const CONSENT_V = "v2-2026-10";
     {state && <a class="cta secondary" href="/tools/csc-locator.html" data-csc-help="near">अपने पास का CSC खोजें</a>}
   </div>
 
-  <div class="svc-ask" data-url={SUPABASE_URL} data-key={SUPABASE_ANON_KEY} data-state={state?.hi ?? ""} data-service={doc ?? ""} data-consent={CONSENT_V}>
+  <div class="svc-ask" data-url={SUPABASE_URL} data-key={SUPABASE_ANON_KEY} data-state={state?.hi ?? ""} data-service={doc ?? ""} data-consent={CONSENT_V} data-covered={covered ? "1" : "0"} data-list={list}>
     <p class="svc-q"><strong>क्या आप यह काम घर बैठे किसी सत्यापित CSC संचालक से करवाना चाहेंगे?</strong> <small>(उनका सेवा शुल्क लगेगा, सरकारी फीस अलग)</small></p>
     <div class="svc-choice">
       <button type="button" class="cta" data-choice="yes">हाँ, मुझे चाहिए</button>
@@ -77,7 +85,8 @@ const CONSENT_V = "v2-2026-10";
         .then(function (res) {
           if (res === "ok" || res === "dup") {
             form.hidden = true; mark("sent");
-            msg.textContent = "✅ धन्यवाद! आपका अनुरोध मिल गया। आपके इलाके में सत्यापित CSC मिलने पर हम फोन/WhatsApp करेंगे।";
+            if (box.dataset.covered === "1") msg.textContent = "✅ धन्यवाद! आपका अनुरोध मिल गया। सत्यापित CSC संचालक मिलते ही हम आपको WhatsApp/फोन करेंगे।";
+            else msg.innerHTML = "✅ आपका अनुरोध मिल गया।<br>अभी आपके इलाके में कोई सत्यापित CSC हमारे साथ नहीं जुड़ा है, इसलिए हो सकता है कि हम जल्दी संपर्क न कर पाएं। तब तक इस पेज पर बताए कागज़ लेकर नज़दीकी CSC पर जाएं: <a href=\"" + box.dataset.list + "\">नज़दीकी CSC सेंटर देखें</a>। आपके इलाके में CSC जुड़ते ही हम WhatsApp करेंगे।";
             try { if (window.gtag) gtag("event", "csc_service_request", { page: location.pathname }); } catch (e) {}
           } else {
             btn.disabled = false;

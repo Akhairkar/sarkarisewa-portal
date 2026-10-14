@@ -96,6 +96,18 @@ ${RULES.map((t, i) => `${i + 1}. ${t}`).join("\n")}
 
 कृपया आज ही संपर्क करें और ऊपर के नियमों का पालन करें। फीस और सेवा शुल्क पहले बताएं, बायोमेट्रिक काम सिर्फ़ ग्राहक की मौजूदगी में करें। काम के बाद हमें बताएं।`;
 
+  // For a request no centre can take yet: what to do meanwhile, no call needed.
+  const msgNoCsc = (r) => `नमस्ते${r.name ? ` ${r.name} जी` : ""}, SarkariSewa India से।
+आपने ${task(r)} के लिए मदद मांगी थी। अभी आपके इलाके में हमारे साथ कोई सत्यापित CSC नहीं जुड़ा है, इसलिए हम यह काम अभी नहीं करवा पा रहे। माफ़ी चाहते हैं।
+
+आप खुद ऐसे करवा सकते हैं:
+• पूरी जानकारी और ज़रूरी कागज़: https://sarkarisewaindia.com${r.page || "/"}
+• अपने पास का CSC सेंटर: https://sarkarisewaindia.com/tools/csc-locator.html
+• CSC पर सरकारी फीस और सेवा शुल्क पहले पूछें और रसीद लें। बैंक का OTP या PIN किसी को न बताएं।
+
+आपके इलाके में CSC जुड़ते ही हम आपको बताएंगे।
+SarkariSewa India एक निजी सेवा है, सरकारी विभाग नहीं।`;
+
   const msgCustomer = (r, c) => {
     const pub = ten(c.public_whatsapp) || ten(c.public_phone);
     return `नमस्ते${r.name ? ` ${r.name} जी` : ""}, SarkariSewa India से।
@@ -147,6 +159,7 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
               <button type="button" class="theme-toggle-btn" data-step="lead" ${r.csc_told_at ? "" : "disabled title=\"पहले ① भेजें और CSC का 'हाँ' आने दें\""}>② CSC ने हाँ कहा: नंबर भेजें</button>
               <button type="button" class="theme-toggle-btn" data-step="customer" ${r.csc_accepted_at ? "" : "disabled title=\"पहले ② पूरा करें\""}>③ ग्राहक को CSC बताएं</button>
             </div>` : "<small>अभी कोई verified CSC नहीं</small>"}
+            <button type="button" class="theme-toggle-btn rq-nocsc" data-step="nocsc" title="बिना कॉल किए ग्राहक को बताएं कि अभी CSC नहीं है और क्या करें">📩 CSC नहीं: ग्राहक को सादा संदेश</button>
             <small class="rq-done">${steps}</small>${waiting(r)}</td>
         <td><select class="rq-in rq-status">${STATUS.map((s) => `<option${s === r.status ? " selected" : ""}>${s}</option>`).join("")}</select>
             <select class="rq-in rq-feedback" style="margin-top:4px">${FEEDBACK.map(([v, t]) => `<option value="${v}"${v === (r.feedback || "") ? " selected" : ""}>${t}</option>`).join("")}</select>
@@ -208,7 +221,7 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
     if (step) {
       const pick = tr.querySelector(".rq-csc-pick");
       const c = centres.find((x) => x.id === (pick && pick.value));
-      if (!c && step !== "skip") return;
+      if (!c && step !== "skip" && step !== "nocsc") return;
       const now = new Date().toISOString();
       if (step === "offer") {
         // Open WhatsApp first (a popup must come straight from the click).
@@ -218,6 +231,9 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
         if (r.csc_claim_id && r.csc_claim_id !== c.id && !confirm("① किसी दूसरे CSC को भेजा था। फिर भी इस CSC को नंबर भेजें?")) return;
         window.open(wa(c.public_whatsapp || c.owner_mobile, msgLead(r)), "_blank");
         await save(id, { csc_claim_id: c.id, csc_accepted_at: now, assigned_to: c.centre_name, status: "assigned" });
+      } else if (step === "nocsc") {
+        window.open(wa(r.phone, msgNoCsc(r)), "_blank");
+        await save(id, { customer_told_at: now, status: r.status === "new" ? "contacted" : r.status, admin_notes: [r.admin_notes, `CSC नहीं: संदेश भेजा ${when(now)}`].filter(Boolean).join(" · ").slice(0, 1000) });
       } else if (step === "skip") {
         if (!confirm("इस CSC ने जवाब नहीं दिया या मना किया? request अगले CSC के लिए खुल जाएगी।")) return;
         await save(id, { skipped_claim_ids: [...(r.skipped_claim_ids || []), r.csc_claim_id].filter(Boolean), csc_claim_id: null, csc_told_at: null, assigned_to: null });
