@@ -24,16 +24,23 @@ const DRY = !!process.env.DRY_RUN || !TOKEN || PROBE;
 const MAX_PER_SOURCE = 3, MAX_TOTAL = 8, KEEP = 2000;
 const SITE = "https://sarkarisewaindia.com";
 
-// Notice pages of national recruiting and exam bodies.
+// Notice pages of national recruiting and exam bodies. Optional fields:
+//   api: "ssc"  read SSC's own JSON notice API (the site itself is a JS app)
+//   match       only links whose text or address matches this regex
+//   want        a looser "worth posting" regex than WANT for this source
+const SSC_API = "https://ssc.gov.in/api/general-website/portal/";
+const SSC_Q = "?page=1&limit=15&key=createdAt&order=DESC&isAttachment=true&language=english&attributes=id,headline,examId,contentType,redirectUrl,startDate,endDate,language,createdAt";
 const SOURCES = process.env.SOURCES_FILE ? JSON.parse(fs.readFileSync(process.env.SOURCES_FILE, "utf8")) : [
-  { id: "upsc", name: "UPSC", url: "https://upsc.gov.in/whats-new" },
+  // www. is served from a cache that runners can reach; the bare host is not.
+  { id: "upsc", name: "UPSC", url: "https://www.upsc.gov.in/whats-new", want: "notice|result|admit|interview|answer|marks|cut[\\s-]*off|advertisement|vacanc|examination" },
   { id: "upsc-exam", name: "UPSC", url: "https://upsc.gov.in/examinations/active-exams" },
-  { id: "ssc", name: "SSC", url: "https://ssc.gov.in/" },
+  { id: "ssc", name: "SSC", api: "ssc", url: "https://ssc.gov.in/" },
   { id: "nta", name: "NTA", url: "https://nta.ac.in/" },
   { id: "ibps", name: "IBPS", url: "https://www.ibps.in/" },
   { id: "aiims", name: "AIIMS", url: "https://www.aiimsexams.ac.in/" },
   { id: "rrb", name: "RRB (Railway)", url: "https://www.rrbcdg.gov.in/" },
-  { id: "ctet", name: "CTET", url: "https://ctet.nic.in/" },
+  // ctet.nic.in is unreachable; CBSE (which runs CTET) lists its notices.
+  { id: "ctet", name: "CTET", url: "https://www.cbse.gov.in/cbsenew/cbse.html", match: "ctet" },
   { id: "rbi", name: "RBI", url: "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx" },
   { id: "sbi", name: "SBI", url: "https://sbi.co.in/web/careers/current-openings" },
   { id: "army", name: "Indian Army", url: "https://joinindianarmy.nic.in/" },
@@ -73,14 +80,33 @@ function stable(url) {
   return u.href;
 }
 
+// SSC notices, results and answer keys from the JSON API its site uses.
+// An item can appear in more than one list, so it is keyed by its PDF.
+async function sscItems() {
+  const out = new Map();
+  for (const [path, type] of [["notice-boards", "notice-boards"], ["records", "results"], ["records", "answer-key"]]) {
+    const { html } = await get(`${SSC_API}${path}${SSC_Q}&contentType=${type}`);
+    for (const d of JSON.parse(html).data || []) {
+      const text = String(d.headline || "").replace(/\s+/g, " ").trim();
+      const file = d.attachments?.[0]?.path;
+      if (text.length < 8 || SKIP.test(text)) continue;
+      const url = file ? "https://ssc.gov.in/api/attachment/" + encodeURI(String(file).replace(/\\/g, "/")) : d.redirectUrl;
+      if (!url || !/^https?:/.test(url)) continue;
+      const key = sha("ssc|" + (file || d.id));
+      if (!out.has(key)) out.set(key, { key, text, url });
+    }
+  }
+  return [...out.values()];
+}
+
 // Every link on the page whose text reads like an update.
-function links(html, base) {
+function links(html, base, want = WANT) {
   const out = new Map();
   for (const m of html.matchAll(/<a\b[^>]*?href\s*=\s*["']([^"'#][^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi)) {
     let text = decode(m[2].replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
     const title = (m[0].match(/\btitle\s*=\s*["']([^"']+)["']/i) || [])[1];
     if (text.length < 12 && title) text = decode(title).trim();
-    if (text.length < 12 || text.length > 300 || !WANT.test(text) || SKIP.test(text)) continue;
+    if (text.length < 12 || text.length > 300 || !want.test(text) || SKIP.test(text)) continue;
     let url;
     try { url = new URL(decode(m[1]).trim(), base).href; } catch { continue; }
     if (!/^https?:/.test(url)) continue;
@@ -93,7 +119,7 @@ function links(html, base) {
 function kind(t) {
   if (/answer\s*key|उत्तर\s*कुंजी/i.test(t)) return ["🔑", "आंसर की"];
   if (/admit\s*card|e-?admit|call\s*letter|प्रवेश\s*पत्र|exam(ination)?\s*city/i.test(t)) return ["🎫", "एडमिट कार्ड / परीक्षा सूचना"];
-  if (/result|merit|selection\s*list|cut[\s-]*off|marks|परिणाम/i.test(t)) return ["📢", "रिजल्ट"];
+  if (/result|merit|selection\s*list|shortlist|qualified|cut[\s-]*off|marks|परिणाम/i.test(t)) return ["📢", "रिजल्ट"];
   if (/notification|recruitment|advertisement|advt|vacanc|भर्ती|विज्ञापन/i.test(t)) return ["📝", "नई भर्ती / नोटिफिकेशन"];
   return ["📌", "नई सूचना"];
 }
@@ -128,8 +154,13 @@ const report = [];
 for (const src of SOURCES) {
   let items;
   try {
-    const { html, final } = await get(src.url);
-    items = links(html, final);
+    if (src.api === "ssc") items = await sscItems();
+    else {
+      const { html, final } = await get(src.url);
+      items = links(html, final, src.want ? new RegExp(src.want, "i") : WANT);
+      // Application/login links carry a per-visit token; never post those.
+      if (src.match) items = items.filter((i) => new RegExp(src.match, "i").test(i.text + " " + i.url) && !/[?&]enc=/.test(i.url));
+    }
   } catch (e) {
     report.push(`✗ ${src.id}: ${e.message}${e.cause ? ` (${e.cause.code || e.cause.message})` : ""}`);
     continue;
