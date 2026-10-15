@@ -23,7 +23,7 @@ const faq = [
 ---
 <Base
   title="RC e-Challan Check: गाड़ी नंबर से चालान रिपोर्ट | SarkariSewa India"
-  description={`गाड़ी नंबर (RC) से ई-चालान की रिपोर्ट: चालान नंबर, राशि और बकाया स्थिति। ₹${PRICE} की सुविधा सेवा; चालान official परिवहन पोर्टल पर फ्री में भी देखे जा सकते हैं।`}
+  description={`बिना चेसिस और इंजन नंबर के, सिर्फ गाड़ी नंबर से ई-चालान की रिपोर्ट: चालान नंबर, राशि और बकाया स्थिति। ₹${PRICE} की सुविधा सेवा; चालान official परिवहन पोर्टल पर फ्री में भी देखे जा सकते हैं।`}
   breadcrumbs={crumbs}
   faq={faq}
   schemaType="WebPage"
@@ -33,12 +33,17 @@ const faq = [
   <section class="hero">
     <span class="eyebrow">🚗 Paid Service · ₹{PRICE} प्रति रिपोर्ट</span>
     <h1>RC e-Challan Check: <em>गाड़ी नंबर से चालान रिपोर्ट</em></h1>
-    <p class="page-intro">गाड़ी का रजिस्ट्रेशन नंबर डालें, ₹{PRICE} का भुगतान करें और उस गाड़ी पर दर्ज ई-चालान की रिपोर्ट तुरंत देखें।</p>
+    <p class="page-intro"><strong>न चेसिस नंबर, न इंजन नंबर: सिर्फ गाड़ी नंबर डालें</strong>, ₹{PRICE} का भुगतान करें और उस गाड़ी पर दर्ज ई-चालान की रिपोर्ट तुरंत देखें।</p>
+    <ul class="rc-usp">
+      <li>✓ परिवहन पोर्टल पर गाड़ी नंबर के साथ चेसिस या इंजन नंबर भी डालना पड़ता है; यहां सिर्फ नंबर प्लेट काफी है</li>
+      <li>✓ सेकंड हैंड गाड़ी खरीदने से पहले, बेचने वाले से RC मांगे बिना बकाया चालान जानें</li>
+      <li>✓ हिंदी में साफ रिपोर्ट, PDF में सेव करें; रिकॉर्ड न मिले तो पूरा पैसा वापस</li>
+    </ul>
   </section>
 
   <section class="section rc-box" data-worker={WORKER} data-price={PRICE}>
     <form class="rc-form" novalidate>
-      <label for="rc-no"><strong>गाड़ी नंबर (RC Number)</strong></label>
+      <label for="rc-no"><strong>गाड़ी नंबर (RC Number)</strong> <small>(चेसिस/इंजन नंबर की ज़रूरत नहीं)</small></label>
       <div class="rc-row">
         <input id="rc-no" name="rc" inputmode="text" autocomplete="off" autocapitalize="characters" maxlength="14" placeholder="जैसे MH01AB1234" />
         <button type="submit" class="cta">₹{PRICE} में रिपोर्ट देखें</button>
