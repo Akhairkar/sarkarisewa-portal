@@ -16,7 +16,7 @@ export const aadhaarMobileUpdate: DocGuide = {
     { label: "आधार मोबाइल नंबर अपडेट" },
   ],
   docHi: "आधार मोबाइल नंबर अपडेट",
-  title: "आधार मोबाइल नंबर अपडेट 2026 | SarkariSewa India",
+  title: "आधार मोबाइल नंबर अपडेट 2026",
   description: "आधार से अपना मोबाइल नंबर अपडेट या लिंक करें — OTP-आधारित सेवाओं, e-KYC, और UIDAI अलर्ट पाने के लिए ज़रूरी। नए Aadhaar ऐप और आधार केंद्र का तरीका, ₹75 फीस।",
   published: "2024-06-01",
   modified: "2026-10-15",

@@ -16,7 +16,7 @@ export const abhaHealthCard: DocGuide = {
     { label: "ABHA हेल्थ कार्ड" },
   ],
   docHi: "ABHA हेल्थ कार्ड",
-  title: "आभा डिजिटल हेल्थ कार्ड (ABHA Health Card) 2026 | SarkariSewa India",
+  title: "आभा डिजिटल हेल्थ कार्ड (ABHA Health Card) 2026",
   description: "आयुष्मान भारत डिजिटल मिशन के तहत 14 अंकों का डिजिटल हेल्थ आईडी कार्ड बनाएं। आभा डिजिटल हेल्थ कार्ड (ABHA Health Card) के लिए आधिकारिक लिंक, आधार से बनाने का तरीका, कार्ड डाउनलोड और हेल्पलाइन।",
   published: "2024-06-01",
   modified: "2026-10-15",

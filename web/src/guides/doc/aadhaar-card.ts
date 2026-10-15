@@ -19,7 +19,7 @@ export const aadhaarCard: DocGuide = {
     { label: "आधार कार्ड" },
   ],
   docHi: "आधार कार्ड",
-  title: "आधार कार्ड 2026 | SarkariSewa India",
+  title: "आधार कार्ड 2026",
   description: "UIDAI द्वारा भारत के निवासियों को जारी किया गया 12 अंकों का विशिष्ट पहचान नंबर। नया आधार, अपडेट फीस (₹75/₹125), मुफ्त ऑनलाइन दस्तावेज़ अपडेट, e-Aadhaar और PVC कार्ड की जानकारी।",
   published: "2024-06-01",
   modified: "2026-10-15",

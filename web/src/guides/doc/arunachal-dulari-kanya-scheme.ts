@@ -19,7 +19,7 @@ export const arunachalDulariKanyaScheme: DocGuide = {
     { label: "दुलारी कन्या योजना" },
   ],
   docHi: "दुलारी कन्या योजना",
-  title: "Dulari Kanya Scheme — SarkariSewa India 2026 | SarkariSewa India",
+  title: "Dulari Kanya Scheme",
   description: "अरुणाचल प्रदेश की दुलारी कन्या योजना: सरकारी/मान्य अस्पताल में जन्मी बेटी के नाम सावधि जमा (2025 से ₹30,000) और कक्षा 11 में दाखिले पर ₹20,000। पात्रता, कागज़ और आवेदन।",
   published: "2024-06-01",
   modified: "2026-10-15",

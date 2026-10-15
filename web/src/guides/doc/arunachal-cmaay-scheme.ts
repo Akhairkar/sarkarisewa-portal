@@ -20,7 +20,7 @@ export const arunachalCmaayScheme: DocGuide = {
     { label: "CMAAY योजना" },
   ],
   docHi: "CMAAY योजना",
-  title: "CMAAY Scheme — SarkariSewa India 2026 | SarkariSewa India",
+  title: "CMAAY Scheme",
   description: "अरुणाचल प्रदेश की मुख्यमंत्री आरोग्य अरुणाचल योजना (CMAAY): पात्र परिवारों को सूचीबद्ध अस्पतालों में ₹5 लाख तक कैशलेस इलाज। पात्रता, कार्ड कैसे बनवाएं, PM-JAY से फर्क।",
   published: "2024-06-01",
   modified: "2026-10-15",

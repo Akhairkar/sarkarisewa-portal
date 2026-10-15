@@ -17,7 +17,7 @@ export const aisAnnualInformationStatement: DocGuide = {
     { label: "AIS / TIS" },
   ],
   docHi: "AIS / TIS",
-  title: "वार्षिक सूचना विवरण (AIS / TIS Income Tax) 2026 | SarkariSewa India",
+  title: "वार्षिक सूचना विवरण (AIS / TIS Income Tax) 2026",
   description: "आयकर पोर्टल से अपने सभी बैंक ब्याज, शेयर, म्यूचुअल फंड व टीडीएस लेनदेन का विवरण (AIS/TIS) डाउनलोड करें। PDF पासवर्ड, गलत जानकारी पर फीडबैक और ITR में उपयोग।",
   published: "2024-06-01",
   modified: "2026-10-15",

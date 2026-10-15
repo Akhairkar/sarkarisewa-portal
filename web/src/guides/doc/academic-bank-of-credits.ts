@@ -17,7 +17,7 @@ export const academicBankOfCredits: DocGuide = {
     { label: "एकेडमिक बैंक ऑफ क्रेडिट्स (ABC)" },
   ],
   docHi: "एकेडमिक बैंक ऑफ क्रेडिट्स (ABC)",
-  title: "शैक्षणिक क्रेडिट बैंक (ABC) 2026 | SarkariSewa India",
+  title: "शैक्षणिक क्रेडिट बैंक (ABC) 2026",
   description: "एनईपी 2020 के तहत एक डिजिटल रिपॉजिटरी जो संस्थानों में छात्रों के शैक्षणिक क्रेडिट संग्रहीत करती है। ABC/APAAR ID कैसे बनाएं, DigiLocker से जुड़ाव, क्रेडिट की वैधता और कॉलेज बदलने में उपयोग।",
   published: "2024-06-01",
   modified: "2026-10-15",

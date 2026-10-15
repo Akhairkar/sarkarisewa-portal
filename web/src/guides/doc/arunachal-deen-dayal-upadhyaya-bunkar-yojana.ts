@@ -22,7 +22,7 @@ export const arunachalDeenDayalUpadhyayaBunkarYojana: DocGuide = {
     { label: "दीन दयाल उपाध्याय बुनकर योजना" },
   ],
   docHi: "दीन दयाल उपाध्याय बुनकर योजना",
-  title: "Deen Dayal Upadhyaya Bunkar Yojana — SarkariSewa India 2026 | SarkariSewa India",
+  title: "Deen Dayal Upadhyaya Bunkar Yojana",
   description: "अरुणाचल प्रदेश की दीन दयाल उपाध्याय बुनकर योजना: महिला बुनकरों को बैंक से ₹2 लाख तक कार्यशील पूंजी ऋण पर 7% ब्याज सहायता। पात्रता, बुनकर प्रमाण पत्र और आवेदन कहां करें।",
   published: "2024-06-01",
   modified: "2026-10-15",
