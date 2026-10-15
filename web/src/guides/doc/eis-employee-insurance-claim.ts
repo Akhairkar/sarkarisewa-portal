@@ -103,7 +103,7 @@ export const eisEmployeeInsuranceClaim: DocGuide = {
     { href: "/service/esic.html", emoji: "🏥", title: "ESIC: पूरी जानकारी", text: "ई-पहचान कार्ड और इलाज" },
     { href: "/service/epfo.html", emoji: "💼", title: "EPFO / PF", text: "PF निकासी और UAN" },
     { href: "/service/e-shram-card.html", emoji: "👷", title: "ई-श्रम कार्ड", text: "असंगठित मज़दूरों के लिए" },
-    { href: "/service/pm-suraksha-bima-yojana.html", emoji: "🛡️", title: "PM सुरक्षा बीमा योजना", text: "₹20 में दुर्घटना बीमा" },
+    { href: "/service/pm-suraksha-bima-yojana.html", emoji: "🛡️", title: "PM सुरक्षा बीमा योजना", text: "दुर्घटना बीमा" },
     { href: "/service/ayushman-bharat.html", emoji: "💳", title: "आयुष्मान कार्ड", text: "₹5 लाख तक मुफ्त इलाज" },
   ],
   aside: [
