@@ -33,7 +33,7 @@ const SSC_Q = "?page=1&limit=15&key=createdAt&order=DESC&isAttachment=true&langu
 const SOURCES = process.env.SOURCES_FILE ? JSON.parse(fs.readFileSync(process.env.SOURCES_FILE, "utf8")) : [
   // www. is served from a cache that runners can reach; the bare host is not.
   { id: "upsc", name: "UPSC", url: "https://www.upsc.gov.in/whats-new", want: "notice|result|admit|interview|answer|marks|cut[\\s-]*off|advertisement|vacanc|examination" },
-  { id: "upsc-exam", name: "UPSC", url: "https://upsc.gov.in/examinations/active-exams" },
+  { id: "upsc-exam", name: "UPSC", url: "https://www.upsc.gov.in/examinations/active-exams" },
   { id: "ssc", name: "SSC", api: "ssc", url: "https://ssc.gov.in/" },
   { id: "nta", name: "NTA", url: "https://nta.ac.in/" },
   { id: "ibps", name: "IBPS", url: "https://www.ibps.in/" },
