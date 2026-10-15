@@ -49,7 +49,7 @@ export const cowinVaccinationCertificate: DocGuide = {
       title: "DigiLocker और Aarogya Setu से",
       list: [
         "<strong>DigiLocker:</strong> लॉगिन करके <strong>Ministry of Health and Family Welfare → Health → COVID Vaccine Certificate</strong> चुनें और लाभार्थी संदर्भ ID (Beneficiary Reference ID) डालें। प्रमाण पत्र \"Issued Documents\" में जुड़ जाता है।",
-        "<strong>Aarogya Setu ऐप:</strong> CoWIN टैब में रजिस्टर्ड मोबाइल नंबर से लॉगिन करके प्रमाण पत्र डाउनलोड करें।",
+        "<strong>Aarogya Setu ऐप:</strong> रजिस्ट्रेशन वाले मोबाइल नंबर से प्रमाण पत्र डाउनलोड कर सकते हैं।",
         "CoWIN के अनुसार रजिस्ट्रेशन के लिए CoWIN के अलावा सिर्फ <strong>Aarogya Setu और UMANG</strong> अधिकृत ऐप हैं। प्रमाण पत्र के नाम पर दूसरे ऐप/लिंक को अपना OTP न दें।",
       ],
     },
@@ -91,7 +91,7 @@ export const cowinVaccinationCertificate: DocGuide = {
   faq: [
     { q: "कोविड टीकाकरण प्रमाण पत्र कहां से डाउनलोड करें?", a: "cowin.gov.in पर रजिस्टर्ड मोबाइल नंबर और OTP से लॉगिन करके। Aarogya Setu ऐप और DigiLocker से भी डाउनलोड होता है। डाउनलोड मुफ्त है।" },
     { q: "मोबाइल नंबर भूल गया/बंद हो गया तो प्रमाण पत्र कैसे मिलेगा?", a: "DigiLocker में COVID Vaccine Certificate चुनकर लाभार्थी संदर्भ ID से कोशिश करें। न हो तो हेल्पलाइन 1075 पर संपर्क करें।" },
-    { q: "प्रमाण पत्र में नाम या जन्म वर्ष गलत है, कैसे सुधारें?", a: "CoWIN खाते में लॉगिन करके \"Raise an Issue\" में \"Correction in certificate\" चुनें और सही विवरण भरें। सुधार के बाद नया प्रमाण पत्र डाउनलोड करें।" },
+    { q: "प्रमाण पत्र में नाम या जन्म वर्ष गलत है, कैसे सुधारें?", a: "CoWIN खाते में लॉगिन करके \"Raise an Issue\" में नाम/उम्र/लिंग/फोटो ID सुधार वाला विकल्प चुनें और सही विवरण भरें। सुधार के बाद नया प्रमाण पत्र डाउनलोड करें।" },
     { q: "प्रमाण पत्र में पासपोर्ट नंबर कैसे जोड़ें?", a: "Raise an Issue में \"Add Passport Details to my vaccination certificate for travelling abroad\" चुनें, सदस्य, जन्म तिथि और पासपोर्ट नंबर भरकर सबमिट करें।" },
     { q: "टीका नहीं लगवाया पर प्रमाण पत्र बन गया, क्या करें?", a: "CoWIN के Raise an Issue में \"Revoke Vaccination\" से गलत दर्ज टीकाकरण रद्द करने का अनुरोध करें।" },
   ],
