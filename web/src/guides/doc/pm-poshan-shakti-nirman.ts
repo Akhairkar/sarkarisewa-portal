@@ -95,7 +95,7 @@ export const pmPoshanShaktiNirman: DocGuide = {
   official: [
     { href: "https://pmposhan.education.gov.in/", title: "PM POSHAN पोर्टल, शिक्षा मंत्रालय" },
     { href: "https://www.myscheme.gov.in/schemes/pm-poshan", title: "myScheme: PM POSHAN" },
-    { href: "https://dsel.education.gov.in/", title: "स्कूल शिक्षा एवं साक्षरता विभाग" },
+    { href: "https://www.education.gov.in/", title: "शिक्षा मंत्रालय" },
   ],
   faq: [
     { q: "पीएम पोषण योजना में किन बच्चों को खाना मिलता है?", a: "सरकारी और सरकारी सहायता प्राप्त स्कूलों में कक्षा 1 से 8 तक और बालवाटिका/प्री-प्राइमरी के सभी बच्चों को।" },

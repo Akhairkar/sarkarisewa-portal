@@ -75,7 +75,7 @@ export const pmPranamYojana: DocGuide = {
     },
   ],
   official: [
-    { href: "https://fert.gov.in/", title: "उर्वरक विभाग, रसायन एवं उर्वरक मंत्रालय" },
+    { href: "https://www.fert.nic.in/", title: "उर्वरक विभाग, रसायन एवं उर्वरक मंत्रालय" },
     { href: "https://pib.gov.in/", title: "PIB: केंद्र सरकार की प्रेस विज्ञप्तियां" },
     { href: "https://agriwelfare.gov.in/", title: "कृषि एवं किसान कल्याण विभाग" },
   ],
@@ -92,7 +92,7 @@ export const pmPranamYojana: DocGuide = {
     { href: "/service/pm-fasal-bima-yojana.html", emoji: "🌧️", title: "पीएम फसल बीमा योजना", text: "फसल नुकसान पर बीमा" },
   ],
   aside: [
-    { href: "https://fert.gov.in/", label: "🌱 उर्वरक विभाग" },
+    { href: "https://www.fert.nic.in/", label: "🌱 उर्वरक विभाग" },
     { href: "/yojana/", label: "📜 सभी सरकारी योजनाएं" },
   ],
 };
