@@ -253,7 +253,7 @@ for (const rel of listHtml(DIST)) {
   const all = listHtml(OUT).filter((r) => !/^(admin|private|partials)\//.test(r));
   for (const rel of all) {
     const head = fs.readFileSync(path.join(OUT, rel), "utf8").slice(0, 8000);
-    if (/http-equiv="refresh"/i.test(head)) continue;
+    // Redirect pages count too: a link to one goes straight to its target.
     const c = head.match(/rel="canonical" href="https:\/\/sarkarisewaindia\.com(\/[^"]*)"/)?.[1];
     const self = "/" + rel, selfDir = self.replace(/index\.html$/, "");
     if (c && c !== self && c !== selfDir) canonOf[self] = c;
