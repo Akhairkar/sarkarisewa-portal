@@ -1,5 +1,9 @@
 import type { DocGuide } from "./types";
 
+// Goa moved to the central CRS portal from 1 Jul 2026 (goa.gov.in PR-380,
+// July 2026; RGI notice): new registrations only on CRS, 1971-Jun 2026 records
+// migrating in phases, unmigrated ones still on rbd.goa.gov.in.
+
 // Sources (checked 14 Oct 2026):
 // - National (all states): Registration of Births and Deaths (Amendment) Act, 2023 in force
 //   1 Oct 2023 (MHA S.O. 4058(E), 13 Sep 2023): section 17(3) single proof of date and
@@ -28,7 +32,8 @@ export const goaBirthCertificate: DocGuide = {
   modified: "2026-10-14",
   verified: "14 अक्टूबर 2026",
   h1: "गोवा जन्म प्रमाण पत्र 2026: पंजीकरण, rbd.goa.gov.in, Goa Online और पुराने रिकॉर्ड",
-  lead: "गोवा में जन्म का पंजीकरण आपके क्षेत्र की ग्राम पंचायत या नगर परिषद (नगरपालिका) में होता है, सिविल रजिस्ट्रार कार्यालय में नहीं। राज्य के नियोजन, सांख्यिकी और मूल्यांकन निदेशालय (DPSE) की साइट rbd.goa.gov.in से ऑनलाइन भुगतान करके 1971 के बाद का प्रमाण पत्र निकल सकता है। पुराने रिकॉर्ड सिविल रजिस्ट्रार कार्यालय में हैं।",
+  lead: "गोवा में जन्म का पंजीकरण आपके क्षेत्र की ग्राम पंचायत या नगर परिषद (नगरपालिका) में होता है, सिविल रजिस्ट्रार कार्यालय में नहीं। 1 जुलाई 2026 से नए पंजीकरण केंद्र सरकार के CRS पोर्टल पर होते हैं; 1971 से जून 2026 तक के पुराने रिकॉर्ड धीरे-धीरे CRS पर ले जाए जा रहे हैं, और जो अभी नहीं गए उनका प्रमाण पत्र राज्य के नियोजन, सांख्यिकी और मूल्यांकन निदेशालय (DPSE) की साइट rbd.goa.gov.in से मिलता है। पुराने रिकॉर्ड सिविल रजिस्ट्रार कार्यालय में हैं।",
+  notice: "<strong>1 जुलाई 2026 से बदलाव:</strong> गोवा ने जन्म-मृत्यु पंजीकरण राज्य पोर्टल से केंद्र के Civil Registration System (CRS) पोर्टल पर ले लिया है। नए पंजीकरण अब सिर्फ CRS पर होते हैं और प्रमाण पत्र राष्ट्रीय फॉर्मेट में मिलता है (गोवा सरकार प्रेस विज्ञप्ति PR-380, जुलाई 2026)।",
   facts: [
     ["पंजीयक", "ग्राम पंचायत / नगर परिषद"],
     ["ऑनलाइन प्रमाण पत्र", "<a href=\"https://rbd.goa.gov.in/\" target=\"_blank\" rel=\"noopener nofollow\">rbd.goa.gov.in</a>"],
