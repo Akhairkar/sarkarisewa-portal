@@ -720,11 +720,15 @@ body.embed { background: var(--c-bg); margin: 0; padding-bottom: 0; }
 :root[data-theme="dark"] .csc-help { background: #2a1a0e; border-color: #9a3412; color: var(--c-text); }
 :root[data-theme="dark"] .csc-help-title { color: #fdba74; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .csc-help { background: #2a1a0e; border-color: #9a3412; color: var(--c-text); } :root:not([data-theme="light"]) .csc-help-title { color: #fdba74; } }
-.svc-ask { margin-top: 14px; padding-top: 12px; border-top: 1px dashed #fdba74; }
-.svc-q { margin: 0 0 8px; }
-.svc-choice { display: flex; flex-wrap: wrap; gap: 8px; }
-.svc-choice .cta { margin: 0; }
-.svc-no { background: none; border: 1px solid var(--c-line); border-radius: 999px; padding: 8px 14px; font: inherit; color: inherit; cursor: pointer; }
+.svc-q { margin: 0 0 6px; }
+.csc-help .svc-why { list-style: none; padding: 0; margin: 0 0 10px; font-size: .95rem; }
+.csc-help .svc-why li { margin: 2px 0; }
+.svc-form .svc-phone span { font-size: .85rem; }
+.csc-self { margin-top: 12px; padding-top: 10px; border-top: 1px dashed #fdba74; }
+.csc-self summary { cursor: pointer; font-weight: 700; color: #9a3412; }
+.csc-self[open] summary { margin-bottom: 8px; }
+:root[data-theme="dark"] .csc-self summary { color: #fdba74; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .csc-self summary { color: #fdba74; } }
 .svc-form { display: grid; gap: 10px; margin-top: 8px; }
 .svc-form label { display: grid; gap: 4px; font-weight: 700; font-size: .92rem; }
 .svc-form input:not([type=checkbox]), .svc-form textarea { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; font-weight: 400; background: var(--c-surface); color: var(--c-text); }
