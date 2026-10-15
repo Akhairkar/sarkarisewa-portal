@@ -119,7 +119,6 @@ export const birthCertificate: DocGuide = {
     { href: "/service/death-certificate.html", emoji: "🕯️", title: "मृत्यु प्रमाण पत्र", text: "पंजीकरण और प्रमाण पत्र" },
     { href: "/service/aadhaar-card.html", emoji: "🆔", title: "बच्चे का आधार", text: "जन्म प्रमाण पत्र से नामांकन" },
   ],
-  otherStatesTitle: "राज्यवार जन्म प्रमाण पत्र गाइड",
   aside: [
     { href: "https://crsorgi.gov.in/", label: "🏛️ CRS पोर्टल" },
     { href: "/tools/csc-locator.html", label: "📍 नज़दीकी CSC" },
