@@ -28,7 +28,7 @@ export const andamanNicobarDomicileCertificate: DocGuide = {
   state: { slug: "andaman-nicobar", hi: "अंडमान और निकोबार" },
   doc: "domicile-certificate",
   docHi: "निवास प्रमाण पत्र",
-  title: "Andaman & Nicobar Islands Domicile",
+  title: "Andaman & Nicobar Islands Domicile Certificate 2026",
   description: "अंडमान और निकोबार में Local Certificate और Residence Certificate 2026: 10 साल / Pre-1942 / Settler श्रेणी, ज़रूरी कागज़, तहसीलदार और e-District / CSC से आवेदन।",
   published: "2026-08-01",
   modified: "2026-10-14",
