@@ -149,7 +149,7 @@ export const fineList: DocGuide = {
   ],
   related: cards("status", "pay", "court", "wrong", "tool", "dl"),
   aside: [
-    { href: "/services/rc-challan/", label: "🚗 ₹49 में चालान रिपोर्ट" },
+    { href: "/services/rc-challan/", label: "🚗 ₹20 में चालान रिपोर्ट" },
     { href: "https://echallan.parivahan.gov.in/", label: "🔍 Official ई-चालान पोर्टल" },
   ],
 };

@@ -100,7 +100,7 @@ export const wrongChallan: DocGuide = {
         "तेलंगाना पुलिस के अनुसार उसके ई-चालान SMS सिर्फ \"ECHALN-*\" हेडर से आते हैं।",
         'धोखा हो गया हो तो तुरंत <a href="tel:1930">1930</a> पर कॉल करें या <a href="https://cybercrime.gov.in/" target="_blank" rel="noopener nofollow">cybercrime.gov.in</a> पर शिकायत करें, और अपने बैंक को बताएं।',
       ],
-      callout: { kind: "warn", html: "कोई निजी वेबसाइट या ऐप (हमारी ₹49 रिपोर्ट सेवा समेत) सरकारी चालान \"माफ\" या \"कम\" नहीं कर सकती। चालान का पैसा सिर्फ official पोर्टल, अदालत या अधिकृत काउंटर पर ही भरें।" },
+      callout: { kind: "warn", html: "कोई निजी वेबसाइट या ऐप (हमारी ₹20 रिपोर्ट सेवा समेत) सरकारी चालान \"माफ\" या \"कम\" नहीं कर सकती। चालान का पैसा सिर्फ official पोर्टल, अदालत या अधिकृत काउंटर पर ही भरें।" },
     },
   ],
   official: [
@@ -122,6 +122,6 @@ export const wrongChallan: DocGuide = {
   related: cards("status", "court", "delhi", "maharashtra", "tool", "mparivahan"),
   aside: [
     { href: "https://traffic.delhipolice.gov.in/en/raise-complaint", label: "🛑 दिल्ली: शिकायत दर्ज करें" },
-    { href: "/services/rc-challan/", label: "🚗 ₹49 में चालान रिपोर्ट" },
+    { href: "/services/rc-challan/", label: "🚗 ₹20 में चालान रिपोर्ट" },
   ],
 };

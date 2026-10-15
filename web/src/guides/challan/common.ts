@@ -20,16 +20,16 @@ export const crumbs = (label: string) => [
 export const promo: Promo = {
   emoji: "🚗",
   title: "गाड़ी नंबर से बकाया चालान की रिपोर्ट",
-  price: "₹49 प्रति गाड़ी",
-  text: `चालान official पोर्टल ${ECHALLAN} पर <strong>फ्री</strong> में देखे और भरे जा सकते हैं। अगर आप बिना चेसिस नंबर ढूंढे, एक क्लिक में साफ रिपोर्ट चाहते हैं जिसे सेव या प्रिंट किया जा सके, तो हमारी ₹49 की सुविधा सेवा इस्तेमाल करें।`,
+  price: "₹20 प्रति गाड़ी",
+  text: `चालान official पोर्टल ${ECHALLAN} पर <strong>फ्री</strong> में देखे और भरे जा सकते हैं। अगर आप बिना चेसिस नंबर ढूंढे, एक क्लिक में साफ रिपोर्ट चाहते हैं जिसे सेव या प्रिंट किया जा सके, तो हमारी ₹20 की सुविधा सेवा इस्तेमाल करें।`,
   points: [
     "हर बकाया ई-चालान का नंबर, तारीख, राशि, उल्लंघन और राज्य",
-    "रिपोर्ट न बन सके (रिकॉर्ड न मिले या सेवा उपलब्ध न हो) तो ₹49 अपने आप रिफंड",
-    "₹49 हमारी सेवा का शुल्क है, चालान की राशि नहीं; चालान official पोर्टल पर ही भरें",
+    "रिपोर्ट न बन सके (रिकॉर्ड न मिले या सेवा उपलब्ध न हो) तो ₹20 अपने आप रिफंड",
+    "₹20 हमारी सेवा का शुल्क है, चालान की राशि नहीं; चालान official पोर्टल पर ही भरें",
     "BH सीरीज़ नंबर अभी सपोर्ट नहीं हैं",
   ],
   href: "/services/rc-challan/",
-  cta: "₹49 में चालान रिपोर्ट देखें",
+  cta: "₹20 में चालान रिपोर्ट देखें",
 };
 
 type Card = { href: string; emoji: string; title: string; text: string };
@@ -45,7 +45,7 @@ export const CARDS: Record<string, Card> = {
   delhi: { href: "/challan/delhi-traffic-challan.html", emoji: "🏙️", title: "दिल्ली ट्रैफिक चालान", text: "नोटिस, इवनिंग कोर्ट, शिकायत" },
   maharashtra: { href: "/challan/maharashtra-e-challan.html", emoji: "🛣️", title: "महाराष्ट्र ई-चालान", text: "भुगतान, मोबाइल लिंक, grievance" },
   telangana: { href: "/challan/telangana-e-challan.html", emoji: "🚓", title: "तेलंगाना ई-चालान", text: "पेंडिंग चालान, रसीद, शिकायत" },
-  tool: { href: "/services/rc-challan/", emoji: "🚗", title: "RC चालान रिपोर्ट (₹49)", text: "गाड़ी नंबर से बकाया चालान की सूची" },
+  tool: { href: "/services/rc-challan/", emoji: "🚗", title: "RC चालान रिपोर्ट (₹20)", text: "गाड़ी नंबर से बकाया चालान की सूची" },
   dl: { href: "/service/driving-licence.html", emoji: "🪪", title: "ड्राइविंग लाइसेंस", text: "लर्नर, पक्का लाइसेंस, रिन्यूअल" },
   mparivahan: { href: "/service/mparivahan-virtual-rc-dl.html", emoji: "📱", title: "mParivahan वर्चुअल RC/DL", text: "मोबाइल में DL और RC रखें" },
 };

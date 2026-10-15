@@ -9,7 +9,7 @@ import { CARDS } from "../../../guides/challan/common";
 
 const LIVE = true;
 const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
-const PRICE = 49; // keep in step with RC_CHALLAN_PRICE in the worker's wrangler.toml
+const PRICE = 20; // keep in step with RC_CHALLAN_PRICE in the worker's wrangler.toml
 
 const crumbs = [{ label: "होम", href: "/" }, { label: "Paid Services", href: "/paid-services/" }, { label: "RC e-Challan Check" }];
 const faq = [
@@ -106,7 +106,7 @@ const faq = [
     var label = btn.textContent;
     // GA4 funnel: tool_view -> begin_checkout -> purchase (or cancel/fail/refund).
     function ev(n, p) { try { if (window.gtag) gtag("event", n, Object.assign({ tool: "rc_challan" }, p || {})); } catch (e) {} }
-    var price = Number(box.dataset.price) || 49;
+    var price = Number(box.dataset.price) || 20;
     window.addEventListener("load", function () { setTimeout(function () { ev("tool_view"); }, 1500); });
     function norm(v) { return String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); }
     function valid(v) { return /^[A-Z]{2}[0-9]{1,2}[A-Z]{0,3}[0-9]{4}$/.test(v); }

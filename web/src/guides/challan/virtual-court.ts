@@ -111,6 +111,6 @@ export const virtualCourt: DocGuide = {
   related: cards("status", "pay", "lokAdalat", "fines", "tool", "delhi"),
   aside: [
     { href: "https://vcourts.gov.in/virtualcourt/", label: "⚖️ Virtual Court खोलें" },
-    { href: "/services/rc-challan/", label: "🚗 ₹49 में चालान रिपोर्ट" },
+    { href: "/services/rc-challan/", label: "🚗 ₹20 में चालान रिपोर्ट" },
   ],
 };

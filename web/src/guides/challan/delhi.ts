@@ -148,6 +148,6 @@ export const delhi: DocGuide = {
   related: cards("hub", "court", "wrong", "lokAdalat", "tool", "mparivahan"),
   aside: [
     { href: `${DTP}/notice/pay-notice`, label: "🏙️ दिल्ली: पेंडिंग चालान" },
-    { href: "/services/rc-challan/", label: "🚗 ₹49 में चालान रिपोर्ट" },
+    { href: "/services/rc-challan/", label: "🚗 ₹20 में चालान रिपोर्ट" },
   ],
 };

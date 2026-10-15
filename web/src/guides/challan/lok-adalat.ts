@@ -119,6 +119,6 @@ export const lokAdalat: DocGuide = {
   related: cards("court", "status", "pay", "fines", "tool", "delhi"),
   aside: [
     { href: "https://nalsa.gov.in/national-lok-adalat/", label: "🤝 NALSA: नेशनल लोक अदालत" },
-    { href: "/services/rc-challan/", label: "🚗 ₹49 में चालान रिपोर्ट" },
+    { href: "/services/rc-challan/", label: "🚗 ₹20 में चालान रिपोर्ट" },
   ],
 };

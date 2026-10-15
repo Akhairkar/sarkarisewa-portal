@@ -119,6 +119,6 @@ export const maharashtra: DocGuide = {
   related: cards("hub", "status", "wrong", "court", "tool", "dl"),
   aside: [
     { href: `${MH}/payechallan/PaymentService.htm`, label: "🛣️ महाराष्ट्र ई-चालान पोर्टल" },
-    { href: "/services/rc-challan/", label: "🚗 ₹49 में चालान रिपोर्ट" },
+    { href: "/services/rc-challan/", label: "🚗 ₹20 में चालान रिपोर्ट" },
   ],
 };

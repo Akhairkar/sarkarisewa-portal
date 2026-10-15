@@ -142,6 +142,6 @@ export const statusCheck: DocGuide = {
   related: cards("pay", "wrong", "court", "fines", "tool", "mparivahan"),
   aside: [
     { href: "https://echallan.parivahan.gov.in/", label: "🔍 Official ई-चालान पोर्टल" },
-    { href: "/services/rc-challan/", label: "🚗 ₹49 में चालान रिपोर्ट" },
+    { href: "/services/rc-challan/", label: "🚗 ₹20 में चालान रिपोर्ट" },
   ],
 };

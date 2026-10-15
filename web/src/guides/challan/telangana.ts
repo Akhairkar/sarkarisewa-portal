@@ -134,6 +134,6 @@ export const telangana: DocGuide = {
   related: cards("hub", "status", "pay", "wrong", "tool", "mparivahan"),
   aside: [
     { href: TS, label: "🚓 तेलंगाना ई-चालान पोर्टल" },
-    { href: "/services/rc-challan/", label: "🚗 ₹49 में चालान रिपोर्ट" },
+    { href: "/services/rc-challan/", label: "🚗 ₹20 में चालान रिपोर्ट" },
   ],
 };
