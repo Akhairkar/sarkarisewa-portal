@@ -42,23 +42,26 @@ const crumbs = g.crumbs ?? [
       {g.notice && <div class="callout warn"><p set:html={g.notice} /></div>}
       {g.promo && <PromoBox p={g.promo} />}
 
-      {g.sections.map((s) => (
-        <section class="section" id={s.id}>
-          <h2>{s.title}</h2>
-          {s.intro && <p set:html={s.intro} />}
-          {s.steps && <ol class="steps">{s.steps.map((x) => <li set:html={x} />)}</ol>}
-          {s.list && <ul class="checklist">{s.list.map((x) => <li set:html={x} />)}</ul>}
-          {s.table && (
-            <div class="table-wrap">
-              <table>
-                <thead><tr>{s.table.head.map((h) => <th>{h}</th>)}</tr></thead>
-                <tbody>{s.table.rows.map((r) => <tr>{r.map((c) => <td set:html={c} />)}</tr>)}</tbody>
-              </table>
-            </div>
-          )}
-          {s.callout && <div class={`callout ${s.callout.kind}`}><p set:html={s.callout.html} /></div>}
-          {s.html && <Fragment set:html={s.html} />}
-        </section>
+      {g.sections.map((s, i) => (
+        <>
+          <section class="section" id={s.id}>
+            <h2>{s.title}</h2>
+            {s.intro && <p set:html={s.intro} />}
+            {s.steps && <ol class="steps">{s.steps.map((x) => <li set:html={x} />)}</ol>}
+            {s.list && <ul class="checklist">{s.list.map((x) => <li set:html={x} />)}</ul>}
+            {s.table && (
+              <div class="table-wrap">
+                <table>
+                  <thead><tr>{s.table.head.map((h) => <th>{h}</th>)}</tr></thead>
+                  <tbody>{s.table.rows.map((r) => <tr>{r.map((c) => <td set:html={c} />)}</tr>)}</tbody>
+                </table>
+              </div>
+            )}
+            {s.callout && <div class={`callout ${s.callout.kind}`}><p set:html={s.callout.html} /></div>}
+            {s.html && <Fragment set:html={s.html} />}
+          </section>
+          {i === 2 && <div class="ad-slot" aria-hidden="true"></div>}
+        </>
       ))}
 
       <OfficialLinks verified={g.verified} links={g.official} />
