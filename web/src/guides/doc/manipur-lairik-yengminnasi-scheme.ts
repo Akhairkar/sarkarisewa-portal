@@ -21,7 +21,7 @@ export const manipurLairikYengminnasiScheme: DocGuide = {
     { label: "लाइरिक योजना (शिक्षा)" },
   ],
   docHi: "लाइरिक योजना (मणिपुर)",
-  title: "Lairik Yengminnasi Scheme",
+  title: "CM's Lairik Heiminnashi Programme मणिपुर (Lairik Yengminnasi)",
   description: "\"Lairik Yengminnasi\" नाम की मणिपुर योजना का सरकारी स्रोत नहीं मिला। मिलती-जुलती सरकारी योजना CM's Lairik Heiminnashi Programme: कक्षा 8-10 के OBC, SC व अल्पसंख्यक छात्रों को मुफ्त कोचिंग।",
   published: "2024-06-01",
   modified: "2026-10-15",
