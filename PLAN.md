@@ -251,7 +251,7 @@ Note: is environment se competitor sites khul nahi rahi (network block), isliye 
 - **2026-10-03:** Targets decide kiye. Purane 30 md/txt docs hataye. Ye PLAN.md banaya.
 
 ## 9. Status (2026-10-05, kaam roka gaya)
-- **Live:** RC e-Challan ₹49 (live keys), GSTIN ₹20, paid tools grid on all guides/CSC/Jan Aushadhi pages, `/refund-policy.html`.
+- **Live:** RC e-Challan ₹20 (live keys; ₹49 se ₹20, 15 Oct 2026), GSTIN ₹20, paid tools grid on all guides/CSC/Jan Aushadhi pages, `/refund-policy.html`.
 - **Naye clusters:** `/challan/` (10), `/gst/` (11), `/affidavit/` (9), `/rent-agreement/` (6), DigiLocker hub + `/digilocker/` (13), Jan Aushadhi (807 pages, all kendras per district).
 - **Upgraded state pages:** labour (UP, Bihar, Rajasthan, MH, MP, Haryana + Delhi, Punjab, CG), ration (UP, Bihar, Rajasthan, MP, Gujarat, Haryana, Punjab, UK, MH), caste (Bihar, Rajasthan, UK, MP), income (Bihar), employment exchange (WB, Haryana, Delhi), Haryana domicile; service: Sanchar Saathi, PCC, minority, SSC.
 - **Cleanup:** 279 `service/<state>-<doc>` duplicates → canonical to `states/`; Staff Login links to `/admin/` removed; UP income/caste unverified claims removed.
