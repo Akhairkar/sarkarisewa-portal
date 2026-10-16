@@ -4,6 +4,7 @@ import type { DocGuide } from "./types";
 // search-result extracts of coverage of the official notice used):
 // careers360, pw.live, challengerapp, indianpaycalculator (CGL 2026
 // notification on ssc.gov.in, online application from 21 May 2026, about
+// SSC tentative vacancy list 24.09.2026: 10,731 posts (ssc.gov.in).
 // 12,256 Group B and C posts; last date reported as 22 June 2026 by most and
 // 25 June by one; correction window end-June/early July), careers360 news,
 // careerindia, adda247, mysarkarinaukri (Tier 1 admit card from about 27 Sep
@@ -22,13 +23,13 @@ export const sscCglRecruitment2026: DocGuide = {
   title: "SSC CGL 2026-27 Recruitment - Combined Graduate Level",
   description: "SSC CGL 2026: कर्मचारी चयन आयोग की संयुक्त स्नातक स्तरीय भर्ती, लगभग 12,256 पद। आवेदन जून 2026 में बंद; टियर 1 परीक्षा 30 सितंबर-30 अक्टूबर 2026, एडमिट कार्ड और आगे के चरण।",
   published: "2024-06-01",
-  modified: "2026-10-15",
+  modified: "2026-10-16",
   verified: "15 अक्टूबर 2026",
   h1: "SSC CGL 2026: आवेदन बंद, टियर 1 परीक्षा और एडमिट कार्ड की जानकारी",
   lead: "कर्मचारी चयन आयोग (Staff Selection Commission, SSC) संयुक्त स्नातक स्तरीय (CGL) परीक्षा से केंद्र सरकार के मंत्रालयों और विभागों में ग्रुप B और ग्रुप C के पद भरता है। 2026 की भर्ती के ऑनलाइन आवेदन <strong>21 मई 2026</strong> से शुरू होकर <strong>जून 2026</strong> में बंद हो चुके हैं; रिपोर्टों के अनुसार इसमें लगभग <strong>12,256 पद</strong> हैं। टियर 1 कंप्यूटर आधारित परीक्षा <strong>30 सितंबर से 30 अक्टूबर 2026</strong> तक चल रही है और एडमिट कार्ड ssc.gov.in पर लॉगिन करके मिलता है।",
   facts: [
     ["आयोग", "कर्मचारी चयन आयोग (SSC)"],
-    ["पद", "लगभग 12,256 (ग्रुप B और C)"],
+    ["पद", "अधिसूचना में लगभग 12,256; SSC की 24.09.2026 की अस्थायी रिक्ति सूची में 10,731"],
     ["योग्यता", "किसी भी विषय में स्नातक (Graduation)"],
     ["टियर 1", "30 सितंबर - 30 अक्टूबर 2026"],
   ],

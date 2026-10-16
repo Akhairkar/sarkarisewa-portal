@@ -5,6 +5,7 @@ import type { DocGuide } from "../doc/types";
 // Sources (checked 16 Oct 2026; ssc.gov.in not reachable from the sandbox,
 // search-result extracts of news coverage used): freepressjournal,
 // news.careers360, deccanherald, testbook (notification 21 May 2026, about
+// SSC tentative vacancy list 24.09.2026: 10,731 posts (ssc.gov.in).
 // 12,256 Group B and C posts; original last date 22 Jun, window reopened
 // 23-25 Jun 2026 11 pm, fee till 26 Jun, correction 1-3 Jul 2026; 25 Jun is
 // the crucial date for eligibility; fee ₹100 for General); testbook,
@@ -29,7 +30,7 @@ export const sscCglRecruitment2026: DocGuide = {
   lead: "<strong>स्थिति: आवेदन बंद, टियर 1 परीक्षा चल रही है।</strong> कर्मचारी चयन आयोग (SSC) ने 21 मई 2026 को CGL 2026 की अधिसूचना जारी की थी; रिपोर्टों के अनुसार लगभग <strong>12,256 पद</strong> हैं। आवेदन की आखिरी तारीख 22 जून थी, जिसे बढ़ाकर <strong>25 जून 2026</strong> किया गया। टियर 1 कंप्यूटर आधारित परीक्षा <strong>30 सितंबर से 30 अक्टूबर 2026</strong> तक है।",
   facts: [
     ["स्थिति", "आवेदन बंद, टियर 1 जारी"],
-    ["पद", "लगभग 12,256 (ग्रुप B और C)"],
+    ["पद", "अधिसूचना में लगभग 12,256; SSC की 24.09.2026 की अस्थायी रिक्ति सूची में 10,731"],
     ["आवेदन बंद", "25 जून 2026 (बढ़ी हुई तारीख)"],
     ["टियर 1", "30 सितंबर - 30 अक्टूबर 2026"],
   ],
