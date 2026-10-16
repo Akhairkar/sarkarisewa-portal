@@ -1,7 +1,9 @@
 ---
 // HRA exemption under section 10(13A) of the Income-tax Act, rule 2A: the
 // least of (a) HRA received, (b) rent paid minus 10% of salary, (c) 50% of
-// salary in Delhi, Mumbai, Kolkata, Chennai, else 40%. Salary = basic + DA
+// salary in a metro (from FY 2026-27: Delhi, Mumbai, Kolkata, Chennai,
+// Bengaluru, Hyderabad, Pune, Ahmedabad; see tools/hra-calculator.astro),
+// else 40%. Salary = basic + DA
 // (forming part of retirement benefits). Only in the old tax regime.
 ---
 <section class="section hracalc">
@@ -10,7 +12,7 @@
     <div><label for="hr-basic">बेसिक + DA (महीने का)</label><input type="number" min="0" inputmode="numeric" id="hr-basic" placeholder="जैसे 40000" /></div>
     <div><label for="hr-hra">मिलने वाला HRA (महीने का)</label><input type="number" min="0" inputmode="numeric" id="hr-hra" placeholder="जैसे 16000" /></div>
     <div><label for="hr-rent">दिया गया किराया (महीने का)</label><input type="number" min="0" inputmode="numeric" id="hr-rent" placeholder="जैसे 15000" /></div>
-    <div><label for="hr-city">शहर</label><select id="hr-city"><option value="0.4">दूसरे शहर (40%)</option><option value="0.5">दिल्ली, मुंबई, कोलकाता, चेन्नई (50%)</option></select></div>
+    <div><label for="hr-city">शहर</label><select id="hr-city"><option value="0.4">दूसरे शहर (40%)</option><option value="0.5">दिल्ली, मुंबई, कोलकाता, चेन्नई, बेंगलुरु, हैदराबाद, पुणे, अहमदाबाद (50%)</option></select></div>
   </div>
   <button type="button" class="cta" id="hr-go">HRA छूट निकालें</button>
   <div id="hr-out" hidden></div>
