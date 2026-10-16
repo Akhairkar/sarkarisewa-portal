@@ -1,4 +1,5 @@
 import type { DocGuide } from "./types";
+import { gstinPromo } from "./promos";
 
 // Sources (checked 15 Oct 2026): myScheme (api.myscheme.gov.in, slug
 // "pm-svanidhi": Ministry of Housing & Urban Affairs; launched 1 Jun 2020;
@@ -20,6 +21,7 @@ export const pmSvanidhi: DocGuide = {
     { label: "पीएम स्वनिधि" },
   ],
   docHi: "पीएम स्वनिधि",
+  promo: gstinPromo,
   title: "पीएम स्वनिधि (स्ट्रीट वेंडर ऋण योजना) 2026",
   description: "शहरी स्ट्रीट वेंडरों को बिना जमानत कार्यशील पूंजी ऋण प्रदान करती है, समय पर पुनर्भुगतान पर क्रमिक रूप से उच्च ऋण सीमा के साथ।",
   published: "2024-06-01",

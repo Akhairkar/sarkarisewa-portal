@@ -1,4 +1,5 @@
 import type { DocGuide } from "./types";
+import { gstinPromo } from "./promos";
 
 // Sources (checked 16 Oct 2026; udyamregistration.gov.in not reachable from
 // the sandbox, search-result extract of its homepage used): Udyam portal
@@ -17,6 +18,7 @@ export const udyamMsmeReRegistration: DocGuide = {
     { label: "उद्यम प्रमाण पत्र अपडेट" },
   ],
   docHi: "उद्योग आधार / उद्यम अपडेट",
+  promo: gstinPromo,
   title: "उद्योग आधार / उद्यम एमएसएमई नवीनीकरण (Udyam Certificate)",
   description: "पुराने उद्योग आधार (UAM) को उद्यम में बदलें, उद्यम प्रमाण पत्र डाउनलोड करें और विवरण अपडेट करें। नवीनीकरण की ज़रूरत नहीं, पोर्टल पर सब मुफ्त।",
   published: "2024-06-01",

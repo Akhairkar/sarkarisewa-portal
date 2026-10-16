@@ -1,4 +1,5 @@
 import type { DocGuide } from "./types";
+import { gstinPromo } from "./promos";
 
 // Sources (checked 15 Oct 2026): myScheme (api.myscheme.gov.in, slug "pmmy":
 // Department of Financial Services; from 8 Apr 2015; loans up to ₹20 lakh to
@@ -18,6 +19,7 @@ export const pmMudraYojana: DocGuide = {
     { label: "पीएम मुद्रा योजना" },
   ],
   docHi: "पीएम मुद्रा योजना",
+  promo: gstinPromo,
   title: "पीएम मुद्रा योजना (PMMY) 2026",
   description: "आय-सृजन गतिविधियों के लिए गैर-कॉर्पोरेट, गैर-कृषि लघु और सूक्ष्म उद्यमों को ₹20 लाख तक का बिना जमानत ऋण प्रदान करती है।",
   published: "2024-06-01",

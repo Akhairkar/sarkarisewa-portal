@@ -1,4 +1,5 @@
 import type { DocGuide } from "./types";
+import { gstinPromo } from "./promos";
 
 // Sources (checked 15 Oct 2026, via search extracts; pmvishwakarma.gov.in was
 // not reachable from here): india.gov.in spotlight and myScheme "pmv"
@@ -19,6 +20,7 @@ export const pmVishwakarmaYojanaApply: DocGuide = {
     { label: "पीएम विश्वकर्मा आवेदन" },
   ],
   docHi: "पीएम विश्वकर्मा आवेदन",
+  promo: gstinPromo,
   title: "पीएम विश्वकर्मा योजना 2026 (PM Vishwakarma Scheme)",
   description: "18 पारंपरिक कामों के कारीगरों के लिए ₹15,000 टूलकिट व ₹3 लाख 5% लोन। पीएम विश्वकर्मा योजना 2026 में CSC पर रजिस्ट्रेशन, ज़रूरी दस्तावेज़, जांच के चरण और स्टेटस।",
   published: "2024-06-01",

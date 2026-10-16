@@ -1,4 +1,5 @@
 import type { DocGuide } from "./types";
+import { gstinPromo } from "./promos";
 
 // Sources (checked 16 Oct 2026; udyamregistration.gov.in not reachable from
 // the sandbox, search-result extract of its homepage used): Udyam portal
@@ -16,6 +17,7 @@ export const udyamRegistration: DocGuide = {
     { label: "उद्यम पंजीकरण" },
   ],
   docHi: "उद्यम पंजीकरण (MSME)",
+  promo: gstinPromo,
   title: "उद्यम पंजीकरण (MSME) 2026",
   description: "सूक्ष्म, लघु, और मध्यम उद्यमों के लिए मुफ़्त ऑनलाइन पंजीकरण, जो प्राथमिकता-क्षेत्र ऋण, सब्सिडी, और निविदा वरीयता देता है।",
   published: "2024-06-01",

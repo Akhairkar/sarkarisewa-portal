@@ -1,4 +1,5 @@
 import type { DocGuide } from "./types";
+import { gstinPromo } from "./promos";
 
 // Sources (checked 15 Oct 2026): mpbcdc.maharashtra.gov.in, official site of
 // Mahatma Phule Backward Class Development Corporation Ltd (Social Justice &
@@ -20,6 +21,7 @@ export const mpbcdcDirectLoanYojana: DocGuide = {
     { label: "थेट कर्ज (Direct Loan) योजना" },
   ],
   docHi: "थेट कर्ज (Direct Loan) योजना",
+  promo: gstinPromo,
   title: "MPBCDC Direct Loan Yojana 2026: 50% Subsidy, 4% Interest Loan",
   description: "MPBCDC थेट कर्ज योजना: महाराष्ट्र के SC/नव-बौद्ध लोगों के ₹1 लाख तक के व्यवसाय पर ₹50,000 अनुदान, ₹45,000 कर्ज 4% ब्याज पर और ₹5,000 अपना हिस्सा। कागज़ और आवेदन।",
   published: "2024-06-01",

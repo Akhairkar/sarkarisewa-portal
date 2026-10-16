@@ -1,4 +1,5 @@
 import type { DocGuide } from "./types";
+import { gstinPromo } from "./promos";
 
 // Sources (checked 16 Oct 2026; pib.gov.in, standupmitra.in and
 // newsonair.gov.in not reachable from the sandbox, search-result extracts
@@ -21,6 +22,7 @@ export const standUpIndia: DocGuide = {
     { label: "स्टैंड अप इंडिया" },
   ],
   docHi: "स्टैंड अप इंडिया",
+  promo: gstinPromo,
   title: "स्टैंड अप इंडिया योजना 2026",
   description: "स्टैंड अप इंडिया: SC/ST और महिला उद्यमियों को नए उद्यम के लिए ₹10 लाख-₹1 करोड़ का बैंक लोन। योजना मार्च 2025 में खत्म हुई, नया रूप तैयार हो रहा है; अभी के विकल्प।",
   published: "2024-06-01",

@@ -1,4 +1,5 @@
 import type { DocGuide } from "./types";
+import { gstinPromo } from "./promos";
 
 // Sources (checked 15 Oct 2026, via search extracts; pmvishwakarma.gov.in and
 // india.gov.in pages were not reachable from here): india.gov.in spotlight
@@ -24,6 +25,7 @@ export const pmVishwakarmaYojana: DocGuide = {
     { label: "पीएम विश्वकर्मा योजना" },
   ],
   docHi: "पीएम विश्वकर्मा योजना",
+  promo: gstinPromo,
   title: "पीएम विश्वकर्मा योजना",
   description: "18 पारंपरिक व्यवसायों के कारीगरों और शिल्पकारों को कौशल प्रशिक्षण, आधुनिक औज़ार, और बिना गारंटी के ऋण देने वाली केंद्रीय योजना।",
   published: "2024-06-01",

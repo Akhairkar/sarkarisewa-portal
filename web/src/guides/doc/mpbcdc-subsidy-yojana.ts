@@ -1,4 +1,5 @@
 import type { DocGuide } from "./types";
+import { gstinPromo } from "./promos";
 
 // Sources (checked 15 Oct 2026): mpbcdc.maharashtra.gov.in, official site of
 // Mahatma Phule Backward Class Development Corporation Ltd (Social Justice &
@@ -20,6 +21,7 @@ export const mpbcdcSubsidyYojana: DocGuide = {
     { label: "50% अनुदान योजना" },
   ],
   docHi: "50% अनुदान योजना",
+  promo: gstinPromo,
   title: "MPBCDC 50% Subsidy Yojana 2026: 50% विशेष अनुदान योजना",
   description: "MPBCDC 50% अनुदान योजना: महाराष्ट्र के SC/नव-बौद्ध लोगों के ₹50,000 तक के व्यवसाय पर 50% (अधिकतम ₹25,000) अनुदान, बाकी बैंक कर्ज। पात्रता, कागज़ और आवेदन प्रक्रिया।",
   published: "2024-06-01",

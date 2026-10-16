@@ -1,4 +1,5 @@
 import type { DocGuide } from "./types";
+import { gstinPromo } from "./promos";
 
 // Sources (checked 15 Oct 2026): mpbcdc.maharashtra.gov.in, official site of
 // Mahatma Phule Backward Class Development Corporation Ltd (Social Justice &
@@ -23,6 +24,7 @@ export const mpbcdcYojana: DocGuide = {
     { label: "महात्मा फुले महामंडळ योजनाएं" },
   ],
   docHi: "महात्मा फुले महामंडळ योजनाएं",
+  promo: gstinPromo,
   title: "MPBCDC Yojana 2026: महात्मा फुले महामंडळ योजनाएं",
   description: "MPBCDC (महात्मा फुले मागासवर्ग विकास महामंडळ) की योजनाएं: 50% अनुदान, बीज भांडवल, थेट कर्ज, प्रशिक्षण और NSFDC कर्ज। तुलना, पात्रता, कागज़ और ज़िला कार्यालय में आवेदन।",
   published: "2024-06-01",
