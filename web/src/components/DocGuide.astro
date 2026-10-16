@@ -12,6 +12,7 @@ import PromoBox from "./PromoBox.astro";
 import PaidTools from "./PaidTools.astro";
 import CscHelp from "./CscHelp.astro";
 import type { DocGuide } from "../guides/doc/types";
+import { promo as challanPromo } from "../guides/challan/common";
 import { langOf } from "../i18n";
 
 interface Props { g: DocGuide; canonical?: string }
@@ -24,6 +25,9 @@ const crumbs = g.crumbs ?? [
   { label: g.state!.hi, href: `/states/${g.state!.slug}.html` },
   { label: g.docHi },
 ];
+// Driving licence readers are vehicle owners: show the RC e-challan report
+// box unless the guide sets its own.
+const promo = g.promo ?? (g.doc === "driving-licence" ? challanPromo : undefined);
 ---
 <Base title={g.title} description={g.description} breadcrumbs={crumbs} faq={g.faq} published={g.published} modified={g.modified} canonical={canonical}>
   <Breadcrumbs items={crumbs} />
@@ -40,7 +44,7 @@ const crumbs = g.crumbs ?? [
       <CscHelp state={g.state} doc={g.docHi} href={g.cscHref} />
 
       {g.notice && <div class="callout warn"><p set:html={g.notice} /></div>}
-      {g.promo && <PromoBox p={g.promo} />}
+      {promo && <PromoBox p={promo} />}
 
       {g.sections.map((s, i) => (
         <>
@@ -65,8 +69,8 @@ const crumbs = g.crumbs ?? [
       ))}
 
       <OfficialLinks verified={g.verified} links={g.official} />
-      <PaidTools exclude={g.promo ? [g.promo.href] : []} />
-      {g.promo && <PromoBox p={g.promo} compact />}
+      <PaidTools exclude={promo ? [promo.href] : []} />
+      {promo && <PromoBox p={promo} compact />}
       <Faq items={g.faq} />
       <CardGrid title={L("इनसे जुड़ी जानकारी", "Related guides")} cards={g.related} id="related" />
       {g.doc && <StateGrid doc={g.doc} current={g.state?.slug} title={g.otherStatesTitle ?? `दूसरे राज्यों में ${g.docHi}`} />}
