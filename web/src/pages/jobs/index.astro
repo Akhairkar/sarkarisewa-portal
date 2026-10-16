@@ -8,6 +8,17 @@ import Faq from "../../components/Faq.astro";
 import Explore from "../../components/Explore.astro";
 import { JOBS } from "../../data/jobs";
 import { oldMeta } from "../../lib/csc";
+import fs from "node:fs";
+import { REPO_ROOT } from "../../lib/repo";
+import type { DocGuide } from "../../guides/doc/types";
+
+// Rebuilt job pages keep their title and description in src/guides/jobs/;
+// pages not rebuilt yet are read from the old HTML.
+const GUIDES = Object.fromEntries(
+  Object.entries(import.meta.glob<Record<string, DocGuide>>("../../guides/jobs/*.ts", { eager: true }))
+    .map(([f, m]) => [f.split("/").pop()!.replace(/\.ts$/, ""), Object.values(m).find((v) => v && typeof v === "object" && "title" in v) as DocGuide]),
+);
+const meta = (slug: string) => GUIDES[slug] ? { title: GUIDES[slug].title, description: GUIDES[slug].description } : fs.existsSync(`${REPO_ROOT}/jobs/${slug}.html`) ? oldMeta(`jobs/${slug}.html`) : { title: slug, description: "" };
 
 const SECTOR_HI: Record<string, string> = {
   SSC: "SSC", UPSC: "UPSC", Banking: "बैंक", Railway: "रेलवे", Defence: "रक्षा", Scientific: "ISRO / वैज्ञानिक",
@@ -16,7 +27,7 @@ const SECTOR_HI: Record<string, string> = {
 const today = new Date().toISOString().slice(0, 10);
 const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "long", year: "numeric" });
 const jobs = JOBS.map((j) => {
-  const m = oldMeta(`jobs/${j.slug}.html`);
+  const m = meta(j.slug);
   return { ...j, href: `/jobs/${j.slug}.html`, title: m.title.replace(/\s*[|—]\s*SarkariSewa.*$/i, "").trim(), text: m.description };
 });
 const state = (j: (typeof jobs)[number]) => (j.status === "expected" ? "expected" : j.last >= today ? "open" : "closed");
