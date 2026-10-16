@@ -1,0 +1,54 @@
+---
+// One service category (old /category/<slug>.html URLs): every rebuilt service
+// page in that category from data/services.json, plus related hubs.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CardGrid from "../components/CardGrid.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+import type { Card } from "../data/site";
+import { CATEGORIES, categoryCards, live } from "../lib/hub-pages";
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  h1: string;
+  intro: string;
+  listTitle: string;
+  extra?: { title: string; cards: Card[] }[];
+  tips?: string[];
+  faq: { q: string; a: string }[];
+}
+const { slug, title, description, h1, intro, listTitle, extra = [], tips = [], faq } = Astro.props;
+const cat = CATEGORIES.find((c) => c.slug === slug)!;
+const cards = categoryCards(slug, cat.emoji);
+const extras = extra.map((x) => ({ ...x, cards: x.cards.filter((c) => live(c.href)) })).filter((x) => x.cards.length);
+const others = CATEGORIES.filter((c) => c.slug !== slug).map((c) => ({ href: `/category/${c.slug}.html`, label: `${c.emoji} ${c.hi}` }));
+const crumbs = [{ label: "होम", href: "/" }, { label: "सभी श्रेणियां", href: "/category/category.html" }, { label: cat.hi }];
+---
+<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} schemaType="WebPage" modified="2026-10-16">
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">{cat.emoji} {cat.hi} · {cards.length} गाइड</span>
+    <h1>{h1}</h1>
+    <p class="page-intro">{intro}</p>
+    <SearchBox placeholder="सेवा या योजना का नाम लिखें…" />
+  </section>
+  <CardGrid title={listTitle} cards={cards} id="list" />
+  {extras.map((x, i) => <CardGrid title={x.title} cards={x.cards} id={`more-${i + 1}`} />)}
+  {tips.length > 0 && (
+    <section class="section" id="tips">
+      <h2>आवेदन से पहले ध्यान रखें</h2>
+      <ul class="checklist">{tips.map((t) => <li>{t}</li>)}</ul>
+      <p class="callout info">SarkariSewa India एक निजी जानकारी वेबसाइट है, सरकारी वेबसाइट नहीं। आवेदन हमेशा official पोर्टल या अपने नज़दीकी CSC / सरकारी कार्यालय से करें।</p>
+    </section>
+  )}
+  <section class="section" id="other-categories">
+    <h2>दूसरी श्रेणियां</h2>
+    <ul class="chips">{others.map((o) => <li><a href={o.href}>{o.label}</a></li>)}</ul>
+  </section>
+  <Faq items={faq} />
+  <Explore />
+</Base>
