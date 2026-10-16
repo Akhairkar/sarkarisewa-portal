@@ -1,0 +1,66 @@
+---
+// Hub of all ready-to-use application / complaint letter formats, grouped by
+// category, with a search box. Data: src/letters/formats/.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { LETTERS, letterHref } from "../../letters";
+import { CATEGORIES, type LetterCategory } from "../../letters/types";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "आवेदन पत्र" }];
+const groups = (Object.keys(CATEGORIES) as LetterCategory[])
+  .map((c) => ({ c, meta: CATEGORIES[c], list: LETTERS.filter((l) => l.category === c) }))
+  .filter((g) => g.list.length);
+const faq = [
+  { q: "क्या ये आवेदन पत्र फ्री हैं?", a: "हां। फॉर्मेट देखना, अपनी जानकारी भरकर पत्र बनाना, कॉपी करना, प्रिंट या PDF बनाना और WhatsApp पर भेजना फ्री है।" },
+  { q: "मेरी जानकारी कहां जाती है?", a: "कहीं नहीं। पत्र आपके ही फोन या कंप्यूटर के ब्राउज़र में बनता है; ड्राफ्ट सिर्फ उसी डिवाइस में सेव रहता है और 'सब मिटाएं' दबाने पर हट जाता है।" },
+  { q: "PDF कैसे बनाएं?", a: "'प्रिंट / PDF' बटन दबाएं और प्रिंटर में 'Save as PDF' चुनें। हिंदी अक्षर सही दिखते हैं।" },
+  { q: "क्या ये फॉर्मेट हर दफ्तर में चलेंगे?", a: "ये आम नमूने हैं। अगर किसी दफ्तर, बैंक या स्कूल का अपना फॉर्म है तो वही भरें; ऐसे मामलों में पेज पर बताया गया है।" },
+];
+---
+<Base title="आवेदन पत्र और शिकायत पत्र के फॉर्मेट (Application Format in Hindi) 2026" description={`${LETTERS.length}+ तैयार आवेदन और शिकायत पत्र फॉर्मेट: RTI, बैंक, बिजली, स्कूल, पुलिस, नगर पालिका। अपनी जानकारी भरें, हिंदी या English में पत्र बनाएं, प्रिंट/PDF करें। फ्री।`} breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>आवेदन पत्र और शिकायत पत्र: तैयार फॉर्मेट, भरें और प्रिंट करें</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">नीचे से अपना पत्र चुनें, अपनी जानकारी भरें और पत्र तुरंत तैयार हो जाएगा। हिंदी और English दोनों में, प्रिंट, PDF या WhatsApp पर भेजने के बटन के साथ। सब फ्री, और आपकी जानकारी आपके ही फोन में रहती है।</p>
+      </section>
+      <label class="arzi-search"><span>पत्र खोजें</span><input type="search" placeholder="जैसे: RTI, बैंक, बिजली, छुट्टी" /></label>
+      {groups.map((g) => (
+        <section class="section arzi-group" id={g.c}>
+          <h2>{g.meta.emoji} {g.meta.title.hi}</h2>
+          <div class="card-grid">
+            {g.list.map((l) => (
+              <a class="card" href={letterHref(l)} data-q={`${l.short.hi} ${l.short.en} ${l.title}`.toLowerCase()}>
+                <span class="emoji" aria-hidden="true">{l.emoji}</span>
+                <strong>{l.short.hi}</strong>
+                <small>{l.short.en}</small>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+  <script is:inline>
+    (function () {
+      var i = document.querySelector(".arzi-search input"); if (!i) return;
+      i.addEventListener("input", function () {
+        var q = i.value.trim().toLowerCase();
+        document.querySelectorAll(".arzi-group").forEach(function (g) {
+          var n = 0; g.querySelectorAll(".card").forEach(function (c) { var ok = !q || c.dataset.q.indexOf(q) > -1; c.hidden = !ok; if (ok) n++; });
+          g.hidden = n === 0;
+        });
+      });
+    })();
+  </script>
+  <style is:global>
+    .arzi-search { display: grid; gap: 4px; margin: 12px 0; font-weight: 600; }
+    .arzi-search input { padding: 12px; border: 1px solid var(--c-line); border-radius: var(--radius-sm, 8px); font: inherit; }
+  </style>
+</Base>

@@ -1,0 +1,96 @@
+---
+// One page per letter format: explanation, live builder, how to submit,
+// FAQ and links to the guides it belongs to. Data: src/letters/formats/.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import OfficialLinks from "../../components/OfficialLinks.astro";
+import Explore from "../../components/Explore.astro";
+import LetterBuilder from "../../components/LetterBuilder.astro";
+import { LETTERS, letterHref } from "../../letters";
+import { CATEGORIES, type Letter } from "../../letters/types";
+import { exists, pageTitle } from "../../lib/repo";
+
+export function getStaticPaths() {
+  return LETTERS.map((l) => ({ params: { slug: l.slug }, props: { l } }));
+}
+const { l } = Astro.props as { l: Letter };
+const cat = CATEGORIES[l.category];
+const crumbs = [{ label: "होम", href: "/" }, { label: "आवेदन पत्र", href: "/arzi/" }, { label: l.short.hi }];
+const related = l.related
+  .filter((h) => exists(h.slice(1)))
+  .map((h) => ({ href: h, emoji: "📘", title: { hi: pageTitle(h.slice(1)).split(/[:|]/)[0].trim() || h, en: "" }, text: { hi: "पूरी जानकारी पढ़ें", en: "" } }));
+const sameCat = LETTERS.filter((x) => x.category === l.category && x.slug !== l.slug).slice(0, 8)
+  .map((x) => ({ href: letterHref(x), emoji: x.emoji, title: x.short, text: { hi: "फॉर्मेट और बनाएं", en: "Format" } }));
+const others = LETTERS.filter((x) => x.category !== l.category).slice(0, 6)
+  .map((x) => ({ href: letterHref(x), emoji: x.emoji, title: x.short, text: { hi: CATEGORIES[x.category].title.hi, en: "" } }));
+---
+<Base title={l.title} description={l.description} breadcrumbs={crumbs} faq={l.faq} published={l.published} modified={l.modified}>
+  <Breadcrumbs items={crumbs} />
+  <div class="page has-aside">
+    <article>
+      <h1>{l.h1}</h1>
+      <div class="meta-row"><span class="verified">✓ जानकारी जांची गई: {l.verified}</span><span>{cat.emoji} {cat.title.hi}</span></div>
+
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead" set:html={l.lead} />
+        <dl class="facts">{l.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}</dl>
+      </section>
+
+      {l.notice && <div class="callout warn"><p set:html={l.notice} /></div>}
+
+      <LetterBuilder l={l} />
+
+      <section class="section" id="kab">
+        <h2>यह पत्र कब काम आता है</h2>
+        <ul class="checklist">{l.when.map((x) => <li set:html={x} />)}</ul>
+        <p><strong>किसे लिखें:</strong> <span set:html={l.to} /></p>
+      </section>
+
+      {l.attach && l.attach.length > 0 && (
+        <section class="section" id="saath">
+          <h2>साथ में क्या लगाएं</h2>
+          <ul class="checklist">{l.attach.map((x) => <li set:html={x} />)}</ul>
+        </section>
+      )}
+
+      {l.submit && l.submit.length > 0 && (
+        <section class="section" id="jama">
+          <h2>कैसे और कहां जमा करें</h2>
+          <ol class="steps">{l.submit.map((x) => <li set:html={x} />)}</ol>
+        </section>
+      )}
+
+      {l.tips && l.tips.length > 0 && (
+        <section class="section" id="dhyan">
+          <h2>ध्यान दें</h2>
+          <ul class="checklist">{l.tips.map((x) => <li set:html={x} />)}</ul>
+        </section>
+      )}
+
+      <div class="callout info"><p>यह एक नमूना है, कानूनी सलाह नहीं। जिस दफ्तर में पत्र देना है, उसका अपना फॉर्म या फॉर्मेट हो तो वही इस्तेमाल करें। SarkariSewa India एक निजी वेबसाइट है, सरकारी नहीं।</p></div>
+
+      {related.length > 0 && <CardGrid title="इससे जुड़ी पूरी जानकारी" cards={related} id="related" />}
+      {sameCat.length > 0 && <CardGrid title={`${cat.title.hi}: और फॉर्मेट`} cards={sameCat} id="same" />}
+      {l.official && l.official.length > 0 && <OfficialLinks verified={l.verified} links={l.official} />}
+      <Faq items={l.faq} />
+      {others.length > 0 && <CardGrid title="दूसरे आवेदन पत्र" cards={others} more={{ href: "/arzi/", label: "सभी फॉर्मेट ›" }} />}
+      <Explore />
+    </article>
+    <aside class="page-aside">
+      <section class="section toc">
+        <h2 style="font-size:1rem">इस पेज पर</h2>
+        <ol>
+          <li><a href="#banayein">पत्र बनाएं</a></li>
+          <li><a href="#kab">कब काम आता है</a></li>
+          {l.attach && <li><a href="#saath">साथ में क्या लगाएं</a></li>}
+          {l.submit && <li><a href="#jama">कैसे जमा करें</a></li>}
+          {l.tips && <li><a href="#dhyan">ध्यान दें</a></li>}
+        </ol>
+        <a class="cta secondary" href="/arzi/" style="margin-top:10px;display:block;text-align:center">📝 सभी आवेदन पत्र</a>
+      </section>
+    </aside>
+  </div>
+</Base>

@@ -1,0 +1,128 @@
+---
+// Live letter builder: the reader fills the fields, the letter updates in the
+// page, and they can copy it, print / save as PDF, or share it on WhatsApp.
+// Everything stays in the browser (a draft is kept in this device's
+// localStorage only); nothing is sent to our server.
+import type { Letter } from "../letters/types";
+interface Props { l: Letter }
+const { l } = Astro.props;
+const data = { slug: l.slug, fields: l.fields, template: l.template };
+---
+<section class="section lt" id="banayein" aria-labelledby="lt-title">
+  <h2 id="lt-title">अपना {l.short.hi} बनाएं</h2>
+  <p class="lt-note">नीचे जानकारी भरें, पत्र अपने आप तैयार हो जाएगा। आपकी जानकारी सिर्फ आपके फोन/कंप्यूटर में रहती है, हमारे सर्वर पर नहीं जाती।</p>
+  <div class="lt-lang" role="group" aria-label="भाषा">
+    <button type="button" data-lang="hi" aria-pressed="true">हिंदी</button>
+    <button type="button" data-lang="en" aria-pressed="false">English</button>
+  </div>
+  <div class="lt-grid">
+    <form class="lt-form" autocomplete="on">
+      {l.fields.map((f) => (
+        <label class={f.type === "textarea" ? "lt-wide" : ""}>
+          <span data-hi={f.label.hi} data-en={f.label.en}>{f.label.hi}{f.required && <b aria-hidden="true"> *</b>}</span>
+          {f.type === "textarea" ? (
+            <textarea name={f.key} rows="3" data-ph-hi={f.placeholder?.hi ?? ""} data-ph-en={f.placeholder?.en ?? ""} placeholder={f.placeholder?.hi ?? ""}></textarea>
+          ) : f.type === "select" ? (
+            <select name={f.key}>{(f.options ?? []).map((o) => <option value={o.hi} data-hi={o.hi} data-en={o.en}>{o.hi}</option>)}</select>
+          ) : (
+            <input name={f.key} type={f.type === "date" ? "date" : f.type === "number" ? "number" : f.type === "tel" ? "tel" : "text"} data-ph-hi={f.placeholder?.hi ?? ""} data-ph-en={f.placeholder?.en ?? ""} placeholder={f.placeholder?.hi ?? ""} />
+          )}
+          {f.hint && <small data-hi={f.hint.hi} data-en={f.hint.en}>{f.hint.hi}</small>}
+        </label>
+      ))}
+    </form>
+    <div class="lt-out">
+      <div class="lt-paper" aria-live="polite"></div>
+      <div class="lt-actions">
+        <button type="button" class="cta" data-act="print">🖨️ प्रिंट / PDF</button>
+        <button type="button" class="cta secondary" data-act="copy">📋 कॉपी करें</button>
+        <button type="button" class="cta secondary" data-act="wa">WhatsApp पर भेजें</button>
+        <button type="button" class="lt-clear" data-act="clear">सब मिटाएं</button>
+      </div>
+      <p class="lt-msg" role="status"></p>
+    </div>
+  </div>
+  <script is:inline type="application/json" class="lt-data" set:html={JSON.stringify(data)} />
+</section>
+
+<script is:inline>
+(function () {
+  document.querySelectorAll(".lt").forEach(function (root) {
+    var D = JSON.parse(root.querySelector(".lt-data").textContent);
+    var form = root.querySelector(".lt-form"), paper = root.querySelector(".lt-paper"), msg = root.querySelector(".lt-msg");
+    var KEY = "ss_letter_" + D.slug, lang = "hi";
+    var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    var today = function () { var d = new Date(); return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear(); };
+    function fmt(v, f) {
+      if (f && f.type === "date" && /^\d{4}-\d{2}-\d{2}$/.test(v)) { var p = v.split("-"); return p[2] + "/" + p[1] + "/" + p[0]; }
+      if (f && f.type === "select") { var o = (f.options || []).find(function (x) { return x.hi === v; }); if (o) return o[lang]; }
+      return v;
+    }
+    function values() { var o = {}; D.fields.forEach(function (f) { var el = form.elements[f.key]; o[f.key] = el ? el.value.trim() : ""; }); return o; }
+    function text(plain) {
+      var v = values(), byKey = {}; D.fields.forEach(function (f) { byKey[f.key] = f; });
+      // Drop a line whose optional field was left empty (e.g. "Mobile: ").
+      var tpl = D.template[lang].split("\n").filter(function (line) {
+        var keys = (line.match(/\{\{(\w+)\}\}/g) || []).map(function (m) { return m.slice(2, -2); });
+        return !keys.length || keys.some(function (k) { return v[k] || k === "date" || (byKey[k] && byKey[k].required); });
+      }).join("\n");
+      return tpl.replace(/\{\{(\w+)\}\}/g, function (_, k) {
+        var x = v[k] ? fmt(v[k], byKey[k]) : (k === "date" ? today() : "");
+        if (plain) return x || "__________";
+        return x ? esc(x) : '<span class="lt-blank">__________</span>';
+      });
+    }
+    function render() {
+      paper.innerHTML = text(false).split(/\n{2,}/).map(function (p) { return "<p>" + p.replace(/\n/g, "<br>") + "</p>"; }).join("");
+      try { localStorage.setItem(KEY, JSON.stringify(values())); } catch (e) {}
+    }
+    function setLang(l) {
+      lang = l;
+      root.querySelectorAll(".lt-lang button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.lang === l ? "true" : "false"); });
+      root.querySelectorAll("[data-hi][data-en]").forEach(function (el) { if (el.tagName === "OPTION") el.textContent = el.dataset[l]; else el.firstChild.nodeValue = el.dataset[l]; });
+      root.querySelectorAll("[data-ph-hi]").forEach(function (el) { el.placeholder = el.dataset["ph" + (l === "hi" ? "Hi" : "En")]; });
+      render();
+    }
+    try { var saved = JSON.parse(localStorage.getItem(KEY) || "{}"); Object.keys(saved).forEach(function (k) { if (form.elements[k]) form.elements[k].value = saved[k]; }); } catch (e) {}
+    form.addEventListener("input", render);
+    form.addEventListener("change", render);
+    root.querySelectorAll(".lt-lang button").forEach(function (b) { b.addEventListener("click", function () { setLang(b.dataset.lang); }); });
+    var track = function (a) { try { if (window.gtag) gtag("event", "letter_" + a, { letter: D.slug, lang: lang }); } catch (e) {} };
+    root.querySelector('[data-act="print"]').addEventListener("click", function () { track("print"); document.body.classList.add("lt-printing"); paper.classList.add("lt-print-me"); window.print(); setTimeout(function () { document.body.classList.remove("lt-printing"); paper.classList.remove("lt-print-me"); }, 500); });
+    root.querySelector('[data-act="copy"]').addEventListener("click", function () {
+      track("copy"); var t = text(true);
+      (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { msg.textContent = "✅ पत्र कॉपी हो गया।"; }, function () { msg.textContent = "कॉपी नहीं हो सका, पत्र को चुनकर कॉपी करें।"; });
+    });
+    root.querySelector('[data-act="wa"]').addEventListener("click", function () { track("whatsapp"); window.open("https://wa.me/?text=" + encodeURIComponent(text(true)), "_blank", "noopener"); });
+    root.querySelector('[data-act="clear"]').addEventListener("click", function () { form.reset(); try { localStorage.removeItem(KEY); } catch (e) {} render(); msg.textContent = ""; });
+    render();
+  });
+})();
+</script>
+
+<style is:global>
+.lt-note { color: var(--c-muted); font-size: .92rem; }
+.lt-lang { display: inline-flex; gap: 4px; margin: 6px 0 12px; border: 1px solid var(--c-line); border-radius: 999px; padding: 3px; }
+.lt-lang button { border: 0; background: none; padding: 6px 14px; border-radius: 999px; font: inherit; cursor: pointer; color: inherit; }
+.lt-lang button[aria-pressed="true"] { background: var(--c-primary, #1d4ed8); color: #fff; }
+.lt-grid { display: grid; gap: 16px; }
+@media (min-width: 900px) { .lt-grid { grid-template-columns: 1fr 1.1fr; align-items: start; } .lt-out { position: sticky; top: 80px; } }
+.lt-form { display: grid; gap: 10px; }
+.lt-form label { display: grid; gap: 4px; font-size: .92rem; }
+.lt-form label > span { font-weight: 600; }
+.lt-form input, .lt-form textarea, .lt-form select { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid var(--c-line); border-radius: var(--radius-sm, 8px); font: inherit; background: var(--c-bg, #fff); color: inherit; }
+.lt-form small { color: var(--c-muted); font-size: .8rem; }
+.lt-paper { background: #fff; color: #111; border: 1px solid var(--c-line); border-radius: 6px; padding: 18px; font-size: .95rem; line-height: 1.65; box-shadow: 0 2px 10px rgba(0,0,0,.06); overflow-wrap: anywhere; }
+.lt-paper p { margin: 0 0 12px; }
+.lt-blank { color: #b45309; }
+.lt-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.lt-actions .cta { flex: 1 1 auto; }
+.lt-clear { border: 0; background: none; color: var(--c-muted); text-decoration: underline; cursor: pointer; font: inherit; }
+.lt-msg { min-height: 1.2em; font-size: .9rem; }
+@media print {
+  body.lt-printing * { visibility: hidden !important; }
+  body.lt-printing .lt-print-me, body.lt-printing .lt-print-me * { visibility: visible !important; }
+  body.lt-printing .lt-print-me { position: absolute; left: 0; top: 0; width: 100%; border: 0; box-shadow: none; padding: 0; font-size: 12pt; }
+  body.lt-printing .lt-blank { color: #111; }
+}
+</style>
