@@ -5,14 +5,30 @@ import path from "node:path";
 
 export const REPO_ROOT = path.resolve(process.cwd(), "..");
 
-export const exists = (rel: string) => fs.existsSync(path.join(REPO_ROOT, rel.replace(/^\//, "")));
+// A page exists if the old static file is still there or an Astro page now
+// builds that URL (most old pages were replaced by web/src/pages/*.astro).
+const PAGES = path.join(process.cwd(), "src/pages");
+export const exists = (rel: string) => {
+  const r = rel.replace(/^\//, "").replace(/[?#].*$/, "");
+  if (fs.existsSync(path.join(REPO_ROOT, r))) return true;
+  const base = r.replace(/\.html$/, "").replace(/\/$/, "/index");
+  return fs.existsSync(path.join(PAGES, base + ".astro")) || fs.existsSync(path.join(PAGES, base, "index.astro"));
+};
 
-/** <title> of an old page, without the " | SarkariSewa India" suffix. */
+/** <title> of an old page, without the " | SarkariSewa India" suffix; for a
+ * page rebuilt from a guide (src/guides/<dir>/<slug>.ts), the guide's title. */
 export function pageTitle(rel: string): string {
+  const slug = path.basename(rel, ".html");
+  for (const dir of ["doc", "blog", "jobs", "exams"]) {
+    const f = path.join(process.cwd(), "src/guides", dir, slug + ".ts");
+    if (!fs.existsSync(f)) continue;
+    const t = fs.readFileSync(f, "utf8").match(/^\s*"?title"?:\s*(["'`])((?:\\.|(?!\1).)*)\1/m)?.[2];
+    if (t) return t.replace(/\\(.)/g, "$1").replace(/\s*[|—-]\s*SarkariSewa.*$/i, "").trim();
+  }
   try {
     const html = fs.readFileSync(path.join(REPO_ROOT, rel.replace(/^\//, "")), "utf8");
     const t = html.match(/<title>([^<]*)<\/title>/i)?.[1] ?? "";
-    return t.replace(/\s*[|—-]\s*SarkariSewa.*$/i, "").replace(/&amp;/g, "&").trim();
+    return /^Moved\b/.test(t) ? "" : t.replace(/\s*[|—-]\s*SarkariSewa.*$/i, "").replace(/&amp;/g, "&").trim();
   } catch {
     return "";
   }

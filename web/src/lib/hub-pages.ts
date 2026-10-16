@@ -2,7 +2,7 @@
 // directory): find the new pages that really exist and read their guide data.
 import fs from "node:fs";
 import path from "node:path";
-import { REPO_ROOT, services } from "./repo";
+import { REPO_ROOT } from "./repo";
 import type { Card } from "../data/site";
 
 export const PAGES_DIR = path.join(REPO_ROOT, "web/src/pages");
@@ -62,9 +62,19 @@ export const CATEGORIES: Category[] = [
   { slug: "mpbcdc-schemes", emoji: "🏦", hi: "MPBCDC योजनाएं", en: "MPBCDC Schemes", text: "महाराष्ट्र: SC/नव-बौद्ध स्वरोज़गार अनुदान और कर्ज" },
 ];
 
+type Service = { slug: string; category: string; customUrl?: string; name: { en?: string; hi?: string }; shortDescription?: { en?: string; hi?: string } };
+
 /** services.json entries of a category whose new page exists, as cards. */
 export function categoryCards(slug: string, emoji = "📌"): Card[] {
-  return services([slug])
-    .filter((s, i, all) => newPage(s.href) && all.findIndex((x) => x.href === s.href) === i)
-    .map((s) => ({ href: s.href, emoji, title: s.title.hi, text: short(s.text.hi) }));
+  const all: Service[] = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, "data/services.json"), "utf8"));
+  const seen = new Set<string>();
+  const out: Card[] = [];
+  for (const s of all) {
+    if (s.category !== slug) continue;
+    const href = "/" + (s.customUrl ?? `service/${s.slug}.html`).replace(/^\//, "");
+    if (seen.has(href) || !newPage(href)) continue;
+    seen.add(href);
+    out.push({ href, emoji, title: s.name.hi || s.name.en || s.slug, text: short(s.shortDescription?.hi || s.shortDescription?.en || "") });
+  }
+  return out;
 }

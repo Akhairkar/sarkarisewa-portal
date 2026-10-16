@@ -1,0 +1,52 @@
+---
+// All service categories (old /category/category.html and /category/index.html).
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CardGrid from "../components/CardGrid.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+import { CATEGORIES, categoryCards, live } from "../lib/hub-pages";
+
+const cats = CATEGORIES.map((c) => ({ ...c, n: categoryCards(c.slug).length })).filter((c) => c.n > 0);
+const cards = cats.map((c) => ({ href: `/category/${c.slug}.html`, emoji: c.emoji, title: c.hi, text: c.text, badge: `${c.n} गाइड` }));
+const total = cats.reduce((s, c) => s + c.n, 0);
+const hubs = [
+  { href: "/documents/", emoji: "📄", title: "दस्तावेज़ हब", text: "राज्य के अनुसार प्रमाण पत्र, राशन, लेबर कार्ड" },
+  { href: "/yojana/", emoji: "🏛️", title: "योजना हब", text: "केंद्र और राज्य की योजनाएं" },
+  { href: "/states/", emoji: "🗺️", title: "राज्य अनुसार सेवाएं", text: "अपने राज्य की सेवाएं और CSC" },
+  { href: "/students/", emoji: "🎓", title: "Students", text: "नौकरी, परीक्षा, छात्रवृत्ति" },
+  { href: "/tools/", emoji: "🛠️", title: "फ्री टूल्स", text: "फोटो रिसाइज़र, कैलकुलेटर, CSC खोज" },
+  { href: "/blog/index.html", emoji: "📚", title: "ब्लॉग गाइड", text: "स्टेटस, समस्या और समाधान" },
+].filter((c) => live(c.href));
+const crumbs = [{ label: "होम", href: "/" }, { label: "सभी श्रेणियां" }];
+const faq = [
+  { q: "यहां कौन-कौन सी सेवाओं की जानकारी है?", a: "पहचान दस्तावेज़, सरकारी योजनाएं, वित्त और टैक्स, नौकरी और शिक्षा, बिजली-पानी-गैस जैसी उपयोगिताएं और स्वास्थ्य सेवाएं। हर श्रेणी खोलकर उसकी सभी गाइड देखें।" },
+  { q: "क्या SarkariSewa India सरकारी वेबसाइट है?", a: "नहीं। यह एक निजी जानकारी वेबसाइट है। हम सरकारी सेवाओं की जानकारी आसान हिंदी में देते हैं और हर गाइड में official पोर्टल का लिंक बताते हैं।" },
+  { q: "आवेदन में मदद कहां मिलेगी?", a: "नज़दीकी CSC (कॉमन सर्विस सेंटर) पर ऑपरेटर ऑनलाइन आवेदन में मदद करते हैं। हमारे CSC Locator से अपने इलाके का CSC खोजें।" },
+];
+interface Props { canonical?: string }
+const { canonical } = Astro.props;
+---
+<Base
+  title="सभी सरकारी सेवा श्रेणियां 2026 | SarkariSewa India"
+  description="सरकारी सेवाओं की श्रेणीवार डायरेक्टरी 2026: पहचान पत्र, सरकारी योजनाएं, वित्त और टैक्स, नौकरी और शिक्षा, स्वास्थ्य व उपयोगिता सेवाओं की आसान हिंदी गाइड।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+  canonical={canonical}
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">📁 {total} गाइड, {cats.length} श्रेणियां</span>
+    <h1>सभी सरकारी सेवा श्रेणियां</h1>
+    <p class="page-intro">अपनी ज़रूरत की श्रेणी चुनें। हर गाइड में ज़रूरी कागज़, फीस, आवेदन का तरीका और official लिंक है।</p>
+    <SearchBox placeholder="जैसे: आधार, राशन कार्ड, PM Kisan…" />
+  </section>
+  <CardGrid title="श्रेणियां" cards={cards} id="categories" />
+  <CardGrid title="दूसरे हब" cards={hubs} id="hubs" />
+  <section class="section"><p class="callout info">SarkariSewa India एक निजी जानकारी वेबसाइट है, सरकारी वेबसाइट नहीं। आवेदन हमेशा official पोर्टल, CSC या सरकारी कार्यालय से करें।</p></section>
+  <Faq items={faq} />
+  <Explore />
+</Base>

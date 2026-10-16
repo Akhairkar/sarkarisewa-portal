@@ -1,0 +1,67 @@
+---
+// Blog hub: every rebuilt blog page in this folder, grouped by topic. Titles and
+// descriptions come from the guide each page renders (src/guides/blog/).
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import SearchBox from "../../components/SearchBox.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { guidePages, cleanTitle, short, live } from "../../lib/hub-pages";
+
+const modules = import.meta.glob<Record<string, unknown>>("../../guides/blog/*.ts", { eager: true });
+const posts = guidePages("blog", modules).sort((a, b) => (b.g.modified ?? "").localeCompare(a.g.modified ?? ""));
+
+const TOPICS: { id: string; title: string; emoji: string; re: RegExp }[] = [
+  { id: "yojana", title: "योजनाएं और किसान", emoji: "🌾", re: /kisan|ladki|lakhpati|drone|vishwakarma|surya-ghar|lpg|(^|-)ration-|nfsa/ },
+  { id: "health", title: "स्वास्थ्य", emoji: "🏥", re: /abha|ayushman|cowin|esic/ },
+  { id: "kaam", title: "नौकरी, वेतन, पेंशन और टैक्स", emoji: "💼", re: /pay-commission|epf|nps|tax|eshram|labour|exam|udyam|project-report|scholarship/ },
+  { id: "docs", title: "दस्तावेज़ और वाहन", emoji: "🆔", re: /aadhaar|pan-|digilocker|driving|fastag|vehicle|birth|rejected/ },
+];
+const groups = [
+  ...TOPICS.map((tp) => ({ ...tp, list: posts.filter((p) => tp.re.test(p.slug) && TOPICS.find((x) => x.re.test(p.slug)) === tp) })),
+  { id: "more", title: "अन्य गाइड", emoji: "📚", list: posts.filter((p) => !TOPICS.some((x) => x.re.test(p.slug))) },
+]
+  .filter((g) => g.list.length)
+  .map((g) => ({ ...g, cards: g.list.map((p) => ({ href: p.href, emoji: g.emoji, title: cleanTitle(p.g.title), text: short(p.g.description) })) }));
+
+const more = [
+  { href: "/states/", emoji: "🗺️", title: "राज्य अनुसार सेवाएं", text: "अपने राज्य की सेवाएं और CSC" },
+  { href: "/category/category.html", emoji: "📁", title: "सभी श्रेणियां", text: "सेवाओं की श्रेणीवार लिस्ट" },
+  { href: "/tools/", emoji: "🛠️", title: "फ्री टूल्स", text: "कैलकुलेटर, फोटो रिसाइज़र, CSC खोज" },
+  { href: "/yojana/", emoji: "🏛️", title: "सरकारी योजनाएं", text: "केंद्र और राज्य की योजनाएं" },
+].filter((c) => live(c.href));
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "ब्लॉग" }];
+const faq = [
+  { q: "इस ब्लॉग में क्या मिलेगा?", a: "सरकारी सेवाओं और योजनाओं से जुड़ी आसान हिंदी गाइड: आवेदन का स्टेटस कैसे देखें, पैसा क्यों नहीं आया, कौन से कागज़ लगेंगे और आम गलतियों से कैसे बचें।" },
+  { q: "क्या ब्लॉग की जानकारी सरकारी आदेश है?", a: "नहीं। ये जानकारी के लिए लिखे लेख हैं, सरकारी आदेश या नोटिफिकेशन नहीं। फीस, तारीख और नियम बदल सकते हैं, इसलिए अंतिम फैसले से पहले official वेबसाइट पर पुष्टि करें।" },
+  { q: "क्या SarkariSewa India सरकारी वेबसाइट है?", a: "नहीं। यह एक निजी जानकारी वेबसाइट है। हर लेख में official पोर्टल का लिंक दिया जाता है।" },
+];
+---
+<Base
+  title="Blog — SarkariSewa India"
+  description="सरकारी योजनाओं और सेवाओं की आसान हिंदी गाइड: PM Kisan स्टेटस, आयुष्मान, आधार अपडेट, PAN-आधार लिंक, e-Shram, EPF, ड्राइविंग लाइसेंस और आम समस्याओं के हल।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">📚 {posts.length} गाइड</span>
+    <h1>ब्लॉग: सरकारी सेवाओं की आसान गाइड</h1>
+    <p class="page-intro">आवेदन का तरीका, स्टेटस देखना, ज़रूरी कागज़, पात्रता और आम गलतियों के हल। हर लेख में official लिंक दिया है।</p>
+    <SearchBox placeholder="जैसे: PM Kisan स्टेटस, आधार अपडेट…" />
+    <ul class="chips" aria-label="विषय चुनें">
+      {groups.map((g) => <li><a href={`#${g.id}`}>{g.emoji} {g.title}</a></li>)}
+    </ul>
+  </section>
+  {groups.map((g) => <CardGrid title={g.title} cards={g.cards} id={g.id} />)}
+  <section class="section">
+    <p class="callout warn"><strong>ध्यान दें:</strong> ये लेख जानकारी के लिए हैं, सरकारी आदेश नहीं। फीस, तारीख और नियम बदल सकते हैं; आवेदन से पहले official वेबसाइट पर पुष्टि करें। SarkariSewa India एक निजी वेबसाइट है।</p>
+  </section>
+  <CardGrid title="आगे कहां जाएं" cards={more} id="more-hubs" />
+  <Faq items={faq} />
+  <Explore />
+</Base>

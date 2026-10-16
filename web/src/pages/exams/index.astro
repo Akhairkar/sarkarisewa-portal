@@ -1,0 +1,79 @@
+---
+// Exam calendar hub: every rebuilt exam page in this folder, grouped by
+// recruiting body. Titles and descriptions come from src/guides/exams/.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { guidePages, cleanTitle, short, live } from "../../lib/hub-pages";
+
+const modules = import.meta.glob<Record<string, unknown>>("../../guides/exams/*.ts", { eager: true });
+const pages = guidePages("exams", modules);
+const isCalendar = (slug: string) => /calendar|schedule/.test(slug);
+
+const BODIES: { id: string; title: string; emoji: string; re: RegExp; site: string }[] = [
+  { id: "ssc", title: "SSC (कर्मचारी चयन आयोग)", emoji: "🔵", re: /^ssc/, site: "ssc.gov.in" },
+  { id: "upsc", title: "UPSC (संघ लोक सेवा आयोग)", emoji: "🟣", re: /^upsc/, site: "upsc.gov.in" },
+  { id: "railway", title: "रेलवे (RRB)", emoji: "🟢", re: /^(rrb|railway)/, site: "rrbapply.gov.in" },
+  { id: "bank", title: "बैंक (IBPS / SBI)", emoji: "🟠", re: /^(ibps|banking|sbi)/, site: "ibps.in" },
+];
+const toCard = (p: (typeof pages)[number], emoji: string) => ({
+  href: p.href, emoji, title: cleanTitle(p.g.title), text: short(p.g.description), badge: isCalendar(p.slug) ? "कैलेंडर" : undefined,
+});
+const groups = [
+  ...BODIES.map((b) => ({ ...b, list: pages.filter((p) => b.re.test(p.slug)) })),
+  { id: "other", title: "अन्य परीक्षाएं", emoji: "📅", re: /$^/, site: "", list: pages.filter((p) => !BODIES.some((b) => b.re.test(p.slug))) },
+]
+  .filter((g) => g.list.length)
+  .map((g) => ({
+    ...g,
+    cards: [...g.list].sort((a, b) => Number(isCalendar(b.slug)) - Number(isCalendar(a.slug))).map((p) => toCard(p, g.emoji)),
+  }));
+
+const more = [
+  { href: "/jobs/index.html", emoji: "🎯", title: "सरकारी नौकरी 2026", text: "किसमें आवेदन चालू है, आखिरी तारीख" },
+  { href: "/students/", emoji: "🎓", title: "Students हब", text: "फॉर्म, टूल और छात्रवृत्ति" },
+  { href: "/tools/photo-resizer.html", emoji: "🖼️", title: "Photo / Signature Resizer", text: "फॉर्म के लिए सही साइज़ में फोटो" },
+  { href: "/tools/typing-speed-test.html", emoji: "⌨️", title: "Typing Speed Test", text: "SSC/कोर्ट टाइपिंग टेस्ट का अभ्यास" },
+].filter((c) => live(c.href));
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "सरकारी नौकरी", href: "/jobs/index.html" }, { label: "परीक्षा कैलेंडर 2026-2027" }];
+const faq = [
+  { q: "परीक्षा की तारीख कहां से पक्की करें?", a: "हमेशा आयोग की official वेबसाइट से: SSC के लिए ssc.gov.in, UPSC के लिए upsc.gov.in, रेलवे के लिए अपने RRB की वेबसाइट और बैंक परीक्षाओं के लिए ibps.in या sbi.co.in। आयोग तारीखें बदल सकता है।" },
+  { q: "वार्षिक कैलेंडर और नोटिफिकेशन में क्या फर्क है?", a: "वार्षिक कैलेंडर में संभावित तारीखें होती हैं। आवेदन की असली तारीख, पद, उम्र सीमा और फीस भर्ती के नोटिफिकेशन में आती है। फॉर्म भरने से पहले नोटिफिकेशन ज़रूर पढ़ें।" },
+  { q: "एडमिट कार्ड कब आता है?", a: "आमतौर पर परीक्षा से कुछ दिन पहले आयोग की वेबसाइट पर। सही तारीख हर परीक्षा के पेज पर और official नोटिस में देखें।" },
+  { q: "क्या SarkariSewa India भर्ती करती है?", a: "नहीं। यह एक निजी जानकारी वेबसाइट है। हम परीक्षा की जानकारी और official लिंक देते हैं; आवेदन आयोग की वेबसाइट पर ही होता है।" },
+];
+---
+<Base
+  title="सरकारी परीक्षा कैलेंडर 2026-2027 | SarkariSewa India"
+  description="सरकारी भर्ती परीक्षाओं का कैलेंडर 2026-2027: SSC CGL, UPSC CSE, RRB NTPC/Group D, IBPS PO/Clerk और बैंक परीक्षाओं की तारीखें, एडमिट कार्ड और official लिंक।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">📅 {pages.length} परीक्षा पेज</span>
+    <h1>सरकारी परीक्षा कैलेंडर 2026-2027: <em>SSC, UPSC, रेलवे और बैंक</em></h1>
+    <p class="page-intro">आयोग-वार परीक्षा तारीखें, आवेदन की खिड़की, एडमिट कार्ड और रिज़ल्ट। यह तैयारी की योजना के लिए है; तारीख बदल सकती है, इसलिए official नोटिस से मिलाएं।</p>
+    <ul class="chips" aria-label="आयोग चुनें">
+      {groups.map((g) => <li><a href={`#${g.id}`}>{g.emoji} {g.title}</a></li>)}
+    </ul>
+  </section>
+  {groups.map((g) => <CardGrid title={g.title} lead={g.site ? `Official वेबसाइट: ${g.site}` : undefined} cards={g.cards} id={g.id} />)}
+  <section class="section" id="plan">
+    <h2>कैलेंडर का सही इस्तेमाल कैसे करें</h2>
+    <ul class="checklist">
+      <li>पहले पात्रता (उम्र, योग्यता) देखें, फिर आवेदन की आखिरी तारीख नोट करें।</li>
+      <li>नोटिफिकेशन, आवेदन, करेक्शन विंडो, एडमिट कार्ड और परीक्षा की तारीख अलग-अलग होती हैं।</li>
+      <li>फोटो, सिग्नेचर और कागज़ पहले से तय साइज़ में तैयार रखें।</li>
+      <li>परीक्षा या यात्रा की योजना से पहले आयोग की नई सूचना ज़रूर देखें।</li>
+    </ul>
+  </section>
+  <CardGrid title="ये भी काम आएंगे" cards={more} id="more-hubs" />
+  <Faq items={faq} />
+  <Explore />
+</Base>

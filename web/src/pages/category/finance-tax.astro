@@ -1,0 +1,33 @@
+---
+import Category from "../../views/Category.astro";
+
+const faq = [
+  { q: "ITR भरना किसके लिए ज़रूरी है?", a: "जिसकी सालाना आय छूट की सीमा से ज़्यादा है, उसे ITR भरना होता है। TDS कटा हो और रिफंड चाहिए तो भी ITR भरें। नियम हर साल बदल सकते हैं, incometax.gov.in पर जांचें।" },
+  { q: "PAN-आधार लिंक नहीं है तो क्या होगा?", a: "PAN निष्क्रिय (inoperative) हो सकता है और TDS ज़्यादा कट सकता है। PAN-आधार लिंकिंग गाइड में तरीका और फीस देखें।" },
+  { q: "GST नंबर असली है या नहीं, कैसे जांचें?", a: "GST पोर्टल पर GSTIN डालकर मुफ्त जांच सकते हैं। हमारी GST गाइड में तरीका है। चाहें तो हमारी पेड GSTIN Verification रिपोर्ट भी ले सकते हैं।" },
+  { q: "क्या SarkariSewa India टैक्स फाइल करती है?", a: "नहीं। हम सिर्फ़ जानकारी और कुछ कैलकुलेटर देते हैं। टैक्स से जुड़ी बड़ी बातों के लिए CA या टैक्स सलाहकार से बात करें।" },
+];
+---
+<Category
+  slug="finance-tax"
+  title="वित्त एवं कर सेवाएं 2026 | SarkariSewa India"
+  description="आयकर ई-फाइलिंग, PAN-आधार लिंक, EPF पासबुक, GST, NPS, PPF और Udyam: टैक्स, बचत और पेंशन से जुड़ी सेवाओं की आसान हिंदी गाइड, official लिंक के साथ।"
+  h1="वित्त और टैक्स: ITR, EPF, NPS, GST की गाइड"
+  intro="आयकर रिटर्न, TDS रिफंड, PAN-आधार लिंक, EPF, NPS, PPF, GST और MSME पंजीकरण से जुड़ी सेवाएं। हर गाइड में प्रक्रिया और official लिंक है।"
+  listTitle="टैक्स, बचत और पेंशन सेवाएं"
+  extra={[
+    { title: "टूल्स और रिपोर्ट", cards: [
+      { href: "/gst/", emoji: "🧾", title: "GST नंबर गाइड", text: "GSTIN जांचने के तरीके" },
+      { href: "/services/gstin-verification/", emoji: "✅", title: "GSTIN Verification रिपोर्ट", text: "पेड सेवा: ₹20 प्रति GSTIN" },
+      { href: "/tools/itr-penalty-calculator.html", emoji: "🧮", title: "ITR पेनल्टी कैलकुलेटर", text: "देर से ITR भरने पर कितनी फीस" },
+      { href: "/tools/savings-comparator.html", emoji: "💹", title: "बचत योजना तुलना", text: "PPF, NPS, FD जैसी योजनाएं" },
+      { href: "/7th-pay-commission-calculator.html", emoji: "💼", title: "7th Pay Calculator", text: "सरकारी कर्मचारी वेतन गणना" },
+    ] },
+  ]}
+  tips={[
+    "टैक्स और निवेश के नियम हर बजट में बदल सकते हैं; official पोर्टल पर ताज़ा जानकारी देखें।",
+    "PAN, आधार और बैंक खाते में नाम एक जैसा रखें।",
+    "किसी को OTP या नेट बैंकिंग पासवर्ड न बताएं।",
+  ]}
+  faq={faq}
+/>

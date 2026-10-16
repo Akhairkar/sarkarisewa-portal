@@ -1,0 +1,55 @@
+---
+// Service directory (old /services/): every rebuilt service page from
+// data/services.json, grouped by category, plus our paid tools.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import SearchBox from "../../components/SearchBox.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { PAID_SERVICES } from "../../data/site";
+import { CATEGORIES, categoryCards, live } from "../../lib/hub-pages";
+
+const groups = CATEGORIES.map((c) => ({ ...c, cards: categoryCards(c.slug, c.emoji) })).filter((g) => g.cards.length);
+const total = groups.reduce((s, g) => s + g.cards.length, 0);
+const paid = PAID_SERVICES.filter((p) => p.live && live(p.href)).map((p) => ({
+  href: p.href, emoji: p.emoji, title: p.title, text: typeof p.text === "string" ? p.text : p.text.hi, badge: `${p.price}`,
+}));
+const hubs = [
+  { href: "/documents/", emoji: "📄", title: "दस्तावेज़ (राज्य अनुसार)", text: "जन्म, जाति, आय, निवास प्रमाण पत्र, राशन, लेबर कार्ड" },
+  { href: "/yojana/", emoji: "🏛️", title: "राज्य की योजनाएं", text: "लाडकी बहिन, मैया सम्मान जैसी राज्य योजनाएं" },
+  { href: "/tools/csc-locator.html", emoji: "📍", title: "CSC Locator", text: "आवेदन में मदद के लिए नज़दीकी CSC" },
+  { href: "/tools/", emoji: "🛠️", title: "फ्री टूल्स", text: "फोटो रिसाइज़र, कैलकुलेटर, दस्तावेज़ चेकलिस्ट" },
+].filter((c) => live(c.href));
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "सभी सेवाएं" }];
+const faq = [
+  { q: "इस डायरेक्टरी में क्या है?", a: "सरकारी दस्तावेज़, योजनाएं, टैक्स, नौकरी-शिक्षा, उपयोगिता और स्वास्थ्य सेवाओं की गाइड, श्रेणी के अनुसार। हर गाइड में पात्रता, ज़रूरी कागज़, आवेदन का तरीका और official लिंक है।" },
+  { q: "क्या यहां से सीधे आवेदन होता है?", a: "नहीं। SarkariSewa India एक निजी जानकारी वेबसाइट है, सरकारी वेबसाइट नहीं। आवेदन official पोर्टल, नज़दीकी CSC या सरकारी कार्यालय से होता है। गाइड में बताया गया है कि कहां और कैसे।" },
+  { q: "पेड सेवाएं क्या हैं?", a: "GSTIN Verification और RC e-Challan रिपोर्ट हमारी पेड सेवाएं हैं, जिनका भुगतान Razorpay से होता है। ये जानकारी को साफ रिपोर्ट में देती हैं; यही जानकारी official पोर्टल पर मुफ्त भी देखी जा सकती है।" },
+];
+---
+<Base
+  title="All Government Services — SarkariSewa India"
+  description="SarkariSewa India की सभी सरकारी सेवाएं, योजनाएं, दस्तावेज़, नौकरी और उपयोगी सेवाएं एक searchable directory में देखें।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">🔎 {total} सेवाएं और गाइड</span>
+    <h1>सभी सरकारी सेवाएं, योजनाएं और दस्तावेज़</h1>
+    <p class="page-intro">सरकारी योजनाएं, दस्तावेज़, नौकरी, पहचान, वित्त, स्वास्थ्य और नागरिक सेवाएं एक जगह। किसी सेवा पर जाएं और पात्रता, ज़रूरी कागज़ और official लिंक देखें।</p>
+    <SearchBox placeholder="सेवा खोजें: आधार, पासपोर्ट, PM Kisan…" />
+    <ul class="chips" aria-label="श्रेणी चुनें">
+      {groups.map((g) => <li><a href={`#${g.slug}`}>{g.emoji} {g.hi} ({g.cards.length})</a></li>)}
+    </ul>
+  </section>
+  {groups.map((g) => <CardGrid title={g.hi} lead={g.text} cards={g.cards} id={g.slug} more={{ href: `/category/${g.slug}.html`, label: "श्रेणी पेज →" }} />)}
+  <CardGrid title="राज्य अनुसार सेवाएं और मदद" cards={hubs} id="hubs" />
+  {paid.length > 0 && <CardGrid title="हमारी पेड सेवाएं" lead="ये SarkariSewa India की अपनी रिपोर्ट सेवाएं हैं, सरकारी सेवा नहीं।" cards={paid} id="paid" more={{ href: "/paid-services/", label: "सभी पेड सेवाएं →" }} />}
+  <Faq items={faq} />
+  <Explore />
+</Base>
