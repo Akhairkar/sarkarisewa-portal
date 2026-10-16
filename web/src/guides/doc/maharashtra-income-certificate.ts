@@ -133,6 +133,7 @@ export const maharashtraIncomeCertificate: DocGuide = {
     { q: "प्रमाण पत्र असली है या नहीं, कैसे जांचें?", a: "Aaple Sarkar होमपेज पर Verify Your Authenticated Certificate में 18 अंकों का बारकोड डालें।" },
   ],
   related: [
+    { href: "/service/nagpur-income-certificate.html", emoji: "🏙️", title: "नागपुर आय प्रमाण पत्र", text: "14 तहसीलें, आवेदन और समय" },
     { href: "/states/maharashtra-caste-certificate.html", emoji: "📜", title: "महाराष्ट्र जाति प्रमाण पत्र", text: "जाति, नॉन-क्रीमी लेयर, जात वैधता" },
     { href: "/states/maharashtra-domicile-certificate.html", emoji: "🏠", title: "महाराष्ट्र डोमिसाइल प्रमाण पत्र", text: "अधिवास प्रमाण पत्र" },
     { href: "/affidavit/income.html", emoji: "✍️", title: "आय का एफिडेविट / स्व-घोषणा", text: "कब काम आता है, नमूना" },

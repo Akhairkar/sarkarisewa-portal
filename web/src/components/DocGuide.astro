@@ -37,7 +37,7 @@ const crumbs = g.crumbs ?? [
         <p class="answer-lead" set:html={g.lead} />
         <dl class="facts">{g.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}</dl>
       </section>
-      <CscHelp state={g.state} doc={g.docHi} />
+      <CscHelp state={g.state} doc={g.docHi} href={g.cscHref} />
 
       {g.notice && <div class="callout warn"><p set:html={g.notice} /></div>}
       {g.promo && <PromoBox p={g.promo} />}

@@ -17,6 +17,7 @@ export type DocGuide = {
   crumbs?: { label: string; href?: string }[]; // overrides the state breadcrumb
   doc?: string; // e.g. "employment-exchange"; links the other states' pages
   docHi: string; // breadcrumb label, e.g. "रोज़गार कार्यालय"
+  cscHref?: string; // "go to a CSC yourself" link in the help box (default: the state CSC list)
   title: string; // keep the ranking title unless it is wrong
   description: string;
   published: string;
