@@ -9,9 +9,10 @@ import type { DocGuide } from "../doc/types";
 // (PMUY targeted subsidy FY 2025-26: ₹300 per 14.2 kg cylinder, up to 9
 // refills a year, pro-rata for 5 kg); PAHAL (DBTL) nationwide since 1 Jan
 // 2015; toll-free LPG helpline 1800-2333-555 (Business Today 12.03.2026).
-// FY 2026-27: several unofficial reports (Anantam IAS, Indian Pay Calculator)
-// claim the subsidised refill cap was cut to 4 from June 2026, but no cabinet
-// decision / PIB notice was found, so no 2026-27 number is stated.
+// FY 2026-27: Business Today and India TV (8 Jun 2026), citing the Petroleum
+// Ministry briefing (Addl. Secretary Praveen Mal Khanooja): subsidised refills
+// cut from 9 to 4 a year, still Rs 300 each. Notification not seen; same as
+// the pm-ujjwala-yojana guide.
 // mylpg.in is the MoPNG LPG portal named on the old page.
 
 export const lpgSubsidyNotComingHeresHowPahaldbtlActuallyWorksMsbuojv71: DocGuide = {
@@ -30,11 +31,11 @@ export const lpgSubsidyNotComingHeresHowPahaldbtlActuallyWorksMsbuojv71: DocGuid
   lead: "PAHAL (DBTL) में हर ग्राहक सिलेंडर पूरी बाज़ार कीमत पर लेता है और सब्सिडी, अगर बनती है, तो अलग से आधार से जुड़े बैंक खाते में आती है। अभी नकद सब्सिडी मुख्य रूप से उज्ज्वला (PMUY) लाभार्थियों को मिलती है: 2025-26 में ₹300 प्रति 14.2 किलो सिलेंडर, साल में 9 रिफिल तक। इसलिए सामान्य ग्राहक के खाते में सब्सिडी ₹0 दिखना ज़्यादातर गलती नहीं है। उज्ज्वला लाभार्थी हैं और फिर भी पैसा नहीं आ रहा, तो आधार सीडिंग, e-KYC और रिफिल की सीमा जांचें।",
   facts: [
     ["व्यवस्था", "PAHAL (DBTL), 1 जनवरी 2015 से पूरे देश में"],
-    ["उज्ज्वला सब्सिडी (2025-26)", "₹300 प्रति 14.2 किलो सिलेंडर, साल में 9 रिफिल तक"],
+    ["उज्ज्वला सब्सिडी (2026-27)", "₹300 प्रति 14.2 किलो सिलेंडर, साल में 4 रिफिल तक (2025-26 में 9 थे)"],
     ["सामान्य ग्राहक", "आम तौर पर कोई नकद सब्सिडी नहीं"],
     ["हेल्पलाइन", "1800-2333-555 (टोल-फ्री)"],
   ],
-  notice: "2026-27 में उज्ज्वला सब्सिडी वाले रिफिल की संख्या घटाने की खबरें आई हैं, पर हमें इसका कैबिनेट फैसला या PIB सूचना नहीं मिली। अपनी सीमा गैस वितरक या कंपनी के ऐप से पूछें।",
+  notice: "<strong>2026-27 में बदलाव:</strong> पेट्रोलियम मंत्रालय की ब्रीफिंग (जून 2026, Business Today/India TV की खबरें) के अनुसार उज्ज्वला में ₹300 सब्सिडी अब साल के पहले 4 रिफिल पर ही मिलती है; 2025-26 में यह 9 रिफिल तक थी। इसके बाद के सिलेंडर पूरी कीमत पर मिलते हैं।",
   sections: [
     {
       id: "pehle-dekhen",
@@ -92,7 +93,7 @@ export const lpgSubsidyNotComingHeresHowPahaldbtlActuallyWorksMsbuojv71: DocGuid
   ],
   faq: [
     { q: "मेरी LPG सब्सिडी ₹0 क्यों दिखती है?", a: "अगर आपका कनेक्शन उज्ज्वला का नहीं है, तो अभी आम तौर पर कोई नकद सब्सिडी नहीं बनती, इसलिए ₹0 सही है। उज्ज्वला लाभार्थी हैं तो आधार सीडिंग, e-KYC और साल की रिफिल सीमा जांचें।" },
-    { q: "उज्ज्वला में कितनी सब्सिडी मिलती है?", a: "2025-26 के लिए ₹300 प्रति 14.2 किलो सिलेंडर, साल में 9 रिफिल तक (5 किलो सिलेंडर पर अनुपात में)। 2026-27 की सीमा का सरकारी फैसला हमें नहीं मिला; वितरक से पूछें।" },
+    { q: "उज्ज्वला में कितनी सब्सिडी मिलती है?", a: "₹300 प्रति 14.2 किलो सिलेंडर। मंत्रालय की ब्रीफिंग की खबरों (जून 2026) के अनुसार 2026-27 में यह साल के पहले 4 रिफिल पर मिलती है; 2025-26 में 9 रिफिल तक थी (5 किलो सिलेंडर पर अनुपात में)।" },
     { q: "बैंक खाता बदल लिया तो क्या करें?", a: "नए खाते में आधार सीडिंग कराएं। सब्सिडी उसी खाते में जाती है जो आपके आधार से DBT के लिए सबसे आखिर में जुड़ा है।" },
     { q: "सब्सिडी कितने दिन में आती है?", a: "आम तौर पर सिलेंडर डिलीवरी के कुछ दिन बाद। देर हो तो कंपनी के ऐप में रिफिल के आगे सब्सिडी की स्थिति देखें।" },
   ],
