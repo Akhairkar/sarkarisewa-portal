@@ -15,7 +15,7 @@ export const arunachalDulariKanyaScheme: DocGuide = {
   crumbs: [
     { label: "होम", href: "/" },
     { label: "राज्यवार सेवाएं", href: "/states/index.html" },
-    { label: "अरुणाचल प्रदेश", href: "/states/arunachal.html" },
+    { label: "अरुणाचल प्रदेश", href: "/states/arunachal-pradesh.html" },
     { label: "दुलारी कन्या योजना" },
   ],
   docHi: "दुलारी कन्या योजना",
@@ -92,7 +92,7 @@ export const arunachalDulariKanyaScheme: DocGuide = {
     { href: "/service/aadhaar-card.html", emoji: "🆔", title: "आधार कार्ड", text: "बच्चे का आधार" },
   ],
   aside: [
-    { href: "/states/arunachal.html", label: "🌅 अरुणाचल की सभी सेवाएं" },
+    { href: "/states/arunachal-pradesh.html", label: "🌅 अरुणाचल की सभी सेवाएं" },
     { href: "/service/csc-locator/arunachal-pradesh.html", label: "📍 नज़दीकी CSC" },
   ],
 };

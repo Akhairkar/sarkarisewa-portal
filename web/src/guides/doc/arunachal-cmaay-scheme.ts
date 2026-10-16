@@ -16,7 +16,7 @@ export const arunachalCmaayScheme: DocGuide = {
   crumbs: [
     { label: "होम", href: "/" },
     { label: "राज्यवार सेवाएं", href: "/states/index.html" },
-    { label: "अरुणाचल प्रदेश", href: "/states/arunachal.html" },
+    { label: "अरुणाचल प्रदेश", href: "/states/arunachal-pradesh.html" },
     { label: "CMAAY योजना" },
   ],
   docHi: "CMAAY योजना",

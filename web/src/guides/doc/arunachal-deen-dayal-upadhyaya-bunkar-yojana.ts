@@ -18,7 +18,7 @@ export const arunachalDeenDayalUpadhyayaBunkarYojana: DocGuide = {
   crumbs: [
     { label: "होम", href: "/" },
     { label: "राज्यवार सेवाएं", href: "/states/index.html" },
-    { label: "अरुणाचल प्रदेश", href: "/states/arunachal.html" },
+    { label: "अरुणाचल प्रदेश", href: "/states/arunachal-pradesh.html" },
     { label: "दीन दयाल उपाध्याय बुनकर योजना" },
   ],
   docHi: "दीन दयाल उपाध्याय बुनकर योजना",
@@ -96,7 +96,7 @@ export const arunachalDeenDayalUpadhyayaBunkarYojana: DocGuide = {
     { href: "/service/arunachal-cmaay-scheme.html", emoji: "🏥", title: "CMAAY योजना", text: "₹5 लाख तक इलाज" },
   ],
   aside: [
-    { href: "/states/arunachal.html", label: "🌅 अरुणाचल की सभी सेवाएं" },
+    { href: "/states/arunachal-pradesh.html", label: "🌅 अरुणाचल की सभी सेवाएं" },
     { href: "/service/csc-locator/arunachal-pradesh.html", label: "📍 नज़दीकी CSC" },
   ],
 };
