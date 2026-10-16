@@ -1,0 +1,153 @@
+---
+// Hidden (indirect) tax calculator. Same URL, title and description as the
+// old page. Runs in the browser.
+// Fixes vs old page:
+// - Old page multiplied spend by the GST rate (e.g. 12% of Rs 8,000), but the
+//   price you pay already includes GST, so the tax inside it is
+//   spend x r / (1 + r). Fixed.
+// - Old page used a flat 12% "average" on groceries; the 12% and 28% slabs
+//   were removed by GST 2.0 from 22 Sep 2025 (notifications 09/2025-CTR to
+//   17/2025-CTR of 17 Sep 2025): main slabs 0%, 5%, 18%, 40% (aerated/sugary
+//   drinks, luxury goods); soap, toothpaste, packaged food mostly 5%;
+//   individual life/health insurance exempt (ClearTax, Vyapar, KnowYourGST).
+//   Clothing/footwear up to Rs 2,500 per piece 5%, above 18% (GST 2.0).
+//   Telecom (mobile recharge, broadband, DTH) 18%.
+// - Fuel: petrol/diesel are outside GST. Central excise was about Rs 19.90/L
+//   (Upstox, Jan 2026) plus state VAT; the exact share differs by state and
+//   date, and we could not find an official 2026 price build-up, so the share
+//   is an editable estimate (default 40%) and the page says so.
+// - Electricity has no GST (state electricity duty differs) - not counted.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "हिडन टैक्स कैलकुलेटर" }];
+const faq = [
+  { q: "हिडन टैक्स (अप्रत्यक्ष कर) क्या है?", a: "जो टैक्स आप सीधे सरकार को नहीं भरते, बल्कि सामान या सेवा की कीमत में शामिल होकर चुकाते हैं, जैसे GST और पेट्रोल-डीज़ल पर एक्साइज़ ड्यूटी व VAT। इनकम टैक्स न भरने वाला भी यह टैक्स देता है।" },
+  { q: "₹118 के सामान पर 18% GST हो तो टैक्स कितना है?", a: "₹18। कीमत में GST पहले से जुड़ा होता है, इसलिए टैक्स = कीमत × 18 ÷ 118। ₹118 का 18% (₹21.24) निकालना गलत है।" },
+  { q: "GST की नई दरें क्या हैं?", a: "22 सितंबर 2025 से GST की मुख्य दरें 5% और 18% हैं, कुछ ज़रूरी चीज़ें 0% पर और कोल्ड ड्रिंक जैसी कुछ चीज़ें व लग्ज़री सामान 40% पर। पहले वाली 12% और 28% की दरें ज़्यादातर हटा दी गईं। व्यक्तिगत जीवन और स्वास्थ्य बीमा पर अब GST नहीं है।" },
+  { q: "पेट्रोल-डीज़ल पर कितना टैक्स है?", a: "पेट्रोल-डीज़ल GST में नहीं हैं। इन पर केंद्र की एक्साइज़ ड्यूटी (जनवरी 2026 में करीब ₹19.90 प्रति लीटर, पेट्रोल) और राज्य का VAT लगता है। कीमत का कितना हिस्सा टैक्स है, यह राज्य और तारीख के हिसाब से बदलता है; टूल में आप यह प्रतिशत बदल सकते हैं।" },
+  { q: "क्या बिजली बिल पर GST लगता है?", a: "नहीं। बिजली GST से बाहर है। कई राज्य बिजली बिल पर अपना 'विद्युत शुल्क' (electricity duty) लेते हैं, जिसकी दर राज्य के हिसाब से अलग है, इसलिए यह टूल उसे नहीं गिनता।" },
+];
+---
+<Base title="Hidden Tax Calculator 2026: Check Actual Tax Paid in India" description="Estimate indirect taxes in everyday household spending, GST and fuel purchases. Free bilingual tool for Indian users with practical guidance and re..." breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>हिडन टैक्स कैलकुलेटर: रोज़ के खर्च में आप कितना टैक्स देते हैं</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">इनकम टैक्स न भरने वाले भी हर खरीद पर GST और पेट्रोल-डीज़ल पर एक्साइज़ व VAT देते हैं। नीचे अपना महीने का खर्च डालें; टूल नई GST दरों (22 सितंबर 2025 से 0%, 5%, 18%, 40%) से बताएगा कि उस खर्च में कितना टैक्स छिपा है। कीमत में टैक्स पहले से शामिल होता है, इसलिए टैक्स = खर्च × दर ÷ (100 + दर)।</p>
+      </section>
+
+      <section class="section ht-tool" aria-labelledby="ht-title">
+        <h2 id="ht-title">🧾 महीने का खर्च डालें</h2>
+        <div class="ht-rows" id="ht-rows"></div>
+        <div class="ht-fuel">
+          <label for="ht-fshare">पेट्रोल/डीज़ल की कीमत में टैक्स का हिस्सा (%, अनुमान)</label>
+          <input type="number" id="ht-fshare" min="0" max="70" step="1" value="40" inputmode="numeric" />
+        </div>
+        <label class="ht-inc-l" for="ht-inc">महीने की कुल आय (₹, वैकल्पिक: आय का कितना % टैक्स गया)</label>
+        <input type="number" id="ht-inc" min="0" inputmode="numeric" placeholder="जैसे 25000" class="ht-inc" />
+        <div id="ht-out" class="calc-out" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>हर लाइन में उस तरह के सामान/सेवा पर महीने का खर्च डालें (अंदाज़ा भी चलेगा)। खाली लाइन छोड़ दें।</li>
+          <li>पेट्रोल-डीज़ल में टैक्स का हिस्सा चाहें तो बदलें; अपने राज्य की कीमत और VAT से यह कम-ज़्यादा होता है।</li>
+          <li>नतीजा तुरंत नीचे दिखेगा: हर हिस्से का टैक्स, महीने और साल का कुल टैक्स।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>दरें और फॉर्मूला</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>खर्च</th><th>टैक्स (अनुमान)</th></tr></thead>
+          <tbody>
+            <tr><td>खुला अनाज, दाल, आटा, सब्ज़ी, फल, दूध</td><td>0% GST</td></tr>
+            <tr><td>पैक्ड खाना, तेल, साबुन, टूथपेस्ट, शैम्पू</td><td>ज़्यादातर 5%</td></tr>
+            <tr><td>कपड़े-जूते ₹2,500 तक (प्रति पीस)</td><td>5%</td></tr>
+            <tr><td>मोबाइल रिचार्ज, इंटरनेट, DTH</td><td>18%</td></tr>
+            <tr><td>TV, फ्रिज, AC, बाइक, ₹2,500 से महंगे कपड़े</td><td>ज़्यादातर 18%</td></tr>
+            <tr><td>कोल्ड ड्रिंक और मीठे पेय</td><td>40%</td></tr>
+            <tr><td>पेट्रोल-डीज़ल</td><td>एक्साइज़ + राज्य VAT (कीमत का करीब 35-45%, राज्य के हिसाब से)</td></tr>
+          </tbody>
+        </table></div>
+        <p><strong>फॉर्मूला:</strong> छपी कीमत में GST शामिल होता है, इसलिए टैक्स = खर्च × दर ÷ (100 + दर)। जैसे ₹1,000 के 18% वाले बिल में टैक्स ₹153 है, ₹180 नहीं।</p>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>यह मोटा अनुमान है। एक ही तरह के सामान में अलग चीज़ों पर दर अलग हो सकती है; सही दर बिल पर छपी होती है।</li>
+          <li>बिजली पर GST नहीं है; राज्य का विद्युत शुल्क, टोल, स्टांप ड्यूटी, शराब पर टैक्स जैसे दूसरे अप्रत्यक्ष कर यहां नहीं गिने गए।</li>
+          <li>तंबाकू उत्पादों पर अलग सेस भी लगता है, इसलिए उन्हें शामिल नहीं किया गया।</li>
+          <li>पक्का बिल लें: GST वाला बिल न मिले तो दुकानदार ने टैक्स लिया पर सरकार तक नहीं पहुंचा हो, ऐसा हो सकता है।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.ht-rows { display: grid; gap: 8px; }
+.ht-row { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 8px; align-items: center; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: var(--radius-sm); background: var(--c-surface); }
+.ht-row label { font-weight: 700; font-size: .92rem; overflow-wrap: anywhere; }
+.ht-row label small { display: block; font-weight: 400; color: var(--c-muted); }
+.ht-row input, .ht-fuel input, .ht-inc { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.ht-fuel { margin-top: 12px; }
+.ht-fuel label, .ht-inc-l { display: block; font-weight: 700; font-size: .92rem; margin: 12px 0 4px; }
+.ht-big { font-size: 1.05rem; margin: 6px 0 10px; }
+.ht-big strong { font-size: 1.5rem; color: var(--c-saffron-700); display: block; }
+.ht-out-list { list-style: none; padding: 0; margin: 10px 0 0; }
+.ht-out-list li { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px dashed var(--c-line); padding: 6px 0; margin: 0; }
+</style>
+
+<script is:inline>
+(function () {
+  // [id, label, hint, rate% (GST, inside price) or "fuel", default]
+  var ROWS = [
+    ["zero", "खुला अनाज, सब्ज़ी, फल, दूध", "0% GST", 0, 3000],
+    ["five", "पैक्ड खाना, तेल, साबुन, टूथपेस्ट", "5% GST", 5, 4000],
+    ["cloth", "कपड़े-जूते (₹2,500 तक प्रति पीस)", "5% GST", 5, 1000],
+    ["tel", "मोबाइल रिचार्ज, इंटरनेट, DTH", "18% GST", 18, 600],
+    ["eighteen", "दूसरा सामान (इलेक्ट्रॉनिक, महंगे कपड़े, गाड़ी सर्विस)", "18% GST", 18, 1000],
+    ["forty", "कोल्ड ड्रिंक / मीठे पेय", "40% GST", 40, 0],
+    ["fuel", "पेट्रोल / डीज़ल", "एक्साइज़ + VAT", "fuel", 2000]
+  ];
+  var $ = function (id) { return document.getElementById(id); };
+  var inr = function (n) { return "₹" + Math.round(n).toLocaleString("en-IN"); };
+  // Tax contained in a tax-inclusive spend
+  function taxIn(spend, rate) { return spend * rate / (100 + rate); }
+  var box = $("ht-rows");
+  ROWS.forEach(function (r) {
+    var d = document.createElement("div"); d.className = "ht-row";
+    d.innerHTML = '<label for="ht-' + r[0] + '">' + r[1] + "<small>" + r[2] + '</small></label><input type="number" min="0" inputmode="numeric" id="ht-' + r[0] + '" value="' + (r[4] || "") + '" placeholder="₹ महीना" />';
+    box.appendChild(d);
+  });
+  function calc() {
+    var share = Math.min(70, Math.max(0, parseFloat($("ht-fshare").value) || 0)), spend = 0, tax = 0, lines = [];
+    ROWS.forEach(function (r) {
+      var v = Math.max(0, parseFloat($("ht-" + r[0]).value) || 0); if (!v) return;
+      var t = r[3] === "fuel" ? v * share / 100 : taxIn(v, r[3]);
+      spend += v; tax += t; lines.push([r[1], t]);
+    });
+    var out = $("ht-out");
+    if (!spend) { out.innerHTML = '<p class="muted">कम से कम एक खर्च डालें।</p>'; return; }
+    var inc = parseFloat($("ht-inc").value) || 0;
+    out.innerHTML = '<p class="ht-big">हर महीने करीब <strong>' + inr(tax) + ' टैक्स</strong></p>' +
+      '<dl class="facts"><div><dt>कुल खर्च</dt><dd>' + inr(spend) + '</dd></div><div><dt>खर्च में टैक्स</dt><dd>' + (Math.round(tax * 1000 / spend) / 10) + '%</dd></div>' +
+      '<div><dt>साल भर में टैक्स</dt><dd>' + inr(tax * 12) + '</dd></div><div><dt>आय का हिस्सा</dt><dd>' + (inc > 0 ? (Math.round(tax * 1000 / inc) / 10) + "%" : "-") + '</dd></div></dl>' +
+      '<ul class="ht-out-list">' + lines.map(function (l) { return "<li><span>" + l[0] + "</span><strong>" + inr(l[1]) + "</strong></li>"; }).join("") + "</ul>";
+    try { if (window.gtag && !calc.s) { calc.s = 1; gtag("event", "tool_usage", { tool: "hidden_tax_calculator" }); } } catch (e) {}
+  }
+  document.querySelector(".ht-tool").addEventListener("input", calc);
+  calc();
+})();
+</script>

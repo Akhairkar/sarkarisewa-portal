@@ -1,0 +1,164 @@
+---
+// Gratuity calculator. Same URL, title and description as the old page.
+// Runs in the browser.
+// Rules used (checked Oct 2026):
+// - The four Labour Codes took effect on 21 Nov 2025; gratuity is now under
+//   the Code on Social Security, 2020 (replacing the Payment of Gratuity Act,
+//   1972, same 15/26 formula). Central rules: G.S.R. 935(E), 30 Dec 2025.
+// - Fixed-term employees: eligible after 1 year of service (rule 34(1)(a)
+//   2nd proviso, SS (Central) Rules 2025), paid pro-rata.
+// - Wages: basic + DA + retaining allowance; if excluded allowances exceed
+//   50% of total pay, the excess is added back to wages (PIB 22 Nov 2025).
+// - Ceiling Rs 20 lakh (notified under the 2018 amendment; continued).
+// - Central govt employees (CCS (Pension) Rules 2021, rule 44): 1/4 of
+//   emoluments per completed six-monthly period, max 16.5 x emoluments,
+//   ceiling Rs 25 lakh from 1 Jan 2024 (raised when DA reached 50%).
+// - Not covered: income-tax formula, half a month's average salary per
+//   completed year (15/30).
+// Sources: Taxmann, Mondaq (SS Code Central Rules 2026), FMSF notice,
+// Aditya Birla Sun Life, LKS, PIB 22 Nov 2025 as reported.
+// Tax: old page said "max tax-exempt Rs 20 lakh". That was the limit under the
+// Income-tax Act, 1961; we did not verify the matching section of the
+// Income-tax Act, 2025, so the page says to confirm it.
+// Old page had no fixed-term, central-govt or 50% wage rule.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "ग्रेच्युटी कैलकुलेटर" }];
+const faq = [
+  { q: "ग्रेच्युटी का फॉर्मूला क्या है?", a: "प्राइवेट नौकरी में: आखिरी महीने का वेतन (बेसिक + DA) × 15 × सेवा के साल ÷ 26। जैसे ₹50,000 वेतन और 10 साल सेवा पर: 50,000 × 15 × 10 ÷ 26 = ₹2,88,462। अधिकतम राशि ₹20 लाख है।" },
+  { q: "ग्रेच्युटी के लिए कितने साल की नौकरी ज़रूरी है?", a: "स्थायी कर्मचारी के लिए आम तौर पर 5 साल की लगातार सेवा। 21 नवंबर 2025 से लागू नए लेबर कोड में फिक्स्ड-टर्म (तय अवधि के अनुबंध वाले) कर्मचारी को 1 साल की सेवा पर ही ग्रेच्युटी मिलती है। मृत्यु या दिव्यांगता की स्थिति में न्यूनतम सेवा की शर्त नहीं है।" },
+  { q: "6 महीने से ज़्यादा की सेवा का क्या होता है?", a: "आखिरी साल में 6 महीने से ज़्यादा काम किया हो तो उसे पूरा साल गिना जाता है। जैसे 10 साल 7 महीने = 11 साल। 6 महीने या कम हो तो वह साल नहीं जुड़ता।" },
+  { q: "नए लेबर कोड में ग्रेच्युटी पर क्या असर पड़ा?", a: "वेतन की नई परिभाषा के अनुसार अगर HRA, भत्ते जैसे हिस्से कुल वेतन के 50% से ज़्यादा हैं, तो ज़्यादा वाला हिस्सा वेतन में जोड़ा जाता है। यानी ग्रेच्युटी कम से कम कुल वेतन के आधे पर बनती है। साथ ही फिक्स्ड-टर्म कर्मचारियों को 1 साल पर ग्रेच्युटी मिलती है।" },
+  { q: "क्या ग्रेच्युटी पर टैक्स लगता है?", a: "सरकारी कर्मचारियों की ग्रेच्युटी पूरी तरह टैक्स-फ्री है। प्राइवेट कर्मचारियों के लिए पुराने आयकर कानून में ₹20 लाख तक छूट थी। 1 अप्रैल 2026 से नया आयकर कानून, 2025 लागू है; उसमें यही सीमा है या नहीं, इसकी पुष्टि हम नहीं कर पाए, इसलिए अपने नियोक्ता या टैक्स सलाहकार से पूछें।" },
+];
+---
+<Base title="Gratuity Calculator 2026: Calculate Gratuity Amount on Retirement" description="Calculate your Gratuity payout under the Payment of Gratuity Act 1972 based on completed years of service and last drawn basic salary." breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>ग्रेच्युटी कैलकुलेटर 2026: नौकरी छोड़ने या रिटायरमेंट पर कितनी ग्रेच्युटी</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">प्राइवेट नौकरी में ग्रेच्युटी = आखिरी बेसिक + DA × 15 × सेवा के साल ÷ 26, अधिकतम ₹20 लाख। स्थायी कर्मचारी को 5 साल और फिक्स्ड-टर्म कर्मचारी को (21 नवंबर 2025 से) 1 साल की सेवा पर ग्रेच्युटी मिलती है। नीचे अपना वेतन और सेवा डालें, टूल हिसाब कर देगा।</p>
+      </section>
+
+      <section class="section gr-tool" aria-labelledby="gr-title">
+        <h2 id="gr-title">🧮 ग्रेच्युटी कैलकुलेटर</h2>
+        <div class="gr-grid">
+          <div class="gr-wide"><label for="gr-mode">आप किस तरह के कर्मचारी हैं</label><select id="gr-mode">
+            <option value="code">प्राइवेट / PSU, स्थायी (ग्रेच्युटी कानून लागू)</option>
+            <option value="fixed">फिक्स्ड-टर्म अनुबंध वाले कर्मचारी</option>
+            <option value="cg">केंद्र सरकार कर्मचारी (CCS पेंशन नियम)</option>
+            <option value="nocover">कंपनी पर ग्रेच्युटी कानून लागू नहीं</option>
+          </select></div>
+          <div><label for="gr-wage">आखिरी महीने का बेसिक + DA (₹)</label><input type="number" id="gr-wage" min="1" inputmode="numeric" placeholder="जैसे 50000" /></div>
+          <div id="gr-gross-box"><label for="gr-gross">कुल मासिक वेतन (ग्रॉस, ₹) <small>वैकल्पिक</small></label><input type="number" id="gr-gross" min="0" inputmode="numeric" placeholder="50% नियम जांचने के लिए" /></div>
+          <div><label for="gr-y">सेवा: साल</label><input type="number" id="gr-y" min="0" max="50" inputmode="numeric" placeholder="जैसे 10" /></div>
+          <div><label for="gr-m">और महीने</label><input type="number" id="gr-m" min="0" max="11" inputmode="numeric" value="0" /></div>
+        </div>
+        <label class="gr-check"><input type="checkbox" id="gr-death" /> मृत्यु या दिव्यांगता के कारण नौकरी खत्म हुई (न्यूनतम सेवा की शर्त नहीं)</label>
+        <button type="button" class="cta" id="gr-go">ग्रेच्युटी निकालें</button>
+        <div id="gr-out" class="calc-out" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>कर्मचारी का प्रकार चुनें। ज़्यादातर प्राइवेट कंपनियों (10 या ज़्यादा कर्मचारी) पर ग्रेच्युटी कानून लागू होता है।</li>
+          <li>सैलरी स्लिप से आखिरी महीने का बेसिक + DA डालें। ग्रॉस वेतन भी डालेंगे तो टूल नए लेबर कोड का 50% नियम लगा देगा।</li>
+          <li>कुल सेवा साल और महीनों में डालें, फिर बटन दबाएं।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>नियम और फॉर्मूला</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>कर्मचारी</th><th>फॉर्मूला</th><th>न्यूनतम सेवा · सीमा</th></tr></thead>
+          <tbody>
+            <tr><td>स्थायी (कानून लागू)</td><td>वेतन × 15 × साल ÷ 26</td><td>5 साल · ₹20 लाख</td></tr>
+            <tr><td>फिक्स्ड-टर्म</td><td>वेतन × 15 × सेवा (अनुपात में) ÷ 26</td><td>1 साल · ₹20 लाख</td></tr>
+            <tr><td>केंद्र सरकार</td><td>वेतन × ¼ × पूरी छमाहियां (अधिकतम 16.5 × वेतन)</td><td>5 साल · ₹25 लाख</td></tr>
+            <tr><td>कानून लागू नहीं</td><td>वेतन × 15 × पूरे साल ÷ 30</td><td>कंपनी की नीति</td></tr>
+          </tbody>
+        </table></div>
+        <ul class="checklist">
+          <li><strong>वेतन:</strong> बेसिक + महंगाई भत्ता (DA)। नए लेबर कोड में अगर बाकी भत्ते कुल वेतन के 50% से ज़्यादा हों, तो ज़्यादा हिस्सा वेतन में जुड़ता है।</li>
+          <li><strong>26 क्यों:</strong> महीने में 26 काम के दिन माने जाते हैं, और हर साल के 15 दिन का वेतन मिलता है।</li>
+          <li><strong>भुगतान:</strong> कंपनी को ग्रेच्युटी देय होने के 30 दिन के अंदर देनी होती है; देर होने पर ब्याज लगता है।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>यह अनुमान है। असल राशि कंपनी के रिकॉर्ड, वेतन की परिभाषा और नियमों से तय होती है।</li>
+          <li>नए लेबर कोड के 50% वेतन नियम और फिक्स्ड-टर्म नियम का ब्योरा हमने सरकारी प्रेस नोट और कानूनी विश्लेषणों से लिया है; अपने मामले में HR से पुष्टि करें।</li>
+          <li>टैक्स छूट की सीमा नए आयकर कानून, 2025 में हमने जांची नहीं है; टैक्स के लिए नियोक्ता या टैक्स सलाहकार से पूछें।</li>
+          <li>ग्रेच्युटी न मिले तो पहले कंपनी को लिखित आवेदन दें, फिर अपने क्षेत्र के श्रम विभाग (नियंत्रक प्राधिकारी) से शिकायत करें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.gr-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; }
+@media (min-width: 560px) { .gr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .gr-wide { grid-column: 1 / -1; } }
+.gr-tool label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 4px; }
+.gr-tool label small { font-weight: 400; color: var(--c-muted); }
+.gr-grid input, .gr-grid select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.gr-tool .gr-check { display: flex; gap: 8px; align-items: flex-start; margin: 14px 0 0; font-weight: 500; }
+.gr-check input { width: 20px; height: 20px; flex: 0 0 20px; margin-top: 3px; }
+.gr-tool button.cta { border: 0; font: inherit; font-weight: 800; cursor: pointer; width: 100%; }
+.gr-big { font-size: 1.05rem; margin: 6px 0 10px; }
+.gr-big strong { font-size: 1.5rem; color: var(--c-green); display: block; }
+.gr-err { color: var(--c-red); font-weight: 700; }
+</style>
+
+<script is:inline>
+(function () {
+  function gratCalc(p) {
+    var wage = p.wage, add = 0;
+    if ((p.mode === "code" || p.mode === "fixed") && p.gross > wage) { var w2 = 0.5 * p.gross; if (w2 > wage) { add = w2 - wage; wage = w2; } }
+    var months = p.y * 12 + p.m;
+    if (p.mode === "cg") {
+      if (months < 60 && !p.death) return { ok: false, min: 5 };
+      var per = Math.min(66, Math.floor(months / 6)), raw0 = 0.25 * wage * per, lim = Math.min(16.5 * wage, 2500000);
+      return { ok: true, amount: Math.min(raw0, lim), periods: per, wage: wage, add: 0, capped: raw0 > lim };
+    }
+    var yrs = p.mode === "nocover" ? p.y : p.y + (p.m > 6 ? 1 : 0), minY = p.mode === "fixed" ? 1 : 5;
+    if (months < minY * 12 && !p.death) return { ok: false, min: minY };
+    if (p.mode === "fixed") yrs = months / 12;
+    var raw = p.mode === "nocover" ? 15 * wage * yrs / 30 : 15 * wage * yrs / 26;
+    var capped = p.mode !== "nocover" && raw > 2000000;
+    return { ok: true, amount: capped ? 2000000 : raw, raw: raw, years: yrs, wage: wage, add: add, capped: capped };
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  var inr = function (n) { return "₹" + Math.round(n).toLocaleString("en-IN"); };
+  function sync() { var m = $("gr-mode").value; $("gr-gross-box").hidden = !(m === "code" || m === "fixed"); }
+  function go() {
+    var out = $("gr-out"), mode = $("gr-mode").value, p = { mode: mode, wage: parseFloat($("gr-wage").value) || 0, gross: parseFloat($("gr-gross").value) || 0, y: parseInt($("gr-y").value, 10) || 0, m: Math.min(11, parseInt($("gr-m").value, 10) || 0), death: $("gr-death").checked };
+    if (!(p.wage > 0)) { out.innerHTML = '<p class="gr-err">आखिरी महीने का बेसिक + DA डालें।</p>'; return; }
+    if (!(p.y || p.m)) { out.innerHTML = '<p class="gr-err">सेवा के साल/महीने डालें।</p>'; return; }
+    var o = gratCalc(p);
+    if (!o.ok) { out.innerHTML = '<p class="gr-err">ग्रेच्युटी के लिए कम से कम ' + o.min + ' साल की लगातार सेवा चाहिए (मृत्यु/दिव्यांगता को छोड़कर)।</p>'; return; }
+    var f = mode === "cg" ? inr(o.wage) + " × ¼ × " + o.periods + " छमाही" : inr(o.wage) + " × 15 × " + (Math.round(o.years * 100) / 100) + " साल ÷ " + (mode === "nocover" ? 30 : 26);
+    out.innerHTML = '<p class="gr-big">अनुमानित ग्रेच्युटी <strong>' + inr(o.amount) + '</strong></p>' +
+      '<dl class="facts"><div><dt>गणना</dt><dd>' + f + '</dd></div><div><dt>गिना गया वेतन</dt><dd>' + inr(o.wage) + '</dd></div>' +
+      '<div><dt>गिनी गई सेवा</dt><dd>' + (mode === "cg" ? o.periods + " छमाही" : (Math.round(o.years * 100) / 100) + " साल") + '</dd></div>' +
+      '<div><dt>अधिकतम सीमा</dt><dd>' + (mode === "cg" ? "₹25 लाख / 16.5 × वेतन" : mode === "nocover" ? "कंपनी की नीति" : "₹20 लाख") + '</dd></div></dl>' +
+      (o.add > 0 ? '<p class="muted" style="margin-top:10px">आपके भत्ते कुल वेतन के 50% से ज़्यादा हैं, इसलिए नए लेबर कोड के अनुसार ' + inr(o.add) + ' वेतन में जोड़ा गया है।</p>' : "") +
+      (o.capped ? '<p class="muted">गणना सीमा से ज़्यादा आई, इसलिए अधिकतम सीमा दिखाई गई है (बिना सीमा: ' + inr(mode === "cg" ? 0.25 * o.wage * o.periods : o.raw) + ').</p>' : "") +
+      (mode === "nocover" ? '<p class="muted">कानून लागू न होने पर ग्रेच्युटी कंपनी की नीति पर निर्भर है; यह फॉर्मूला आयकर नियम वाला है।</p>' : "");
+    try { if (window.gtag && !go.s) { go.s = 1; gtag("event", "tool_usage", { tool: "gratuity_calculator" }); } } catch (e) {}
+  }
+  $("gr-mode").addEventListener("change", sync); sync();
+  $("gr-go").addEventListener("click", go);
+})();
+</script>

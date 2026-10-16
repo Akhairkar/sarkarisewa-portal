@@ -1,0 +1,166 @@
+---
+// EPF maturity + EPS pension estimate. Same URL, title and description as
+// the old page. Runs in the browser.
+// Rules used (checked Oct 2026):
+// - EPF interest FY 2025-26: 8.25% (CBT 2 Mar 2026; finance ministry
+//   concurrence, credit from June 2026 - Outlook Money, The Statesman, Angel One).
+// - Wage ceiling: Union Cabinet on 16 Sep 2026 raised the EPFO wage ceiling
+//   from Rs 15,000 to Rs 25,000 per month, effective 17 Sep 2026 (Moneylife,
+//   Free Press Journal, Onmanorama, Upstox, 16-17 Sep 2026). EPS share
+//   8.33% of capped wage: max Rs 1,250 -> about Rs 2,083/month. Pension for
+//   service after the change is counted on the new ceiling (pro-rata).
+//   Official EPFO notification not seen by us; the page says so and lets the
+//   user switch back to Rs 15,000.
+// - Contribution: employee 12% (+ optional VPF); employer 12%, of which 8.33%
+//   of capped wage goes to EPS, rest to EPF (EPF Scheme 1952 / EPS 1995).
+// - EPS pension formula: pensionable salary x pensionable service / 70;
+//   min service 10 yrs; 2 yrs weightage at 20+ yrs; min pension Rs 1,000.
+// Old page fixed the employer EPF share at 3.67% for any salary and
+// compounded monthly; EPFO credits interest yearly on monthly running
+// balances, which this version follows.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "EPF कैलकुलेटर" }];
+const faq = [
+  { q: "EPF पर अभी कितना ब्याज मिल रहा है?", a: "वित्त वर्ष 2025-26 के लिए EPF ब्याज दर 8.25% है। EPFO के केंद्रीय न्यासी बोर्ड ने 2 मार्च 2026 को यह दर तय की और वित्त मंत्रालय की मंज़ूरी के बाद जून 2026 से खातों में ब्याज जमा होना शुरू हुआ। आगे के सालों की दर हर साल नए सिरे से तय होती है।" },
+  { q: "मेरी सैलरी से कितना PF कटता है और कंपनी कितना डालती है?", a: "आपके बेसिक + DA का 12% आपके PF खाते में जाता है। कंपनी भी 12% देती है, लेकिन उसमें से 8.33% (वेतन सीमा तक) पेंशन योजना EPS में जाता है और बाकी आपके PF खाते में। जैसे ₹25,000 बेसिक पर: आपका ₹3,000, कंपनी का ₹917 PF में और ₹2,083 EPS में।" },
+  { q: "EPF की वेतन सीमा ₹25,000 कब से है?", a: "खबरों के अनुसार केंद्रीय कैबिनेट ने 16 सितंबर 2026 को EPFO की वेतन सीमा ₹15,000 से बढ़ाकर ₹25,000 महीना की, जो 17 सितंबर 2026 से लागू है। इससे EPS में हर महीने अधिकतम योगदान करीब ₹1,250 से बढ़कर ₹2,083 हो गया। अपनी सैलरी स्लिप या EPFO पासबुक में देखें कि आपकी कंपनी ने नया नियम लागू किया है या नहीं।" },
+  { q: "EPS पेंशन कितनी मिलेगी?", a: "मोटा फॉर्मूला है: पेंशन वाला वेतन × पेंशन वाली सेवा के साल ÷ 70। कम से कम 10 साल की सेवा ज़रूरी है, 20 साल से ज़्यादा सेवा पर 2 साल का बोनस जुड़ता है, और न्यूनतम पेंशन ₹1,000 महीना है। पेंशन 58 साल की उम्र से मिलती है। असल राशि EPFO आपकी सेवा के रिकॉर्ड से तय करता है।" },
+  { q: "क्या यह कैलकुलेटर बिल्कुल सही रकम बताता है?", a: "नहीं, यह अनुमान है। इसमें माना गया है कि ब्याज दर, वेतन बढ़ोतरी और नौकरी पूरे समय लगातार रहेगी। असल रकम नौकरी बदलने, बीच में निकासी, ब्याज दर में बदलाव और कंपनी के नियम से अलग हो सकती है।" },
+];
+---
+<Base title="EPF Calculator 2026 | SarkariSewa India" description="Free EPF Calculator with latest 8.25% interest rate. Calculate total Provident Fund maturity corpus, employer share, employee share and pension amount." breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>EPF कैलकुलेटर 2026: रिटायरमेंट पर कितना PF और कितनी पेंशन</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">अपना बेसिक + DA, उम्र और अभी का PF बैलेंस डालें। टूल 8.25% ब्याज (वित्त वर्ष 2025-26 की दर) पर रिटायरमेंट तक का अनुमानित PF, आपका और कंपनी का हिस्सा, ब्याज और EPS पेंशन का अंदाज़ा दिखाएगा। हर महीने बेसिक + DA का 12% आप और 12% कंपनी देती है; कंपनी के 12% में से वेतन सीमा (अब ₹25,000) तक का 8.33% पेंशन (EPS) में जाता है।</p>
+      </section>
+
+      <section class="section ep-tool" aria-labelledby="ep-title">
+        <h2 id="ep-title">🧮 EPF और पेंशन कैलकुलेटर</h2>
+        <div class="ep-grid">
+          <div><label for="ep-wage">महीने का बेसिक + DA (₹)</label><input type="number" id="ep-wage" min="1" inputmode="numeric" placeholder="जैसे 30000" /></div>
+          <div><label for="ep-bal">अभी का PF बैलेंस (₹)</label><input type="number" id="ep-bal" min="0" inputmode="numeric" value="0" /></div>
+          <div><label for="ep-age">आपकी उम्र (साल)</label><input type="number" id="ep-age" min="15" max="70" inputmode="numeric" placeholder="जैसे 30" /></div>
+          <div><label for="ep-ret">रिटायरमेंट की उम्र</label><input type="number" id="ep-ret" min="18" max="75" inputmode="numeric" value="58" /></div>
+          <div><label for="ep-hike">हर साल वेतन बढ़ोतरी (%)</label><input type="number" id="ep-hike" min="0" max="30" step="0.5" inputmode="decimal" value="5" /></div>
+          <div><label for="ep-rate">EPF ब्याज दर (% सालाना)</label><input type="number" id="ep-rate" min="1" max="15" step="0.05" inputmode="decimal" value="8.25" /></div>
+          <div><label for="ep-full">PF किस वेतन पर कटता है</label><select id="ep-full"><option value="1">पूरे बेसिक + DA पर</option><option value="0">सिर्फ वेतन सीमा तक</option></select></div>
+          <div><label for="ep-ceil">EPFO वेतन सीमा</label><select id="ep-ceil"><option value="25000">₹25,000 (17 सितंबर 2026 से)</option><option value="15000">₹15,000 (पुरानी)</option></select></div>
+          <div><label for="ep-vpf">अतिरिक्त VPF (% वेतन, चाहें तो)</label><input type="number" id="ep-vpf" min="0" max="88" step="1" inputmode="numeric" value="0" /></div>
+          <div><label for="ep-past">अब तक की नौकरी (EPS में साल)</label><input type="number" id="ep-past" min="0" max="45" inputmode="numeric" value="0" /></div>
+        </div>
+        <label class="ep-check"><input type="checkbox" id="ep-eps" checked /> मैं EPS (पेंशन योजना) का सदस्य हूं</label>
+        <p class="muted ep-hint">1 सितंबर 2014 के बाद नौकरी शुरू करते समय वेतन सीमा से ज़्यादा वेतन वाले नए कर्मचारी आम तौर पर EPS में नहीं होते; तब पूरा 12% PF में जाता है।</p>
+        <button type="button" class="cta" id="ep-go">PF हिसाब निकालें</button>
+        <div id="ep-out" class="calc-out" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>सैलरी स्लिप से बेसिक + DA (महंगाई भत्ता) लिखें, पूरी सैलरी (CTC) नहीं।</li>
+          <li>अभी का PF बैलेंस EPFO पासबुक या UMANG ऐप से देखकर डालें (कर्मचारी + कंपनी दोनों हिस्से जोड़कर)।</li>
+          <li>देखें कि आपका PF पूरे वेतन पर कटता है या सिर्फ सीमा तक; यह सैलरी स्लिप में PF की रकम ÷ 12% से पता चलता है।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>नियम और फॉर्मूला</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>हिस्सा</th><th>दर</th><th>₹25,000 बेसिक + DA पर</th></tr></thead>
+          <tbody>
+            <tr><td>कर्मचारी → EPF</td><td>12%</td><td>₹3,000</td></tr>
+            <tr><td>कंपनी → EPS (पेंशन)</td><td>8.33% (वेतन सीमा तक)</td><td>₹2,083</td></tr>
+            <tr><td>कंपनी → EPF</td><td>12% − EPS हिस्सा</td><td>₹917</td></tr>
+          </tbody>
+        </table></div>
+        <ul class="checklist">
+          <li><strong>ब्याज:</strong> हर महीने के बैलेंस पर (दर ÷ 12) के हिसाब से ब्याज जुड़ता है और साल के अंत में एक साथ खाते में जमा होता है। 2025-26 की दर 8.25% है।</li>
+          <li><strong>EPS पेंशन:</strong> पेंशन वाला वेतन × सेवा के साल ÷ 70। कम से कम 10 साल की सेवा, 20+ साल पर 2 साल बोनस, न्यूनतम ₹1,000 महीना, अधिकतम 35 साल की सेवा गिनी जाती है।</li>
+          <li><strong>नई वेतन सीमा:</strong> खबरों के अनुसार 17 सितंबर 2026 से सीमा ₹25,000 है और पेंशन में नई सीमा सिर्फ उसके बाद की सेवा पर लगेगी (पहले की सेवा पर ₹15,000)। टूल यही मानकर पेंशन का अंदाज़ा लगाता है।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>यह अनुमान है, EPFO का आधिकारिक हिसाब नहीं। ब्याज दर हर साल बदल सकती है।</li>
+          <li>वेतन सीमा ₹25,000 करने की EPFO की आधिकारिक अधिसूचना हमने अभी नहीं देखी है; यह कैबिनेट फैसले की खबरों पर आधारित है। पुरानी सीमा से हिसाब देखने के लिए ऊपर ₹15,000 चुनें।</li>
+          <li>नौकरी बदलने पर PF ट्रांसफर करवाएं, निकालें नहीं; इससे ब्याज और पेंशन की सेवा दोनों जारी रहती हैं।</li>
+          <li>SarkariSewa India निजी वेबसाइट है। अपना बैलेंस और दावा सिर्फ EPFO पोर्टल, UMANG ऐप या EPFO दफ्तर से देखें/करें। <a href="/service/epfo.html">EPFO गाइड</a> देखें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.ep-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; }
+@media (min-width: 560px) { .ep-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ep-tool label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 4px; }
+.ep-grid input, .ep-grid select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.ep-tool .ep-check { display: flex; gap: 8px; align-items: center; margin: 14px 0 0; }
+.ep-check input { width: 20px; height: 20px; }
+.ep-hint { font-size: .85rem; margin: 4px 0 0; }
+.ep-tool button.cta { border: 0; font: inherit; font-weight: 800; cursor: pointer; width: 100%; }
+.ep-big { font-size: 1.05rem; margin: 6px 0 10px; }
+.ep-big strong { font-size: 1.5rem; color: var(--c-green); display: block; }
+.ep-err { color: var(--c-red); font-weight: 700; }
+</style>
+
+<script is:inline>
+(function () {
+  function epfCalc(p) {
+    var months = Math.max(0, Math.round((p.retire - p.age) * 12)), r = p.rate / 100 / 12;
+    var bal = p.bal, w = p.wage, own = 0, er = 0, epsT = 0, int = 0, yInt = 0, first = null;
+    for (var m = 0; m < months; m++) {
+      if (m && m % 12 === 0) { w = w * (1 + p.hike / 100); }
+      var cap = Math.min(w, p.ceil), pfw = p.full ? w : cap;
+      var e = 0.12 * pfw + (p.vpf / 100) * w, s = p.eps ? Math.round(0.0833 * cap) : 0, x = 0.12 * pfw - s;
+      if (!first) first = { e: e, x: x, s: s };
+      bal += e + x; own += e; er += x; epsT += s;
+      yInt += bal * r;
+      if ((m + 1) % 12 === 0 || m === months - 1) { bal += yInt; int += yInt; yInt = 0; }
+    }
+    var fy = months / 12, svc = p.past + fy, pen = 0, ps = Math.min(p.past, 35), fs = Math.max(0, Math.min(fy, 35 - ps));
+    if (p.eps && svc >= 10) {
+      var bonus = svc >= 20 ? 2 : 0, lastCap = Math.min(w, p.ceil);
+      pen = Math.max(1000, (Math.min(p.wage, 15000) * ps + lastCap * (fs + bonus)) / 70);
+    }
+    return { months: months, corpus: bal, own: own, er: er, int: int, eps: epsT, first: first, svc: svc, pension: pen };
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  var inr = function (n) { return "₹" + Math.round(n).toLocaleString("en-IN"); };
+  var num = function (id, d) { var v = parseFloat($(id).value); return isNaN(v) ? d : v; };
+  function go() {
+    var out = $("ep-out"), p = {
+      wage: num("ep-wage", 0), bal: Math.max(0, num("ep-bal", 0)), age: num("ep-age", NaN), retire: num("ep-ret", 58),
+      hike: num("ep-hike", 0), rate: num("ep-rate", 8.25), full: $("ep-full").value === "1", ceil: +$("ep-ceil").value,
+      vpf: Math.max(0, num("ep-vpf", 0)), past: Math.max(0, num("ep-past", 0)), eps: $("ep-eps").checked
+    };
+    if (!(p.wage > 0)) { out.innerHTML = '<p class="ep-err">महीने का बेसिक + DA डालें।</p>'; return; }
+    if (!(p.age >= 15) || !(p.retire > p.age)) { out.innerHTML = '<p class="ep-err">सही उम्र और उससे ज़्यादा रिटायरमेंट उम्र डालें।</p>'; return; }
+    var o = epfCalc(p), yrs = Math.round(o.months / 12 * 10) / 10;
+    out.innerHTML = '<p class="ep-big">' + yrs + ' साल बाद (' + p.retire + ' साल की उम्र पर) अनुमानित PF <strong>' + inr(o.corpus) + '</strong></p>' +
+      '<dl class="facts"><div><dt>आपका कुल योगदान</dt><dd>' + inr(o.own) + '</dd></div><div><dt>कंपनी का EPF योगदान</dt><dd>' + inr(o.er) + '</dd></div>' +
+      '<div><dt>कुल ब्याज</dt><dd>' + inr(o.int) + '</dd></div><div><dt>अभी का बैलेंस</dt><dd>' + inr(p.bal) + '</dd></div></dl>' +
+      '<p style="margin-top:12px"><strong>इस महीने का बंटवारा:</strong> आप ' + inr(o.first.e) + ' · कंपनी PF में ' + inr(o.first.x) + ' · कंपनी EPS में ' + inr(o.first.s) + '</p>' +
+      (p.eps ? (o.pension ? '<p><strong>अनुमानित EPS पेंशन (58 साल से):</strong> ' + inr(o.pension) + ' महीना · कुल सेवा ' + Math.round(o.svc * 10) / 10 + ' साल</p>'
+        : '<p class="muted">EPS पेंशन के लिए कम से कम 10 साल की सेवा चाहिए। उससे कम में EPS का पैसा एकमुश्त (withdrawal benefit) मिलता है।</p>') : "") +
+      '<p class="muted">यह अनुमान है: ब्याज दर ' + p.rate + '%, हर साल ' + p.hike + '% वेतन बढ़ोतरी और बिना रुकावट नौकरी मानी गई है। EPS में गया पैसा इस PF रकम में शामिल नहीं है।</p>';
+    try { if (window.gtag && !go.s) { go.s = 1; gtag("event", "tool_usage", { tool: "epf_calculator" }); } } catch (e) {}
+  }
+  $("ep-go").addEventListener("click", go);
+  document.querySelector(".ep-tool").addEventListener("keydown", function (e) { if (e.key === "Enter" && e.target.tagName === "INPUT") go(); });
+})();
+</script>

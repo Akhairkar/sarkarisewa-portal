@@ -1,0 +1,132 @@
+---
+// HRA exemption calculator. Same URL, title and description as the old page.
+// Runs in the browser.
+// Rule: exempt HRA = least of (a) HRA received, (b) rent paid - 10% of salary,
+// (c) 50% of salary in listed cities, else 40%. Salary = basic + DA (forming
+// part of retirement benefits) + commission at fixed % of turnover. Only in
+// the old regime.
+// Change checked Oct 2026: from FY 2026-27 (Income-tax Act, 2025 and
+// Income-tax Rules, 2026, in force 1 Apr 2026) the 50% list has 8 cities:
+// Delhi, Mumbai, Kolkata, Chennai + Bengaluru, Hyderabad, Pune, Ahmedabad
+// (draft rule 279, Feb 2026; ClearTax, Business Today, Angel One, Patron
+// Accounting Apr 2026). We did not see the final rule number ourselves; the
+// page says to confirm. FY 2025-26 (old Act s.10(13A), rule 2A): 4 cities.
+// Old page had only the 4-city list.
+// Landlord PAN when annual rent > Rs 1 lakh: CBDT practice for employer TDS
+// declarations (Form 12BB); kept as general guidance.
+// Note for coordinator: components/HraCalc.astro (embed) still has the
+// 4-city list; not edited here.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "HRA कैलकुलेटर" }];
+const faq = [
+  { q: "HRA छूट कैसे निकलती है?", a: "तीन रकमों में से जो सबसे कम हो, उतना HRA टैक्स-फ्री है: (1) मिला हुआ HRA, (2) दिया गया किराया घटा वेतन का 10%, (3) वेतन का 50% (बड़े 8 शहरों में) या 40% (बाकी जगह)। यहां वेतन = बेसिक + DA।" },
+  { q: "2026-27 में 50% वाले शहर कौन-से हैं?", a: "वित्त वर्ष 2026-27 से नए आयकर नियमों के अनुसार दिल्ली, मुंबई, कोलकाता, चेन्नई के साथ बेंगलुरु, हैदराबाद, पुणे और अहमदाबाद में भी 50% की सीमा है। 2025-26 तक सिर्फ पहले चार शहर थे।" },
+  { q: "क्या नई टैक्स व्यवस्था में HRA छूट मिलती है?", a: "नहीं। HRA छूट सिर्फ पुरानी टैक्स व्यवस्था (old regime) में मिलती है। नई व्यवस्था में पूरा HRA टैक्स वाली आय में जुड़ता है। दोनों में कौन-सी सस्ती है, यह इनकम टैक्स कैलकुलेटर से देखें।" },
+  { q: "मकान मालिक का PAN कब देना होता है?", a: "आम तौर पर जब साल का किराया ₹1 लाख से ज़्यादा हो, तो कंपनी को HRA छूट के लिए मकान मालिक का PAN देना होता है। किराये की रसीद और किरायानामा भी संभाल कर रखें।" },
+  { q: "माता-पिता को किराया देकर HRA ले सकते हैं?", a: "हां, अगर घर उनके नाम है और आप सच में किराया (बैंक से) देते हैं। माता-पिता को वह किराया अपनी आय में दिखाना होगा। पति/पत्नी को किराया देकर छूट लेना आम तौर पर मान्य नहीं माना जाता।" },
+];
+---
+<Base title="HRA Exemption Calculator 2026 | SarkariSewa India" description="Calculate House Rent Allowance (HRA) tax exemption under Section 10(13A) for Metro and Non-Metro cities with actual rent paid and basic salary." breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>HRA छूट कैलकुलेटर 2026: किराये पर कितना HRA टैक्स-फ्री</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">HRA छूट तीन रकमों में से सबसे कम होती है: मिला HRA, किराया घटा (बेसिक + DA) का 10%, और (बेसिक + DA) का 50% या 40%। वित्त वर्ष 2026-27 से 50% की सीमा 8 शहरों में है: दिल्ली, मुंबई, कोलकाता, चेन्नई, बेंगलुरु, हैदराबाद, पुणे, अहमदाबाद। यह छूट सिर्फ पुरानी टैक्स व्यवस्था में मिलती है।</p>
+      </section>
+
+      <section class="section hr-tool" aria-labelledby="hr-title">
+        <h2 id="hr-title">🏠 HRA छूट निकालें</h2>
+        <div class="hr-grid">
+          <div><label for="hr-fy">वित्त वर्ष</label><select id="hr-fy"><option value="2027">2026-27 (नया आयकर कानून)</option><option value="2026">2025-26</option></select></div>
+          <div><label for="hr-city">आप किस शहर में रहते हैं</label><select id="hr-city">
+            <option value="m4">दिल्ली / मुंबई / कोलकाता / चेन्नई</option>
+            <option value="m8">बेंगलुरु / हैदराबाद / पुणे / अहमदाबाद</option>
+            <option value="o">दूसरा शहर / गांव</option>
+          </select></div>
+          <div><label for="hr-basic">महीने का बेसिक (₹)</label><input type="number" id="hr-basic" min="0" inputmode="numeric" placeholder="जैसे 40000" /></div>
+          <div><label for="hr-da">महीने का DA (₹)</label><input type="number" id="hr-da" min="0" inputmode="numeric" value="0" /></div>
+          <div><label for="hr-hra">महीने का मिला HRA (₹)</label><input type="number" id="hr-hra" min="0" inputmode="numeric" placeholder="जैसे 16000" /></div>
+          <div><label for="hr-rent">महीने का दिया किराया (₹)</label><input type="number" id="hr-rent" min="0" inputmode="numeric" placeholder="जैसे 15000" /></div>
+          <div><label for="hr-mon">कितने महीने (साल में)</label><input type="number" id="hr-mon" min="1" max="12" inputmode="numeric" value="12" /></div>
+        </div>
+        <div id="hr-out" class="calc-out" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>वित्त वर्ष और शहर चुनें।</li>
+          <li>सैलरी स्लिप से महीने का बेसिक, DA और HRA डालें, फिर महीने का किराया।</li>
+          <li>साल के बीच नौकरी या घर बदला हो तो 'कितने महीने' में उतने महीने डालें। नतीजा तुरंत नीचे दिखेगा।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>नियम और फॉर्मूला</h2>
+        <ul class="checklist">
+          <li><strong>छूट = तीन में सबसे कम:</strong> (1) मिला HRA, (2) किराया − वेतन का 10%, (3) वेतन का 50% (8 शहर) या 40% (बाकी)। वेतन = बेसिक + DA (जो रिटायरमेंट लाभ में गिना जाता है)।</li>
+          <li><strong>2026-27 में बदलाव:</strong> 1 अप्रैल 2026 से नया आयकर कानून, 2025 और आयकर नियम, 2026 लागू हैं। इनमें 50% वाले शहरों में बेंगलुरु, हैदराबाद, पुणे और अहमदाबाद जोड़े गए। 2025-26 के लिए ये 40% में ही गिने जाएंगे।</li>
+          <li><strong>सिर्फ पुरानी व्यवस्था:</strong> नई टैक्स व्यवस्था (जो अब डिफॉल्ट है) में HRA छूट नहीं मिलती।</li>
+          <li><strong>सबूत:</strong> किराये की रसीद, किरायानामा, और साल का किराया ₹1 लाख से ज़्यादा हो तो मकान मालिक का PAN।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>8 शहरों वाला बदलाव आयकर नियम, 2026 की खबरों और टैक्स विशेषज्ञों के विश्लेषण पर आधारित है; आधिकारिक नियम हमने खुद नहीं पढ़ा। अपनी कंपनी या incometax.gov.in से पुष्टि करें।</li>
+          <li>अपने ही घर में रहते हुए या बिना किराया दिए HRA छूट न लें; जांच में पकड़े जाने पर टैक्स और जुर्माना लग सकता है।</li>
+          <li>यह टूल अनुमान देता है, टैक्स सलाह नहीं। पूरा टैक्स देखने के लिए <a href="/tools/income-tax-calculator.html">इनकम टैक्स कैलकुलेटर</a> देखें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.hr-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; }
+@media (min-width: 560px) { .hr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.hr-tool label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 4px; }
+.hr-grid input, .hr-grid select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.hr-big { font-size: 1.05rem; margin: 6px 0 10px; }
+.hr-big strong { font-size: 1.5rem; color: var(--c-green); display: block; }
+.hr-tool .facts div.min { border-color: var(--c-green); background: var(--c-green-50); }
+</style>
+
+<script is:inline>
+(function () {
+  // all amounts yearly; cityPct: 0.5 or 0.4
+  function hraExempt(basic, da, hra, rent, cityPct) {
+    var sal = basic + da, a = hra, b = Math.max(0, rent - 0.1 * sal), c = cityPct * sal, ex = Math.min(a, b, c);
+    return { a: a, b: b, c: c, ex: ex, taxable: Math.max(0, hra - ex), which: ex === a ? 0 : ex === b ? 1 : 2 };
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  var inr = function (n) { return "₹" + Math.round(n).toLocaleString("en-IN"); };
+  function calc() {
+    var mon = Math.min(12, Math.max(1, parseInt($("hr-mon").value, 10) || 12)), v = function (id) { return Math.max(0, parseFloat($(id).value) || 0) * mon; };
+    var basic = v("hr-basic"), da = v("hr-da"), hra = v("hr-hra"), rent = v("hr-rent"), city = $("hr-city").value, fy = $("hr-fy").value;
+    var pct = city === "m4" || (city === "m8" && fy === "2027") ? 0.5 : 0.4, out = $("hr-out");
+    if (!basic || !hra) { out.innerHTML = '<p class="muted">बेसिक और मिला HRA भरें।</p>'; return; }
+    var r = hraExempt(basic, da, hra, rent, pct), cls = function (i) { return r.which === i ? ' class="min"' : ""; };
+    out.innerHTML = '<p class="hr-big">साल की HRA छूट <strong>' + inr(r.ex) + '</strong></p>' +
+      '<dl class="facts"><div' + cls(0) + '><dt>1. मिला HRA</dt><dd>' + inr(r.a) + '</dd></div><div' + cls(1) + '><dt>2. किराया − 10% वेतन</dt><dd>' + inr(r.b) + '</dd></div>' +
+      '<div' + cls(2) + '><dt>3. ' + (pct * 100) + '% वेतन</dt><dd>' + inr(r.c) + '</dd></div><div><dt>टैक्स वाला HRA</dt><dd>' + inr(r.taxable) + '</dd></div></dl>' +
+      '<p class="muted" style="margin-top:10px">हरे बॉक्स वाली रकम सबसे कम है, वही छूट है। यह छूट सिर्फ पुरानी टैक्स व्यवस्था में मिलेगी।' +
+      (city === "m8" && fy === "2026" ? " 2025-26 में यह शहर 40% वाली सूची में था।" : "") +
+      (rent > 100000 ? " साल का किराया ₹1 लाख से ज़्यादा है, इसलिए मकान मालिक का PAN देना होगा।" : "") + "</p>";
+    try { if (window.gtag && !calc.s) { calc.s = 1; gtag("event", "tool_usage", { tool: "hra_calculator" }); } } catch (e) {}
+  }
+  document.querySelector(".hr-tool").addEventListener("input", calc);
+  document.querySelector(".hr-tool").addEventListener("change", calc);
+  calc();
+})();
+</script>

@@ -1,0 +1,148 @@
+---
+// NPS corpus and pension estimate. Same URL, title and description as the old
+// page. Rules checked Oct 2026:
+// - PFRDA (Exits and Withdrawals under NPS) Amendment Regulations, notified
+//   12 Dec 2025: non-government subscribers (All Citizen / Corporate) may take
+//   up to 80% lump sum, minimum 20% annuity; corpus up to Rs 8 lakh can be
+//   withdrawn fully (earlier Rs 5 lakh); Rs 8-12 lakh: up to Rs 6 lakh lump sum,
+//   rest via annuity or Systematic Unit Redemption. Government subscribers stay
+//   at 60% lump sum / 40% annuity. (Business Standard, Angel One, Outlook
+//   Money reports of the gazette.) The old page always used 60/40.
+// - Central government NPS: employee 10%, government 14% of basic + DA.
+// - Annuity rate is not fixed by law; insurers quote different rates. Default
+//   6% a year as on the old page, editable.
+// - The old page's formula (monthly SIP, contribution at start of month) is
+//   kept: FV = P x ((1+r)^n - 1)/r x (1+r). Added an optional yearly step-up.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "NPS पेंशन कैलकुलेटर" }];
+const faq = [
+  { q: "60 साल पर NPS का कितना पैसा एक साथ निकाल सकते हैं?", a: "सरकारी कर्मचारी (केंद्र/राज्य) कुल जमा राशि का 60% तक एक साथ ले सकते हैं और कम से कम 40% से पेंशन (annuity) खरीदनी होती है। दिसंबर 2025 के PFRDA नियमों के बाद गैर-सरकारी सदस्य (All Citizen और Corporate) 80% तक एक साथ ले सकते हैं और कम से कम 20% से annuity खरीदनी होती है।" },
+  { q: "कम राशि होने पर क्या पूरा पैसा निकाल सकते हैं?", a: "हां। नए नियमों में कुल राशि ₹8 लाख या कम हो तो पूरी राशि एक साथ निकाली जा सकती है। गैर-सरकारी सदस्यों के लिए ₹8 से ₹12 लाख के बीच ₹6 लाख तक एक साथ और बाकी annuity या किस्तों (SUR) में लेने का विकल्प है।" },
+  { q: "NPS पेंशन कितनी मिलेगी, यह पक्का क्यों नहीं है?", a: "NPS बाज़ार से जुड़ी योजना है, इसलिए रिटर्न तय नहीं होता। पेंशन उस annuity दर पर भी निर्भर करती है जो रिटायरमेंट के समय बीमा कंपनी देगी। यह कैलकुलेटर आपके डाले रिटर्न और annuity दर पर सिर्फ अनुमान देता है।" },
+  { q: "केंद्रीय कर्मचारी के NPS में कितना जमा होता है?", a: "केंद्रीय कर्मचारी के वेतन से (बेसिक + DA) का 10% कटता है और सरकार 14% जमा करती है, यानी कुल 24%। 1 अप्रैल 2025 से केंद्रीय कर्मचारी UPS (एकीकृत पेंशन योजना) भी चुन सकते हैं, जिसमें सरकार का हिस्सा 18.5% है।" },
+];
+---
+<Base title="NPS Pension & Maturity Calculator 2026 | SarkariSewa" description="Calculate National Pension System (NPS) monthly pension amount, total wealth accumulation, and lump sum maturity withdrawal." breadcrumbs={crumbs} faq={faq} modified="2026-10-16">
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>NPS पेंशन और मैच्योरिटी कैलकुलेटर</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">हर महीने NPS में कुल कितना जमा होता है (आपका + सरकार/कंपनी का), रिटायरमेंट में कितने साल बाकी हैं और अनुमानित रिटर्न डालें। कैलकुलेटर 60 साल पर कुल राशि, एक साथ मिलने वाली रकम और annuity से मासिक पेंशन बताएगा। सरकारी कर्मचारी 60% तक और गैर-सरकारी सदस्य (दिसंबर 2025 से) 80% तक एक साथ ले सकते हैं।</p>
+      </section>
+
+      <section class="section tl" aria-labelledby="calc-title">
+        <h2 id="calc-title">📈 NPS कैलकुलेटर</h2>
+        <div class="tl-grid">
+          <div><label for="np-m">हर महीने कुल NPS जमा ₹</label><input type="number" id="np-m" min="0" step="500" value="12500" inputmode="numeric" /></div>
+          <div><label for="np-y">रिटायरमेंट में कितने साल बाकी</label><input type="number" id="np-y" min="1" max="50" value="25" inputmode="numeric" /></div>
+          <div><label for="np-r">अनुमानित सालाना रिटर्न (%)</label><input type="number" id="np-r" min="0" max="20" step="0.5" value="10" inputmode="decimal" /></div>
+          <div><label for="np-s">हर साल जमा में बढ़ोतरी (%)</label><input type="number" id="np-s" min="0" max="20" step="1" value="0" inputmode="numeric" /></div>
+          <div><label for="np-t">आप कौन हैं</label><select id="np-t">
+            <option value="gov">सरकारी कर्मचारी (60% एक साथ, 40% annuity)</option>
+            <option value="pvt">गैर-सरकारी / All Citizen / Corporate (80% / 20%)</option>
+          </select></div>
+          <div><label for="np-a">Annuity में कितना % लगाएंगे</label><input type="number" id="np-a" min="40" max="100" step="5" value="40" inputmode="numeric" /></div>
+          <div><label for="np-ar">Annuity दर (सालाना %)</label><input type="number" id="np-ar" min="0" max="12" step="0.25" value="6" inputmode="decimal" /></div>
+        </div>
+        <div class="tl-hero" aria-live="polite">
+          <div><span>60 साल पर कुल राशि</span><strong id="np-c">₹0</strong></div>
+          <div><span>अनुमानित मासिक पेंशन</span><strong id="np-p">₹0</strong></div>
+        </div>
+        <div class="table-wrap"><table><tbody id="np-rows"></tbody></table></div>
+        <p class="muted" id="np-note"></p>
+        <p class="notice">यह अनुमान है। NPS का रिटर्न बाज़ार पर निर्भर है और annuity की दर रिटायरमेंट के समय बीमा कंपनी तय करेगी। महंगाई के कारण आज के ₹1 की कीमत भविष्य में कम होगी।</p>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li><strong>महीने का कुल जमा:</strong> केंद्रीय कर्मचारी के लिए (बेसिक + DA) का 24% (10% आपका + 14% सरकार का)। जैसे बेसिक + DA ₹50,000 हो तो ₹12,000।</li>
+          <li><strong>साल और रिटर्न:</strong> 60 साल की उम्र तक बचे साल डालें। रिटर्न का अंदाज़ा कम रखें तो अनुमान सुरक्षित रहेगा।</li>
+          <li><strong>Annuity:</strong> कम से कम हिस्सा (सरकारी 40%, गैर-सरकारी 20%) अपने-आप लगता है; चाहें तो ज़्यादा डालें।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="formula">
+        <h2>फॉर्मूला</h2>
+        <ul class="checklist">
+          <li><strong>कुल राशि</strong> = हर महीने का जमा × ((1 + r)<sup>n</sup> − 1) ÷ r × (1 + r), जहां r = सालाना रिटर्न ÷ 12 और n = महीनों की संख्या। बढ़ोतरी डालने पर हर साल जमा उतने % बढ़ता है।</li>
+          <li><strong>मासिक पेंशन</strong> = annuity में लगी राशि × annuity दर ÷ 12।</li>
+          <li><strong>एक साथ मिलने वाली राशि</strong> = कुल राशि − annuity में लगी राशि।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>60% तक की एकमुश्त निकासी पर अभी टैक्स नहीं लगता। गैर-सरकारी सदस्य के 60% से ऊपर के हिस्से पर टैक्स नियम निकासी से पहले जांच लें। Annuity से मिलने वाली पेंशन आय में जुड़ती है।</li>
+          <li>पुरानी टैक्स व्यवस्था में NPS में अपने जमा पर ₹50,000 तक की अलग छूट मिलती है; नई व्यवस्था में यह छूट नहीं है।</li>
+          <li>केंद्रीय कर्मचारी की सैलरी और NPS कटौती: <a href="/7th-pay-commission-calculator.html">7वां वेतन आयोग कैलकुलेटर</a>।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.tl .tl-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; }
+@media (min-width: 560px) { .tl .tl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tl label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: 4px; color: var(--c-ink); }
+.tl input[type=number], .tl select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; min-width: 0; }
+.tl .tl-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 14px 0; }
+.tl .tl-hero div { background: var(--c-brand-50); border-radius: 10px; padding: 12px; text-align: center; min-width: 0; }
+.tl .tl-hero div:last-child { background: var(--c-green-50); }
+.tl .tl-hero span { display: block; font-size: .8rem; color: var(--c-muted); }
+.tl .tl-hero strong { font-size: 1.35rem; color: var(--c-ink); overflow-wrap: anywhere; }
+.tl td.r { text-align: right; white-space: nowrap; }
+.tl .muted { color: var(--c-muted); font-size: .9rem; }
+</style>
+
+<script is:inline>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function r(n) { return "₹" + Math.round(n).toLocaleString("en-IN"); }
+  function big(n) { return n >= 1e7 ? "₹" + (n / 1e7).toFixed(2) + " करोड़" : n >= 1e5 ? "₹" + (n / 1e5).toFixed(2) + " लाख" : r(n); }
+  // Corpus at retirement: monthly contribution at the start of each month,
+  // monthly compounding; contribution grows by step% once a year.
+  function corpus(P, years, rate, step) {
+    var i = rate / 100 / 12, fv = 0, inv = 0, p = P;
+    for (var y = 0; y < years; y++) {
+      for (var m = 0; m < 12; m++) { fv = (fv + p) * (1 + i); inv += p; }
+      p = p * (1 + step / 100);
+    }
+    return { fv: fv, inv: inv };
+  }
+  function exit(fv, type, annPct, annRate) {
+    var minAnn = type === "pvt" ? 20 : 40, pct = Math.max(minAnn, Math.min(100, annPct)), ann, lump;
+    if (fv <= 800000) { ann = fv * pct / 100; lump = fv - ann; return { full: true, ann: ann, lump: lump, pct: pct, pension: ann * annRate / 100 / 12 }; }
+    ann = fv * pct / 100; lump = fv - ann;
+    return { full: false, ann: ann, lump: lump, pct: pct, pension: ann * annRate / 100 / 12 };
+  }
+  window.__nps = { corpus: corpus, exit: exit };
+  var sent = false;
+  function calc() {
+    var type = $("np-t").value, a = $("np-a");
+    a.min = type === "pvt" ? 20 : 40;
+    if (Number(a.value) < Number(a.min)) a.value = a.min;
+    var c = corpus(Math.max(0, Number($("np-m").value) || 0), Math.max(1, Math.min(50, Number($("np-y").value) || 1)), Math.max(0, Number($("np-r").value) || 0), Math.max(0, Number($("np-s").value) || 0));
+    var e = exit(c.fv, type, Number(a.value) || 0, Math.max(0, Number($("np-ar").value) || 0));
+    $("np-c").textContent = big(c.fv); $("np-p").textContent = r(e.pension);
+    $("np-rows").innerHTML = [["आपका कुल जमा (योगदान)", r(c.inv)], ["कमाई (रिटर्न)", r(c.fv - c.inv)], ["60 साल पर कुल राशि", r(c.fv)], ["एक साथ मिलेगा (" + (100 - e.pct) + "%)", r(e.lump)], ["Annuity में (" + e.pct + "%)", r(e.ann)], ["मासिक पेंशन (अनुमान)", r(e.pension)]]
+      .map(function (x) { return "<tr><td>" + x[0] + '</td><td class="r"><strong>' + x[1] + "</strong></td></tr>"; }).join("");
+    $("np-note").textContent = e.full ? "कुल राशि ₹8 लाख या कम है: नए नियमों में आप चाहें तो पूरी राशि एक साथ निकाल सकते हैं।"
+      : (type === "pvt" && c.fv <= 1200000 ? "कुल राशि ₹8 से ₹12 लाख के बीच है: गैर-सरकारी सदस्य ₹6 लाख तक एक साथ ले सकते हैं, बाकी annuity या किस्तों (SUR) में।" : "");
+    if (!sent) { sent = true; try { if (window.gtag) gtag("event", "tool_usage", { tool_name: "nps-pension-calculator" }); } catch (x) {} }
+  }
+  ["np-m", "np-y", "np-r", "np-s", "np-t", "np-a", "np-ar"].forEach(function (id) { $(id).addEventListener("input", calc); $(id).addEventListener("change", calc); });
+  calc();
+})();
+</script>

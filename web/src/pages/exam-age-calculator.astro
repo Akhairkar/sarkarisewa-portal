@@ -1,0 +1,187 @@
+---
+// Exam age eligibility calculator. Same URL, title and description as the old
+// page. Exact age on a cut-off date + upper-age check against major central
+// exams, with category relaxation. Checked Oct 2026:
+// - Central relaxation (DoPT): OBC-NCL +3, SC/ST +5, PwBD +10 (so PwBD+OBC
+//   +13, PwBD+SC/ST +15). The old page made PwD a separate category, so a
+//   SC/ST or OBC candidate with disability got only +10. Now PwBD is a
+//   checkbox added to the social category. Posts closed to PwBD (SSC GD,
+//   RRB ALP) do not get the PwBD relaxation.
+// - SSC CHSL 2025: 18-27 as on 01-01-2026 (Careers360 summary of notice).
+// - SSC GD: 18-23; SSC MTS 18-25 (Havaldar 18-27); SSC CGL post-wise up to
+//   32 (coaching-site summaries of SSC notices).
+// - RRB NTPC (CEN 06/2025): graduate 18-33, undergraduate 18-30, as on
+//   01-01-2026. RRB ALP 18-30.
+// - UPSC CSE: 21-32 as on 1 August of the exam year.
+// - IBPS PO 20-30, IBPS Clerk 20-28, SBI PO 21-30: limits from the 2025
+//   notices; cut-off dates differ every year, so none are hard-coded.
+// - Upper limit: notices give a birth-date window (CHSL 2025: born not
+//   before 02-01-1999 and not later than 01-01-2008 for 18-27 on 01-01-2026),
+//   i.e. the candidate must NOT have reached the max age on the cut-off date.
+//   The old page allowed one extra year (max + 1); fixed.
+// The old "State PSC (typical) 21-40" row was dropped: no single state rule.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+
+const EXAMS = [
+  { name: "SSC CGL (पद के हिसाब से 27, 30 या 32)", min: 18, max: 32, note: "अधिकतर पद 18-27/30; कुछ पद 32 तक" },
+  { name: "SSC CHSL", min: 18, max: 27, note: "2025 भर्ती: 1 जनवरी 2026 को" },
+  { name: "SSC MTS", min: 18, max: 25, note: "हवलदार पद: 18-27" },
+  { name: "SSC GD कांस्टेबल", min: 18, max: 23, note: "दिव्यांग आवेदन नहीं कर सकते" },
+  { name: "UPSC सिविल सेवा (IAS/IPS)", min: 21, max: 32, note: "परीक्षा वर्ष की 1 अगस्त को" },
+  { name: "RRB NTPC (ग्रेजुएट)", min: 18, max: 33, note: "CEN 06/2025: 1 जनवरी 2026 को" },
+  { name: "RRB NTPC (12वीं पास)", min: 18, max: 30, note: "CEN 07/2025: 1 जनवरी 2026 को" },
+  { name: "RRB ALP", min: 18, max: 30, note: "दिव्यांग आवेदन नहीं कर सकते" },
+  { name: "IBPS PO", min: 20, max: 30, note: "कट-ऑफ तारीख अधिसूचना में" },
+  { name: "IBPS Clerk", min: 20, max: 28, note: "कट-ऑफ तारीख अधिसूचना में" },
+  { name: "SBI PO", min: 21, max: 30, note: "कट-ऑफ तारीख अधिसूचना में" },
+];
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "परीक्षा आयु पात्रता कैलकुलेटर" }];
+const faq = [
+  { q: "परीक्षा के लिए उम्र किस तारीख से गिनी जाती है?", a: "हर भर्ती की अधिसूचना में एक कट-ऑफ तारीख लिखी होती है, जैसे UPSC सिविल सेवा में परीक्षा वर्ष की 1 अगस्त। उम्र उसी तारीख तक गिनी जाती है, फॉर्म भरने या परीक्षा के दिन तक नहीं।" },
+  { q: "केंद्र सरकार की परीक्षाओं में आयु छूट कितनी है?", a: "OBC (नॉन-क्रीमी लेयर) को 3 साल, SC/ST को 5 साल और दिव्यांग (PwBD) को 10 साल की छूट मिलती है। दिव्यांग OBC को 13 साल और दिव्यांग SC/ST को 15 साल। EWS को आयु में छूट नहीं मिलती। पूर्व सैनिक और कुछ अन्य वर्गों की छूट अधिसूचना में देखें।" },
+  { q: "जन्म तिथि के लिए कौन सा दस्तावेज़ मान्य है?", a: "ज़्यादातर भर्तियों में 10वीं (मैट्रिक) का प्रमाणपत्र या मार्कशीट ही जन्म तिथि का सबूत माना जाता है। फॉर्म में वही तारीख भरें जो 10वीं के प्रमाणपत्र में है।" },
+  { q: "क्या यह कैलकुलेटर सरकारी है?", a: "नहीं। यह एक निजी वेबसाइट का मुफ्त टूल है और पिछली अधिसूचनाओं की आम आयु सीमा पर आधारित है। आयु सीमा पद और साल के हिसाब से बदल सकती है, इसलिए आवेदन से पहले उस साल की आधिकारिक अधिसूचना ज़रूर पढ़ें।" },
+];
+---
+<Base title="Govt Exam Age Limit & Eligibility Calculator 2026 | SarkariSewa" description="Calculate your exact age and check age relaxation criteria for UPSC, SSC, Banking, Railways, and State PSC examinations 2026." breadcrumbs={crumbs} faq={faq} modified="2026-10-16">
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>परीक्षा आयु पात्रता कैलकुलेटर: SSC, UPSC, रेलवे, बैंक</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">अपनी जन्म तिथि (10वीं के प्रमाणपत्र वाली), अधिसूचना की कट-ऑफ तारीख और वर्ग चुनें। टूल उस तारीख पर आपकी सही उम्र (वर्ष, महीने, दिन) बताएगा और 11 बड़ी परीक्षाओं में दिखाएगा कि आप आयु सीमा में हैं या नहीं। केंद्र में OBC को 3, SC/ST को 5 और दिव्यांग को 10 साल की छूट मिलती है।</p>
+      </section>
+
+      <section class="section tl" aria-labelledby="calc-title">
+        <h2 id="calc-title">🎯 आयु पात्रता जांचें</h2>
+        <form id="ea-form" novalidate>
+          <div class="tl-grid">
+            <div><label for="ea-dob">जन्म तिथि</label><input type="date" id="ea-dob" required /></div>
+            <div><label for="ea-cut">किस तारीख को उम्र (कट-ऑफ तारीख)</label><input type="date" id="ea-cut" required /></div>
+            <div><label for="ea-cat">वर्ग</label><select id="ea-cat">
+              <option value="0">सामान्य (UR) / EWS</option>
+              <option value="3">OBC (नॉन-क्रीमी लेयर) +3 साल</option>
+              <option value="5">SC / ST +5 साल</option>
+            </select></div>
+            <div class="tl-checks"><label class="tl-check"><input type="checkbox" id="ea-pwd" /> दिव्यांग (PwBD) +10 साल</label></div>
+          </div>
+          <button type="submit" class="cta">उम्र और पात्रता देखें</button>
+        </form>
+        <div id="ea-out" aria-live="polite"></div>
+        <p class="notice">आयु सीमा पिछली अधिसूचनाओं से ली गई है और हर साल व पद के हिसाब से बदल सकती है। अंतिम फैसला उस भर्ती की आधिकारिक अधिसूचना से ही करें।</p>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li><strong>जन्म तिथि:</strong> वही डालें जो 10वीं के प्रमाणपत्र में है।</li>
+          <li><strong>कट-ऑफ तारीख:</strong> अधिसूचना में "आयु इस तारीख को" लिखी तारीख डालें। अधिसूचना न आई हो तो पिछली भर्ती वाली तारीख से अंदाज़ा लगाएं (नीचे तालिका देखें)।</li>
+          <li><strong>वर्ग और दिव्यांगता:</strong> अपना वर्ग चुनें। दिव्यांग हों तो बॉक्स पर निशान लगाएं; यह छूट वर्ग की छूट के साथ जुड़ती है।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="seema">
+        <h2>बड़ी परीक्षाओं की आयु सीमा (सामान्य वर्ग)</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>परीक्षा</th><th>न्यूनतम</th><th>अधिकतम</th><th>ध्यान दें</th></tr></thead>
+          <tbody>{EXAMS.map((e) => <tr><td>{e.name}</td><td>{e.min}</td><td>{e.max}</td><td>{e.note}</td></tr>)}</tbody>
+        </table></div>
+        <p class="muted">राज्य लोक सेवा आयोग (PSC) की आयु सीमा और छूट हर राज्य में अलग है, और आरक्षण की छूट आम तौर पर उसी राज्य के निवासियों को मिलती है।</p>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>आयु की गणना का नियम</h2>
+        <ul class="checklist">
+          <li>अधिसूचना में आयु सीमा जन्म तिथि की सीमा से तय होती है। जैसे SSC CHSL 2025 में "1 जनवरी 2026 को 18-27 साल" का मतलब था: जन्म 2 जनवरी 1999 से पहले नहीं और 1 जनवरी 2008 के बाद नहीं। यानी कट-ऑफ तारीख तक 27 साल पूरे नहीं होने चाहिए। यह टूल इसी तरह जांचता है।</li>
+          <li>"न्यूनतम 18 साल" का मतलब है कि कट-ऑफ तारीख तक 18 साल पूरे हो चुके हों।</li>
+          <li>छूट सिर्फ ऊपरी आयु सीमा में मिलती है, न्यूनतम आयु वही रहती है।</li>
+          <li>पूर्व सैनिक, केंद्रीय कर्मचारी, विधवा/तलाकशुदा महिला आदि की अलग छूट इस टूल में नहीं जोड़ी गई।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="aage">
+        <h2>आगे क्या करें</h2>
+        <ul class="checklist">
+          <li>नई भर्तियां और आखिरी तारीख: <a href="/jobs/index.html">सरकारी नौकरी</a></li>
+          <li>सिर्फ सही उम्र (वर्ष-महीने-दिन) चाहिए: <a href="/tools/age-calculator.html">आयु कैलकुलेटर</a></li>
+          <li>फॉर्म के लिए फोटो और साइन का साइज़: <a href="/tools/photo-resizer.html">फोटो रिसाइज़र</a></li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.tl .tl-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; }
+@media (min-width: 560px) { .tl .tl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tl label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: 4px; color: var(--c-ink); }
+.tl input[type=date], .tl select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; min-width: 0; }
+.tl .tl-checks { display: flex; align-items: flex-end; }
+.tl .tl-check { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; min-height: 44px; }
+.tl .tl-check input { width: 18px; height: 18px; }
+.tl button.cta { width: 100%; border: 0; font: inherit; font-weight: 800; cursor: pointer; }
+.tl .ea-age { font-size: 1.15rem; margin: 14px 0 8px; }
+.tl .ea-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .8rem; font-weight: 800; white-space: nowrap; }
+.tl .ea-pill.ok { background: var(--c-green-50); color: var(--c-green); }
+.tl .ea-pill.over { background: var(--c-red-50); color: var(--c-red); }
+.tl .ea-pill.under { background: var(--c-saffron-50); color: var(--c-saffron-700); }
+.tl .muted { color: var(--c-muted); font-size: .9rem; }
+</style>
+
+<script is:inline>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var EXAMS = [
+    ["SSC CGL", 18, 32, 1], ["SSC CHSL", 18, 27, 1], ["SSC MTS", 18, 25, 1], ["SSC GD कांस्टेबल", 18, 23, 0],
+    ["UPSC सिविल सेवा", 21, 32, 1], ["RRB NTPC (ग्रेजुएट)", 18, 33, 1], ["RRB NTPC (12वीं पास)", 18, 30, 1],
+    ["RRB ALP", 18, 30, 0], ["IBPS PO", 20, 30, 1], ["IBPS Clerk", 20, 28, 1], ["SBI PO", 21, 30, 1]
+  ];
+  var M = ["जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
+  function parse(v) { var p = (v || "").split("-").map(Number); return p.length === 3 && p[0] ? new Date(Date.UTC(p[0], p[1] - 1, p[2])) : null; }
+  function hi(d) { return d.getUTCDate() + " " + M[d.getUTCMonth()] + " " + d.getUTCFullYear(); }
+  // Exact age in years/months/days (same method as the old page, in UTC).
+  function exactAge(b, on) {
+    var y = on.getUTCFullYear() - b.getUTCFullYear(), m = on.getUTCMonth() - b.getUTCMonth(), d = on.getUTCDate() - b.getUTCDate();
+    if (d < 0) { m--; d += new Date(Date.UTC(on.getUTCFullYear(), on.getUTCMonth(), 0)).getUTCDate(); }
+    if (m < 0) { y--; m += 12; }
+    return [y, m, d];
+  }
+  // Eligible if min age is reached on the cut-off date and (max + relaxation)
+  // is NOT yet reached: notices say e.g. 18-27 on 01-01-2026 = born not
+  // before 02-01-1999 and not later than 01-01-2008.
+  function check(b, on, min, max) {
+    var minD = new Date(Date.UTC(b.getUTCFullYear() + min, b.getUTCMonth(), b.getUTCDate()));
+    var maxD = new Date(Date.UTC(b.getUTCFullYear() + max, b.getUTCMonth(), b.getUTCDate()));
+    return on < minD ? "under" : on >= maxD ? "over" : "ok";
+  }
+  window.__examAge = { exactAge: exactAge, check: check };
+  try { $("ea-cut").value = new Date().getFullYear() + "-08-01"; } catch (e) {}
+  $("ea-form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var out = $("ea-out"), b = parse($("ea-dob").value), on = parse($("ea-cut").value);
+    if (!b || !on) { out.innerHTML = '<p class="callout warn">जन्म तिथि और कट-ऑफ तारीख दोनों भरें।</p>'; return; }
+    if (on < b) { out.innerHTML = '<p class="callout warn">कट-ऑफ तारीख जन्म तिथि से पहले नहीं हो सकती।</p>'; return; }
+    var cat = Number($("ea-cat").value), pwd = $("ea-pwd").checked, a = exactAge(b, on), n = 0;
+    var rows = EXAMS.map(function (e) {
+      var rel = cat + (pwd && e[3] ? 10 : 0), max = e[2] + rel, s = check(b, on, e[1], max);
+      if (pwd && !e[3]) s = "na";
+      if (s === "ok") n++;
+      var pill = s === "ok" ? '<span class="ea-pill ok">✓ आयु सीमा में</span>' : s === "over" ? '<span class="ea-pill over">✗ उम्र ज़्यादा</span>' : s === "under" ? '<span class="ea-pill under">उम्र कम</span>' : '<span class="ea-pill over">दिव्यांग के लिए पद नहीं</span>';
+      return '<tr><td>' + e[0] + '</td><td>' + e[1] + '-' + max + (rel ? ' <small class="muted">(सामान्य ' + e[2] + ')</small>' : "") + '</td><td>' + pill + '</td></tr>';
+    });
+    out.innerHTML = '<p class="ea-age">' + hi(on) + ' को आपकी उम्र: <strong>' + a[0] + ' वर्ष ' + a[1] + ' महीने ' + a[2] + ' दिन</strong></p>'
+      + '<p class="callout ' + (n ? "ok" : "bad") + '"><strong>' + EXAMS.length + ' में से ' + n + ' परीक्षाओं</strong> की आयु सीमा में आप आते हैं' + (cat || pwd ? " (कुल छूट: " + (cat + (pwd ? 10 : 0)) + " साल)" : "") + '।</p>'
+      + '<div class="table-wrap"><table><thead><tr><th>परीक्षा</th><th>आपकी आयु सीमा</th><th>नतीजा</th></tr></thead><tbody>' + rows.join("") + '</tbody></table></div>'
+      + '<p class="muted">यह नतीजा आपकी डाली एक ही कट-ऑफ तारीख पर है। हर परीक्षा की अपनी कट-ऑफ तारीख होती है।</p>';
+    try { if (window.gtag) gtag("event", "tool_usage", { tool_name: "exam-age-calculator" }); } catch (e) {}
+  });
+})();
+</script>

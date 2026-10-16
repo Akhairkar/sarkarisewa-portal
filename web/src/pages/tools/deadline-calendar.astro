@@ -1,0 +1,177 @@
+---
+// Government deadline calendar. Same URL, title and description as the old
+// /tools/ page. The old /tools/ page showed five hard-coded "deadlines" with
+// made-up dates (e.g. "SSC CGL 2026 last date 15 Sep 2026") and a promo box
+// with unverified scheme claims. The site already has a real, admin-managed
+// list: the Supabase "deadlines" table (supabase/deadlines-schema.sql, public
+// read only for status = 'published'), rendered by
+// /assets/js/deadline-calendar.js (used by the old root copy of this page,
+// which now redirects here). This page loads that script unchanged, with the
+// ids/classes it expects (dl-list, dl-summary, dl-calendar, dl-search,
+// dl-filter-type, dl-filter-state, [data-dl-category], [data-dl-time],
+// .dl-view-btn). Status (days left / expired) is computed in the browser
+// from today's date, so nothing on this page goes stale by itself.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "डेडलाइन कैलेंडर" }];
+const faq = [
+  { q: "इस कैलेंडर में कौन-सी तारीखें हैं?", a: "सरकारी योजनाओं, छात्रवृत्ति, सरकारी नौकरी, परीक्षा, टैक्स, e-KYC और दूसरे सरकारी कामों की वे आखिरी तारीखें जो हमारी टीम official अधिसूचना या पोर्टल देखकर जोड़ती है। हर डेडलाइन के विवरण में स्रोत और आखिरी जांच की तारीख लिखी होती है।" },
+  { q: "'दिन बचे' कैसे गिने जाते हैं?", a: "आज की तारीख और आखिरी तारीख के बीच के दिन आपके फोन या कंप्यूटर की तारीख से अपने-आप गिने जाते हैं। आखिरी तारीख निकल जाने पर डेडलाइन 'समाप्त' में चली जाती है।" },
+  { q: "आखिरी तारीख बढ़ जाए तो?", a: "सरकार कई बार तारीख बढ़ाती है। हम पता चलने पर नई तारीख जोड़ते हैं और विवरण में पुरानी तारीख भी दिखाते हैं। फिर भी फॉर्म भरने से पहले official पोर्टल पर तारीख ज़रूर देखें।" },
+  { q: "आखिरी दिन पोर्टल न खुले तो क्या करें?", a: "आखिरी दिनों में पोर्टल पर भीड़ रहती है और भुगतान अटक सकता है। इसलिए फॉर्म कुछ दिन पहले भरें। भुगतान कटने पर भी फॉर्म पूरा न दिखे तो रसीद और ट्रांजैक्शन ID संभालकर रखें और विभाग की हेल्पलाइन पर बताएं।" },
+  { q: "क्या यह सरकारी कैलेंडर है?", a: "नहीं। SarkariSewa India एक निजी जानकारी वेबसाइट है। तारीखें official स्रोत से ली जाती हैं, पर अंतिम तारीख हमेशा संबंधित विभाग की अधिसूचना या पोर्टल से ही पक्की मानें।" },
+];
+---
+<Base title="Govt Exam & Scheme Deadline Calendar 2026 | SarkariSewa India" description="सरकारी परीक्षा व योजना अंतिम तिथि कैलेंडर 2026: UPSC, SSC, रेलवे, बैंक व सरकारी योजनाओं की लास्ट डेट, एडमिट कार्ड व परीक्षा तारीखों का लाइव कैलेंडर।" breadcrumbs={crumbs} faq={faq} modified="2026-10-16">
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>सरकारी डेडलाइन कैलेंडर: फॉर्म, योजना और परीक्षा की आखिरी तारीख</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">नीचे सरकारी नौकरी, परीक्षा, योजना, छात्रवृत्ति, टैक्स और e-KYC की आने वाली आखिरी तारीखें हैं, सबसे नज़दीकी तारीख सबसे ऊपर। हर कार्ड पर बचे दिन अपने-आप गिने जाते हैं। "विवरण देखें" में पूरी जानकारी और official पोर्टल का लिंक है; फॉर्म हमेशा official पोर्टल पर ही भरें।</p>
+      </section>
+
+      <section class="section dl-tool" aria-labelledby="dl-title">
+        <h2 id="dl-title">📅 आने वाली आखिरी तारीखें</h2>
+        <div class="dl-summary" id="dl-summary"><div class="dl-summary-card"><span class="dl-summary-num">—</span><span class="dl-summary-label">लोड हो रहा है…</span></div></div>
+
+        <div class="dl-toolbar" id="dl-toolbar">
+          <input class="dl-search" id="dl-search" type="search" placeholder="खोजें: PM Kisan, SSC, छात्रवृत्ति, टैक्स…" aria-label="डेडलाइन खोजें" />
+          <div class="dl-filter-row" role="group" aria-label="श्रेणी">
+            <button class="chip-btn active" data-dl-category="all" type="button">सभी</button>
+            <button class="chip-btn" data-dl-category="jobs" type="button">सरकारी नौकरी</button>
+            <button class="chip-btn" data-dl-category="exam" type="button">परीक्षा</button>
+            <button class="chip-btn" data-dl-category="scheme" type="button">योजनाएं</button>
+            <button class="chip-btn" data-dl-category="scholarship" type="button">छात्रवृत्ति</button>
+            <button class="chip-btn" data-dl-category="education" type="button">Admission</button>
+            <button class="chip-btn" data-dl-category="tax" type="button">टैक्स</button>
+            <button class="chip-btn" data-dl-category="ekyc" type="button">e-KYC</button>
+            <button class="chip-btn" data-dl-category="farmer" type="button">किसान</button>
+            <button class="chip-btn" data-dl-category="pension" type="button">पेंशन</button>
+            <button class="chip-btn" data-dl-category="banking" type="button">बैंक/वित्त</button>
+            <button class="chip-btn" data-dl-category="documents" type="button">दस्तावेज़</button>
+            <button class="chip-btn" data-dl-category="housing" type="button">आवास</button>
+            <button class="chip-btn" data-dl-category="business" type="button">व्यवसाय/लोन</button>
+          </div>
+          <div class="dl-selects">
+            <select class="dl-select" id="dl-filter-type" aria-label="डेडलाइन का प्रकार">
+              <option value="all">प्रकार: सभी</option>
+              <option value="application">आवेदन की आखिरी तारीख</option>
+              <option value="registration">रजिस्ट्रेशन</option>
+              <option value="correction">सुधार (Correction)</option>
+              <option value="document_submission">दस्तावेज़ जमा</option>
+              <option value="payment">भुगतान</option>
+              <option value="ekyc">e-KYC</option>
+              <option value="renewal">नवीनीकरण</option>
+              <option value="admission">Admission</option>
+              <option value="exam_date">परीक्षा की तारीख</option>
+              <option value="result">रिज़ल्ट/अधिसूचना</option>
+            </select>
+            <select class="dl-select" id="dl-filter-state" aria-label="राज्य">
+              <option value="all">राज्य: सभी</option>
+              <option value="all-india">पूरे भारत के लिए</option>
+              <option value="maharashtra">महाराष्ट्र</option>
+              <option value="madhya-pradesh">मध्य प्रदेश</option>
+              <option value="rajasthan">राजस्थान</option>
+              <option value="uttar-pradesh">उत्तर प्रदेश</option>
+              <option value="bihar">बिहार</option>
+              <option value="gujarat">गुजरात</option>
+              <option value="karnataka">कर्नाटक</option>
+              <option value="delhi">दिल्ली</option>
+              <option value="other">दूसरे राज्य</option>
+            </select>
+          </div>
+          <div class="dl-filter-row" role="group" aria-label="समय">
+            <button class="chip-btn active" data-dl-time="all" type="button">हर समय</button>
+            <button class="chip-btn" data-dl-time="today" type="button">आज</button>
+            <button class="chip-btn" data-dl-time="tomorrow" type="button">कल</button>
+            <button class="chip-btn" data-dl-time="7days" type="button">7 दिन में</button>
+            <button class="chip-btn" data-dl-time="30days" type="button">30 दिन में</button>
+            <button class="chip-btn" data-dl-time="later" type="button">बाद में</button>
+            <button class="chip-btn" data-dl-time="expired" type="button">समाप्त</button>
+          </div>
+          <div class="dl-filter-row">
+            <button class="chip-btn dl-view-btn active" data-view="list" type="button">📋 सूची</button>
+            <button class="chip-btn dl-view-btn" data-view="calendar" type="button">📅 कैलेंडर</button>
+          </div>
+        </div>
+
+        <div class="dl-list" id="dl-list"><p class="dl-empty">लोड हो रहा है…</p></div>
+        <div id="dl-calendar" hidden></div>
+        <p class="notice">तारीखें official अधिसूचना/पोर्टल से ली जाती हैं, पर बदल सकती हैं। फॉर्म भरने से पहले official पोर्टल पर आखिरी तारीख देख लें।</p>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>फॉर्म समय पर भरने के ज़रूरी नियम</h2>
+        <ul class="checklist">
+          <li><strong>आखिरी 2-3 दिन से बचें:</strong> इन दिनों पोर्टल पर भीड़ रहती है और भुगतान अटक सकता है। कुछ दिन पहले फॉर्म भरें।</li>
+          <li><strong>फीस की अलग तारीख:</strong> कई भर्तियों में फॉर्म और फीस भरने की आखिरी तारीख अलग होती है। दोनों अधिसूचना में देखें।</li>
+          <li><strong>दस्तावेज़ पहले तैयार:</strong> फोटो, साइन और प्रमाणपत्र सही साइज़ में पहले ही बना लें (<a href="/tools/photo-resizer.html">फोटो रिसाइज़र</a>, <a href="/tools/document-compressor.html">PDF छोटा करें</a>)।</li>
+          <li><strong>रसीद सेव करें:</strong> फॉर्म और भुगतान की रसीद/कन्फर्मेशन पेज PDF में सेव करें।</li>
+          <li><strong>उम्र की जांच:</strong> नौकरी के फॉर्म से पहले <a href="/tools/age-calculator.html">आयु कैलकुलेटर</a> से कट-ऑफ तारीख पर अपनी उम्र देख लें।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="alert">
+        <h2>नई भर्ती और आखिरी तारीख का अलर्ट</h2>
+        <p>नई सरकारी नौकरियां और उनकी आखिरी तारीख <a href="/jobs/index.html">सरकारी नौकरी</a> पेज पर देखें। अलर्ट के लिए हमारा Telegram चैनल जॉइन करें।</p>
+        <a class="cta secondary" href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener">✈️ Telegram चैनल जॉइन करें</a>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.dl-tool .dl-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 14px; }
+@media (min-width: 640px) { .dl-tool .dl-summary { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.dl-tool .dl-summary-card { display: grid; justify-items: center; gap: 2px; padding: 10px 8px; border-radius: 10px; background: var(--c-surface-2); text-align: center; min-width: 0; }
+.dl-tool .dl-summary-icon { font-size: 1.1rem; }
+.dl-tool .dl-summary-num { font-size: 1.4rem; font-weight: 800; color: var(--c-ink); }
+.dl-tool .dl-summary-label { font-size: .78rem; color: var(--c-muted); font-weight: 700; }
+.dl-tool .dl-search, .dl-tool .dl-select { width: 100%; min-height: 46px; padding: 8px 12px; border: 2px solid var(--c-line); border-radius: 12px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; min-width: 0; }
+.dl-tool .dl-selects { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin: 10px 0; }
+@media (min-width: 560px) { .dl-tool .dl-selects { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.dl-tool .dl-filter-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.dl-tool .dl-filter-row .chip-btn { font-size: .85rem; padding: 6px 11px; }
+.dl-tool .dl-list { display: grid; gap: 10px; margin-top: 8px; }
+.dl-tool .dl-card { border: 1px solid var(--c-line); border-left: 4px solid var(--c-brand); border-radius: var(--radius-sm); padding: 12px 14px; background: var(--c-surface); min-width: 0; }
+.dl-tool .dl-card--closing-today, .dl-tool .dl-card--closing-tomorrow, .dl-tool .dl-card--urgent { border-left-color: var(--c-red); }
+.dl-tool .dl-card--week { border-left-color: var(--c-saffron); }
+.dl-tool .dl-card--expired { border-left-color: var(--c-line); opacity: .75; }
+.dl-tool .dl-card__top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; align-items: center; font-size: .88rem; font-weight: 700; color: var(--c-muted); }
+.dl-tool .dl-card__title { margin: 6px 0 4px; font-size: 1.02rem; color: var(--c-ink); overflow-wrap: anywhere; }
+.dl-tool .dl-card__desc { margin: 0 0 6px; font-size: .92rem; color: var(--c-text); }
+.dl-tool .dl-card__meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.dl-tool .dl-tag { font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--c-brand-50); color: var(--c-brand); }
+.dl-tool .dl-card__actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.dl-tool .dl-card__actions .btn { display: inline-block; padding: 7px 12px; border-radius: 10px; background: var(--c-brand); color: #fff; font-weight: 800; text-decoration: none; font-size: .9rem; }
+.dl-tool .dl-card__official { font-weight: 700; font-size: .88rem; }
+.dl-tool .dl-badge { font-size: .75rem; font-weight: 800; padding: 2px 9px; border-radius: 999px; background: var(--c-brand-50); color: var(--c-brand); white-space: nowrap; }
+.dl-tool .dl-badge--closing-today, .dl-tool .dl-badge--closing-tomorrow, .dl-tool .dl-badge--urgent { background: var(--c-red-50); color: var(--c-red); }
+.dl-tool .dl-badge--week { background: var(--c-saffron-50); color: var(--c-saffron-700); }
+.dl-tool .dl-badge--expired { background: var(--c-surface-2); color: var(--c-muted); }
+.dl-tool .dl-empty { color: var(--c-muted); font-weight: 600; }
+.dl-tool .dl-section-heading { margin: 14px 0 4px; font-size: 1rem; color: var(--c-muted); }
+.dl-tool .dl-cal-header { display: flex; align-items: center; justify-content: space-between; margin: 10px 0; }
+.dl-tool .dl-cal-nav { min-width: 44px; min-height: 40px; border: 1px solid var(--c-line); border-radius: 10px; background: var(--c-surface); color: var(--c-text); font: inherit; cursor: pointer; }
+.dl-tool .dl-cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+.dl-tool .dl-cal-weekday { text-align: center; font-size: .75rem; font-weight: 800; color: var(--c-muted); }
+.dl-tool .dl-cal-cell { position: relative; aspect-ratio: 1; min-width: 0; border: 1px solid var(--c-line); border-radius: 8px; background: var(--c-surface); color: var(--c-text); font: inherit; font-size: .85rem; padding: 2px; cursor: default; }
+.dl-tool .dl-cal-cell--empty { border: 0; background: none; }
+.dl-tool .dl-cal-cell--has-events { cursor: pointer; border-color: var(--c-brand); background: var(--c-brand-50); }
+.dl-tool .dl-cal-cell--today { outline: 2px solid var(--c-saffron); }
+.dl-tool .dl-cal-cell--selected { background: var(--c-brand); color: #fff; }
+.dl-tool .dl-cal-dot { position: absolute; right: 2px; top: 2px; font-size: .62rem; font-weight: 800; background: var(--c-red); color: #fff; border-radius: 999px; padding: 0 4px; }
+</style>
+
+<script is:inline>window.SS_ROOT = "/"; window.SITE = window.SITE || { lang: "hi" };</script>
+<script is:inline src="/assets/js/supabase-client.js"></script>
+<script is:inline src="/assets/js/i18n-helper.js"></script>
+<script is:inline src="/assets/js/deadline-calendar.js"></script>

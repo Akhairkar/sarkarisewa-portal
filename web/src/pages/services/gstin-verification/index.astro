@@ -1,0 +1,267 @@
+---
+// Paid GSTIN verification (Rs 20). Same URL, title and description as the old
+// page; layout moved to the new design, modelled on services/rc-challan.
+// Payment/API flow is unchanged: format + checksum check in the browser ->
+// POST {gstin} to the gstin worker /create-order -> Razorpay checkout ->
+// POST {razorpay_order_id, razorpay_payment_id, razorpay_signature, gstin} to
+// /verify-payment -> worker returns {success, data:{gstin, legal_name,
+// trade_name, registration_date, taxpayer_type, business_constitution,
+// address, city, state_code, status, verified_at}}. Same GA4 events
+// (tool_view, begin_checkout, purchase, checkout_cancel, payment_failed,
+// report_error).
+// Fix: the old showResult() wrote to a 7th ".item strong" that did not
+// exist, so it threw after a successful payment and the report never showed.
+// Fields are now filled by id.
+import Base from "../../../layouts/Base.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import Faq from "../../../components/Faq.astro";
+import CardGrid from "../../../components/CardGrid.astro";
+
+const WORKER = "https://sarkarisewa-gstin-api.khairkar92.workers.dev";
+const PRICE = 20; // keep in step with the gstin worker
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "Paid Services", href: "/paid-services/" }, { label: "GSTIN Verification" }];
+const faq = [
+  { q: "क्या यह official GST पोर्टल है?", a: "नहीं। SarkariSewa India एक स्वतंत्र निजी वेबसाइट है, GST विभाग या किसी सरकारी दफ्तर से जुड़ी नहीं। GSTIN की जानकारी official GST पोर्टल (services.gst.gov.in) पर फ्री भी देखी जा सकती है; अंतिम पुष्टि वहीं से करें।" },
+  { q: `₹${PRICE} किस बात के हैं?`, a: "यह हमारी रिपोर्ट सेवा का शुल्क है, कोई सरकारी फीस नहीं। इसमें GSTIN के फॉर्मेट और चेकसम की मुफ्त जांच, हिंदी-अंग्रेज़ी रिपोर्ट और जांच के समय के साथ सेव करने लायक PDF शामिल है।" },
+  { q: "भुगतान के बाद क्या मिलेगा?", a: "उस GSTIN की उपलब्ध जानकारी: स्टेटस (Active या नहीं), कानूनी नाम, व्यापार नाम, पंजीकरण की तारीख, करदाता का प्रकार, व्यवसाय का स्वरूप और पता/राज्य। कौन सी जानकारी आएगी, यह verification provider के जवाब पर निर्भर है।" },
+  { q: "पैसा कट गया पर रिपोर्ट नहीं आई तो?", a: "भुगतान ID (pay_ से शुरू) संभालकर रखें और हमारे संपर्क पेज से भेजें। रिपोर्ट न बन पाने पर पूरा पैसा वापस किया जाता है; शर्तें रिफंड पॉलिसी में हैं।" },
+  { q: "क्या यह सेवा GST रिकॉर्ड बदल सकती है?", a: "नहीं। यह सेवा कोई सरकारी प्रमाणपत्र नहीं देती और GST रिकॉर्ड को न बदलती है, न मंज़ूर करती है। कभी भी अपना पासवर्ड, OTP या UPI PIN किसी को न बताएं।" },
+];
+---
+<Base
+  title="GSTIN Verification Online — SarkariSewa India"
+  description="Verify GSTIN online with SarkariSewa India. Check GSTIN status, legal name, trade name, registration date and available business details through an independent paid verification service for ₹20."
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">🧾 Paid Service · ₹{PRICE} प्रति GSTIN</span>
+    <h1>GSTIN Verification: <em>GST नंबर असली है या नहीं, जांचें</em></h1>
+    <p class="page-intro">15 अंकों का GSTIN डालें, ₹{PRICE} का भुगतान करें और उस GST नंबर का स्टेटस, कानूनी नाम, व्यापार नाम और पंजीकरण की तारीख हिंदी-अंग्रेज़ी रिपोर्ट में देखें।</p>
+    <ul class="rc-usp">
+      <li>✓ भुगतान से पहले फॉर्मेट और चेकसम की मुफ्त जांच: टाइपिंग की गलती पर पैसा नहीं कटता</li>
+      <li>✓ जांच के समय के साथ PDF, वेंडर फाइल या अकाउंटेंट को भेजने लायक</li>
+      <li>✓ निजी सेवा है, सरकारी नहीं; यही जानकारी GST पोर्टल पर फ्री भी मिलती है</li>
+    </ul>
+  </section>
+
+  <section class="answer" aria-labelledby="answer-title" style="margin-top:16px">
+    <p class="answer-title" id="answer-title">सीधा जवाब</p>
+    <p class="answer-lead">किसी एक GSTIN को कभी-कभार देखना हो तो official GST पोर्टल (services.gst.gov.in → Search Taxpayer) पर फ्री में देखें। जब सप्लायर को पैसा देने या बिल पर ITC लेने से पहले सबूत के तौर पर रखने लायक रिपोर्ट चाहिए, तब यहां ₹{PRICE} में रिपोर्ट लें।</p>
+  </section>
+
+  <section class="section rc-box gv-box" data-worker={WORKER} data-price={PRICE}>
+    <form class="rc-form" id="gv-form" novalidate>
+      <label for="gstin"><strong>GSTIN नंबर</strong> <small>(15 अक्षर, जैसे बिल पर छपा है)</small></label>
+      <div class="rc-row">
+        <input id="gstin" maxlength="15" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="जैसे 27AAPFU0939F1ZV" />
+        <button type="submit" class="cta" id="verify">₹{PRICE} में जांचें</button>
+      </div>
+      <p class="rc-msg" id="validation" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="rc-result gv-result" id="result" hidden>
+      <div class="gv-head">
+        <h2>सत्यापन परिणाम <small>Verification Result</small></h2>
+        <span class="gv-badge" id="gv-status">—</span>
+      </div>
+      <dl class="facts gv-facts">
+        <div><dt>कानूनी नाम · Legal Name</dt><dd id="legal">—</dd></div>
+        <div><dt>GSTIN</dt><dd id="shown">—</dd></div>
+        <div><dt>व्यापार नाम · Trade Name</dt><dd id="gv-trade">—</dd></div>
+        <div><dt>पंजीकरण की तारीख · Registration Date</dt><dd id="gv-date">—</dd></div>
+        <div><dt>करदाता का प्रकार · Taxpayer Type</dt><dd id="gv-type">—</dd></div>
+        <div><dt>व्यवसाय का स्वरूप · Constitution</dt><dd id="gv-const">—</dd></div>
+        <div class="gv-wide"><dt>मुख्य व्यवसाय स्थान / राज्य · Principal Place</dt><dd id="gv-place">—</dd></div>
+        <div class="gv-wide"><dt>जांच का समय · Verification Time</dt><dd id="time">—</dd></div>
+      </dl>
+      <div class="gv-actions">
+        <button type="button" class="more-btn" id="pdf">↓ PDF सेव / प्रिंट करें</button>
+        <button type="button" class="more-btn" id="share">↗ रिपोर्ट शेयर करें</button>
+        <button type="button" class="more-btn" id="again">＋ दूसरा GSTIN जांचें</button>
+      </div>
+      <p class="rc-note">यह जानकारी authorized verification provider से मिले जवाब पर आधारित है। अंतिम और आधिकारिक पुष्टि के लिए <a href="https://services.gst.gov.in/services/searchtp" target="_blank" rel="noopener nofollow">GST पोर्टल</a> देखें।</p>
+    </div>
+    <p class="rc-note">भुगतान Razorpay से सुरक्षित होता है। एक भुगतान पर एक GSTIN की रिपोर्ट। ₹{PRICE} हमारी सेवा का शुल्क है, सरकारी फीस नहीं। यहां कभी भी पासवर्ड, OTP या UPI PIN न डालें। <a href="/refund-policy.html">रिफंड और सेवा शर्तें</a></p>
+  </section>
+
+  <section class="section" id="kyun">
+    <h2>GSTIN तो GST पोर्टल पर फ्री दिखता है, फिर ₹{PRICE} क्यों?</h2>
+    <p>सीधी बात: कभी-कभार एक GSTIN देखना है तो <a href="https://services.gst.gov.in/services/searchtp" target="_blank" rel="noopener nofollow">GST पोर्टल</a> पर फ्री में देखिए, तरीका हमारी <a href="/gst/how-to-verify-gst-number.html">फ्री गाइड</a> में है। हमारी रिपोर्ट तब काम की है जब सबूत के तौर पर रखने लायक रिपोर्ट चाहिए:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>बात</th><th>GST पोर्टल (फ्री)</th><th>हमारी रिपोर्ट (₹{PRICE})</th></tr></thead>
+        <tbody>
+          <tr><td>गलत GSTIN</td><td>"No records found" जैसा संदेश</td><td>भुगतान से पहले फॉर्मेट और चेकसम जांच; टाइपिंग की गलती मुफ्त में पकड़ी जाती है</td></tr>
+          <tr><td>भाषा</td><td>अंग्रेज़ी</td><td>हिंदी + अंग्रेज़ी, स्टेटस का मतलब साफ</td></tr>
+          <tr><td>रिकॉर्ड</td><td>स्क्रीनशॉट लेना पड़ता है</td><td>जांच के समय के साथ PDF</td></tr>
+          <tr><td>रिपोर्ट न बने तो</td><td>-</td><td>भुगतान ID भेजने पर पूरा पैसा वापस (<a href="/refund-policy.html">शर्तें</a>)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="checklist">
+      <li><strong>नए सप्लायर को एडवांस देने से पहले:</strong> GSTIN सक्रिय है और नाम बिल से मिलता है, यह जांचें।</li>
+      <li><strong>बिल की जांच:</strong> बिल पर छपा GSTIN और कंपनी का नाम रिपोर्ट से मिलाएं।</li>
+      <li><strong>वेंडर/ठेकेदार का रिकॉर्ड:</strong> फाइल में जांच की तारीख वाली रिपोर्ट रखें।</li>
+    </ul>
+  </section>
+
+  <section class="section" id="kaise">
+    <h2>यह सेवा कैसे काम करती है</h2>
+    <ol class="steps">
+      <li><strong>GSTIN डालें:</strong> 15 अक्षर का नंबर। फॉर्मेट या आखिरी अक्षर (चेकसम) गलत हो तो यहीं बता दिया जाता है, पैसा नहीं कटता।</li>
+      <li><strong>₹{PRICE} भुगतान:</strong> UPI, कार्ड या नेटबैंकिंग से Razorpay पर।</li>
+      <li><strong>रिपोर्ट देखें:</strong> भुगतान की पुष्टि के बाद रिपोर्ट इसी पेज पर दिखती है; PDF सेव या शेयर करें।</li>
+    </ol>
+  </section>
+
+  <section class="section" id="free">
+    <h2>फ्री में GSTIN कैसे देखें (official तरीका)</h2>
+    <ol class="steps">
+      <li><a href="https://services.gst.gov.in/services/searchtp" target="_blank" rel="noopener nofollow">services.gst.gov.in</a> पर "Search Taxpayer → Search by GSTIN/UIN" खोलें।</li>
+      <li>GSTIN और कैप्चा भरकर "Search" दबाएं।</li>
+      <li>स्टेटस, कानूनी नाम, व्यापार नाम और पंजीकरण की तारीख वहीं दिख जाएगी।</li>
+    </ol>
+  </section>
+
+  <Faq items={faq} />
+  <CardGrid title="GST गाइड और और सेवाएं" id="related" cards={[
+    { href: "/gst/", emoji: "📚", title: { hi: "सभी GST गाइड", en: "All GST guides" }, text: { hi: "GSTIN जांच, स्टेटस, फॉर्मेट", en: "GSTIN check, status, format" } },
+    { href: "/gst/how-to-verify-gst-number.html", emoji: "📘", title: { hi: "GST नंबर कैसे जांचें", en: "How to verify a GST number" }, text: { hi: "फ्री तरीका, स्टेप बाय स्टेप", en: "Free method, step by step" } },
+    { href: "/gst/gstin-format-structure.html", emoji: "🔢", title: { hi: "GSTIN का फॉर्मेट", en: "GSTIN format" }, text: { hi: "15 अंकों का मतलब", en: "What the 15 characters mean" } },
+    { href: "/paid-services/", emoji: "🧾", title: { hi: "सभी Paid Services", en: "All paid services" }, text: { hi: "RC e-Challan और अन्य", en: "RC e-Challan and more" } },
+  ]} />
+
+  <style is:global>
+  .gv-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+  .gv-head h2 { margin: 0; }
+  .gv-head h2 small { display: block; font-size: .8rem; color: var(--c-muted); font-weight: 600; }
+  .gv-badge { font-weight: 800; font-size: .85rem; padding: 4px 12px; border-radius: 999px; background: var(--c-surface-2); color: var(--c-muted); }
+  .gv-badge.ok { background: var(--c-green-50); color: var(--c-green); }
+  .gv-badge.no { background: var(--c-saffron-50); color: var(--c-saffron-700); }
+  .facts.gv-facts { grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 560px) { .facts.gv-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .facts.gv-facts .gv-wide { grid-column: 1 / -1; } }
+  .gv-actions { display: grid; gap: 0; }
+  @media print { .gv-actions, .rc-usp, #kyun, #kaise, #related, .answer { display: none !important; } }
+  </style>
+
+  <script is:inline>
+  (function () {
+    var box = document.querySelector(".gv-box"), WORKER_BASE = box.dataset.worker;
+    var CREATE_ORDER_ENDPOINT = WORKER_BASE + "/create-order", VERIFY_PAYMENT_ENDPOINT = WORKER_BASE + "/verify-payment";
+    var SS_PRICE = Number(box.dataset.price) || 20;
+    var input = document.getElementById("gstin"), result = document.getElementById("result"), verify = document.getElementById("verify"), validation = document.getElementById("validation"), form = document.getElementById("gv-form");
+    var label = verify.textContent;
+    function ssEv(n, p) { try { if (window.gtag) gtag("event", n, Object.assign({ tool: "gstin_verification" }, p || {})); } catch (e) {} }
+    var SS_ITEM = [{ item_id: "gstin_verification", item_name: "GSTIN verification report", price: SS_PRICE, quantity: 1 }];
+    var GSTIN_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    function esc(v) { return v == null || v === "" ? "—" : String(v); }
+    function $(id) { return document.getElementById(id); }
+    function formatDate(v) {
+      if (!v) return "—";
+      var d = new Date(v);
+      return Number.isNaN(d.getTime()) ? v : d.toLocaleDateString("en-IN", { day: "2-digit", month: "2-digit", year: "numeric" });
+    }
+    function gstinChecksumValid(gstin) {
+      var body = gstin.slice(0, 14), provided = gstin[14], factor = 1, sum = 0;
+      for (var i = 0; i < body.length; i++) {
+        var product = GSTIN_CHARS.indexOf(body[i]) * factor;
+        sum += Math.floor(product / 36) + (product % 36);
+        factor = factor === 1 ? 2 : 1;
+      }
+      return GSTIN_CHARS[(36 - (sum % 36)) % 36] === provided;
+    }
+    window.__gstinChecksumValid = gstinChecksumValid;
+    function showValidation(m) { validation.textContent = m; }
+    function clearValidation() { validation.textContent = ""; }
+    function setButton(text, disabled) { verify.disabled = !!disabled; verify.textContent = text || label; }
+    function setStatus(raw) {
+      var b = $("gv-status"), active = String(raw || "").toLowerCase() === "active";
+      b.textContent = active ? "ACTIVE · सक्रिय" : "NOT ACTIVE · सक्रिय नहीं" + (raw ? " (" + raw + ")" : "");
+      b.className = "gv-badge " + (active ? "ok" : "no");
+    }
+    async function createOrder(gstin) {
+      var res = await fetch(CREATE_ORDER_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify({ gstin: gstin }) });
+      var body = await res.json().catch(function () { return {}; });
+      if (!res.ok || !body.success || !body.order_id || !body.key_id) throw new Error(body.error || "भुगतान शुरू नहीं हो सका। फिर कोशिश करें।");
+      return body;
+    }
+    async function verifyPayment(paymentResponse, gstin) {
+      var res = await fetch(VERIFY_PAYMENT_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(Object.assign({}, paymentResponse, { gstin: gstin })) });
+      var body = await res.json().catch(function () { return {}; });
+      if (!res.ok || !body.success) throw new Error(body.error || "भुगतान या GSTIN की जांच पूरी नहीं हो सकी।");
+      return body;
+    }
+    function showResult(body) {
+      var d = body.data || {};
+      $("shown").textContent = esc(d.gstin);
+      $("legal").textContent = esc(d.legal_name);
+      $("gv-trade").textContent = esc(d.trade_name);
+      $("gv-date").textContent = formatDate(d.registration_date);
+      $("gv-type").textContent = esc(d.taxpayer_type);
+      $("gv-const").textContent = esc(d.business_constitution);
+      $("gv-place").textContent = esc([d.address, d.city].filter(Boolean).join(", ") || d.state_code);
+      $("time").textContent = new Date(d.verified_at || body.verified_at || Date.now()).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+      setStatus(d.status);
+      result.hidden = false;
+      result.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    async function runVerification(e) {
+      if (e) e.preventDefault();
+      clearValidation();
+      var v = input.value.trim().toUpperCase().replace(/\s/g, "");
+      input.value = v;
+      if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(v)) { showValidation("GSTIN का फॉर्मेट सही नहीं है। पूरा 15 अक्षर का GSTIN डालें (जैसे 27AAPFU0939F1ZV)।"); input.focus(); return; }
+      if (!gstinChecksumValid(v)) { showValidation("GSTIN का आखिरी अक्षर (चेकसम) मेल नहीं खा रहा। बिल या दस्तावेज़ से नंबर दोबारा ध्यान से मिलाएं।"); input.focus(); return; }
+      if (typeof Razorpay === "undefined") { showValidation("भुगतान लोड नहीं हुआ। पेज रिफ्रेश करके फिर कोशिश करें।"); return; }
+      setButton("भुगतान तैयार हो रहा है…", true);
+      try {
+        var order = await createOrder(v);
+        var razorpay = new Razorpay({
+          key: order.key_id, amount: order.amount, currency: order.currency || "INR",
+          name: "SarkariSewa India", description: "GSTIN Verification", order_id: order.order_id,
+          prefill: {}, notes: { service: "GSTIN Verification", gstin: v }, theme: { color: "#0b5cab" },
+          modal: { ondismiss: function () { ssEv("checkout_cancel"); setButton("", false); } },
+          handler: async function (response) {
+            try {
+              setButton("भुगतान की पुष्टि हो रही है…", true);
+              var body = await verifyPayment(response, v);
+              showResult(body);
+              ssEv("purchase", { transaction_id: response.razorpay_payment_id, value: SS_PRICE, currency: "INR", items: SS_ITEM });
+            } catch (err) {
+              ssEv("report_error", { reason: String(err.message || "").slice(0, 90) });
+              showValidation((err.message || "भुगतान की पुष्टि नहीं हो सकी।") + " पैसा कटा हो तो यह भुगतान ID संपर्क पेज से भेजें: " + response.razorpay_payment_id);
+            } finally { setButton("", false); }
+          }
+        });
+        razorpay.on("payment.failed", function (response) {
+          ssEv("payment_failed", { reason: String((response.error && response.error.description) || "").slice(0, 90) });
+          showValidation((response.error && response.error.description) || "भुगतान नहीं हो सका। फिर कोशिश करें।");
+          setButton("", false);
+        });
+        ssEv("begin_checkout", { value: SS_PRICE, currency: "INR", items: SS_ITEM });
+        razorpay.open();
+      } catch (err) {
+        showValidation(err.message || "जांच शुरू नहीं हो सकी। फिर कोशिश करें।");
+        setButton("", false);
+      }
+    }
+    form.addEventListener("submit", runVerification);
+    window.addEventListener("load", function () { setTimeout(function () { ssEv("tool_view"); }, 1500); });
+    input.addEventListener("input", function () { input.value = input.value.toUpperCase().replace(/\s/g, ""); clearValidation(); });
+    $("again").onclick = function () { result.hidden = true; clearValidation(); input.value = ""; input.focus(); };
+    $("share").onclick = async function () {
+      var text = "GSTIN Verification Report\nGSTIN: " + $("shown").textContent + "\nStatus: " + $("gv-status").textContent.trim();
+      try {
+        if (navigator.share) await navigator.share({ title: "GSTIN Verification Report", text: text });
+        else if (navigator.clipboard) { await navigator.clipboard.writeText(text + "\n" + location.href); showValidation(""); }
+      } catch (e) {}
+    };
+    $("pdf").onclick = function () { window.print(); };
+  })();
+  </script>
+  <script is:inline src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+</Base>

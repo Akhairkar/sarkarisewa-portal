@@ -1,0 +1,246 @@
+---
+// Scheme eligibility checker. Same URL, title and description as the old page.
+// Runs in the browser; nothing the visitor enters is sent anywhere.
+// Old page: 7 schemes with some wrong rules (Ayushman shown to anyone with
+// income under Rs 5 lakh; MPBCDC "50% subsidy / 4%" and NSP "Rs 10k-50k"
+// without source). Rebuilt with ~28 central and state schemes. Every amount
+// and condition below is taken from our scheme guides in src/guides/doc/*.ts
+// (verified 15 Oct 2026 from official portals / PIB), e.g.:
+//   PM-KISAN Rs 6,000/yr; PM-JAY Rs 5 lakh, all 70+ eligible; APY 18-40, no
+//   income-tax payers since 1 Oct 2022; PM-SYM 18-40, income <= Rs 15,000/mo;
+//   PM-KMY 18-40, land <= 2 ha; e-Shram 16+, not EPFO/ESIC, not tax payer;
+//   PMJJBY 18-50 Rs 436; PMSBY 18-70 Rs 20; PMAY-U 2.0 income <= Rs 9 lakh;
+//   SSY girl < 10, 8.2% (Oct-Dec 2026); PMMVY Rs 5,000 / Rs 6,000;
+//   Post-matric OBC/SC income <= Rs 2.5 lakh; Ladki Bahin 21-65, <= 2.5 lakh;
+//   Maiya Samman 18-50 Rs 2,500; Subhadra 21-60 Rs 10,000/yr; Gruha Lakshmi
+//   Rs 2,000; Magalir Urimai Rs 1,000; Orunodoi Rs 1,250; Kanya Sumangala
+//   Rs 25,000, income <= 3 lakh; Mahtari Vandan Rs 1,000 (new registration
+//   closed as of Oct 2026); Stand-Up India ended 31 Mar 2025 (not listed).
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "योजना पात्रता चेकर" }];
+const faq = [
+  { q: "यह पात्रता चेकर कैसे काम करता है?", a: "आप अपनी उम्र, आय, काम, राज्य और कुछ हालात (जैसे पक्का घर नहीं, गर्भवती, बेटी 10 साल से छोटी) चुनते हैं। टूल लगभग 28 केंद्र और राज्य योजनाओं की मुख्य शर्तों से मिलान करके बताता है कि आप किनके लिए पात्र हो सकते हैं। अंतिम फैसला योजना का विभाग जांच के बाद करता है।" },
+  { q: "क्या इसके लिए आधार नंबर या मोबाइल नंबर देना होता है?", a: "नहीं। कोई निजी पहचान नहीं मांगी जाती और जो आप भरते हैं वह कहीं नहीं भेजा जाता; मिलान आपके फोन के ब्राउज़र में ही होता है।" },
+  { q: "टूल ने 'पात्र हो सकते हैं' बताया, तो क्या पैसा पक्का मिलेगा?", a: "नहीं। हर योजना में कुछ और शर्तें, दस्तावेज़ और सत्यापन होता है, और कई योजनाओं में लाभार्थी सरकारी सूची (जैसे SECC या राशन कार्ड) से तय होते हैं। हर योजना के साथ दिए 'पूरी जानकारी' लिंक में शर्तें और आवेदन का तरीका देखें।" },
+  { q: "पात्र योजना मिलने के बाद आवेदन कैसे करें?", a: "हर योजना के कार्ड पर हमारी गाइड का लिंक है, जिसमें official पोर्टल, ज़रूरी कागज़ और आवेदन का तरीका दिया है। ज़्यादातर योजनाओं में नज़दीकी CSC केंद्र, बैंक, डाकघर या आंगनवाड़ी से भी आवेदन होता है।" },
+  { q: "मेरे राज्य की योजनाएं क्यों नहीं दिख रहीं?", a: "अभी इसमें केंद्र की योजनाएं और कुछ राज्यों (महाराष्ट्र, झारखंड, ओडिशा, कर्नाटक, तमिलनाडु, असम, उत्तर प्रदेश, छत्तीसगढ़) की महिलाओं और बेटियों वाली मुख्य योजनाएं हैं। बाकी राज्यों की योजनाएं हमारे योजना पेज पर देखें।" },
+  { q: "SarkariSewa India क्या सरकारी वेबसाइट है?", a: "नहीं। यह एक निजी जानकारी वेबसाइट है। हम कोई योजना नहीं चलाते और न ही आवेदन लेते हैं। आवेदन हमेशा official पोर्टल या सरकारी दफ्तर/CSC से करें।" },
+];
+---
+<Base title="Govt Scheme Eligibility Checker 2026 | SarkariSewa India" description="सरकारी योजना व नौकरी पात्रता चेकर 2026: अपनी उम्र, आय, श्रेणी व राज्य दर्ज करके जानें आप किन-किन सरकारी योजनाओं, सब्सिडी व स्कॉलरशिप के लिए 100% पात्र हैं।" breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>सरकारी योजना पात्रता चेकर 2026: आप किन योजनाओं के लिए पात्र हो सकते हैं</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">नीचे अपनी उम्र, परिवार की सालाना आय, काम और राज्य भरें और जो बातें आप पर लागू हों उन पर टिक करें। टूल तुरंत बताएगा कि केंद्र और कुछ राज्यों की करीब 28 योजनाओं में से आप किनके लिए पात्र हो सकते हैं। यह सिर्फ शुरुआती अंदाज़ा है; अंतिम पात्रता विभाग की जांच से तय होती है।</p>
+      </section>
+
+      <section class="section el-tool" aria-labelledby="el-title">
+        <h2 id="el-title">🎯 अपनी जानकारी भरें</h2>
+        <div class="el-grid">
+          <div><label for="el-age">उम्र (साल)</label><input type="number" id="el-age" min="0" max="110" inputmode="numeric" placeholder="जैसे 35" /></div>
+          <div><label for="el-gender">लिंग</label><select id="el-gender"><option value="f">महिला</option><option value="m">पुरुष</option><option value="t">ट्रांसजेंडर</option></select></div>
+          <div><label for="el-inc">परिवार की सालाना आय (₹)</label><input type="number" id="el-inc" min="0" inputmode="numeric" placeholder="जैसे 150000" /></div>
+          <div><label for="el-cat">श्रेणी</label><select id="el-cat"><option value="gen">सामान्य</option><option value="ews">EWS</option><option value="obc">OBC</option><option value="sc">SC</option><option value="st">ST</option></select></div>
+          <div><label for="el-occ">काम / स्थिति</label><select id="el-occ">
+            <option value="farmer">किसान (अपनी खेती की ज़मीन)</option>
+            <option value="worker">मज़दूर / असंगठित कामगार (खेतिहर, घरेलू, दिहाड़ी)</option>
+            <option value="construction">निर्माण मज़दूर (राजमिस्त्री, बेलदार आदि)</option>
+            <option value="vendor">रेहड़ी-पटरी / ठेला (शहर में)</option>
+            <option value="artisan">कारीगर (बढ़ई, लोहार, दर्जी, नाई, कुम्हार आदि)</option>
+            <option value="business">छोटा कारोबार / दुकान / स्वरोज़गार</option>
+            <option value="shg">स्वयं सहायता समूह (SHG) की सदस्य</option>
+            <option value="student">छात्र / बेरोज़गार युवा</option>
+            <option value="home">गृहिणी</option>
+            <option value="job">नौकरी (प्राइवेट / सरकारी)</option>
+          </select></div>
+          <div><label for="el-state">राज्य</label><select id="el-state">
+            <option value="other">दूसरा राज्य / केंद्र शासित प्रदेश</option>
+            <option value="as">असम</option><option value="up">उत्तर प्रदेश</option><option value="ka">कर्नाटक</option>
+            <option value="cg">छत्तीसगढ़</option><option value="jh">झारखंड</option><option value="tn">तमिलनाडु</option>
+            <option value="od">ओडिशा</option><option value="mh">महाराष्ट्र</option>
+          </select></div>
+        </div>
+        <fieldset class="el-flags">
+          <legend>जो बातें आप पर लागू हों, उन पर टिक करें</legend>
+          <label><input type="checkbox" value="tax" /> परिवार में कोई आयकर (income tax) भरता है</label>
+          <label><input type="checkbox" value="epf" /> मेरा PF (EPFO) या ESIC कटता है</label>
+          <label><input type="checkbox" value="govt" /> मैं सरकारी नौकरी में हूं / सरकारी पेंशन मिलती है</label>
+          <label><input type="checkbox" value="bpl" /> BPL / अंत्योदय / प्राथमिकता वाला राशन कार्ड है</label>
+          <label><input type="checkbox" value="small" /> खेती की ज़मीन 2 हेक्टेयर (करीब 5 एकड़) तक है</label>
+          <label><input type="checkbox" value="nohouse" /> परिवार के पास कहीं पक्का घर नहीं है</label>
+          <label><input type="checkbox" value="nolpg" /> घर में LPG गैस कनेक्शन नहीं है</label>
+          <label><input type="checkbox" value="preg" /> गर्भवती हूं / हाल में बच्चा हुआ है</label>
+          <label><input type="checkbox" value="girl" /> घर में 10 साल से छोटी बेटी है</label>
+          <label><input type="checkbox" value="widow" /> विधवा हूं</label>
+          <label><input type="checkbox" value="married" /> विवाहित हूं</label>
+        </fieldset>
+        <div class="el-out" aria-live="polite">
+          <p class="el-count" id="el-count"></p>
+          <div class="el-list" id="el-list"></div>
+        </div>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>अपनी उम्र और पूरे परिवार की साल भर की कुल आय डालें (सभी सदस्यों की कमाई जोड़कर)।</li>
+          <li>अपना मुख्य काम और राज्य चुनें, फिर नीचे जो बातें सच हों उन पर टिक करें।</li>
+          <li>नतीजे में हर योजना का लाभ और ज़रूरी शर्त दिखेगी। 'पूरी जानकारी' खोलकर कागज़ और आवेदन का तरीका देखें।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>पात्रता के आम नियम</h2>
+        <ul class="checklist">
+          <li><strong>आयकर भरने वाले:</strong> अटल पेंशन, श्रम योगी मान-धन, ई-श्रम और PM किसान जैसी योजनाओं में आयकर भरने वालों को लाभ नहीं मिलता।</li>
+          <li><strong>सूची वाली योजनाएं:</strong> आयुष्मान भारत (70 साल से कम उम्र के लिए) और PMAY-ग्रामीण में आवेदन नहीं, सरकारी सर्वे/सूची से नाम तय होता है।</li>
+          <li><strong>आय प्रमाण पत्र:</strong> आय सीमा वाली योजनाओं (छात्रवृत्ति, लाडकी बहिण, कन्या सुमंगला) में तहसील/सक्षम अधिकारी का आय प्रमाण पत्र लगता है।</li>
+          <li><strong>आधार और बैंक खाता:</strong> लगभग हर योजना में पैसा आधार से जुड़े (DBT चालू) बैंक खाते में आता है और e-KYC ज़रूरी होता है।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>यह टूल योजनाओं की मुख्य शर्तों से मिलान करता है, हर छोटी शर्त से नहीं। नतीजा 'पात्र हो सकते हैं' है, गारंटी नहीं।</li>
+          <li>राशि और शर्तें 15 अक्टूबर 2026 तक की हमारी जांच पर आधारित हैं; सरकार इन्हें बदल सकती है।</li>
+          <li>किसी योजना के नाम पर पैसे मांगने वाले एजेंट से बचें। सरकारी योजनाओं का पंजीकरण आम तौर पर मुफ्त या तय छोटी फीस पर होता है।</li>
+          <li>ज़रूरी कागज़ों की सूची के लिए <a href="/tools/document-checklist.html">दस्तावेज़ चेकलिस्ट</a> और पास का CSC केंद्र खोजने के लिए <a href="/tools/csc-locator.html">CSC लोकेटर</a> देखें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.el-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; }
+@media (min-width: 560px) { .el-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.el-tool label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 4px; }
+.el-grid input, .el-grid select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.el-flags { border: 1px solid var(--c-line); border-radius: var(--radius-sm); padding: 10px 12px; margin: 14px 0 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px 14px; }
+@media (min-width: 640px) { .el-flags { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.el-flags legend { font-weight: 800; padding: 0 4px; }
+.el-flags label { display: flex; gap: 8px; align-items: flex-start; font-weight: 500; margin: 4px 0; }
+.el-flags input { width: 20px; height: 20px; flex: 0 0 20px; margin-top: 3px; }
+.el-count { font-weight: 800; font-size: 1.1rem; margin: 16px 0 8px; color: var(--c-ink); }
+.el-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+@media (min-width: 760px) { .el-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.el-card { border: 1px solid var(--c-line); border-left: 4px solid var(--c-green); border-radius: var(--radius-sm); background: var(--c-surface); padding: 12px 14px; overflow-wrap: anywhere; }
+.el-card.warn { border-left-color: var(--c-saffron); }
+.el-card h3 { margin: 0 0 4px; font-size: 1.02rem; }
+.el-card p { margin: 0 0 6px; font-size: .93rem; }
+.el-card .el-cond { color: var(--c-muted); font-size: .86rem; }
+.el-card a { font-weight: 700; }
+</style>
+
+<script is:inline>
+(function () {
+  // u: { age, g, inc (null = unknown), cat, occ, st, f: {flag: true} }
+  // test returns false (not eligible) or a string (extra condition to check, "" = none)
+  var UNORG = { worker: 1, construction: 1, vendor: 1, artisan: 1, farmer: 1, shg: 1, business: 0 };
+  function incLE(u, lim) { return u.inc === null || u.inc <= lim; }
+  function incNote(u, lim, txt) { return u.inc === null ? (txt || "परिवार की आय " + lim.toLocaleString("en-IN") + " रुपये तक होनी चाहिए") : ""; }
+  var S = [
+    { n: "🌾 पीएम किसान सम्मान निधि", b: "₹6,000 सालाना (₹2,000 की 3 किस्त)", h: "/service/pm-kisan.html",
+      t: function (u) { return u.occ === "farmer" && u.age >= 18 && !u.f.tax && !u.f.govt && "ज़मीन परिवार के नाम हो; e-KYC ज़रूरी, कई राज्यों में Farmer ID भी"; } },
+    { n: "💳 किसान क्रेडिट कार्ड (KCC)", b: "₹3 लाख तक के फसल लोन पर 7% ब्याज, समय पर चुकाने पर 4%", h: "/service/kisan-credit-card.html",
+      t: function (u) { return u.occ === "farmer" && u.age >= 18 && "लोन बैंक की जांच पर मिलता है"; } },
+    { n: "👴 पीएम किसान मान-धन (पेंशन)", b: "60 साल के बाद ₹3,000 महीना पेंशन", h: "/service/pm-kisan-maan-dhan-yojana.html",
+      t: function (u) { return u.occ === "farmer" && u.age >= 18 && u.age <= 40 && (u.f.small ? "" : "ज़मीन 2 हेक्टेयर तक होनी चाहिए"); } },
+    { n: "🏥 आयुष्मान वय वंदना कार्ड (70+)", b: "₹5 लाख तक मुफ्त इलाज हर साल, आय की कोई सीमा नहीं", h: "/service/ayushman-bharat-vayo-vandana.html",
+      t: function (u) { return u.age >= 70 && ""; } },
+    { n: "🏥 आयुष्मान भारत (PM-JAY)", b: "परिवार को ₹5 लाख तक मुफ्त इलाज हर साल", h: "/service/ayushman-bharat.html",
+      t: function (u) { return u.age < 70 && (u.f.bpl || incLE(u, 100000)) && !u.f.tax && "आवेदन नहीं होता; परिवार का नाम SECC/राज्य की सूची में होना चाहिए, beneficiary.nha.gov.in पर जांचें"; } },
+    { n: "🪪 ई-श्रम कार्ड", b: "मुफ्त पंजीकरण, 12 अंकों का UAN; योजनाओं से जुड़ना आसान", h: "/service/e-shram-card.html",
+      t: function (u) { return u.age >= 16 && UNORG[u.occ] !== undefined && !u.f.tax && !u.f.epf && "कार्ड पर अपने-आप कोई मासिक पैसा नहीं आता"; } },
+    { n: "👷 श्रम योगी मान-धन (पेंशन)", b: "60 साल के बाद ₹3,000 महीना पेंशन; ₹55-200 महीना जमा", h: "/service/pm-shram-yogi-maandhan.html",
+      t: function (u) { return u.age >= 18 && u.age <= 40 && UNORG[u.occ] !== undefined && u.occ !== "farmer" && !u.f.tax && !u.f.epf && "आपकी अपनी मासिक आय ₹15,000 या कम होनी चाहिए"; } },
+    { n: "🏗️ निर्माण मज़दूर लेबर कार्ड (BOCW)", b: "बच्चों की पढ़ाई, शादी, प्रसूति, पेंशन जैसी बोर्ड की योजनाएं", h: "/service/labour-card-construction-workers.html",
+      t: function (u) { return u.occ === "construction" && u.age >= 18 && u.age <= 60 && "पिछले 12 महीने में 90 दिन निर्माण कार्य; योजनाएं राज्य के हिसाब से"; } },
+    { n: "🧓 अटल पेंशन योजना", b: "60 साल के बाद ₹1,000 से ₹5,000 महीना पेंशन", h: "/service/atal-pension-yojana.html",
+      t: function (u) { return u.age >= 18 && u.age <= 40 && !u.f.tax && "बचत खाता ज़रूरी"; } },
+    { n: "🛡️ जीवन ज्योति बीमा (PMJJBY)", b: "₹436 सालाना में ₹2 लाख जीवन बीमा", h: "/service/pm-jeevan-jyoti-bima-yojana.html",
+      t: function (u) { return u.age >= 18 && u.age <= 50 && "बैंक/डाकघर बचत खाता ज़रूरी"; } },
+    { n: "🛡️ सुरक्षा बीमा (PMSBY)", b: "₹20 सालाना में ₹2 लाख दुर्घटना बीमा", h: "/service/pm-suraksha-bima-yojana.html",
+      t: function (u) { return u.age >= 18 && u.age <= 70 && "बैंक/डाकघर बचत खाता ज़रूरी"; } },
+    { n: "🔥 उज्ज्वला गैस कनेक्शन", b: "मुफ्त LPG कनेक्शन, पहला रिफिल और चूल्हा", h: "/service/pm-ujjwala-yojana.html",
+      t: function (u) { return u.g === "f" && u.age >= 18 && u.f.nolpg && (u.f.bpl || incLE(u, 250000)) && "गरीब परिवार की महिला; घर में किसी के नाम LPG न हो"; } },
+    { n: "🏠 प्रधानमंत्री आवास योजना", b: "गांव में ₹1.20-1.30 लाख मदद; शहर में घर/ब्याज सब्सिडी (PMAY-U 2.0)", h: "/service/pm-awas-yojana.html",
+      t: function (u) { return u.f.nohouse && incLE(u, 900000) && "शहर में आय ₹9 लाख तक; गांव में नाम Awaas+ सर्वे से"; } },
+    { n: "🔨 पीएम विश्वकर्मा", b: "₹15,000 तक औज़ार, प्रशिक्षण भत्ता, 5% ब्याज पर ₹3 लाख तक लोन", h: "/service/pm-vishwakarma-yojana.html",
+      t: function (u) { return u.occ === "artisan" && u.age >= 18 && !u.f.govt && "18 पारंपरिक कामों में से एक; परिवार में एक व्यक्ति"; } },
+    { n: "🛒 पीएम स्वनिधि", b: "बिना गारंटी लोन ₹15,000 → ₹25,000 → ₹50,000, 7% ब्याज सब्सिडी", h: "/service/pm-svanidhi.html",
+      t: function (u) { return u.occ === "vendor" && u.age >= 18 && "शहर में रेहड़ी-पटरी का काम; वेंडिंग सर्टिफिकेट/सिफारिश पत्र"; } },
+    { n: "🏪 मुद्रा लोन", b: "छोटे कारोबार के लिए ₹20 लाख तक लोन (शिशु, किशोर, तरुण)", h: "/service/pm-mudra-yojana.html",
+      t: function (u) { return (u.occ === "business" || u.occ === "artisan" || u.occ === "vendor" || u.occ === "shg") && u.age >= 18 && "ब्याज और मंज़ूरी बैंक तय करता है; कोई एजेंट नहीं"; } },
+    { n: "👩‍👩‍👧 लखपति दीदी", b: "SHG के ज़रिये रोज़गार में मदद ताकि परिवार की आय ₹1 लाख+ हो", h: "/service/lakhpati-didi-yojana.html",
+      t: function (u) { return u.g === "f" && u.occ === "shg" && "नकद योजना नहीं; अपने SHG/ग्राम संगठन से जुड़ें"; } },
+    { n: "🤰 प्रधानमंत्री मातृ वंदना", b: "पहले बच्चे पर ₹5,000; दूसरी संतान बेटी हो तो ₹6,000", h: "/service/pm-matru-vandana-yojana.html",
+      t: function (u) { return u.g === "f" && u.f.preg && !u.f.govt && "आंगनवाड़ी या pmmvy.wcd.gov.in से, जन्म के 270 दिन के अंदर"; } },
+    { n: "👧 सुकन्या समृद्धि खाता", b: "बेटी के लिए बचत, ब्याज 8.2% (अक्टूबर-दिसंबर 2026)", h: "/service/sukanya-samriddhi-yojana.html",
+      t: function (u) { return u.f.girl && "बेटी के नाम माता-पिता/अभिभावक खाता खोलते हैं; ₹250 से ₹1.5 लाख सालाना"; } },
+    { n: "🎓 पोस्ट-मैट्रिक छात्रवृत्ति (SC/ST/OBC)", b: "11वीं के बाद की पढ़ाई के लिए छात्रवृत्ति", h: "/service/post-matric-scholarship-obc-ebc.html",
+      t: function (u) { return u.occ === "student" && (u.cat === "sc" || u.cat === "st" || u.cat === "obc") && incLE(u, 250000) && (incNote(u, 250000) || "राज्य के छात्रवृत्ति पोर्टल या NSP पर आवेदन"); } },
+    { n: "🎓 राष्ट्रीय छात्रवृत्ति पोर्टल (NSP)", b: "केंद्र और कई राज्यों की छात्रवृत्तियां एक जगह", h: "/service/national-scholarship-portal.html",
+      t: function (u) { return u.occ === "student" && "हर छात्रवृत्ति की आय और अंक की शर्त अलग; पहले OTR बनवाएं"; } },
+    { n: "💼 पीएम इंटर्नशिप", b: "बड़ी कंपनियों में इंटर्नशिप और मासिक भत्ता", h: "/service/pm-internship-scheme.html",
+      t: function (u) { return u.age >= 21 && u.age <= 24 && (u.occ === "student" || u.occ === "home") && !u.f.govt && "2026 की शर्तें और भत्ता pminternship.mca.gov.in पर देखें"; } },
+    { n: "👵 वृद्धावस्था पेंशन (NSAP)", b: "BPL बुज़ुर्गों को मासिक पेंशन; केंद्र का हिस्सा ₹200-500, राज्य जोड़ते हैं", h: "/service/national-social-assistance-programme.html",
+      t: function (u) { return u.age >= 60 && !u.f.tax && (u.f.bpl ? "" : "आम तौर पर BPL परिवार ज़रूरी; राज्य की शर्त देखें"); } },
+    { n: "🕊️ विधवा पेंशन (NSAP / राज्य)", b: "BPL विधवा महिलाओं को मासिक पेंशन; राशि राज्य के हिसाब से", h: "/service/national-social-assistance-programme.html",
+      t: function (u) { return u.g === "f" && u.f.widow && "उम्र और आय की शर्त राज्य के हिसाब से; ब्लॉक/समाज कल्याण कार्यालय से पूछें"; } },
+    // State schemes for women and girls
+    { n: "👩 माझी लाडकी बहीण (महाराष्ट्र)", b: "₹1,500 हर महीने", h: "/service/mh-ladki-bahin-yojana.html", st: "mh",
+      t: function (u) { return u.st === "mh" && u.g === "f" && u.age >= 21 && u.age <= 65 && incLE(u, 250000) && !u.f.tax && (incNote(u, 250000) || "हर साल e-KYC ज़रूरी"); } },
+    { n: "👩 मंईयां सम्मान (झारखंड)", b: "₹2,500 हर महीने", h: "/service/jh-maiya-samman-yojana.html", st: "jh",
+      t: function (u) { return u.st === "jh" && u.g === "f" && u.age >= 18 && u.age <= 50 && "पूरी शर्तें गाइड में देखें"; } },
+    { n: "👩 सुभद्रा योजना (ओडिशा)", b: "₹10,000 हर साल (₹5,000 की दो किस्त)", h: "/service/od-subhadra-yojana.html", st: "od",
+      t: function (u) { return u.st === "od" && u.g === "f" && u.age >= 21 && u.age < 60 && "पूरी शर्तें गाइड में देखें"; } },
+    { n: "👩 गृह लक्ष्मी (कर्नाटक)", b: "₹2,000 हर महीने", h: "/service/ka-gruha-lakshmi-yojana.html", st: "ka",
+      t: function (u) { return u.st === "ka" && u.g === "f" && u.age >= 18 && "राशन कार्ड में महिला मुखिया के रूप में नाम हो"; } },
+    { n: "👩 कलैग्नर मगलिर उरिमई (तमिलनाडु)", b: "₹1,000 हर महीने", h: "/service/tn-magalir-urimai-thogai.html", st: "tn",
+      t: function (u) { return u.st === "tn" && u.g === "f" && u.age >= 21 && "राशन कार्ड वाले परिवार की महिला मुखिया"; } },
+    { n: "👩 ओरुणोदोई (असम)", b: "₹1,250 हर महीने", h: "/service/as-orunodoi-scheme.html", st: "as",
+      t: function (u) { return u.st === "as" && u.g === "f" && u.age >= 18 && "पूरी शर्तें गाइड में देखें"; } },
+    { n: "👩 महतारी वंदन (छत्तीसगढ़)", b: "₹1,000 हर महीने", h: "/service/cg-mahtari-vandan-yojana.html", st: "cg", warn: 1,
+      t: function (u) { return u.st === "cg" && u.g === "f" && u.age >= 21 && (u.f.married || u.f.widow) && "अक्टूबर 2026 तक नया पंजीयन बंद है; विस्तार की घोषणा हुई है"; } },
+    { n: "👧 कन्या सुमंगला (उत्तर प्रदेश)", b: "बेटी के लिए कुल ₹25,000 (6 किस्त)", h: "/service/up-kanya-sumangala-yojana.html", st: "up",
+      t: function (u) { return u.st === "up" && u.f.girl && incLE(u, 300000) && (incNote(u, 300000) || "mksy.up.gov.in पर आवेदन"); } }
+  ];
+  var $ = function (id) { return document.getElementById(id); };
+  function read() {
+    var a = parseInt($("el-age").value, 10), i = $("el-inc").value.trim(), f = {};
+    document.querySelectorAll(".el-flags input").forEach(function (c) { f[c.value] = c.checked; });
+    return { age: isNaN(a) ? null : a, g: $("el-gender").value, inc: i === "" ? null : Math.max(0, +i), cat: $("el-cat").value, occ: $("el-occ").value, st: $("el-state").value, f: f };
+  }
+  function match(u) {
+    var out = [];
+    S.forEach(function (s) { var r = s.t(u); if (r !== false && r !== undefined && r !== null) out.push({ s: s, note: r }); });
+    return out;
+  }
+  var sent = 0;
+  function render() {
+    var u = read(), list = $("el-list");
+    if (u.age === null) { $("el-count").textContent = "शुरू करने के लिए अपनी उम्र डालें।"; list.innerHTML = ""; return; }
+    var m = match(u);
+    $("el-count").textContent = m.length ? "आप " + m.length + " योजनाओं के लिए पात्र हो सकते हैं" : "इन जानकारियों से कोई योजना मेल नहीं खाई";
+    list.innerHTML = m.length ? m.map(function (x) {
+      return '<div class="el-card' + (x.s.warn ? " warn" : "") + '"><h3>' + x.s.n + '</h3><p>' + x.s.b + '</p>' + (x.note ? '<p class="el-cond">शर्त: ' + x.note + '</p>' : "") + '<a href="' + x.s.h + '">पूरी जानकारी और आवेदन →</a></div>';
+    }).join("") : '<p class="muted">काम या टिक वाले विकल्प बदलकर देखें, या <a href="/yojana/">सभी योजनाएं</a> देखें।</p>';
+    if (!sent) { sent = 1; try { if (window.gtag) gtag("event", "tool_usage", { tool: "eligibility_checker" }); } catch (e) {} }
+  }
+  document.querySelector(".el-tool").addEventListener("input", render);
+  document.querySelector(".el-tool").addEventListener("change", render);
+  render();
+})();
+</script>

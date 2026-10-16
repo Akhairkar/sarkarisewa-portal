@@ -1,0 +1,192 @@
+---
+// Income tax calculator, old vs new regime. Same URL, title and description
+// as the old page. Runs in the browser.
+// Old page used FY 2024-25 rules (new-regime slabs from Rs 3 lakh, Rs 50,000
+// standard deduction, rebate up to Rs 7 lakh) although titled 2026-27, and
+// ignored surcharge. Updated (checked Oct 2026):
+// - Income-tax Act, 2025 in force from 1 Apr 2026 ("tax year" 2026-27).
+//   Budget 2026 made no change to slabs, so FY 2026-27 = FY 2025-26 rates
+//   (BankBazaar, Tata Capital, basunivesh FY 2026-27 explainers).
+// - New regime (s.115BAC -> s.202 of the 2025 Act): 0-4L nil, 4-8L 5%,
+//   8-12L 10%, 12-16L 15%, 16-20L 20%, 20-24L 25%, above 30%. Standard
+//   deduction Rs 75,000. Rebate (s.87A -> s.156) up to Rs 60,000 when taxable
+//   income <= Rs 12 lakh, with marginal relief just above it. Default regime.
+// - Old regime: basic exemption 2.5L (<60), 3L (60-79), 5L (80+); 5/20/30%;
+//   standard deduction Rs 50,000; rebate Rs 12,500 up to Rs 5 lakh;
+//   80C (-> s.123) Rs 1.5 lakh; home-loan interest (self-occupied) Rs 2 lakh;
+//   80CCD(1B) Rs 50,000.
+// - Surcharge 10% (>50L), 15% (>1Cr), 25% (>2Cr), 37% (>5Cr, old only; new
+//   capped at 25%) with marginal relief; 4% health & education cess. Not
+//   re-verified separately for the 2025 Act (no change reported in Budget 2026).
+// - Section mapping per TaxGuru / Business Today / calcguru (2025-26).
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "इनकम टैक्स कैलकुलेटर" }];
+const faq = [
+  { q: "2026-27 में नई टैक्स व्यवस्था के स्लैब क्या हैं?", a: "₹4 लाख तक 0, ₹4-8 लाख 5%, ₹8-12 लाख 10%, ₹12-16 लाख 15%, ₹16-20 लाख 20%, ₹20-24 लाख 25% और ₹24 लाख से ऊपर 30%। बजट 2026 में इन्हें नहीं बदला गया, इसलिए 2025-26 और 2026-27 दोनों में यही दरें हैं। ऊपर से 4% सेस लगता है।" },
+  { q: "₹12.75 लाख तक की सैलरी पर टैक्स ज़ीरो कैसे है?", a: "नई व्यवस्था में ₹75,000 की स्टैंडर्ड डिडक्शन घटाने के बाद टैक्स वाली आय ₹12 लाख बचती है, और ₹12 लाख तक की आय पर ₹60,000 तक की छूट (रिबेट) मिलती है, जिससे टैक्स शून्य हो जाता है। यह छूट कैपिटल गेन जैसी विशेष दर वाली आय पर नहीं मिलती।" },
+  { q: "₹12 लाख से थोड़ा ज़्यादा आय हो तो?", a: "मार्जिनल रिलीफ मिलती है: टैक्स, ₹12 लाख से ऊपर की आय से ज़्यादा नहीं होगा। जैसे टैक्स वाली आय ₹12.25 लाख हो तो टैक्स ₹25,000 + सेस, न कि पूरे स्लैब वाला ₹63,750।" },
+  { q: "पुरानी या नई, कौन-सी व्यवस्था चुनें?", a: "अगर आपकी 80C, HRA, होम लोन ब्याज, 80D जैसी कटौतियां बहुत ज़्यादा हैं तो पुरानी व्यवस्था सस्ती हो सकती है; वरना ज़्यादातर लोगों के लिए नई व्यवस्था सस्ती है। यह टूल दोनों का टैक्स साथ दिखाता है। नई व्यवस्था डिफॉल्ट है; पुरानी चाहिए तो रिटर्न/कंपनी को बताना होता है।" },
+  { q: "नए आयकर कानून, 2025 में क्या बदला?", a: "1 अप्रैल 2026 से आयकर कानून, 1961 की जगह आयकर कानून, 2025 लागू है। 'पिछला वर्ष/निर्धारण वर्ष' की जगह 'टैक्स वर्ष' शब्द आया और धाराओं के नंबर बदले (जैसे 80C अब धारा 123, रिबेट 87A अब धारा 156)। टैक्स की दरें और मुख्य कटौतियों की सीमाएं वही रहीं।" },
+];
+---
+<Base title="Income Tax Calculator 2026-27: Old vs New Regime Comparison" description="Compare Old vs New Tax Regime with latest budget slab rates, standard deduction ₹75,000, 80C, 80D, and HRA. Find out which regime saves more tax." breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>इनकम टैक्स कैलकुलेटर 2026-27: पुरानी बनाम नई व्यवस्था</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">टैक्स वर्ष 2026-27 (1 अप्रैल 2026 से, नया आयकर कानून 2025) में दरें 2025-26 जैसी ही हैं। नई व्यवस्था में ₹75,000 स्टैंडर्ड डिडक्शन के बाद ₹12 लाख तक की आय पर टैक्स शून्य है, यानी ₹12.75 लाख तक की सैलरी टैक्स-फ्री। नीचे अपनी आय और कटौतियां डालें; टूल दोनों व्यवस्थाओं का टैक्स (सरचार्ज और 4% सेस सहित) दिखाकर बताएगा कि कौन-सी सस्ती है।</p>
+      </section>
+
+      <section class="section it-tool" aria-labelledby="it-title">
+        <h2 id="it-title">🧮 टैक्स कैलकुलेटर (टैक्स वर्ष 2026-27 / वित्त वर्ष 2025-26)</h2>
+        <div class="it-grid">
+          <div><label for="it-gross">सालाना सैलरी / पेंशन (ग्रॉस, ₹)</label><input type="number" id="it-gross" min="0" inputmode="numeric" placeholder="जैसे 1200000" /></div>
+          <div><label for="it-other">दूसरी आय (ब्याज, किराया आदि, ₹)</label><input type="number" id="it-other" min="0" inputmode="numeric" value="0" /></div>
+          <div><label for="it-age">उम्र</label><select id="it-age"><option value="lt60">60 साल से कम</option><option value="60">60 से 79 साल</option><option value="80">80 साल या ज़्यादा</option></select></div>
+          <div><label for="it-sal">आय का प्रकार</label><select id="it-sal"><option value="1">नौकरी / पेंशन (स्टैंडर्ड डिडक्शन मिलेगी)</option><option value="0">बिना सैलरी (व्यापार आदि)</option></select></div>
+          <div><label for="it-emp">कंपनी का NPS योगदान (₹, दोनों में)</label><input type="number" id="it-emp" min="0" inputmode="numeric" value="0" /></div>
+        </div>
+        <details class="it-old" open>
+          <summary>पुरानी व्यवस्था की कटौतियां (सिर्फ पुरानी में)</summary>
+          <div class="it-grid">
+            <div><label for="it-80c">80C: PF, PPF, LIC, ELSS, ट्यूशन फीस (अधिकतम ₹1.5 लाख)</label><input type="number" id="it-80c" min="0" inputmode="numeric" value="0" /></div>
+            <div><label for="it-80d">80D: स्वास्थ्य बीमा प्रीमियम (₹)</label><input type="number" id="it-80d" min="0" inputmode="numeric" value="0" /></div>
+            <div><label for="it-hra">HRA छूट (₹) <a href="/tools/hra-calculator.html">निकालें</a></label><input type="number" id="it-hra" min="0" inputmode="numeric" value="0" /></div>
+            <div><label for="it-hl">होम लोन ब्याज, अपना घर (अधिकतम ₹2 लाख)</label><input type="number" id="it-hl" min="0" inputmode="numeric" value="0" /></div>
+            <div><label for="it-nps">NPS में खुद का अतिरिक्त (अधिकतम ₹50,000)</label><input type="number" id="it-nps" min="0" inputmode="numeric" value="0" /></div>
+            <div><label for="it-oth">दूसरी कटौतियां (80E, 80G, 80TTA आदि)</label><input type="number" id="it-oth" min="0" inputmode="numeric" value="0" /></div>
+          </div>
+        </details>
+        <div id="it-out" class="calc-out" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>साल भर की कुल सैलरी/पेंशन (Form 16 का ग्रॉस) और दूसरी आय डालें।</li>
+          <li>पुरानी व्यवस्था देखनी हो तो उसकी कटौतियां भरें। नई व्यवस्था में ये नहीं मिलतीं।</li>
+          <li>नतीजा तुरंत दिखता है: दोनों व्यवस्थाओं का टैक्स, हर हिस्से का ब्योरा और कौन-सी सस्ती है।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>टैक्स स्लैब 2026-27</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>नई व्यवस्था (डिफॉल्ट)</th><th>दर</th></tr></thead>
+          <tbody>
+            <tr><td>₹4 लाख तक</td><td>0</td></tr><tr><td>₹4-8 लाख</td><td>5%</td></tr><tr><td>₹8-12 लाख</td><td>10%</td></tr>
+            <tr><td>₹12-16 लाख</td><td>15%</td></tr><tr><td>₹16-20 लाख</td><td>20%</td></tr><tr><td>₹20-24 लाख</td><td>25%</td></tr><tr><td>₹24 लाख से ऊपर</td><td>30%</td></tr>
+          </tbody>
+        </table></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>पुरानी व्यवस्था</th><th>60 से कम</th><th>60-79</th><th>80+</th></tr></thead>
+          <tbody>
+            <tr><td>0%</td><td>₹2.5 लाख तक</td><td>₹3 लाख तक</td><td>₹5 लाख तक</td></tr>
+            <tr><td>5%</td><td>₹2.5-5 लाख</td><td>₹3-5 लाख</td><td>-</td></tr>
+            <tr><td>20%</td><td colspan="3">₹5-10 लाख</td></tr>
+            <tr><td>30%</td><td colspan="3">₹10 लाख से ऊपर</td></tr>
+          </tbody>
+        </table></div>
+        <ul class="checklist">
+          <li><strong>स्टैंडर्ड डिडक्शन:</strong> नई में ₹75,000, पुरानी में ₹50,000 (सैलरी और पेंशन वालों को)।</li>
+          <li><strong>रिबेट:</strong> नई में ₹12 लाख तक की आय पर ₹60,000 तक (₹12 लाख से थोड़ा ऊपर मार्जिनल रिलीफ); पुरानी में ₹5 लाख तक ₹12,500 तक।</li>
+          <li><strong>सरचार्ज:</strong> ₹50 लाख से ऊपर 10%, ₹1 करोड़ से ऊपर 15%, ₹2 करोड़ से ऊपर 25%, ₹5 करोड़ से ऊपर 37% (सिर्फ पुरानी; नई में अधिकतम 25%)। फिर कुल पर 4% सेस।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>यह अनुमान है। शेयर/म्यूचुअल फंड के कैपिटल गेन, लॉटरी जैसी विशेष दर वाली आय, खेती की आय और नुकसान की भरपाई इसमें नहीं गिने गए।</li>
+          <li>सरचार्ज की दरें बजट 2026 में न बदलने की खबरों पर आधारित हैं; बहुत ज़्यादा आय हो तो CA से पुष्टि करें।</li>
+          <li>कंपनी के NPS योगदान की सीमा (नई में बेसिक का 14%, पुरानी में 10%) टूल नहीं जांचता; सही रकम डालें।</li>
+          <li>रिटर्न सिर्फ incometax.gov.in पर भरें। SarkariSewa India निजी वेबसाइट है। <a href="/service/income-tax-return-filing.html">ITR भरने की गाइड</a> देखें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.it-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; }
+@media (min-width: 560px) { .it-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.it-tool label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: 4px; }
+.it-grid input, .it-grid select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.it-old { margin-top: 14px; border: 1px solid var(--c-line); border-radius: var(--radius-sm); padding: 10px 12px; }
+.it-old summary { cursor: pointer; font-weight: 800; margin-bottom: 8px; }
+.it-cmp { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 14px; }
+@media (min-width: 640px) { .it-cmp { grid-template-columns: 1fr 1fr; } }
+.it-card { border: 1px solid var(--c-line); border-radius: var(--radius-sm); background: var(--c-surface); padding: 12px 14px; }
+.it-card.win { border: 2px solid var(--c-green); background: var(--c-green-50); }
+.it-card h3 { margin: 0 0 2px; font-size: 1rem; }
+.it-card .it-tax { font-size: 1.45rem; font-weight: 800; color: var(--c-ink); margin: 0 0 6px; }
+.it-card ul { list-style: none; padding: 0; margin: 0; font-size: .9rem; }
+.it-card li { display: flex; justify-content: space-between; gap: 8px; border-top: 1px dashed var(--c-line); padding: 4px 0; margin: 0; }
+.it-verdict { font-weight: 800; margin: 12px 0 0; }
+</style>
+
+<script is:inline>
+(function () {
+  function slab(t, s) { var tax = 0, prev = 0; for (var i = 0; i < s.length; i++) { if (t > prev) tax += (Math.min(t, s[i][0]) - prev) * s[i][1]; prev = s[i][0]; } return tax; }
+  function surch(t, base, S, isNew) {
+    var L = [[50000000, 0.37], [20000000, 0.25], [10000000, 0.15], [5000000, 0.10]];
+    for (var i = 0; i < L.length; i++) {
+      var th = L[i][0], r = L[i][1];
+      if (isNew && r > 0.25) continue;
+      if (t > th) {
+        var prevR = 0; for (var j = i + 1; j < L.length; j++) { prevR = L[j][1]; break; }
+        return Math.max(0, Math.min(base * r, S(th) * (1 + prevR) + (t - th) - base));
+      }
+    }
+    return 0;
+  }
+  function taxCalc(p) {
+    var inc = p.gross + p.other;
+    var oldDed = (p.salaried ? 50000 : 0) + Math.min(p.d80c, 150000) + p.d80d + p.hra + Math.min(p.hl, 200000) + Math.min(p.nps1b, 50000) + p.oth + p.empNps;
+    var newDed = (p.salaried ? 75000 : 0) + p.empNps;
+    var B = p.age === "80" ? 500000 : p.age === "60" ? 300000 : 250000;
+    var oldS = function (t) { return slab(t, [[B, 0], [500000, 0.05], [1000000, 0.2], [Infinity, 0.3]]); };
+    var newS = function (t) { return slab(t, [[400000, 0], [800000, 0.05], [1200000, 0.1], [1600000, 0.15], [2000000, 0.2], [2400000, 0.25], [Infinity, 0.3]]); };
+    function one(t, S, rebLim, rebMax, isNew, ded) {
+      var base = S(t), reb = 0;
+      if (t <= rebLim) reb = Math.min(base, rebMax);
+      else if (isNew && base > t - rebLim) reb = base - (t - rebLim);
+      var after = base - reb, sc = surch(t, after, S, isNew), cess = (after + sc) * 0.04;
+      return { ded: ded, taxable: t, base: base, rebate: reb, surcharge: sc, cess: cess, total: Math.round((after + sc + cess) / 10) * 10 };
+    }
+    return { income: inc, old: one(Math.max(0, inc - oldDed), oldS, 500000, 12500, false, oldDed), nw: one(Math.max(0, inc - newDed), newS, 1200000, 60000, true, newDed) };
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  var inr = function (n) { return "₹" + Math.round(n).toLocaleString("en-IN"); };
+  var n = function (id) { return Math.max(0, parseFloat($(id).value) || 0); };
+  function card(title, r, win) {
+    return '<div class="it-card' + (win ? " win" : "") + '"><h3>' + title + (win ? " ✅ सस्ती" : "") + '</h3><p class="it-tax">' + inr(r.total) + '</p><ul>' +
+      '<li><span>कुल कटौती</span><strong>' + inr(r.ded) + '</strong></li><li><span>टैक्स वाली आय</span><strong>' + inr(r.taxable) + '</strong></li>' +
+      '<li><span>स्लैब से टैक्स</span><strong>' + inr(r.base) + '</strong></li><li><span>रिबेट / मार्जिनल रिलीफ</span><strong>− ' + inr(r.rebate) + '</strong></li>' +
+      (r.surcharge ? '<li><span>सरचार्ज</span><strong>' + inr(r.surcharge) + '</strong></li>' : "") +
+      '<li><span>4% सेस</span><strong>' + inr(r.cess) + '</strong></li></ul></div>';
+  }
+  function calc() {
+    var p = { gross: n("it-gross"), other: n("it-other"), salaried: $("it-sal").value === "1", age: $("it-age").value, d80c: n("it-80c"), d80d: n("it-80d"), hra: n("it-hra"), hl: n("it-hl"), nps1b: n("it-nps"), oth: n("it-oth"), empNps: n("it-emp") };
+    var out = $("it-out");
+    if (!(p.gross + p.other)) { out.innerHTML = '<p class="muted">सालाना आय डालें।</p>'; return; }
+    var o = taxCalc(p), d = o.old.total - o.nw.total;
+    out.innerHTML = '<div class="it-cmp">' + card("नई व्यवस्था", o.nw, d > 0) + card("पुरानी व्यवस्था", o.old, d < 0) + "</div>" +
+      '<p class="it-verdict">' + (d > 0 ? "नई व्यवस्था में " + inr(d) + " कम टैक्स लगेगा।" : d < 0 ? "पुरानी व्यवस्था में " + inr(-d) + " कम टैक्स लगेगा।" : "दोनों व्यवस्थाओं में टैक्स बराबर है।") +
+      " महीने का औसत टैक्स (सस्ती व्यवस्था): " + inr(Math.min(o.old.total, o.nw.total) / 12) + "</p>";
+    try { if (window.gtag && !calc.s) { calc.s = 1; gtag("event", "tool_usage", { tool: "income_tax_calculator" }); } } catch (e) {}
+  }
+  document.querySelector(".it-tool").addEventListener("input", calc);
+  document.querySelector(".it-tool").addEventListener("change", calc);
+  calc();
+})();
+</script>

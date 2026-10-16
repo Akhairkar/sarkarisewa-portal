@@ -1,0 +1,168 @@
+---
+// Govt card clarifier: what each common card is, who issues it, what it
+// proves, plus a "which card for which job" finder. Same URL, title and
+// description as the old page. Runs in the browser.
+// Corrections vs the old page:
+// - e-Shram: old text promised "Rs 2 lakh accident insurance" with the card;
+//   our verified e-Shram guide (15 Oct 2026) says no automatic money/benefit
+//   comes with the card itself. Removed.
+// - Voter ID: old text called EPIC a "valid citizenship proof". Only citizens
+//   can enrol as voters, but EPIC is not treated as conclusive citizenship
+//   proof everywhere; wording softened.
+// - Aadhaar: UIDAI says Aadhaar is proof of identity, not of citizenship or
+//   date of birth (EPFO dropped it as DOB proof in Jan 2024).
+// - Removed unsourced figures (PAN Rs 50,000 cash-deposit limit, reprint fee,
+//   MPBCDC "50% subsidy"). KCC/Ayushman/ration figures taken from our
+//   verified guides (PM-JAY Rs 5 lakh; MISS 7% / 4% on prompt repayment up to
+//   Rs 3 lakh; NFSA 5 kg per person PHH, 35 kg per AAY family, free under
+//   PMGKAY).
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "सरकारी कार्ड क्लैरिफायर" }];
+const faq = [
+  { q: "आयुष्मान कार्ड और आभा (ABHA) कार्ड में क्या अंतर है?", a: "आयुष्मान कार्ड (PM-JAY) से पात्र परिवार को साल में ₹5 लाख तक का मुफ्त इलाज मिलता है। आभा (ABHA) 14 अंकों का डिजिटल हेल्थ अकाउंट है, जिसमें आपकी जांच रिपोर्ट और पर्चे जुड़ते हैं; इससे मुफ्त इलाज नहीं मिलता। आभा हर कोई बना सकता है।" },
+  { q: "ई-श्रम कार्ड और लेबर कार्ड (BOCW) में क्या फर्क है?", a: "ई-श्रम केंद्र सरकार का असंगठित मज़दूरों का राष्ट्रीय पंजीकरण है; कार्ड पर अपने-आप कोई पैसा नहीं आता। लेबर कार्ड राज्य का निर्माण मज़दूर कल्याण बोर्ड बनाता है और उससे बोर्ड की योजनाओं (पढ़ाई, शादी, प्रसूति, पेंशन आदि) का लाभ मिलता है। निर्माण मज़दूर दोनों बनवा सकता है।" },
+  { q: "राशन कार्ड PHH और AAY में क्या अंतर है?", a: "राष्ट्रीय खाद्य सुरक्षा कानून में प्राथमिकता वाले परिवार (PHH) को हर सदस्य पर 5 किलो अनाज और अंत्योदय (AAY) परिवार को हर महीने 35 किलो अनाज मिलता है। प्रधानमंत्री गरीब कल्याण अन्न योजना में यह अनाज मुफ्त है।" },
+  { q: "क्या आधार कार्ड नागरिकता या जन्मतिथि का प्रमाण है?", a: "नहीं। UIDAI के अनुसार आधार पहचान का प्रमाण है, नागरिकता या जन्मतिथि का नहीं। जन्मतिथि के लिए जन्म प्रमाण पत्र या 10वीं का प्रमाण पत्र मांगा जाता है।" },
+  { q: "वोटर आईडी (e-EPIC) डिजिटल कैसे डाउनलोड करें?", a: "voters.eci.gov.in पर अपने EPIC नंबर से जुड़े मोबाइल नंबर से लॉगिन करके e-EPIC की PDF डाउनलोड कर सकते हैं।" },
+  { q: "APAAR ID क्या है?", a: "APAAR (One Nation One Student ID) छात्रों का 12 अंकों का शिक्षा पहचान नंबर है, जो DigiLocker और Academic Bank of Credits से जुड़ता है। स्कूल/कॉलेज के ज़रिये बनता है।" },
+  { q: "क्या DigiLocker में रखा ड्राइविंग लाइसेंस मान्य है?", a: "हां। सड़क परिवहन मंत्रालय के अनुसार DigiLocker या mParivahan ऐप में दिखाया गया ड्राइविंग लाइसेंस और RC जांच के समय मान्य है।" },
+];
+---
+<Base title="Govt Card Clarifier 2026 | SarkariSewa India" description="सरकारी कार्ड क्लैरिफायर 2026: आधार, पैन, वोटर आईडी, राशन कार्ड, ई-श्रम, आयुष्मान व आभा कार्ड के अंतर, उपयोग, नागरिकता प्रमाण नियम व आधिकारिक पोर्टल लिंक।" breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>सरकारी कार्ड क्लैरिफायर: कौन-सा कार्ड किस काम का</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">आधार पहचान का कार्ड है, PAN टैक्स और बैंक का, वोटर ID वोट डालने का, राशन कार्ड सस्ते/मुफ्त अनाज का, आयुष्मान कार्ड मुफ्त इलाज का, आभा डिजिटल हेल्थ रिकॉर्ड का और ई-श्रम असंगठित मज़दूरों के पंजीकरण का। नीचे अपना काम चुनें या कोई कार्ड खोलें; हर कार्ड का जारी करने वाला विभाग, उपयोग और official पोर्टल दिखेगा।</p>
+      </section>
+
+      <section class="section gc-tool" aria-labelledby="gc-title">
+        <h2 id="gc-title">🔍 मुझे किस काम के लिए कार्ड चाहिए?</h2>
+        <label for="gc-need" class="sr-only">काम चुनें</label>
+        <select id="gc-need" class="gc-select">
+          <option value="">काम चुनें...</option>
+          <option value="id">पहचान दिखानी है</option>
+          <option value="addr">पते का प्रमाण</option>
+          <option value="dob">जन्मतिथि का प्रमाण</option>
+          <option value="cit">नागरिकता का प्रमाण</option>
+          <option value="bank">बैंक खाता, टैक्स, निवेश</option>
+          <option value="vote">वोट डालना</option>
+          <option value="food">सस्ता/मुफ्त राशन</option>
+          <option value="health">मुफ्त इलाज / हेल्थ रिकॉर्ड</option>
+          <option value="worker">मज़दूर की योजनाएं</option>
+          <option value="farm">खेती के लिए लोन</option>
+          <option value="disab">दिव्यांग लाभ</option>
+        </select>
+        <div id="gc-need-out" class="gc-need-out" aria-live="polite"></div>
+
+        <h2 class="gc-h2">💳 कार्ड चुनें</h2>
+        <div class="gc-tabs" id="gc-tabs" role="tablist" aria-label="कार्ड"></div>
+        <div class="gc-card" id="gc-card" role="tabpanel" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>ऊपर अपना काम चुनें: टूल बताएगा कि उसके लिए कौन-से कार्ड आम तौर पर चलते हैं।</li>
+          <li>किसी कार्ड का नाम दबाएं: उसका विभाग, उपयोग, वह क्या साबित करता है और official पोर्टल दिखेगा।</li>
+          <li>कार्ड बनवाने या सुधार के लिए 'पूरी गाइड' खोलें या पास के CSC केंद्र पर जाएं।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>ज़रूरी नियम</h2>
+        <ul class="checklist">
+          <li><strong>आधार नागरिकता या जन्मतिथि का सबूत नहीं:</strong> UIDAI के अनुसार आधार सिर्फ पहचान का प्रमाण है। EPFO ने जनवरी 2024 से आधार को जन्मतिथि के प्रमाण की सूची से हटा दिया।</li>
+          <li><strong>आयुष्मान ≠ आभा:</strong> आयुष्मान कार्ड से मुफ्त इलाज मिलता है; आभा सिर्फ डिजिटल हेल्थ रिकॉर्ड है।</li>
+          <li><strong>ई-श्रम ≠ लेबर कार्ड:</strong> ई-श्रम केंद्र का पंजीकरण है; निर्माण मज़दूरों की योजनाएं राज्य के BOCW बोर्ड के लेबर कार्ड से मिलती हैं।</li>
+          <li><strong>नाम और जन्मतिथि एक जैसी रखें:</strong> आधार, PAN, बैंक और प्रमाण पत्रों में अंतर हो तो कई काम अटकते हैं। पहले सुधार करवाएं।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>कौन-सा कार्ड किस काम में माना जाएगा, यह आखिर में संबंधित विभाग या फॉर्म की सूची तय करती है।</li>
+          <li>OTP, आधार की पूरी कॉपी या बैंक की जानकारी किसी अनजान व्यक्ति को न दें। जहां संभव हो 'मास्क्ड आधार' दें।</li>
+          <li>SarkariSewa India निजी जानकारी वेबसाइट है; कार्ड सिर्फ official पोर्टल, सरकारी दफ्तर या CSC से बनवाएं। ज़रूरी कागज़ों के लिए <a href="/tools/document-checklist.html">दस्तावेज़ चेकलिस्ट</a> देखें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.gc-select { width: 100%; min-height: 46px; padding: 8px 10px; border: 2px solid var(--c-line); border-radius: 10px; font: inherit; background: var(--c-surface); color: var(--c-text); }
+.gc-need-out:not(:empty) { margin-top: 10px; }
+.gc-need-out p { margin: 0 0 6px; }
+.gc-need-out .chip-btn { margin: 0 6px 6px 0; }
+.gc-h2 { margin-top: 22px; }
+.gc-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.gc-card { border: 1px solid var(--c-line); border-radius: var(--radius); background: var(--c-surface); padding: 14px 16px; overflow-wrap: anywhere; }
+.gc-card h3 { margin: 0 0 6px; }
+.gc-card .facts { margin: 10px 0; }
+.gc-card .cta { display: inline-block; margin-right: 8px; }
+.gc-links { display: flex; flex-wrap: wrap; gap: 0 8px; }
+.gc-links .cta { flex: 1 1 200px; }
+</style>
+
+<script is:inline>
+(function () {
+  var C = {
+    aadhaar: { t: "🆔 आधार कार्ड", by: "UIDAI (भारतीय विशिष्ट पहचान प्राधिकरण)", use: "पहचान और पते का प्रमाण; बैंक खाता, सिम, सरकारी योजनाओं में DBT और e-KYC।", proof: "पहचान ✅ · पता ✅ · जन्मतिथि ❌ · नागरिकता ❌", off: ["https://myaadhaar.uidai.gov.in/", "myAadhaar पोर्टल"], g: "/service/aadhaar-card.html" },
+    pan: { t: "💳 PAN कार्ड", by: "आयकर विभाग", use: "आयकर रिटर्न, बैंक/डाकघर खाता, बड़े लेन-देन, म्यूचुअल फंड और शेयर निवेश।", proof: "पहचान ✅ (फोटो वाला) · पता ❌ · नागरिकता ❌", off: ["https://www.incometax.gov.in/", "आयकर ई-फाइलिंग पोर्टल"], g: "/service/pan-card.html" },
+    voter: { t: "🗳️ वोटर ID (EPIC)", by: "भारत निर्वाचन आयोग", use: "चुनाव में वोट डालना; पहचान और पते के प्रमाण के रूप में भी कई जगह चलता है।", proof: "पहचान ✅ · पता ✅ · नागरिकता: सिर्फ नागरिक मतदाता बन सकते हैं, पर हर प्रक्रिया में इसे अकेले नागरिकता का पक्का प्रमाण नहीं माना जाता", off: ["https://voters.eci.gov.in/", "ECI वोटर सेवा पोर्टल"], g: "/service/voter-id-card.html" },
+    ration: { t: "🍚 राशन कार्ड (NFSA)", by: "राज्य का खाद्य एवं आपूर्ति विभाग", use: "PDS दुकान से अनाज: PHH में हर सदस्य 5 किलो, AAY परिवार 35 किलो हर महीने (PMGKAY में मुफ्त); परिवार के सदस्यों का प्रमाण।", proof: "पता ✅ (कई जगह) · परिवार ✅ · नागरिकता ❌", off: ["https://nfsa.gov.in/", "NFSA पोर्टल"], g: "/service/ration-card.html" },
+    ayushman: { t: "🏥 आयुष्मान कार्ड (PM-JAY)", by: "राष्ट्रीय स्वास्थ्य प्राधिकरण (NHA)", use: "सूचीबद्ध अस्पतालों में पात्र परिवार को साल में ₹5 लाख तक कैशलेस इलाज। 70+ उम्र के सभी बुज़ुर्ग पात्र (वय वंदना कार्ड)।", proof: "इलाज का लाभ कार्ड; पहचान/नागरिकता का प्रमाण नहीं", off: ["https://beneficiary.nha.gov.in/", "आयुष्मान लाभार्थी पोर्टल"], g: "/service/ayushman-bharat.html" },
+    abha: { t: "🩺 आभा (ABHA) हेल्थ अकाउंट", by: "आयुष्मान भारत डिजिटल मिशन (NHA)", use: "14 अंकों का डिजिटल हेल्थ अकाउंट; जांच रिपोर्ट और पर्चे एक जगह। इससे मुफ्त इलाज नहीं मिलता।", proof: "हेल्थ रिकॉर्ड ID; पहचान/नागरिकता का प्रमाण नहीं", off: ["https://abha.abdm.gov.in/", "ABHA पोर्टल"], g: "/service/abha-health-card.html" },
+    eshram: { t: "👷 ई-श्रम कार्ड", by: "श्रम एवं रोज़गार मंत्रालय", use: "असंगठित मज़दूरों का मुफ्त पंजीकरण, 12 अंकों का UAN; योजनाओं से जुड़ना आसान। कार्ड पर अपने-आप कोई पैसा नहीं आता।", proof: "मज़दूर पंजीकरण; पहचान/नागरिकता का प्रमाण नहीं", off: ["https://eshram.gov.in/", "ई-श्रम पोर्टल"], g: "/service/e-shram-card.html" },
+    labour: { t: "🏗️ लेबर कार्ड (BOCW)", by: "राज्य का भवन एवं सन्निर्माण कर्मकार कल्याण बोर्ड", use: "निर्माण मज़दूरों (18-60 साल, साल में 90 दिन काम) के लिए बोर्ड की योजनाएं: बच्चों की पढ़ाई, शादी, प्रसूति, पेंशन, मृत्यु सहायता। राशि राज्य के हिसाब से।", proof: "बोर्ड सदस्यता; पहचान/नागरिकता का प्रमाण नहीं", off: null, g: "/service/labour-card-construction-workers.html" },
+    kcc: { t: "🌾 किसान क्रेडिट कार्ड (KCC)", by: "बैंक (सरकारी, निजी, ग्रामीण, सहकारी)", use: "खेती, पशुपालन, मछली पालन के लिए अल्पकालिक लोन; ₹3 लाख तक 7% ब्याज, समय पर चुकाने पर 4%।", proof: "लोन सुविधा; पहचान का प्रमाण नहीं", off: null, g: "/service/kisan-credit-card.html" },
+    udid: { t: "♿ UDID कार्ड (दिव्यांग)", by: "सामाजिक न्याय मंत्रालय (दिव्यांगजन सशक्तिकरण विभाग)", use: "देश भर में मान्य दिव्यांगता प्रमाण पत्र और पहचान; नौकरी में आरक्षण, रेल रियायत और योजनाओं में काम आता है। सुविधाएं राज्य के हिसाब से अलग।", proof: "दिव्यांगता ✅ · नागरिकता ❌", off: ["https://swavlambancard.gov.in/", "UDID (स्वावलंबन) पोर्टल"], g: "/service/udid-disability-card-download.html" }
+  };
+  var NEED = {
+    id: [["aadhaar", "voter", "pan"], "फोटो वाले ये कार्ड पहचान में सबसे ज़्यादा चलते हैं। पासपोर्ट और ड्राइविंग लाइसेंस भी।"],
+    addr: [["aadhaar", "voter", "ration"], "पते के लिए ये चलते हैं; बिजली बिल, बैंक पासबुक भी कई जगह मान्य।"],
+    dob: [[], "जन्मतिथि के लिए जन्म प्रमाण पत्र या 10वीं का प्रमाण पत्र दें। आधार जन्मतिथि का प्रमाण नहीं है।"],
+    cit: [["voter"], "नागरिकता के लिए आम तौर पर पासपोर्ट, जन्म प्रमाण पत्र या विभाग की बताई सूची मांगी जाती है। आधार, PAN, राशन कार्ड नागरिकता का प्रमाण नहीं हैं।"],
+    bank: [["pan", "aadhaar"], "बैंक खाता और टैक्स के लिए PAN और आधार (e-KYC) दोनों लगते हैं।"],
+    vote: [["voter"], "वोट डालने के लिए मतदाता सूची में नाम ज़रूरी है; बूथ पर EPIC या आयोग की बताई दूसरी फोटो ID दिखाएं।"],
+    food: [["ration"], "राशन कार्ड से PDS दुकान पर अनाज मिलता है; आधार से e-KYC करवाएं।"],
+    health: [["ayushman", "abha"], "मुफ्त इलाज आयुष्मान कार्ड से; आभा सिर्फ रिकॉर्ड रखता है।"],
+    worker: [["eshram", "labour"], "असंगठित मज़दूर ई-श्रम बनवाएं; निर्माण मज़दूर राज्य बोर्ड का लेबर कार्ड भी।"],
+    farm: [["kcc"], "खेती के सस्ते लोन के लिए KCC; PM किसान के लिए Farmer ID भी देखें।"],
+    disab: [["udid"], "दिव्यांग लाभों के लिए UDID कार्ड बनवाएं।"]
+  };
+  var $ = function (id) { return document.getElementById(id); };
+  var tabs = $("gc-tabs");
+  Object.keys(C).forEach(function (k) {
+    var b = document.createElement("button"); b.type = "button"; b.className = "chip-btn"; b.dataset.k = k; b.setAttribute("role", "tab");
+    b.textContent = C[k].t; b.onclick = function () { show(k); }; tabs.appendChild(b);
+  });
+  function show(k, scroll) {
+    var c = C[k]; if (!c) return;
+    tabs.querySelectorAll("button").forEach(function (b) { var on = b.dataset.k === k; b.classList.toggle("active", on); b.setAttribute("aria-selected", on); });
+    $("gc-card").innerHTML = "<h3>" + c.t + "</h3><p>" + c.use + "</p><dl class=\"facts\"><div><dt>कौन बनाता है</dt><dd>" + c.by + "</dd></div><div><dt>क्या साबित करता है</dt><dd>" + c.proof + "</dd></div></dl>" +
+      '<div class="gc-links">' + (c.off ? '<a class="cta secondary" href="' + c.off[0] + '" target="_blank" rel="noopener nofollow">' + c.off[1] + " ↗</a>" : "") + '<a class="cta" href="' + c.g + '">पूरी गाइड</a></div>';
+    if (scroll) $("gc-card").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  $("gc-need").addEventListener("change", function () {
+    var n = NEED[this.value], out = $("gc-need-out");
+    if (!n) { out.innerHTML = ""; return; }
+    out.innerHTML = "<p>" + n[1] + "</p>" + n[0].map(function (k) { return '<button type="button" class="chip-btn" data-k="' + k + '">' + C[k].t + "</button>"; }).join("");
+    out.querySelectorAll("button").forEach(function (b) { b.onclick = function () { show(b.dataset.k, true); }; });
+    if (n[0][0]) show(n[0][0]);
+    try { if (window.gtag) gtag("event", "tool_usage", { tool: "govt_card_clarifier", need: this.value }); } catch (e) {}
+  });
+  show("aadhaar");
+})();
+</script>

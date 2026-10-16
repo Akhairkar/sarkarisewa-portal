@@ -1,0 +1,290 @@
+---
+// Project report generator (PMEGP / Mudra / state corporation loans). Same
+// URL, title and description as the old page. The tool is FREE: no payment
+// flow exists in the old page or its scripts. The calculation, PDF and
+// Supabase draft auto-save scripts are loaded unchanged from
+// /assets/js/project-report/*.js and /assets/js/supabase-client.js, so the
+// form keeps every id/class those scripts use (pr-form, .pr-step, .pr-next,
+// .pr-field, pr-scheme, pr-sector-field, pr-calculate-btn, pr-result-area...).
+// The old login nudge needed the old header's login modal (window.ssAuth),
+// which the new site does not have, so it is left out; auto-save/resume
+// still runs for anyone already signed in.
+// Facts checked Oct 2026:
+// - PMEGP: subsidy 15%/25% (general, urban/rural), 25%/35% (special
+//   categories); own contribution 10% / 5%; max project cost Rs 50 lakh
+//   manufacturing, Rs 20 lakh service (KVIC guidelines, bank pages). The
+//   scheme's approval ran to 31 Mar 2026; continuation for the next cycle was
+//   pending approval in reports seen (Kashmir Life, Centre's reply). The page
+//   says so.
+// - Mudra: Shishu <= 50,000; Kishore to 5 lakh; Tarun to 10 lakh; Tarun Plus
+//   10-20 lakh only for borrowers who repaid a Tarun loan (PIB 29 Oct 2024,
+//   effective 24 Oct 2024). The old text said "Tarun: 5 to 20 lakh" and the
+//   tool rejected loans above 10 lakh; Tarun Plus is added below.
+// - "MPBCDC": the old page called it a Madhya Pradesh corporation; that could
+//   not be confirmed, so the page now calls it a state corporation scheme.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "प्रोजेक्ट रिपोर्ट जेनरेटर" }];
+const faq = [
+  { q: "क्या यह रिपोर्ट सीधे बैंक में जमा हो सकती है?", a: "यह रिपोर्ट आपके बिज़नेस का पूरा हिसाब (लागत, अपना हिस्सा, सब्सिडी, लोन, मुनाफा, DSCR) देती है, जिसे बैंक अधिकारी आसानी से समझ सकें। पर हर बैंक अपना फॉर्मेट मांग सकता है, इसलिए जमा करने से पहले अपनी शाखा से फॉर्मेट पूछ लें।" },
+  { q: "DSCR कितना होना चाहिए?", a: "ज़्यादातर बैंक 1.5 या उससे ज़्यादा औसत DSCR को ठीक मानते हैं, पर सही सीमा बैंक और योजना पर निर्भर है। यह टूल आंकड़ा बताता है, फैसला बैंक करता है।" },
+  { q: "क्या ब्याज दर हमेशा 11% होगी?", a: "नहीं। 11% सिर्फ पहले से भरा अनुमान है। अपने बैंक की असली दर 'और विकल्प' में डालकर रिपोर्ट दोबारा बनाएं।" },
+  { q: "क्या PMEGP की सब्सिडी सीधे मेरे हाथ में मिलेगी?", a: "नहीं। PMEGP की सब्सिडी (मार्जिन मनी) बैंक के ज़रिए आपके लोन खाते में जमा होती है, नकद नहीं मिलती।" },
+  { q: "क्या यह टूल फ्री है?", a: "हां, रिपोर्ट बनाना और PDF डाउनलोड करना पूरी तरह फ्री है। कोई लॉगिन ज़रूरी नहीं।" },
+  { q: "प्रोजेक्ट लागत PMEGP की सीमा से ज़्यादा हो तो?", a: "सब्सिडी और आपका हिस्सा सिर्फ सीमा (मैन्युफैक्चरिंग ₹50 लाख, सर्विस ₹20 लाख) तक की लागत पर गिना जाता है। उससे ऊपर की पूरी राशि बिना सब्सिडी के बैंक लोन में जुड़ती है; टूल यह अपने-आप करता है।" },
+];
+---
+<Base title="Project Report Generator 2026: PMEGP, Mudra & MPBCDC Loan" description="Generate your bank-ready Project Report for PMEGP, Mudra, and MPBCDC loans for free. Auto-calculate subsidy, DSCR, P&L, and EMI." breadcrumbs={crumbs} faq={faq} modified="2026-10-16">
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>प्रोजेक्ट रिपोर्ट जेनरेटर: PMEGP और मुद्रा लोन के लिए (फ्री)</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">बिज़नेस का नाम, जगह, वर्ग, योजना और लागत-बिक्री के आंकड़े भरें। टूल आपका हिस्सा, सरकारी सब्सिडी (PMEGP में), बैंक लोन, EMI, 5 साल का मुनाफा, DSCR और ब्रेक-ईवन निकालकर बैंक के लिए PDF रिपोर्ट बना देगा। यह फ्री है और कोई लॉगिन ज़रूरी नहीं।</p>
+      </section>
+
+      <section class="section pr-tool" aria-labelledby="calc-title">
+        <h2 id="calc-title">📊 अपनी रिपोर्ट बनाएं</h2>
+        <div class="pr-ledger-card" aria-label="उदाहरण">
+          <p class="pr-sample">उदाहरण: PMEGP, गांव, सामान्य वर्ग</p>
+          <div class="pr-ledger-row"><span class="pr-label">प्रोजेक्ट लागत</span><span class="pr-value">₹10,00,000</span></div>
+          <div class="pr-ledger-row"><span class="pr-label">आपका हिस्सा (10%)</span><span class="pr-value">₹1,00,000</span></div>
+          <div class="pr-ledger-row"><span class="pr-label">सरकारी सब्सिडी (25%)</span><span class="pr-value">₹2,50,000</span></div>
+          <div class="pr-ledger-row pr-total"><span class="pr-label">बैंक लोन</span><span class="pr-value">₹6,50,000</span></div>
+        </div>
+        <button class="pr-btn pr-btn-primary" id="pr-start-btn" type="button">रिपोर्ट शुरू करें ↓</button>
+
+        <nav aria-label="फॉर्म के चरण" class="pr-page-tabs" id="pr-page-tabs">
+          <span class="pr-page-tab pr-active" data-step="1">1. बिज़नेस</span>
+          <span class="pr-page-tab" data-step="2">2. योजना</span>
+          <span class="pr-page-tab" data-step="3">3. आंकड़े</span>
+          <span class="pr-page-tab" data-step="4">4. रिपोर्ट</span>
+        </nav>
+
+        <form id="pr-form" novalidate>
+          <section class="pr-step" data-step="1">
+            <div class="pr-field">
+              <label for="pr-business-name">बिज़नेस का नाम</label>
+              <input id="pr-business-name" name="businessName" required type="text" />
+              <span class="pr-error">बिज़नेस का नाम ज़रूरी है।</span>
+            </div>
+            <div class="pr-field">
+              <label for="pr-applicant-name">आवेदक का नाम</label>
+              <input id="pr-applicant-name" name="applicantName" required type="text" />
+              <span class="pr-error">आवेदक का नाम ज़रूरी है।</span>
+            </div>
+            <div class="pr-field">
+              <label for="pr-business-address">बिज़नेस का पता</label>
+              <textarea id="pr-business-address" name="businessAddress" required rows="2"></textarea>
+              <span class="pr-error">पता ज़रूरी है।</span>
+            </div>
+            <div class="pr-field">
+              <label for="pr-area">जगह</label>
+              <select id="pr-area" name="area" required>
+                <option value="">चुनें</option>
+                <option value="urban">शहर (Urban)</option>
+                <option value="rural">गांव (Rural)</option>
+              </select>
+              <span class="pr-error">जगह चुनें।</span>
+            </div>
+            <div class="pr-field">
+              <label for="pr-category">वर्ग</label>
+              <select id="pr-category" name="category" required>
+                <option value="">चुनें</option>
+                <option value="general">सामान्य (General)</option>
+                <option value="sc">SC</option>
+                <option value="st">ST</option>
+                <option value="obc">OBC</option>
+                <option value="women">महिला</option>
+                <option value="minority">अल्पसंख्यक</option>
+                <option value="ex_servicemen">पूर्व सैनिक</option>
+                <option value="divyang">दिव्यांग</option>
+              </select>
+              <span class="pr-error">वर्ग चुनें।</span>
+            </div>
+            <button class="pr-btn pr-btn-primary pr-next" data-goto="2" type="button">आगे →</button>
+          </section>
+
+          <section class="pr-step" data-step="2" hidden>
+            <div class="pr-field">
+              <label for="pr-scheme">योजना</label>
+              <select id="pr-scheme" name="scheme" required>
+                <option value="">चुनें</option>
+                <option value="pmegp">PMEGP (सब्सिडी वाला लोन)</option>
+                <option value="mudra">मुद्रा लोन (PMMY)</option>
+                <option value="mpbcdc">MPBCDC / राज्य निगम की योजना</option>
+              </select>
+              <span class="pr-error">योजना चुनें।</span>
+            </div>
+            <div class="pr-field" id="pr-sector-field">
+              <label for="pr-sector">बिज़नेस का प्रकार</label>
+              <select id="pr-sector" name="sector">
+                <option value="">चुनें</option>
+                <option value="manufacturing">मैन्युफैक्चरिंग (सामान बनाना)</option>
+                <option value="service">सर्विस / ट्रेडिंग</option>
+              </select>
+              <span class="pr-error">बिज़नेस का प्रकार चुनें।</span>
+            </div>
+            <button class="pr-btn pr-btn-primary pr-next" data-goto="3" type="button">आगे →</button>
+          </section>
+
+          <section class="pr-step" data-step="3" hidden>
+            <div class="pr-field">
+              <label for="pr-project-cost">कुल प्रोजेक्ट लागत (₹)</label>
+              <input id="pr-project-cost" min="1" name="projectCost" required type="number" inputmode="numeric" />
+              <span class="pr-error">प्रोजेक्ट लागत ज़रूरी है।</span>
+            </div>
+            <div class="pr-field">
+              <label for="pr-monthly-sales">अनुमानित महीने की बिक्री (₹)</label>
+              <input id="pr-monthly-sales" min="1" name="monthlySales" required type="number" inputmode="numeric" />
+              <span class="pr-error">अनुमानित बिक्री ज़रूरी है।</span>
+            </div>
+            <div class="pr-field">
+              <label for="pr-cogs-percent">कच्चा माल / माल की लागत (बिक्री का %)</label>
+              <input id="pr-cogs-percent" max="95" min="1" name="cogsPercent" required type="number" value="60" inputmode="numeric" />
+              <span class="pr-error">1 से 95 के बीच संख्या डालें।</span>
+            </div>
+            <div class="pr-field">
+              <label for="pr-monthly-opex">बाकी महीने का खर्च (किराया, वेतन, बिजली) ₹</label>
+              <input id="pr-monthly-opex" min="0" name="monthlyOpex" required type="number" inputmode="numeric" />
+              <span class="pr-error">यह जानकारी ज़रूरी है।</span>
+            </div>
+            <details class="pr-advanced">
+              <summary>और विकल्प: ब्याज, अवधि, बिक्री बढ़त (अपने बैंक की शर्तें डालें)</summary>
+              <div class="pr-field">
+                <label for="pr-interest-rate">लोन की ब्याज दर (% सालाना)</label>
+                <input id="pr-interest-rate" max="30" min="0" name="interestRatePercent" step="0.1" type="number" value="11" inputmode="decimal" />
+              </div>
+              <div class="pr-field">
+                <label for="pr-loan-tenure">लोन की अवधि (साल)</label>
+                <input id="pr-loan-tenure" max="15" min="1" name="loanTenureYears" type="number" value="5" inputmode="numeric" />
+              </div>
+              <div class="pr-field">
+                <label for="pr-growth-rate">हर साल बिक्री में बढ़त (%)</label>
+                <input id="pr-growth-rate" max="100" min="0" name="revenueGrowthPercent" type="number" value="10" inputmode="numeric" />
+              </div>
+            </details>
+            <button class="pr-btn pr-btn-primary" id="pr-calculate-btn" type="button">रिपोर्ट बनाएं →</button>
+          </section>
+
+          <section class="pr-step" data-step="4" hidden>
+            <div aria-live="polite" id="pr-result-area"></div>
+          </section>
+        </form>
+        <p class="notice">यह अनुमान बनाने का टूल है, सरकारी या कानूनी सलाह नहीं। आंकड़े आपके डाले अनुमान पर हैं; लोन से पहले अपनी बैंक शाखा या CA से सलाह लें। PDF आपके फोन/कंप्यूटर पर ही बनती है।</p>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li><strong>बिज़नेस:</strong> नाम, पता, शहर या गांव और अपना वर्ग चुनें।</li>
+          <li><strong>योजना:</strong> PMEGP, मुद्रा या राज्य निगम की योजना चुनें; PMEGP में बिज़नेस का प्रकार भी।</li>
+          <li><strong>आंकड़े:</strong> कुल लागत, महीने की अनुमानित बिक्री, माल की लागत (%) और बाकी खर्च भरें।</li>
+          <li><strong>रिपोर्ट:</strong> "रिपोर्ट बनाएं" दबाएं, नतीजा देखें और PDF डाउनलोड करें।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="pmegp">
+        <h2>PMEGP: सब्सिडी के नियम</h2>
+        <p>PMEGP (प्रधानमंत्री रोज़गार सृजन कार्यक्रम) KVIC चलाता है। इसमें प्रोजेक्ट लागत का एक हिस्सा आप लगाते हैं, एक हिस्सा सरकार मार्जिन मनी सब्सिडी के रूप में देती है और बाकी बैंक लोन होता है।</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>वर्ग</th><th>आपका हिस्सा</th><th>सब्सिडी (शहर)</th><th>सब्सिडी (गांव)</th></tr></thead>
+          <tbody>
+            <tr><td>सामान्य</td><td>10%</td><td>15%</td><td>25%</td></tr>
+            <tr><td>विशेष (SC/ST/OBC/अल्पसंख्यक/महिला/पूर्व सैनिक/दिव्यांग आदि)</td><td>5%</td><td>25%</td><td>35%</td></tr>
+          </tbody>
+        </table></div>
+        <ul class="checklist">
+          <li>सब्सिडी के लिए अधिकतम लागत: मैन्युफैक्चरिंग ₹50 लाख, सर्विस/ट्रेडिंग ₹20 लाख।</li>
+          <li>PMEGP की मंज़ूरी 31 मार्च 2026 तक थी। आगे के सालों के लिए योजना जारी रखने की मंज़ूरी पर इस पेज की जांच (अक्टूबर 2026) तक पक्की खबर नहीं मिली। आवेदन से पहले KVIC के PMEGP पोर्टल या ज़िला उद्योग केंद्र (DIC) से पुष्टि करें।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="mudra">
+        <h2>मुद्रा लोन (PMMY) की श्रेणियां</h2>
+        <p>मुद्रा लोन में सरकारी सब्सिडी नहीं होती; यह बिना गारंटी (collateral) का लोन है। श्रेणी लोन की राशि से तय होती है:</p>
+        <ul class="checklist">
+          <li><strong>शिशु:</strong> ₹50,000 तक</li>
+          <li><strong>किशोर:</strong> ₹50,000 से ₹5 लाख</li>
+          <li><strong>तरुण:</strong> ₹5 लाख से ₹10 लाख</li>
+          <li><strong>तरुण प्लस:</strong> ₹10 लाख से ₹20 लाख, सिर्फ उनके लिए जिन्होंने पहले तरुण लोन लेकर पूरा चुका दिया हो (24 अक्टूबर 2024 से)।</li>
+        </ul>
+        <p>मुद्रा और राज्य निगम की योजनाओं में अपना हिस्सा तय नहीं होता, इसलिए टूल 10% मानकर चलता है। ब्याज दर बैंक तय करता है।</p>
+      </section>
+
+      <section class="section" id="report">
+        <h2>रिपोर्ट में क्या-क्या होता है</h2>
+        <ul class="checklist">
+          <li><strong>पैसे का इंतज़ाम (Means of Finance):</strong> आपका हिस्सा, सब्सिडी और बैंक लोन।</li>
+          <li><strong>लोन चुकाने की तालिका:</strong> हर साल की EMI, ब्याज और मूलधन।</li>
+          <li><strong>लाभ-हानि अनुमान:</strong> बिक्री, खर्च, घिसावट (depreciation) और शुद्ध मुनाफा।</li>
+          <li><strong>DSCR:</strong> लोन चुकाने की क्षमता, जिसे बैंक सबसे पहले देखता है।</li>
+          <li><strong>ब्रेक-ईवन और कैश फ्लो:</strong> कितनी बिक्री पर न घाटा न मुनाफा, और हर साल नकद की स्थिति।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.pr-tool { --pr-text-muted: var(--c-muted); }
+.pr-tool .pr-ledger-card { border: 1px dashed var(--c-line); border-radius: var(--radius-sm); padding: 10px 14px; margin: 0 0 12px; background: var(--c-surface-2); }
+.pr-tool .pr-sample { margin: 0 0 4px; font-size: .8rem; color: var(--c-muted); font-weight: 700; }
+.pr-tool .pr-ledger-row { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--c-line); }
+.pr-tool .pr-ledger-row:last-child { border-bottom: 0; }
+.pr-tool .pr-label { color: var(--c-text); min-width: 0; }
+.pr-tool .pr-value { font-weight: 800; color: var(--c-ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pr-tool .pr-total .pr-label, .pr-tool .pr-total .pr-value { color: var(--c-green); font-weight: 800; }
+.pr-tool .pr-btn { display: block; width: 100%; border: 0; border-radius: 12px; padding: 12px 16px; font: inherit; font-weight: 800; cursor: pointer; background: var(--c-saffron); color: #1f1300; margin: 10px 0 0; }
+.pr-tool .pr-btn:disabled { opacity: .6; cursor: wait; }
+.pr-tool .pr-page-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin: 18px 0 12px; }
+.pr-tool .pr-page-tab { text-align: center; font-size: .78rem; font-weight: 700; padding: 6px 2px; border-radius: 8px; background: var(--c-surface-2); color: var(--c-muted); overflow-wrap: anywhere; }
+.pr-tool .pr-page-tab.pr-active { background: var(--c-brand); color: #fff; }
+.pr-tool .pr-page-tab.pr-done { background: var(--c-green-50); color: var(--c-green); }
+.pr-tool .pr-field { margin-bottom: 12px; }
+.pr-tool .pr-field label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 4px; color: var(--c-ink); }
+.pr-tool .pr-field input, .pr-tool .pr-field select, .pr-tool .pr-field textarea { width: 100%; min-height: 46px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; min-width: 0; }
+.pr-tool .pr-error { display: none; color: var(--c-red); font-size: .85rem; font-weight: 700; margin-top: 4px; }
+.pr-tool .pr-has-error .pr-error { display: block; }
+.pr-tool .pr-has-error input, .pr-tool .pr-has-error select, .pr-tool .pr-has-error textarea { border-color: var(--c-red); }
+.pr-tool .pr-advanced { margin: 4px 0 8px; }
+.pr-tool .pr-advanced summary { cursor: pointer; font-weight: 700; color: var(--c-brand); margin-bottom: 10px; }
+.pr-tool .pr-pdf-status { font-weight: 700; color: var(--c-muted); }
+</style>
+
+<script is:inline src="/assets/js/supabase-client.js"></script>
+<script is:inline src="/assets/js/project-report/finance-config.js"></script>
+<script is:inline>
+// Mudra "Tarun Plus" (Rs 10-20 lakh, for borrowers who repaid a Tarun loan),
+// in force since 24 Oct 2024; the shared config stops at Rs 10 lakh.
+(function () {
+  try {
+    var t = window.PRFinanceConfig && window.PRFinanceConfig.MUDRA && window.PRFinanceConfig.MUDRA.tiers;
+    if (t && !t.some(function (x) { return x.key === "tarun_plus"; })) t.push({ key: "tarun_plus", label: "Tarun Plus", min: 1000001, max: 2000000 });
+  } catch (e) {}
+})();
+</script>
+<script is:inline src="/assets/js/project-report/calculator-utils.js"></script>
+<script is:inline src="/assets/js/project-report/pmegp-calculator.js"></script>
+<script is:inline src="/assets/js/project-report/mudra-calculator.js"></script>
+<script is:inline src="/assets/js/project-report/loan-amortization.js"></script>
+<script is:inline src="/assets/js/project-report/pnl-projection.js"></script>
+<script is:inline src="/assets/js/project-report/financial-ratios.js"></script>
+<script is:inline src="/assets/js/project-report/cashflow-statement.js"></script>
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script is:inline src="/assets/js/project-report/report-pdf.js"></script>
+<script is:inline src="/assets/js/project-report/report-form-ui.js"></script>
+<script is:inline>
+(function () {
+  var b = document.getElementById("pr-calculate-btn");
+  if (b) b.addEventListener("click", function () { try { if (window.gtag) gtag("event", "tool_usage", { tool_name: "project-report" }); } catch (e) {} });
+})();
+</script>

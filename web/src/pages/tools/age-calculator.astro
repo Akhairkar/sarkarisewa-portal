@@ -1,0 +1,215 @@
+---
+// Age, exam-eligibility and retirement-date calculator. Same URL, title and
+// description as the old page. Checked Oct 2026:
+// - Exact age in years/months/days on a cut-off date (old method, in UTC).
+// - Upper age limit: notices give a birth-date window, e.g. SSC CHSL 2025
+//   "18-27 on 01-01-2026" = born not before 02-01-1999 and not later than
+//   01-01-2008, so the max age must NOT be reached on the cut-off date. The
+//   old page compared a fractional age with "> max", which let people up to
+//   max + 1 year through.
+// - Central relaxation (DoPT): OBC-NCL +3, SC/ST +5, PwBD +10/+13/+15.
+//   Ex-servicemen relaxation is "military service + 3 years" (not a flat +3
+//   as the old page applied), so it is no longer offered as a category.
+// - Exam limits: SSC CGL up to 32 (post-wise), CHSL 18-27, MTS 18-25,
+//   GD 18-23, UPSC CSE 21-32 (1 Aug), RRB NTPC 18-33 graduate / 18-30 UG
+//   (CEN 06/07 2025, 01-01-2026), IBPS PO 20-30, Clerk 20-28, SBI PO 21-30.
+//   The old "RRB Group D 18-33" and "State PSC 21-40" rows were dropped as
+//   unverified / not one rule.
+// - Retirement: FR 56(a) - a central employee retires on the afternoon of the
+//   last day of the month in which they turn 60; if born on the 1st, the last
+//   day of the previous month.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "आयु एवं रिटायरमेंट कैलकुलेटर" }];
+const faq = [
+  { q: "सरकारी परीक्षा में कट-ऑफ तारीख पर उम्र कैसे गिनी जाती है?", a: "भर्ती की अधिसूचना में एक तय तारीख (जैसे 1 जनवरी या 1 अगस्त) लिखी होती है। उम्र फॉर्म भरने के दिन की नहीं, उसी तारीख की गिनी जाती है। यह कैलकुलेटर जन्म तिथि से उस तारीख तक के पूरे वर्ष, महीने और दिन बताता है।" },
+  { q: "क्या 10वीं की मार्कशीट वाली जन्म तिथि ही मान्य है?", a: "ज़्यादातर भर्तियों में 10वीं (मैट्रिक) के प्रमाणपत्र में लिखी जन्म तिथि ही मानी जाती है। फॉर्म में वही तारीख भरें।" },
+  { q: "केंद्र की भर्तियों में आयु छूट कितनी है?", a: "OBC (नॉन-क्रीमी लेयर) को 3 साल, SC/ST को 5 साल, दिव्यांग (PwBD) सामान्य/EWS को 10 साल, दिव्यांग OBC को 13 साल और दिव्यांग SC/ST को 15 साल। केंद्र में EWS को आयु छूट नहीं मिलती। पूर्व सैनिकों को सैन्य सेवा की अवधि घटाकर 3 साल की छूट मिलती है, जिसकी गणना अधिसूचना के नियम से करें।" },
+  { q: "सरकारी कर्मचारी की रिटायरमेंट तारीख कैसे तय होती है?", a: "केंद्रीय नियम FR 56 के अनुसार कर्मचारी जिस महीने 60 साल का होता है, उस महीने के आखिरी दिन दोपहर बाद रिटायर होता है। अगर जन्म किसी महीने की 1 तारीख को हुआ है तो रिटायरमेंट पिछले महीने के आखिरी दिन होता है। कुछ राज्यों और संस्थाओं में रिटायरमेंट की उम्र 58, 62 या 65 है, इसलिए अपनी उम्र डालें।" },
+  { q: "क्या मेरी जन्म तिथि कहीं सेव होती है?", a: "नहीं। पूरी गणना आपके फोन या कंप्यूटर के ब्राउज़र में होती है; कोई जानकारी हमारे सर्वर पर नहीं जाती।" },
+];
+---
+<Base title="Govt Exam Age Calculator 2026 | SarkariSewa India" description="सरकारी नौकरी फॉर्म हेतु कट-ऑफ डेट पर सटीक आयु (वर्ष, माह, दिन) की गणना करें। SSC, UPSC, रेलवे, बैंक व पुलिस परीक्षा आयु सीमा व छूट 2026।" breadcrumbs={crumbs} faq={faq} modified="2026-10-16">
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>सरकारी परीक्षा आयु एवं रिटायरमेंट कैलकुलेटर</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">जन्म तिथि और अधिसूचना की कट-ऑफ तारीख डालें। कैलकुलेटर उस तारीख पर आपकी सही उम्र (वर्ष, महीने, दिन), बड़ी भर्ती परीक्षाओं की आयु सीमा में आप आते हैं या नहीं, और सरकारी नौकरी में रिटायरमेंट की तारीख व बची सेवा बताएगा। सारी गणना आपके फोन में ही होती है।</p>
+      </section>
+
+      <section class="section tl" aria-labelledby="calc-title">
+        <h2 id="calc-title">⏳ आयु कैलकुलेटर</h2>
+        <div class="tl-grid">
+          <div><label for="dob">जन्म तिथि (10वीं के प्रमाणपत्र वाली)</label><input type="date" id="dob" /></div>
+          <div>
+            <label for="cutoff-date">किस तारीख को उम्र (कट-ऑफ तारीख)</label><input type="date" id="cutoff-date" />
+            <div class="ag-pills" role="group" aria-label="जल्दी चुनें">
+              <button type="button" class="chip-btn active" data-d="today">आज</button>
+              <button type="button" class="chip-btn" data-d="2027-01-01">1 जनवरी 2027</button>
+              <button type="button" class="chip-btn" data-d="2027-07-01">1 जुलाई 2027</button>
+              <button type="button" class="chip-btn" data-d="2027-08-01">1 अगस्त 2027</button>
+            </div>
+          </div>
+          <div><label for="category">आरक्षण वर्ग</label><select id="category">
+            <option value="0">सामान्य / EWS (छूट नहीं)</option>
+            <option value="3">OBC नॉन-क्रीमी लेयर (+3 साल)</option>
+            <option value="5">SC / ST (+5 साल)</option>
+            <option value="10">दिव्यांग सामान्य/EWS (+10 साल)</option>
+            <option value="13">दिव्यांग OBC (+13 साल)</option>
+            <option value="15">दिव्यांग SC/ST (+15 साल)</option>
+          </select></div>
+          <div><label for="retire-age">रिटायरमेंट की उम्र (साल)</label><input type="number" id="retire-age" value="60" min="50" max="70" inputmode="numeric" /><small class="muted">केंद्र सरकार: 60 साल</small></div>
+        </div>
+        <button type="button" class="cta" id="ag-go">उम्र और पात्रता देखें</button>
+        <div id="result-section" aria-live="polite" hidden>
+          <p class="ag-big"><span id="res-target-date-display">--</span> को आपकी उम्र: <strong id="res-age-big">--</strong></p>
+          <dl class="facts">
+            <div><dt>कुल दिन</dt><dd id="res-total-days">--</dd></div>
+            <div><dt>अगला जन्मदिन (आज से)</dt><dd id="res-next-bday">--</dd></div>
+            <div><dt>रिटायरमेंट की तारीख</dt><dd id="res-retire-date">--</dd></div>
+            <div><dt>कट-ऑफ तारीख से बची सेवा</dt><dd id="res-service-left">--</dd></div>
+          </dl>
+          <h3>बड़ी परीक्षाओं की आयु सीमा में आप</h3>
+          <div class="table-wrap"><table><thead><tr><th>परीक्षा</th><th>आपकी सीमा</th><th>नतीजा</th></tr></thead><tbody id="exam-matrix"></tbody></table></div>
+          <p class="muted">दिव्यांग उम्मीदवार SSC GD और RRB ALP जैसे पदों के लिए आवेदन नहीं कर सकते; हर पद की शर्त अधिसूचना में देखें।</p>
+          <button type="button" class="more-btn" id="ag-print">🖨️ प्रिंट करें / PDF सेव करें</button>
+        </div>
+        <p class="notice">आयु सीमा पिछली अधिसूचनाओं से ली गई है और हर साल व पद के हिसाब से बदल सकती है। आवेदन से पहले उस भर्ती की आधिकारिक अधिसूचना पढ़ें।</p>
+      </section>
+      <p class="muted">🔗 यह कैलकुलेटर अपनी वेबसाइट या ब्लॉग पर फ्री लगाएं: <a href="/embed/#age">Embed कोड पाएं</a></p>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li><strong>जन्म तिथि:</strong> 10वीं के प्रमाणपत्र में लिखी तारीख डालें।</li>
+          <li><strong>कट-ऑफ तारीख:</strong> अधिसूचना में "आयु इस तारीख को" वाली तारीख डालें, या ऊपर के बटन से जल्दी चुनें।</li>
+          <li><strong>वर्ग और रिटायरमेंट उम्र:</strong> अपना वर्ग चुनें। सरकारी कर्मचारी अपनी सेवा की रिटायरमेंट उम्र डालें।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="seema">
+        <h2>बड़ी भर्तियों की आयु सीमा (सामान्य वर्ग)</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>परीक्षा</th><th>आयु सीमा</th><th>पिछली भर्ती में कट-ऑफ</th></tr></thead>
+          <tbody>
+            <tr><td>SSC CGL</td><td>18 से 27/30/32 (पद के हिसाब से)</td><td>अधिसूचना में</td></tr>
+            <tr><td>SSC CHSL</td><td>18 से 27</td><td>1 जनवरी 2026 (2025 भर्ती)</td></tr>
+            <tr><td>SSC MTS / हवलदार</td><td>18 से 25 / 27</td><td>अधिसूचना में</td></tr>
+            <tr><td>SSC GD कांस्टेबल</td><td>18 से 23</td><td>अधिसूचना में</td></tr>
+            <tr><td>UPSC सिविल सेवा</td><td>21 से 32</td><td>परीक्षा वर्ष की 1 अगस्त</td></tr>
+            <tr><td>RRB NTPC</td><td>18 से 33 (ग्रेजुएट), 18 से 30 (12वीं पास)</td><td>1 जनवरी 2026 (2025 भर्ती)</td></tr>
+            <tr><td>RRB ALP</td><td>18 से 30</td><td>अधिसूचना में</td></tr>
+            <tr><td>IBPS PO / Clerk, SBI PO</td><td>20-30 / 20-28 / 21-30</td><td>अधिसूचना में</td></tr>
+          </tbody>
+        </table></div>
+        <p class="muted">राज्य लोक सेवा आयोग और राज्य पुलिस भर्ती की आयु सीमा और छूट हर राज्य में अलग है।</p>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li><strong>ऊपरी सीमा का मतलब:</strong> "18-27 साल, 1 जनवरी 2026 को" का मतलब था जन्म 2 जनवरी 1999 से पहले नहीं। यानी कट-ऑफ तारीख तक 27 साल पूरे नहीं होने चाहिए। यह टूल इसी तरह जांचता है।</li>
+          <li><strong>OBC क्रीमी लेयर:</strong> क्रीमी लेयर वाले OBC को आयु छूट नहीं मिलती; वे सामान्य वर्ग की सीमा में आते हैं।</li>
+          <li><strong>EWS:</strong> केंद्र की भर्तियों में EWS को आयु छूट नहीं है; कुछ राज्य अपनी भर्तियों में देते हैं।</li>
+          <li><strong>सिर्फ उम्र चाहिए:</strong> ज़्यादा परीक्षाओं के साथ जांच के लिए <a href="/exam-age-calculator.html">परीक्षा आयु पात्रता कैलकुलेटर</a> भी देखें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.tl .tl-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; }
+@media (min-width: 560px) { .tl .tl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tl label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: 4px; color: var(--c-ink); }
+.tl input[type=number], .tl input[type=date], .tl select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; min-width: 0; }
+.tl button.cta { width: 100%; border: 0; font: inherit; font-weight: 800; cursor: pointer; }
+.tl .ag-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tl .ag-pills .chip-btn { font-size: .82rem; padding: 5px 10px; }
+.tl .ag-big { font-size: 1.12rem; margin: 16px 0 10px; }
+.tl .ea-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .8rem; font-weight: 800; white-space: nowrap; }
+.tl .ea-pill.ok { background: var(--c-green-50); color: var(--c-green); }
+.tl .ea-pill.over { background: var(--c-red-50); color: var(--c-red); }
+.tl .ea-pill.under { background: var(--c-saffron-50); color: var(--c-saffron-700); }
+.tl .muted { color: var(--c-muted); font-size: .9rem; }
+</style>
+
+<script is:inline>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  // [name, min, max, PwBD allowed]
+  var EXAMS = [
+    ["SSC CGL", 18, 32, 1], ["SSC CHSL", 18, 27, 1], ["SSC MTS", 18, 25, 1], ["SSC GD कांस्टेबल", 18, 23, 0],
+    ["UPSC सिविल सेवा", 21, 32, 1], ["RRB NTPC (ग्रेजुएट)", 18, 33, 1], ["RRB NTPC (12वीं पास)", 18, 30, 1],
+    ["RRB ALP", 18, 30, 0], ["IBPS PO", 20, 30, 1], ["IBPS Clerk", 20, 28, 1], ["SBI PO", 21, 30, 1]
+  ];
+  var M = ["जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
+  function parse(v) { var p = (v || "").split("-").map(Number); return p.length === 3 && p[0] ? new Date(Date.UTC(p[0], p[1] - 1, p[2])) : null; }
+  function iso(d) { return d.getUTCFullYear() + "-" + String(d.getUTCMonth() + 1).padStart(2, "0") + "-" + String(d.getUTCDate()).padStart(2, "0"); }
+  function hi(d) { return d.getUTCDate() + " " + M[d.getUTCMonth()] + " " + d.getUTCFullYear(); }
+  function todayUTC() { var t = new Date(); return new Date(Date.UTC(t.getFullYear(), t.getMonth(), t.getDate())); }
+  function exactAge(b, on) {
+    var y = on.getUTCFullYear() - b.getUTCFullYear(), m = on.getUTCMonth() - b.getUTCMonth(), d = on.getUTCDate() - b.getUTCDate();
+    if (d < 0) { m--; d += new Date(Date.UTC(on.getUTCFullYear(), on.getUTCMonth(), 0)).getUTCDate(); }
+    if (m < 0) { y--; m += 12; }
+    return [y, m, d];
+  }
+  function check(b, on, min, max) {
+    var minD = new Date(Date.UTC(b.getUTCFullYear() + min, b.getUTCMonth(), b.getUTCDate()));
+    var maxD = new Date(Date.UTC(b.getUTCFullYear() + max, b.getUTCMonth(), b.getUTCDate()));
+    return on < minD ? "under" : on >= maxD ? "over" : "ok";
+  }
+  // FR 56(a): last day of the month in which the employee attains the age;
+  // born on the 1st -> last day of the previous month.
+  function retireDate(b, age) {
+    var y = b.getUTCFullYear() + age, m = b.getUTCMonth();
+    return b.getUTCDate() === 1 ? new Date(Date.UTC(y, m, 0)) : new Date(Date.UTC(y, m + 1, 0));
+  }
+  window.__ageCalc = { exactAge: exactAge, check: check, retireDate: retireDate };
+  $("cutoff-date").value = iso(todayUTC());
+  document.querySelectorAll(".ag-pills .chip-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".ag-pills .chip-btn").forEach(function (p) { p.classList.remove("active"); });
+      btn.classList.add("active");
+      $("cutoff-date").value = btn.dataset.d === "today" ? iso(todayUTC()) : btn.dataset.d;
+      if ($("dob").value) calc();
+    });
+  });
+  var sent = false;
+  function calc() {
+    var out = $("result-section"), b = parse($("dob").value), on = parse($("cutoff-date").value);
+    if (!b || !on) { out.hidden = false; $("res-target-date-display").textContent = "कट-ऑफ तारीख"; $("res-age-big").textContent = "जन्म तिथि और कट-ऑफ तारीख भरें"; return; }
+    if (b > on) { out.hidden = false; $("res-target-date-display").textContent = hi(on); $("res-age-big").textContent = "जन्म तिथि कट-ऑफ तारीख के बाद की है"; return; }
+    var a = exactAge(b, on), rel = Number($("category").value) || 0, pwd = rel >= 10;
+    $("res-target-date-display").textContent = hi(on);
+    $("res-age-big").textContent = a[0] + " वर्ष " + a[1] + " महीने " + a[2] + " दिन";
+    $("res-total-days").textContent = Math.round((on - b) / 864e5).toLocaleString("en-IN");
+    var t = todayUTC(), nb = new Date(Date.UTC(t.getUTCFullYear(), b.getUTCMonth(), b.getUTCDate()));
+    if (nb < t) nb = new Date(Date.UTC(t.getUTCFullYear() + 1, b.getUTCMonth(), b.getUTCDate()));
+    var left = Math.round((nb - t) / 864e5);
+    $("res-next-bday").textContent = left === 0 ? "🎉 आज जन्मदिन है" : left + " दिन बाकी";
+    var ra = Math.max(50, Math.min(70, Number($("retire-age").value) || 60)), rd = retireDate(b, ra);
+    $("res-retire-date").textContent = hi(rd);
+    if (on >= rd) $("res-service-left").textContent = "रिटायरमेंट हो चुका";
+    else { var s = exactAge(on, rd); $("res-service-left").textContent = s[0] + " वर्ष " + s[1] + " महीने " + s[2] + " दिन"; }
+    $("exam-matrix").innerHTML = EXAMS.map(function (e) {
+      var r = pwd && !e[3] ? rel - 10 : rel, max = e[2] + r, st = pwd && !e[3] ? "na" : check(b, on, e[1], max);
+      var pill = st === "ok" ? '<span class="ea-pill ok">✓ आयु सीमा में</span>' : st === "over" ? '<span class="ea-pill over">✗ उम्र ज़्यादा</span>' : st === "under" ? '<span class="ea-pill under">उम्र कम</span>' : '<span class="ea-pill over">दिव्यांग के लिए पद नहीं</span>';
+      return "<tr><td>" + e[0] + "</td><td>" + e[1] + "-" + max + "</td><td>" + pill + "</td></tr>";
+    }).join("");
+    out.hidden = false;
+    if (!sent) { sent = true; try { if (window.gtag) gtag("event", "tool_usage", { tool_name: "age-calculator" }); } catch (x) {} }
+  }
+  $("ag-go").addEventListener("click", function () { calc(); $("result-section").scrollIntoView({ behavior: "smooth", block: "nearest" }); });
+  ["dob", "cutoff-date", "category", "retire-age"].forEach(function (id) { $(id).addEventListener("change", function () { if ($("dob").value) calc(); }); });
+  $("ag-print").addEventListener("click", function () { window.print(); });
+})();
+</script>
