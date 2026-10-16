@@ -4,6 +4,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import BottomNav from "../components/BottomNav.astro";
 import Subscribe from "../components/Subscribe.astro";
+import LettersBox from "../components/LettersBox.astro";
 import { SITE } from "../data/site";
 import { langOf, twin, t, UI } from "../i18n";
 
@@ -111,6 +112,7 @@ if (faq.length) {
   <Header />
   <main id="main" class="container">
     <slot />
+    <LettersBox />
   </main>
   <Subscribe />
   <Footer />

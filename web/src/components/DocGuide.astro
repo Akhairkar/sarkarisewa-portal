@@ -13,7 +13,6 @@ import PaidTools from "./PaidTools.astro";
 import CscHelp from "./CscHelp.astro";
 import type { DocGuide } from "../guides/doc/types";
 import { promo as challanPromo } from "../guides/challan/common";
-import { lettersFor, letterHref } from "../letters";
 import { langOf } from "../i18n";
 
 interface Props { g: DocGuide; canonical?: string }
@@ -29,7 +28,6 @@ const crumbs = g.crumbs ?? [
 // Driving licence readers are vehicle owners: show the RC e-challan report
 // box unless the guide sets its own.
 const promo = g.promo ?? (g.doc === "driving-licence" ? challanPromo : undefined);
-const letters = lettersFor(Astro.url.pathname).map((l) => ({ href: letterHref(l), emoji: l.emoji, title: l.short, text: { hi: "तैयार फॉर्मेट, भरें और प्रिंट करें", en: "Ready format" } }));
 ---
 <Base title={g.title} description={g.description} breadcrumbs={crumbs} faq={g.faq} published={g.published} modified={g.modified} canonical={canonical}>
   <Breadcrumbs items={crumbs} />
@@ -73,7 +71,6 @@ const letters = lettersFor(Astro.url.pathname).map((l) => ({ href: letterHref(l)
       <OfficialLinks verified={g.verified} links={g.official} />
       <PaidTools exclude={promo ? [promo.href] : []} />
       {promo && <PromoBox p={promo} compact />}
-      {letters.length > 0 && <CardGrid title="इससे जुड़े आवेदन पत्र (तैयार फॉर्मेट)" cards={letters} id="arzi" more={{ href: "/arzi/", label: "सभी फॉर्मेट ›" }} />}
       <Faq items={g.faq} />
       <CardGrid title={L("इनसे जुड़ी जानकारी", "Related guides")} cards={g.related} id="related" />
       {g.doc && <StateGrid doc={g.doc} current={g.state?.slug} title={g.otherStatesTitle ?? `दूसरे राज्यों में ${g.docHi}`} />}

@@ -1,0 +1,9 @@
+---
+// "इससे जुड़े आवेदन पत्र": letter formats (src/letters/formats) that list this
+// page in their `related`, shown at the end of any page that has some.
+import CardGrid from "./CardGrid.astro";
+import { lettersFor, letterHref } from "../letters";
+const path = Astro.url.pathname.replace(/\/index\.html$/, "/");
+const cards = lettersFor(path).map((l) => ({ href: letterHref(l), emoji: l.emoji, title: l.short, text: { hi: "तैयार फॉर्मेट, भरें और प्रिंट करें", en: "Ready format to fill and print" } }));
+---
+{cards.length > 0 && <div class="page"><CardGrid title="इससे जुड़े आवेदन पत्र (तैयार फॉर्मेट)" cards={cards} id="arzi" more={{ href: "/arzi/", label: "सभी फॉर्मेट ›" }} /></div>}
