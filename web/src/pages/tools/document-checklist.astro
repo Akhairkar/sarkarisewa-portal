@@ -1,0 +1,204 @@
+---
+// Document checklist tool: pick a purpose, tick documents as you collect them,
+// print or save as PDF. Same URL, title and description as the old page.
+// Ticks are remembered only in this browser (localStorage), nothing is sent.
+// Facts checked Oct 2026:
+// - PM-KISAN: Aadhaar e-KYC mandatory; Farmer ID (AgriStack) required for new
+//   registrations in many states (Lok Sabha reply, MoS Agriculture, 5 Aug 2025,
+//   reported by Angel One / Outlook Money). pmkisan.gov.in.
+// - Majhi Ladki Bahin (Maharashtra only): women 21-65, family income below
+//   Rs 2.5 lakh/yr, Aadhaar-linked bank account, yearly e-KYC
+//   (ladakibahin.maharashtra.gov.in; Scroll, Outlook Money 2025-26).
+// - NFSA 2013 s.13: eldest woman (18+) is head of household on ration card.
+// Old page's loan box quoted MPBCDC "50% subsidy / 4% interest" and KCC
+// figures without a source; removed, we link to our guides instead.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "दस्तावेज़ चेकलिस्ट" }];
+const faq = [
+  { q: "डॉक्यूमेंट चेकलिस्ट टूल का क्या उपयोग है?", a: "यह सरकारी नौकरी के दस्तावेज़ सत्यापन (DV), PM किसान, राशन कार्ड, जाति/आय प्रमाण पत्र जैसे कामों के लिए आम तौर पर मांगे जाने वाले कागज़ों की सूची देता है। आप हर कागज़ जुटाने पर उस पर टिक कर सकते हैं।" },
+  { q: "क्या मैं चेकलिस्ट को प्रिंट या PDF में सेव कर सकता हूं?", a: "हां। 'प्रिंट / PDF' बटन दबाएं। मोबाइल पर प्रिंट विंडो में 'Save as PDF' चुनें तो फाइल फोन में सेव हो जाएगी।" },
+  { q: "क्या मेरे टिक किए गए कागज़ कहीं सेव होते हैं?", a: "टिक सिर्फ आपके इसी फोन/ब्राउज़र में याद रहते हैं, ताकि अगली बार खोलने पर सूची वैसी ही मिले। कोई जानकारी हमारे पास नहीं आती।" },
+  { q: "क्या निवास प्रमाण के लिए बिजली बिल मान्य है?", a: "ज़्यादातर सेवाओं में हाल का बिजली बिल, पानी बिल या रजिस्टर्ड किराया अनुबंध पते के प्रमाण के रूप में लिया जाता है। कितना पुराना बिल चलेगा, यह हर विभाग अलग तय करता है, इसलिए आवेदन फॉर्म में दी सूची देखें।" },
+  { q: "जाति प्रमाण पत्र के लिए सबसे ज़रूरी कागज़ क्या है?", a: "आम तौर पर पिता या खून के रिश्ते के किसी व्यक्ति का पुराना जाति प्रमाण पत्र, या पुराना राजस्व/स्कूल रिकॉर्ड जिसमें जाति लिखी हो। कौन-से साल से पहले का रिकॉर्ड चाहिए, यह राज्य के नियम पर निर्भर है।" },
+  { q: "क्या चेकलिस्ट राज्य के हिसाब से बदलती है?", a: "हां। राज्य के e-District पोर्टल या विभाग कुछ अतिरिक्त कागज़ मांग सकते हैं। यह सूची एक आम शुरुआत है; अंतिम सूची हमेशा official अधिसूचना या पोर्टल से मिलाएं।" },
+];
+---
+<Base title="Govt Job & Scheme Document Checklist 2026 | SarkariSewa India" description="सरकारी नौकरी व योजना दस्तावेज़ चेकलिस्ट 2026: सरकारी फॉर्म, डीवी (Document Verification), जाति, आय व लोन हेतु आवश्यक सभी कागजातों की कस्टमाइज़्ड चेकलिस्ट बनाएं।" breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>सरकारी नौकरी और योजना के लिए दस्तावेज़ चेकलिस्ट</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">नीचे अपना काम चुनें (जैसे नौकरी का DV, PM किसान, राशन कार्ड)। आम तौर पर मांगे जाने वाले कागज़ों की सूची खुलेगी। हर कागज़ जुटाते ही टिक करें और 'प्रिंट / PDF' से सूची साथ ले जाएं। अंतिम सूची हमेशा official अधिसूचना या पोर्टल से मिलाएं।</p>
+      </section>
+
+      <section class="section dc-tool" id="dc-tool" aria-labelledby="dc-title">
+        <h2 id="dc-title">📂 काम चुनें</h2>
+        <div class="dc-pick" role="group" aria-label="काम चुनें" id="dc-pick"></div>
+        <p class="dc-note" id="dc-note"></p>
+        <div class="dc-prog"><span id="dc-count">0 / 0</span><div class="meter" aria-hidden="true"><i id="dc-bar" style="width:0"></i></div></div>
+        <ul class="dc-list" id="dc-list"></ul>
+        <div class="dc-actions">
+          <button type="button" class="cta" id="dc-print">🖨️ प्रिंट / PDF</button>
+          <button type="button" class="cta secondary" id="dc-all">✅ सभी पर टिक</button>
+          <button type="button" class="more-btn" id="dc-reset">🔄 रीसेट</button>
+        </div>
+        <p class="muted dc-more" id="dc-more"></p>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>ऊपर अपना काम चुनें।</li>
+          <li>हर कागज़ की असली (original) कॉपी और 2-3 फोटोकॉपी जुटाएं, फिर उस पर टिक करें। टिक इसी फोन में याद रहते हैं।</li>
+          <li>'प्रिंट / PDF' दबाकर सूची सेव करें और दफ्तर या CSC केंद्र पर साथ ले जाएं।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>दस्तावेज़ सत्यापन (DV) के ज़रूरी नियम</h2>
+        <ul class="checklist">
+          <li><strong>नाम और जन्मतिथि एक जैसी:</strong> सरकारी नौकरी में जन्मतिथि आम तौर पर 10वीं के प्रमाण पत्र से मानी जाती है। आधार, PAN और जाति प्रमाण पत्र में नाम की स्पेलिंग उसी से मिलाएं। फर्क हो तो पहले सुधार कराएं।</li>
+          <li><strong>तय तारीख (crucial date):</strong> OBC-NCL, EWS जैसे प्रमाण पत्र किस तारीख या वित्त वर्ष के होने चाहिए, यह भर्ती की अधिसूचना में लिखा होता है। वही देखें।</li>
+          <li><strong>सही फॉर्मेट:</strong> केंद्र सरकार की नौकरी में जाति/EWS प्रमाण पत्र केंद्र सरकार के फॉर्मेट में मांगा जाता है, राज्य का फॉर्मेट नहीं चलता।</li>
+          <li><strong>सबूत रखें:</strong> ऑनलाइन फॉर्म की अंतिम PDF और रसीद/रजिस्ट्रेशन नंबर संभाल कर रखें।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>यह सूची आम तौर पर मांगे जाने वाले कागज़ों पर आधारित है। हर राज्य और विभाग अपने नियम से कुछ कागज़ जोड़ या हटा सकता है।</li>
+          <li>SarkariSewa India एक निजी जानकारी वेबसाइट है, सरकारी वेबसाइट नहीं। आवेदन हमेशा official पोर्टल या सरकारी दफ्तर/CSC से करें।</li>
+          <li>पास का CSC केंद्र खोजने के लिए <a href="/tools/csc-locator.html">CSC लोकेटर</a> देखें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.dc-pick { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 12px; }
+.dc-note { margin: 0 0 10px; color: var(--c-muted); font-size: .92rem; }
+.dc-prog { display: flex; align-items: center; gap: 10px; font-weight: 700; margin-bottom: 8px; }
+.dc-prog .meter { flex: 1; }
+.dc-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.dc-list li { margin: 0; }
+.dc-list label { display: flex; gap: 10px; align-items: flex-start; padding: 12px; border: 1px solid var(--c-line); border-radius: var(--radius-sm); background: var(--c-surface); cursor: pointer; overflow-wrap: anywhere; }
+.dc-list input { width: 22px; height: 22px; flex: 0 0 22px; margin-top: 2px; accent-color: var(--c-green); }
+.dc-list input:checked + span { color: var(--c-muted); text-decoration: line-through; }
+.dc-list small { display: block; color: var(--c-muted); font-size: .84rem; text-decoration: none; }
+.dc-actions { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 10px; margin-top: 8px; }
+@media (min-width: 560px) { .dc-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.dc-actions button { border: 0; font: inherit; font-weight: 800; cursor: pointer; width: 100%; }
+.dc-actions .more-btn { border: 1px solid var(--c-line); margin-top: 10px; }
+.dc-more { margin-top: 12px; }
+@media print {
+  body * { visibility: hidden; }
+  #dc-tool, #dc-tool * { visibility: visible; }
+  #dc-tool { position: absolute; left: 0; top: 0; width: 100%; }
+  .dc-actions, .dc-pick, .dc-more { display: none !important; }
+}
+</style>
+
+<script is:inline>
+(function () {
+  var LISTS = {
+    job_dv: { name: "💼 सरकारी नौकरी DV", note: "SSC, रेलवे, बैंक या राज्य भर्ती के दस्तावेज़ सत्यापन के लिए। अधिसूचना में दी सूची ही अंतिम है।", docs: [
+      ["10वीं का प्रमाण पत्र/मार्कशीट", "जन्मतिथि का मुख्य प्रमाण"],
+      ["12वीं, स्नातक/डिप्लोमा की सभी मार्कशीट और डिग्री", "जो योग्यता भर्ती में मांगी गई है"],
+      ["जाति प्रमाण पत्र (SC/ST/OBC-NCL) या EWS प्रमाण पत्र", "केंद्र की नौकरी में केंद्र सरकार के फॉर्मेट में, अधिसूचना में दी तारीख के हिसाब से"],
+      ["निवास (domicile) प्रमाण पत्र", "अगर भर्ती में मांगा गया हो"],
+      ["फोटो पहचान पत्र (आधार / वोटर ID / पासपोर्ट)", ""],
+      ["हाल की पासपोर्ट साइज़ फोटो", "आम तौर पर 4-6, फॉर्म वाली फोटो जैसी"],
+      ["एडमिट कार्ड, ऑनलाइन फॉर्म का प्रिंट और DV कॉल लेटर", ""],
+      ["अनापत्ति प्रमाण पत्र (NOC)", "अगर पहले से सरकारी नौकरी में हैं"]
+    ], more: '' },
+    pmkisan: { name: "🌾 PM किसान", note: "PM-KISAN में आधार e-KYC ज़रूरी है। कई राज्यों में नए रजिस्ट्रेशन के लिए Farmer ID (AgriStack) भी ज़रूरी कर दी गई है।", docs: [
+      ["आधार कार्ड", "e-KYC के लिए; आधार से मोबाइल जुड़ा हो"],
+      ["ज़मीन का ताज़ा रिकॉर्ड (खतौनी / जमाबंदी / 7/12 / पट्टा)", "ज़मीन आवेदक के नाम हो"],
+      ["आधार से जुड़ी (DBT चालू) बैंक पासबुक", "पहला पन्ना"],
+      ["Farmer ID (किसान पहचान संख्या)", "जिन राज्यों में ज़रूरी है"],
+      ["मोबाइल नंबर", "OTP के लिए"]
+    ], more: 'पूरी जानकारी: <a href="/service/pm-kisan.html">PM किसान गाइड</a>' },
+    ladki: { name: "👩 लाडकी बहिण (महाराष्ट्र)", note: "यह सिर्फ महाराष्ट्र की योजना है: 21-65 साल की महिलाएं, परिवार की सालाना आय ₹2.5 लाख से कम। हर साल e-KYC ज़रूरी है।", docs: [
+      ["महिला का आधार कार्ड", ""],
+      ["महिला के नाम का आधार से जुड़ा बैंक खाता (पासबुक)", ""],
+      ["महाराष्ट्र का निवास प्रमाण (domicile) या जन्म प्रमाण", ""],
+      ["राशन कार्ड (पीला/केसरी) या आय प्रमाण पत्र", "आय ₹2.5 लाख से कम"],
+      ["स्व-घोषणा पत्र (हमीपत्र)", ""]
+    ], more: 'पूरी जानकारी: <a href="/service/mh-ladki-bahin-yojana.html">लाडकी बहिण योजना गाइड</a>' },
+    loan: { name: "🏦 सरकारी लोन / सब्सिडी", note: "पिछड़ा वर्ग निगम, PMEGP जैसे स्वरोज़गार लोन में आम तौर पर ये कागज़ मांगे जाते हैं। योजना की शर्तें निगम/बैंक से पूछें।", docs: [
+      ["जाति प्रमाण पत्र", "अगर योजना किसी वर्ग के लिए है"],
+      ["परिवार का आय प्रमाण पत्र", "तहसीलदार/सक्षम अधिकारी का"],
+      ["व्यवसाय की प्रोजेक्ट रिपोर्ट और मशीन/सामान का कोटेशन", ""],
+      ["निवास प्रमाण और राशन कार्ड", ""],
+      ["PAN कार्ड, आधार और पासपोर्ट साइज़ फोटो", ""],
+      ["बैंक पासबुक / स्टेटमेंट", ""]
+    ], more: 'देखें: <a href="/service/mpbcdc-direct-loan-yojana.html">महात्मा फुले महामंडल लोन</a> · <a href="/service/kisan-credit-card.html">किसान क्रेडिट कार्ड</a>' },
+    cert: { name: "📜 जाति / आय प्रमाण पत्र", note: "जाति के लिए कौन-से साल से पहले का रिकॉर्ड चाहिए, यह राज्य के नियम पर निर्भर है।", docs: [
+      ["आवेदक और पिता का आधार कार्ड", ""],
+      ["राशन कार्ड या बिजली बिल (पते का प्रमाण)", ""],
+      ["पिता/खून के रिश्ते का जाति प्रमाण पत्र या पुराना राजस्व/स्कूल रिकॉर्ड", "जाति प्रमाण पत्र के लिए"],
+      ["आय का प्रमाण (वेतन पर्ची, फॉर्म 16, ITR या स्व-घोषणा)", "आय प्रमाण पत्र के लिए"],
+      ["पंचायत/पार्षद की रिपोर्ट और स्व-घोषणा पत्र", "जहां मांगा जाए"]
+    ], more: 'देखें: <a href="/service/caste-certificate.html">जाति प्रमाण पत्र</a> · <a href="/service/income-certificate.html">आय प्रमाण पत्र</a>' },
+    ration: { name: "🍚 राशन कार्ड", note: "राष्ट्रीय खाद्य सुरक्षा कानून में परिवार की सबसे बड़ी (18+) महिला को मुखिया माना जाता है।", docs: [
+      ["परिवार के सभी सदस्यों के आधार कार्ड", ""],
+      ["मुखिया महिला की बैंक पासबुक और फोटो", ""],
+      ["पते का प्रमाण (बिजली बिल / मकान कर रसीद)", ""],
+      ["आय प्रमाण पत्र", "जिन राज्यों में मांगा जाता है"],
+      ["छोटे बच्चे का जन्म प्रमाण पत्र", "नाम जुड़वाने के लिए"]
+    ], more: 'देखें: <a href="/service/ration-card.html">राशन कार्ड गाइड</a>' }
+  };
+  var KEY = "ss-doc-checklist";
+  var state = {}; try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  var $ = function (id) { return document.getElementById(id); };
+  var active = state._a && LISTS[state._a] ? state._a : "job_dv";
+  var pick = $("dc-pick");
+  Object.keys(LISTS).forEach(function (k) {
+    var b = document.createElement("button"); b.type = "button"; b.className = "chip-btn"; b.textContent = LISTS[k].name; b.dataset.k = k;
+    b.onclick = function () { load(k); }; pick.appendChild(b);
+  });
+  function progress() {
+    var boxes = $("dc-list").querySelectorAll("input"), n = 0;
+    boxes.forEach(function (c) { if (c.checked) n++; });
+    $("dc-count").textContent = n + " / " + boxes.length + " तैयार";
+    $("dc-bar").style.width = (boxes.length ? Math.round(n * 100 / boxes.length) : 0) + "%";
+  }
+  function load(k) {
+    active = k; state._a = k; save();
+    pick.querySelectorAll("button").forEach(function (b) { var on = b.dataset.k === k; b.classList.toggle("active", on); b.setAttribute("aria-pressed", on); });
+    var L = LISTS[k], ticks = state[k] || [], list = $("dc-list"); list.innerHTML = "";
+    $("dc-note").textContent = L.note; $("dc-more").innerHTML = L.more;
+    L.docs.forEach(function (d, i) {
+      var li = document.createElement("li");
+      li.innerHTML = '<label><input type="checkbox"' + (ticks.indexOf(i) > -1 ? " checked" : "") + '><span>' + d[0] + (d[1] ? "<small>" + d[1] + "</small>" : "") + "</span></label>";
+      li.querySelector("input").addEventListener("change", function (e) {
+        var t = state[k] || [], p = t.indexOf(i);
+        if (e.target.checked && p < 0) t.push(i); if (!e.target.checked && p > -1) t.splice(p, 1);
+        state[k] = t; save(); progress();
+      });
+      list.appendChild(li);
+    });
+    progress();
+  }
+  function all(v) {
+    var t = []; $("dc-list").querySelectorAll("input").forEach(function (c, i) { c.checked = v; if (v) t.push(i); });
+    state[active] = t; save(); progress();
+  }
+  $("dc-all").onclick = function () { all(true); };
+  $("dc-reset").onclick = function () { all(false); };
+  $("dc-print").onclick = function () { try { if (window.gtag) gtag("event", "tool_usage", { tool: "document_checklist", action: "print" }); } catch (e) {} window.print(); };
+  load(active);
+})();
+</script>

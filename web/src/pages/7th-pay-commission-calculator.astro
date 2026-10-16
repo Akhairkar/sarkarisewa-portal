@@ -1,0 +1,227 @@
+---
+// 7th CPC in-hand salary calculator (central government civilian pay matrix).
+// Same URL, title and description as the old page. Rules checked Oct 2026:
+// - Pay matrix (Levels 1-18): each cell = previous cell x 1.03, rounded to
+//   the nearest Rs 100 (7th CPC report; Level 7 cell 21 = 81,200, Level 8
+//   cell 20 = 83,600 as in the CCS (Revised Pay) Rules 2016 matrix). The old
+//   page's table had wrong cells in Levels 4, 6, 7, 8 and no Levels 13A, 15-18.
+// - DA: 60% of basic from 1 Jan 2026 (Cabinet decision 18 Apr 2026, DoE OM
+//   22 Apr 2026). The July 2026 instalment had not been announced when this
+//   page was checked; the user can type any DA.
+// - HRA (DoE OM 7 Jul 2017): 24/16/8%; 27/18/9% once DA crosses 25%;
+//   30/20/10% once DA crosses 50% (in force since 1 Jan 2024). Minimum
+//   Rs 5,400 / 3,600 / 1,800. Old page used 24/16/8 for any DA below 50%.
+// - Transport allowance (7th CPC): Level 9+ Rs 7,200/3,600; Level 3-8
+//   Rs 3,600/1,800; Level 1-2 Rs 1,350/900, but Rs 3,600/1,800 if basic is
+//   Rs 24,200 or more. Plus DA on TA.
+// - NPS: employee 10% of (basic + DA), government 14%. UPS (from 1 Apr 2025):
+//   employee 10%, government 18.5%.
+// - CGHS subscription (2017 rates): Level 1-5 Rs 250, Level 6 Rs 450,
+//   Level 7-11 Rs 650, Level 12+ Rs 1,000. Old page charged Rs 450 for
+//   Levels 4-6 and Rs 650 for Level 12+.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+
+const LEVELS: [string, number, number, string][] = [
+  ["1", 18000, 40, "1800"], ["2", 19900, 40, "1900"], ["3", 21700, 40, "2000"], ["4", 25500, 40, "2400"],
+  ["5", 29200, 40, "2800"], ["6", 35400, 40, "4200"], ["7", 44900, 40, "4600"], ["8", 47600, 40, "4800"],
+  ["9", 53100, 40, "5400 (PB-2)"], ["10", 56100, 40, "5400 (PB-3)"], ["11", 67700, 39, "6600"], ["12", 78800, 34, "7600"],
+  ["13", 123100, 20, "8700"], ["13A", 131100, 18, "8900"], ["14", 144200, 15, "10000"], ["15", 182200, 8, "HAG"],
+  ["16", 205400, 4, "HAG+"], ["17", 225000, 1, "Apex"], ["18", 250000, 1, "Cabinet Secretary"],
+];
+const cells = (start: number, n: number) => {
+  const a = [start];
+  while (a.length < n) a.push(Math.round((a[a.length - 1] * 1.03) / 100) * 100);
+  return a;
+};
+const matrix = LEVELS.map(([l, s, n, gp]) => ({ l, gp, steps: cells(s, n) }));
+const inr = (n: number) => "₹" + n.toLocaleString("en-IN");
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "7वां वेतन आयोग सैलरी कैलकुलेटर" }];
+const faq = [
+  { q: "अभी केंद्रीय कर्मचारियों का DA कितना है?", a: "1 जनवरी 2026 से केंद्रीय कर्मचारियों का महंगाई भत्ता (DA) बेसिक का 60% है। केंद्रीय कैबिनेट ने अप्रैल 2026 में 58% से 60% करने की मंज़ूरी दी थी। जुलाई 2026 की किस्त की घोषणा होने पर कैलकुलेटर में नया DA खुद डाल दें।" },
+  { q: "7वें वेतन आयोग में HRA कितना मिलता है?", a: "DA 50% से ऊपर होने के कारण अभी HRA X शहरों में बेसिक का 30%, Y शहरों में 20% और Z शहरों में 10% है। कम से कम HRA ₹5,400, ₹3,600 और ₹1,800 है। सरकारी आवास मिला हो तो HRA नहीं मिलता।" },
+  { q: "TA और TATP (DA on TA) क्या है?", a: "TA यानी ट्रांसपोर्ट अलाउंस, जो लेवल और शहर के हिसाब से तय है (जैसे लेवल 9 और ऊपर बड़े शहरों में ₹7,200)। इस TA पर भी उतने ही प्रतिशत DA मिलता है, जिसे DA on TA कहते हैं।" },
+  { q: "क्या यह कैलकुलेटर राज्य कर्मचारियों के लिए भी सही है?", a: "ज़्यादातर राज्यों ने 7वें वेतन आयोग जैसा पे मैट्रिक्स अपनाया है, पर उनका DA, HRA, TA और मैट्रिक्स की राशि अलग हो सकती है। राज्य कर्मचारी अपने राज्य का DA प्रतिशत डालें और बाकी भत्ते अपनी वेतन पर्ची से मिलाएं।" },
+  { q: "इन-हैंड सैलरी में और क्या कट सकता है?", a: "इस कैलकुलेटर में NPS/UPS (या GPF) और CGHS की कटौती जोड़ी गई है। इनकम टैक्स (TDS), CGEGIS बीमा (ग्रुप A ₹120, B ₹60, C ₹30), लोन की किस्त या सोसाइटी की कटौती नहीं जोड़ी गई। असली राशि आपकी वेतन पर्ची में देखें।" },
+];
+---
+<Base title="7th Pay Commission Salary Calculator 2026: In-Hand Pay & DA 50%+" description="Calculate your exact 7th CPC In-Hand Salary with latest 50%+ Dearness Allowance (DA), HRA (X/Y/Z), TA & NPS deductions for central & state employees." breadcrumbs={crumbs} faq={faq} modified="2026-10-16">
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>7वां वेतन आयोग सैलरी कैलकुलेटर: इन-हैंड सैलरी (DA 60%)</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">अपना पे लेवल और बेसिक पे चुनें, शहर की श्रेणी (X/Y/Z) चुनें। कैलकुलेटर बेसिक + DA + HRA + TA जोड़कर कुल वेतन और NPS व CGHS घटाकर इन-हैंड सैलरी बताएगा। केंद्रीय कर्मचारियों का DA 1 जनवरी 2026 से 60% है, यही पहले से भरा है।</p>
+      </section>
+
+      <section class="section tl" aria-labelledby="calc-title">
+        <h2 id="calc-title">🧮 सैलरी कैलकुलेटर</h2>
+        <div class="tl-grid">
+          <div><label for="p7-level">पे लेवल</label><select id="p7-level">
+            {matrix.map((m) => <option value={m.l} selected={m.l === "7"}>{`लेवल ${m.l} (शुरुआत ${inr(m.steps[0])})`}</option>)}
+          </select></div>
+          <div><label for="p7-basic">बेसिक पे (सेल)</label><select id="p7-basic"></select></div>
+          <div><label for="p7-da">DA (%)</label><input type="number" id="p7-da" min="0" max="200" step="1" value="60" inputmode="numeric" /></div>
+          <div><label for="p7-ta">TA के लिए शहर</label><select id="p7-ta">
+            <option value="higher">बड़े शहर (दिल्ली, मुंबई, कोलकाता, चेन्नई, बेंगलुरु, हैदराबाद, पुणे, अहमदाबाद आदि)</option>
+            <option value="other">दूसरे शहर / कस्बे</option>
+          </select></div>
+          <div><label for="p7-pen">पेंशन योजना</label><select id="p7-pen">
+            <option value="nps">NPS (2004 के बाद भर्ती)</option>
+            <option value="ups">UPS (एकीकृत पेंशन योजना)</option>
+            <option value="ops">पुरानी पेंशन (GPF)</option>
+          </select></div>
+          <div><label for="p7-gpf">GPF कटौती (% बेसिक, सिर्फ पुरानी पेंशन)</label><input type="number" id="p7-gpf" min="6" max="100" step="1" value="6" inputmode="numeric" /></div>
+        </div>
+        <fieldset class="tl-radios">
+          <legend>HRA के लिए शहर की श्रेणी</legend>
+          <label><input type="radio" name="p7-hra" value="X" checked /> X (बड़े महानगर)</label>
+          <label><input type="radio" name="p7-hra" value="Y" /> Y (मध्यम शहर)</label>
+          <label><input type="radio" name="p7-hra" value="Z" /> Z (बाकी जगह)</label>
+        </fieldset>
+        <label class="tl-check"><input type="checkbox" id="p7-qtr" /> सरकारी आवास मिला है (HRA नहीं मिलेगा)</label>
+        <label class="tl-check"><input type="checkbox" id="p7-cghs" checked /> CGHS कटौती जोड़ें</label>
+
+        <div class="tl-hero" aria-live="polite">
+          <div><span>अनुमानित इन-हैंड सैलरी</span><strong id="p7-net">₹0</strong></div>
+          <div><span>कुल वेतन (Gross)</span><strong id="p7-gross">₹0</strong></div>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>हिस्सा</th><th>कैसे</th><th>राशि</th></tr></thead>
+          <tbody id="p7-rows"></tbody>
+        </table></div>
+        <p class="muted" id="p7-emp"></p>
+        <button type="button" class="cta secondary" id="p7-share">💬 WhatsApp पर भेजें</button>
+        <p class="notice">यह अनुमान है। इनकम टैक्स (TDS), CGEGIS, लोन की किस्त जैसी कटौतियां नहीं जोड़ी गईं। असली राशि अपनी वेतन पर्ची से मिलाएं।</p>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li><strong>पे लेवल चुनें:</strong> यह आपके नियुक्ति पत्र या वेतन पर्ची में लिखा होता है (जैसे Level 7)।</li>
+          <li><strong>बेसिक पे का सेल चुनें:</strong> हर साल 1 जनवरी या 1 जुलाई की वेतन वृद्धि के बाद आप अगले सेल पर जाते हैं।</li>
+          <li><strong>DA, शहर और पेंशन योजना चुनें:</strong> DA पहले से 60% भरा है। राज्य कर्मचारी अपने राज्य का DA डालें।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>गणना के नियम (अक्टूबर 2026 तक)</h2>
+        <ul class="checklist">
+          <li><strong>DA:</strong> बेसिक × DA%। केंद्र में 1 जनवरी 2026 से 60%। जुलाई 2026 की किस्त की घोषणा इस पेज की जांच तक नहीं हुई थी।</li>
+          <li><strong>HRA:</strong> DA 50% से ऊपर होने पर X/Y/Z में बेसिक का 30%/20%/10% (DA 25% से 50% के बीच 27/18/9, उससे कम पर 24/16/8)। कम से कम ₹5,400/₹3,600/₹1,800।</li>
+          <li><strong>TA:</strong> लेवल 9 और ऊपर ₹7,200 (बड़े शहर) / ₹3,600; लेवल 3 से 8 ₹3,600 / ₹1,800; लेवल 1-2 ₹1,350 / ₹900 (बेसिक ₹24,200 या ज़्यादा हो तो ₹3,600 / ₹1,800)। TA पर भी DA मिलता है।</li>
+          <li><strong>NPS / UPS:</strong> कर्मचारी की कटौती (बेसिक + DA) का 10%। सरकार NPS में 14% और UPS में 18.5% जमा करती है (यह वेतन से नहीं कटता)।</li>
+          <li><strong>CGHS:</strong> लेवल 1-5 ₹250, लेवल 6 ₹450, लेवल 7-11 ₹650, लेवल 12 और ऊपर ₹1,000 महीना।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="matrix">
+        <h2>7वें वेतन आयोग का पे मैट्रिक्स (लेवल 1 से 18)</h2>
+        <p>हर लेवल का पहला और आखिरी सेल। बीच के सेल ऊपर कैलकुलेटर के "बेसिक पे" में देखें।</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>लेवल</th><th>पुराना ग्रेड पे</th><th>शुरुआती बेसिक</th><th>अधिकतम बेसिक</th></tr></thead>
+          <tbody>{matrix.map((m) => <tr><td><strong>{m.l}</strong></td><td>{m.gp}</td><td>{inr(m.steps[0])}</td><td>{inr(m.steps[m.steps.length - 1])}</td></tr>)}</tbody>
+        </table></div>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>यह निजी वेबसाइट का अनुमान है, सरकारी वेतन पर्ची नहीं। सही आंकड़े आपके DDO या वेतन पर्ची में होते हैं।</li>
+          <li>8वें वेतन आयोग के बाद वेतन कितना हो सकता है, यह <a href="/8th-pay-calculator.html">8वां वेतन आयोग कैलकुलेटर</a> में देखें।</li>
+          <li>रिटायरमेंट पर NPS पेंशन का अनुमान <a href="/nps-pension-calculator.html">NPS पेंशन कैलकुलेटर</a> में निकालें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.tl .tl-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; }
+@media (min-width: 560px) { .tl .tl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tl label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: 4px; color: var(--c-ink); }
+.tl input[type=number], .tl input[type=date], .tl input[type=text], .tl select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; min-width: 0; }
+.tl .tl-radios { border: 0; padding: 0; margin: 12px 0 4px; display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.tl .tl-radios legend { font-weight: 700; font-size: .9rem; padding: 0; margin-bottom: 4px; color: var(--c-ink); }
+.tl .tl-radios label, .tl .tl-check { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; margin: 4px 14px 4px 0; }
+.tl .tl-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 14px 0; }
+.tl .tl-hero div { background: var(--c-brand-50); border-radius: 10px; padding: 12px; text-align: center; min-width: 0; }
+.tl .tl-hero div:first-child { background: var(--c-green-50); }
+.tl .tl-hero span { display: block; font-size: .8rem; color: var(--c-muted); }
+.tl .tl-hero strong { font-size: 1.35rem; color: var(--c-ink); overflow-wrap: anywhere; }
+.tl td.r, .tl th.r { text-align: right; white-space: nowrap; }
+.tl tr.tot td { font-weight: 800; background: var(--c-surface-2); }
+.tl .muted { color: var(--c-muted); font-size: .9rem; }
+</style>
+
+<script is:inline>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var L = { "1": [18000, 40], "2": [19900, 40], "3": [21700, 40], "4": [25500, 40], "5": [29200, 40], "6": [35400, 40], "7": [44900, 40], "8": [47600, 40], "9": [53100, 40], "10": [56100, 40], "11": [67700, 39], "12": [78800, 34], "13": [123100, 20], "13A": [131100, 18], "14": [144200, 15], "15": [182200, 8], "16": [205400, 4], "17": [225000, 1], "18": [250000, 1] };
+  function cells(l) { var s = L[l], a = [s[0]]; while (a.length < s[1]) a.push(Math.round(a[a.length - 1] * 1.03 / 100) * 100); return a; }
+  function num(l) { return l === "13A" ? 13.5 : Number(l); }
+  function r(n) { return "₹" + Math.round(n).toLocaleString("en-IN"); }
+  // Pure calculation (also tested with node): returns all parts of the pay slip.
+  function pay(o) {
+    var n = num(o.level), b = o.basic, da = o.da;
+    var daAmt = b * da / 100;
+    var hp = { X: [24, 27, 30], Y: [16, 18, 20], Z: [8, 9, 10] }[o.city][da >= 50 ? 2 : da >= 25 ? 1 : 0];
+    var hraMin = { X: 5400, Y: 3600, Z: 1800 }[o.city];
+    var hra = o.quarter ? 0 : Math.max(b * hp / 100, hraMin);
+    var hi = o.ta === "higher", ta;
+    if (n >= 9) ta = hi ? 7200 : 3600;
+    else if (n >= 3 || b >= 24200) ta = hi ? 3600 : 1800;
+    else ta = hi ? 1350 : 900;
+    var taDa = ta * da / 100;
+    var gross = b + daAmt + hra + ta + taDa;
+    var pen = o.pension === "ops" ? b * (o.gpf || 6) / 100 : (b + daAmt) * 0.10;
+    var govt = o.pension === "nps" ? (b + daAmt) * 0.14 : o.pension === "ups" ? (b + daAmt) * 0.185 : 0;
+    var cghs = !o.cghs ? 0 : n >= 12 ? 1000 : n >= 7 ? 650 : n >= 6 ? 450 : 250;
+    return { daAmt: daAmt, hraPct: o.quarter ? 0 : hp, hra: hra, ta: ta, taDa: taDa, gross: gross, pen: pen, govt: govt, cghs: cghs, net: gross - pen - cghs };
+  }
+  window.__pay7 = pay;
+  var lv = $("p7-level"), bs = $("p7-basic");
+  function fillBasic() {
+    var c = cells(lv.value);
+    bs.innerHTML = c.map(function (v, i) { return '<option value="' + v + '">सेल ' + (i + 1) + ': ' + r(v) + '</option>'; }).join("");
+  }
+  var sent = false;
+  function calc() {
+    var o = { level: lv.value, basic: Number(bs.value), da: Math.max(0, Number($("p7-da").value) || 0), city: document.querySelector('input[name="p7-hra"]:checked').value, quarter: $("p7-qtr").checked, ta: $("p7-ta").value, pension: $("p7-pen").value, gpf: Math.max(6, Number($("p7-gpf").value) || 6), cghs: $("p7-cghs").checked };
+    var p = pay(o);
+    $("p7-gpf").disabled = o.pension !== "ops";
+    $("p7-net").textContent = r(p.net); $("p7-gross").textContent = r(p.gross);
+    var penName = o.pension === "ops" ? "GPF कटौती" : (o.pension === "ups" ? "UPS" : "NPS") + " कर्मचारी अंशदान";
+    var penHow = o.pension === "ops" ? o.gpf + "% बेसिक" : "10% (बेसिक + DA)";
+    var rows = [
+      ["बेसिक पे", "पे लेवल " + o.level, "+ " + r(o.basic)],
+      ["महंगाई भत्ता (DA)", o.da + "% बेसिक", "+ " + r(p.daAmt)],
+      ["मकान किराया भत्ता (HRA)", o.quarter ? "सरकारी आवास" : p.hraPct + "% बेसिक (" + o.city + ")", "+ " + r(p.hra)],
+      ["ट्रांसपोर्ट भत्ता (TA)", "लेवल और शहर के हिसाब से", "+ " + r(p.ta)],
+      ["TA पर DA", o.da + "% × TA", "+ " + r(p.taDa)],
+      ["कुल वेतन (Gross)", "", r(p.gross), 1],
+      [penName, penHow, "− " + r(p.pen)],
+      ["CGHS", o.cghs ? "लेवल के हिसाब से तय" : "नहीं जोड़ा", "− " + r(p.cghs)],
+      ["इन-हैंड सैलरी", "Gross − कटौती", r(p.net), 1]
+    ];
+    $("p7-rows").innerHTML = rows.map(function (x) { return '<tr' + (x[3] ? ' class="tot"' : "") + '><td>' + x[0] + '</td><td>' + x[1] + '</td><td class="r">' + x[2] + '</td></tr>'; }).join("");
+    $("p7-emp").textContent = p.govt ? "सरकार का अंशदान (" + (o.pension === "ups" ? "18.5%" : "14%") + " बेसिक + DA): " + r(p.govt) + " महीना, यह सीधे आपके PRAN खाते में जाता है और ऊपर के वेतन में नहीं जुड़ता।" : "पुरानी पेंशन में NPS कटौती नहीं होती; GPF में कम से कम 6% बेसिक जमा करना होता है।";
+    if (!sent) { sent = true; try { if (window.gtag) gtag("event", "tool_usage", { tool_name: "7th-pay-calculator" }); } catch (e) {} }
+  }
+  fillBasic(); calc();
+  lv.addEventListener("change", function () { fillBasic(); calc(); });
+  ["p7-basic", "p7-da", "p7-ta", "p7-pen", "p7-gpf", "p7-qtr", "p7-cghs"].forEach(function (id) { $(id).addEventListener("input", calc); $(id).addEventListener("change", calc); });
+  document.querySelectorAll('input[name="p7-hra"]').forEach(function (x) { x.addEventListener("change", calc); });
+  $("p7-share").addEventListener("click", function () {
+    var t = "मेरी 7वें वेतन आयोग सैलरी (अनुमान)\nलेवल " + lv.value + ", बेसिक " + r(Number(bs.value)) + "\nकुल वेतन: " + $("p7-gross").textContent + "\nइन-हैंड: " + $("p7-net").textContent + "\nअपनी सैलरी देखें: " + location.href;
+    window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(t), "_blank", "noopener");
+  });
+})();
+</script>

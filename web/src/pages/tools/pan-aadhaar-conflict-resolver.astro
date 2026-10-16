@@ -1,0 +1,174 @@
+---
+// PAN–Aadhaar link problem checker. Same URL and title as the old page; the
+// description drops "100% आधिकारिक" (we are a private site). The old tool only
+// compared names; this one also compares date of birth and gender, which the
+// e-filing portal also matches, and explains the likely fix.
+//
+// Facts used (checked Oct 2026):
+// - Fee for linking after the due date: up to ₹1,000 under section 234H
+//   (Income Tax Department FAQ, incometaxindia.gov.in/w/what-are-consequences-
+//   for-not-linking-pan-with-aadhaar-number). Paid on e-Pay Tax, Major Head 0021,
+//   Minor Head 500 (taxguru / gconnect FAQs on the portal's "Link Aadhaar" service).
+// - Unlinked PAN becomes inoperative: refunds not issued, no interest on refund
+//   for that period, TDS/TCS at higher rates (CBDT Circular 3/2023 as reported
+//   by taxmann/taxheal). Reactivated after linking (department FAQ; about 30 days).
+// - General deadline was 30 Jun 2023; for PANs allotted on Aadhaar enrolment
+//   ID before 1 Oct 2024 it was 31 Dec 2025 (businesstoday.in, 31 Dec 2025).
+// - Exempt: residents of Assam, J&K, Meghalaya, non-residents, people aged 80+
+//   and non-citizens (angelone.in, Jul 2026; department FAQ).
+// - Mismatch fix: correct PAN via Protean (NSDL) / UTIITSL, or Aadhaar via UIDAI.
+// Removed from the old page: the unrelated MPBCDC loan promo and the
+// unverified "₹50,000 transactions blocked" claim.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "पैन-आधार लिंक समस्या" }];
+const faq = [
+  { q: "पैन और आधार में नाम या जन्मतिथि अलग होने पर क्या करें?", a: "जिस कार्ड में गलती है, पहले उसे सुधारें। पैन में सुधार Protean (NSDL) या UTIITSL की वेबसाइट से होता है, आधार में सुधार myAadhaar पोर्टल या आधार सेवा केंद्र से। दोनों में नाम, जन्मतिथि और लिंग एक जैसे होने के बाद आयकर पोर्टल पर लिंक करें।" },
+  { q: "पैन-आधार लिंक करने की फीस कितनी है?", a: "तय तारीख के बाद लिंक करने पर धारा 234H के तहत ₹1,000 तक की फीस लगती है। यह e-Pay Tax सेवा से Major Head 0021 और Minor Head 500 चुनकर जमा होती है। भुगतान के कुछ दिन बाद 'Link Aadhaar' में जाकर लिंक करें।" },
+  { q: "पैन निष्क्रिय (Inoperative) होने से क्या नुकसान है?", a: "आयकर रिफंड नहीं मिलता, उस समय का रिफंड पर ब्याज भी नहीं मिलता, और TDS या TCS ऊंची दर से कट सकता है। लिंक होने के बाद पैन फिर से चालू हो जाता है।" },
+  { q: "किन लोगों को पैन-आधार लिंक करना ज़रूरी नहीं है?", a: "असम, जम्मू-कश्मीर और मेघालय के निवासी, अनिवासी भारतीय (NRI), 80 साल या उससे ज़्यादा उम्र के लोग और जो भारत के नागरिक नहीं हैं, उन्हें छूट है।" },
+  { q: "लिंकिंग स्टेटस कैसे चेक करें?", a: "आयकर ई-फाइलिंग पोर्टल (incometax.gov.in) के होम पेज पर 'Link Aadhaar Status' में अपना पैन और आधार नंबर डालकर स्टेटस देखें। इसके लिए लॉगिन ज़रूरी नहीं है।" },
+  { q: "शादी के बाद उपनाम बदला है तो क्या करें?", a: "पैन या आधार, जिसमें पुराना नाम है, उसमें विवाह प्रमाण पत्र या गजट नोटिफिकेशन लगाकर नाम बदलवाएं। दोनों में एक ही नाम होने के बाद लिंक करें।" },
+];
+---
+<Base title="PAN Aadhaar Link Conflict Resolver 2026 | SarkariSewa India" description="पैन-आधार लिंक समस्या समाधान 2026: नाम, जन्मतिथि मिसमैच सुधार, ₹1000 चालान फीस व इनऑपरेटिव पैन दोबारा चालू करने की पूरी प्रक्रिया आसान हिंदी में।" breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>पैन-आधार लिंक समस्या समाधान: नाम, जन्मतिथि मिसमैच और इनऑपरेटिव पैन</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">पैन-आधार तभी लिंक होता है जब दोनों में नाम, जन्मतिथि और लिंग मेल खाते हों। अगर गलती है तो पहले पैन (Protean / UTIITSL) या आधार (UIDAI) में सुधार करें। फिर आयकर पोर्टल पर ₹1,000 फीस भरकर लिंक करें; लिंक होने के बाद निष्क्रिय पैन फिर चालू हो जाता है।</p>
+      </section>
+
+      <section class="section pacalc" aria-labelledby="pa-title">
+        <h2 id="pa-title">🔍 पैन और आधार का विवरण मिलाएं</h2>
+        <div class="pa-grid">
+          <fieldset>
+            <legend>💳 पैन कार्ड पर</legend>
+            <label for="pa-pname">पूरा नाम</label>
+            <input type="text" id="pa-pname" autocomplete="off" placeholder="जैसे RAMESH KUMAR SHARMA" />
+            <label for="pa-pdob">जन्मतिथि</label>
+            <input type="date" id="pa-pdob" />
+            <label for="pa-pg">लिंग</label>
+            <select id="pa-pg"><option value="">-- चुनें --</option><option value="M">पुरुष</option><option value="F">महिला</option><option value="T">ट्रांसजेंडर</option></select>
+          </fieldset>
+          <fieldset>
+            <legend>🆔 आधार कार्ड पर</legend>
+            <label for="pa-aname">पूरा नाम</label>
+            <input type="text" id="pa-aname" autocomplete="off" placeholder="जैसे RAMESH SHARMA" />
+            <label for="pa-adob">जन्मतिथि</label>
+            <input type="date" id="pa-adob" />
+            <label for="pa-ag">लिंग</label>
+            <select id="pa-ag"><option value="">-- चुनें --</option><option value="M">पुरुष</option><option value="F">महिला</option><option value="T">ट्रांसजेंडर</option></select>
+          </fieldset>
+        </div>
+        <button type="button" class="cta" id="pa-go">जांचें</button>
+        <div id="pa-out" aria-live="polite"></div>
+        <p class="muted">आपका डाला विवरण सिर्फ आपके फोन/कंप्यूटर में जांचा जाता है, कहीं भेजा नहीं जाता।</p>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>पैन कार्ड और आधार कार्ड पर जैसा छपा है, वैसा ही नाम, जन्मतिथि और लिंग भरें।</li>
+          <li>"जांचें" दबाएं। टूल बताएगा कि कहां अंतर है और पहले क्या सुधारना है।</li>
+          <li>सब मेल खाता हो तो आयकर पोर्टल पर फीस भरकर लिंक करें।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="samadhan">
+        <h2>मुख्य समस्याएं और समाधान</h2>
+        <ul class="checklist">
+          <li><strong>नाम में छोटा अंतर (जैसे बीच का नाम या शुरुआती अक्षर):</strong> पोर्टल कई बार आधार OTP से आंशिक मिलान मान लेता है। लिंक न हो तो एक कार्ड में नाम सुधारें।</li>
+          <li><strong>नाम पूरी तरह अलग या शादी के बाद बदला उपनाम:</strong> पैन या आधार में नाम सुधार करवाना ही होगा।</li>
+          <li><strong>जन्मतिथि या लिंग अलग:</strong> लिंक नहीं होगा। जिस कार्ड में गलत है, उसे दस्तावेज़ (जैसे 10वीं की मार्कशीट, जन्म प्रमाण पत्र, पासपोर्ट) से सुधारें।</li>
+          <li><strong>₹1,000 फीस भरना:</strong> आयकर पोर्टल पर e-Pay Tax → Income Tax → Major Head 0021, Minor Head 500 (Other Receipts) चुनें। भुगतान दिखने में कुछ दिन लग सकते हैं।</li>
+          <li><strong>निष्क्रिय पैन दोबारा चालू:</strong> फीस भरकर लिंक करने के बाद पैन फिर चालू होता है। इसमें आम तौर पर लगभग 30 दिन लगते हैं।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="links">
+        <h2>ज़रूरी वेबसाइट</h2>
+        <ul class="checklist">
+          <li>पैन-आधार लिंक / स्टेटस: <a href="https://www.incometax.gov.in/" target="_blank" rel="noopener nofollow">incometax.gov.in</a></li>
+          <li>पैन में सुधार: <a href="https://www.protean-tinpan.com/" target="_blank" rel="noopener nofollow">Protean (NSDL)</a> या <a href="https://www.pan.utiitsl.com/" target="_blank" rel="noopener nofollow">UTIITSL</a></li>
+          <li>आधार में सुधार: <a href="https://myaadhaar.uidai.gov.in/" target="_blank" rel="noopener nofollow">myaadhaar.uidai.gov.in</a> (पता ऑनलाइन; नाम, जन्मतिथि, लिंग के लिए आम तौर पर आधार सेवा केंद्र जाना होता है)</li>
+          <li>पास का CSC केंद्र: <a href="/tools/csc-locator.html">CSC केंद्र खोजें</a></li>
+        </ul>
+        <p class="notice">यह एक निजी वेबसाइट है, सरकारी नहीं। फीस और तारीखें बदल सकती हैं; भुगतान से पहले आयकर पोर्टल पर पुष्टि करें।</p>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.pacalc .pa-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-bottom: 14px; }
+@media (min-width: 640px) { .pacalc .pa-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pacalc fieldset { border: 1px solid var(--c-line); border-radius: 12px; padding: 12px 14px; margin: 0; min-width: 0; }
+.pacalc legend { font-weight: 800; padding: 0 6px; color: var(--c-ink); }
+.pacalc label { display: block; font-weight: 700; font-size: .9rem; margin: 8px 0 4px; }
+.pacalc input, .pacalc select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.pacalc .cta { border: 0; cursor: pointer; font: inherit; font-weight: 800; }
+.pacalc .muted { color: var(--c-muted); font-size: .88rem; }
+.pa-res { margin-top: 16px; border-radius: 12px; padding: 14px; border-left: 4px solid var(--c-saffron); background: var(--c-saffron-50); }
+.pa-res.ok { border-color: var(--c-green); background: var(--c-green-50); }
+.pa-res.bad { border-color: var(--c-red); background: var(--c-red-50); }
+.pa-res h3 { margin: 0 0 8px; font-size: 1.05rem; }
+.pa-res ul { margin: 0 0 10px; padding-left: 1.2em; }
+.pa-res .pa-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.pa-res .pa-btns a { font-size: .92rem; }
+</style>
+
+<script is:inline>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function norm(s) { return (s || "").toUpperCase().replace(/[.,]/g, " ").replace(/\s+/g, " ").trim(); }
+  // "same" | "order" (same words, other order) | "partial" (missing middle name / initials) | "different"
+  function compareNames(a, b) {
+    a = norm(a); b = norm(b);
+    if (a === b) return "same";
+    var x = a.split(" "), y = b.split(" ");
+    if (x.slice().sort().join(" ") === y.slice().sort().join(" ")) return "order";
+    var short = x.length <= y.length ? x : y, long = short === x ? y : x;
+    var ok = short.every(function (w) {
+      return long.some(function (v) { return v === w || (w.length === 1 && v.charAt(0) === w) || (v.length === 1 && w.charAt(0) === v); });
+    });
+    return ok ? "partial" : "different";
+  }
+  var LINK = '<a class="cta" href="https://www.incometax.gov.in/" target="_blank" rel="noopener nofollow">आयकर पोर्टल पर लिंक करें ↗</a>';
+  var PAN = '<a class="cta secondary" href="https://www.protean-tinpan.com/" target="_blank" rel="noopener nofollow">पैन सुधार (Protean) ↗</a><a class="cta secondary" href="https://www.pan.utiitsl.com/" target="_blank" rel="noopener nofollow">पैन सुधार (UTIITSL) ↗</a>';
+  var UID = '<a class="cta secondary" href="https://myaadhaar.uidai.gov.in/" target="_blank" rel="noopener nofollow">आधार (UIDAI) ↗</a>';
+  $("pa-go").addEventListener("click", function () {
+    var out = $("pa-out"), pn = $("pa-pname").value, an = $("pa-aname").value;
+    if (!norm(pn) || !norm(an)) { out.innerHTML = '<p class="notice">दोनों कार्ड पर लिखा नाम भरें।</p>'; return; }
+    var nm = compareNames(pn, an), issues = [], hard = false;
+    var pd = $("pa-pdob").value, ad = $("pa-adob").value, pg = $("pa-pg").value, ag = $("pa-ag").value;
+    if (nm === "order") issues.push("नाम के शब्द वही हैं, पर क्रम अलग है। आधार OTP से लिंक हो सकता है; न हो तो एक कार्ड में क्रम सुधारें।");
+    if (nm === "partial") issues.push("नाम में छोटा अंतर है (बीच का नाम या शुरुआती अक्षर)। आधार OTP से आंशिक मिलान पर लिंक हो सकता है; न हो तो नाम सुधारें।");
+    if (nm === "different") { hard = true; issues.push('नाम में बड़ा अंतर है: पैन पर "' + esc(norm(pn)) + '", आधार पर "' + esc(norm(an)) + '"। पहले किसी एक कार्ड में नाम सुधारें।'); }
+    if (pd && ad && pd !== ad) { hard = true; issues.push("जन्मतिथि अलग है। जिस कार्ड में गलत है, उसे दस्तावेज़ से सुधारें। जन्मतिथि मेल न खाए तो लिंक नहीं होगा।"); }
+    if (pg && ag && pg !== ag) { hard = true; issues.push("लिंग अलग है। जिस कार्ड में गलत है, उसे सुधारें।"); }
+    var missing = (!pd || !ad || !pg || !ag) ? '<p class="muted">जन्मतिथि और लिंग भी भरें, तो जांच पूरी होगी।</p>' : "";
+    var cls, title, btns;
+    if (!issues.length) {
+      cls = "ok"; title = "✅ भरा गया विवरण मेल खाता है";
+      issues.push("आयकर पोर्टल पर 'Link Aadhaar' से लिंक करें। तय तारीख निकल चुकी है तो पहले ₹1,000 फीस (Major Head 0021, Minor Head 500) भरें।");
+      btns = LINK;
+    } else if (hard) {
+      cls = "bad"; title = "⚠️ पहले सुधार ज़रूरी है"; btns = PAN + UID;
+    } else {
+      cls = ""; title = "ℹ️ छोटा अंतर है"; btns = LINK + PAN + UID;
+    }
+    out.innerHTML = '<div class="pa-res ' + cls + '"><h3>' + title + '</h3><ul><li>' + issues.join("</li><li>") + '</li></ul>' + missing + '<div class="pa-btns">' + btns + '</div></div>';
+    try { if (window.gtag) gtag("event", "tool_usage", { tool: "pan_aadhaar_resolver", result: cls || "minor" }); } catch (e) {}
+  });
+})();
+</script>

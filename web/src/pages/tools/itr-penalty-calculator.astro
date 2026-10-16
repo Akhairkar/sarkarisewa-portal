@@ -1,0 +1,168 @@
+---
+// ITR late filing fee + interest estimator. Same URL, title and description
+// as the old page. Improvements: the delay is worked out from the due date and
+// the filing date (part of a month = full month), the unpaid tax is rounded
+// down to the nearest ₹100 as rule 119A requires, and "income below the basic
+// exemption" uses current limits.
+//
+// Rules used (checked Oct 2026):
+// - Late fee: section 234F of the Income-tax Act, 1961 (returns for
+//   FY 2025-26 / AY 2026-27 and earlier) and section 428 of the Income-tax
+//   Act, 2025 (from 1 Apr 2026, for tax year 2026-27 onward): ₹1,000 if total
+//   income does not exceed ₹5 lakh, ₹5,000 otherwise.
+//   https://www.incometaxindia.gov.in/w/section-428-6 (enacted text)
+// - Interest for late return: section 234A, simple interest 1% per month or
+//   part of a month on tax unpaid after TDS/TCS/advance tax, from the day
+//   after the due date to the date of filing.
+// - Due dates for AY 2026-27: 31 Jul 2026 (ITR-1/ITR-2, non-audit), 31 Aug
+//   2026 (ITR-3/ITR-4 non-audit, per Budget 2026 reports), 31 Oct 2026 (audit).
+//   Belated return: 31 Dec 2026. Sources: sahi.com/blogs/itr-penalties-late-filing-2026,
+//   swastika.co.in AY 2026-27 deadlines guide. Some sites say 31 Mar 2027 for
+//   belated returns; not verified from an official notification, so the page
+//   asks the reader to check the portal after 31 Dec.
+// - Basic exemption FY 2025-26: ₹4 lakh (new regime), ₹2.5/3/5 lakh (old regime
+//   by age).
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "ITR लेट फीस कैलकुलेटर" }];
+const faq = [
+  { q: "ITR देर से भरने पर कितनी लेट फीस लगती है?", a: "अगर कुल आय ₹5 लाख तक है तो ₹1,000 और ₹5 लाख से ज़्यादा है तो ₹5,000 लेट फीस लगती है। यह नियम 1961 के आयकर कानून की धारा 234F में था और 1 अप्रैल 2026 से लागू नए आयकर कानून 2025 की धारा 428 में भी यही राशि है।" },
+  { q: "क्या कम आय वालों को भी लेट फीस देनी होगी?", a: "अगर आपकी कुल आय टैक्स-फ्री सीमा (बेसिक छूट) से कम है और किसी और कारण से रिटर्न भरना ज़रूरी नहीं है, तो आम तौर पर लेट फीस नहीं लगती। FY 2025-26 में नई टैक्स व्यवस्था में यह सीमा ₹4 लाख है, पुरानी व्यवस्था में ₹2.5 लाख (60 साल से ऊपर ₹3 लाख, 80 साल से ऊपर ₹5 लाख)।" },
+  { q: "धारा 234A का ब्याज कैसे लगता है?", a: "रिटर्न देर से भरने पर बचे हुए टैक्स (TDS और एडवांस टैक्स घटाकर) पर हर महीने 1% साधारण ब्याज लगता है। महीने का कोई भी हिस्सा पूरा महीना गिना जाता है। ब्याज ड्यू डेट के अगले दिन से रिटर्न भरने की तारीख तक लगता है।" },
+  { q: "AY 2026-27 का बिलेटेड रिटर्न कब तक भर सकते हैं?", a: "FY 2025-26 (AY 2026-27) का बिलेटेड रिटर्न आम तौर पर 31 दिसंबर 2026 तक भरा जा सकता है। इसके बाद के विकल्प, जैसे अपडेटेड रिटर्न (ITR-U), के लिए आयकर पोर्टल या टैक्स सलाहकार से पुष्टि करें।" },
+  { q: "क्या यह गणना अंतिम है?", a: "नहीं, यह अनुमान है। सही राशि आयकर पोर्टल पर रिटर्न भरते समय तय होती है। अगर एडवांस टैक्स कम भरा है तो धारा 234B और 234C का ब्याज अलग से लग सकता है, जो इस टूल में शामिल नहीं है।" },
+];
+---
+<Base title="ITR Late Filing Fee & Penalty Calculator | SarkariSewa India" description="Check late filing penalty fee (₹1,000 / ₹5,000) under Section 234F and interest under 234A/B/C for delayed Income Tax Return filing." breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>ITR देर से भरने पर लेट फीस और ब्याज कैलकुलेटर</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">ड्यू डेट के बाद ITR भरने पर लेट फीस लगती है: कुल आय ₹5 लाख तक हो तो ₹1,000, उससे ज़्यादा हो तो ₹5,000। अगर टैक्स बाकी है तो उस पर हर महीने 1% ब्याज (धारा 234A) भी लगता है। FY 2025-26 का बिलेटेड रिटर्न आम तौर पर 31 दिसंबर 2026 तक भरा जा सकता है।</p>
+      </section>
+
+      <section class="section itrcalc" aria-labelledby="itr-title">
+        <h2 id="itr-title">🧮 लेट फीस और ब्याज निकालें</h2>
+        <div class="grid2">
+          <div>
+            <label for="itr-income">आपकी कुल टैक्स योग्य आय</label>
+            <select id="itr-income">
+              <option value="">-- चुनें --</option>
+              <option value="below">टैक्स-फ्री सीमा से कम (रिटर्न भरना ज़रूरी नहीं)</option>
+              <option value="upto5">₹5 लाख तक</option>
+              <option value="above5">₹5 लाख से ज़्यादा</option>
+            </select>
+          </div>
+          <div>
+            <label for="itr-tax">बाकी टैक्स (₹)</label>
+            <input type="number" id="itr-tax" min="0" inputmode="numeric" value="0" />
+            <span class="hint">TDS / एडवांस टैक्स से पूरा टैक्स कट चुका है तो 0 रहने दें।</span>
+          </div>
+          <div>
+            <label for="itr-due">आपकी ड्यू डेट (FY 2025-26)</label>
+            <select id="itr-due">
+              <option value="2026-07-31">31 जुलाई 2026 (ITR-1, ITR-2, ऑडिट नहीं)</option>
+              <option value="2026-08-31">31 अगस्त 2026 (ITR-3, ITR-4, ऑडिट नहीं)</option>
+              <option value="2026-10-31">31 अक्टूबर 2026 (ऑडिट वाले केस)</option>
+            </select>
+          </div>
+          <div>
+            <label for="itr-date">रिटर्न भरने की तारीख</label>
+            <input type="date" id="itr-date" />
+            <span class="hint">खाली छोड़ें तो आज की तारीख ली जाएगी।</span>
+          </div>
+        </div>
+        <button type="button" class="cta" id="itr-go">लेट फीस निकालें</button>
+        <div id="itr-out" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li><strong>आय चुनें:</strong> कुल टैक्स योग्य आय (छूट और कटौती के बाद) किस सीमा में है।</li>
+          <li><strong>बाकी टैक्स डालें:</strong> कुल टैक्स में से TDS, TCS और एडवांस टैक्स घटाकर जो बचा है।</li>
+          <li><strong>ड्यू डेट और भरने की तारीख चुनें:</strong> टूल देरी के महीने खुद गिन लेगा।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>नियम और फॉर्मूला</h2>
+        <ul class="checklist">
+          <li><strong>लेट फीस:</strong> कुल आय ₹5 लाख तक = ₹1,000; ₹5 लाख से ज़्यादा = ₹5,000। (1961 कानून की धारा 234F; नए आयकर कानून 2025 की धारा 428 में भी यही राशि।)</li>
+          <li><strong>धारा 234A ब्याज:</strong> बाकी टैक्स × 1% × देरी के महीने। महीने का कोई हिस्सा भी पूरा महीना गिना जाता है। ब्याज के लिए टैक्स को नीचे के ₹100 तक गोल किया जाता है।</li>
+          <li><strong>उदाहरण:</strong> ड्यू डेट 31 जुलाई, रिटर्न 5 सितंबर, बाकी टैक्स ₹20,050 → 2 महीने × 1% × ₹20,000 = ₹400 ब्याज।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>देर से रिटर्न भरने पर कुछ नुकसान (जैसे बिज़नेस या कैपिटल लॉस) अगले साल आगे नहीं ले जा सकते।</li>
+          <li>एडवांस टैक्स कम भरा हो तो धारा 234B / 234C का ब्याज अलग से लगता है; वह इस टूल में नहीं है।</li>
+          <li>लेट फीस और ब्याज रिटर्न भरने से पहले चालान से जमा करना होता है। आयकर पोर्टल: <a href="https://www.incometax.gov.in/" target="_blank" rel="noopener nofollow">incometax.gov.in</a></li>
+          <li>यह निजी वेबसाइट का अनुमान है, सरकारी गणना नहीं। अंतिम राशि आयकर पोर्टल पर तय होती है।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.itrcalc .grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px 14px; margin-bottom: 14px; }
+@media (min-width: 560px) { .itrcalc .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.itrcalc label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 4px; }
+.itrcalc input, .itrcalc select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.itrcalc .hint { display: block; font-size: .8rem; color: var(--c-muted); margin-top: 3px; }
+.itrcalc .cta { border: 0; cursor: pointer; font: inherit; font-weight: 800; }
+.itr-res { margin-top: 16px; border: 1px solid var(--c-line); border-radius: 12px; padding: 14px; background: var(--c-surface-2); }
+.itr-res div { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--c-line); }
+.itr-res div:last-of-type { border-bottom: 0; font-size: 1.15rem; }
+.itr-res .tot strong { color: var(--c-red); }
+.itr-res p { color: var(--c-muted); font-size: .9rem; margin: 8px 0 0; }
+</style>
+
+<script is:inline>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var inr = function (n) { return "₹" + Math.round(n).toLocaleString("en-IN"); };
+  // Months of delay: from the day after the due date to filing; any part month = 1.
+  function monthsLate(due, filed) {
+    if (filed <= due) return 0;
+    var m = (filed.getFullYear() - due.getFullYear()) * 12 + (filed.getMonth() - due.getMonth());
+    if (filed.getDate() > due.getDate()) m += 1;
+    return Math.max(m, 1);
+  }
+  function fee(slab) { return slab === "upto5" ? 1000 : slab === "above5" ? 5000 : 0; }
+  function interest234A(tax, months) { var t = Math.floor(Math.max(0, tax) / 100) * 100; return t * 0.01 * months; }
+  $("itr-go").addEventListener("click", function () {
+    var out = $("itr-out"), slab = $("itr-income").value;
+    if (!slab) { out.innerHTML = '<p class="notice">पहले अपनी आय की सीमा चुनें।</p>'; return; }
+    var dueStr = $("itr-due").value, due = new Date(dueStr + "T00:00:00");
+    var fv = $("itr-date").value, filed = fv ? new Date(fv + "T00:00:00") : new Date();
+    filed.setHours(0, 0, 0, 0);
+    var tax = parseFloat($("itr-tax").value) || 0;
+    var mon = monthsLate(due, filed);
+    var f = mon > 0 ? fee(slab) : 0, i = interest234A(tax, mon);
+    var note;
+    if (mon === 0) note = "आप ड्यू डेट तक रिटर्न भर रहे हैं, इसलिए लेट फीस और 234A ब्याज नहीं लगेगा।";
+    else if (slab === "below") note = "आय टैक्स-फ्री सीमा से कम है और रिटर्न भरना ज़रूरी नहीं है, तो आम तौर पर लेट फीस नहीं लगती।";
+    else if (slab === "upto5") note = "कुल आय ₹5 लाख से ज़्यादा नहीं है, इसलिए लेट फीस ₹1,000 है।";
+    else note = "कुल आय ₹5 लाख से ज़्यादा है, इसलिए लेट फीस ₹5,000 है।";
+    var late = filed > new Date("2026-12-31T00:00:00") ? '<p><strong>ध्यान दें:</strong> FY 2025-26 का बिलेटेड रिटर्न आम तौर पर 31 दिसंबर 2026 तक ही भरा जा सकता है। इसके बाद का विकल्प आयकर पोर्टल पर देखें।</p>' : "";
+    out.innerHTML = '<div class="itr-res"><div><span>देरी</span><strong>' + mon + ' महीने</strong></div>' +
+      '<div><span>लेट फीस (234F / 428)</span><strong>' + inr(f) + '</strong></div>' +
+      '<div><span>ब्याज (234A)</span><strong>' + inr(i) + '</strong></div>' +
+      '<div class="tot"><span>कुल अनुमानित राशि</span><strong>' + inr(f + i) + '</strong></div>' +
+      '<p>' + note + '</p>' + late + '<p>यह अनुमान है; अंतिम राशि आयकर पोर्टल पर तय होगी।</p></div>';
+    try { if (window.gtag) gtag("event", "tool_usage", { tool: "itr_penalty" }); } catch (e) {}
+  });
+})();
+</script>

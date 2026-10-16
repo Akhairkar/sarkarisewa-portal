@@ -14,7 +14,7 @@ export const JOBS: Job[] = [
   { slug: "ibps-po-mt-xvi-recruitment-2026-4455-posts", sector: "Banking", last: "2026-07-21" },
   { slug: "ibps-clerk-crp-csa-xvi-customer-service-associate-recruitment-2026-msa62jkl-0", sector: "Banking", last: "2026-08-21" },
   { slug: "isro-scientistengineer-recruitment-2026-mseotm9e-1", sector: "Scientific", last: "2026-08-17" },
-  { slug: "isro-recruitment-2026-assistant-udc-jpa-stenographer-244-posts-ms8e3oon-0", sector: "Scientific", last: "2026-08-16" },
+  { slug: "isro-recruitment-2026-assistant-udc-jpa-stenographer-244-posts-ms8e3oon-0", sector: "Scientific", last: "2026-08-20" },
   { slug: "rbi-grade-b-officer-recruitment-2026", sector: "Banking", last: "2026-05-20" },
   { slug: "rrb-section-controller-recruitment-2026-cen-032026-119-posts-ms8e3ooo-1", sector: "Railway", last: "2026-08-14" },
   { slug: "upsc-principal-vice-principal-recruitment-2026-delhi-education-dept-828-posts-ms8e3ooo-2", sector: "UPSC", last: "2026-08-14" },
