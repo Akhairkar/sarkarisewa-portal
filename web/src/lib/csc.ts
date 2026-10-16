@@ -194,6 +194,22 @@ export type CscPage = {
   canonical?: string; // main page when this one is a spelling variant
   stateDir: string; slug: string; rel: string; href: string; name: string;
   d: CscDistrict; pins: number; top: [string, number][]; lat: number; lng: number;
+  // Districts missing from csc_centers, filled from the Feb 2018 Maharashtra list
+  // (no PIN or map); the page lists every centre by taluka and says how old it is.
+  legacy?: { year: number; talukas: [string, { name: string; village: string; extra: string }[]][] };
+};
+
+// Maharashtra Transport Department PDF "Address of CSCs in Maharashtra"
+// (Feb 2018), parsed into data/csc-mh2018.json for the 14 districts that our
+// csc_centers import lacks. Rows are also in the table with csc_id "MH2018-<sr>".
+type Mh2018 = { sr: number; name: string; district: string; sub: string; village: string; extra: string };
+const MH2018: Mh2018[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "src/data/csc-mh2018.json"), "utf8"));
+// District headquarters (approximate), for the nearby-districts list only.
+const MH2018_HQ: Record<string, [number, number]> = {
+  Jalgaon: [21.007, 75.563], Jalna: [19.841, 75.886], Kolhapur: [16.705, 74.243], Latur: [18.408, 76.56],
+  Mumbai: [18.94, 72.835], "Mumbai Suburban": [19.12, 72.85], Nagpur: [21.146, 79.088], Nanded: [19.138, 77.321],
+  Nandurbar: [21.37, 74.24], Nashik: [19.997, 73.79], Osmanabad: [18.186, 76.042], Palghar: [19.697, 72.765],
+  Parbhani: [19.268, 76.77], Pune: [18.52, 73.856],
 };
 
 let _pages: CscPage[] | null = null;
@@ -226,6 +242,22 @@ export function cscPages(): CscPage[] {
         lat: main.lat, lng: main.lng,
       });
     }
+  }
+  for (const [district, [lat, lng]] of Object.entries(MH2018_HQ)) {
+    const slug = district.toLowerCase().replace(/\s+/g, "-");
+    if (out.some((p) => p.stateDir === "maharashtra" && p.slug === slug)) continue;
+    const rows = MH2018.filter((r) => r.district === district);
+    if (!rows.length) continue;
+    const by: Record<string, { name: string; village: string; extra: string }[]> = {};
+    for (const r of rows) (by[r.sub] ??= []).push({ name: r.name, village: r.village, extra: r.extra });
+    for (const l of Object.values(by)) l.sort((a, b) => a.village.localeCompare(b.village) || a.name.localeCompare(b.name));
+    const rel = `service/csc-locator/maharashtra/${slug}.html`;
+    out.push({
+      stateDir: "maharashtra", slug, rel, href: `/${rel}`, name: district,
+      d: { dbState: "MAHARASHTRA", names: [district], count: rows.length },
+      pins: 0, top: [], lat, lng,
+      legacy: { year: 2018, talukas: Object.entries(by).sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0])) },
+    });
   }
   // Spelling variants of one district point to the main page; city pages stay their own.
   const groups: Record<string, CscPage[]> = {};
