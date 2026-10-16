@@ -7,39 +7,52 @@
 // state's CSC list and the location-based locator.
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
 import { listings } from "../lib/csc-listings";
-import { STATES } from "../data/site";
+import { STATES, WHATSAPP_CHANNEL } from "../data/site";
 interface Props { state?: { slug: string; hi: string }; doc?: string; href?: string }
 const { state, doc, href } = Astro.props;
 const list = href || (state ? `/service/csc-locator/${state.slug}.html` : "/tools/csc-locator.html");
 // Version of the consent notice shown next to the send button; stored with
-// each request (v3: shorter notice; pressing the button is the consent).
-const CONSENT_V = "v3-2026-10";
+// each request (v3: shorter notice; pressing the button is the consent;
+// v4-info: states without a verified centre, where we only send the details
+// on WhatsApp and note the interest).
 // Whether any verified centre is listed in this state (at build time; the site
 // rebuilds every 2 hours). Without one, the thank-you message says so plainly
 // and points to the state's CSC list instead of promising a call.
 const key = (s: string | null | undefined) => String(s ?? "").toLowerCase().replace(/&|and|[^a-z]/g, "");
 const stateEn = state ? STATES.find((s) => s.slug === state.slug)?.name : undefined;
 const covered = !!stateEn && (await listings()).some((l) => key(l.state) === key(stateEn));
+const CONSENT_V = covered ? "v3-2026-10" : "v4-info-2026-10";
+const what = doc ? `${doc} बनवाने` : "यह काम करवाने";
 ---
 <section class="csc-help" aria-labelledby="csc-help-title">
-  <div class="svc-ask" data-url={SUPABASE_URL} data-key={SUPABASE_ANON_KEY} data-state={state?.hi ?? ""} data-service={doc ?? ""} data-consent={CONSENT_V} data-covered={covered ? "1" : "0"} data-list={list}>
-    <p class="csc-help-title" id="csc-help-title">📞 {doc ? `${doc} बनवाने` : "यह काम करवाने"} में मदद चाहिए?</p>
+  <div class="svc-ask" data-url={SUPABASE_URL} data-key={SUPABASE_ANON_KEY} data-state={state?.hi ?? ""} data-service={doc ?? ""} data-consent={CONSENT_V} data-covered={covered ? "1" : "0"} data-list={list} data-channel={WHATSAPP_CHANNEL}>
+    {covered ? (<>
+    <p class="csc-help-title" id="csc-help-title">📞 {what} में मदद चाहिए?</p>
     <p class="svc-q">अपना मोबाइल नंबर दें। आपके इलाके का भरोसेमंद CSC (जन सेवा केंद्र) वाला फोन या WhatsApp पर बात करेगा।</p>
     <ul class="svc-why">
       <li>✓ कौन से कागज़ लगेंगे, फोन पर ही पता चलेगा</li>
       <li>✓ कितना खर्च होगा, काम शुरू होने से पहले बताया जाएगा</li>
-      <li>✓ नंबर भेजना बिल्कुल मुफ़्त है</li>
+      <li>✓ नंबर भेजना बिल्कुल मुफ्त है</li>
     </ul>
+    </>) : (<>
+    <p class="csc-help-title" id="csc-help-title">📲 {what} की पूरी जानकारी WhatsApp पर चाहिए?</p>
+    <p class="svc-q">अपना मोबाइल नंबर दें। कौन से कागज़ लगेंगे, आवेदन कहां होगा और फीस कितनी है, यह हम WhatsApp पर भेज देंगे।</p>
+    <ul class="svc-why">
+      <li>✓ ज़रूरी कागज़ों की लिस्ट और आवेदन का तरीका</li>
+      <li>✓ आपके इलाके में भरोसेमंद CSC जुड़ते ही हम बताएंगे</li>
+      <li>✓ बिल्कुल मुफ्त</li>
+    </ul>
+    </>)}
     <form class="svc-form">
       <label class="svc-phone"><span>मोबाइल नंबर</span><input name="phone" type="tel" required inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10 अंक का नंबर" autocomplete="tel-national" /></label>
-      <button type="submit" class="cta">मुझे फोन करें</button>
+      <button type="submit" class="cta">{covered ? "मुझे फोन करें" : "WhatsApp पर जानकारी भेजें"}</button>
       <details class="svc-more">
         <summary>नाम, ज़िला या काम भी लिखें <small>(चाहें तो)</small></summary>
         <label>आपका नाम<input name="name" maxlength="60" autocomplete="name" /></label>
         <label>आपका ज़िला<input name="district" maxlength="60" /></label>
         <label>कौन सा काम करवाना है?<textarea name="details" rows="2" maxlength="400" placeholder={doc ? `जैसे: ${doc} नया बनवाना है, या स्टेटस देखना है` : "जैसे: नया आवेदन, सुधार, स्टेटस"}></textarea></label>
       </details>
-      <p class="svc-note">बटन दबाने पर आपका नंबर सिर्फ इसी काम के लिए एक भरोसेमंद CSC वाले को दिया जाएगा; 6 महीने बाद हटा दिया जाता है (<a href="/privacy-policy.html" target="_blank">गोपनीयता नीति</a>)। SarkariSewa India निजी सेवा है, सरकारी नहीं। किसी को OTP न बताएं।</p>
+      <p class="svc-note">{covered ? "बटन दबाने पर आपका नंबर सिर्फ इसी काम के लिए एक भरोसेमंद CSC वाले को दिया जाएगा" : "बटन दबाने पर आपका नंबर सिर्फ यह जानकारी भेजने और आपके इलाके में CSC जुड़ने पर बताने के लिए रखा जाएगा"}; 6 महीने बाद हटा दिया जाता है (<a href="/privacy-policy.html" target="_blank">गोपनीयता नीति</a>)। SarkariSewa India निजी सेवा है, सरकारी नहीं। किसी को OTP न बताएं।</p>
     </form>
     <p class="svc-msg" role="status"></p>
   </div>
@@ -77,13 +90,14 @@ const covered = !!stateEn && (await listings()).some((l) => key(l.state) === key
       var phone = f.phone.value.replace(/\D/g, "").slice(-10);
       if (!/^[6-9]\d{9}$/.test(phone)) { msg.textContent = "कृपया सही 10 अंकों का मोबाइल नंबर लिखें।"; f.phone.focus(); return; }
       btn.disabled = true; msg.textContent = "भेज रहे हैं…";
-      rpc("service_request_submit", { p_page: location.pathname, p_state: box.dataset.state || null, p_district: f.district.value, p_service: box.dataset.service || null, p_details: f.details.value, p_name: f.name.value, p_phone: phone, p_consent: true, p_consent_version: box.dataset.consent })
+      rpc("service_request_submit", { p_page: location.pathname, p_state: box.dataset.state || null, p_district: f.district.value, p_service: box.dataset.service || null, p_details: (box.dataset.covered === "1" ? "" : "[सिर्फ जानकारी] ") + f.details.value, p_name: f.name.value, p_phone: phone, p_consent: true, p_consent_version: box.dataset.consent })
         .then(function (r) { return r.ok ? r.json() : "error"; })
         .then(function (res) {
           if (res === "ok" || res === "dup") {
             form.hidden = true; box.querySelector(".svc-why").hidden = true; mark("sent");
-            if (box.dataset.covered === "1") msg.textContent = "✅ धन्यवाद! आपका नंबर मिल गया। CSC वाले से बात होते ही हम आपको फोन/WhatsApp करेंगे।";
-            else msg.innerHTML = "✅ आपका अनुरोध मिल गया।<br>अभी आपके इलाके में कोई सत्यापित CSC हमारे साथ नहीं जुड़ा है, इसलिए हो सकता है कि हम जल्दी संपर्क न कर पाएं। तब तक इस पेज पर बताए कागज़ लेकर नज़दीकी CSC पर जाएं: <a href=\"" + box.dataset.list + "\">नज़दीकी CSC सेंटर देखें</a>। आपके इलाके में CSC जुड़ते ही हम WhatsApp करेंगे।";
+            var join = "<a class=\"cta svc-join\" href=\"" + box.dataset.channel + "\" target=\"_blank\" rel=\"noopener\">WhatsApp चैनल जॉइन करें</a><br><small>नई योजनाएं, भर्ती और आखिरी तारीखें सबसे पहले।</small>";
+            if (box.dataset.covered === "1") msg.innerHTML = "✅ धन्यवाद! आपका नंबर मिल गया। CSC वाले से बात होते ही हम आपको फोन/WhatsApp करेंगे।<br>" + join;
+            else msg.innerHTML = "✅ धन्यवाद! आपका नंबर मिल गया। ज़रूरी जानकारी जल्द WhatsApp पर भेजेंगे। तब तक इस पेज पर बताए कागज़ तैयार रखें, या नज़दीकी CSC पर जाएं: <a href=\"" + box.dataset.list + "\">नज़दीकी CSC सेंटर देखें</a>।<br>" + join;
             try { if (window.gtag) gtag("event", "csc_service_request", { page: location.pathname }); } catch (e) {}
           } else {
             btn.disabled = false;

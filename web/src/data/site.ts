@@ -186,3 +186,8 @@ export const PAID_SERVICES: PaidService[] = [
   },
 ];
 
+
+// Official SarkariSewa channels (join links shown in the footer and after a
+// help request).
+export const WHATSAPP_CHANNEL = "https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g";
+export const TELEGRAM_CHANNEL = "https://t.me/sarkarisewaindia";
