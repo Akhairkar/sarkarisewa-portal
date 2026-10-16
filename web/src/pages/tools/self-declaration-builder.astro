@@ -1,0 +1,173 @@
+---
+// Self-declaration / hamipatra builder. Same URL, title and description.
+// Fixes from the old page: the "OBC-NCL" option had no template (it showed
+// the general one); the income declaration hard-coded "below ₹2,50,000" for
+// everyone, now the visitor enters their own income; place and date are
+// separate fields; user text is escaped; print prints only the declaration.
+// The old FAQ claimed the format was "fully valid under IT Act 2000" - removed.
+//
+// Facts used (checked Oct 2026):
+// - IBPS handwritten declaration text: "I, ___ (Name of the candidate),
+//   hereby declare that all the information submitted by me in the
+//   application form is correct, true and valid. I will present the
+//   supporting documents as and when required." (IBPS notifications).
+// - OBC creamy layer income limit ₹8 lakh a year (last revised 2017; govt
+//   told the parliamentary committee no revision is under consideration):
+//   visionias.in 2025-04-04, obcrights.org "creamy & non-creamy layer rules 2026".
+// - Majhi Ladki Bahin hamipatra: family income up to ₹2.5 lakh, no four-wheeler
+//   except tractor, not more than one unmarried woman in the family:
+//   sarkariyojana.com/ladli-behna-yojana-hamipatra, patrika.com 11 Jul 2026.
+//   Income-tax payer and government employee/pensioner exclusions are from
+//   the scheme GR (upstox.com eligibility article); not re-verified from a
+//   2026 GR, so the page asks users to prefer the official form.
+// - False declarations: section 229 Bharatiya Nyaya Sanhita, 2023 (false
+//   evidence) replaced IPC 193 from 1 Jul 2024; the page states this generally.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "स्व-घोषणा पत्र" }];
+const faq = [
+  { q: "स्व-घोषणा पत्र (Self-Declaration) क्या होता है?", a: "यह सादे कागज़ पर लिखा आपका अपना बयान है, जिसमें आप अपनी आय, पता या किसी शर्त के बारे में सच बताते हैं और नीचे हस्ताक्षर करते हैं। कई योजनाओं और फॉर्म में शपथ पत्र (affidavit) की जगह स्व-घोषणा मान ली जाती है।" },
+  { q: "क्या इसके लिए नोटरी या स्टांप पेपर चाहिए?", a: "आम स्व-घोषणा के लिए नोटरी या स्टांप पेपर नहीं चाहिए, सिर्फ आपके हस्ताक्षर काफी हैं। लेकिन अगर विभाग शपथ पत्र (affidavit) मांगे, तो वह स्टांप पेपर पर नोटरी या मजिस्ट्रेट से सत्यापित कराना होगा। विभाग का निर्देश ही अंतिम है।" },
+  { q: "क्या यहां बना घोषणा पत्र हर जगह मान्य होगा?", a: "यह एक आम नमूना है। अगर योजना या भर्ती ने अपना तय फॉर्मेट (प्रपत्र) दिया है, तो वही इस्तेमाल करें। यह वेबसाइट निजी है, सरकारी नहीं।" },
+  { q: "IBPS / बैंक परीक्षा की हस्तलिखित घोषणा कैसे बनाएं?", a: "इसे टाइप या प्रिंट नहीं करना है। सफेद कागज़ पर काली स्याही से अपनी हैंडराइटिंग में, अंग्रेज़ी में, बड़े अक्षरों (CAPITAL) में नहीं, लिखें, फिर स्कैन करके अपलोड करें। यह टूल सिर्फ सही शब्द दिखाता है ताकि आप देखकर लिख सकें।" },
+  { q: "गलत घोषणा करने पर क्या होता है?", a: "गलत जानकारी पाए जाने पर लाभ रद्द हो सकता है, लिया गया पैसा वसूला जा सकता है और भारतीय न्याय संहिता (BNS) के तहत झूठे बयान का मुकदमा भी हो सकता है। इसलिए सिर्फ सच लिखें।" },
+];
+---
+<Base title="Self Declaration Form Builder 2026 | SarkariSewa India" description="स्व-घोषणा पत्र व हमीपत्र जनरेटर 2026: सरकारी नौकरी, लाडकी बहीण, आय, OBC व IBPS परीक्षाओं के लिए 1-क्लिक में लीगल सेल्फ डिक्लेरेशन बनाएं और प्रिंट करें।" breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>स्व-घोषणा पत्र और हमीपत्र बनाएं (सरकारी नौकरी व योजनाओं के लिए)</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">घोषणा का प्रकार चुनें, अपना नाम, पिता/पति का नाम और पता भरें। नीचे तैयार घोषणा पत्र दिखेगा, जिसे प्रिंट करके हस्ताक्षर करें। अगर विभाग ने अपना फॉर्मेट दिया है तो वही इस्तेमाल करें; IBPS की घोषणा अपने हाथ से लिखनी होती है।</p>
+      </section>
+
+      <section class="section sdb" aria-labelledby="sd-title">
+        <h2 id="sd-title">📝 जानकारी भरें</h2>
+        <div class="grid2">
+          <div class="full">
+            <label for="sd-type">घोषणा का प्रकार</label>
+            <select id="sd-type">
+              <option value="general">सामान्य स्व-घोषणा (आवेदन की जानकारी सही है)</option>
+              <option value="income">पारिवारिक आय स्व-घोषणा</option>
+              <option value="obc">OBC नॉन-क्रीमी लेयर स्व-घोषणा</option>
+              <option value="ladki">माझी लाडकी बहीण हमीपत्र (मराठी)</option>
+              <option value="ibps">IBPS / बैंक परीक्षा हस्तलिखित घोषणा (English)</option>
+            </select>
+          </div>
+          <div><label for="sd-name">आवेदक का पूरा नाम</label><input type="text" id="sd-name" placeholder="जैसे राहुल शर्मा" autocomplete="name" /></div>
+          <div class="nf"><label for="sd-rel">संबंध</label><select id="sd-rel"><option value="पुत्र">पुत्र (S/o)</option><option value="पुत्री">पुत्री (D/o)</option><option value="पत्नी">पत्नी (W/o)</option></select></div>
+          <div class="nf"><label for="sd-father">पिता / पति का नाम</label><input type="text" id="sd-father" placeholder="जैसे सुरेश शर्मा" /></div>
+          <div class="nf full"><label for="sd-addr">पूरा पता (गांव/शहर, ज़िला, राज्य)</label><input type="text" id="sd-addr" placeholder="जैसे ग्राम रामपुर, ज़िला नागपुर, महाराष्ट्र" /></div>
+          <div class="only-income"><label for="sd-inc">परिवार की कुल सालाना आय (₹)</label><input type="number" id="sd-inc" min="0" inputmode="numeric" placeholder="जैसे 120000" /></div>
+          <div class="only-income"><label for="sd-src">आय के स्रोत</label><input type="text" id="sd-src" placeholder="जैसे खेती, मजदूरी" /></div>
+          <div class="only-obc"><label for="sd-caste">जाति / उपजाति</label><input type="text" id="sd-caste" placeholder="जैसे कुर्मी" /></div>
+          <div class="only-obc"><label for="sd-list">किस सूची में</label><select id="sd-list"><option value="केंद्र सरकार">केंद्र सरकार की OBC सूची</option><option value="राज्य सरकार">राज्य सरकार की OBC सूची</option></select></div>
+          <div><label for="sd-place">स्थान</label><input type="text" id="sd-place" placeholder="जैसे नागपुर" /></div>
+          <div><label for="sd-date">तारीख</label><input type="date" id="sd-date" /></div>
+        </div>
+
+        <div class="sd-paper" id="sd-preview" aria-live="polite"></div>
+        <div class="sd-btns">
+          <button type="button" class="cta" id="sd-print">🖨️ प्रिंट / PDF</button>
+          <button type="button" class="cta secondary" id="sd-copy">📋 टेक्स्ट कॉपी करें</button>
+          <span class="muted" id="sd-msg" role="status"></span>
+        </div>
+        <p class="muted">आपकी जानकारी सिर्फ आपके ब्राउज़र में रहती है, कहीं भेजी नहीं जाती।</p>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>घोषणा का प्रकार चुनें और खाली जगह भरें।</li>
+          <li>नीचे बना घोषणा पत्र ध्यान से पढ़ें। जो बात आप पर लागू नहीं होती, उस पर हस्ताक्षर न करें।</li>
+          <li>प्रिंट निकालें (या मोबाइल में "PDF के रूप में सेव" चुनें), हस्ताक्षर या अंगूठा लगाएं और फॉर्म के साथ जमा करें या स्कैन करके अपलोड करें।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li><strong>विभाग का फॉर्मेट पहले:</strong> लाडकी बहीण, छात्रवृत्ति या जाति प्रमाण पत्र जैसे कामों में अक्सर तय प्रपत्र होता है। वह मिले तो वही भरें।</li>
+          <li><strong>OBC नॉन-क्रीमी लेयर:</strong> केंद्र सरकार की नौकरी/दाखिले के लिए क्रीमी लेयर की आय सीमा ₹8 लाख सालाना है (वेतन और खेती की आय इसमें नहीं गिनी जाती)। स्व-घोषणा प्रमाण पत्र की जगह नहीं लेती; NCL प्रमाण पत्र तहसील/SDM से बनता है।</li>
+          <li><strong>लाडकी बहीण:</strong> परिवार की आय ₹2.5 लाख तक होनी चाहिए और ट्रैक्टर छोड़कर कोई चारपहिया वाहन नहीं होना चाहिए। शर्तें बदलती रहती हैं; आधिकारिक पोर्टल या नारी शक्ति दूत ऐप पर दिया हमीपत्र ही सबसे सही है।</li>
+          <li><strong>IBPS:</strong> घोषणा अपने हाथ से, काली स्याही से, अंग्रेज़ी में लिखें; टाइप की हुई या किसी और की लिखी घोषणा मान्य नहीं होती।</li>
+          <li><strong>सच ही लिखें:</strong> झूठी घोषणा पर लाभ रद्द और कानूनी कार्रवाई हो सकती है।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.sdb .grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; margin-bottom: 14px; }
+@media (min-width: 640px) { .sdb .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sdb .grid2 .full { grid-column: 1 / -1; } }
+.sdb label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: 4px; }
+.sdb input, .sdb select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.sdb [hidden] { display: none !important; }
+.sd-paper { background: #fff; color: #111; border: 1px solid var(--c-line); border-radius: 8px; padding: 20px 18px; line-height: 1.75; font-size: 1rem; overflow-wrap: anywhere; }
+.sd-paper h3 { text-align: center; font-size: 1.1rem; margin: 0 0 14px; color: #111; text-decoration: underline; }
+.sd-paper ol { padding-left: 1.3em; }
+.sd-paper .sd-sign { display: flex; justify-content: space-between; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
+.sd-paper .sd-sign div:last-child { text-align: right; margin-left: auto; }
+.sd-paper .sd-hand { font-size: .85rem; background: #fff7e6; border: 1px dashed #d97706; padding: 6px 10px; border-radius: 6px; margin-bottom: 10px; }
+.sdb .sd-btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+.sdb .cta { border: 0; cursor: pointer; font: inherit; font-weight: 800; }
+.sdb .muted { color: var(--c-muted); font-size: .88rem; }
+@media print {
+  body * { visibility: hidden !important; }
+  #sd-preview, #sd-preview * { visibility: visible !important; }
+  #sd-preview { position: absolute; left: 0; top: 0; width: 100%; border: 0; padding: 24px; font-size: 13pt; }
+  #sd-preview .sd-hand { display: none; }
+}
+</style>
+
+<script is:inline>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function v(id) { var x = ($(id).value || "").trim(); return x ? "<strong>" + esc(x) + "</strong>" : "__________"; }
+  function dmy() { var d = $("sd-date").value; return d ? d.split("-").reverse().join("/") : "__________"; }
+  function inr(n) { return "₹" + Number(n).toLocaleString("en-IN"); }
+  var relMr = { "पुत्र": "मुलगा", "पुत्री": "मुलगी", "पत्नी": "पत्नी" };
+  function sign(hi, who) { return '<div class="sd-sign"><div>' + hi[0] + ": " + dmy() + "<br>" + hi[1] + ": " + v("sd-place") + '</div><div>_______________________<br>' + who + "</div></div>"; }
+  function render() {
+    var t = $("sd-type").value, rel = $("sd-rel").value, h = "";
+    document.querySelectorAll(".sdb .only-income").forEach(function (e) { e.hidden = t !== "income"; });
+    document.querySelectorAll(".sdb .only-obc").forEach(function (e) { e.hidden = t !== "obc"; });
+    document.querySelectorAll(".sdb .nf").forEach(function (e) { e.hidden = t === "ibps"; });
+    var who = v("sd-name") + ", " + rel + " " + v("sd-father") + ", निवासी " + v("sd-addr");
+    if (t === "general") {
+      h = "<h3>स्व-घोषणा पत्र</h3><p>मैं, " + who + ", यह घोषणा करता/करती हूँ कि मेरे द्वारा आवेदन पत्र में दी गई सभी जानकारी और लगाए गए दस्तावेज़ मेरी जानकारी के अनुसार पूरी तरह सत्य और सही हैं। कोई जानकारी गलत पाए जाने पर मेरा आवेदन/लाभ रद्द किया जा सकता है और मैं कानूनी कार्रवाई के लिए स्वयं ज़िम्मेदार रहूँगा/रहूँगी।</p>" + sign(["दिनांक", "स्थान"], "आवेदक के हस्ताक्षर / अंगूठा");
+    } else if (t === "income") {
+      var inc = parseFloat($("sd-inc").value), src = ($("sd-src").value || "").trim();
+      h = "<h3>पारिवारिक आय स्व-घोषणा पत्र</h3><p>मैं, " + who + ", यह घोषणा करता/करती हूँ कि:</p><ol><li>मेरे परिवार की सभी स्रोतों से कुल सालाना आय " + (inc >= 0 && !isNaN(inc) ? "<strong>" + inr(inc) + "</strong>" : "₹__________") + " है।</li><li>आय के स्रोत: " + (src ? "<strong>" + esc(src) + "</strong>" : "__________") + "।</li><li>ऊपर दी गई जानकारी मेरी जानकारी के अनुसार सत्य है। गलत पाए जाने पर मिला लाभ वापस लिया जा सकता है और मैं कानूनी कार्रवाई के लिए ज़िम्मेदार रहूँगा/रहूँगी।</li></ol>" + sign(["दिनांक", "स्थान"], "आवेदक के हस्ताक्षर / अंगूठा");
+    } else if (t === "obc") {
+      h = "<h3>OBC नॉन-क्रीमी लेयर स्व-घोषणा पत्र</h3><p>मैं, " + who + ", यह घोषणा करता/करती हूँ कि:</p><ol><li>मैं " + v("sd-caste") + " जाति से हूँ, जो " + esc($("sd-list").value) + " की अन्य पिछड़ा वर्ग (OBC) सूची में शामिल है।</li><li>मैं क्रीमी लेयर में नहीं आता/आती हूँ। मेरे माता-पिता की आय लगातार तीन वर्षों में से किसी भी वर्ष में तय सीमा (वर्तमान में ₹8 लाख सालाना; वेतन और खेती की आय छोड़कर) से अधिक नहीं रही है।</li><li>मेरे पास जारी OBC नॉन-क्रीमी लेयर प्रमाण पत्र की स्थिति में कोई बदलाव होने पर मैं संबंधित विभाग को तुरंत सूचित करूँगा/करूँगी।</li><li>यह जानकारी सत्य है; गलत पाए जाने पर मेरा चयन/लाभ रद्द किया जा सकता है।</li></ol>" + sign(["दिनांक", "स्थान"], "आवेदक के हस्ताक्षर");
+    } else if (t === "ladki") {
+      var whoMr = v("sd-name") + ", " + (relMr[rel] || rel) + " " + v("sd-father") + ", रा. " + v("sd-addr");
+      h = "<h3>मुख्यमंत्री माझी लाडकी बहीण योजना - हमीपत्र</h3><p>मी, " + whoMr + ", याद्वारे घोषित करते की:</p><ol><li>माझ्या कुटुंबाचे सर्व मार्गांनी मिळणारे एकत्रित वार्षिक उत्पन्न ₹२.५ लाखांपेक्षा जास्त नाही.</li><li>माझ्या कुटुंबातील कोणताही सदस्य आयकरदाता नाही.</li><li>माझ्या कुटुंबातील कोणताही सदस्य नियमित / कायम सरकारी कर्मचारी किंवा निवृत्तीवेतनधारक नाही.</li><li>माझ्या किंवा माझ्या कुटुंबातील सदस्यांच्या नावावर चारचाकी वाहन (ट्रॅक्टर वगळून) नोंदणीकृत नाही.</li><li>माझ्या कुटुंबात एकापेक्षा जास्त अविवाहित महिलेने या योजनेचा लाभ घेतलेला नाही.</li></ol><p>वरील सर्व माहिती खरी आहे. ती खोटी आढळल्यास मिळालेला लाभ वसूल करण्यास व कायदेशीर कारवाईस मी पात्र राहीन.</p>" + sign(["दिनांक", "ठिकाण"], "अर्जदार महिलेची स्वाक्षरी / अंगठा");
+    } else {
+      var nm = ($("sd-name").value || "").trim();
+      h = '<p class="sd-hand">⚠️ इसे प्रिंट न करें। सफेद कागज़ पर काली स्याही से अपनी हैंडराइटिंग में (CAPITAL में नहीं) हूबहू लिखें।</p><p>I, ' + (nm ? esc(nm) : "__________") + ", hereby declare that all the information submitted by me in the application form is correct, true and valid. I will present the supporting documents as and when required.</p><p>(Signature)</p>";
+    }
+    $("sd-preview").innerHTML = h;
+  }
+  $("sd-date").valueAsDate = new Date();
+  document.querySelectorAll(".sdb input, .sdb select").forEach(function (e) { e.addEventListener("input", render); e.addEventListener("change", render); });
+  $("sd-print").onclick = function () { try { if (window.gtag) gtag("event", "tool_usage", { tool: "self_declaration", type: $("sd-type").value }); } catch (e) {} window.print(); };
+  $("sd-copy").onclick = function () {
+    var txt = $("sd-preview").innerText;
+    var ok = function () { $("sd-msg").textContent = "✅ कॉपी हो गया"; };
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(ok, function () { $("sd-msg").textContent = "कॉपी नहीं हुआ, टेक्स्ट चुनकर कॉपी करें।"; });
+  };
+  render();
+})();
+</script>

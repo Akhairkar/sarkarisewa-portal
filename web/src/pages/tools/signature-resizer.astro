@@ -1,0 +1,250 @@
+---
+// Signature resizer: crop (Cropper.js 1.6.1 from cdnjs, as before), rotate,
+// darken ink / clean background, resize to the preset's pixel size and
+// compress to the KB range. Runs fully in the browser; nothing is uploaded.
+// Same URL, title and description as the old page.
+//
+// Changes: the old page used canvas ctx.filter for contrast, which some
+// browsers (older Safari/iOS) ignore, so the "enhance" did nothing there; this
+// version changes the pixels directly. Presets now set the output pixel size
+// and a minimum KB (portals reject files under ~10 KB); rotate added.
+// Preset values are commonly published ones and differ by notification:
+// - SSC: 10-20 KB, 4.0 x 2.0 cm (pw.live SSC CGL photo & signature 2026)
+// - IBPS: 140 x 60 px, 10-20 KB, black ink on white paper
+//   (truejobs.co.in IBPS photo/signature 2026 guide)
+// - UPSC: 350 x 150 px, 20-100 KB (bharatnotes.com UPSC specs) - sources
+//   conflict, so the page says to check the notification.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "सिग्नेचर रिसाइज़र" }];
+const faq = [
+  { q: "सरकारी फॉर्म के लिए हस्ताक्षर का साइज क्या होता है?", a: "SSC और IBPS जैसी ज़्यादातर भर्तियों में हस्ताक्षर 10 से 20 KB में मांगा जाता है; IBPS में 140 x 60 पिक्सल। UPSC जैसी कुछ परीक्षाओं में साइज अलग होता है। अपनी भर्ती की अधिसूचना में दिया साइज ही अंतिम मानें।" },
+  { q: "क्या मेरा हस्ताक्षर किसी सर्वर पर जाता है?", a: "नहीं। काटना, गहरा करना और छोटा करना सब आपके फोन या कंप्यूटर के ब्राउज़र में होता है। फाइल कहीं अपलोड नहीं होती।" },
+  { q: "हस्ताक्षर किस पेन से करें?", a: "सफेद सादे कागज़ पर काले पेन से हस्ताक्षर करें (कुछ भर्तियों में नीला भी चलता है, अधिसूचना देखें)। कागज़ पर लाइनें न हों और फोटो साफ रोशनी में खींचें।" },
+  { q: "क्या CAPITAL अक्षरों में हस्ताक्षर कर सकते हैं?", a: "नहीं। ज़्यादातर भर्तियां बड़े अक्षरों (CAPITAL) में किए हस्ताक्षर को मान्य नहीं करतीं। वैसे ही हस्ताक्षर करें जैसे आप हमेशा करते हैं, क्योंकि परीक्षा केंद्र पर इनका मिलान होता है।" },
+  { q: "फाइल 10 KB से छोटी बन रही है तो क्या करें?", a: "टूल में चौड़ाई और ऊंचाई (px) थोड़ी बढ़ाएं और दोबारा बनाएं। छोटी तस्वीर कितनी भी अच्छी क्वालिटी में हो, KB कम ही रहता है।" },
+];
+---
+<Base title="Govt Exam Signature Resizer 2026: Compress to 10KB - 20KB Online" description="Free online signature compressor for SSC, IBPS, UPSC and Railway forms. Crop, enhance, and resize signature image to 10KB-20KB in 2 clicks." breadcrumbs={crumbs} faq={faq}>
+  <link slot="head" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>सिग्नेचर रिसाइज़र: हस्ताक्षर को 10KB - 20KB में बदलें</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">सफेद कागज़ पर काले पेन से किए हस्ताक्षर की फोटो चुनें, परीक्षा का प्रीसेट चुनें, सिर्फ हस्ताक्षर वाला हिस्सा काटें और "हस्ताक्षर तैयार करें" दबाएं। टूल स्याही गहरी करके फाइल को सही नाप और 10-20 KB जैसी सीमा में बदल देगा। सब कुछ आपके ब्राउज़र में होता है, कुछ अपलोड नहीं होता।</p>
+      </section>
+
+      <section class="section prs" aria-labelledby="sg-title">
+        <h2 id="sg-title">✍️ हस्ताक्षर तैयार करें</h2>
+        <p class="prs-safe">🔒 हस्ताक्षर आपके फोन/कंप्यूटर में ही प्रोसेस होता है, किसी सर्वर पर नहीं जाता।</p>
+
+        <label class="prs-drop" id="sg-drop" for="sg-file">
+          <span class="prs-drop-ico" aria-hidden="true">✍️</span>
+          <strong>हस्ताक्षर की फोटो चुनें या यहां खींचकर छोड़ें</strong>
+          <span class="muted">JPG, PNG, WebP</span>
+        </label>
+        <input type="file" id="sg-file" accept="image/jpeg,image/png,image/webp" class="sr-only" />
+
+        <div id="sg-work" hidden>
+          <div class="prs-crop"><img id="sg-img" alt="काटने के लिए चुना गया हस्ताक्षर" /></div>
+          <div class="prs-tools">
+            <button type="button" class="chip-btn" id="sg-rl">⟲ बाएं घुमाएं</button>
+            <button type="button" class="chip-btn" id="sg-rr">⟳ दाएं घुमाएं</button>
+            <button type="button" class="chip-btn" id="sg-change">✕ फोटो बदलें</button>
+          </div>
+
+          <fieldset class="prs-set">
+            <legend>परीक्षा प्रीसेट</legend>
+            <div class="prs-chips" id="sg-presets">
+              <button type="button" class="chip-btn on" data-w="280" data-h="140" data-min="10" data-max="20">SSC (4×2 cm)</button>
+              <button type="button" class="chip-btn" data-w="140" data-h="60" data-min="10" data-max="20">IBPS / बैंक (140×60)</button>
+              <button type="button" class="chip-btn" data-w="350" data-h="150" data-min="20" data-max="100">UPSC (350×150)</button>
+              <button type="button" class="chip-btn" data-w="0" data-h="0" data-min="10" data-max="20">अपना नाप</button>
+            </div>
+            <div class="prs-grid">
+              <div><label for="sg-w">चौड़ाई (px)</label><input type="number" id="sg-w" min="0" max="2000" inputmode="numeric" value="280" /></div>
+              <div><label for="sg-h">ऊंचाई (px)</label><input type="number" id="sg-h" min="0" max="2000" inputmode="numeric" value="140" /></div>
+              <div><label for="sg-min">कम से कम KB</label><input type="number" id="sg-min" min="0" max="500" inputmode="numeric" value="10" /></div>
+              <div><label for="sg-max">ज़्यादा से ज़्यादा KB</label><input type="number" id="sg-max" min="2" max="1000" inputmode="numeric" value="20" /></div>
+            </div>
+            <p class="muted">"अपना नाप" में चौड़ाई/ऊंचाई 0 रखें तो जितना काटा है उसी अनुपात में बनेगा (लंबी तरफ अधिकतम 600 px)।</p>
+          </fieldset>
+
+          <fieldset class="prs-set">
+            <legend>स्याही और बैकग्राउंड</legend>
+            <label for="sg-con">स्याही गहरी करें: <span id="sg-con-v">150%</span></label>
+            <input type="range" id="sg-con" min="100" max="300" value="150" class="sg-range" />
+            <label class="prs-check"><input type="checkbox" id="sg-white" checked /> बैकग्राउंड पूरा सफेद करें (मोबाइल फोटो की परछाईं हटाता है)</label>
+          </fieldset>
+
+          <button type="button" class="cta prs-go" id="sg-go">✂️ हस्ताक्षर तैयार करें</button>
+          <p class="muted" id="sg-wait" hidden>⏳ बन रहा है...</p>
+        </div>
+
+        <div class="prs-result" id="sg-result" hidden aria-live="polite">
+          <h3>✅ हस्ताक्षर तैयार है</h3>
+          <img id="sg-out" alt="तैयार हस्ताक्षर" />
+          <p class="prs-stats"><span id="sg-kb">-- KB</span> <span id="sg-dim">-- px</span></p>
+          <p class="notice" id="sg-warn" hidden></p>
+          <a class="cta" id="sg-dl" download="sarkarisewa_signature.jpg" href="#">⬇️ हस्ताक्षर डाउनलोड करें</a>
+        </div>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li><strong>हस्ताक्षर करें:</strong> सफेद सादे कागज़ पर काले पेन से, जैसा आप हमेशा करते हैं।</li>
+          <li><strong>फोटो खींचें:</strong> दिन की रोशनी में, ऊपर से सीधा, बिना परछाईं के।</li>
+          <li><strong>काटें:</strong> डिब्बे को सिर्फ हस्ताक्षर के चारों तरफ रखें, ज़्यादा खाली जगह न छोड़ें।</li>
+          <li><strong>तैयार करें और डाउनलोड करें।</strong> KB सीमा से बाहर हो तो नाप बदलकर दोबारा बनाएं।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="niyam">
+        <h2>आम तौर पर मांगा जाने वाला साइज</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>भर्ती</th><th>नाप</th><th>साइज</th></tr></thead>
+            <tbody>
+              <tr><td>SSC</td><td>लगभग 4.0 × 2.0 cm</td><td>10-20 KB</td></tr>
+              <tr><td>IBPS / बैंक</td><td>140 × 60 px</td><td>10-20 KB</td></tr>
+              <tr><td>UPSC</td><td>अधिसूचना देखें (स्रोतों में अलग-अलग)</td><td>अधिसूचना देखें</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted">हर भर्ती की अधिसूचना में साइज बदल सकता है; वही अंतिम मानें।</p>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>CAPITAL अक्षरों में हस्ताक्षर न करें; परीक्षा केंद्र पर हस्ताक्षर का मिलान होता है।</li>
+          <li>लाइन वाले या रंगीन कागज़ पर हस्ताक्षर न करें।</li>
+          <li>फोटो के लिए <a href="/tools/photo-resizer.html">फोटो रिसाइज़र</a> और दस्तावेज़ के लिए <a href="/tools/document-compressor.html">डॉक्यूमेंट कंप्रेसर</a> देखें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.prs .prs-safe { font-weight: 700; color: var(--c-green); background: var(--c-green-50); border-radius: 10px; padding: 8px 12px; font-size: .92rem; }
+.prs .prs-drop { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; padding: 28px 14px; border: 2px dashed var(--c-brand-100); border-radius: 14px; background: var(--c-brand-50); cursor: pointer; }
+.prs .prs-drop.over { border-color: var(--c-brand); }
+.prs .prs-drop-ico { font-size: 2.4rem; }
+.prs .prs-crop { max-height: 420px; background: var(--c-surface-2); border-radius: 10px; overflow: hidden; }
+.prs .prs-crop img { display: block; max-width: 100%; }
+.prs .prs-tools, .prs .prs-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.prs .chip-btn.on { background: var(--c-brand); color: #fff; border-color: var(--c-brand); }
+.prs .prs-set { border: 1px solid var(--c-line); border-radius: 12px; padding: 10px 14px; margin: 0 0 12px; min-width: 0; }
+.prs .prs-set legend { font-weight: 800; padding: 0 6px; }
+.prs .prs-set > label { display: block; font-weight: 700; font-size: .88rem; margin: 6px 0 4px; }
+.prs .prs-check { display: flex !important; gap: 8px; align-items: flex-start; cursor: pointer; }
+.prs .prs-check input { width: 18px; height: 18px; flex-shrink: 0; }
+.prs .sg-range { width: 100%; }
+.prs .prs-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; }
+.prs .prs-grid label { display: block; font-weight: 700; font-size: .85rem; margin-bottom: 3px; }
+.prs .prs-grid input { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.prs .muted { color: var(--c-muted); font-size: .88rem; }
+.prs .cta { border: 0; cursor: pointer; font: inherit; font-weight: 800; }
+.prs .prs-go { width: 100%; justify-content: center; }
+.prs .prs-result { margin-top: 16px; text-align: center; border: 1px solid var(--c-line); border-radius: 12px; padding: 14px; }
+.prs .prs-result h3 { margin-top: 0; }
+.prs .prs-result img { max-width: 100%; max-height: 200px; border: 1px solid var(--c-line); background: #fff; }
+.prs .prs-stats span { display: inline-block; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: var(--c-green-50); color: var(--c-green); margin: 4px; }
+.prs .prs-result .notice { text-align: left; }
+</style>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+<script is:inline>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var drop = $("sg-drop"), file = $("sg-file"), work = $("sg-work"), img = $("sg-img"), res = $("sg-result");
+  var cropper = null;
+  function ratio() { var w = +$("sg-w").value, h = +$("sg-h").value; return w > 0 && h > 0 ? w / h : NaN; }
+  function preview() {
+    var c = +$("sg-con").value; $("sg-con-v").textContent = c + "%";
+    var el = document.querySelector("#sg-work .cropper-canvas img");
+    if (el) el.style.filter = "grayscale(100%) contrast(" + c + "%) brightness(110%)";
+  }
+  function load(f) {
+    if (!f || !/^image\//.test(f.type)) { alert("कृपया JPG, PNG या WebP फोटो चुनें।"); return; }
+    if (cropper) { cropper.destroy(); cropper = null; }
+    img.onload = function () {
+      if (typeof Cropper === "undefined") { alert("क्रॉप टूल लोड नहीं हुआ। इंटरनेट जांचकर पेज दोबारा खोलें।"); return; }
+      cropper = new Cropper(img, { viewMode: 1, aspectRatio: ratio(), autoCropArea: 0.8, background: false, toggleDragModeOnDblclick: false, ready: preview });
+    };
+    img.src = URL.createObjectURL(f); drop.hidden = true; work.hidden = false; res.hidden = true;
+  }
+  file.addEventListener("change", function () { if (file.files[0]) load(file.files[0]); });
+  ["dragover", "dragenter"].forEach(function (e) { drop.addEventListener(e, function (ev) { ev.preventDefault(); drop.classList.add("over"); }); });
+  drop.addEventListener("dragleave", function () { drop.classList.remove("over"); });
+  drop.addEventListener("drop", function (ev) { ev.preventDefault(); drop.classList.remove("over"); if (ev.dataTransfer.files[0]) load(ev.dataTransfer.files[0]); });
+  $("sg-rl").onclick = function () { cropper && cropper.rotate(-90); };
+  $("sg-rr").onclick = function () { cropper && cropper.rotate(90); };
+  $("sg-change").onclick = function () { if (cropper) { cropper.destroy(); cropper = null; } file.value = ""; drop.hidden = false; work.hidden = true; res.hidden = true; };
+  $("sg-con").addEventListener("input", preview);
+  document.querySelectorAll("#sg-presets .chip-btn").forEach(function (b) {
+    b.onclick = function () {
+      document.querySelectorAll("#sg-presets .chip-btn").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      $("sg-w").value = b.dataset.w; $("sg-h").value = b.dataset.h; $("sg-min").value = b.dataset.min; $("sg-max").value = b.dataset.max;
+      if (cropper) cropper.setAspectRatio(ratio());
+    };
+  });
+  ["sg-w", "sg-h"].forEach(function (id) { $(id).addEventListener("change", function () { if (cropper) cropper.setAspectRatio(ratio()); }); });
+  // Grayscale + contrast + slight brightening, done on pixels so it works in every browser.
+  // whiteBg: pixels lighter than 200 after contrast become pure white.
+  function enhance(c, contrastPct, whiteBg) {
+    var x = c.getContext("2d"), d = x.getImageData(0, 0, c.width, c.height), p = d.data, k = contrastPct / 100;
+    for (var i = 0; i < p.length; i += 4) {
+      var g = 0.299 * p[i] + 0.587 * p[i + 1] + 0.114 * p[i + 2];
+      g = ((g - 128) * k + 128) * 1.1;
+      if (whiteBg && g > 200) g = 255;
+      g = g < 0 ? 0 : g > 255 ? 255 : g;
+      p[i] = p[i + 1] = p[i + 2] = g; p[i + 3] = 255;
+    }
+    x.putImageData(d, 0, 0);
+  }
+  function toBlob(c, q) { return new Promise(function (r) { c.toBlob(r, "image/jpeg", q); }); }
+  async function compress(c, maxBytes) {
+    var lo = 0.05, hi = 0.95, best = null, top = await toBlob(c, hi);
+    if (top.size <= maxBytes) return top;
+    for (var i = 0; i < 9; i++) {
+      var q = (lo + hi) / 2, b = await toBlob(c, q);
+      if (b.size <= maxBytes) { best = b; lo = q; } else hi = q;
+    }
+    return best || toBlob(c, 0.05);
+  }
+  $("sg-go").addEventListener("click", async function () {
+    if (!cropper) return;
+    var btn = this; btn.disabled = true; $("sg-wait").hidden = false;
+    try {
+      var tw = +$("sg-w").value, th = +$("sg-h").value, src = cropper.getCroppedCanvas({ fillColor: "#fff", imageSmoothingQuality: "high" });
+      if (!(tw > 0 && th > 0)) { var s = Math.min(1, 600 / Math.max(src.width, src.height)); tw = Math.round(src.width * s); th = Math.round(src.height * s); }
+      var c = document.createElement("canvas"); c.width = tw; c.height = th;
+      var cx = c.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, tw, th); cx.imageSmoothingQuality = "high"; cx.drawImage(src, 0, 0, tw, th);
+      enhance(c, +$("sg-con").value, $("sg-white").checked);
+      var minKb = +$("sg-min").value || 0, maxKb = +$("sg-max").value || 20;
+      var blob = await compress(c, maxKb * 1024), kb = blob.size / 1024, warn = "";
+      if (kb > maxKb) warn = "फाइल " + maxKb + " KB से छोटी नहीं हो पाई। चौड़ाई/ऊंचाई थोड़ी कम करके दोबारा बनाएं।";
+      else if (kb < minKb) warn = "सबसे अच्छी क्वालिटी पर भी फाइल " + kb.toFixed(1) + " KB है, जो " + minKb + " KB से कम है। चौड़ाई/ऊंचाई (px) बढ़ाकर दोबारा बनाएं, या देखें कि अधिसूचना में कम से कम KB की शर्त है या नहीं।";
+      var url = URL.createObjectURL(blob);
+      $("sg-out").src = url; $("sg-dl").href = url;
+      $("sg-kb").textContent = kb.toFixed(1) + " KB"; $("sg-dim").textContent = tw + " × " + th + " px";
+      $("sg-warn").textContent = warn; $("sg-warn").hidden = !warn;
+      res.hidden = false; res.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      try { if (window.gtag) gtag("event", "tool_usage", { tool: "signature_resizer", kb: Math.round(kb) }); } catch (e) {}
+    } catch (e) { alert("हस्ताक्षर बनाने में दिक्कत आई। दोबारा कोशिश करें।"); }
+    btn.disabled = false; $("sg-wait").hidden = true;
+  });
+})();
+</script>

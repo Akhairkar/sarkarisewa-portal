@@ -1,0 +1,200 @@
+---
+// Application status troubleshooter: pick the scheme and the problem, get the
+// likely reason, fix steps and where to complain. Same URL and title; the
+// description drops "लाइव" (the tool does not fetch live status).
+// All answers are rendered as HTML (readable without JS); the script only
+// shows the chosen one.
+//
+// Facts updated (checked Oct 2026):
+// - PM-KISAN: eKYC mandatory (OTP on portal, biometric at CSC, face auth in
+//   app); land seeding is done by the state from land records; helpline
+//   155261 / 011-24300606 (pmkisan.gov.in). Old page linked the UP-only
+//   Bhulekh site for everyone - removed.
+// - EPFO: since Apr 2025 no cheque-leaf/passbook upload for online claims and
+//   no employer approval for bank seeding (PIB release, labour.gov.in/sites/
+//   default/files/pib2118168.pdf; business-standard.com 4 Apr 2025). Old page
+//   told users to upload passbook and get employer approval - fixed.
+// - Aadhaar bank seeding status: myAadhaar portal (old link
+//   resident.uidai.gov.in/bank-mapper is the retired portal).
+// - Removed unverified claims: "IPPB account auto-maps DBT in 24 hours",
+//   "15-20 days and all past installments together".
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+type Fix = { id: string; title: string; why: string; steps: string[]; links: [string, string][] };
+const ext = (u: string) => /^https?:/.test(u);
+const cats: { id: string; name: string; items: Fix[] }[] = [
+  { id: "pmkisan", name: "PM किसान सम्मान निधि", items: [
+    { id: "ekyc", title: "eKYC पूरी नहीं (eKYC: No)", why: "PM-KISAN में eKYC अनिवार्य है। eKYC न होने पर किस्त रुक जाती है।",
+      steps: ["pmkisan.gov.in पर 'e-KYC' में आधार नंबर डालकर आधार से जुड़े मोबाइल पर आए OTP से eKYC करें।", "मोबाइल आधार से नहीं जुड़ा है तो नज़दीकी CSC केंद्र पर अंगूठा लगाकर (बायोमेट्रिक) eKYC कराएं, या PM-KISAN ऐप में चेहरे से (Face Authentication) करें।", "कुछ दिन बाद 'Know Your Status' में eKYC की स्थिति देखें।"],
+      links: [["https://pmkisan.gov.in/", "PM-KISAN पोर्टल"], ["/tools/csc-locator.html", "नज़दीकी CSC केंद्र"]] },
+    { id: "land", title: "Land Seeding: No", why: "आपकी ज़मीन का रिकॉर्ड PM-KISAN पंजीकरण से नहीं जुड़ा है। यह काम राज्य सरकार ज़मीन के रिकॉर्ड से करती है।",
+      steps: ["खतौनी/7-12/जमाबंदी जैसी ज़मीन की नकल और आधार की कॉपी लें।", "अपने पटवारी/लेखपाल/तलाठी या प्रखंड/तहसील के कृषि कार्यालय में जाकर लैंड सीडिंग के लिए कहें।", "सुधार के बाद 'Know Your Status' में Land Seeding 'Yes' दिखना चाहिए।"],
+      links: [["https://pmkisan.gov.in/", "PM-KISAN पोर्टल"], ["/service/pm-kisan.html", "PM किसान पूरी जानकारी"]] },
+    { id: "bank", title: "आधार-बैंक सीडिंग नहीं / पैसा नहीं आया", why: "किस्त उसी बैंक खाते में आती है जो आधार से DBT के लिए जुड़ा (NPCI पर सीडेड) है। खाता बंद, बदला हुआ या सीडेड न हो तो पैसा अटक जाता है।",
+      steps: ["myAadhaar पोर्टल पर लॉगिन करके 'Bank Seeding Status' देखें कि आधार किस बैंक से जुड़ा है।", "अपने बैंक में जाकर आधार सीडिंग (DBT/NPCI मैपिंग) का फॉर्म भरें, या इंडिया पोस्ट पेमेंट्स बैंक (IPPB) में आधार से जुड़ा खाता खुलवाएं।", "फिर भी पैसा न आए तो PM-KISAN हेल्पलाइन 155261 या 011-24300606 पर बात करें।"],
+      links: [["https://myaadhaar.uidai.gov.in/", "myAadhaar (बैंक सीडिंग स्टेटस)"], ["https://pmkisan.gov.in/", "PM-KISAN पोर्टल"]] },
+  ] },
+  { id: "ladki", name: "माझी लाडकी बहीण (महाराष्ट्र)", items: [
+    { id: "money", title: "मंज़ूरी के बाद भी पैसा नहीं आया", why: "पैसा आधार से जुड़े (DBT सीडेड) बैंक खाते में आता है। eKYC अधूरी हो या खाता आधार से न जुड़ा हो तो किस्त रुक सकती है।",
+      steps: ["योजना के पोर्टल या नारी शक्ति दूत ऐप पर अपने आवेदन की स्थिति और eKYC देखें।", "बैंक जाकर पक्का करें कि खाता आपके अपने नाम पर है और आधार से DBT के लिए जुड़ा है।", "आंगनवाड़ी सेविका, सेतु सुविधा केंद्र या वार्ड/तालुका कार्यालय से संपर्क करें।"],
+      links: [["/service/mh-ladki-bahin-yojana.html", "लाडकी बहीण योजना जानकारी"], ["https://myaadhaar.uidai.gov.in/", "myAadhaar (बैंक सीडिंग स्टेटस)"]] },
+    { id: "reject", title: "आवेदन अपात्र / रिजेक्ट", why: "जांच में परिवार की आय, चारपहिया वाहन, सरकारी नौकरी या दूसरी योजना का लाभ जैसी शर्त पूरी न होने पर आवेदन अपात्र हो सकता है।",
+      steps: ["पोर्टल/ऐप में रिजेक्शन का कारण पढ़ें।", "अगर कारण गलत है (जैसे नाम या आय की गलती), तो सही दस्तावेज़ लेकर तालुका/वार्ड कार्यालय में शिकायत या सुधार का अनुरोध दें।", "शर्तें बदलती रहती हैं; ताज़ा शर्तें आधिकारिक पोर्टल पर देखें।"],
+      links: [["/service/mh-ladki-bahin-yojana.html", "लाडकी बहीण योजना जानकारी"]] },
+  ] },
+  { id: "ration", name: "राशन कार्ड / e-KYC", items: [
+    { id: "ekyc", title: "राशन कार्ड e-KYC बाकी", why: "राशन कार्ड के हर सदस्य का आधार से बायोमेट्रिक सत्यापन (e-KYC) ज़रूरी है। e-KYC न हो तो उस सदस्य का राशन रुक सकता है या नाम कट सकता है।",
+      steps: ["सभी सदस्य आधार लेकर अपनी राशन दुकान (उचित मूल्य दुकान) पर जाएं।", "ई-पॉस मशीन पर अंगूठा लगाकर e-KYC कराएं। अंगूठा न लगे तो आधार केंद्र पर बायोमेट्रिक अपडेट कराएं।", "कई राज्यों में खाद्य विभाग के पोर्टल/ऐप पर भी e-KYC की स्थिति दिखती है।"],
+      links: [["/service/ration-card.html", "राशन कार्ड पूरी जानकारी"]] },
+    { id: "name", title: "सदस्य का नाम कट गया / जोड़ना है", why: "e-KYC न होने, मृत्यु/स्थानांतरण की गलत एंट्री या दोहराव की जांच में नाम कट सकता है।",
+      steps: ["राज्य के खाद्य एवं आपूर्ति पोर्टल पर 'सदस्य जोड़ें' का आवेदन करें या आपूर्ति कार्यालय/तहसील में फॉर्म दें।", "आधार, जन्म प्रमाण पत्र (बच्चे के लिए) या विवाह प्रमाण पत्र (बहू के लिए) लगाएं।", "आवेदन की रसीद संभालकर रखें।"],
+      links: [["/service/ration-card.html", "राशन कार्ड पूरी जानकारी"], ["/tools/document-checklist.html", "दस्तावेज़ चेकलिस्ट"]] },
+  ] },
+  { id: "scholarship", name: "छात्रवृत्ति (NSP / राज्य)", items: [
+    { id: "notreceived", title: "मंज़ूर हो गई पर खाते में नहीं आई", why: "छात्रवृत्ति आम तौर पर आधार से जुड़े (DBT सीडेड) खाते में भेजी जाती है। वह आपका पुराना या दूसरा खाता हो सकता है।",
+      steps: ["myAadhaar पोर्टल पर 'Bank Seeding Status' देखें कि आधार किस बैंक से जुड़ा है, और उस खाते की पासबुक देखें।", "PFMS पोर्टल पर 'Know Your Payments' में भुगतान की स्थिति देखें।", "संस्थान के नोडल अधिकारी या NSP हेल्पडेस्क से संपर्क करें।"],
+      links: [["https://myaadhaar.uidai.gov.in/", "myAadhaar (बैंक सीडिंग स्टेटस)"], ["https://pfms.nic.in/", "PFMS पोर्टल"], ["/service/national-scholarship-portal.html", "NSP जानकारी"]] },
+    { id: "defect", title: "आवेदन Defective / संस्थान स्तर पर पेंडिंग", why: "संस्थान (कॉलेज/स्कूल) को आपका आवेदन जांचकर आगे भेजना होता है। गलत दस्तावेज़ या जानकारी पर आवेदन लौटाया जाता है।",
+      steps: ["पोर्टल पर लौटाने का कारण पढ़ें और तय तारीख से पहले सुधार करें।", "संस्थान के नोडल अधिकारी से मिलकर सत्यापन करवाएं।", "आय, जाति और बैंक विवरण उसी नाम से हों जो आधार में है।"],
+      links: [["/service/national-scholarship-portal.html", "NSP जानकारी"]] },
+  ] },
+  { id: "certificate", name: "जाति / आय / निवास प्रमाण पत्र", items: [
+    { id: "reject", title: "प्रमाण पत्र का आवेदन रिजेक्ट", why: "अधूरे दस्तावेज़, पते या नाम में अंतर, या जांच अधिकारी (पटवारी/लेखपाल/तलाठी) की प्रतिकूल रिपोर्ट।",
+      steps: ["पोर्टल से रिजेक्शन का कारण/आदेश डाउनलोड करें।", "जाति प्रमाण पत्र के लिए पिता या परिवार का पुराना प्रमाण पत्र या पुराने राजस्व रिकॉर्ड लगाएं; आय के लिए वेतन पर्ची, ITR या स्व-घोषणा।", "सही दस्तावेज़ के साथ दोबारा आवेदन करें, या राज्य के सेवा का अधिकार (लोक सेवा गारंटी) कानून के तहत अपील करें।"],
+      links: [["/tools/document-checklist.html", "दस्तावेज़ चेकलिस्ट"], ["/tools/self-declaration-builder.html", "स्व-घोषणा पत्र बनाएं"]] },
+    { id: "pending", title: "तय समय से ज़्यादा 'Under Process'", why: "ज़्यादातर राज्यों में ऐसे प्रमाण पत्रों के लिए सेवा का अधिकार कानून में समय-सीमा तय है। उसके बाद भी काम न हो तो अपील की जा सकती है।",
+      steps: ["आवेदन की रसीद पर लिखी समय-सीमा देखें।", "समय निकल जाने पर उसी पोर्टल पर या तहसील/SDM कार्यालय में प्रथम अपील दें।", "राज्य की मुख्यमंत्री हेल्पलाइन/शिकायत पोर्टल पर भी शिकायत कर सकते हैं।"],
+      links: [["/tools/csc-locator.html", "नज़दीकी CSC केंद्र"]] },
+  ] },
+  { id: "exam", name: "सरकारी नौकरी / परीक्षा फॉर्म", items: [
+    { id: "fee", title: "फीस कट गई पर फॉर्म पेंडिंग", why: "भुगतान बैंक और आयोग के सर्वर के बीच अटक गया है। असफल लेनदेन का पैसा बैंक तय दिनों में अपने आप लौटाता है।",
+      steps: ["तुरंत दोबारा भुगतान न करें, पैसा दो बार कट सकता है।", "1-2 दिन बाद पोर्टल पर भुगतान की स्थिति दोबारा देखें (कई पोर्टल पर 'Verify Payment' का बटन होता है)।", "फिर भी पेंडिंग हो तो लेनदेन ID/UTR के साथ आयोग के हेल्पडेस्क को ईमेल करें, और पैसा न लौटे तो अपने बैंक में शिकायत करें।"],
+      links: [] },
+    { id: "photo", title: "फोटो / हस्ताक्षर रिजेक्ट", why: "फोटो या हस्ताक्षर का साइज, नाप या साफ़ी अधिसूचना के अनुसार नहीं है।",
+      steps: ["अधिसूचना में फोटो/हस्ताक्षर का KB और नाप देखें।", "हमारे टूल से सही साइज में बनाएं (सब कुछ आपके ब्राउज़र में होता है)।", "सुधार की तारीखों (correction window) में दोबारा अपलोड करें।"],
+      links: [["/tools/photo-resizer.html", "फोटो रिसाइज़र"], ["/tools/signature-resizer.html", "सिग्नेचर रिसाइज़र"]] },
+  ] },
+  { id: "epf", name: "EPFO PF क्लेम", items: [
+    { id: "bank", title: "क्लेम रिजेक्ट: बैंक विवरण / KYC", why: "UAN से जुड़ा बैंक खाता बंद है, IFSC बदल गया है या नाम मेल नहीं खाता।",
+      steps: ["UAN मेंबर पोर्टल पर 'Manage → KYC' में सही बैंक खाता जोड़ें। अप्रैल 2025 से इसके लिए नियोक्ता (employer) की मंज़ूरी ज़रूरी नहीं है।", "ऑनलाइन क्लेम में अब चेक या पासबुक की फोटो लगाना ज़रूरी नहीं है।", "बैंक सत्यापन पूरा होने के बाद नया क्लेम डालें।"],
+      links: [["/service/epfo.html", "EPFO पूरी जानकारी"], ["https://epfigms.gov.in/", "EPFiGMS शिकायत पोर्टल"]] },
+    { id: "doe", title: "क्लेम रिजेक्ट: Date of Exit / नाम-जन्मतिथि मेल नहीं", why: "नौकरी छोड़ने की तारीख दर्ज नहीं है, या EPFO रिकॉर्ड में नाम/जन्मतिथि आधार से अलग है।",
+      steps: ["नौकरी छोड़े 2 महीने हो गए हों तो मेंबर पोर्टल पर खुद Date of Exit दर्ज कर सकते हैं (या नियोक्ता से करवाएं)।", "नाम/जन्मतिथि सुधार के लिए मेंबर पोर्टल पर प्रोफाइल सुधार (Joint Declaration) का अनुरोध करें।", "सुधार होने के बाद नया क्लेम डालें। समस्या बनी रहे तो EPFiGMS पर शिकायत करें।"],
+      links: [["https://epfigms.gov.in/", "EPFiGMS शिकायत पोर्टल"], ["/tools/epf-calculator.html", "EPF कैलकुलेटर"]] },
+  ] },
+];
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "आवेदन स्टेटस समाधान" }];
+const faq = [
+  { q: "यह टूल क्या करता है?", a: "आप योजना और समस्या चुनते हैं, टूल उसका आम कारण, सुधार के कदम और सही पोर्टल/शिकायत की जगह बताता है। यह आपके आवेदन का असली स्टेटस नहीं देखता; उसके लिए संबंधित पोर्टल पर जाएं।" },
+  { q: "प्रमाण पत्र तय समय से ज़्यादा दिन से 'Under Process' है तो क्या करें?", a: "ज़्यादातर राज्यों में सेवा का अधिकार (लोक सेवा गारंटी) कानून में समय-सीमा तय है। समय निकल जाने पर उसी पोर्टल पर या तहसील/SDM कार्यालय में प्रथम अपील करें।" },
+  { q: "PM किसान की हेल्पलाइन क्या है?", a: "PM-KISAN हेल्पलाइन 155261 और 011-24300606 है। 155261 पर फोन से भी स्टेटस पता किया जा सकता है।" },
+  { q: "केंद्र सरकार के विभाग की शिकायत कहां करें?", a: "केंद्र सरकार के विभागों की शिकायत CPGRAMS पोर्टल (pgportal.gov.in) पर दर्ज कर सकते हैं। राज्य के कामों के लिए राज्य का शिकायत पोर्टल या मुख्यमंत्री हेल्पलाइन बेहतर है।" },
+  { q: "RTI से अटके आवेदन की जानकारी कैसे लें?", a: "संबंधित विभाग के लोक सूचना अधिकारी को RTI आवेदन देकर पूछ सकते हैं कि आवेदन किस अधिकारी के पास कब से है और देरी का कारण क्या है। केंद्र सरकार के विभागों के लिए rtionline.gov.in पर ऑनलाइन RTI होती है।" },
+];
+---
+<Base title="Govt Scheme Application Status | SarkariSewa India" description="सरकारी योजना, राशन कार्ड, छात्रवृत्ति या परीक्षा फॉर्म अटक गया है? स्टेटस ट्रबलशूटर से रिजेक्शन का कारण, समाधान और आधिकारिक शिकायत लिंक 2026 पाएं।" breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>सरकारी आवेदन अटका या रिजेक्ट हुआ? कारण और समाधान</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">ज़्यादातर आवेदन eKYC अधूरी होने, आधार-बैंक सीडिंग न होने, नाम/जन्मतिथि में अंतर या अधूरे दस्तावेज़ के कारण अटकते हैं। नीचे अपनी योजना और समस्या चुनें; कारण, सुधार के कदम और सही पोर्टल दिखेगा। यह टूल आपके आवेदन का असली स्टेटस नहीं देखता।</p>
+      </section>
+
+      <section class="section stt" aria-labelledby="st-title">
+        <h2 id="st-title">🔍 अपनी समस्या चुनें</h2>
+        <div class="grid2">
+          <div>
+            <label for="st-cat">योजना / सेवा</label>
+            <select id="st-cat">{cats.map((c) => <option value={c.id}>{c.name}</option>)}</select>
+          </div>
+          <div>
+            <label for="st-item">समस्या</label>
+            <select id="st-item">{cats[0].items.map((i) => <option value={i.id}>{i.title}</option>)}</select>
+          </div>
+        </div>
+        <div id="st-results" aria-live="polite">
+          {cats.map((c, ci) => c.items.map((it, ii) => (
+            <div class="st-res" data-cat={c.id} data-id={it.id} data-title={it.title} hidden={!(ci === 0 && ii === 0)}>
+              <h3>🛠️ {c.name}: {it.title}</h3>
+              <p><strong>आम कारण:</strong> {it.why}</p>
+              <p><strong>क्या करें:</strong></p>
+              <ol>{it.steps.map((s) => <li>{s}</li>)}</ol>
+              {it.links.length > 0 && (
+                <div class="st-links">
+                  {it.links.map(([href, label]) => ext(href)
+                    ? <a class="cta secondary" href={href} target="_blank" rel="noopener nofollow">{label} ↗</a>
+                    : <a class="cta secondary" href={href}>{label}</a>)}
+                </div>
+              )}
+            </div>
+          )))}
+        </div>
+      </section>
+
+      <section class="section" id="aam">
+        <h2>हर आवेदन से पहले ये 4 चीज़ें जांचें</h2>
+        <ul class="checklist">
+          <li><strong>नाम और जन्मतिथि:</strong> आधार, बैंक खाते और आवेदन में एक जैसे हों।</li>
+          <li><strong>आधार-बैंक सीडिंग:</strong> DBT वाली योजनाओं में पैसा आधार से जुड़े खाते में ही आता है। स्थिति <a href="https://myaadhaar.uidai.gov.in/" target="_blank" rel="noopener nofollow">myAadhaar</a> पर देखें।</li>
+          <li><strong>eKYC:</strong> PM किसान, राशन कार्ड जैसी योजनाओं में eKYC अनिवार्य है।</li>
+          <li><strong>रसीद:</strong> हर आवेदन की रसीद/आवेदन नंबर संभालकर रखें; शिकायत और अपील में यही काम आता है।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="shikayat">
+        <h2>शिकायत कहां करें</h2>
+        <ul class="checklist">
+          <li><strong>केंद्र सरकार के विभाग:</strong> <a href="https://pgportal.gov.in/" target="_blank" rel="noopener nofollow">CPGRAMS (pgportal.gov.in)</a></li>
+          <li><strong>EPFO:</strong> <a href="https://epfigms.gov.in/" target="_blank" rel="noopener nofollow">EPFiGMS</a></li>
+          <li><strong>PM किसान:</strong> हेल्पलाइन 155261 / 011-24300606</li>
+          <li><strong>राज्य की योजनाएं और प्रमाण पत्र:</strong> राज्य का शिकायत पोर्टल, मुख्यमंत्री हेल्पलाइन, या सेवा का अधिकार कानून के तहत अपील।</li>
+          <li><strong>जानकारी के लिए:</strong> RTI (केंद्र के लिए <a href="https://rtionline.gov.in/" target="_blank" rel="noopener nofollow">rtionline.gov.in</a>)।</li>
+        </ul>
+        <p class="notice">यह एक निजी वेबसाइट है, सरकारी नहीं। हम आपका आवेदन या शिकायत दर्ज नहीं करते; ऊपर दिए आधिकारिक पोर्टल पर ही आवेदन करें।</p>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.stt .grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px 14px; margin-bottom: 14px; }
+@media (min-width: 640px) { .stt .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.stt label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 4px; }
+.stt select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.stt .st-res { border-left: 4px solid var(--c-brand); background: var(--c-brand-50); border-radius: 10px; padding: 14px 16px; overflow-wrap: anywhere; }
+.stt .st-res[hidden] { display: none; }
+.stt .st-res h3 { margin: 0 0 8px; font-size: 1.05rem; }
+.stt .st-res ol { padding-left: 1.3em; margin: 0 0 10px; }
+.stt .st-res li { margin: 4px 0; }
+.stt .st-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.stt .st-links .cta { font-size: .92rem; }
+</style>
+
+<script is:inline>
+(function () {
+  var cat = document.getElementById("st-cat"), item = document.getElementById("st-item");
+  var all = Array.prototype.slice.call(document.querySelectorAll("#st-results .st-res"));
+  function fill() {
+    item.innerHTML = "";
+    all.filter(function (d) { return d.dataset.cat === cat.value; }).forEach(function (d) {
+      var o = document.createElement("option"); o.value = d.dataset.id; o.textContent = d.dataset.title; item.appendChild(o);
+    });
+    show();
+  }
+  function show() {
+    all.forEach(function (d) { d.hidden = !(d.dataset.cat === cat.value && d.dataset.id === item.value); });
+    try { if (window.gtag) gtag("event", "tool_usage", { tool: "status_troubleshooter", issue: cat.value + ":" + item.value }); } catch (e) {}
+  }
+  cat.addEventListener("change", fill);
+  item.addEventListener("change", show);
+})();
+</script>

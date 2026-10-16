@@ -1,0 +1,218 @@
+---
+// Post office small savings vs bank FD calculator. Same URL, title and
+// description as the old page.
+//
+// Rates: Oct-Dec 2026 quarter (Q3 FY 2026-27), unchanged from the previous
+// quarter: savings 4.0, TD 1/2/3/5 yr 6.9/7.0/7.1/7.5, RD 6.7, MIS 7.4,
+// SCSS 8.2, NSC 7.7, KVP 7.5 (115 months), PPF 7.1, SSY 8.2.
+// Sources: studycafe.in "Government Keeps Small Savings Interest Rates
+// Unchanged for October-December Quarter of FY 2026-27"; angelone.in "finance
+// minister announces small savings interest rates for october december 2026
+// quarter"; freepressjournal.in (PPF 7.1, NSC 7.7).
+// Rates are the same as the old page; the maths is fixed:
+// - Old page treated PPF/SSY as one lump sum compounded quarterly for 15
+//   years; they are yearly deposits with yearly compounding (SSY: deposits
+//   for 15 years, maturity at 21 years).
+// - NSC compounds yearly (old: quarterly). KVP doubles in 115 months.
+// - SCSS pays interest every quarter and MIS every month (simple payout),
+//   old page compounded SCSS.
+// - Old page used invented bank FD rates per tenure; now the visitor enters
+//   their own bank's FD rate.
+// Limits: SCSS ₹1,000-₹30 lakh; MIS ₹9 lakh single / ₹15 lakh joint;
+// PPF ₹500-₹1.5 lakh a year; SSY ₹250-₹1.5 lakh a year. DICGC cover ₹5 lakh.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "पोस्ट ऑफिस बनाम बैंक" }];
+const rates: [string, string][] = [
+  ["डाकघर बचत खाता", "4.0%"], ["1 साल टाइम डिपॉजिट (TD)", "6.9%"], ["2 साल TD", "7.0%"], ["3 साल TD", "7.1%"], ["5 साल TD", "7.5%"],
+  ["5 साल रेकरिंग डिपॉजिट (RD)", "6.7%"], ["मासिक आय योजना (MIS)", "7.4%"], ["वरिष्ठ नागरिक बचत योजना (SCSS)", "8.2%"],
+  ["राष्ट्रीय बचत पत्र (NSC)", "7.7%"], ["किसान विकास पत्र (KVP)", "7.5% (115 महीने में दोगुना)"], ["PPF", "7.1%"], ["सुकन्या समृद्धि (SSY)", "8.2%"],
+];
+const faq = [
+  { q: "अक्टूबर-दिसंबर 2026 में पोस्ट ऑफिस योजनाओं पर कितना ब्याज है?", a: "सरकार ने अक्टूबर-दिसंबर 2026 तिमाही के लिए दरें नहीं बदलीं: SCSS और सुकन्या समृद्धि 8.2%, NSC 7.7%, 5 साल TD 7.5%, KVP 7.5%, MIS 7.4%, PPF 7.1% और बचत खाता 4%। दरें हर तिमाही तय होती हैं।" },
+  { q: "पोस्ट ऑफिस और बैंक FD में कौन ज़्यादा सुरक्षित है?", a: "पोस्ट ऑफिस की छोटी बचत योजनाएं भारत सरकार की योजनाएं हैं। बैंक में जमा पैसे पर DICGC से हर बैंक में एक व्यक्ति के ₹5 लाख तक (ब्याज मिलाकर) का बीमा होता है।" },
+  { q: "MIS में हर महीने कितना ब्याज मिलेगा?", a: "7.4% दर पर ₹9 लाख (अकेले खाते की अधिकतम सीमा) जमा करने पर हर महीने लगभग ₹5,550 और ₹15 लाख (संयुक्त खाते की सीमा) पर लगभग ₹9,250 मिलते हैं। मूल राशि 5 साल बाद वापस मिलती है।" },
+  { q: "SCSS में कौन पैसा लगा सकता है?", a: "60 साल या उससे ज़्यादा उम्र के लोग। कुछ शर्तों के साथ 55 से 60 साल के रिटायर हुए कर्मचारी और 50 साल से ऊपर के रिटायर रक्षा कर्मी भी। सीमा ₹1,000 से ₹30 लाख तक है और ब्याज हर तिमाही मिलता है।" },
+  { q: "टैक्स में छूट किन योजनाओं में मिलती है?", a: "PPF, सुकन्या समृद्धि, NSC, 5 साल TD और SCSS में जमा राशि पर धारा 80C (₹1.5 लाख तक) की छूट सिर्फ पुरानी टैक्स व्यवस्था में मिलती है। PPF और सुकन्या का ब्याज टैक्स-फ्री है; TD, MIS, SCSS, NSC और KVP का ब्याज टैक्स योग्य है।" },
+];
+---
+<Base title="Post Office vs Bank Savings Schemes 2026 | SarkariSewa India" description="Post Office vs Bank Savings Schemes 2026: Compare live interest rates, maturity calculator & complete guide for SCSS, MIS, TD, PPF, SSY, KVP & NSC." breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>पोस्ट ऑफिस बनाम बैंक बचत योजना 2026: ब्याज दरें और मैच्योरिटी कैलकुलेटर</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">अक्टूबर-दिसंबर 2026 में पोस्ट ऑफिस की दरें नहीं बदलीं: SCSS और सुकन्या 8.2%, NSC 7.7%, 5 साल TD 7.5%, KVP 7.5%, MIS 7.4%, PPF 7.1%। नीचे योजना और रकम चुनें, और अपने बैंक की FD दर डालकर देखें कि किसमें ज़्यादा ब्याज बनेगा।</p>
+      </section>
+
+      <section class="section svcalc" aria-labelledby="sv-title">
+        <h2 id="sv-title">🧮 मैच्योरिटी और ब्याज कैलकुलेटर</h2>
+        <div class="grid2">
+          <div>
+            <label for="sv-scheme">पोस्ट ऑफिस योजना</label>
+            <select id="sv-scheme">
+              <option value="td1">1 साल TD (6.9%)</option>
+              <option value="td2">2 साल TD (7.0%)</option>
+              <option value="td3">3 साल TD (7.1%)</option>
+              <option value="td5" selected>5 साल TD (7.5%)</option>
+              <option value="nsc">NSC 5 साल (7.7%)</option>
+              <option value="kvp">KVP 115 महीने (7.5%)</option>
+              <option value="mis">MIS 5 साल, मासिक ब्याज (7.4%)</option>
+              <option value="scss">SCSS 5 साल, तिमाही ब्याज (8.2%)</option>
+              <option value="ppf">PPF 15 साल, सालाना जमा (7.1%)</option>
+              <option value="ssy">सुकन्या समृद्धि, सालाना जमा (8.2%)</option>
+            </select>
+          </div>
+          <div>
+            <label for="sv-amt" id="sv-amt-label">जमा राशि (₹)</label>
+            <input type="number" id="sv-amt" min="0" step="1000" inputmode="numeric" value="100000" />
+            <div class="chips sv-chips">
+              <button type="button" class="chip-btn" data-v="50000">₹50,000</button>
+              <button type="button" class="chip-btn" data-v="100000">₹1 लाख</button>
+              <button type="button" class="chip-btn" data-v="150000">₹1.5 लाख</button>
+              <button type="button" class="chip-btn" data-v="500000">₹5 लाख</button>
+            </div>
+          </div>
+          <div>
+            <label for="sv-bank">आपके बैंक की FD दर (% सालाना)</label>
+            <input type="number" id="sv-bank" min="0" max="15" step="0.05" inputmode="decimal" placeholder="जैसे 6.5" />
+            <span class="hint">तुलना के लिए अपने बैंक की इसी अवधि की FD दर डालें (बैंक की वेबसाइट या पासबुक से)।</span>
+          </div>
+        </div>
+        <div id="sv-out" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="dar">
+        <h2>पोस्ट ऑफिस ब्याज दरें (1 अक्टूबर से 31 दिसंबर 2026)</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>योजना</th><th>ब्याज दर (सालाना)</th></tr></thead>
+            <tbody>{rates.map(([n, r]) => <tr><td>{n}</td><td>{r}</td></tr>)}</tbody>
+          </table>
+        </div>
+        <p class="muted">दरें वित्त मंत्रालय हर तिमाही तय करता है। जमा करते समय जो दर है, वही आम तौर पर पूरी अवधि मिलती है (PPF और सुकन्या में दर बदलती रहती है)।</p>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>योजना चुनें। PPF और सुकन्या में <strong>हर साल जमा होने वाली रकम</strong> डालें, बाकी में एक बार की जमा रकम।</li>
+          <li>तुलना के लिए अपने बैंक की FD दर डालें।</li>
+          <li>नतीजे में मैच्योरिटी राशि, कुल ब्याज, और MIS/SCSS में हर महीने/तिमाही का ब्याज दिखेगा।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="formula">
+        <h2>गणना का तरीका</h2>
+        <ul class="checklist">
+          <li><strong>TD और बैंक FD:</strong> ब्याज हर तिमाही जुड़ता है: राशि × (1 + दर/400)<sup>4 × साल</sup>। (पोस्ट ऑफिस TD का ब्याज हर साल खाते में आता है; यहां मान लिया है कि वह दोबारा जमा होता रहे।)</li>
+          <li><strong>NSC:</strong> ब्याज हर साल जुड़ता है और 5 साल बाद एक साथ मिलता है।</li>
+          <li><strong>KVP:</strong> 7.5% पर पैसा 115 महीने (9 साल 7 महीने) में दोगुना।</li>
+          <li><strong>MIS / SCSS:</strong> ब्याज हर महीने / तिमाही खाते में आता है, मूल राशि 5 साल बाद वापस।</li>
+          <li><strong>PPF:</strong> हर साल की शुरुआत में जमा, ब्याज हर साल जुड़ता है, 15 साल।</li>
+          <li><strong>सुकन्या:</strong> 15 साल तक जमा, खाता खुलने से 21 साल पर मैच्योर; ब्याज हर साल जुड़ता है।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li><strong>सीमाएं:</strong> MIS ₹9 लाख (अकेले) / ₹15 लाख (संयुक्त); SCSS ₹30 लाख तक; PPF और सुकन्या ₹1.5 लाख प्रति साल तक।</li>
+          <li><strong>समय से पहले निकासी:</strong> TD 6 महीने से पहले बंद नहीं होता। MIS 1 साल से पहले नहीं; 1-3 साल में 2% और 3 साल के बाद 1% कटता है।</li>
+          <li><strong>वरिष्ठ नागरिक:</strong> बैंक अक्सर उन्हें FD पर थोड़ा ज़्यादा ब्याज देते हैं; अपने बैंक से दर पूछें।</li>
+          <li>यह निजी वेबसाइट का अनुमान है। सही राशि के लिए <a href="https://www.indiapost.gov.in/" target="_blank" rel="noopener nofollow">India Post</a> या अपने बैंक से पुष्टि करें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.svcalc .grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px 14px; }
+@media (min-width: 640px) { .svcalc .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.svcalc label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 4px; }
+.svcalc input, .svcalc select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; }
+.svcalc .hint { display: block; font-size: .8rem; color: var(--c-muted); margin-top: 3px; }
+.svcalc .sv-chips { margin-top: 8px; }
+.sv-res { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 16px; }
+@media (min-width: 560px) { .sv-res { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.sv-box { border: 1px solid var(--c-line); border-radius: 12px; padding: 14px; background: var(--c-surface-2); }
+.sv-box.po { border-left: 4px solid var(--c-saffron); }
+.sv-box.bk { border-left: 4px solid var(--c-brand); }
+.sv-box h3 { margin: 0 0 6px; font-size: 1rem; }
+.sv-box .big { font-size: 1.4rem; font-weight: 800; color: var(--c-ink); margin: 0; }
+.sv-box p { margin: 4px 0; font-size: .92rem; }
+.sv-note { margin-top: 12px; font-weight: 700; }
+.sv-warn { color: var(--c-red); font-weight: 700; font-size: .92rem; }
+</style>
+
+<script is:inline>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var inr = function (n) { return "₹" + Math.round(n).toLocaleString("en-IN"); };
+  // Post office rates, Oct-Dec 2026 quarter.
+  var S = {
+    td1: { n: "1 साल TD", r: 6.9, y: 1, k: "q" }, td2: { n: "2 साल TD", r: 7.0, y: 2, k: "q" },
+    td3: { n: "3 साल TD", r: 7.1, y: 3, k: "q" }, td5: { n: "5 साल TD", r: 7.5, y: 5, k: "q" },
+    nsc: { n: "NSC", r: 7.7, y: 5, k: "a" }, kvp: { n: "KVP", r: 7.5, y: 115 / 12, k: "kvp" },
+    mis: { n: "MIS", r: 7.4, y: 5, k: "m", max: 1500000 }, scss: { n: "SCSS", r: 8.2, y: 5, k: "s", min: 1000, max: 3000000 },
+    ppf: { n: "PPF", r: 7.1, y: 15, k: "ppf", min: 500, max: 150000 }, ssy: { n: "सुकन्या समृद्धि", r: 8.2, y: 21, k: "ssy", min: 250, max: 150000 },
+  };
+  function po(s, p) {
+    var r = s.r / 100;
+    if (s.k === "q") return { mat: p * Math.pow(1 + r / 4, 4 * s.y), dep: p };
+    if (s.k === "a") return { mat: p * Math.pow(1 + r, s.y), dep: p };
+    if (s.k === "kvp") return { mat: 2 * p, dep: p };
+    if (s.k === "m") return { mat: p + p * r * 5, dep: p, pay: p * r / 12, per: "हर महीने" };
+    if (s.k === "s") return { mat: p + p * r * 5, dep: p, pay: p * r / 4, per: "हर तिमाही" };
+    if (s.k === "ppf") { var b = 0; for (var i = 0; i < 15; i++) b = (b + p) * (1 + r); return { mat: b, dep: p * 15 }; }
+    if (s.k === "ssy") { var c = 0; for (var j = 0; j < 21; j++) c = (c + (j < 15 ? p : 0)) * (1 + r); return { mat: c, dep: p * 15 }; }
+  }
+  function bank(s, p, rate) {
+    var r = rate / 100;
+    if (s.k === "m" || s.k === "s") return { mat: p + p * r * s.y, pay: s.k === "m" ? p * r / 12 : p * r / 4 };
+    if (s.k === "ppf" || s.k === "ssy") { var b = 0, n = s.k === "ppf" ? 15 : 21; for (var i = 0; i < n; i++) b = (b + (i < 15 ? p : 0)) * Math.pow(1 + r / 4, 4); return { mat: b }; }
+    return { mat: p * Math.pow(1 + r / 4, 4 * s.y) };
+  }
+  function yrs(y) { return y === 115 / 12 ? "115 महीने" : y + " साल"; }
+  function calc() {
+    var key = $("sv-scheme").value, s = S[key], p = parseFloat($("sv-amt").value) || 0, br = parseFloat($("sv-bank").value);
+    var yearly = s.k === "ppf" || s.k === "ssy";
+    $("sv-amt-label").textContent = yearly ? "हर साल जमा राशि (₹)" : "जमा राशि (₹)";
+    var out = $("sv-out");
+    if (p <= 0) { out.innerHTML = '<p class="notice">जमा राशि डालें।</p>'; return; }
+    var warn = "";
+    if (s.max && p > s.max) warn = s.n + " में अधिकतम सीमा " + inr(s.max) + (yearly ? " प्रति साल" : "") + (key === "mis" ? " (संयुक्त खाता; अकेले खाते में ₹9 लाख)" : "") + " है।";
+    else if (key === "mis" && p > 900000) warn = "अकेले खाते में MIS की सीमा ₹9 लाख है; ₹15 लाख तक संयुक्त खाते में।";
+    else if (s.min && p < s.min) warn = s.n + " में कम से कम " + inr(s.min) + " जमा करना होता है।";
+    var a = po(s, p), int = a.mat - a.dep;
+    var h = '<div class="sv-res"><div class="sv-box po"><h3>📮 ' + s.n + ' (' + s.r + '%)</h3><p class="big">' + inr(a.mat) + '</p><p>' + yrs(s.y) + ' बाद कुल राशि</p><p>कुल जमा: ' + inr(a.dep) + ' · कुल ब्याज: <strong>' + inr(int) + '</strong></p>' + (a.pay ? '<p>ब्याज ' + a.per + ': <strong>' + inr(a.pay) + '</strong></p>' : "") + '</div>';
+    var note = "";
+    if (br > 0) {
+      var b = bank(s, p, br), bint = b.mat - a.dep;
+      h += '<div class="sv-box bk"><h3>🏦 बैंक FD (' + br + '%)</h3><p class="big">' + inr(b.mat) + '</p><p>उसी अवधि में कुल राशि</p><p>कुल ब्याज: <strong>' + inr(bint) + '</strong></p>' + (b.pay ? '<p>ब्याज ' + a.per + ': <strong>' + inr(b.pay) + '</strong></p>' : "") + '</div>';
+      var d = int - bint;
+      note = Math.abs(d) < 1 ? "दोनों में लगभग बराबर ब्याज।" : d > 0 ? "💡 पोस्ट ऑफिस में " + inr(d) + " ज़्यादा ब्याज बनेगा।" : "💡 बैंक FD में " + inr(-d) + " ज़्यादा ब्याज बनेगा।";
+      if (yearly) note += " (बैंक के लिए हर साल उतनी ही रकम की FD मानी गई है।)";
+    } else {
+      h += '<div class="sv-box bk"><h3>🏦 बैंक FD</h3><p>तुलना के लिए ऊपर अपने बैंक की FD दर डालें।</p></div>';
+    }
+    h += '</div>';
+    if (note) h += '<p class="sv-note">' + note + '</p>';
+    if (warn) h += '<p class="sv-warn">⚠️ ' + warn + '</p>';
+    h += '<p class="muted">यह अनुमान है; टैक्स (TDS) नहीं घटाया गया।</p>';
+    out.innerHTML = h;
+    if (!calc.sent) { calc.sent = 1; try { if (window.gtag) gtag("event", "tool_usage", { tool: "savings_comparator" }); } catch (e) {} }
+  }
+  document.querySelectorAll(".sv-chips .chip-btn").forEach(function (b) { b.onclick = function () { $("sv-amt").value = b.dataset.v; calc(); }; });
+  ["sv-scheme", "sv-amt", "sv-bank"].forEach(function (id) { $(id).addEventListener("input", calc); $(id).addEventListener("change", calc); });
+  calc.sent = 1; calc(); calc.sent = 0;
+})();
+</script>
