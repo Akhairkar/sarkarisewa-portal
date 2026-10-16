@@ -1,0 +1,119 @@
+---
+// "Find services for you": pick who you are and see the guides that matter.
+// Replaces the old JS wizard (find-services.js) with static lists; every link
+// is checked against src/pages at build time and dropped if missing.
+import fs from "node:fs";
+import path from "node:path";
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import SearchBox from "../components/SearchBox.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+import { exists } from "../lib/repo";
+
+// A link is live if the new site builds it or the old static page exists.
+const PAGES = path.join(process.cwd(), "src/pages");
+const live = (href: string) => {
+  const p = href.split("#")[0];
+  const base = p.endsWith("/") ? p + "index" : p.replace(/\.html$/, "");
+  return fs.existsSync(path.join(PAGES, base + ".astro")) || exists(p.endsWith("/") ? p + "index.html" : p);
+};
+const S = (slug: string, label: string): [string, string] => [`/service/${slug}.html`, label];
+
+const personas: { id: string; emoji: string; title: string; text: string; links: [string, string][] }[] = [
+  { id: "buzurg", emoji: "👴", title: "बुज़ुर्ग (60+)", text: "पहचान पत्र, पेंशन और मुफ्त इलाज", links: [
+    S("senior-citizen-card", "सीनियर सिटीजन कार्ड (राज्य अनुसार)"), S("ayushman-bharat-vayo-vandana", "आयुष्मान वय वंदना कार्ड (70+)"),
+    S("national-social-assistance-programme", "वृद्धावस्था पेंशन (NSAP)"), S("pm-vaya-vandana-yojana", "PM वय वंदना योजना"),
+    S("jan-aushadhi-store-locator", "सस्ती दवा: जन औषधि केंद्र"), S("epfo", "EPFO पेंशन / PF"),
+  ] },
+  { id: "mazdoor", emoji: "👷", title: "मज़दूर और कामगार", text: "लेबर कार्ड, e-Shram, पेंशन और बीमा", links: [
+    S("labour-card-construction-workers", "लेबर कार्ड (निर्माण मज़दूर)"), S("e-shram-card", "e-Shram कार्ड"),
+    S("pm-shram-yogi-maandhan", "PM श्रम योगी मानधन पेंशन"), S("migrant-worker-registration", "प्रवासी मज़दूर पंजीकरण"),
+    S("esic", "ESIC (कर्मचारी बीमा)"), S("pm-suraksha-bima-yojana", "PM सुरक्षा बीमा (₹20/साल)"),
+  ] },
+  { id: "kisan", emoji: "🌾", title: "किसान", text: "किस्त, कर्ज़, फसल बीमा और सब्सिडी", links: [
+    S("pm-kisan", "PM-KISAN किस्त और स्टेटस"), S("kisan-credit-card", "किसान क्रेडिट कार्ड"),
+    S("pm-fasal-bima-yojana", "PM फसल बीमा योजना"), S("farmer-id-card-agristack", "फार्मर ID (AgriStack)"),
+    S("pm-kusam-solar-pump-apply", "PM-KUSUM सोलर पंप"), S("pm-kisan-maan-dhan-yojana", "PM किसान मानधन पेंशन"),
+  ] },
+  { id: "mahila", emoji: "👩", title: "महिलाएं और बेटियां", text: "मातृत्व सहायता, बचत और राज्य योजनाएं", links: [
+    S("pm-matru-vandana-yojana", "PM मातृ वंदना योजना"), S("janani-suraksha-yojana", "जननी सुरक्षा योजना"),
+    S("sukanya-samriddhi-yojana", "सुकन्या समृद्धि योजना"), S("lakhpati-didi-yojana", "लखपति दीदी"),
+    S("pm-ujjwala-yojana", "PM उज्ज्वला (मुफ्त गैस कनेक्शन)"), ["/yojana/", "राज्य की महिला योजनाएं"],
+  ] },
+  { id: "chhatra", emoji: "🎓", title: "छात्र और नौकरी ढूंढने वाले", text: "छात्रवृत्ति, प्रमाण पत्र, भर्ती और परीक्षा", links: [
+    S("national-scholarship-portal", "राष्ट्रीय छात्रवृत्ति पोर्टल (NSP)"), ["/jobs/index.html", "सरकारी नौकरी 2026"],
+    ["/exams/index.html", "परीक्षा कैलेंडर"], S("caste-certificate", "जाति प्रमाण पत्र"),
+    S("income-certificate", "आय प्रमाण पत्र"), ["/students/", "Students हब"],
+  ] },
+  { id: "vyapari", emoji: "🏪", title: "दुकानदार और छोटा व्यापार", text: "पंजीकरण, लोन और GST", links: [
+    S("udyam-registration", "Udyam (MSME) पंजीकरण"), S("pm-mudra-yojana", "PM मुद्रा लोन"),
+    S("pm-svanidhi", "PM स्वनिधि (रेहड़ी-पटरी)"), S("pm-vishwakarma-yojana", "PM विश्वकर्मा योजना"),
+    S("gst", "GST पंजीकरण"), ["/gst/", "GST नंबर असली है या नहीं"],
+  ] },
+  { id: "parivar", emoji: "🏠", title: "हर परिवार के काम", text: "पहचान, राशन, प्रमाण पत्र और बिजली", links: [
+    S("aadhaar-card", "आधार कार्ड"), S("ration-card", "राशन कार्ड"), S("birth-certificate", "जन्म प्रमाण पत्र"),
+    S("voter-id-card", "वोटर ID कार्ड"), S("ayushman-bharat", "आयुष्मान कार्ड (₹5 लाख इलाज)"), ["/solar/", "PM सूर्य घर सोलर सब्सिडी"],
+  ] },
+];
+const groups = personas.map((p) => ({ ...p, links: p.links.filter(([h]) => live(h)) })).filter((p) => p.links.length);
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "अपनी सेवा खोजें" }];
+const faq = [
+  { q: "यहां कितनी सेवाओं की जानकारी है?", a: "केंद्र और राज्य सरकार की सैकड़ों सेवाओं, योजनाओं और प्रमाण पत्रों की गाइड हैं, जिनमें हर राज्य के लिए अलग पेज भी हैं। ऊपर अपनी स्थिति चुनें या सर्च करें।" },
+  { q: "अपने राज्य की सेवाएं कैसे खोजें?", a: "राज्य अनुसार सेवाएं वाले पेज पर अपना राज्य चुनें। वहां प्रमाण पत्र, राशन कार्ड, लेबर कार्ड और राज्य योजनाओं की गाइड मिलेंगी।" },
+  { q: "क्या ये सेवाएं फ्री हैं?", a: "यहां की सारी गाइड फ्री हैं। सरकारी सेवा की अपनी फीस हो सकती है, जो official पोर्टल या दफ्तर में दी जाती है। CSC से करवाने पर CSC अपना सेवा शुल्क अलग बताता है।" },
+];
+---
+<Base
+  title="Find Government Services | SarkariSewa India"
+  description="अपने लिए सही सरकारी सेवा खोजें: बुज़ुर्ग, मज़दूर, किसान, महिला, छात्र या व्यापारी चुनें और काम की योजनाएं, प्रमाण पत्र और कार्ड की गाइड देखें।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">🔎 सही सेवा, जल्दी</span>
+    <h1>अपने लिए <em>सरकारी सेवा खोजें</em></h1>
+    <p class="page-intro">नीचे चुनें कि आप कौन हैं, आपके काम की योजनाएं और कागज़ों की गाइड सामने आ जाएंगी। या सीधे खोजें।</p>
+    <SearchBox placeholder="खोजें: पेंशन, राशन कार्ड, छात्रवृत्ति…" />
+    <ul class="chips" aria-label="आप कौन हैं">
+      {groups.map((g) => <li><a class="chip-btn" href={`#${g.id}`}>{g.emoji} {g.title}</a></li>)}
+    </ul>
+  </section>
+
+  {groups.map((g) => (
+    <section class="block" id={g.id}>
+      <div class="block-head"><h2>{g.emoji} {g.title}</h2></div>
+      <p class="block-lead">{g.text}</p>
+      <ul class="fs-list">
+        {g.links.map(([href, label]) => <li><a href={href}>{label} ›</a></li>)}
+      </ul>
+    </section>
+  ))}
+
+  <article class="page">
+    <div>
+      <section class="section">
+        <h2>और रास्ते</h2>
+        <ul class="checklist">
+          <li><a href="/support/state-wise-services.html">राज्य अनुसार सेवाएं</a>: प्रमाण पत्र, राशन, लेबर कार्ड आपके राज्य में</li>
+          <li><a href="/documents/">सभी दस्तावेज़</a> · <a href="/yojana/">सभी योजनाएं</a> · <a href="/tools/">फ्री टूल</a></li>
+          <li>खुद आवेदन न कर सकें तो <a href="/tools/csc-locator.html">नज़दीकी CSC</a> पर जाएं</li>
+        </ul>
+        <p><small>SarkariSewa India एक निजी जानकारी वेबसाइट है, सरकारी नहीं। आवेदन हमेशा official पोर्टल या CSC पर करें।</small></p>
+      </section>
+      <Faq items={faq} />
+    </div>
+  </article>
+  <Explore />
+</Base>
+
+<style>
+  .fs-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 8px; }
+  .fs-list li { margin: 0; }
+  .fs-list a { display: block; padding: 10px 12px; border: 1px solid var(--c-line); border-radius: var(--radius-sm); background: var(--c-surface); text-decoration: none; overflow-wrap: anywhere; }
+  .fs-list a:hover { border-color: var(--c-brand); }
+</style>

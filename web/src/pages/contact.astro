@@ -1,0 +1,76 @@
+---
+// Contact page. Email is the only support channel; Telegram/WhatsApp are
+// one-way update channels. Government complaints go to official helplines.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import { TELEGRAM_CHANNEL, WHATSAPP_CHANNEL } from "../data/site";
+
+const EMAIL = "sarkarisewaindia@gmail.com";
+const crumbs = [{ label: "होम", href: "/" }, { label: "संपर्क करें" }];
+const topics = [
+  ["🔗 टूटा लिंक या पुरानी जानकारी", "पेज का लिंक और क्या गलत है, यह लिखें।"],
+  ["📍 CSC लिस्टिंग में सुधार", "केंद्र का नाम, ज़िला और सही जानकारी लिखें। संचालक खुद भी केंद्र जोड़ सकते हैं।"],
+  ["💳 पेड रिपोर्ट या रिफंड", "Razorpay भुगतान ID (pay_ से शुरू), तारीख, राशि और गाड़ी नंबर/GSTIN लिखें।"],
+  ["💡 नई योजना या टूल का सुझाव", "किस काम की गाइड चाहिए, यह लिखें।"],
+];
+const faq = [
+  { q: "जवाब कितने समय में मिलता है?", a: "हम आम तौर पर 2-3 कामकाजी दिन में ईमेल का जवाब देने की कोशिश करते हैं। रिफंड से जुड़े मेल पहले देखे जाते हैं।" },
+  { q: "क्या आप मेरा सरकारी फॉर्म भर देंगे?", a: "नहीं। हम कोई सरकारी आवेदन नहीं भरते। हर गाइड में official वेबसाइट का लिंक और तरीका दिया है। खुद न भर सकें तो नज़दीकी CSC (जन सेवा केंद्र) पर जाएं।" },
+  { q: "क्या फोन पर बात हो सकती है?", a: "हमारा कोई फोन हेल्पलाइन नंबर नहीं है; सहायता सिर्फ ईमेल से होती है। कुछ गाइड पर आप अपना नंबर दे सकते हैं ताकि आपके इलाके का CSC संचालक बात करे या हम WhatsApp पर जानकारी भेजें।" },
+  { q: "सरकारी विभाग की शिकायत कहां करें?", a: "हम सरकारी शिकायत दर्ज या हल नहीं कर सकते। केंद्र सरकार के विभागों की शिकायत pgportal.gov.in (CPGRAMS) पर करें, या संबंधित विभाग की हेल्पलाइन पर फोन करें।" },
+];
+---
+<Base
+  title="Contact Us | Citizen Help Desk | SarkariSewa India"
+  description="SarkariSewa India से संपर्क करें: गलत जानकारी या टूटा लिंक बताएं, CSC लिस्टिंग सुधारें, पेड रिपोर्ट या रिफंड के लिए ईमेल करें। सरकारी शिकायत के लिए official हेल्पलाइन।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>संपर्क करें (Contact Us)</h1>
+      <p class="page-intro">किसी पेज में गलती दिखी, लिंक नहीं खुल रहा, CSC की जानकारी गलत है या पेड रिपोर्ट में दिक्कत आई? हमें ईमेल करें।</p>
+
+      <section class="section" id="email">
+        <h2>📧 ईमेल</h2>
+        <p style="font-size:1.15rem;overflow-wrap:anywhere"><strong><a href={`mailto:${EMAIL}`}>{EMAIL}</a></strong></p>
+        <p>मेल में ये बातें लिखें, ताकि जल्दी मदद हो सके:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>किस बारे में</th><th>क्या लिखें</th></tr></thead>
+            <tbody>{topics.map(([a, b]) => <tr><td>{a}</td><td>{b}</td></tr>)}</tbody>
+          </table>
+        </div>
+        <p>CSC संचालक अपना केंद्र यहां जोड़ें: <a href="/claim-your-csc.html">अपना CSC जोड़ें</a>। रिफंड के नियम: <a href="/refund-policy.html">रिफंड नीति</a>।</p>
+      </section>
+
+      <section class="section" id="channels">
+        <h2>अपडेट चैनल</h2>
+        <p>नई भर्ती, योजना और आखिरी तारीख की खबर के लिए जुड़ें। इन चैनलों पर सवालों के जवाब नहीं दिए जाते; सहायता के लिए ईमेल करें।</p>
+        <ul class="checklist">
+          <li><a href={TELEGRAM_CHANNEL} target="_blank" rel="noopener">Telegram: t.me/sarkarisewaindia</a></li>
+          <li><a href={WHATSAPP_CHANNEL} target="_blank" rel="noopener">WhatsApp चैनल</a></li>
+          <li><a href="/tools/csc-locator.html">नज़दीकी CSC सेंटर खोजें</a> (फ्री)</li>
+        </ul>
+      </section>
+
+      <section class="section" id="sarkari-shikayat">
+        <h2>सरकारी विभाग की शिकायत</h2>
+        <p>हम सरकारी शिकायत दर्ज या हल नहीं कर सकते। इसके लिए official माध्यम इस्तेमाल करें:</p>
+        <ul class="checklist">
+          <li>केंद्र सरकार के विभाग: <a href="https://pgportal.gov.in/" target="_blank" rel="noopener nofollow">CPGRAMS (pgportal.gov.in)</a></li>
+          <li>आधार: 1947 · राष्ट्रीय उपभोक्ता हेल्पलाइन: 1915 · साइबर फ्रॉड: 1930</li>
+          <li>बाकी नंबर: <a href="/support/helpline-directory.html">Helpline Directory</a> · सूचना मांगने के लिए: <a href="/support/rti-guide.html">RTI गाइड</a></li>
+        </ul>
+      </section>
+
+      <div class="callout warn"><p><strong>सावधान:</strong> SarkariSewa India एक निजी वेबसाइट है, सरकारी नहीं। हम कभी OTP, UPI PIN, बैंक पासवर्ड या आधार की कॉपी नहीं मांगते। सरकारी काम के नाम पर किसी अनजान व्यक्ति को पैसे न दें। सरकारी आवेदन सिर्फ .gov.in / .nic.in पोर्टल या अधिकृत CSC पर करें।</p></div>
+
+      <Faq items={faq} />
+    </div>
+  </article>
+</Base>

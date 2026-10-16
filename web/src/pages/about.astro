@@ -1,0 +1,83 @@
+---
+// About page: who we are, what the site does today (free guides, CSC locator,
+// paid reports), and how content is checked. Private site, never government.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CardGrid from "../components/CardGrid.astro";
+import Faq from "../components/Faq.astro";
+import { PAID_SERVICES, TELEGRAM_CHANNEL, WHATSAPP_CHANNEL } from "../data/site";
+
+const paid = PAID_SERVICES.filter((s) => s.live);
+const crumbs = [{ label: "होम", href: "/" }, { label: "हमारे बारे में" }];
+const faq = [
+  { q: "SarkariSewa India क्या है?", a: "SarkariSewa India एक निजी (private) जानकारी वेबसाइट है। यहां सरकारी दस्तावेज़, प्रमाण पत्र, योजनाओं, नौकरी और परीक्षा की जानकारी आसान हिंदी में मिलती है, साथ में official वेबसाइट का लिंक भी।" },
+  { q: "क्या यह सरकारी वेबसाइट है?", a: "नहीं। हम भारत सरकार या किसी राज्य सरकार के किसी विभाग से जुड़े नहीं हैं। कोई सरकारी आवेदन हम नहीं भरते और कोई सरकारी प्रमाण पत्र जारी नहीं करते। आवेदन हमेशा official पोर्टल या CSC पर होता है।" },
+  { q: "क्या यहां की जानकारी फ्री है?", a: "हां, सभी गाइड, CSC लोकेटर और ज़्यादातर टूल फ्री हैं। सिर्फ दो रिपोर्ट सेवाएं (GSTIN Verification और RC e-Challan रिपोर्ट) पेड हैं; उनकी कीमत भुगतान से पहले साफ लिखी होती है।" },
+  { q: "जानकारी कितनी भरोसेमंद है?", a: "हम official वेबसाइट, सरकारी आदेश और PIB जैसे स्रोतों से जानकारी लेते हैं और हर गाइड पर जांच की तारीख लिखते हैं। फिर भी नियम और फीस बदल सकती है, इसलिए आवेदन से पहले official पोर्टल पर एक बार पुष्टि ज़रूर करें।" },
+  { q: "गलती दिखे तो क्या करें?", a: "पेज का लिंक और गलती sarkarisewaindia@gmail.com पर भेजें। हम जांच करके पेज ठीक करते हैं।" },
+];
+---
+<Base
+  title="About SarkariSewa India: Mission, Citizen Services & Team"
+  description="SarkariSewa India एक निजी, स्वतंत्र वेबसाइट है: सरकारी दस्तावेज़, योजना और नौकरी की आसान हिंदी गाइड, CSC सेंटर लोकेटर और काम के फ्री टूल।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>हमारे बारे में (About SarkariSewa India)</h1>
+      <p class="page-intro">SarkariSewa India एक निजी, स्वतंत्र वेबसाइट है। हम सरकारी कामों की जानकारी आसान हिंदी में देते हैं: कौन सा कागज़ लगेगा, आवेदन कहां होगा, फीस कितनी है और official वेबसाइट कौन सी है।</p>
+
+      <div class="callout warn"><p><strong>ज़रूरी:</strong> SarkariSewa India सरकारी वेबसाइट नहीं है। हम किसी सरकारी विभाग से जुड़े नहीं हैं, कोई सरकारी आवेदन नहीं भरते और कोई प्रमाण पत्र जारी नहीं करते। आवेदन हमेशा official पोर्टल या अधिकृत CSC (जन सेवा केंद्र) पर ही करें।</p></div>
+
+      <section class="section" id="uddeshya">
+        <h2>हमारा उद्देश्य</h2>
+        <p>बहुत से लोग सरकारी सेवा या योजना का लाभ इसलिए नहीं ले पाते क्योंकि उन्हें सही जानकारी नहीं मिलती, या वे गलत वेबसाइट और दलालों के चक्कर में फंस जाते हैं। हमारा काम है सही प्रक्रिया को सीधे शब्दों में समझाना और असली official लिंक तक पहुंचाना। हमारे ज़्यादातर पाठक बुज़ुर्ग, मज़दूर, छात्र और गांव-कस्बों के परिवार हैं जो फोन पर पढ़ते हैं, इसलिए हम छोटे वाक्य और साफ भाषा रखते हैं।</p>
+      </section>
+
+      <section class="section" id="kya-milta-hai">
+        <h2>यहां क्या मिलता है</h2>
+        <ul class="checklist">
+          <li><strong>दस्तावेज़ और प्रमाण पत्र गाइड (फ्री):</strong> आधार, PAN, राशन कार्ड, वोटर ID, जन्म-मृत्यु, जाति, आय, निवास प्रमाण पत्र, सीनियर सिटीजन कार्ड, लेबर कार्ड, हर राज्य के हिसाब से। <a href="/documents/">सभी दस्तावेज़</a> · <a href="/states/">राज्य अनुसार</a></li>
+          <li><strong>योजनाएं (फ्री):</strong> केंद्र और राज्य की योजनाओं की पात्रता, राशि और आवेदन का तरीका। <a href="/yojana/">योजनाएं देखें</a></li>
+          <li><strong>नौकरी और परीक्षा (फ्री):</strong> नई भर्तियां, आखिरी तारीख और परीक्षा कैलेंडर। <a href="/jobs/index.html">सरकारी नौकरी</a> · <a href="/exams/index.html">Exam Calendar</a></li>
+          <li><strong>CSC सेंटर लोकेटर (फ्री):</strong> अपने ज़िले के जन सेवा केंद्र खोजें। CSC संचालक अपना केंद्र खुद जोड़ या सुधार सकते हैं। <a href="/tools/csc-locator.html">CSC खोजें</a> · <a href="/claim-your-csc.html">अपना CSC जोड़ें</a></li>
+          <li><strong>टूल (फ्री):</strong> उम्र कैलकुलेटर, फोटो/PDF छोटा करने का टूल, डॉक्यूमेंट चेकलिस्ट आदि। <a href="/tools/">सभी टूल</a></li>
+          <li><strong>पेड रिपोर्ट:</strong> {paid.map((s, i) => <>{i > 0 && ", "}<a href={s.href}>{s.title}</a> ({s.price} {typeof s.unit === "string" ? s.unit : s.unit.hi})</>)}। यह हमारी रिपोर्ट सेवा का शुल्क है, सरकारी फीस नहीं। यही जानकारी official पोर्टल पर फ्री में भी देखी जा सकती है। <a href="/refund-policy.html">रिफंड नीति</a></li>
+        </ul>
+      </section>
+
+      <section class="section" id="jaanch">
+        <h2>हम जानकारी कैसे जांचते हैं</h2>
+        <ol class="steps">
+          <li><strong>Official स्रोत पहले:</strong> विभाग की वेबसाइट, सरकारी आदेश (GO/notification) और PIB। अखबार की खबर सिर्फ तब, जब official पेज न खुले।</li>
+          <li><strong>पक्का न हो तो अंदाज़ा नहीं:</strong> जो राशि या तारीख हम पक्के तौर पर नहीं जांच पाते, वह नहीं लिखते और आपको सही दफ्तर से पूछने को कहते हैं।</li>
+          <li><strong>जांच की तारीख:</strong> हर नई गाइड पर लिखा होता है कि जानकारी कब जांची गई।</li>
+          <li><strong>सुधार:</strong> गलती की खबर मिलने पर पेज दोबारा जांचकर ठीक किया जाता है।</li>
+        </ol>
+        <p>सरकारी नियम, फीस और पोर्टल बदलते रहते हैं। आवेदन या भुगतान से पहले official पोर्टल पर एक बार ज़रूर देखें।</p>
+      </section>
+
+      <section class="section" id="sampark">
+        <h2>संपर्क</h2>
+        <p>सवाल, सुझाव या गलती की जानकारी: <a href="mailto:sarkarisewaindia@gmail.com">sarkarisewaindia@gmail.com</a> · <a href="/contact.html">Contact पेज</a></p>
+        <p>नई भर्ती और योजना की खबर: <a href={TELEGRAM_CHANNEL} target="_blank" rel="noopener">Telegram चैनल</a> · <a href={WHATSAPP_CHANNEL} target="_blank" rel="noopener">WhatsApp चैनल</a></p>
+        <p>नियम और नीतियां: <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/terms.html">Terms</a> · <a href="/disclaimer.html">Disclaimer</a></p>
+      </section>
+
+      <CardGrid title="शुरुआत कहां से करें" cards={[
+        { href: "/documents/", emoji: "📄", title: { hi: "दस्तावेज़", en: "Documents" }, text: { hi: "प्रमाण पत्र और कार्ड की गाइड", en: "Certificate and card guides" } },
+        { href: "/yojana/", emoji: "🎯", title: { hi: "योजनाएं", en: "Schemes" }, text: { hi: "पात्रता, राशि और आवेदन", en: "Eligibility and how to apply" } },
+        { href: "/states/", emoji: "🗺️", title: { hi: "राज्य अनुसार", en: "By state" }, text: { hi: "अपने राज्य की सेवाएं", en: "Services in your state" } },
+        { href: "/tools/", emoji: "🧮", title: "Tools", text: { hi: "फ्री कैलकुलेटर और टूल", en: "Free calculators and tools" } },
+        { href: "/support/index.html", emoji: "🛟", title: "Support", text: { hi: "Helpline, RTI और राज्य सेवाएं", en: "Helplines, RTI, state services" } },
+        { href: "/near-me/", emoji: "📍", title: "Near Me", text: { hi: "पास का CSC और जन औषधि केंद्र", en: "Nearby CSC and Jan Aushadhi" } },
+      ]} />
+
+      <Faq items={faq} />
+    </div>
+  </article>
+</Base>

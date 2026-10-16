@@ -1,0 +1,59 @@
+---
+// Disclaimer: not government, no application processing, accuracy limits,
+// paid reports and CSC operators are separate from government fees.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "Disclaimer" }];
+const faq = [
+  { q: "क्या SarkariSewa India सरकारी वेबसाइट है?", a: "नहीं। यह एक निजी, स्वतंत्र जानकारी वेबसाइट है। यह किसी सरकारी विभाग से जुड़ी नहीं है।" },
+  { q: "जानकारी गलत निकले तो कौन ज़िम्मेदार है?", a: "हम official स्रोतों से जानकारी लेकर अच्छी नीयत से देते हैं, पर नियम बदल सकते हैं। आवेदन या भुगतान से पहले official वेबसाइट पर पुष्टि करना ज़रूरी है। गलती दिखे तो sarkarisewaindia@gmail.com पर बताएं।" },
+  { q: "क्या यहां की जानकारी कानूनी सलाह है?", a: "नहीं। यह सिर्फ सामान्य जानकारी है। कानूनी, टैक्स या वित्तीय मामलों में किसी योग्य जानकार से सलाह लें।" },
+];
+---
+<Base
+  title="Disclaimer | SarkariSewa India"
+  description="SarkariSewa India का अस्वीकरण: यह सरकारी वेबसाइट नहीं है, आवेदन नहीं लेती, जानकारी बदल सकती है, पेड रिपोर्ट और CSC शुल्क सरकारी फीस नहीं हैं।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>अस्वीकरण (Disclaimer)</h1>
+      <p class="page-intro">SarkariSewa India इस्तेमाल करने से पहले यह पेज ध्यान से पढ़ें। अपडेट: 16 अक्टूबर 2026।</p>
+
+      <div class="callout warn"><p><strong>SarkariSewa India सरकारी वेबसाइट नहीं है।</strong> हम भारत सरकार, किसी राज्य सरकार या किसी सरकारी विभाग से जुड़े नहीं हैं और उनकी ओर से काम नहीं करते।</p></div>
+
+      <section class="section" id="aavedan">
+        <h2>हम आवेदन नहीं लेते</h2>
+        <p>हम सरकारी फॉर्म नहीं लेते, आवेदन प्रोसेस नहीं करते और कोई प्रमाण पत्र, कार्ड, पेंशन या लाभ मंज़ूर नहीं करते। हर सेवा का आवेदन उसके official पोर्टल (आम तौर पर .gov.in या .nic.in) या अधिकृत CSC पर होता है। official लिंक सिर्फ आपकी सुविधा के लिए दिए गए हैं।</p>
+      </section>
+
+      <section class="section" id="sahi-jankari">
+        <h2>जानकारी कितनी सही है</h2>
+        <p>हम official वेबसाइट, सरकारी आदेश और PIB जैसे स्रोतों से जानकारी लेते हैं और नई गाइड पर जांच की तारीख लिखते हैं। फिर भी सरकारी नियम, फीस, पात्रता और तारीखें बिना सूचना बदल सकती हैं। कोई ज़रूरी फैसला, आवेदन या भुगतान करने से पहले official वेबसाइट या संबंधित दफ्तर से पुष्टि करें।</p>
+      </section>
+
+      <section class="section" id="shulk">
+        <h2>शुल्क के बारे में</h2>
+        <ul class="checklist">
+          <li><strong>सरकारी फीस:</strong> हमेशा official पोर्टल, बैंक या सरकारी दफ्तर में ही दें, कभी हमें नहीं।</li>
+          <li><strong>हमारी पेड रिपोर्ट</strong> (GSTIN Verification, RC e-Challan): यह हमारी सेवा का शुल्क है, सरकारी फीस नहीं। यही जानकारी official पोर्टल पर फ्री में भी देखी जा सकती है। <a href="/refund-policy.html">रिफंड नीति</a></li>
+          <li><strong>CSC संचालक</strong> अपनी सेवा का शुल्क खुद लेते हैं; वह सरकारी फीस से अलग है। CSC संचालक हमारे कर्मचारी नहीं हैं।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="bahari">
+        <h2>बाहरी वेबसाइट और सलाह</h2>
+        <p>हमारी गाइड में दूसरी वेबसाइटों के लिंक हैं। उनके कंटेंट, उपलब्धता या नीति पर हमारा नियंत्रण नहीं है। यहां दी गई जानकारी कानूनी, टैक्स या वित्तीय सलाह नहीं है।</p>
+        <p>कभी भी किसी को OTP, UPI PIN या बैंक पासवर्ड न बताएं। हम ये कभी नहीं मांगते। और जानकारी: <a href="/terms.html">Terms</a> · <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/contact.html">Contact</a></p>
+      </section>
+
+      <Faq items={faq} />
+    </div>
+  </article>
+</Base>

@@ -1,0 +1,79 @@
+---
+// State-wise services: which services are national and which depend on the
+// state, then every state's hub and document guides that exist (built at
+// build time, so no dead links).
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import { STATES, DOCS } from "../../data/site";
+import { exists } from "../../lib/repo";
+
+const states = STATES.map((s) => ({
+  ...s,
+  hub: exists(`states/${s.slug}.html`) ? `/states/${s.slug}.html` : null,
+  docs: DOCS.filter((d) => exists(`states/${s.slug}-${d.slug}.html`)).map((d) => ({ href: `/states/${s.slug}-${d.slug}.html`, label: `${d.emoji} ${typeof d.title === "string" ? d.title : d.title.hi}` })),
+})).filter((s) => s.hub || s.docs.length);
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "Support", href: "/support/index.html" }, { label: "राज्य अनुसार सेवाएं" }];
+const faq = [
+  { q: "कौन सी सेवाएं हर राज्य में अलग होती हैं?", a: "जन्म-मृत्यु, जाति, आय और निवास प्रमाण पत्र, राशन कार्ड, लेबर कार्ड, वृद्धावस्था पेंशन और ड्राइविंग लाइसेंस का दफ्तर राज्य सरकार या नगर निकाय के होते हैं, इसलिए इनका पोर्टल, फीस और समय हर राज्य में अलग है।" },
+  { q: "दूसरे राज्य का निवासी किसी राज्य की योजना में आवेदन कर सकता है?", a: "ज़्यादातर राज्य योजनाएं सिर्फ उसी राज्य के निवासियों के लिए होती हैं, इसलिए निवास प्रमाण पत्र मांगा जाता है। केंद्र की योजनाएं (जैसे आयुष्मान भारत, PM-KISAN, e-Shram) पूरे देश में लागू हैं।" },
+  { q: "राज्य की सेवा का स्टेटस कैसे देखें?", a: "जिस पोर्टल (e-District, सेवा पोर्टल या विभाग की वेबसाइट) पर आवेदन किया था, वहीं आवेदन नंबर डालकर Track Status देखें। हर राज्य की गाइड में official पोर्टल का लिंक दिया है।" },
+];
+---
+<Base
+  title="State Wise Sarkari Yojana 2026: Apne Rajya Ki Scheme Khojein"
+  description="अपने राज्य की सरकारी सेवाएं: जन्म, जाति, आय, निवास प्रमाण पत्र, राशन कार्ड, लेबर कार्ड, सीनियर सिटीजन कार्ड और राज्य योजनाओं की गाइड, सभी 36 राज्य/UT के लिए।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>राज्य अनुसार सरकारी सेवाएं</h1>
+      <p class="page-intro">आधार, PAN, पासपोर्ट और वोटर ID का पोर्टल पूरे देश में एक है। लेकिन प्रमाण पत्र, राशन कार्ड, लेबर कार्ड और पेंशन जैसे काम राज्य सरकार करती है, इसलिए पोर्टल और नियम राज्य के हिसाब से बदलते हैं। नीचे अपना राज्य चुनें।</p>
+
+      <section class="section" id="farq">
+        <h2>राष्ट्रीय या राज्य सेवा?</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>पूरे देश में एक पोर्टल</th><th>राज्य के हिसाब से अलग</th></tr></thead>
+            <tbody>
+              <tr><td><a href="/service/aadhaar-card.html">आधार</a>, <a href="/service/pan-card.html">PAN</a>, <a href="/service/passport.html">पासपोर्ट</a>, <a href="/service/voter-id-card.html">वोटर ID</a>, <a href="/service/e-shram-card.html">e-Shram</a>, <a href="/service/ayushman-bharat.html">आयुष्मान कार्ड</a></td>
+                <td>जन्म-मृत्यु, जाति, आय, निवास प्रमाण पत्र, राशन कार्ड, लेबर कार्ड, सीनियर सिटीजन कार्ड/पेंशन, रोज़गार कार्यालय, ड्राइविंग लाइसेंस का दफ्तर</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>खुद ऑनलाइन आवेदन न कर सकें तो <a href="/tools/csc-locator.html">नज़दीकी CSC (जन सेवा केंद्र)</a> पर जाएं।</p>
+      </section>
+
+      <section class="section" id="rajya">
+        <h2>अपना राज्य चुनें</h2>
+        {states.map((s) => (
+          <details id={s.slug}>
+            <summary><strong>{s.hi}</strong> ({s.name})</summary>
+            <ul class="sw-list">
+              {s.hub && <li><a href={s.hub}>🏛️ {s.hi} की सभी सेवाएं और योजनाएं</a></li>}
+              {s.docs.map((d) => <li><a href={d.href}>{d.label}</a></li>)}
+            </ul>
+          </details>
+        ))}
+      </section>
+
+      <p>सभी दस्तावेज़ एक जगह: <a href="/documents/">दस्तावेज़ हब</a> · <a href="/states/">राज्य हब</a> · <a href="/support/helpline-directory.html">Helpline Directory</a></p>
+      <div class="callout info"><p>SarkariSewa India एक निजी जानकारी वेबसाइट है, सरकारी नहीं। आवेदन हमेशा राज्य के official पोर्टल या अधिकृत CSC पर करें।</p></div>
+
+      <Faq items={faq} />
+    </div>
+  </article>
+</Base>
+
+<style>
+  details { border-bottom: 1px solid var(--c-line); padding: 10px 0; }
+  details:last-child { border-bottom: 0; }
+  summary { cursor: pointer; }
+  .sw-list { list-style: none; padding: 0; margin: 10px 0 4px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 6px 16px; }
+  .sw-list li { margin: 0; }
+</style>

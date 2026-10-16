@@ -1,0 +1,102 @@
+---
+// RTI guide. Facts (checked 16 Oct 2026): RTI Act 2005 s.6, 7(1) 30 days /
+// 48 hours, s.19 first appeal 30 days, second appeal 90 days, s.20 penalty
+// ₹250/day up to ₹25,000; RTI Rules 2012: ₹10 fee, BPL exempt, ₹2 per page;
+// rtionline.gov.in guidelines: Central public authorities only, 3000
+// characters, no fee for first appeal. State portals listed only where seen.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "Support", href: "/support/index.html" }, { label: "RTI गाइड" }];
+const facts: [string, string][] = [
+  ["फीस (केंद्र)", "₹10; BPL के लिए फ्री"],
+  ["जवाब का समय", "30 दिन (जीवन/स्वतंत्रता का मामला: 48 घंटे)"],
+  ["पहली अपील", "जवाब के 30 दिन के अंदर, कोई फीस नहीं"],
+  ["केंद्र का पोर्टल", "rtionline.gov.in"],
+];
+const faq = [
+  { q: "RTI क्या है और इससे क्या मांग सकते हैं?", a: "सूचना का अधिकार अधिनियम 2005 (RTI Act) के तहत कोई भी भारतीय नागरिक सरकारी विभाग, नगर निगम या सार्वजनिक संस्था से रिकॉर्ड, फाइल, आदेश, खर्च का हिसाब या अपने आवेदन की स्थिति लिखित में मांग सकता है। कारण बताना ज़रूरी नहीं है।" },
+  { q: "RTI की फीस कितनी है?", a: "केंद्र सरकार के विभागों के लिए ₹10। गरीबी रेखा से नीचे (BPL) के आवेदकों के लिए फ्री, BPL प्रमाण की कॉपी लगानी होती है। कागज़ की कॉपी के लिए ₹2 प्रति पेज लग सकता है। राज्यों की फीस अलग हो सकती है।" },
+  { q: "RTI का जवाब कितने दिन में आता है?", a: "लोक सूचना अधिकारी (PIO) को 30 दिन में जवाब देना होता है। मामला किसी के जीवन या स्वतंत्रता से जुड़ा हो तो 48 घंटे में।" },
+  { q: "जवाब न मिले या गलत मिले तो क्या करें?", a: "30 दिन में जवाब न आए या अधूरा हो तो पहली अपील (First Appeal) उसी विभाग के प्रथम अपील अधिकारी (FAA) को करें। फैसले से संतुष्ट न हों तो 90 दिन के अंदर केंद्रीय सूचना आयोग (CIC) या राज्य सूचना आयोग में दूसरी अपील कर सकते हैं।" },
+  { q: "क्या rtionline.gov.in पर राज्य सरकार की RTI लग सकती है?", a: "नहीं। यह पोर्टल सिर्फ केंद्र सरकार के मंत्रालयों और विभागों के लिए है। राज्य विभाग, पुलिस, नगर निगम आदि के लिए राज्य का RTI पोर्टल इस्तेमाल करें, या डाक से आवेदन भेजें।" },
+  { q: "क्या RTI से हर जानकारी मिलती है?", a: "नहीं। धारा 8 के तहत देश की सुरक्षा, किसी और व्यक्ति की निजी जानकारी और कुछ दूसरी जानकारियां देने से मना किया जा सकता है। मना करने पर PIO को कारण बताना होता है।" },
+];
+---
+<Base
+  title="RTI Online Filing Guide 2026 | SarkariSewa India"
+  description="RTI ऑनलाइन कैसे लगाएं: rtionline.gov.in पर आवेदन, ₹10 फीस (BPL फ्री), 30 दिन में जवाब, स्टेटस चेक, पहली और दूसरी अपील, और आवेदन लिखने का तरीका।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  modified="2026-10-16"
+  published="2026-08-01"
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>RTI ऑनलाइन कैसे लगाएं: आवेदन, स्टेटस और पहली अपील</h1>
+      <p class="page-intro">RTI (सूचना का अधिकार) से आप किसी भी सरकारी दफ्तर से लिखित जानकारी मांग सकते हैं, जैसे आपका आवेदन कहां अटका है। केंद्र सरकार के विभागों के लिए RTI <a href="https://rtionline.gov.in/" target="_blank" rel="noopener nofollow">rtionline.gov.in</a> पर ₹10 में लगती है और 30 दिन में जवाब आना चाहिए। जांच की तारीख: 16 अक्टूबर 2026।</p>
+
+      <div class="table-wrap">
+        <table><tbody>{facts.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table>
+      </div>
+
+      <section class="section" id="online">
+        <h2>RTI ऑनलाइन कैसे लगाएं (केंद्र सरकार)</h2>
+        <ol class="steps">
+          <li><a href="https://rtionline.gov.in/" target="_blank" rel="noopener nofollow">rtionline.gov.in</a> खोलें और <strong>Submit Request</strong> पर क्लिक करें।</li>
+          <li>दिशा-निर्देश पढ़कर "I have read and understood" पर टिक करें और Submit करें।</li>
+          <li>वह मंत्रालय या विभाग चुनें जिसके पास जानकारी है (जैसे रेलवे, डाक, आयकर, CBSE)।</li>
+          <li>नाम, पता, मोबाइल और email भरें। BPL हैं तो "Yes" चुनें और BPL प्रमाण अपलोड करें।</li>
+          <li>सवाल लिखें। बॉक्स में <strong>3000 अक्षर (characters)</strong> तक ही लिखे जा सकते हैं; ज़्यादा हो तो PDF बनाकर "Supporting document" में लगाएं।</li>
+          <li>₹10 फीस नेट बैंकिंग, कार्ड या UPI से भरें (BPL को फीस नहीं)।</li>
+          <li>मिला <strong>Registration Number</strong> लिखकर रखें। इसी से स्टेटस देखा जाता है।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="likhna">
+        <h2>RTI आवेदन कैसे लिखें</h2>
+        <ul class="checklist">
+          <li>सबसे ऊपर: "सेवा में, लोक सूचना अधिकारी (PIO)", विभाग का नाम और पता।</li>
+          <li>विषय: "सूचना का अधिकार अधिनियम 2005 की धारा 6(1) के तहत आवेदन"।</li>
+          <li>सवाल नंबर डालकर (1, 2, 3…) छोटे और साफ लिखें। राय या सलाह न मांगें, सिर्फ रिकॉर्ड और तथ्य मांगें। जैसे: "मेरे आवेदन संख्या ___ दिनांक ___ पर अब तक की कार्यवाही की प्रमाणित प्रति दें।"</li>
+          <li>अंत में अपना नाम, पता, तारीख और हस्ताक्षर। डाक से भेजें तो फीस का पोस्टल ऑर्डर/ड्राफ्ट या राज्य के नियम के अनुसार भुगतान लगाएं।</li>
+        </ul>
+        <p>अपने आवेदन, भुगतान की रसीद और डाक की रसीद की कॉपी संभालकर रखें।</p>
+      </section>
+
+      <section class="section" id="status">
+        <h2>RTI का स्टेटस कैसे देखें</h2>
+        <ol class="steps">
+          <li>rtionline.gov.in पर <strong>View Status</strong> खोलें।</li>
+          <li>Registration Number और आवेदन में दिया email डालें।</li>
+          <li>Security code भरकर Submit करें। जवाब आया हो तो वहीं दिखेगा, और email पर भी सूचना आती है।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="appeal">
+        <h2>जवाब न मिले तो: पहली और दूसरी अपील</h2>
+        <ul class="checklist">
+          <li><strong>पहली अपील:</strong> 30 दिन में जवाब न आए, या जवाब अधूरा/गलत हो, तो उसी विभाग के प्रथम अपील अधिकारी (FAA) को अपील करें। समय: जवाब मिलने के (या 30 दिन पूरे होने के) 30 दिन के अंदर। rtionline.gov.in पर "Submit First Appeal" से ऑनलाइन होती है; कोई फीस नहीं।</li>
+          <li><strong>दूसरी अपील:</strong> पहली अपील के फैसले से संतुष्ट न हों तो 90 दिन के अंदर केंद्रीय सूचना आयोग (<a href="https://cic.gov.in/" target="_blank" rel="noopener nofollow">cic.gov.in</a>) या अपने राज्य सूचना आयोग में।</li>
+          <li><strong>जुर्माना:</strong> बिना ठोस कारण जानकारी न देने पर आयोग PIO पर ₹250 प्रति दिन (अधिकतम ₹25,000) तक जुर्माना लगा सकता है।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="rajya">
+        <h2>राज्य सरकार की RTI</h2>
+        <p>rtionline.gov.in सिर्फ केंद्र सरकार के लिए है। राज्य पुलिस, नगर निगम, तहसील, राज्य शिक्षा बोर्ड जैसे दफ्तरों से जानकारी के लिए राज्य का RTI पोर्टल इस्तेमाल करें, या सादे कागज़ पर आवेदन लिखकर उस दफ्तर के PIO को डाक से भेजें। कई राज्यों के अपने ऑनलाइन पोर्टल हैं, जैसे:</p>
+        <ul class="checklist">
+          <li>गोवा: <a href="https://rtionline.goa.gov.in/" target="_blank" rel="noopener nofollow">rtionline.goa.gov.in</a></li>
+          <li>छत्तीसगढ़: <a href="https://rtionline.cg.gov.in/" target="_blank" rel="noopener nofollow">rtionline.cg.gov.in</a></li>
+        </ul>
+        <p>अपने राज्य का पोर्टल राज्य सरकार या राज्य सूचना आयोग की official वेबसाइट पर देखें। राज्यों में फीस और भुगतान का तरीका अलग हो सकता है।</p>
+      </section>
+
+      <div class="callout info"><p>SarkariSewa India एक निजी वेबसाइट है, सरकारी नहीं। हम RTI दाखिल नहीं करते। आवेदन हमेशा official पोर्टल या संबंधित दफ्तर में ही करें। और मदद: <a href="/support/helpline-directory.html">Helpline Directory</a> · <a href="/support/index.html">Support</a></p></div>
+
+      <Faq items={faq} />
+    </div>
+  </article>
+</Base>

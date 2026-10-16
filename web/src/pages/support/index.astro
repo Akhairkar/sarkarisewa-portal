@@ -1,0 +1,66 @@
+---
+// Support hub: helplines, RTI, state-wise services, and what to do when a
+// government application is stuck. Our own contact is email only.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CardGrid from "../../components/CardGrid.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "Support" }];
+const faq = [
+  { q: "SarkariSewa India से कैसे संपर्क करें?", a: "ईमेल करें: sarkarisewaindia@gmail.com। गलत जानकारी, टूटा लिंक, CSC लिस्टिंग या पेड रिपोर्ट के रिफंड के लिए यही तरीका है। हमारा कोई फोन हेल्पलाइन नंबर नहीं है।" },
+  { q: "क्या SarkariSewa India सरकारी वेबसाइट है?", a: "नहीं। यह एक निजी जानकारी वेबसाइट है। सरकारी आवेदन, भुगतान या स्टेटस का असली समाधान संबंधित विभाग के official पोर्टल या हेल्पलाइन से ही मिलता है।" },
+  { q: "योजना का पैसा या प्रमाण पत्र नहीं मिल रहा, क्या करें?", a: "पहले official पोर्टल पर आवेदन नंबर से स्टेटस देखें। फिर विभाग की हेल्पलाइन पर फोन करें या शिकायत दर्ज करें (केंद्र के विभागों के लिए pgportal.gov.in)। तय समय में जवाब न मिले तो RTI लगाकर आवेदन की स्थिति पूछ सकते हैं।" },
+  { q: "क्या आप फॉर्म भरने के पैसे लेते हैं?", a: "नहीं, हम सरकारी फॉर्म नहीं भरते। हमारी सिर्फ दो पेड रिपोर्ट सेवाएं हैं (GSTIN और RC e-Challan), जिनकी कीमत पहले से लिखी होती है। फॉर्म भरवाना हो तो नज़दीकी CSC पर जाएं; CSC अपना शुल्क खुद बताता है।" },
+];
+---
+<Base
+  title="SarkariSewa Help & Support: Yojana Form Queries & Solutions"
+  description="सरकारी आवेदन में दिक्कत? सभी ज़रूरी हेल्पलाइन नंबर, RTI लगाने का तरीका, राज्य अनुसार सेवाएं और नज़दीकी CSC एक जगह। SarkariSewa India से संपर्क का तरीका भी।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+  canonical="/support/index.html"
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="hero">
+    <span class="eyebrow">🛟 मदद और शिकायत</span>
+    <h1>Support: <em>हेल्पलाइन, RTI और राज्य सेवाएं</em></h1>
+    <p class="page-intro">आवेदन अटक गया, पैसा नहीं आया या सही पोर्टल नहीं मिल रहा? यहां से सही हेल्पलाइन, शिकायत और RTI का रास्ता देखें।</p>
+  </section>
+
+  <CardGrid title="किस काम के लिए कौन सा पेज" cards={[
+    { href: "/support/helpline-directory.html", emoji: "📞", title: "Helpline Directory", text: { hi: "आधार, पेंशन, PM-KISAN, आयुष्मान आदि के official नंबर", en: "Official helpline numbers" } },
+    { href: "/support/rti-guide.html", emoji: "📄", title: { hi: "RTI गाइड", en: "RTI guide" }, text: { hi: "₹10 में सरकारी दफ्तर से जानकारी मांगें", en: "Ask any office for information" } },
+    { href: "/support/state-wise-services.html", emoji: "🗺️", title: { hi: "राज्य अनुसार सेवाएं", en: "State-wise services" }, text: { hi: "प्रमाण पत्र, राशन कार्ड आदि का राज्य पोर्टल", en: "State portals for certificates" } },
+    { href: "/tools/csc-locator.html", emoji: "📍", title: { hi: "नज़दीकी CSC", en: "Nearest CSC" }, text: { hi: "फॉर्म भरवाने के लिए जन सेवा केंद्र", en: "Get forms filled at a CSC" } },
+    { href: "/tools/status-troubleshooter.html", emoji: "🔍", title: "Status Troubleshooter", text: { hi: "आवेदन अटकने पर कदम-दर-कदम", en: "Step-by-step when stuck" } },
+    { href: "/contact.html", emoji: "✉️", title: { hi: "हमसे संपर्क", en: "Contact us" }, text: { hi: "गलती, टूटा लिंक, रिफंड: ईमेल करें", en: "Errors, broken links, refunds" } },
+  ]} />
+
+  <article class="page">
+    <div>
+      <section class="section" id="checklist">
+        <h2>आवेदन में दिक्कत हो तो ये करें</h2>
+        <ol class="steps">
+          <li><strong>रसीद संभालें:</strong> आवेदन नंबर, तारीख और भुगतान की रसीद लिखकर या फोटो खींचकर रखें।</li>
+          <li><strong>Official पोर्टल पर स्टेटस देखें:</strong> आवेदन नंबर से स्टेटस और कोई नया नोटिस देखें। कई बार कोई कागज़ दोबारा मांगा जाता है।</li>
+          <li><strong>विभाग की हेल्पलाइन या दफ्तर:</strong> <a href="/support/helpline-directory.html">Helpline Directory</a> से सही नंबर लें, या ब्लॉक/तहसील दफ्तर जाएं।</li>
+          <li><strong>शिकायत दर्ज करें:</strong> केंद्र के विभागों के लिए <a href="https://pgportal.gov.in/" target="_blank" rel="noopener nofollow">CPGRAMS (pgportal.gov.in)</a>; राज्य के कामों के लिए राज्य का शिकायत पोर्टल या हेल्पलाइन।</li>
+          <li><strong>फिर भी जवाब नहीं:</strong> <a href="/support/rti-guide.html">RTI लगाकर</a> आवेदन की स्थिति और देरी का कारण लिखित में मांगें।</li>
+        </ol>
+        <div class="callout warn"><p><strong>सावधान:</strong> किसी को OTP, UPI PIN, बैंक पासवर्ड न बताएं। "जल्दी काम करवा देंगे" कहकर पैसे मांगने वालों से बचें। सरकारी फीस सिर्फ official पोर्टल या दफ्तर में दें।</p></div>
+      </section>
+
+      <section class="section" id="hamse">
+        <h2>SarkariSewa India से मदद</h2>
+        <p>हम सरकारी आवेदन नहीं भरते और सरकारी शिकायत हल नहीं कर सकते। हमारी किसी गाइड में गलती, टूटा लिंक, CSC लिस्टिंग या पेड रिपोर्ट/रिफंड के लिए <a href="mailto:sarkarisewaindia@gmail.com">sarkarisewaindia@gmail.com</a> पर लिखें। <a href="/faq.html">FAQ</a> · <a href="/refund-policy.html">रिफंड नीति</a></p>
+      </section>
+
+      <Faq items={faq} />
+    </div>
+  </article>
+  <Explore />
+</Base>

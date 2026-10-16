@@ -1,0 +1,152 @@
+---
+// HTML sitemap, built at build time from what really exists: every page in
+// src/pages/<section>/ plus old static pages in the same folder that are not
+// redirects or noindex. Titles come from the page's guide data, its <Base
+// title>, or the old page's <title>. CSC centre pages are reached via the
+// locator, state document pages via the state hubs.
+import fs from "node:fs";
+import path from "node:path";
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { STATES } from "../data/site";
+import { REPO_ROOT, exists, pageTitle } from "../lib/repo";
+
+const PAGES = path.join(process.cwd(), "src/pages");
+
+// Guide data titles, keyed "<guide dir>/<file>".
+const GUIDES: Record<string, string> = {};
+for (const [f, m] of Object.entries(import.meta.glob<Record<string, unknown>>("../guides/*/*.ts", { eager: true }))) {
+  const g = Object.values(m).find((v) => v && typeof v === "object" && typeof (v as { title?: unknown }).title === "string") as { title: string } | undefined;
+  if (g) GUIDES[f.replace(/^\.\.\/guides\//, "").replace(/\.ts$/, "")] = g.title;
+}
+
+const clean = (t: string) => t.replace(/\s*[|—]\s*SarkariSewa.*$/i, "").replace(/&amp;/g, "&").trim();
+const human = (slug: string) => slug.replace(/-ms[a-z0-9]{5,}-\d+$/, "").replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
+
+function titleOfAstro(file: string): string {
+  const src = fs.readFileSync(file, "utf8");
+  const imp = src.match(/from\s+["'](?:\.\.\/)+guides\/([\w-]+\/[\w-]+)["']/);
+  if (imp && GUIDES[imp[1]]) return clean(GUIDES[imp[1]]);
+  const t = src.match(/<Base[^>]*?\btitle="([^"]+)"/) ?? src.match(/^\s*title="([^"]+)"/m);
+  return t ? clean(t[1]) : "";
+}
+
+// JS template pages (?slug= / ?id=) are not real pages.
+const TEMPLATES = new Set(["service/service.html", "blog/post.html", "jobs/post.html", "exams/exam.html", "tools/deadline-detail.html"]);
+function oldLive(rel: string): boolean {
+  if (TEMPLATES.has(rel)) return false;
+  try {
+    const head = fs.readFileSync(path.join(REPO_ROOT, rel), "utf8").slice(0, 6000);
+    return !/http-equiv=["']refresh/i.test(head) && !/name=["']robots["'][^>]*noindex/i.test(head);
+  } catch { return false; }
+}
+
+/** All pages in one URL folder: new Astro pages plus live old pages. */
+function folder(dir: string): { href: string; title: string }[] {
+  const out = new Map<string, string>();
+  const nd = path.join(PAGES, dir);
+  if (fs.existsSync(nd)) {
+    for (const f of fs.readdirSync(nd)) {
+      if (!f.endsWith(".astro") || f.startsWith("[") || f === "index.astro") continue;
+      const slug = f.slice(0, -6);
+      out.set(slug, titleOfAstro(path.join(nd, f)) || pageTitle(`${dir}/${slug}.html`) || human(slug));
+    }
+  }
+  const od = path.join(REPO_ROOT, dir);
+  if (fs.existsSync(od)) {
+    for (const f of fs.readdirSync(od)) {
+      if (!f.endsWith(".html") || f === "index.html") continue;
+      const slug = f.slice(0, -5);
+      if (out.has(slug) || !oldLive(`${dir}/${f}`)) continue;
+      out.set(slug, pageTitle(`${dir}/${f}`) || human(slug));
+    }
+  }
+  return [...out].map(([slug, title]) => ({ href: `/${dir}/${slug}.html`, title })).sort((a, b) => a.title.localeCompare(b.title, "hi"));
+}
+
+const live = (href: string) => {
+  const p = href.endsWith("/") ? href + "index" : href.replace(/\.html$/, "");
+  return fs.existsSync(path.join(PAGES, p + ".astro")) || exists(href.endsWith("/") ? href + "index.html" : href);
+};
+const main: [string, string][] = ([
+  ["/", "होम"], ["/documents/", "दस्तावेज़"], ["/yojana/", "योजनाएं"], ["/students/", "Students"], ["/jobs/index.html", "सरकारी नौकरी"],
+  ["/exams/index.html", "Exam Calendar"], ["/blog/index.html", "ब्लॉग"], ["/tools/", "Tools"], ["/near-me/", "Near Me"], ["/states/", "राज्य"],
+  ["/find-services.html", "अपनी सेवा खोजें"], ["/tools/csc-locator.html", "CSC सेंटर लोकेटर"], ["/claim-your-csc.html", "अपना CSC जोड़ें"],
+  ["/paid-services/", "Paid Services"], ["/services/gstin-verification/", "GSTIN Verification"], ["/services/rc-challan/", "RC e-Challan रिपोर्ट"],
+  ["/solar/", "PM सूर्य घर सोलर"], ["/gst/", "GST गाइड"], ["/challan/", "ट्रैफिक चालान"], ["/affidavit/", "एफिडेविट फॉर्मेट"],
+  ["/rent-agreement/", "रेंट एग्रीमेंट"], ["/deadline-calendar.html", "आखिरी तारीख कैलेंडर"], ["/search.html", "सर्च"],
+] as [string, string][]).filter(([h]) => live(h));
+const info: [string, string][] = ([
+  ["/about.html", "हमारे बारे में"], ["/contact.html", "संपर्क"], ["/faq.html", "FAQ"], ["/support/index.html", "Support"],
+  ["/support/helpline-directory.html", "Helpline Directory"], ["/support/rti-guide.html", "RTI गाइड"], ["/support/state-wise-services.html", "राज्य अनुसार सेवाएं"],
+  ["/privacy-policy.html", "Privacy Policy"], ["/terms.html", "Terms"], ["/disclaimer.html", "Disclaimer"], ["/refund-policy.html", "रिफंड नीति"],
+] as [string, string][]).filter(([h]) => live(h));
+const states = STATES.filter((s) => exists(`states/${s.slug}.html`));
+
+const sections = [
+  { id: "service", title: "दस्तावेज़, प्रमाण पत्र और योजनाएं", list: folder("service") },
+  { id: "category", title: "श्रेणियां", list: folder("category") },
+  { id: "tools", title: "टूल और कैलकुलेटर", list: folder("tools") },
+  { id: "jobs", title: "सरकारी नौकरी", list: folder("jobs") },
+  { id: "exams", title: "परीक्षा", list: folder("exams") },
+  { id: "blog", title: "ब्लॉग", list: folder("blog") },
+  { id: "gst", title: "GST", list: folder("gst") },
+  { id: "challan", title: "ट्रैफिक चालान", list: folder("challan") },
+  { id: "digilocker", title: "DigiLocker", list: folder("digilocker") },
+  { id: "affidavit", title: "एफिडेविट", list: folder("affidavit") },
+  { id: "rent-agreement", title: "रेंट एग्रीमेंट", list: folder("rent-agreement") },
+].filter((s) => s.list.length);
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "Sitemap" }];
+---
+<Base
+  title="Sitemap | SarkariSewa India"
+  description="SarkariSewa India के सभी पेज एक जगह: दस्तावेज़ और प्रमाण पत्र गाइड, योजनाएं, राज्य अनुसार सेवाएं, नौकरी, परीक्षा, ब्लॉग और फ्री टूल।"
+  breadcrumbs={crumbs}
+  schemaType="WebPage"
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>Sitemap: सभी पेज</h1>
+      <p class="page-intro">वेबसाइट के सभी मुख्य पेज विषय के अनुसार। किसी राज्य के प्रमाण पत्र, राशन कार्ड, लेबर कार्ड और सीनियर सिटीजन कार्ड के पेज उस राज्य के पेज पर हैं। CSC सेंटर <a href="/tools/csc-locator.html">CSC लोकेटर</a> से खोजें।</p>
+
+      <nav class="section toc" aria-label="विषय">
+        <ul class="sm-list">
+          <li><a href="#main">मुख्य पेज</a></li>
+          <li><a href="#states">राज्य</a></li>
+          {sections.map((s) => <li><a href={`#${s.id}`}>{s.title} ({s.list.length})</a></li>)}
+          <li><a href="#info">जानकारी और नीतियां</a></li>
+        </ul>
+      </nav>
+
+      <section class="section" id="main">
+        <h2>मुख्य पेज</h2>
+        <ul class="sm-list">{main.map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul>
+      </section>
+
+      <section class="section" id="states">
+        <h2>राज्य अनुसार सेवाएं</h2>
+        <ul class="sm-list">{states.map((s) => <li><a href={`/states/${s.slug}.html`}>{s.hi} ({s.name})</a></li>)}</ul>
+      </section>
+
+      {sections.map((s) => (
+        <section class="section" id={s.id}>
+          <h2>{s.title} <small>({s.list.length})</small></h2>
+          <ul class="sm-list">{s.list.map((p) => <li><a href={p.href}>{p.title}</a></li>)}</ul>
+        </section>
+      ))}
+
+      <section class="section" id="info">
+        <h2>जानकारी और नीतियां</h2>
+        <ul class="sm-list">{info.map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul>
+        <p><small>SarkariSewa India एक निजी जानकारी वेबसाइट है, सरकारी नहीं।</small></p>
+      </section>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .sm-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 6px 20px; }
+  .sm-list li { margin: 0; overflow-wrap: anywhere; font-size: 0.95rem; }
+</style>

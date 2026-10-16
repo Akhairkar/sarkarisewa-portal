@@ -1,0 +1,129 @@
+---
+// National helpline numbers, checked 16 Oct 2026 against official pages or
+// DoT short-code allotments (UIDAI 1947, e-Shram 14434 on eshram.gov.in,
+// EPFO 14470 -> 1800-118-005, Passport 1800-258-1800, Jan Aushadhi
+// 1800-180-8080 on pmbi.co.in, e-filing 1800-103-0025 on incometaxindia.gov.in,
+// GSTN 1800-103-4786, RBI 14448, PM-JAY 14555). Only add numbers you can
+// verify; state numbers belong in the state guides.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+
+type Row = { name: string; num: string; note: string; guide?: string };
+const groups: { id: string; title: string; rows: Row[] }[] = [
+  { id: "emergency", title: "🚨 आपातकाल और सुरक्षा", rows: [
+    { name: "आपातकालीन सहायता (पुलिस, फायर, एंबुलेंस)", num: "112", note: "पूरे देश में एक नंबर" },
+    { name: "साइबर फ्रॉड / ऑनलाइन ठगी", num: "1930", note: "पैसा कटते ही तुरंत फोन करें; शिकायत cybercrime.gov.in पर भी" },
+    { name: "महिला हेल्पलाइन", num: "181", note: "ज़्यादातर राज्यों में" },
+    { name: "चाइल्ड हेल्पलाइन", num: "1098", note: "मुसीबत में बच्चों के लिए" },
+    { name: "Elderline (बुज़ुर्गों के लिए)", num: "14567", note: "पेंशन, कानूनी सलाह, दुर्व्यवहार", guide: "/service/senior-citizen-card.html" },
+    { name: "Tele-MANAS (मानसिक स्वास्थ्य)", num: "14416", note: "फ्री काउंसलिंग" },
+  ] },
+  { id: "documents", title: "🪪 पहचान दस्तावेज़", rows: [
+    { name: "आधार (UIDAI)", num: "1947", note: "नामांकन, अपडेट, शिकायत", guide: "/service/aadhaar-card.html" },
+    { name: "वोटर हेल्पलाइन (चुनाव आयोग)", num: "1950", note: "वोटर ID, लिस्ट में नाम", guide: "/service/voter-id-card.html" },
+    { name: "पासपोर्ट (National Call Centre)", num: "1800-258-1800", note: "टोल-फ्री", guide: "/service/passport.html" },
+    { name: "इनकम टैक्स e-Filing / CPC", num: "1800-103-0025", note: "या 1800-419-0025; ITR, PAN-आधार लिंक", guide: "/service/income-tax-return-filing.html" },
+    { name: "GST हेल्पडेस्क (GSTN)", num: "1800-103-4786", note: "GST पोर्टल की तकनीकी दिक्कत" },
+  ] },
+  { id: "schemes", title: "🎯 योजनाएं और पेंशन", rows: [
+    { name: "PM-KISAN", num: "155261", note: "या 011-24300606", guide: "/service/pm-kisan.html" },
+    { name: "आयुष्मान भारत (PM-JAY)", num: "14555", note: "कार्ड, अस्पताल, शिकायत", guide: "/service/ayushman-bharat.html" },
+    { name: "e-Shram", num: "14434", note: "असंगठित मज़दूर पंजीकरण", guide: "/service/e-shram-card.html" },
+    { name: "EPFO (PF, पेंशन)", num: "14470", note: "टोल-फ्री 1800-118-005", guide: "/service/epfo.html" },
+    { name: "किसान कॉल सेंटर", num: "1800-180-1551", note: "खेती से जुड़े सवाल" },
+    { name: "जन औषधि (सस्ती दवा)", num: "1800-180-8080", note: "टोल-फ्री", guide: "/service/jan-aushadhi-store-locator.html" },
+    { name: "राशन / खाद्य हेल्पलाइन", num: "1967", note: "कई राज्यों में; नंबर राज्य के खाद्य विभाग की वेबसाइट पर देखें", guide: "/service/ration-card.html" },
+  ] },
+  { id: "consumer", title: "🛒 उपभोक्ता, बैंक और सफर", rows: [
+    { name: "राष्ट्रीय उपभोक्ता हेल्पलाइन", num: "1915", note: "दुकान, कंपनी, ऑनलाइन खरीद की शिकायत", guide: "/service/consumer-grievance-redressal.html" },
+    { name: "RBI (बैंक की शिकायत)", num: "14448", note: "पहले बैंक में शिकायत करें; हल न हो तो RBI" },
+    { name: "LPG गैस लीक (आपात)", num: "1906", note: "सभी गैस कंपनियां", guide: "/service/lpg-cylinder-booking.html" },
+    { name: "रेलवे सहायता (Rail Madad)", num: "139", note: "PNR, शिकायत, सुरक्षा" },
+    { name: "नेशनल हाईवे / FASTag", num: "1033", note: "हाईवे पर मदद, FASTag शिकायत", guide: "/service/fastag-registration.html" },
+    { name: "CSC (जन सेवा केंद्र) हेल्पडेस्क", num: "1800-121-3468", note: "CSC सेवाओं से जुड़ी शिकायत" },
+  ] },
+];
+const tel = (n: string) => "tel:" + n.replace(/[^0-9]/g, "");
+const crumbs = [{ label: "होम", href: "/" }, { label: "Support", href: "/support/index.html" }, { label: "Helpline Directory" }];
+const faq = [
+  { q: "राष्ट्रीय हेल्पलाइन नंबर कौन से हैं?", a: "आपातकाल 112, साइबर फ्रॉड 1930, आधार 1947, राष्ट्रीय उपभोक्ता हेल्पलाइन 1915, बुज़ुर्गों के लिए Elderline 14567 और वोटर हेल्पलाइन 1950।" },
+  { q: "PM-KISAN का हेल्पलाइन नंबर क्या है?", a: "PM-KISAN हेल्पलाइन 155261 या 011-24300606 है। किस्त का स्टेटस pmkisan.gov.in पर Know Your Status से भी देख सकते हैं।" },
+  { q: "आयुष्मान भारत का टोल-फ्री नंबर क्या है?", a: "आयुष्मान भारत (PM-JAY) की हेल्पलाइन 14555 है। कार्ड, अस्पताल और इलाज से जुड़ी शिकायत यहां कर सकते हैं।" },
+  { q: "ऑनलाइन ठगी हो जाए तो क्या करें?", a: "तुरंत 1930 पर फोन करें और cybercrime.gov.in पर शिकायत दर्ज करें। जितनी जल्दी शिकायत होगी, पैसा रुकने की संभावना उतनी ज़्यादा होती है। अपने बैंक को भी तुरंत बताएं।" },
+  { q: "क्या यह SarkariSewa India का नंबर है?", a: "नहीं। ये सरकारी विभागों और संस्थाओं के official नंबर हैं। SarkariSewa India एक निजी वेबसाइट है; हमसे संपर्क सिर्फ ईमेल sarkarisewaindia@gmail.com पर होता है।" },
+];
+---
+<Base
+  title="All Govt Helpline Numbers 2026: Official Customer Care List"
+  description="सरकारी हेल्पलाइन नंबर 2026: आपातकाल 112, साइबर फ्रॉड 1930, आधार 1947, PM-KISAN 155261, आयुष्मान 14555, e-Shram 14434, EPFO 14470 और अन्य official नंबर।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  modified="2026-10-16"
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>सरकारी हेल्पलाइन नंबर (Helpline Directory)</h1>
+      <p class="page-intro">केंद्र सरकार की मुख्य सेवाओं के official हेल्पलाइन नंबर एक जगह। नंबर पर टैप करके सीधे फोन करें। जांच की तारीख: 16 अक्टूबर 2026।</p>
+
+      <div class="callout warn"><p><strong>ध्यान दें:</strong> ये SarkariSewa India के नंबर नहीं हैं; ये सरकारी विभागों के नंबर हैं। कोई भी असली हेल्पलाइन OTP, UPI PIN या बैंक पासवर्ड नहीं मांगती। Google पर दिखे "customer care" नंबरों से सावधान रहें; नंबर official वेबसाइट से ही लें।</p></div>
+
+      <div class="search-box" role="search">
+        <label class="sr-only" for="hl-q">हेल्पलाइन खोजें</label>
+        <input id="hl-q" type="search" placeholder="खोजें: आधार, पेंशन, PF, किसान…" autocomplete="off" />
+      </div>
+
+      {groups.map((g) => (
+        <section class="section hl-group" id={g.id}>
+          <h2>{g.title}</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>सेवा</th><th>नंबर</th></tr></thead>
+              <tbody>
+                {g.rows.map((r) => (
+                  <tr data-q={`${r.name} ${r.note} ${r.num}`.toLowerCase()}>
+                    <td><strong>{r.name}</strong><br /><small>{r.note}{r.guide && <> · <a href={r.guide}>गाइड</a></>}</small></td>
+                    <td style="white-space:nowrap"><a href={tel(r.num)}><strong>{r.num}</strong></a></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ))}
+      <p class="hl-empty" hidden>इस खोज से कोई नंबर नहीं मिला। दूसरा शब्द आज़माएं।</p>
+
+      <section class="section" id="aur">
+        <h2>राज्य के नंबर और शिकायत</h2>
+        <ul class="checklist">
+          <li>प्रमाण पत्र, राशन, पेंशन और लेबर कार्ड के राज्य हेल्पलाइन नंबर हर राज्य की गाइड में दिए हैं: <a href="/states/">राज्य अनुसार सेवाएं</a>।</li>
+          <li>केंद्र सरकार के विभाग की शिकायत: <a href="https://pgportal.gov.in/" target="_blank" rel="noopener nofollow">CPGRAMS (pgportal.gov.in)</a>।</li>
+          <li>लिखित जानकारी चाहिए तो: <a href="/support/rti-guide.html">RTI कैसे लगाएं</a>।</li>
+          <li>कोई नंबर बंद या गलत मिले तो <a href="mailto:sarkarisewaindia@gmail.com">sarkarisewaindia@gmail.com</a> पर बताएं।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+    </div>
+  </article>
+  <script is:inline>
+    (function () {
+      var q = document.getElementById("hl-q");
+      if (!q) return;
+      q.addEventListener("input", function () {
+        var v = q.value.trim().toLowerCase(), any = false;
+        document.querySelectorAll(".hl-group").forEach(function (g) {
+          var shown = 0;
+          g.querySelectorAll("tbody tr").forEach(function (tr) {
+            var ok = !v || tr.dataset.q.indexOf(v) !== -1;
+            tr.hidden = !ok; if (ok) shown++;
+          });
+          g.hidden = shown === 0; if (shown) any = true;
+        });
+        document.querySelector(".hl-empty").hidden = any;
+      });
+    })();
+  </script>
+</Base>

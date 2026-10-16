@@ -1,0 +1,32 @@
+---
+// Not-found page (Astro outputs 404.html). Search box plus the main hubs.
+import Base from "../layouts/Base.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CardGrid from "../components/CardGrid.astro";
+---
+<Base
+  title="Page Not Found (404) | SarkariSewa India"
+  description="यह पेज नहीं मिला या हटा दिया गया है। सर्च करें या सरकारी दस्तावेज़, योजनाएं, नौकरी और फ्री टूल के मुख्य पेज देखें।"
+  noindex={true}
+  schemaType="WebPage"
+  canonical="/404.html"
+>
+  <section class="hero">
+    <span class="eyebrow">404</span>
+    <h1>यह पेज <em>नहीं मिला</em></h1>
+    <p class="page-intro">जो पेज आप ढूंढ रहे हैं वह हटा दिया गया है या उसका पता बदल गया है। नीचे खोजें या मुख्य पेजों से शुरू करें।</p>
+    <SearchBox placeholder="खोजें: आधार, राशन कार्ड, पेंशन, नौकरी…" />
+    <p><a class="cta" href="/">होम पेज पर जाएं</a></p>
+  </section>
+
+  <CardGrid title="मुख्य पेज" cards={[
+    { href: "/documents/", emoji: "📄", title: { hi: "दस्तावेज़", en: "Documents" }, text: { hi: "प्रमाण पत्र और कार्ड की गाइड", en: "Certificates and cards" } },
+    { href: "/yojana/", emoji: "🎯", title: { hi: "योजनाएं", en: "Schemes" }, text: { hi: "पात्रता, राशि और आवेदन", en: "Eligibility and how to apply" } },
+    { href: "/states/", emoji: "🗺️", title: { hi: "राज्य अनुसार", en: "By state" }, text: { hi: "अपने राज्य की सेवाएं", en: "Your state's services" } },
+    { href: "/jobs/index.html", emoji: "💼", title: { hi: "सरकारी नौकरी", en: "Government jobs" }, text: { hi: "नई भर्तियां और आखिरी तारीख", en: "New vacancies, last dates" } },
+    { href: "/students/", emoji: "🎓", title: "Students", text: { hi: "छात्रवृत्ति, परीक्षा, टूल", en: "Scholarships, exams, tools" } },
+    { href: "/tools/", emoji: "🧮", title: "Tools", text: { hi: "फ्री कैलकुलेटर और टूल", en: "Free calculators and tools" } },
+    { href: "/tools/csc-locator.html", emoji: "📍", title: { hi: "नज़दीकी CSC", en: "Nearest CSC" }, text: { hi: "जन सेवा केंद्र खोजें", en: "Find a CSC" } },
+    { href: "/sitemap.html", emoji: "🗂️", title: "Sitemap", text: { hi: "सभी पेज एक जगह", en: "All pages" } },
+  ]} />
+</Base>
