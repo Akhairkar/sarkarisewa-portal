@@ -24,7 +24,7 @@ export const punjabSirVoterList: DocGuide = {
     { label: "SIR वोटर लिस्ट" },
   ],
   docHi: "SIR वोटर लिस्ट",
-  title: "Punjab SIR Voter List 2026: Online Apply, Eligibility & Documents",
+  title: "Punjab SIR Voter List 2026: Name Check, Eligibility & Documents",
   description: "पंजाब SIR वोटर लिस्ट 2026: अंतिम सूची 12 अक्टूबर 2026 को छपी। नाम कैसे देखें, नाम कटा हो तो फॉर्म 6, BLO और हेल्पलाइन 1950 की जानकारी।",
   published: "2024-06-01",
   modified: "2026-10-16",
