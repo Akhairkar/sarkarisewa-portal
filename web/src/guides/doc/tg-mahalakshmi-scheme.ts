@@ -80,7 +80,6 @@ export const tgMahalakshmiScheme: DocGuide = {
   ],
   official: [
     { href: "https://www.telangana.gov.in/", title: "तेलंगाना सरकार" },
-    { href: "https://www.tgsrtc.telangana.gov.in/", title: "TGSRTC", note: "बस सेवाएं" },
   ],
   faq: [
     { q: "महालक्ष्मी योजना में मुफ्त बस यात्रा किसे मिलती है?", a: "तेलंगाना की निवासी सभी उम्र की महिलाओं, लड़कियों और ट्रांसजेंडर व्यक्तियों को, TGSRTC की नॉन-AC बसों में राज्य के भीतर। कंडक्टर को पहचान पत्र दिखाकर ज़ीरो टिकट लें।" },
