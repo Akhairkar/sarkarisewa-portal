@@ -137,8 +137,8 @@ if (faq.length) {
       function show() {
         if (shown) return; shown = true;
         var d = document.createElement("div"); d.className = "tg-float";
-        d.innerHTML = '<a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener"><span aria-hidden="true">✈️</span>' + (hi ? "Telegram पर फ्री अपडेट पाएं" : "Free updates on Telegram") + '</a><button type="button" aria-label="' + (hi ? "बंद करें" : "Close") + '">✕</button>';
-        d.querySelector("a").addEventListener("click", function () { setTimeout(function () { hide(30); }, 300); });
+        d.innerHTML = '<span class="tgf-label">' + (hi ? "फ्री अपडेट:" : "Free updates:") + '</span><a class="tgf-wa" href="https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g" target="_blank" rel="noopener">WhatsApp</a><a href="https://t.me/sarkarisewaindia" target="_blank" rel="noopener">Telegram</a><button type="button" aria-label="' + (hi ? "बंद करें" : "Close") + '">✕</button>';
+        d.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function () { setTimeout(function () { hide(30); }, 300); }); });
         d.querySelector("button").addEventListener("click", function () { hide(3); });
         document.body.appendChild(d);
       }
