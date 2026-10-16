@@ -1,0 +1,338 @@
+---
+// Document / PDF compressor for exam and scheme forms. Same URL, title and
+// description as the old page. Runs fully in the browser: images are drawn on
+// a canvas and re-encoded as JPEG; PDFs are rendered page by page with pdf.js
+// (cdnjs, loaded only when a PDF is chosen) and rebuilt with jsPDF. No file
+// is uploaded anywhere.
+// Changes vs old page: PDFs now work (old page only showed an alert),
+// several images (e.g. Aadhaar front + back) can be joined into one PDF, the
+// size search also lowers resolution when quality alone is not enough, the
+// PDF size shown is the real size of the generated file, and the old
+// "Exam Rules 2026" size table was removed: its limits had no source and
+// differ by notification, so the page now tells readers to check theirs.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "दस्तावेज़ और PDF कंप्रेसर" }];
+const faq = [
+  { q: "क्या मेरा आधार या मार्कशीट किसी सर्वर पर जाती है?", a: "नहीं। यह टूल पूरी तरह आपके फोन या कंप्यूटर के ब्राउज़र में चलता है। फाइल कहीं अपलोड नहीं होती। पेज खुलने के बाद इंटरनेट बंद करके भी फोटो कंप्रेस हो सकती है (PDF के लिए पहली बार एक छोटी लाइब्रेरी डाउनलोड होती है)।" },
+  { q: "सरकारी फॉर्म में मार्कशीट और प्रमाण पत्र का साइज़ कितना होना चाहिए?", a: "यह हर भर्ती और पोर्टल पर अलग होता है। आम तौर पर 50 KB से 300 KB के बीच और PDF या JPG मांगा जाता है। अपनी भर्ती की अधिसूचना में लिखी सीमा और फॉर्मेट ही देखें और वही साइज़ यहां डालें।" },
+  { q: "फाइल 100 KB से थोड़ी ऊपर आ रही है, क्या करें?", a: "लक्ष्य साइज़ में 90 या 95 KB डालें। टूल कोशिश करता है कि फाइल लक्ष्य के अंदर रहे; फिर भी ऊपर रहे तो 'ब्लैक एंड व्हाइट' विकल्प चालू करें।" },
+  { q: "क्या आधार के दोनों तरफ एक ही PDF में बना सकते हैं?", a: "हां। फाइल चुनते समय दोनों फोटो एक साथ चुनें (या एक-एक करके 'और फाइल जोड़ें')। 'PDF डाउनलोड' करने पर दोनों पेज एक ही PDF में आएंगे और कुल साइज़ लक्ष्य के अंदर रखा जाएगा।" },
+  { q: "कंप्रेस करने के बाद अक्षर धुंधले हो जाएं तो?", a: "'अक्षर साफ करें' विकल्प चालू रखें, लक्ष्य साइज़ थोड़ा बढ़ाएं, और स्कैन/फोटो अच्छी रोशनी में सीधा खींचें। बहुत कम KB (जैसे 20 KB) में कई पेज वाला दस्तावेज़ साफ रखना मुश्किल होता है।" },
+  { q: "क्या PDF फाइल भी छोटी हो जाती है?", a: "हां। टूल PDF के हर पेज को तस्वीर में बदलकर छोटा करता है और नई PDF बनाता है। इससे PDF में टेक्स्ट चुनने (copy) की सुविधा नहीं रहती, लेकिन फॉर्म में अपलोड के लिए यह ठीक रहता है।" },
+];
+---
+<Base title="Govt Exam Document & PDF Compressor 2026 | SarkariSewa India" description="सरकारी नौकरी फॉर्म के लिए मार्कशीट, जाति प्रमाण पत्र, आधार और पीडीएफ को 100KB, 200KB या 50KB में मुफ्त कंप्रेस करें। 100% सुरक्षित और ऑफलाइन।" breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>सरकारी फॉर्म के लिए दस्तावेज़ और PDF कंप्रेसर (50 / 100 / 200 KB)</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">अपनी मार्कशीट, प्रमाण पत्र या आधार की फोटो/PDF चुनें, लक्ष्य साइज़ (जैसे 100 KB) चुनें और JPG या PDF डाउनलोड करें। फाइल किसी सर्वर पर नहीं जाती, सब कुछ आपके ही फोन/कंप्यूटर में होता है। कितना KB चाहिए, यह अपनी भर्ती की अधिसूचना में देखें।</p>
+      </section>
+
+      <section class="section dz-tool" aria-labelledby="dz-title">
+        <h2 id="dz-title">⚙️ दस्तावेज़ कंप्रेसर</h2>
+        <label class="dz-drop" id="dz-drop" for="dz-file">
+          <span class="dz-ico" aria-hidden="true">📄</span>
+          <strong>फाइल चुनें या यहां खींचकर छोड़ें</strong>
+          <small>JPG, PNG, WebP या PDF · कई फोटो एक साथ चुन सकते हैं · फाइल अपलोड नहीं होती</small>
+          <input type="file" id="dz-file" accept="image/*,application/pdf" multiple />
+        </label>
+        <p class="dz-msg" id="dz-msg" role="status" aria-live="polite"></p>
+
+        <div id="dz-controls" hidden>
+          <p class="dz-label">🎯 लक्ष्य साइज़</p>
+          <div class="dz-pills" id="dz-pills">
+            <button type="button" class="chip-btn" data-kb="50">50 KB</button>
+            <button type="button" class="chip-btn active" data-kb="100">100 KB</button>
+            <button type="button" class="chip-btn" data-kb="200">200 KB</button>
+            <button type="button" class="chip-btn" data-kb="300">300 KB</button>
+            <button type="button" class="chip-btn" data-kb="500">500 KB</button>
+          </div>
+          <label class="dz-custom">अपना साइज़ (KB): <input type="number" id="dz-kb" value="100" min="10" max="5000" inputmode="numeric" /></label>
+          <label class="dz-check"><input type="checkbox" id="dz-enh" checked /> ✨ अक्षर साफ करें (स्कैन किए कागज़ के लिए)</label>
+          <label class="dz-check"><input type="checkbox" id="dz-gray" /> ⬛ ब्लैक एंड व्हाइट (फाइल और छोटी)</label>
+          <div class="dz-row">
+            <button type="button" class="more-btn" id="dz-rl">↺ बाएं घुमाएं</button>
+            <button type="button" class="more-btn" id="dz-rr">↻ दाएं घुमाएं</button>
+          </div>
+
+          <div class="dz-stats" aria-live="polite">
+            <dl class="facts">
+              <div><dt>पेज / फोटो</dt><dd id="dz-n">0</dd></div>
+              <div><dt>मूल साइज़</dt><dd id="dz-orig">0 KB</dd></div>
+              <div><dt>JPG साइज़</dt><dd id="dz-jpg">-</dd></div>
+              <div><dt>PDF साइज़</dt><dd id="dz-pdf">-</dd></div>
+            </dl>
+            <p class="dz-status" id="dz-status"></p>
+          </div>
+          <div class="dz-preview"><img id="dz-img" alt="कंप्रेस किए गए दस्तावेज़ का पहला पेज" /></div>
+          <div class="dz-row dz-dl">
+            <button type="button" class="cta" id="dz-djpg">📥 JPG डाउनलोड</button>
+            <button type="button" class="cta secondary" id="dz-dpdf">📄 PDF डाउनलोड</button>
+          </div>
+          <div class="dz-row">
+            <label class="more-btn dz-add" for="dz-file">+ और फाइल जोड़ें</label>
+            <button type="button" class="more-btn" id="dz-reset">🔄 नया दस्तावेज़</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li>दस्तावेज़ की साफ फोटो खींचें या स्कैन करें, फिर ऊपर चुनें। PDF भी चुन सकते हैं।</li>
+          <li>भर्ती की अधिसूचना में लिखा साइज़ चुनें। सीमा "100 KB तक" हो तो 90-95 KB रखें।</li>
+          <li>कागज़ आड़ा हो तो घुमाएं। फोटो देखकर पक्का करें कि नाम, रोल नंबर और मुहर पढ़ने में आ रहे हैं।</li>
+          <li>पोर्टल जो फॉर्मेट मांगे (JPG या PDF), वही डाउनलोड करें। कई पेज हों तो PDF लें।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="kaam">
+        <h2>यह टूल कैसे काम करता है</h2>
+        <ul class="checklist">
+          <li>फोटो को JPEG में दोबारा बदला जाता है। पहले गुणवत्ता (quality) घटाई जाती है; फिर भी लक्ष्य से बड़ी हो तो लंबाई-चौड़ाई (pixels) थोड़ी कम की जाती है।</li>
+          <li>PDF के हर पेज को तस्वीर में बदलकर छोटा किया जाता है और नई PDF बनती है। कुल साइज़ लक्ष्य के अंदर रखने के लिए हर पेज को बराबर हिस्सा मिलता है।</li>
+          <li>'अक्षर साफ करें' हल्के रंग को सफेद और गहरे रंग को काला कर देता है, जिससे स्कैन किए कागज़ के अक्षर साफ दिखते हैं। रंगीन फोटो (जैसे पासपोर्ट फोटो) के लिए इसे बंद रखें।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="dhyan">
+        <h2>ध्यान दें</h2>
+        <ul class="checklist">
+          <li>साइज़ और फॉर्मेट की सीमा हर भर्ती में अलग होती है। हमेशा अपनी अधिसूचना देखें; यहां दी गई संख्याएं सिर्फ आम उदाहरण हैं।</li>
+          <li>बहुत कम KB में कई पेज वाला दस्तावेज़ धुंधला हो सकता है। अपलोड से पहले फोटो बड़ा करके पढ़कर देखें।</li>
+          <li>पासपोर्ट फोटो और हस्ताक्षर के लिए नाप (cm/pixel) भी तय होता है; उनके लिए अलग फोटो/हस्ताक्षर टूल इस्तेमाल करें।</li>
+          <li>ज़रूरी कागज़ों की सूची के लिए <a href="/tools/document-checklist.html">दस्तावेज़ चेकलिस्ट</a> देखें।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.dz-drop { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; padding: 22px 14px; border: 2px dashed var(--c-brand); border-radius: var(--radius); background: var(--c-brand-50); cursor: pointer; overflow-wrap: anywhere; }
+.dz-drop.over { background: var(--c-brand-100); }
+.dz-drop small { color: var(--c-muted); }
+.dz-drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.dz-ico { font-size: 2rem; }
+.dz-msg:not(:empty) { margin: 10px 0 0; font-weight: 700; color: var(--c-saffron-700); }
+.dz-label { font-weight: 700; margin: 14px 0 6px; }
+.dz-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.dz-custom { display: flex; align-items: center; gap: 8px; margin: 10px 0; font-weight: 700; flex-wrap: wrap; }
+.dz-custom input { width: 110px; min-height: 44px; padding: 6px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); }
+.dz-check { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; }
+.dz-check input { width: 20px; height: 20px; flex: 0 0 20px; margin-top: 3px; }
+.dz-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.dz-row .more-btn, .dz-row .cta { margin-top: 10px; }
+.dz-row button.cta { border: 0; font: inherit; font-weight: 800; cursor: pointer; width: 100%; }
+.dz-add { display: grid; place-items: center; }
+.dz-stats { margin-top: 14px; }
+.dz-status { font-weight: 700; margin: 8px 0 0; }
+.dz-status.ok { color: var(--c-green); }
+.dz-status.bad { color: var(--c-saffron-700); }
+.dz-preview { margin-top: 12px; text-align: center; background: var(--c-surface-2); border-radius: var(--radius-sm); padding: 8px; }
+.dz-preview img { max-width: 100%; max-height: 420px; height: auto; }
+.cta.off { opacity: .5; pointer-events: none; }
+</style>
+
+<script is:inline>
+(function () {
+  var JSPDF = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+  var PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+  var PDFJS_WORKER = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  var MAXDIM = 2200; // longest side kept for a page before compression
+  var $ = function (id) { return document.getElementById(id); };
+  var cut = false, pages = [], origBytes = 0, targetKB = 100, rot = 0, outBlobs = [], pdfBlob = null, baseName = "document", runId = 0, timer = 0;
+
+  function kb(b) { return b < 1024 * 1024 ? (b / 1024).toFixed(1) + " KB" : (b / 1048576).toFixed(2) + " MB"; }
+  function msg(t) { $("dz-msg").textContent = t || ""; }
+  function load(src) {
+    return new Promise(function (res, rej) {
+      if (document.querySelector('script[src="' + src + '"]')) { var w = setInterval(function () { if ((src === JSPDF && window.jspdf) || (src === PDFJS && window.pdfjsLib)) { clearInterval(w); res(); } }, 50); return; }
+      var s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = function () { rej(new Error("लाइब्रेरी लोड नहीं हुई, इंटरनेट जांचें")); }; document.head.appendChild(s);
+    });
+  }
+  function toBlob(c, q) { return new Promise(function (r) { c.toBlob(function (b) { r(b); }, "image/jpeg", q); }); }
+  function fit(w, h) { var s = Math.min(1, MAXDIM / Math.max(w, h)); return [Math.round(w * s), Math.round(h * s)]; }
+  function canvasOf(src, w, h) { var d = fit(w, h), c = document.createElement("canvas"); c.width = d[0]; c.height = d[1]; var x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height); x.drawImage(src, 0, 0, c.width, c.height); return c; }
+
+  function readImage(file) {
+    return new Promise(function (res, rej) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () { var c = canvasOf(img, img.naturalWidth, img.naturalHeight); URL.revokeObjectURL(url); res([c]); };
+      img.onerror = function () { URL.revokeObjectURL(url); rej(new Error(file.name + " खुल नहीं पाई")); };
+      img.src = url;
+    });
+  }
+  function readPdf(file) {
+    return load(PDFJS).then(function () {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+      return file.arrayBuffer();
+    }).then(function (buf) { return window.pdfjsLib.getDocument({ data: buf }).promise; }).then(function (doc) {
+      var out = [], i = 1; if (doc.numPages > 30) cut = true;
+      function next() {
+        if (i > doc.numPages || i > 30) return Promise.resolve(out);
+        return doc.getPage(i++).then(function (p) {
+          var v1 = p.getViewport({ scale: 1 }), sc = Math.min(2, MAXDIM / Math.max(v1.width, v1.height)), v = p.getViewport({ scale: sc });
+          var c = document.createElement("canvas"); c.width = Math.round(v.width); c.height = Math.round(v.height);
+          var x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height);
+          return p.render({ canvasContext: x, viewport: v }).promise.then(function () { out.push(c); return next(); });
+        });
+      }
+      return next();
+    });
+  }
+
+  // rotate + filters
+  function prepare(src) {
+    var r = ((rot % 360) + 360) % 360, side = r === 90 || r === 270;
+    var c = document.createElement("canvas"); c.width = side ? src.height : src.width; c.height = side ? src.width : src.height;
+    var x = c.getContext("2d"); x.translate(c.width / 2, c.height / 2); x.rotate(r * Math.PI / 180); x.drawImage(src, -src.width / 2, -src.height / 2);
+    var enh = $("dz-enh").checked, gray = $("dz-gray").checked;
+    if (enh || gray) {
+      var d = x.getImageData(0, 0, c.width, c.height), a = d.data;
+      for (var i = 0; i < a.length; i += 4) {
+        var R = a[i], G = a[i + 1], B = a[i + 2];
+        if (gray) R = G = B = 0.299 * R + 0.587 * G + 0.114 * B;
+        if (enh) { R = R > 180 ? 255 : R < 70 ? 0 : R; G = G > 180 ? 255 : G < 70 ? 0 : G; B = B > 180 ? 255 : B < 70 ? 0 : B; }
+        a[i] = R; a[i + 1] = G; a[i + 2] = B;
+      }
+      x.putImageData(d, 0, 0);
+    }
+    return c;
+  }
+  function scaled(c, s) { if (s >= 1) return c; var o = document.createElement("canvas"); o.width = Math.max(1, Math.round(c.width * s)); o.height = Math.max(1, Math.round(c.height * s)); var x = o.getContext("2d"); x.imageSmoothingQuality = "high"; x.drawImage(c, 0, 0, o.width, o.height); return o; }
+  // Largest JPEG not above `budget` bytes: binary search on quality, then shrink pixels.
+  function squeeze(c, budget) {
+    var s = 1, best = null;
+    function round() {
+      var sc = scaled(c, s);
+      return toBlob(sc, 0.92).then(function (top) {
+        if (top.size <= budget) return { b: top, w: sc.width, h: sc.height };
+        var lo = 0.3, hi = 0.92, n = 0, ok = null;
+        function step() {
+          if (n++ >= 7) return Promise.resolve(ok);
+          var mid = (lo + hi) / 2;
+          return toBlob(sc, mid).then(function (b) { if (b.size <= budget) { ok = b; lo = mid; } else { hi = mid; } return step(); });
+        }
+        return step().then(function (b) {
+          if (b) return { b: b, w: sc.width, h: sc.height };
+          return toBlob(sc, 0.3).then(function (low) {
+            best = { b: low, w: sc.width, h: sc.height };
+            if (Math.max(sc.width, sc.height) <= 400) return best;
+            s = s * Math.max(0.5, Math.min(0.9, Math.sqrt(budget / low.size) * 0.95));
+            return round();
+          });
+        });
+      });
+    }
+    return round();
+  }
+  function dataUrl(b) { return new Promise(function (r) { var f = new FileReader(); f.onload = function () { r(f.result); }; f.readAsDataURL(b); }); }
+  function buildPdf(items) {
+    return load(JSPDF).then(function () {
+      var J = window.jspdf.jsPDF, pdf = null;
+      return items.reduce(function (p, it) {
+        return p.then(function () { return dataUrl(it.b); }).then(function (u) {
+          var land = it.w > it.h, W = land ? 297 : 210, H = land ? 210 : 297, m = 8;
+          if (!pdf) pdf = new J({ orientation: land ? "landscape" : "portrait", unit: "mm", format: "a4", compress: true });
+          else pdf.addPage("a4", land ? "landscape" : "portrait");
+          var k = Math.min((W - 2 * m) / it.w, (H - 2 * m) / it.h), w = it.w * k, h = it.h * k;
+          pdf.addImage(u, "JPEG", (W - w) / 2, (H - h) / 2, w, h);
+        });
+      }, Promise.resolve()).then(function () { return pdf.output("blob"); });
+    });
+  }
+
+  function run() {
+    if (!pages.length) return;
+    var my = ++runId, target = targetKB * 1024;
+    $("dz-status").textContent = "⏳ कंप्रेस हो रहा है..."; $("dz-status").className = "dz-status";
+    var prepped = pages.map(prepare), n = prepped.length;
+    // JPG: only for a single page
+    var jpgP = n === 1 ? squeeze(prepped[0], target) : Promise.resolve(null);
+    jpgP.then(function (j) {
+      if (my !== runId) return;
+      outBlobs = j ? [j] : [];
+      $("dz-jpg").textContent = j ? kb(j.b.size) : "सिर्फ 1 पेज पर";
+      $("dz-djpg").classList.toggle("off", !j);
+      // PDF: share the budget across pages, retry smaller if the file overshoots
+      var budget = Math.max(3000, (target - 3500 - 1200 * n) / n), tries = 0;
+      function attempt() {
+        return Promise.all(prepped.map(function (c) { return squeeze(c, budget); })).then(function (items) {
+          return buildPdf(items).then(function (blob) {
+            if (my !== runId) return null;
+            if (blob.size > target && tries++ < 3) { budget = budget * (target / blob.size) * 0.95; return attempt(); }
+            if (!outBlobs.length) outBlobs = [items[0]];
+            return blob;
+          });
+        });
+      }
+      return attempt();
+    }).then(function (blob) {
+      if (my !== runId || blob === undefined) return;
+      pdfBlob = blob;
+      if (blob) $("dz-pdf").textContent = kb(blob.size);
+      var shown = outBlobs[0]; if (shown) { var old = $("dz-img").src; $("dz-img").src = URL.createObjectURL(shown.b); if (old && old.indexOf("blob:") === 0) URL.revokeObjectURL(old); }
+      var j = n === 1 && outBlobs[0] ? outBlobs[0].b.size : 0, okJ = !j || j <= target, okP = blob && blob.size <= target;
+      var st = $("dz-status");
+      if (okP && okJ) { st.textContent = "✅ फाइल " + targetKB + " KB के अंदर है। अपलोड से पहले फोटो पढ़कर जांच लें।"; st.className = "dz-status ok"; }
+      else { st.textContent = "⚠️ लक्ष्य " + targetKB + " KB से ऊपर है। लक्ष्य बढ़ाएं, ब्लैक एंड व्हाइट चुनें या पेज कम करें।"; st.className = "dz-status bad"; }
+    }).catch(function (e) { if (my === runId) { $("dz-status").textContent = "⚠️ " + e.message; $("dz-status").className = "dz-status bad"; } });
+  }
+  function later() { clearTimeout(timer); timer = setTimeout(run, 250); }
+
+  function addFiles(list) {
+    var files = Array.prototype.slice.call(list || []);
+    if (!files.length) return;
+    msg("⏳ फाइल खुल रही है...");
+    files.reduce(function (p, f) {
+      return p.then(function () {
+        if (f.size > 25 * 1048576) throw new Error(f.name + " 25 MB से बड़ी है");
+        var isPdf = f.type === "application/pdf" || /\.pdf$/i.test(f.name);
+        if (!isPdf && f.type.indexOf("image/") !== 0) throw new Error(f.name + ": सिर्फ फोटो या PDF चुनें");
+        if (!pages.length) baseName = f.name.replace(/\.[^.]+$/, "").replace(/[^\wऀ-ॿ-]+/g, "_").slice(0, 40) || "document";
+        origBytes += f.size;
+        return (isPdf ? readPdf(f) : readImage(f)).then(function (cs) { pages = pages.concat(cs); });
+      });
+    }, Promise.resolve()).then(function () {
+      msg(cut ? "ℹ️ PDF के सिर्फ पहले 30 पेज लिए गए हैं।" : ""); cut = false;
+      $("dz-controls").hidden = !pages.length; $("dz-n").textContent = pages.length; $("dz-orig").textContent = kb(origBytes);
+      try { if (window.gtag) gtag("event", "tool_usage", { tool: "document_compressor" }); } catch (e) {}
+      run();
+    }).catch(function (e) { msg("⚠️ " + e.message); $("dz-controls").hidden = !pages.length; if (pages.length) run(); });
+  }
+  function save(blob, ext) { var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = baseName + "_" + targetKB + "kb." + ext; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000); }
+
+  $("dz-file").addEventListener("change", function (e) { addFiles(e.target.files); e.target.value = ""; });
+  var drop = $("dz-drop");
+  drop.addEventListener("dragover", function (e) { e.preventDefault(); drop.classList.add("over"); });
+  drop.addEventListener("dragleave", function () { drop.classList.remove("over"); });
+  drop.addEventListener("drop", function (e) { e.preventDefault(); drop.classList.remove("over"); addFiles(e.dataTransfer.files); });
+  $("dz-pills").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    targetKB = +b.dataset.kb; $("dz-kb").value = targetKB;
+    $("dz-pills").querySelectorAll("button").forEach(function (x) { x.classList.toggle("active", x === b); });
+    run();
+  });
+  $("dz-kb").addEventListener("input", function () {
+    var v = parseInt(this.value, 10); if (!(v >= 10 && v <= 5000)) return;
+    targetKB = v; $("dz-pills").querySelectorAll("button").forEach(function (x) { x.classList.toggle("active", +x.dataset.kb === v); }); later();
+  });
+  $("dz-enh").onchange = run; $("dz-gray").onchange = run;
+  $("dz-rl").onclick = function () { rot -= 90; run(); };
+  $("dz-rr").onclick = function () { rot += 90; run(); };
+  $("dz-djpg").onclick = function () { if (outBlobs[0] && pages.length === 1) save(outBlobs[0].b, "jpg"); };
+  $("dz-dpdf").onclick = function () { if (pdfBlob) save(pdfBlob, "pdf"); };
+  $("dz-reset").onclick = function () { runId++; pages = []; origBytes = 0; rot = 0; outBlobs = []; pdfBlob = null; $("dz-controls").hidden = true; msg(""); $("dz-jpg").textContent = "-"; $("dz-pdf").textContent = "-"; };
+})();
+</script>

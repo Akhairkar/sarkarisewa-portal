@@ -1,0 +1,159 @@
+---
+// 8th Pay Commission salary projection. Same URL, title and description as the
+// old page. Facts checked Oct 2026:
+// - Cabinet approved the 8th CPC Terms of Reference on 28 Oct 2025; chair
+//   Justice Ranjana Prakash Desai, part-time member Prof. Pulak Ghosh,
+//   member-secretary Pankaj Jain; report due within 18 months of constitution
+//   (PTI/Deccan Herald/Tribune, 28 Oct 2025). No fitment factor has been
+//   announced; every factor here is an assumption chosen by the user.
+// - 7th CPC fitment factor was 2.57 (it absorbed 125% DA). Current DA is 60%
+//   from 1 Jan 2026 (Cabinet, Apr 2026), so a factor of 1.60 only keeps pay
+//   level; the page shows the real increase over basic + DA.
+// - HRA after a pay commission restarts at the low-DA slab (24/16/8% today);
+//   the 8th CPC may change these rates.
+// Old page: new basic = basic x factor; gross = new basic + DA + 24% HRA + 3,600.
+// Kept that, but added city choice, editable TA and the comparison with the
+// current 7th CPC gross. Removed the claim that 8th CPC "is expected to be
+// implemented around January 2026" as a fact.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import Explore from "../components/Explore.astro";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "टूल्स", href: "/tools/" }, { label: "8वां वेतन आयोग कैलकुलेटर" }];
+const faq = [
+  { q: "8वां वेतन आयोग कब लागू होगा?", a: "केंद्रीय कैबिनेट ने 28 अक्टूबर 2025 को 8वें वेतन आयोग की शर्तें (Terms of Reference) मंज़ूर कीं। आयोग को गठन से 18 महीने में अपनी रिपोर्ट देनी है। नया वेतन किस तारीख से लागू होगा, यह सरकार रिपोर्ट आने के बाद तय करेगी। अक्टूबर 2026 तक इसकी कोई आधिकारिक तारीख घोषित नहीं हुई है।" },
+  { q: "8वें वेतन आयोग का फिटमेंट फैक्टर कितना होगा?", a: "अभी कोई फिटमेंट फैक्टर तय नहीं हुआ है। अखबारों में 1.92 से 3.68 तक के अनुमान और कर्मचारी संगठनों की मांगें छपती हैं, पर यह सब अनुमान है। 7वें वेतन आयोग में फिटमेंट फैक्टर 2.57 था।" },
+  { q: "फिटमेंट फैक्टर 2.57 होने पर भी सैलरी उतनी क्यों नहीं बढ़ती?", a: "नए वेतन आयोग में मौजूदा DA बेसिक में मिल जाता है और DA फिर से 0% से शुरू होता है। अभी DA 60% है, इसलिए 1.60 का फैक्टर सिर्फ बेसिक + DA के बराबर होगा। असली बढ़त फैक्टर को 1.60 से भाग देकर समझें; यह कैलकुलेटर यह बढ़त अलग से दिखाता है।" },
+  { q: "8वां वेतन आयोग किसके लिए है?", a: "यह केंद्र सरकार के कर्मचारियों और पेंशनभोगियों के लिए है (करीब 50 लाख कर्मचारी और 69 लाख पेंशनभोगी)। राज्य सरकारें अपने कर्मचारियों के लिए अलग से फैसला करती हैं।" },
+];
+---
+<Base title="8th Pay Commission Salary Calculator 2026 | SarkariSewa India" description="Check expected salary increase under 8th Pay Commission with 1.92 to 3.68 fitment factors. Calculate projected Basic Pay and In-Hand Salary online." breadcrumbs={crumbs} faq={faq} modified="2026-10-16">
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>8वां वेतन आयोग सैलरी कैलकुलेटर (अनुमान)</h1>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">8वें वेतन आयोग का फिटमेंट फैक्टर अभी तय नहीं हुआ है। अपना मौजूदा बेसिक पे डालें और कोई अनुमानित फैक्टर चुनें: नया बेसिक = मौजूदा बेसिक × फैक्टर। कैलकुलेटर यह भी बताता है कि आज के वेतन (DA 60%) के मुकाबले असल में कितनी बढ़त होगी।</p>
+      </section>
+
+      <section class="section tl" aria-labelledby="calc-title">
+        <h2 id="calc-title">🔮 8वें वेतन आयोग का अनुमान</h2>
+        <div class="tl-grid">
+          <div><label for="p8-basic">मौजूदा बेसिक पे (7वां वेतन आयोग) ₹</label><input type="number" id="p8-basic" min="18000" step="100" value="35400" inputmode="numeric" /></div>
+          <div><label for="p8-fit">अनुमानित फिटमेंट फैक्टर</label><select id="p8-fit">
+            <option value="1.92">1.92</option>
+            <option value="2.28">2.28</option>
+            <option value="2.57">2.57 (7वें वेतन आयोग जितना)</option>
+            <option value="2.86" selected>2.86</option>
+            <option value="3.00">3.00</option>
+            <option value="3.68">3.68</option>
+            <option value="custom">अपना फैक्टर डालें</option>
+          </select></div>
+          <div id="p8-cwrap" hidden><label for="p8-custom">अपना फैक्टर</label><input type="number" id="p8-custom" min="1" max="5" step="0.01" value="2.5" inputmode="decimal" /></div>
+          <div><label for="p8-curda">आज का DA (%)</label><input type="number" id="p8-curda" min="0" max="200" value="60" inputmode="numeric" /></div>
+          <div><label for="p8-da">नए वेतन पर DA (%)</label><input type="number" id="p8-da" min="0" max="100" value="0" inputmode="numeric" /></div>
+          <div><label for="p8-city">HRA के लिए शहर</label><select id="p8-city">
+            <option value="X">X शहर</option><option value="Y">Y शहर</option><option value="Z">Z शहर</option>
+          </select></div>
+          <div><label for="p8-ta">ट्रांसपोर्ट भत्ता (TA) ₹, अभी जितना</label><input type="number" id="p8-ta" min="0" step="50" value="3600" inputmode="numeric" /></div>
+        </div>
+
+        <div class="tl-hero" aria-live="polite">
+          <div><span>अनुमानित नया बेसिक</span><strong id="p8-nb">₹0</strong></div>
+          <div><span>अनुमानित कुल वेतन (Gross)</span><strong id="p8-ng">₹0</strong></div>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>तुलना</th><th class="r">आज (7वां)</th><th class="r">अनुमान (8वां)</th></tr></thead>
+          <tbody id="p8-rows"></tbody>
+        </table></div>
+        <p class="muted" id="p8-gain"></p>
+        <p class="notice">यह सिर्फ अनुमान है। 8वें वेतन आयोग का फिटमेंट फैक्टर, नया पे मैट्रिक्स, HRA और TA की दरें सरकार की अधिसूचना के बाद ही पता चलेंगी। NPS, CGHS और टैक्स की कटौती इसमें नहीं जोड़ी गई।</p>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>कैसे इस्तेमाल करें</h2>
+        <ol class="steps">
+          <li><strong>मौजूदा बेसिक पे डालें:</strong> वेतन पर्ची में लिखा 7वें वेतन आयोग वाला बेसिक। सही सेल के लिए <a href="/7th-pay-commission-calculator.html">7वां वेतन आयोग कैलकुलेटर</a> देखें।</li>
+          <li><strong>फिटमेंट फैक्टर चुनें:</strong> कोई भी अनुमान चुनें या अपना डालें।</li>
+          <li><strong>नतीजा मिलाएं:</strong> तालिका में आज का कुल वेतन और अनुमानित नया वेतन साथ-साथ दिखेगा।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="formula">
+        <h2>फॉर्मूला</h2>
+        <ul class="checklist">
+          <li><strong>नया बेसिक</strong> = मौजूदा बेसिक × फिटमेंट फैक्टर (₹100 तक गोल)। असली पे मैट्रिक्स में इसे अगले सेल पर रखा जाता है, इसलिए राशि थोड़ी अलग हो सकती है।</li>
+          <li><strong>DA:</strong> नए वेतन आयोग के लागू होते ही पुराना DA बेसिक में मिल जाता है और DA 0% से शुरू होता है।</li>
+          <li><strong>HRA:</strong> DA कम होने पर अभी के नियम में X/Y/Z शहर में बेसिक का 24%/16%/8% है। 8वां वेतन आयोग ये दरें बदल सकता है।</li>
+          <li><strong>असल बढ़त</strong> = नया कुल वेतन ÷ आज का कुल वेतन। आज DA 60% है, इसलिए 1.60 से ऊपर का फैक्टर ही बेसिक + DA से ज़्यादा देगा।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="status">
+        <h2>8वां वेतन आयोग: अब तक क्या हुआ</h2>
+        <ul class="checklist">
+          <li>जनवरी 2025: केंद्र सरकार ने 8वां वेतन आयोग बनाने की सैद्धांतिक मंज़ूरी दी।</li>
+          <li>28 अक्टूबर 2025: कैबिनेट ने Terms of Reference मंज़ूर किए। अध्यक्ष: पूर्व सुप्रीम कोर्ट जज जस्टिस रंजना प्रकाश देसाई।</li>
+          <li>आयोग को गठन से 18 महीने में रिपोर्ट देनी है। लागू होने की तारीख और फिटमेंट फैक्टर अक्टूबर 2026 तक घोषित नहीं हुए।</li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+.tl .tl-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 14px; }
+@media (min-width: 560px) { .tl .tl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tl label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: 4px; color: var(--c-ink); }
+.tl input[type=number], .tl select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1px solid var(--c-line); border-radius: 8px; font: inherit; background: var(--c-surface); color: var(--c-text); box-sizing: border-box; min-width: 0; }
+.tl .tl-hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 14px 0; }
+.tl .tl-hero div { background: var(--c-brand-50); border-radius: 10px; padding: 12px; text-align: center; min-width: 0; }
+.tl .tl-hero div:first-child { background: var(--c-green-50); }
+.tl .tl-hero span { display: block; font-size: .8rem; color: var(--c-muted); }
+.tl .tl-hero strong { font-size: 1.35rem; color: var(--c-ink); overflow-wrap: anywhere; }
+.tl td.r, .tl th.r { text-align: right; white-space: nowrap; }
+.tl tr.tot td { font-weight: 800; background: var(--c-surface-2); }
+.tl .muted { color: var(--c-muted); font-size: .9rem; }
+</style>
+
+<script is:inline>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function r(n) { return "₹" + Math.round(n).toLocaleString("en-IN"); }
+  // Pure projection (also tested with node).
+  function project(o) {
+    var hraNow = { X: 30, Y: 20, Z: 10 }[o.city], hraLow = { X: 24, Y: 16, Z: 8 }[o.city];
+    var nowHraPct = o.curDa >= 50 ? hraNow : o.curDa >= 25 ? { X: 27, Y: 18, Z: 9 }[o.city] : hraLow;
+    var nowGross = o.basic * (1 + o.curDa / 100) + o.basic * nowHraPct / 100 + o.ta * (1 + o.curDa / 100);
+    var nb = Math.round(o.basic * o.fit / 100) * 100;
+    var newHraPct = o.newDa >= 50 ? hraNow : o.newDa >= 25 ? { X: 27, Y: 18, Z: 9 }[o.city] : hraLow;
+    var newGross = nb * (1 + o.newDa / 100) + nb * newHraPct / 100 + o.ta * (1 + o.newDa / 100);
+    return { nb: nb, nowHraPct: nowHraPct, newHraPct: newHraPct, nowGross: nowGross, newGross: newGross, rise: (newGross / nowGross - 1) * 100, basicDaRise: (nb / (o.basic * (1 + o.curDa / 100)) - 1) * 100 };
+  }
+  var sent = false;
+  function calc() {
+    var fs = $("p8-fit").value; $("p8-cwrap").hidden = fs !== "custom";
+    var o = { basic: Math.max(0, Number($("p8-basic").value) || 0), fit: fs === "custom" ? Number($("p8-custom").value) || 1 : Number(fs), curDa: Number($("p8-curda").value) || 0, newDa: Number($("p8-da").value) || 0, city: $("p8-city").value, ta: Math.max(0, Number($("p8-ta").value) || 0) };
+    if (!o.basic) { $("p8-nb").textContent = "₹0"; $("p8-ng").textContent = "₹0"; $("p8-rows").innerHTML = ""; $("p8-gain").textContent = "बेसिक पे भरें।"; return; }
+    var p = project(o);
+    $("p8-nb").textContent = r(p.nb); $("p8-ng").textContent = r(p.newGross);
+    var rows = [
+      ["बेसिक पे", r(o.basic), r(p.nb)],
+      ["DA", o.curDa + "% = " + r(o.basic * o.curDa / 100), o.newDa + "% = " + r(p.nb * o.newDa / 100)],
+      ["HRA (" + o.city + ")", p.nowHraPct + "% = " + r(o.basic * p.nowHraPct / 100), p.newHraPct + "% = " + r(p.nb * p.newHraPct / 100)],
+      ["TA + उस पर DA", r(o.ta * (1 + o.curDa / 100)), r(o.ta * (1 + o.newDa / 100))],
+      ["कुल वेतन (Gross)", r(p.nowGross), r(p.newGross), 1]
+    ];
+    $("p8-rows").innerHTML = rows.map(function (x) { return '<tr' + (x[3] ? ' class="tot"' : "") + '><td>' + x[0] + '</td><td class="r">' + x[1] + '</td><td class="r">' + x[2] + '</td></tr>'; }).join("");
+    $("p8-gain").textContent = "फैक्टर " + o.fit + " पर कुल वेतन में अनुमानित बढ़त: " + (p.rise >= 0 ? "+" : "") + p.rise.toFixed(1) + "% (" + r(p.newGross - p.nowGross) + " महीना)। सिर्फ बेसिक + DA की तुलना में: " + (p.basicDaRise >= 0 ? "+" : "") + p.basicDaRise.toFixed(1) + "%।";
+    if (!sent) { sent = true; try { if (window.gtag) gtag("event", "tool_usage", { tool_name: "8th-pay-calculator" }); } catch (e) {} }
+  }
+  ["p8-basic", "p8-fit", "p8-custom", "p8-curda", "p8-da", "p8-city", "p8-ta"].forEach(function (id) { $(id).addEventListener("input", calc); $(id).addEventListener("change", calc); });
+  calc();
+})();
+</script>
