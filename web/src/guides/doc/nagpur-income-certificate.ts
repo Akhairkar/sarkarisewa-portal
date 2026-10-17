@@ -22,6 +22,12 @@ export const nagpurIncomeCertificate: DocGuide = {
   ],
   docHi: "नागपुर आय प्रमाण पत्र",
   cscHref: "/service/csc-locator/maharashtra/nagpur.html",
+  demand: {
+    title: "🏠 आय प्रमाण पत्र बनवाने में परेशानी?",
+    text: "हम नागपुर में घर बैठे आय प्रमाण पत्र बनवाने की सेवा शुरू कर रहे हैं। फॉर्म एक verified आपले सरकार सेवा केंद्र वाला भरेगा। क्या आप यह सेवा लेंगे?",
+    places: TAHSILS,
+    service: "नागपुर आय प्रमाण पत्र",
+  },
   title: "Nagpur Income Certificate 2026: उत्पन्नाचा दाखला कैसे बनवाएं",
   description: "नागपुर (Nagpur) में आय प्रमाण पत्र / उत्पन्नाचा दाखला 2026: Aaple Sarkar पर ऑनलाइन आवेदन, 14 तहसीलें, ज़रूरी कागज़, 15 दिन की समय सीमा, स्टेटस और अपील।",
   published: "2026-10-16",

@@ -11,6 +11,7 @@ import Explore from "./Explore.astro";
 import PromoBox from "./PromoBox.astro";
 import PaidTools from "./PaidTools.astro";
 import CscHelp from "./CscHelp.astro";
+import DemandBox from "./DemandBox.astro";
 import type { DocGuide } from "../guides/doc/types";
 import { promo as challanPromo } from "../guides/challan/common";
 import { langOf } from "../i18n";
@@ -41,7 +42,7 @@ const promo = g.promo ?? (g.doc === "driving-licence" ? challanPromo : undefined
         <p class="answer-lead" set:html={g.lead} />
         <dl class="facts">{g.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}</dl>
       </section>
-      <CscHelp state={g.state} doc={g.docHi} href={g.cscHref} />
+      {g.demand ? <DemandBox {...g.demand} state={g.state?.hi} /> : <CscHelp state={g.state} doc={g.docHi} href={g.cscHref} />}
 
       {g.notice && <div class="callout warn"><p set:html={g.notice} /></div>}
       {promo && <PromoBox p={promo} />}

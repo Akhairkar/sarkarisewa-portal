@@ -1,0 +1,62 @@
+---
+// Short demand test for a service we may start (paid later): asks whether the
+// reader wants it done for them and collects a number only from those who do.
+// Replaces CscHelp on pages whose guide sets `demand`. Stored through the same
+// service_request_submit RPC; the choice goes into `details` as "[मांग] ...".
+// "No" only logs a count (service_interest, choice "no"), no personal data.
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+interface Props { title: string; text: string; places?: string[]; service: string; state?: string }
+const { title, text, places, service, state } = Astro.props;
+---
+<section class="csc-help dm" data-url={SUPABASE_URL} data-key={SUPABASE_ANON_KEY} data-service={service} data-state={state ?? ""} aria-labelledby="dm-title">
+  <p class="csc-help-title" id="dm-title">{title}</p>
+  <p class="svc-q">{text}</p>
+  <form class="svc-form">
+    <label class="dm-opt"><input type="radio" name="choice" value="सेवा शुल्क देकर भी" required /> हां, सेवा शुल्क देकर भी (सरकारी फीस अलग)</label>
+    <label class="dm-opt"><input type="radio" name="choice" value="सिर्फ बहुत कम पैसे में" /> हां, पर बहुत कम पैसे में</label>
+    <label>मोबाइल नंबर<input name="phone" type="tel" required inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10 अंक का नंबर" autocomplete="tel-national" /></label>
+    <label>नाम<input name="name" maxlength="60" autocomplete="name" /></label>
+    {places && places.length > 0 && <label>तहसील<select name="district"><option value="">चुनें</option>{places.map((p) => <option>{p}</option>)}</select></label>}
+    <button type="submit" class="cta">सेवा शुरू होने पर बताएं</button>
+    <p class="svc-note">अभी कोई पैसा नहीं। नंबर सिर्फ इस सेवा के लिए, 6 महीने बाद हटा दिया जाता है (<a href="/privacy-policy.html" target="_blank">गोपनीयता नीति</a>)। OTP/पासवर्ड यहां कभी न डालें। SarkariSewa India निजी सेवा है, सरकारी नहीं।</p>
+  </form>
+  <button type="button" class="dm-no">नहीं, खुद कर लूंगा</button>
+  <p class="svc-msg" role="status"></p>
+</section>
+<script is:inline>
+  (function () {
+    var box = document.querySelector(".dm"); if (!box) return;
+    var form = box.querySelector("form"), msg = box.querySelector(".svc-msg"), no = box.querySelector(".dm-no");
+    var key = "ss_dm_" + location.pathname;
+    function rpc(fn, body) { return fetch(box.dataset.url + "/rest/v1/rpc/" + fn, { method: "POST", keepalive: true, headers: { apikey: box.dataset.key, Authorization: "Bearer " + box.dataset.key, "Content-Type": "application/json" }, body: JSON.stringify(body) }); }
+    function done(t) { form.hidden = true; no.hidden = true; msg.textContent = t; try { localStorage.setItem(key, t); } catch (e) {} }
+    try { var s = localStorage.getItem(key); if (s) { form.hidden = true; no.hidden = true; msg.textContent = s; } } catch (e) {}
+    no.addEventListener("click", function () {
+      rpc("service_interest_log", { p_page: location.pathname, p_state: box.dataset.state || null, p_service: box.dataset.service, p_choice: "no" }).catch(function () {});
+      try { if (window.gtag) gtag("event", "service_demand", { choice: "no", page: location.pathname }); } catch (e) {}
+      done("ठीक है, ऊपर-नीचे दी गई जानकारी से आप खुद आवेदन कर सकते हैं।");
+    });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var f = form.elements, btn = form.querySelector("[type=submit]");
+      var phone = f.phone.value.replace(/\D/g, "").slice(-10);
+      if (!/^[6-9]\d{9}$/.test(phone)) { msg.textContent = "कृपया सही 10 अंकों का मोबाइल नंबर लिखें।"; f.phone.focus(); return; }
+      btn.disabled = true; msg.textContent = "भेज रहे हैं…";
+      rpc("service_request_submit", { p_page: location.pathname, p_state: box.dataset.state || null, p_district: f.district ? f.district.value : "", p_service: box.dataset.service, p_details: "[मांग] " + f.choice.value, p_name: f.name.value, p_phone: phone, p_consent: true, p_consent_version: "v5-demand-2026-10" })
+        .then(function (r) { return r.ok ? r.json() : "error"; })
+        .then(function (res) {
+          if (res === "ok" || res === "dup") {
+            try { if (window.gtag) gtag("event", "service_demand", { choice: f.choice.value, page: location.pathname }); } catch (e) {}
+            done("✅ धन्यवाद! सेवा शुरू होते ही हम आपको फोन/WhatsApp करेंगे।");
+          } else { btn.disabled = false; msg.textContent = res === "limit" ? "आज इस नंबर से काफी अनुरोध आ चुके हैं।" : "अभी नहीं भेजा जा सका, थोड़ी देर बाद कोशिश करें।"; }
+        })
+        .catch(function () { btn.disabled = false; msg.textContent = "नेटवर्क की दिक्कत है, थोड़ी देर बाद कोशिश करें।"; });
+    });
+  })();
+</script>
+<style is:global>
+  .dm .dm-opt { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .dm .dm-opt input { width: auto; }
+  .dm select { padding: 10px; border: 1px solid var(--c-line); border-radius: var(--radius-sm, 8px); font: inherit; }
+  .dm-no { border: 0; background: none; color: var(--c-muted); text-decoration: underline; cursor: pointer; font: inherit; padding: 6px 0 0; }
+</style>
