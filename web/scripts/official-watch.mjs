@@ -5,7 +5,8 @@
 //
 // Only links whose text looks like a result/admit card/notification are
 // considered. A source seen for the first time is recorded silently (nothing
-// is posted), so a lost state never floods the channel. At most MAX_PER_SOURCE
+// is posted), so a lost state never floods the channel. Low-interest notices
+// (NOISE: departmental exams, corrigenda, court matters) are never posted. At most MAX_PER_SOURCE
 // items per source and MAX_TOTAL items per run are posted; the rest wait.
 //
 // Env: TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL (default @sarkarisewaindia),
@@ -21,8 +22,9 @@ const CHANNEL = (process.env.TELEGRAM_CHANNEL || "@sarkarisewaindia").trim();
 const STATE_FILE = process.env.STATE_FILE || ".watch-state.json";
 const PROBE = !!process.env.PROBE;
 const DRY = !!process.env.DRY_RUN || !TOKEN || PROBE;
-const MAX_PER_SOURCE = 3, MAX_TOTAL = 8, KEEP = 2000;
+const MAX_PER_SOURCE = 2, MAX_TOTAL = 6, KEEP = 2000;
 const SITE = "https://sarkarisewaindia.com";
+const WHATSAPP = "https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g";
 
 // Notice pages of national recruiting and exam bodies. Optional fields:
 //   api: "ssc"  read SSC's own JSON notice API (the site itself is a JS app)
@@ -50,6 +52,10 @@ const SOURCES = process.env.SOURCES_FILE ? JSON.parse(fs.readFileSync(process.en
 // What counts as an update worth posting, and what never does.
 const WANT = /result|admit\s*card|e-?admit|call\s*letter|answer\s*key|cut[\s-]*off|marks|notification|recruitment|advertisement|advt|vacanc|exam(ination)?\s*(date|schedule|calendar|city)|interview|merit\s*list|selection\s*list|written\s*test|परिणाम|प्रवेश\s*पत्र|भर्ती|विज्ञापन|उत्तर\s*कुंजी/i;
 const SKIP = /tender|e-?procurement|auction|quotation|rti\b|annual\s*report|budget|empanel|rate\s*contract|login|sign\s*in|register(ed)?\s*user|archive|^more$|^click here$|^view all|^read more|^details?$|^download$/i;
+
+// Updates that matter only to a few people (departmental exams, corrigenda,
+// court matters, lists of rejected candidates ...): recorded as seen, never posted.
+const NOISE = /departmental|\bldce\b|in-?service|corrigend|addend|errat|court\s*(case|order)|contempt|compliance|show\s*cause|debar|representation|rejected|withheld|seniority|promotion|transfer\s*order|office\s*memorandum|\bo\.?m\.?\b|grievance|mock\s*test|feedback|tentative\s*vacanc|vacancy\s*position|minutes\s*of|re-?exam\s*request/i;
 
 const sha = (s) => crypto.createHash("sha1").update(s).digest("hex").slice(0, 16);
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -133,7 +139,8 @@ function message(src, it) {
       `📷 <a href="${SITE}/tools/photo-resizer.html?utm_source=telegram">फोटो</a> और <a href="${SITE}/tools/signature-resizer.html?utm_source=telegram">सिग्नेचर</a> सही KB में करें`,
       `⏳ <a href="${SITE}/tools/age-calculator.html?utm_source=telegram">कट-ऑफ तारीख पर अपनी उम्र</a> जांचें`);
   }
-  lines.push("", "<i>पूरी जानकारी और आवेदन सिर्फ official वेबसाइट पर देखें।</i>");
+  lines.push("", "<i>पूरी जानकारी और आवेदन सिर्फ official वेबसाइट पर देखें।</i>",
+    `📋 <a href="${SITE}/jobs/?utm_source=telegram">सभी सरकारी नौकरी अपडेट</a> | 📲 <a href="${WHATSAPP}">WhatsApp चैनल जॉइन करें</a>`);
   return lines.join("\n");
 }
 
@@ -177,7 +184,9 @@ for (const src of SOURCES) {
     continue;
   }
   const have = new Set(seen);
-  const fresh = items.filter((i) => !have.has(i.key));
+  const fresh = items.filter((i) => !have.has(i.key) && !NOISE.test(i.text));
+  const skipped = items.filter((i) => !have.has(i.key) && NOISE.test(i.text));
+  skipped.forEach((i) => { console.log(`[${src.id}] skipped (noise): ${i.text}`); seen.push(i.key); });
   let sent = 0;
   for (const it of fresh) {
     if (sent >= MAX_PER_SOURCE || posted >= MAX_TOTAL) break;
@@ -194,7 +203,7 @@ for (const src of SOURCES) {
   // Keep the newest keys; a link that drops off and comes back is not re-posted
   // while it is still remembered.
   state[src.id] = seen.slice(-KEEP);
-  report.push(`• ${src.id}: ${items.length} links, ${fresh.length} new, ${sent} posted${fresh.length > sent ? `, ${fresh.length - sent} wait for the next run` : ""}`);
+  report.push(`• ${src.id}: ${items.length} links, ${fresh.length} new, ${skipped.length} skipped as noise, ${sent} posted${fresh.length > sent ? `, ${fresh.length - sent} wait for the next run` : ""}`);
 }
 
 if (!DRY) fs.writeFileSync(STATE_FILE, JSON.stringify(state));
