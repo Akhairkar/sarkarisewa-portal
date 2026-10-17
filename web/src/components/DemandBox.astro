@@ -14,7 +14,7 @@ const { title, text, places, service, state } = Astro.props;
   <p class="svc-q">{text}</p>
   <form class="svc-form">
     <label class="dm-opt"><input type="radio" name="choice" value="सेवा शुल्क देकर भी" required /> हां, सेवा शुल्क देकर भी (सरकारी फीस अलग)</label>
-    <label class="dm-opt"><input type="radio" name="choice" value="सिर्फ बहुत कम पैसे में" /> हां, पर बहुत कम पैसे में</label>
+    <label class="dm-opt"><input type="radio" name="choice" value="पहले शुल्क जानना है" /> शायद, पहले शुल्क जानना चाहूंगा</label>
     <label>मोबाइल नंबर<input name="phone" type="tel" required inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10 अंक का नंबर" autocomplete="tel-national" /></label>
     <label>नाम<input name="name" maxlength="60" autocomplete="name" /></label>
     {places && places.length > 0 && <label>तहसील<select name="district"><option value="">चुनें</option>{places.map((p) => <option>{p}</option>)}</select></label>}

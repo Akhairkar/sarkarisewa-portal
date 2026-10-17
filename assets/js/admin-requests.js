@@ -203,7 +203,7 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
     const sum = {};
     survey.forEach((x) => {
       const a = (sum[x.service] = sum[x.service] || { paid: 0, cheap: 0, no: 0, places: {} });
-      if (/शुल्क/.test(x.details || "")) a.paid++; else a.cheap++;
+      if (/देकर/.test(x.details || "")) a.paid++; else a.cheap++;
       const t = x.district || "—"; a.places[t] = (a.places[t] || 0) + 1;
     });
     svNo.forEach((i) => { const s = i.service.slice(SV.length); (sum[s] = sum[s] || { paid: 0, cheap: 0, no: 0, places: {} }).no++; });
