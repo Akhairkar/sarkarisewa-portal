@@ -28,6 +28,7 @@ const faq = [
         <p class="answer-title" id="answer-title">सीधा जवाब</p>
         <p class="answer-lead">नीचे से अपना पत्र चुनें, अपनी जानकारी भरें और पत्र तुरंत तैयार हो जाएगा। हिंदी और English दोनों में, प्रिंट, PDF या WhatsApp पर भेजने के बटन के साथ। सब फ्री, और आपकी जानकारी आपके ही फोन में रहती है।</p>
       </section>
+      <nav class="arzi-cats" aria-label="श्रेणियां">{groups.map((g) => <a href={`#${g.c}`}>{g.meta.emoji} {g.meta.title.hi} <small>({g.list.length})</small></a>)}</nav>
       <label class="arzi-search"><span>पत्र खोजें</span><input type="search" placeholder="जैसे: RTI, बैंक, बिजली, छुट्टी" /></label>
       {groups.map((g) => (
         <section class="section arzi-group" id={g.c}>
@@ -60,6 +61,9 @@ const faq = [
     })();
   </script>
   <style is:global>
+    .arzi-cats { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+    .arzi-cats a { border: 1px solid var(--c-line); border-radius: 999px; padding: 5px 12px; font-size: .88rem; text-decoration: none; color: inherit; }
+    .arzi-cats small { color: var(--c-muted); }
     .arzi-search { display: grid; gap: 4px; margin: 12px 0; font-weight: 600; }
     .arzi-search input { padding: 12px; border: 1px solid var(--c-line); border-radius: var(--radius-sm, 8px); font: inherit; }
   </style>

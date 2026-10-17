@@ -17,7 +17,7 @@ export type Field = {
 
 export type LetterCategory =
   | "rti" | "bank" | "school" | "job" | "police" | "complaint" | "utility"
-  | "document" | "municipal" | "social" | "personal";
+  | "document" | "land" | "municipal" | "social" | "personal";
 
 export type Letter = {
   slug: string;
@@ -53,6 +53,7 @@ export const CATEGORIES: Record<LetterCategory, { emoji: string; title: T; text:
   bank: { emoji: "🏦", title: { hi: "बैंक के आवेदन", en: "Bank applications" }, text: { hi: "KYC, ATM, खाता, स्टेटमेंट", en: "KYC, ATM, account" } },
   utility: { emoji: "💡", title: { hi: "बिजली, पानी, गैस", en: "Electricity, water, gas" }, text: { hi: "कनेक्शन, बिल, नाम बदलना", en: "Connection, bill, name change" } },
   document: { emoji: "📄", title: { hi: "दस्तावेज़ और प्रमाण पत्र", en: "Documents & certificates" }, text: { hi: "सुधार, दोबारा जारी, सत्यापन", en: "Correction, reissue" } },
+  land: { emoji: "🌾", title: { hi: "ज़मीन, तहसील और किसान", en: "Land, tehsil & farmers" }, text: { hi: "खसरा-खतौनी, नापजोख, फसल नुकसान", en: "Land records, crop loss" } },
   municipal: { emoji: "🏛️", title: { hi: "नगर पालिका और पंचायत", en: "Municipality & panchayat" }, text: { hi: "सफाई, सड़क, संपत्ति कर", en: "Sanitation, roads, tax" } },
   police: { emoji: "👮", title: { hi: "पुलिस को आवेदन", en: "Police applications" }, text: { hi: "गुम सामान, शिकायत", en: "Lost items, complaints" } },
   school: { emoji: "🎓", title: { hi: "स्कूल और कॉलेज", en: "School & college" }, text: { hi: "छुट्टी, TC, फीस माफी", en: "Leave, TC, fee waiver" } },
