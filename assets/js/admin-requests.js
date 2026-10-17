@@ -7,6 +7,9 @@
 //      customer's number, and ask it to reply "हाँ";
 //   2. once it agrees, send it the customer's name and number;
 //   3. tell the customer which centre will call and what to watch out for.
+// Answers from the demand box (DemandBox.astro, consent "v5-demand-*") are a
+// survey for a service not started yet: shown in their own table, kept out
+// of the lead list and never offered to a CSC.
 // The "demand without a verified CSC" table is admin-only, for inviting
 // centres in those districts to claim their listing.
 document.addEventListener("DOMContentLoaded", async () => {
@@ -187,19 +190,35 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
       client.from("csc_claims").select("id,application_id,centre_name,owner_name,owner_mobile,public_phone,public_whatsapp,city,district,state,home_visit,remote_services,leads_paused").eq("status", "approved"),
     ]);
     if (error) { list.innerHTML = `<tr><td colspan="5">Could not load: ${esc(error.message)}</td></tr>`; return; }
-    rows = data || [];
+    // Survey answers (demand box, consent v5-demand) are not leads.
+    const isSurvey = (x) => String(x.consent_version || "").startsWith("v5-demand");
+    const survey = (data || []).filter(isSurvey);
+    rows = (data || []).filter((x) => !isSurvey(x));
     tally();
     centres = (cs || []).filter((c) => ten(c.public_whatsapp) || ten(c.owner_mobile));
     const since = new Date(Date.now() - 90 * 864e5).toISOString();
     const { data: ints } = await client.from("service_interest").select("page,state,service,choice").gte("created_at", since).limit(20000);
-    const yes = (ints || []).filter((i) => i.choice === "yes").length, no = (ints || []).length - yes;
+    const SV = "[सर्वे] ", isSvNo = (i) => String(i.service || "").startsWith(SV);
+    const svNo = (ints || []).filter(isSvNo);
+    const sum = {};
+    survey.forEach((x) => {
+      const a = (sum[x.service] = sum[x.service] || { paid: 0, cheap: 0, no: 0, places: {} });
+      if (/शुल्क/.test(x.details || "")) a.paid++; else a.cheap++;
+      const t = x.district || "—"; a.places[t] = (a.places[t] || 0) + 1;
+    });
+    svNo.forEach((i) => { const s = i.service.slice(SV.length); (sum[s] = sum[s] || { paid: 0, cheap: 0, no: 0, places: {} }).no++; });
+    document.getElementById("sv-sum").innerHTML = Object.keys(sum).length ? Object.entries(sum).map(([s, a]) => `<tr><td>${esc(s)}</td><td><strong>${a.paid}</strong></td><td>${a.cheap}</td><td>${a.no}</td><td><small>${Object.entries(a.places).sort((p, q) => q[1] - p[1]).map(([t, n]) => `${esc(t)} (${n})`).join(", ")}</small></td></tr>`).join("") : `<tr><td colspan="5">अभी कोई जवाब नहीं।</td></tr>`;
+    document.getElementById("sv-list").innerHTML = survey.map((x) => `<tr><td>${esc(when(x.created_at))}</td><td>${esc(x.name || "(नाम नहीं)")}<br><a href="tel:+91${esc(x.phone)}">${esc(x.phone)}</a></td><td>${esc(x.service || "")}</td><td>${esc(String(x.details || "").replace("[मांग] ", ""))}</td><td>${esc(x.district || "")}</td></tr>`).join("");
+    const intsL = (ints || []).filter((i) => !isSvNo(i));
+    const yes = intsL.filter((i) => i.choice === "yes").length, no = intsL.length - yes;
     stats.innerHTML = card("Open requests", rows.filter((r) => OPEN.includes(r.status)).length)
       + card("Done", rows.filter((r) => r.status === "done").length)
       + card("Verified CSCs", centres.length)
+      + card("📋 Survey answers", survey.length)
       + card("Said yes (90 days)", yes) + card("Said no (90 days)", no)
       + card("Yes → request", yes ? Math.round((rows.filter((r) => r.created_at >= since).length * 100) / yes) + "%" : "—");
     const agg = {};
-    (ints || []).forEach((i) => { const k = [i.page, i.state, i.service].join("|"); (agg[k] = agg[k] || { ...i, yes: 0, no: 0 })[i.choice]++; });
+    intsL.forEach((i) => { const k = [i.page, i.state, i.service].join("|"); (agg[k] = agg[k] || { ...i, yes: 0, no: 0 })[i.choice]++; });
     const top = Object.values(agg).sort((a, b) => b.yes - a.yes || b.no - a.no).slice(0, 50);
     document.getElementById("rq-interest").innerHTML = top.length ? top.map((a) => `<tr><td><a href="${esc(a.page)}" target="_blank">${esc(a.page)}</a></td><td>${esc(a.state || "")}</td><td>${esc(a.service || "")}</td><td>${a.yes}</td><td>${a.no}</td></tr>`).join("") : `<tr><td colspan="5">No answers yet.</td></tr>`;
     render();

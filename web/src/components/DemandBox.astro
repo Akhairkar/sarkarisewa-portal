@@ -3,7 +3,8 @@
 // reader wants it done for them and collects a number only from those who do.
 // Replaces CscHelp on pages whose guide sets `demand`. Stored through the same
 // service_request_submit RPC; the choice goes into `details` as "[मांग] ...".
-// "No" only logs a count (service_interest, choice "no"), no personal data.
+// "No" only logs a count (service_interest, choice "no", service prefixed
+// "[सर्वे] " so the admin page can tell it apart), no personal data.
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
 interface Props { title: string; text: string; places?: string[]; service: string; state?: string }
 const { title, text, places, service, state } = Astro.props;
@@ -32,7 +33,7 @@ const { title, text, places, service, state } = Astro.props;
     function done(t) { form.hidden = true; no.hidden = true; msg.textContent = t; try { localStorage.setItem(key, t); } catch (e) {} }
     try { var s = localStorage.getItem(key); if (s) { form.hidden = true; no.hidden = true; msg.textContent = s; } } catch (e) {}
     no.addEventListener("click", function () {
-      rpc("service_interest_log", { p_page: location.pathname, p_state: box.dataset.state || null, p_service: box.dataset.service, p_choice: "no" }).catch(function () {});
+      rpc("service_interest_log", { p_page: location.pathname, p_state: box.dataset.state || null, p_service: "[सर्वे] " + box.dataset.service, p_choice: "no" }).catch(function () {});
       try { if (window.gtag) gtag("event", "service_demand", { choice: "no", page: location.pathname }); } catch (e) {}
       done("ठीक है, ऊपर-नीचे दी गई जानकारी से आप खुद आवेदन कर सकते हैं।");
     });
