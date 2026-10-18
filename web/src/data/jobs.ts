@@ -4,6 +4,11 @@
 export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway" | "Defence" | "Scientific" | "State Govt" | "Health" | "Post" | "PSU"; last: string; lastNote?: string; status?: "expected" };
 
 export const JOBS: Job[] = [
+  { slug: "indian-coast-guard-navik-yantrik-recruitment-2026", sector: "Defence", last: "2026-10-21", lastNote: "21 अक्टूबर 2026, शाम 5:30 बजे तक (ssc.gov.in पर)" },
+  { slug: "crpf-sports-quota-head-constable-constable-recruitment-2026", sector: "Defence", last: "2026-11-11" },
+  { slug: "itbp-constable-gd-sports-quota-recruitment-2026", sector: "Defence", last: "2026-11-01" },
+  { slug: "indian-army-tes-57-recruitment-2026", sector: "Defence", last: "2026-11-12" },
+  { slug: "rrc-nwr-jaipur-apprentice-recruitment-2026", sector: "Railway", last: "2026-11-06", lastNote: "अप्रेंटिसशिप, पक्की नौकरी नहीं" },
   { slug: "nicl-ao-recruitment-2026", sector: "Banking", last: "2026-10-28", lastNote: "बीमा कंपनी NICL, 321 AO पद" },
   { slug: "cwc-recruitment-2026", sector: "PSU", last: "2026-11-15", lastNote: "केंद्रीय PSU (CWC), 327 पद" },
   { slug: "bhel-artisan-recruitment-2026", sector: "PSU", last: "2026-11-18", lastNote: "संभावित: आवेदन 21 अक्टूबर से, आखिरी तारीख विस्तृत विज्ञापन में पक्की होगी", status: "expected" },
