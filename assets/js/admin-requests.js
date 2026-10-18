@@ -60,15 +60,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const sameDistrict = (c, r) => { const a = norm(c.district), b = norm(r.district); return a && b && (a === b || a.includes(b) || b.includes(a)); };
   // Best first: same district, then same state; within those, centres that
   // reply to offers, then home visit or remote work. Centres with leads
-  // paused, and those that already let this request go, are left out.
+  // paused, and those that already let this request go, are left out. Centres
+  // that asked for leads on the claim form (leads_opt_in) come first.
   function suggest(r) {
     const skipped = r.skipped_claim_ids || [];
     return centres
       .filter((c) => c.id === r.csc_claim_id || (!c.leads_paused && !skipped.includes(c.id)))
-      .map((c) => ({ c, s: (sameState(c, r) ? 2 : 0) + (sameState(c, r) && sameDistrict(c, r) ? 3 : 0) + rate(c) * 1.5 + (c.home_visit ? 0.25 : 0) + ((c.remote_services || []).length ? 0.25 : 0) }))
+      .map((c) => ({ c, s: (sameState(c, r) ? 2 : 0) + (sameState(c, r) && sameDistrict(c, r) ? 3 : 0) + rate(c) * 1.5 + (c.leads_opt_in ? 1 : 0) + (c.home_visit ? 0.25 : 0) + ((c.remote_services || []).length ? 0.25 : 0) }))
       .sort((a, b) => b.s - a.s);
   }
-  const label = (c, r) => `${sameState(c, r) && sameDistrict(c, r) ? "✅ " : sameState(c, r) ? "🟡 " : "⚪ "}${c.centre_name} · ${c.district || "?"}, ${String(c.state || "").trim()}${c.home_visit ? " · घर आते हैं" : ""}${(c.remote_services || []).length ? " · ऑनलाइन काम" : ""}${record(c)}`;
+  const label = (c, r) => `${sameState(c, r) && sameDistrict(c, r) ? "✅ " : sameState(c, r) ? "🟡 " : "⚪ "}${c.centre_name} · ${c.district || "?"}, ${String(c.state || "").trim()}${c.leads_opt_in ? " · 🙋 लीड चाहिए" : ""}${c.home_visit ? " · घर आते हैं" : ""}${(c.remote_services || []).length ? " · ऑनलाइन काम" : ""}${record(c)}`;
   const task = (r) => r.service || "सरकारी काम";
   const place = (r) => [r.district, r.state].filter(Boolean).join(", ") || "ज़िला नहीं बताया";
 
@@ -240,7 +241,7 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
   async function load() {
     const [{ data, error }, { data: cs }] = await Promise.all([
       client.from("service_requests").select("*").order("created_at", { ascending: false }).limit(500),
-      client.from("csc_claims").select("id,application_id,centre_name,owner_name,owner_mobile,public_phone,public_whatsapp,city,district,state,home_visit,remote_services,leads_paused").eq("status", "approved"),
+      client.from("csc_claims").select("id,application_id,centre_name,owner_name,owner_mobile,public_phone,public_whatsapp,city,district,state,home_visit,remote_services,leads_paused,leads_opt_in").eq("status", "approved"),
     ]);
     if (error) { list.innerHTML = `<tr><td colspan="5">Could not load: ${esc(error.message)}</td></tr>`; return; }
     // Survey answers (demand box, consent v5-demand) are not leads.

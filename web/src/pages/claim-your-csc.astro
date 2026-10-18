@@ -104,6 +104,21 @@ const faq = [
           <p class="hint">खाली छोड़ेंगे तो वह बटन नहीं दिखेगा। कम से कम एक नंबर भरें, तभी ग्राहक संपर्क कर पाएंगे।</p>
           <label class="inline"><input type="checkbox" name="show_address" checked /> पूरा पता और नक्शा दिखाएं</label>
           <label class="inline"><input type="checkbox" name="show_hours" checked /> समय दिखाएं</label>
+          <div class="leads-box">
+            <label class="inline"><input type="checkbox" name="leads_opt_in" /> <strong>मुझे ग्राहक लीड चाहिए (फ्री):</strong> मेरे इलाके से कोई घर बैठे काम करवाना चाहे तो SarkariSewa India मुझे WhatsApp पर काम भेजे। मैं नीचे के नियम मानता/मानती हूं।</label>
+            <details><summary>लीड के नियम पढ़ें</summary>
+              <ol class="leads-rules">
+                <li>पहले काम और जगह बताई जाएगी; 2 घंटे में "हाँ" लिखने पर ही ग्राहक का नाम-नंबर मिलेगा। जवाब न देने पर काम दूसरे केंद्र को जाएगा, और बार-बार जवाब न देने पर लीड बंद हो सकती हैं।</li>
+                <li>ग्राहक से विनम्रता और धैर्य से बात करें; ज़्यादातर बुज़ुर्ग, मज़दूर और ऐसे लोग हैं जो खुद फॉर्म नहीं भर पाते।</li>
+                <li>सरकारी फीस जितनी है उतनी ही लें। अपना सेवा शुल्क काम से पहले साफ बताएं, तय दर से ज़्यादा न लें और हर भुगतान की रसीद दें।</li>
+                <li>अंगूठा/आँख/लाइव फोटो (बायोमेट्रिक) वाले काम सिर्फ ग्राहक की मौजूदगी में, अपने रजिस्टर्ड डिवाइस से करें।</li>
+                <li>बैंक/UPI का OTP, PIN या पासवर्ड कभी न मांगें। आधार OTP सिर्फ उसी काम के लिए, ग्राहक को बताकर।</li>
+                <li>ग्राहक का नंबर और कागज़ सिर्फ उसी काम के लिए हैं; किसी और को न दें, प्रचार के मैसेज न भेजें, काम के बाद कॉपी न रखें।</li>
+                <li>गलत या नकली कागज़ से कोई काम न करें। काम पूरा हो या न हो, हमें WhatsApp पर बताएं।</li>
+                <li>लीड अभी फ्री हैं। ग्राहक की शिकायत आने पर लीड बंद की जा सकती हैं।</li>
+              </ol>
+            </details>
+          </div>
           <label class="inline"><input type="checkbox" name="consent" required /> मैं इस केंद्र का संचालक हूं, जानकारी सही है, और SarkariSewa India मुझसे जांच के लिए संपर्क कर सकता है। ऊपर दिए 'ग्राहकों के लिए' नंबर साइट पर दिखाए जा सकते हैं।</label>
         </fieldset>
 
@@ -202,6 +217,7 @@ const faq = [
         home_visit: f.home_visit.checked, appointment_required: false,
         public_phone: pp || null, public_whatsapp: pw || null,
         show_address: f.show_address.checked, show_hours: f.show_hours.checked, consent_given: true, status: "pending",
+        leads_opt_in: f.leads_opt_in.checked, leads_rules_version: f.leads_opt_in.checked ? "v1-2026-10" : null,
       };
       var btn = f.querySelector("button[type=submit]"); btn.disabled = true; out.style.color = ""; out.textContent = "भेजा जा रहा है…";
       fetch(url + "/rest/v1/csc_claims", {
@@ -229,4 +245,10 @@ const faq = [
     });
   })();
   </script>
+  <style is:global>
+    .leads-box { border: 1px solid #fdba74; background: #fff7ed; border-radius: 10px; padding: 10px 12px; margin: 10px 0; color: #1f2937; }
+    .leads-box summary { cursor: pointer; font-weight: 700; margin-top: 6px; }
+    .leads-rules { margin: 6px 0 0; padding-left: 20px; font-size: .9rem; }
+    .leads-rules li { margin: 3px 0; }
+  </style>
 </Base>
