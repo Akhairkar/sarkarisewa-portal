@@ -23,7 +23,7 @@ const meta = (slug: string) => DAILY[slug] ? { title: DAILY[slug].title, descrip
 
 const SECTOR_HI: Record<string, string> = {
   SSC: "SSC", UPSC: "UPSC", Banking: "बैंक", Railway: "रेलवे", Defence: "रक्षा", Scientific: "ISRO / वैज्ञानिक",
-  "State Govt": "राज्य सरकार", Health: "स्वास्थ्य", Post: "डाक विभाग",
+  "State Govt": "राज्य सरकार", Health: "स्वास्थ्य", Post: "डाक विभाग", PSU: "PSU / सरकारी कंपनी",
 };
 const today = new Date().toISOString().slice(0, 10);
 const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "long", year: "numeric" });

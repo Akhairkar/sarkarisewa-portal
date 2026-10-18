@@ -1,9 +1,18 @@
 // Job pages in /jobs/ with the facts the hub needs. Title and description are
 // read from each page; last dates were taken from each page's important-dates
 // table (checked 4 Oct 2026). status "expected" = dates are only scheduled.
-export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway" | "Defence" | "Scientific" | "State Govt" | "Health" | "Post"; last: string; lastNote?: string; status?: "expected" };
+export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway" | "Defence" | "Scientific" | "State Govt" | "Health" | "Post" | "PSU"; last: string; lastNote?: string; status?: "expected" };
 
 export const JOBS: Job[] = [
+  { slug: "nicl-ao-recruitment-2026", sector: "Banking", last: "2026-10-28", lastNote: "बीमा कंपनी NICL, 321 AO पद" },
+  { slug: "cwc-recruitment-2026", sector: "PSU", last: "2026-11-15", lastNote: "केंद्रीय PSU (CWC), 327 पद" },
+  { slug: "bhel-artisan-recruitment-2026", sector: "PSU", last: "2026-11-18", lastNote: "संभावित: आवेदन 21 अक्टूबर से, आखिरी तारीख विस्तृत विज्ञापन में पक्की होगी", status: "expected" },
+  { slug: "isro-iprc-recruitment-2026", sector: "Scientific", last: "2026-10-24", lastNote: "बढ़ी हुई तारीख, शाम 5 बजे तक; फीस 29 अक्टूबर तक" },
+  { slug: "up-assistant-teacher-recruitment-2026", sector: "State Govt", last: "2026-10-28", lastNote: "बढ़ी हुई तारीख; फॉर्म सुधार 31 अक्टूबर 2026 तक" },
+  { slug: "mp-police-constable-driver-recruitment-2026", sector: "State Govt", last: "2026-10-29", lastNote: "फॉर्म सुधार 3 नवंबर 2026 तक" },
+  { slug: "punjab-court-clerk-recruitment-2026", sector: "State Govt", last: "2026-11-04", lastNote: "शाम 4 बजे तक" },
+  { slug: "upsssc-sports-directorate-recruitment-2026", sector: "State Govt", last: "2026-11-04", lastNote: "फीस समायोजन/सुधार 11 नवंबर 2026 तक" },
+  { slug: "upsssc-inter-level-recruitment-2026", sector: "State Govt", last: "2026-12-01", lastNote: "आवेदन 10 नवंबर 2026 से शुरू होगा", status: "expected" },
   { slug: "rrb-ntpc-recruitment-2026", sector: "Railway", last: "2026-11-13", lastNote: "ग्रेजुएट पद 6 नवंबर, 12वीं पास पद 13 नवंबर 2026" },
   { slug: "upsc-civil-services-ias-ifs-2027", sector: "UPSC", last: "2027-02-02", lastNote: "संभावित: नोटिफिकेशन 13 जनवरी, आखिरी तारीख 2 फरवरी 2027", status: "expected" },
   { slug: "sbi-clerk-junior-associate-recruitment-2026", sector: "Banking", last: "2026-08-31" },

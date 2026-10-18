@@ -19,7 +19,7 @@ const SITE = "https://sarkarisewaindia.com";
 // Top-level folders that are tooling, not website.
 const SKIP_DIRS = new Set([
   ".git", ".github", ".vscode", "web", "node_modules", "scripts", "automation", "supabase",
-  "sql-to-run-in-supabase", "scratch", "cloudflare", "api",
+  "sql-to-run-in-supabase", "scratch", "cloudflare", "api", "jobs-daily",
 ]);
 // Extensions never published, anywhere in the tree.
 const SKIP_EXT = new Set([".py", ".ps1", ".md", ".sql", ".log", ".toml", ".csv", ".pyc"]);

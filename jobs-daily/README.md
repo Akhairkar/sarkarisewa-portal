@@ -36,7 +36,7 @@ You are filling a job-post data file for a Hindi website from the OFFICIAL recru
 
 {
   "slug": "keyword-first-english-lowercase-with-hyphens, e.g. ssc-gd-constable-recruitment-2027",
-  "sector": "one of: SSC, UPSC, Banking, Railway, Defence, Scientific, State Govt, Health, Post",
+  "sector": "one of: SSC, UPSC, Banking, Railway, Defence, Scientific, State Govt, Health, Post, PSU",
   "title": "Hindi title max 70 chars, e.g. SSC GD कांस्टेबल भर्ती 2027: 25,000 पद, आखिरी तारीख",
   "description": "Hindi, max 160 chars: posts, qualification, last date",
   "h1": "Hindi heading, e.g. SSC GD कांस्टेबल भर्ती 2027: आवेदन, योग्यता, उम्र और फीस",
