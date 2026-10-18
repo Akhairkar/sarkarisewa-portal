@@ -7,6 +7,9 @@
 //      customer's number, and ask it to reply "हाँ";
 //   2. once it agrees, send it the customer's name and number;
 //   3. tell the customer which centre will call and what to watch out for.
+// Info-only requests (consent "v4-info-*", states without a verified CSC)
+// get their own table with a WhatsApp "send the details" button and are
+// never offered to a CSC: that consent covers only sending information.
 // Answers from the demand box (DemandBox.astro, consent "v5-demand-*") are a
 // survey for a service not started yet: shown in their own table, kept out
 // of the lead list and never offered to a CSC.
@@ -28,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const profileUrl = (c) => "https://sarkarisewaindia.com/csc-centre/" + [slugify(c.centre_name), slugify(c.district), (String(c.application_id || "").match(/\d{4,}$/) || [slugify(c.application_id)])[0]].filter(Boolean).join("-") + ".html";
   const when = (t) => (t ? new Date(t).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" }) : "");
   const card = (label, value) => `<div class="dash-card" style="margin:0;"><div style="font-size:.8rem;opacity:.75">${label}</div><div style="font-size:1.6rem;font-weight:800">${value}</div></div>`;
-  let rows = [], centres = [], resp = {};
+  let rows = [], centres = [], resp = {}, infoRows = [];
   // How each centre answered offers: replied = said yes (② sent),
   // skipped = no reply or said no, so the offer went to the next centre.
   function tally() {
@@ -124,6 +127,46 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
 SarkariSewa India एक निजी सेवा है, सरकारी विभाग नहीं।`;
   };
 
+  // Details for someone who asked only for information (no CSC involved).
+  const msgInfo = (r) => `नमस्ते${r.name ? ` ${r.name} जी` : ""}, SarkariSewa India से।
+आपने ${task(r)} की जानकारी मांगी थी:
+• पूरी जानकारी, ज़रूरी कागज़ और आवेदन का तरीका: https://sarkarisewaindia.com${r.page || "/"}
+• अपने पास का CSC सेंटर: https://sarkarisewaindia.com/tools/csc-locator.html
+• नई योजनाएं और भर्ती: ${"https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g"}
+
+CSC पर सरकारी फीस और सेवा शुल्क पहले पूछें और रसीद लें। बैंक का OTP या PIN किसी को न बताएं।
+आपके इलाके में भरोसेमंद CSC जुड़ते ही हम बताएंगे।
+SarkariSewa India एक निजी सेवा है, सरकारी विभाग नहीं।`;
+
+  function renderInfo() {
+    const open = infoRows.filter((r) => OPEN.includes(r.status));
+    const el = document.getElementById("rq-info");
+    el.innerHTML = open.length ? open.map((r) => `<tr data-id="${r.id}">
+        <td>${esc(when(r.created_at))}</td>
+        <td><strong>${esc(r.name || "(नाम नहीं दिया)")}</strong><br>${esc(r.phone)}<br><small>${esc(place(r))}</small></td>
+        <td>${esc(task(r))}${r.details ? `<br><small>“${esc(String(r.details).replace("[सिर्फ जानकारी] ", ""))}”</small>` : ""}<br><small><a href="${esc(r.page || "#")}" target="_blank">${esc(r.page || "")}</a></small></td>
+        <td><button type="button" class="theme-toggle-btn" data-info="send">📲 WhatsApp पर जानकारी भेजें</button>
+          <button type="button" class="theme-toggle-btn" data-info="done">✓ भेज दी (done)</button>
+          <button type="button" class="logout-btn" data-info="del">Delete</button></td></tr>`).join("") : `<tr><td colspan="4">कोई बाकी नहीं।</td></tr>`;
+  }
+
+  document.getElementById("rq-info").addEventListener("click", async (e) => {
+    const act = e.target.dataset.info, tr = e.target.closest("tr[data-id]");
+    if (!act || !tr) return;
+    const r = infoRows.find((x) => x.id === tr.dataset.id);
+    if (act === "send") {
+      window.open(wa(r.phone, msgInfo(r)), "_blank");
+      await save(r.id, { customer_told_at: new Date().toISOString(), status: "done" });
+    } else if (act === "done") {
+      await save(r.id, { status: "done" });
+    } else if (act === "del") {
+      if (!confirm("Delete this request permanently?")) return;
+      const { error } = await client.from("service_requests").delete().eq("id", r.id);
+      if (error) { alert("Not deleted: " + error.message); return; }
+    }
+    load();
+  });
+
   // An offer the centre has not answered yet: how long, and a way to move on.
   function waiting(r) {
     if (!r.csc_told_at || r.csc_accepted_at || !OPEN.includes(r.status)) return "";
@@ -193,7 +236,11 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
     // Survey answers (demand box, consent v5-demand) are not leads.
     const isSurvey = (x) => String(x.consent_version || "").startsWith("v5-demand");
     const survey = (data || []).filter(isSurvey);
-    rows = (data || []).filter((x) => !isSurvey(x));
+    // Info-only requests (consent v4-info) may not be shared with a CSC.
+    const isInfo = (x) => String(x.consent_version || "").startsWith("v4-info");
+    infoRows = (data || []).filter(isInfo);
+    rows = (data || []).filter((x) => !isSurvey(x) && !isInfo(x));
+    renderInfo();
     tally();
     centres = (cs || []).filter((c) => ten(c.public_whatsapp) || ten(c.owner_mobile));
     const since = new Date(Date.now() - 90 * 864e5).toISOString();
@@ -215,6 +262,7 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
       + card("Done", rows.filter((r) => r.status === "done").length)
       + card("Verified CSCs", centres.length)
       + card("📋 Survey answers", survey.length)
+      + card("📲 Info to send", infoRows.filter((r) => OPEN.includes(r.status)).length)
       + card("Said yes (90 days)", yes) + card("Said no (90 days)", no)
       + card("Yes → request", yes ? Math.round((rows.filter((r) => r.created_at >= since).length * 100) / yes) + "%" : "—");
     const agg = {};
