@@ -211,7 +211,7 @@ for (const src of SOURCES) {
     items.slice(0, 15).forEach((it) => console.log(`[${src.id}] ${kind(it.text)[1]} | ${it.text} | ${it.url}`));
     continue;
   }
-  // Our own job pages start from nothing, so the open ones go out 2 a run.
+  // Our own job pages start from nothing, so every open one is posted once.
   const seen = state[src.id] ?? (src.site ? [] : undefined);
   if (!seen) {
     state[src.id] = items.map((i) => i.key);
@@ -225,7 +225,8 @@ for (const src of SOURCES) {
   skipped.forEach((i) => { console.log(`[${src.id}] skipped (not a new recruitment / noise): ${i.text}`); seen.push(i.key); });
   let sent = 0;
   for (const it of fresh) {
-    if (sent >= MAX_PER_SOURCE || posted >= MAX_TOTAL) break;
+    // Our own job pages all go out (each is a separate post); official notices are capped.
+    if (src.site ? sent >= 20 : (sent >= MAX_PER_SOURCE || posted >= MAX_TOTAL)) break;
     const text = src.site ? siteMessage(it) : message(src, it);
     console.log(`--- ${src.id}\n${text}\n`);
     if (!DRY) {
