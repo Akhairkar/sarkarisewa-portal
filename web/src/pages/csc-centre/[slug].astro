@@ -130,6 +130,14 @@ const ld = {
         </div>
       </section>
 
+      {/* Map right after the contact details, so phone readers see it without scrolling to the end. */}
+      <section class="section" id="c-map" hidden={!embed}>
+        <h2>नक्शे पर केंद्र</h2>
+        <iframe class="csc-map" src={embed || undefined} data-src={embed} title={`${name} नक्शा`} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {!exact && embed && <p class="hint">पते के हिसाब से अनुमानित जगह; सही रास्ते के लिए केंद्र को कॉल करें।</p>}
+        {map && <a href={map} data-act="map" target="_blank" rel="noopener nofollow">🗺️ Google Maps में खोलें ↗</a>}
+      </section>
+
       {c.about && (
         <section class="section" id="parichay">
           <h2>केंद्र के बारे में</h2>
@@ -235,12 +243,6 @@ const ld = {
         {wa && <a class="cta secondary" href={`https://wa.me/91${wa}?text=${waText}`} data-act="whatsapp" target="_blank" rel="noopener nofollow">💬 WhatsApp</a>}
         {districtPage && <a class="cta secondary" href={districtPage.href}>{districtPage.name} के सभी CSC</a>}
         {isJa && ja && <a class="cta secondary" href={ja.href}>{ja.name} के सभी जन औषधि केंद्र</a>}
-      </section>
-      <section class="section toc" id="c-map" hidden={!embed}>
-        <h2 style="font-size:1rem">नक्शे पर केंद्र</h2>
-        <iframe class="csc-map" src={embed || undefined} data-src={embed} title={`${name} नक्शा`} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        {!exact && embed && <p class="hint">पते के हिसाब से अनुमानित जगह; सही रास्ते के लिए केंद्र को कॉल करें।</p>}
-        {map && <a href={map} data-act="map" target="_blank" rel="noopener nofollow">🗺️ Google Maps में खोलें ↗</a>}
       </section>
       <section class="section toc">
         <h2 style="font-size:1rem">यह पेज शेयर करें</h2>
