@@ -81,7 +81,7 @@ const faq = [
               <div class="checks">{k.main.map((x) => <label><input type="checkbox" name="online_services" value={x} /> {x}</label>)}</div>
               <label>{k.otherLabel}</label>
               <div class="checks">{k.other.map((x) => <label><input type="checkbox" name="offline_services" value={x} /> {x}</label>)}</div>
-              <label>{k.remoteLabel} {kind === "csc" && <span class="hint">(ग्राहक WhatsApp/फोन पर कागज़ भेजे, आप ऑनलाइन काम कर दें)</span>}</label>
+              <label>{k.remoteLabel} {kind === "csc" && <span class="hint">(ग्राहक WhatsApp/फोन पर कागज़ भेजे, आप ऑनलाइन काम कर दें। कोई भी अपने आप नहीं चुना जाता; सिर्फ वही चुनें जो आप सच में ऐसे करते हैं। घर जाकर सेवा देते हैं तो नीचे "घर पर जाकर सेवा" अलग से चुनें।)</span>}</label>
               <div class="checks">{k.remote.map((x) => <label><input type="checkbox" name="remote_services" value={x} /> {x}</label>)}</div>
             </div>
           ))}

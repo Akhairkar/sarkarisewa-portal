@@ -28,7 +28,7 @@ export const SERVICE_CHOICES: Record<Kind, { main: string[]; other: string[]; re
     remote: CSC_CENTRE.filter((s) => !s.startsWith("Aadhaar")),
     mainLabel: "🏢 केंद्र पर आकर होने वाली सेवाएं",
     otherLabel: "दूसरी सेवाएं",
-    remoteLabel: "🏠 घर बैठे होने वाली सेवाएं",
+    remoteLabel: "📲 बिना केंद्र आए (ऑनलाइन) होने वाली सेवाएं",
   },
   ja: {
     main: ["जेनेरिक दवाएं", "डायबिटीज़ / BP / दिल की दवाएं", "एंटीबायोटिक / बुखार-दर्द की दवाएं", "सर्जिकल सामान", "सुविधा सैनिटरी पैड", "न्यूट्रास्यूटिकल / प्रोटीन पाउडर", "आयुर्वेदिक दवाएं"],

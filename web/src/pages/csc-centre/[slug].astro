@@ -140,10 +140,10 @@ const ld = {
       {all.length > 0 && (
         <section class="section" id="sevayen">
           <h2>{name} पर मिलने वाली {isJa ? "दवाएं और सुविधाएं" : "सेवाएं"}</h2>
-          {remote.length > 0 && <><h3>{isJa ? "🏠 घर बैठे (WhatsApp / होम डिलीवरी)" : "🏠 घर बैठे (WhatsApp/फोन से कागज़ भेजकर)"}</h3><ul class="checklist svc-chips">{remote.map((s) => <li>{s}</li>)}</ul></>}
+          {remote.length > 0 && <><h3>{isJa ? "🏠 घर बैठे (WhatsApp / होम डिलीवरी)" : "📲 बिना केंद्र आए (WhatsApp/फोन पर कागज़ भेजकर)"}</h3><ul class="checklist svc-chips">{remote.map((s) => <li>{s}</li>)}</ul></>}
           {online.length > 0 && <><h3>{isJa ? "💊 केंद्र पर मिलने वाली दवाएं और सामान" : "🏢 केंद्र पर आकर: सरकारी सेवाएं"}</h3><ul class="checklist svc-chips">{online.map((s) => <li>{s}</li>)}</ul></>}
           {(offline.length > 0 || custom.length > 0) && <><h3>{isJa ? "🏪 दूसरी सुविधाएं" : "🏢 केंद्र पर: दूसरी सेवाएं"}</h3><ul class="checklist svc-chips">{[...offline, ...custom].map((s) => <li>{s}</li>)}</ul></>}
-          {remote.length > 0 && wa && <p><a class="cta secondary" href={`https://wa.me/91${wa}?text=${waText}`} data-act="whatsapp" target="_blank" rel="noopener nofollow">{isJa ? "💬 दवा के लिए WhatsApp करें" : "💬 घर बैठे काम के लिए WhatsApp करें"}</a></p>}
+          {remote.length > 0 && wa && <p><a class="cta secondary" href={`https://wa.me/91${wa}?text=${waText}`} data-act="whatsapp" target="_blank" rel="noopener nofollow">{isJa ? "💬 दवा के लिए WhatsApp करें" : "💬 बिना केंद्र आए काम के लिए WhatsApp करें"}</a></p>}
           <p class="cell-note">सेवाओं की जानकारी केंद्र के संचालक ने दी है। जाने से पहले फोन या WhatsApp पर पूछ लें।</p>
         </section>
       )}
