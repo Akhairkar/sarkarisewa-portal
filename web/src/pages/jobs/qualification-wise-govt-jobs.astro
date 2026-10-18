@@ -10,13 +10,14 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Faq from "../../components/Faq.astro";
 import Explore from "../../components/Explore.astro";
 import { FINDER_JOBS, QUALS, FINDER_VERIFIED, type Qual } from "../../data/job-finder";
-import { JOBS } from "../../data/jobs";
+import { ALL_JOBS as JOBS, DAILY_JOBS } from "../../lib/daily-jobs";
 import { exists, pageTitle } from "../../lib/repo";
 
 const crumbs = [{ label: "होम", href: "/" }, { label: "सरकारी नौकरी", href: "/jobs/index.html" }, { label: "योग्यता अनुसार" }];
 const today = new Date().toISOString().slice(0, 10);
-const open = JOBS.filter((j) => j.last >= today && exists(`jobs/${j.slug}.html`))
-  .map((j) => ({ ...j, title: pageTitle(`jobs/${j.slug}.html`).split(/[:|]/)[0].trim() || j.slug }));
+const daily = Object.fromEntries(DAILY_JOBS.map((d) => [d.slug, d.title]));
+const open = JOBS.filter((j) => j.last >= today && (daily[j.slug] || exists(`jobs/${j.slug}.html`)))
+  .map((j) => ({ ...j, title: (daily[j.slug] ?? pageTitle(`jobs/${j.slug}.html`)).split(/[:|]/)[0].trim() || j.slug }));
 const order: Qual[] = ["8th", "10th", "12th", "iti", "diploma", "graduate", "engineering", "nursing", "pg"];
 // Each exam is listed once, under the lowest qualification it accepts.
 const lowest = (qs: Qual[]) => order.find((q) => qs.includes(q));

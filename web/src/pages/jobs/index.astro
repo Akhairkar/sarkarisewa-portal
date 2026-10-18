@@ -6,7 +6,7 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import CardGrid from "../../components/CardGrid.astro";
 import Faq from "../../components/Faq.astro";
 import Explore from "../../components/Explore.astro";
-import { JOBS } from "../../data/jobs";
+import { ALL_JOBS as JOBS, DAILY_JOBS } from "../../lib/daily-jobs";
 import { oldMeta } from "../../lib/csc";
 import fs from "node:fs";
 import { REPO_ROOT } from "../../lib/repo";
@@ -18,7 +18,8 @@ const GUIDES = Object.fromEntries(
   Object.entries(import.meta.glob<Record<string, DocGuide>>("../../guides/jobs/*.ts", { eager: true }))
     .map(([f, m]) => [f.split("/").pop()!.replace(/\.ts$/, ""), Object.values(m).find((v) => v && typeof v === "object" && "title" in v) as DocGuide]),
 );
-const meta = (slug: string) => GUIDES[slug] ? { title: GUIDES[slug].title, description: GUIDES[slug].description } : fs.existsSync(`${REPO_ROOT}/jobs/${slug}.html`) ? oldMeta(`jobs/${slug}.html`) : { title: slug, description: "" };
+const DAILY = Object.fromEntries(DAILY_JOBS.map((d) => [d.slug, d]));
+const meta = (slug: string) => DAILY[slug] ? { title: DAILY[slug].title, description: DAILY[slug].description } : GUIDES[slug] ? { title: GUIDES[slug].title, description: GUIDES[slug].description } : fs.existsSync(`${REPO_ROOT}/jobs/${slug}.html`) ? oldMeta(`jobs/${slug}.html`) : { title: slug, description: "" };
 
 const SECTOR_HI: Record<string, string> = {
   SSC: "SSC", UPSC: "UPSC", Banking: "बैंक", Railway: "रेलवे", Defence: "रक्षा", Scientific: "ISRO / वैज्ञानिक",

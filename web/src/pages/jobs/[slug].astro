@@ -1,0 +1,11 @@
+---
+// Job pages from jobs-daily/*.json (see src/lib/daily-jobs.ts).
+import DocGuide from "../../components/DocGuide.astro";
+import { DAILY_JOBS, dailyGuide, type DailyJob } from "../../lib/daily-jobs";
+
+export function getStaticPaths() {
+  return DAILY_JOBS.map((d) => ({ params: { slug: d.slug }, props: { d } }));
+}
+const { d } = Astro.props as { d: DailyJob };
+---
+<DocGuide g={dailyGuide(d)} />
