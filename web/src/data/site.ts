@@ -50,6 +50,7 @@ export const FOOTER: { title: Text; links: { href: string; label: Text }[] }[] =
       { href: "/service/aadhaar-card.html", label: "Aadhaar" },
       { href: "/states/", label: { hi: "राज्य अनुसार सेवाएं", en: "Services by state" } },
       { href: "/support/helpline-directory.html", label: { hi: "Helpline नंबर", en: "Helpline numbers" } },
+      { href: "/status-check/", label: { hi: "स्टेटस चेक (सभी योजनाएं)", en: "Status check (all schemes)" } },
       { href: "/challan/", label: { hi: "ट्रैफिक चालान गाइड", en: "Traffic challan guides" } },
       { href: "/solar/", label: { hi: "PM सूर्य घर सोलर सब्सिडी", en: "PM Surya Ghar solar subsidy" } },
       { href: "/gst/", label: "GST Guides" },

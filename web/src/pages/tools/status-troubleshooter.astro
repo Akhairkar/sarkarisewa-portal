@@ -196,5 +196,9 @@ const faq = [
   }
   cat.addEventListener("change", fill);
   item.addEventListener("change", show);
+  // Links like /tools/status-troubleshooter.html#pmkisan (from the status
+  // hub) open with that scheme chosen.
+  var h = location.hash.slice(1);
+  if (h && cat.querySelector('option[value="' + h.replace(/[^a-z0-9-]/gi, "") + '"]')) { cat.value = h; fill(); cat.scrollIntoView({ block: "center" }); }
 })();
 </script>

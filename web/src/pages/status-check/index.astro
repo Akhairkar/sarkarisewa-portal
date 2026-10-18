@@ -1,0 +1,99 @@
+---
+// Status Check hub: one page for the status searches people make most (PM
+// Kisan, ration card, Ayushman, PAN, passport, voter ID, scholarship ...).
+// Each card: what you need, steps, what common status messages mean, the
+// official status page, helpline and our full guide. Data and sources:
+// src/data/status-hub.ts. We do not fetch any status ourselves.
+import Base from "../../layouts/Base.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Faq from "../../components/Faq.astro";
+import Explore from "../../components/Explore.astro";
+import { STATUS_ITEMS, STATUS_GROUPS, STATUS_VERIFIED, type StatusItem } from "../../data/status-hub";
+import { exists } from "../../lib/repo";
+
+const crumbs = [{ label: "होम", href: "/" }, { label: "स्टेटस चेक" }];
+const groups = (Object.keys(STATUS_GROUPS) as StatusItem["group"][])
+  .map((g) => ({ g, label: STATUS_GROUPS[g], list: STATUS_ITEMS.filter((s) => s.group === g) }))
+  .filter((x) => x.list.length);
+const guideOk = (p?: string) => !!p && exists(p.replace(/^\//, "").replace(/#.*$/, ""));
+const names = STATUS_ITEMS.slice(0, 8).map((s) => s.en).join(", ");
+const faq = [
+  { q: "क्या इस पेज से सीधे स्टेटस दिखता है?", a: "नहीं। हर योजना का स्टेटस उसकी आधिकारिक वेबसाइट या ऐप पर ही दिखता है। यहां हर योजना का सही आधिकारिक लिंक, ज़रूरी जानकारी और स्टेप दिए गए हैं, ताकि आप सीधे सही पेज पर जाएं।" },
+  { q: "स्टेटस चेक करने के लिए क्या चाहिए?", a: "ज़्यादातर योजनाओं में आधार नंबर, रजिस्ट्रेशन/आवेदन नंबर या मोबाइल नंबर और उस पर आया OTP। हर कार्ड में 'क्या चाहिए' लिखा है।" },
+  { q: "स्टेटस में 'Pending' या 'Rejected' दिखे तो क्या करें?", a: "कार्ड में दिए 'स्टेटस का मतलब' देखें। ज़्यादा जानकारी के लिए 'समस्या का हल' बटन से स्टेटस ट्रबलशूटर खोलें, या योजना की हेल्पलाइन पर बात करें।" },
+  { q: "क्या स्टेटस चेक करने के पैसे लगते हैं?", a: "नहीं, आधिकारिक वेबसाइट पर स्टेटस देखना मुफ्त है। कोई स्टेटस दिखाने के नाम पर पैसे या OTP मांगे तो न दें।" },
+  { q: "SarkariSewa India सरकारी वेबसाइट है?", a: "नहीं, यह एक निजी वेबसाइट है जो सरकारी सेवाओं की जानकारी आसान हिंदी में देती है। स्टेटस हमेशा आधिकारिक वेबसाइट पर ही देखें।" },
+];
+---
+<Base title="Status Check 2026: PM Kisan, Ration Card, Ayushman, PAN, Passport स्टेटस एक जगह" description={`सभी सरकारी योजनाओं और दस्तावेज़ों का स्टेटस कैसे देखें: ${STATUS_ITEMS.length} योजनाओं के आधिकारिक लिंक, क्या चाहिए, स्टेप और स्टेटस का मतलब। ${names}।`.slice(0, 300)} breadcrumbs={crumbs} faq={faq}>
+  <Breadcrumbs items={crumbs} />
+  <article class="page">
+    <div>
+      <h1>स्टेटस चेक 2026: सभी योजनाओं और दस्तावेज़ों का स्टेटस एक जगह</h1>
+      <div class="meta-row"><span class="verified">✓ लिंक जांचे गए: {STATUS_VERIFIED}</span></div>
+      <section class="answer" aria-labelledby="answer-title">
+        <p class="answer-title" id="answer-title">सीधा जवाब</p>
+        <p class="answer-lead">नीचे अपनी योजना या दस्तावेज़ चुनें। हर कार्ड में <strong>आधिकारिक स्टेटस पेज का लिंक</strong>, स्टेटस देखने के लिए <strong>क्या चाहिए</strong>, आसान स्टेप और आम स्टेटस का <strong>मतलब</strong> दिया है। स्टेटस देखना मुफ्त है; यह पेज खुद कोई स्टेटस नहीं दिखाता, आपको सही सरकारी पेज तक पहुंचाता है।</p>
+      </section>
+
+      <nav class="arzi-cats" aria-label="श्रेणियां">{groups.map((x) => <a href={`#g-${x.g}`}>{x.label} <small>({x.list.length})</small></a>)}</nav>
+      <label class="arzi-search"><span>योजना खोजें</span><input type="search" placeholder="जैसे: PM Kisan, राशन, PAN, पासपोर्ट" /></label>
+
+      {groups.map((x) => (
+        <section class="section st-group" id={`g-${x.g}`}>
+          <h2>{x.label}</h2>
+          {x.list.map((s) => (
+            <div class="st-card" id={s.id} data-q={`${s.name} ${s.en}`.toLowerCase()}>
+              <h3>{s.name} <small>({s.en})</small></h3>
+              <p class="st-need"><strong>क्या चाहिए:</strong> {s.need}</p>
+              <ol class="steps">{s.steps.map((t) => <li set:html={t} />)}</ol>
+              {s.meanings && s.meanings.length > 0 && (
+                <details class="st-mean"><summary>स्टेटस का मतलब</summary>
+                  <dl class="facts">{s.meanings.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}</dl>
+                </details>
+              )}
+              <div class="st-cta">
+                <a class="cta" href={s.url} target="_blank" rel="noopener nofollow">स्टेटस देखें: {s.portal} ↗</a>
+                {guideOk(s.guide) && <a class="cta secondary" href={s.guide}>पूरी जानकारी</a>}
+                {s.fix && <a class="cta secondary" href={s.fix}>समस्या का हल</a>}
+              </div>
+              {s.helpline && <p class="st-help">📞 हेल्पलाइन: {s.helpline}</p>}
+            </div>
+          ))}
+        </section>
+      ))}
+
+      <div class="callout info"><p>SarkariSewa India एक निजी वेबसाइट है, सरकारी नहीं। स्टेटस सिर्फ आधिकारिक वेबसाइट या ऐप पर देखें। स्टेटस दिखाने के नाम पर कोई पैसे, OTP या पासवर्ड मांगे तो न दें।</p></div>
+      <Faq items={faq} />
+      <Explore />
+    </div>
+  </article>
+  <script is:inline>
+    (function () {
+      var i = document.querySelector(".arzi-search input"); if (!i) return;
+      i.addEventListener("input", function () {
+        var q = i.value.trim().toLowerCase();
+        document.querySelectorAll(".st-group").forEach(function (g) {
+          var n = 0; g.querySelectorAll(".st-card").forEach(function (c) { var ok = !q || c.dataset.q.indexOf(q) > -1; c.hidden = !ok; if (ok) n++; });
+          g.hidden = n === 0;
+        });
+      });
+    })();
+  </script>
+  <style is:global>
+    .arzi-cats { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+    .arzi-cats a { border: 1px solid var(--c-line); border-radius: 999px; padding: 5px 12px; font-size: .88rem; text-decoration: none; color: inherit; }
+    .arzi-cats small { color: var(--c-muted); }
+    .arzi-search { display: grid; gap: 4px; margin: 12px 0; font-weight: 600; }
+    .arzi-search input { padding: 12px; border: 1px solid var(--c-line); border-radius: var(--radius-sm, 8px); font: inherit; }
+    .st-card { border: 1px solid var(--c-line); border-radius: var(--radius, 12px); padding: 14px 16px; margin: 0 0 12px; scroll-margin-top: 80px; }
+    .st-card h3 { margin: 0 0 6px; font-size: 1.08rem; }
+    .st-card h3 small { color: var(--c-muted); font-weight: 600; }
+    .st-need { margin: 0 0 6px; font-size: .95rem; }
+    .st-card .steps { margin: 6px 0 8px; }
+    .st-mean summary { cursor: pointer; font-weight: 700; margin: 4px 0; }
+    .st-cta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .st-cta .cta { margin: 0; max-width: 100%; white-space: normal; overflow-wrap: anywhere; text-align: center; }
+    .st-help { margin: 8px 0 0; font-size: .92rem; }
+  </style>
+</Base>
