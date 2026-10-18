@@ -15,6 +15,7 @@
 //      PROBE=1 to list what every source shows now. Neither saves state.
 import fs from "node:fs";
 import crypto from "node:crypto";
+import { execSync } from "node:child_process";
 import { fbText, plain } from "./fb-page.mjs";
 
 const TOKEN = (process.env.TELEGRAM_BOT_TOKEN || "").trim();
@@ -177,6 +178,40 @@ function message(src, it) {
   return lines.join("\n");
 }
 
+// A phone-size screenshot of one of our pages, for the post. Playwright is
+// installed only when a run has a site job to post; on any failure the post
+// goes out as text.
+let pw = null;
+async function shot(url) {
+  try {
+    if (!pw) {
+      execSync("npm init -y >/dev/null && npm install --no-save playwright@1 && npx playwright install --with-deps chromium", { stdio: "inherit" });
+      pw = await import("playwright");
+    }
+    const b = await pw.chromium.launch();
+    const pg = await b.newPage({ viewport: { width: 430, height: 900 }, deviceScaleFactor: 2 });
+    await pg.goto(url, { waitUntil: "networkidle", timeout: 45000 }).catch(() => {});
+    await pg.waitForTimeout(800);
+    await pg.addStyleTag({ content: ".bottom-nav,.wa-float,#wa-join,[id*='consent'],.cookie{display:none!important}" }).catch(() => {});
+    const buf = await pg.screenshot({ clip: { x: 0, y: 0, width: 430, height: 900 } });
+    await b.close();
+    return buf;
+  } catch (e) {
+    console.log("screenshot skipped:", e.message);
+    return null;
+  }
+}
+
+async function sendPhoto(buf, caption) {
+  const form = new FormData();
+  form.append("chat_id", CHANNEL);
+  form.append("caption", caption.slice(0, 1024));
+  form.append("parse_mode", "HTML");
+  form.append("photo", new Blob([buf], { type: "image/png" }), "page.png");
+  const j = await (await fetch(`https://api.telegram.org/bot${TOKEN}/sendPhoto`, { method: "POST", body: form })).json();
+  if (!j.ok) throw new Error(`Telegram: ${j.description}`);
+}
+
 async function send(text) {
   const r = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
     method: "POST", headers: { "Content-Type": "application/json" },
@@ -230,7 +265,10 @@ for (const src of SOURCES) {
     const text = src.site ? siteMessage(it) : message(src, it);
     console.log(`--- ${src.id}\n${text}\n`);
     if (!DRY) {
-      try { await send(text); } catch (e) { console.log(`send failed: ${e.message}`); break; }
+      try {
+        const img = src.site ? await shot(it.url) : null;
+        if (img) await sendPhoto(img, text); else await send(text);
+      } catch (e) { console.log(`send failed: ${e.message}`); break; }
       await fbText(plain(text), it.url);
       await new Promise((r) => setTimeout(r, 1500));
     }
