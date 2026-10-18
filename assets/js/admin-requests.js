@@ -26,7 +26,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const STATE_EN = { "आंध्र प्रदेश": "Andhra Pradesh", "अरुणाचल प्रदेश": "Arunachal Pradesh", "असम": "Assam", "बिहार": "Bihar", "छत्तीसगढ़": "Chhattisgarh", "गोवा": "Goa", "गुजरात": "Gujarat", "हरियाणा": "Haryana", "हिमाचल प्रदेश": "Himachal Pradesh", "झारखंड": "Jharkhand", "कर्नाटक": "Karnataka", "केरल": "Kerala", "मध्य प्रदेश": "Madhya Pradesh", "महाराष्ट्र": "Maharashtra", "मणिपुर": "Manipur", "मेघालय": "Meghalaya", "मिज़ोरम": "Mizoram", "नागालैंड": "Nagaland", "ओडिशा": "Odisha", "पंजाब": "Punjab", "राजस्थान": "Rajasthan", "सिक्किम": "Sikkim", "तमिलनाडु": "Tamil Nadu", "तेलंगाना": "Telangana", "त्रिपुरा": "Tripura", "उत्तर प्रदेश": "Uttar Pradesh", "उत्तराखंड": "Uttarakhand", "पश्चिम बंगाल": "West Bengal", "अंडमान-निकोबार": "Andaman & Nicobar", "चंडीगढ़": "Chandigarh", "दादरा नगर हवेली, दमन-दीव": "Dadra & Nagar Haveli and Daman & Diu", "दिल्ली": "Delhi", "जम्मू-कश्मीर": "Jammu & Kashmir", "लद्दाख": "Ladakh", "लक्षद्वीप": "Lakshadweep", "पुडुचेरी": "Puducherry" };
   const norm = (s) => String(s || "").toLowerCase().replace(/district|जिला|ज़िला|&|and|[^a-zऀ-ॿ]/g, "");
   const ten = (s) => String(s || "").replace(/\D/g, "").slice(-10);
-  const wa = (phone, text) => `https://wa.me/91${ten(phone)}?text=${encodeURIComponent(text)}`;
+  // Send from the WhatsApp Business app (the admin's business number): on
+  // Android an intent opens com.whatsapp.w4b directly (falls back to wa.me if
+  // it is not installed); elsewhere wa.me opens WhatsApp / WhatsApp Web.
+  const ANDROID = /Android/i.test(navigator.userAgent);
+  const wa = (phone, text) => {
+    const web = `https://wa.me/91${ten(phone)}?text=${encodeURIComponent(text)}`;
+    return ANDROID ? `intent://send/?phone=91${ten(phone)}&text=${encodeURIComponent(text)}#Intent;scheme=whatsapp;package=com.whatsapp.w4b;S.browser_fallback_url=${encodeURIComponent(web)};end` : web;
+  };
+  // An intent must load in the current tab; a new tab would stay blank.
+  const openWa = (url) => { if (ANDROID) location.href = url; else window.open(url, "_blank"); };
   const slugify = (s) => String(s || "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
   const profileUrl = (c) => "https://sarkarisewaindia.com/csc-centre/" + [slugify(c.centre_name), slugify(c.district), (String(c.application_id || "").match(/\d{4,}$/) || [slugify(c.application_id)])[0]].filter(Boolean).join("-") + ".html";
   const when = (t) => (t ? new Date(t).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" }) : "");
@@ -155,7 +164,7 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
     if (!act || !tr) return;
     const r = infoRows.find((x) => x.id === tr.dataset.id);
     if (act === "send") {
-      window.open(wa(r.phone, msgInfo(r)), "_blank");
+      openWa(wa(r.phone, msgInfo(r)));
       await save(r.id, { customer_told_at: new Date().toISOString(), status: "done" });
     } else if (act === "done") {
       await save(r.id, { status: "done" });
@@ -292,20 +301,20 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
       const now = new Date().toISOString();
       if (step === "offer") {
         // Open WhatsApp first (a popup must come straight from the click).
-        window.open(wa(c.public_whatsapp || c.owner_mobile, msgOffer(r, c)), "_blank");
+        openWa(wa(c.public_whatsapp || c.owner_mobile, msgOffer(r, c)));
         await save(id, { csc_claim_id: c.id, csc_told_at: now, assigned_to: c.centre_name, status: r.status === "new" ? "contacted" : r.status });
       } else if (step === "lead") {
         if (r.csc_claim_id && r.csc_claim_id !== c.id && !confirm("① किसी दूसरे CSC को भेजा था। फिर भी इस CSC को नंबर भेजें?")) return;
-        window.open(wa(c.public_whatsapp || c.owner_mobile, msgLead(r)), "_blank");
+        openWa(wa(c.public_whatsapp || c.owner_mobile, msgLead(r)));
         await save(id, { csc_claim_id: c.id, csc_accepted_at: now, assigned_to: c.centre_name, status: "assigned" });
       } else if (step === "nocsc") {
-        window.open(wa(r.phone, msgNoCsc(r)), "_blank");
+        openWa(wa(r.phone, msgNoCsc(r)));
         await save(id, { customer_told_at: now, status: r.status === "new" ? "contacted" : r.status, admin_notes: [r.admin_notes, `CSC नहीं: संदेश भेजा ${when(now)}`].filter(Boolean).join(" · ").slice(0, 1000) });
       } else if (step === "skip") {
         if (!confirm("इस CSC ने जवाब नहीं दिया या मना किया? request अगले CSC के लिए खुल जाएगी।")) return;
         await save(id, { skipped_claim_ids: [...(r.skipped_claim_ids || []), r.csc_claim_id].filter(Boolean), csc_claim_id: null, csc_told_at: null, assigned_to: null });
       } else if (step === "customer") {
-        window.open(wa(r.phone, msgCustomer(r, c)), "_blank");
+        openWa(wa(r.phone, msgCustomer(r, c)));
         await save(id, { customer_told_at: now });
       }
       load();
