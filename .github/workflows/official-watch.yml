@@ -2,8 +2,9 @@ name: Official update watcher
 
 # Every 2 hours from about 6 AM to 10 PM IST, checks the notice pages of UPSC,
 # SSC (its JSON notice API), NTA, IBPS, AIIMS, RRB, CTET (via CBSE) and others (web/scripts/official-watch.mjs) and
-# posts each new result, admit card, answer key or notification to the
-# Telegram channel with its official link. What has been seen is kept in the
+# posts each new recruitment notification to the Telegram channel with its
+# official link (results, answer keys and admit cards are skipped), plus each
+# open job page newly added to our site (web/src/data/jobs.ts, jobs-daily/). What has been seen is kept in the
 # Actions cache; if the cache is lost, the next run records the current
 # notices silently instead of posting them again.
 # Secrets: TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL (optional).
@@ -32,7 +33,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: web/scripts
+          sparse-checkout: |
+            web/scripts
+            web/src/data
+            web/src/guides/jobs
+            jobs-daily
       - uses: actions/setup-node@v4
         with:
           node-version: 22

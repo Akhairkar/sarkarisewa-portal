@@ -34,6 +34,8 @@ const SSC_API = "https://ssc.gov.in/api/general-website/portal/";
 const SSC_Q = "?page=1&limit=15&key=createdAt&order=DESC&isAttachment=true&language=english&attributes=id,headline,examId,contentType,redirectUrl,startDate,endDate,language,createdAt";
 const SOURCES = process.env.SOURCES_FILE ? JSON.parse(fs.readFileSync(process.env.SOURCES_FILE, "utf8")) : [
   // www. is served from a cache that runners can reach; the bare host is not.
+  // Our own new job pages (siteJobs below), posted with a link to the page.
+  { id: "site-jobs", name: "SarkariSewa", site: true, url: SITE },
   { id: "upsc", name: "UPSC", url: "https://www.upsc.gov.in/whats-new", want: "notice|result|admit|interview|answer|marks|cut[\\s-]*off|advertisement|vacanc|examination" },
   { id: "upsc-exam", name: "UPSC", url: "https://www.upsc.gov.in/examinations/active-exams" },
   { id: "ssc", name: "SSC", api: "ssc", url: "https://ssc.gov.in/" },
@@ -53,9 +55,14 @@ const SOURCES = process.env.SOURCES_FILE ? JSON.parse(fs.readFileSync(process.en
 const WANT = /result|admit\s*card|e-?admit|call\s*letter|answer\s*key|cut[\s-]*off|marks|notification|recruitment|advertisement|advt|vacanc|exam(ination)?\s*(date|schedule|calendar|city)|interview|merit\s*list|selection\s*list|written\s*test|परिणाम|प्रवेश\s*पत्र|भर्ती|विज्ञापन|उत्तर\s*कुंजी/i;
 const SKIP = /tender|e-?procurement|auction|quotation|rti\b|annual\s*report|budget|empanel|rate\s*contract|login|sign\s*in|register(ed)?\s*user|archive|^more$|^click here$|^view all|^read more|^details?$|^download$/i;
 
+// From official sites only new recruitments are posted (results, answer keys
+// and admit cards go to too few readers); our own new job pages are posted
+// too (source "site-jobs"), with a link to the page.
+const POST_KINDS = /^नई भर्ती/;
+
 // Updates that matter only to a few people (departmental exams, corrigenda,
 // court matters, lists of rejected candidates ...): recorded as seen, never posted.
-const NOISE = /departmental|\bldce\b|in-?service|corrigend|addend|errat|court\s*(case|order)|contempt|compliance|show\s*cause|debar|representation|rejected|withheld|seniority|promotion|transfer\s*order|office\s*memorandum|\bo\.?m\.?\b|grievance|mock\s*test|feedback|tentative\s*vacanc|vacancy\s*position|minutes\s*of|re-?exam\s*request/i;
+const NOISE = /departmental|\bldce\b|in-?service|corrigend|addend|errat|court\s*(case|order)|contempt|compliance|show\s*cause|debar|representation|rejected|withheld|seniority|promotion|transfer\s*order|office\s*memorandum|\bo\.?m\.?\b|grievance|mock\s*test|feedback|tentative\s*vacanc|vacancy\s*position|minutes\s*of|re-?exam\s*request|additional|response\s*sheet|tentative|list[\s-]*i|qualified\s*for|provisional|marks\s*of|withheld|result\s*of\s*re/i;
 
 const sha = (s) => crypto.createHash("sha1").update(s).digest("hex").slice(0, 16);
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -130,6 +137,32 @@ function kind(t) {
   return ["📌", "नई सूचना"];
 }
 
+// Open jobs that have a page on our site: src/data/jobs.ts (title from its
+// guide) and jobs-daily/*.json. Read from the checked-out repo.
+function siteJobs() {
+  const root = "../..", today = new Date().toISOString().slice(0, 10), out = [];
+  const guideTitle = (slug) => { try { return (fs.readFileSync(`${root}/web/src/guides/jobs/${slug}.ts`, "utf8").match(/\n  title: "([^"]+)"/) || [])[1]; } catch { return undefined; } };
+  const jobsTs = fs.readFileSync(`${root}/web/src/data/jobs.ts`, "utf8");
+  for (const m of jobsTs.matchAll(/\{ slug: "([^"]+)", sector: "[^"]+", last: "(\d{4}-\d{2}-\d{2})"(?:, lastNote: "([^"]*)")?(, status: "expected")?/g)) {
+    const [, slug, last, note, expected] = m;
+    const title = guideTitle(slug);
+    if (title && !expected && last >= today) out.push({ key: sha("site|" + slug), text: title, url: `${SITE}/jobs/${slug}.html`, last, note });
+  }
+  try {
+    for (const f of fs.readdirSync(`${root}/jobs-daily`).filter((f) => f.endsWith(".json") && !f.startsWith("_"))) {
+      try { const j = JSON.parse(fs.readFileSync(`${root}/jobs-daily/${f}`, "utf8")); if (j.slug && j.title && j.lastDate >= today) out.push({ key: sha("site|" + j.slug), text: j.title, url: `${SITE}/jobs/${j.slug}.html`, last: j.lastDate, note: j.lastNote }); } catch {}
+    }
+  } catch {}
+  return out;
+}
+
+function siteMessage(it) {
+  const d = new Date(it.last + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "long", year: "numeric" });
+  return [`🆕 <b>नई भर्ती: ${esc(it.text)}</b>`, "", `⏳ आखिरी तारीख: <b>${d}</b>${it.note ? ` (${esc(it.note)})` : ""}`, "",
+    `👉 योग्यता, उम्र, फीस और आवेदन का तरीका: <a href="${esc(it.url)}?utm_source=telegram">पूरी जानकारी पढ़ें</a>`, "",
+    `📋 <a href="${SITE}/jobs/qualification-wise-govt-jobs.html?utm_source=telegram">अपनी योग्यता से नौकरी खोजें</a> | 📲 <a href="${WHATSAPP}">WhatsApp चैनल</a>`].join("\n");
+}
+
 function message(src, it) {
   const [icon, label] = kind(it.text);
   const lines = [`${icon} <b>${esc(src.name)}: ${label}</b>`, "", esc(it.text), "", `🔗 Official लिंक: <a href="${esc(it.url)}">${esc(new URL(it.url).hostname)}</a>`];
@@ -161,7 +194,8 @@ const report = [];
 for (const src of SOURCES) {
   let items;
   try {
-    if (src.api === "ssc") items = await sscItems();
+    if (src.site) items = siteJobs();
+    else if (src.api === "ssc") items = await sscItems();
     else {
       const { html, final } = await get(src.url);
       items = links(html, final, src.want ? new RegExp(src.want, "i") : WANT);
@@ -177,20 +211,22 @@ for (const src of SOURCES) {
     items.slice(0, 15).forEach((it) => console.log(`[${src.id}] ${kind(it.text)[1]} | ${it.text} | ${it.url}`));
     continue;
   }
-  const seen = state[src.id];
+  // Our own job pages start from nothing, so the open ones go out 2 a run.
+  const seen = state[src.id] ?? (src.site ? [] : undefined);
   if (!seen) {
     state[src.id] = items.map((i) => i.key);
     report.push(`• ${src.id}: baseline ${items.length} links (nothing posted)`);
     continue;
   }
   const have = new Set(seen);
-  const fresh = items.filter((i) => !have.has(i.key) && !NOISE.test(i.text));
-  const skipped = items.filter((i) => !have.has(i.key) && NOISE.test(i.text));
-  skipped.forEach((i) => { console.log(`[${src.id}] skipped (noise): ${i.text}`); seen.push(i.key); });
+  const wanted = (i) => src.site || (!NOISE.test(i.text) && POST_KINDS.test(kind(i.text)[1]));
+  const fresh = items.filter((i) => !have.has(i.key) && wanted(i));
+  const skipped = items.filter((i) => !have.has(i.key) && !wanted(i));
+  skipped.forEach((i) => { console.log(`[${src.id}] skipped (not a new recruitment / noise): ${i.text}`); seen.push(i.key); });
   let sent = 0;
   for (const it of fresh) {
     if (sent >= MAX_PER_SOURCE || posted >= MAX_TOTAL) break;
-    const text = message(src, it);
+    const text = src.site ? siteMessage(it) : message(src, it);
     console.log(`--- ${src.id}\n${text}\n`);
     if (!DRY) {
       try { await send(text); } catch (e) { console.log(`send failed: ${e.message}`); break; }
