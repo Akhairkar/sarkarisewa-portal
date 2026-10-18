@@ -143,8 +143,9 @@ SarkariSewa India एक निजी सेवा है, सरकारी �
 • अपने पास का CSC सेंटर: https://sarkarisewaindia.com/tools/csc-locator.html
 • नई योजनाएं और भर्ती: ${"https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g"}
 
+❓ पेज पढ़कर भी कोई बात समझ न आए, या कागज़, फॉर्म या स्टेटस में दिक्कत हो, तो अपनी परेशानी यहीं लिखकर भेजें। हम जवाब देंगे।
+
 CSC पर सरकारी फीस और सेवा शुल्क पहले पूछें और रसीद लें। बैंक का OTP या PIN किसी को न बताएं।
-आपके इलाके में भरोसेमंद CSC जुड़ते ही हम बताएंगे।
 SarkariSewa India एक निजी सेवा है, सरकारी विभाग नहीं।`;
 
   function renderInfo() {
