@@ -1,0 +1,68 @@
+---
+// "नई सरकारी भर्तियां" on the homepage: the 8 newest job pages on our site
+// whose application is still open (src/data/jobs.ts + jobs-daily/), newest
+// first by the guide's `published` date. NEW = added in the last 7 days;
+// a red tag when 3 days or fewer are left. Rebuilt with the site (every
+// 2 hours), so finished jobs drop off on their own.
+import type { DocGuide } from "../guides/doc/types";
+import { ALL_JOBS, DAILY_JOBS } from "../lib/daily-jobs";
+
+const GUIDES = Object.fromEntries(
+  Object.entries(import.meta.glob<Record<string, DocGuide>>("../guides/jobs/*.ts", { eager: true }))
+    .map(([f, m]) => [f.split("/").pop()!.replace(/\.ts$/, ""), Object.values(m).find((v) => v && typeof v === "object" && "title" in v) as DocGuide]),
+);
+const DAILY = Object.fromEntries(DAILY_JOBS.map((d) => [d.slug, d]));
+const DAY = 864e5;
+const today = new Date().toISOString().slice(0, 10);
+const days = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / DAY);
+const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "short" });
+
+const jobs = ALL_JOBS
+  .filter((j) => j.status !== "expected" && j.last >= today && (GUIDES[j.slug] || DAILY[j.slug]))
+  .map((j) => {
+    const title = GUIDES[j.slug]?.title ?? DAILY[j.slug]!.title;
+    const published = GUIDES[j.slug]?.published ?? DAILY[j.slug]?.published ?? today;
+    const [name, ...rest] = title.split(":");
+    const left = days(today, j.last);
+    return { href: `/jobs/${j.slug}.html`, name: name.trim(), sub: rest.join(":").trim(), last: j.last, published, isNew: days(published, today) <= 7, left };
+  })
+  .sort((a, b) => b.published.localeCompare(a.published) || a.last.localeCompare(b.last))
+  .slice(0, 8);
+---
+{jobs.length > 0 && (
+  <section class="block nj" aria-labelledby="new-jobs">
+    <div class="block-head"><h2 id="new-jobs">🔔 नई सरकारी भर्तियां</h2><a href="/jobs/index.html">सभी नौकरियां ›</a></div>
+    <ul class="nj-grid">
+      {jobs.map((j) => (
+        <li>
+          <a class="nj-card" href={j.href}>
+            <span class="nj-tags">
+              {j.isNew && <span class="nj-new">NEW</span>}
+              {j.left <= 3 && <span class="nj-hot">⏳ {j.left === 0 ? "आज आखिरी दिन" : `${j.left} दिन बाकी`}</span>}
+            </span>
+            <strong>{j.name}</strong>
+            {j.sub && <small>{j.sub}</small>}
+            <span class="nj-last">आखिरी तारीख: {fmt(j.last)}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="nj-more"><a href="/jobs/qualification-wise-govt-jobs.html">🎓 10वीं / 12वीं / ग्रेजुएट: अपनी योग्यता से नौकरी खोजें ›</a></p>
+  </section>
+)}
+
+<style is:global>
+  .nj-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (min-width: 900px) { .nj-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .nj-card { display: flex; flex-direction: column; gap: 4px; height: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--c-line); border-radius: var(--radius-sm, 10px); background: var(--c-surface); color: inherit; text-decoration: none; }
+  .nj-card:hover { border-color: var(--c-primary, #1d4ed8); }
+  .nj-card strong { font-size: .95rem; line-height: 1.3; }
+  .nj-card small { color: var(--c-muted); font-size: .8rem; line-height: 1.3; }
+  .nj-last { margin-top: auto; font-size: .8rem; font-weight: 700; color: var(--c-green, #15803d); }
+  .nj-tags { display: flex; flex-wrap: wrap; gap: 4px; min-height: 0; }
+  .nj-tags:empty { display: none; }
+  .nj-new, .nj-hot { font-size: .68rem; font-weight: 800; padding: 2px 7px; border-radius: 999px; letter-spacing: .02em; }
+  .nj-new { background: #f59e0b; color: #111; }
+  .nj-hot { background: #dc2626; color: #fff; }
+  .nj-more { margin: 10px 0 0; font-size: .92rem; }
+</style>
