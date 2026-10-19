@@ -53,12 +53,14 @@
 <div class="ov-stat"><b id="c-flagged">—</b><span>Flagged comments</span></div>
 <div class="ov-stat"><b id="c-claims">—</b><span>Pending CSC claims</span></div>
 </div></section>
-<section class="dash-card"><h3 style="margin-top:0">Content data (database)</h3>
+<section class="dash-card"><h3 style="margin-top:0">Site content <small id="d-built" style="font-weight:400;color:var(--admin-text-muted)"></small></h3>
 <div class="ov-grid">
+<div class="ov-stat"><b id="d-jobs-open">—</b><span>Open job pages</span></div>
+<div class="ov-stat"><b id="d-jobs">—</b><span>Job pages (total)</span></div>
+<div class="ov-stat"><b id="d-letters">—</b><span>Letter formats (/arzi/)</span></div>
+<div class="ov-stat"><b id="d-guides">—</b><span>Guides</span></div>
 <div class="ov-stat"><b id="d-blog">—</b><span>Blog posts</span></div>
-<div class="ov-stat"><b id="d-jobs">—</b><span>Job alerts</span></div>
-<div class="ov-stat"><b id="d-exams">—</b><span>Exam calendar</span></div>
-<div class="ov-stat"><b id="d-deadlines">—</b><span>Deadlines</span></div>
+<div class="ov-stat"><b id="d-status">—</b><span>Status check items</span></div>
 </div></section>
 <section class="dash-card"><h3 style="margin-top:0">Bahar ke dashboards</h3>
 <div class="ov-links">
@@ -88,15 +90,20 @@
     const r = s.data[0];
     set("v-today", r.today_visitors); set("v-online", r.online_users); set("v-total", r.total_visitors); set("v-views", r.total_views);
   }
-  const [subs, comments, flagged, claims, blog, jobs, exams, deadlines] = await Promise.all([
+  const [subs, comments, flagged, claims] = await Promise.all([
     count("subscribers"),
     count("comments"),
     count("comments", q => q.eq("status", "flagged")),
     count("csc_claims", q => q.in("status", ["pending", "changes_requested"])),
-    count("blog_posts"), count("job_alerts"), count("exam_calendar"), count("deadlines"),
   ]);
   set("c-subs", subs); set("c-comments", comments); set("c-flagged", flagged); set("c-claims", claims);
-  set("d-blog", blog); set("d-jobs", jobs); set("d-exams", exams); set("d-deadlines", deadlines);
+  // Content counts come from the built site (web/src/pages/site-stats.json.ts).
+  try {
+    const st = await (await fetch("/site-stats.json", { cache: "no-store" })).json();
+    set("d-jobs-open", st.jobs_open); set("d-jobs", st.jobs_total); set("d-letters", st.letters);
+    set("d-guides", st.guides); set("d-blog", st.blog); set("d-status", st.status_items);
+    document.getElementById("d-built").textContent = "(site built " + new Date(st.built).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" }) + ")";
+  } catch (e) {}
 })();
 </script>
 </body>
