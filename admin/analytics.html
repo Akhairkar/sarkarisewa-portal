@@ -57,6 +57,27 @@
 </table>
 </div>
 <div class="dash-card">
+<h3 style="margin-top:0;">Section-wise views (last 30 days)</h3>
+<table class="cat-table" id="analytics-sections-table">
+<thead><tr><th>Section</th><th>Views</th></tr></thead>
+<tbody><tr><td class="loading" colspan="2">Loading…</td></tr></tbody>
+</table>
+</div>
+<div class="dash-card">
+<h3 style="margin-top:0;">💼 Jobs: top pages (last 30 days)</h3>
+<table class="cat-table" id="analytics-jobs-table">
+<thead><tr><th>Page</th><th>Views</th></tr></thead>
+<tbody><tr><td class="loading" colspan="2">Loading…</td></tr></tbody>
+</table>
+</div>
+<div class="dash-card">
+<h3 style="margin-top:0;">🏛️ Top yojana pages (last 30 days)</h3>
+<table class="cat-table" id="analytics-yojana-table">
+<thead><tr><th>Page</th><th>Views</th></tr></thead>
+<tbody><tr><td class="loading" colspan="2">Loading…</td></tr></tbody>
+</table>
+</div>
+<div class="dash-card">
 <h3 style="margin-top:0;">Top pages</h3>
 <table class="cat-table" id="analytics-top-table">
 <thead><tr><th>Page</th><th>Views</th></tr></thead>
@@ -167,6 +188,19 @@
     devicesBody.innerHTML = deviceRows.length
       ? deviceRows.map((r) => `<tr><td>${escapeHtml(r.device_type)}</td><td>${r.views}</td></tr>`).join("")
       : `<tr><td colspan="2">No page views logged yet.</td></tr>`;
+
+    // Section totals and top jobs / yojana pages (last 30 days).
+    const NAMES = { home: "Homepage", "index.html": "Homepage", states: "States (राज्य गाइड)", service: "Service guides", tools: "Tools", jobs: "💼 Jobs", exams: "Exams", yojana: "Yojana hub", blog: "Blog", arzi: "आवेदन पत्र", "status-check": "Status check", category: "Category pages", "search.html": "Search", documents: "Documents" };
+    const YOJANA = "yojana|yojna|scheme|pm-kisan|ayushman|pension|ladki|samman|ujjwala|awas|mudra|svanidhi|vishwakarma|kanya|bhandar|surya-ghar|jan-dhan|bima";
+    const fill = (id, rows, label) => { document.querySelector(`#${id} tbody`).innerHTML = rows && rows.length ? rows.map((r) => `<tr><td>${escapeHtml(label(r))}</td><td>${r.views}</td></tr>`).join("") : `<tr><td colspan="2">No views yet.</td></tr>`; };
+    const [secRes, jobsRes, yojRes] = await Promise.all([
+      SUPABASE_CLIENT.rpc("analytics_section_views", { days: 30 }),
+      SUPABASE_CLIENT.rpc("analytics_top_pages_matching", { pattern: "^/jobs/", days: 30, limit_count: 10 }),
+      SUPABASE_CLIENT.rpc("analytics_top_pages_matching", { pattern: `^/(service|yojana|category|blog|solar)/.*(${YOJANA})`, days: 30, limit_count: 5 }),
+    ]);
+    fill("analytics-sections-table", (secRes.data || []).slice(0, 15), (r) => NAMES[r.section] || r.section);
+    fill("analytics-jobs-table", jobsRes.data, (r) => r.page_path);
+    fill("analytics-yojana-table", yojRes.data, (r) => r.page_path);
   }
 </script>
 </body>
