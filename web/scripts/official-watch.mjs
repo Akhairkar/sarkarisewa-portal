@@ -157,11 +157,35 @@ function siteJobs() {
   return out;
 }
 
-function siteMessage(it) {
+// Post for one of our job pages, in the same layout as the daily page post
+// (telegram-daily.mjs): title, summary, "इस पेज पर" from the page's headings,
+// last date, link and hashtags. Read from the live page; if that fails, a
+// short version from our data.
+const htmlText = (h) => h.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, " ").trim();
+async function siteMessage(it) {
   const d = new Date(it.last + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "long", year: "numeric" });
-  return [`🆕 <b>नई भर्ती: ${esc(it.text)}</b>`, "", `⏳ आखिरी तारीख: <b>${d}</b>${it.note ? ` (${esc(it.note)})` : ""}`, "",
-    `👉 योग्यता, उम्र, फीस और आवेदन का तरीका: <a href="${esc(it.url)}?utm_source=telegram">पूरी जानकारी पढ़ें</a>`, "",
-    `📋 <a href="${SITE}/jobs/qualification-wise-govt-jobs.html?utm_source=telegram">अपनी योग्यता से नौकरी खोजें</a> | 📲 <a href="${WHATSAPP}">WhatsApp चैनल</a>`].join("\n");
+  let title = it.text, desc = "", points = [];
+  try {
+    const { html } = await get(it.url);
+    const meta = (n) => html.match(new RegExp(`<meta[^>]+name="${n}"[^>]+content="([^"]*)"`, "i"))?.[1] ?? html.match(new RegExp(`<meta[^>]+content="([^"]*)"[^>]+name="${n}"`, "i"))?.[1] ?? "";
+    title = htmlText(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1] ?? "") || title;
+    desc = htmlText(meta("description"));
+    const skip = /सवाल-जवाब|पूछे जाने वाले|FAQ|Official|आधिकारिक लिंक|और जानकारी|लोकप्रिय|Explore|इस पेज पर|स्रोत|पेड सेवाएं|आवेदन पत्र|मदद/i;
+    points = [...new Set([...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/gi)].map((m) => htmlText(m[1]).replace(/^[^\wऀ-ॿ₹]+/, "")).filter((t) => t && t.length < 90 && !skip.test(t)))].slice(0, 5);
+  } catch (e) { console.log(`site page not read (${it.url}): ${e.message}`); }
+  const build = () => [
+    `🆕 <b>${esc(title)}</b>`,
+    ...(desc ? ["", esc(desc.length > 300 ? desc.slice(0, 297) + "…" : desc)] : []),
+    ...(points.length ? ["", "📌 <b>इस पेज पर:</b>", ...points.map((p) => "• " + esc(p))] : []),
+    "", `⏳ <b>आखिरी तारीख:</b> ${d}${it.note ? ` (${esc(it.note)})` : ""}`,
+    "⏰ आवेदन सिर्फ आधिकारिक वेबसाइट से करें, किसी को पैसे न दें।",
+    "", `👉 <b>पूरी जानकारी:</b> ${it.url}`,
+    "", "#सरकारी_नौकरी #SarkariSewa",
+    `📢 चैनल शेयर करें: t.me/${CHANNEL.replace(/^@/, "")}`,
+  ].join("\n");
+  let c = build();
+  while (c.length > 1024 && points.length) { points.pop(); c = build(); }
+  return c.slice(0, 1024);
 }
 
 function message(src, it) {
@@ -262,7 +286,7 @@ for (const src of SOURCES) {
   for (const it of fresh) {
     // Our own job pages all go out (each is a separate post); official notices are capped.
     if (src.site ? sent >= 20 : (sent >= MAX_PER_SOURCE || posted >= MAX_TOTAL)) break;
-    const text = src.site ? siteMessage(it) : message(src, it);
+    const text = src.site ? await siteMessage(it) : message(src, it);
     console.log(`--- ${src.id}\n${text}\n`);
     if (!DRY) {
       try {
