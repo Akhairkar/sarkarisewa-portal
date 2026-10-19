@@ -6,14 +6,13 @@
   const NAV = [
     ["dashboard.html", "📊 Overview"],
     ["analytics.html", "📈 Analytics"],
-    ["comments.html", "💬 Comments"],
     ["subscribers.html", "📬 Subscribers"],
     ["csc.html", "🏬 CSC Claims"],
     ["solar.html", "☀️ Solar Leads"],
     ["rc-reports.html", "🚗 RC Challan Reports"],
     ["posters.html", "🖼️ Daily Posters"],
     ["requests.html", "🙋 Service Requests"],
-    ["data.html", "🗂️ Content Data"],
+    ["data.html", "🗂️ Purana DB data"],
   ];
 
   function renderNav() {

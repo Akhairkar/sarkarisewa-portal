@@ -13,6 +13,7 @@
 <script defer src="../assets/js/admin-theme-toggle.js"></script>
 <style>
 .ov-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+a.ov-stat{text-decoration:none;color:inherit}
 .ov-stat{padding:16px;border:1px solid var(--admin-border);border-radius:14px;background:var(--admin-surface)}
 .ov-stat b{display:block;font-size:1.5rem;color:var(--admin-text)}
 .ov-stat span{font-size:.8rem;color:var(--admin-text-muted)}
@@ -46,12 +47,13 @@
 <div class="ov-stat"><b id="v-total">—</b><span>Total visitors</span></div>
 <div class="ov-stat"><b id="v-views">—</b><span>Total page views</span></div>
 </div></section>
-<section class="dash-card"><h3 style="margin-top:0">Users &amp; moderation</h3>
+<section class="dash-card"><h3 style="margin-top:0">Kaam baaki (to do)</h3>
 <div class="ov-grid">
-<div class="ov-stat"><b id="c-subs">—</b><span>Subscribers</span></div>
-<div class="ov-stat"><b id="c-comments">—</b><span>Comments (total)</span></div>
-<div class="ov-stat"><b id="c-flagged">—</b><span>Flagged comments</span></div>
-<div class="ov-stat"><b id="c-claims">—</b><span>Pending CSC claims</span></div>
+<a class="ov-stat" href="requests.html"><b id="c-leads">—</b><span>Open CSC leads</span></a>
+<a class="ov-stat" href="requests.html"><b id="c-info">—</b><span>Info to send (WhatsApp)</span></a>
+<a class="ov-stat" href="requests.html"><b id="c-survey">—</b><span>Survey answers</span></a>
+<a class="ov-stat" href="csc.html"><b id="c-claims">—</b><span>Pending CSC claims</span></a>
+<a class="ov-stat" href="subscribers.html"><b id="c-subs">—</b><span>Subscribers</span></a>
 </div></section>
 <section class="dash-card"><h3 style="margin-top:0">Site content <small id="d-built" style="font-weight:400;color:var(--admin-text-muted)"></small></h3>
 <div class="ov-grid">
@@ -90,13 +92,16 @@
     const r = s.data[0];
     set("v-today", r.today_visitors); set("v-online", r.online_users); set("v-total", r.total_visitors); set("v-views", r.total_views);
   }
-  const [subs, comments, flagged, claims] = await Promise.all([
+  // Requests by consent: v4-info = info only, v5-demand = survey, others = CSC leads.
+  const open = ["new", "contacted", "assigned"];
+  const [subs, claims, leads, info, survey] = await Promise.all([
     count("subscribers"),
-    count("comments"),
-    count("comments", q => q.eq("status", "flagged")),
     count("csc_claims", q => q.in("status", ["pending", "changes_requested"])),
+    count("service_requests", q => q.in("status", open).not("consent_version", "like", "v4-info%").not("consent_version", "like", "v5-demand%")),
+    count("service_requests", q => q.in("status", open).like("consent_version", "v4-info%")),
+    count("service_requests", q => q.like("consent_version", "v5-demand%")),
   ]);
-  set("c-subs", subs); set("c-comments", comments); set("c-flagged", flagged); set("c-claims", claims);
+  set("c-subs", subs); set("c-claims", claims); set("c-leads", leads); set("c-info", info); set("c-survey", survey);
   // Content counts come from the built site (web/src/pages/site-stats.json.ts).
   try {
     const st = await (await fetch("/site-stats.json", { cache: "no-store" })).json();
