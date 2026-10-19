@@ -4,6 +4,11 @@
 export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway" | "Defence" | "Scientific" | "State Govt" | "Health" | "Post" | "PSU"; last: string; lastNote?: string; status?: "expected" };
 
 export const JOBS: Job[] = [
+  { slug: "bpsc-tre-4-teacher-recruitment-2026", sector: "State Govt", last: "2026-10-26", lastNote: "फीस 25/26 अक्टूबर तक" },
+  { slug: "cg-vyapam-lecturer-recruitment-2026", sector: "State Govt", last: "2026-10-26", lastNote: "शाम 5 बजे तक" },
+  { slug: "dsssb-district-court-recruitment-2026", sector: "State Govt", last: "2026-11-04" },
+  { slug: "oavs-teacher-recruitment-2026", sector: "State Govt", last: "2026-11-11" },
+  { slug: "upsssc-junior-engineer-recruitment-2026", sector: "State Govt", last: "2026-11-27", lastNote: "आवेदन 3 नवंबर से; मैकेनिकल 25 नवंबर तक", status: "expected" },
   { slug: "indian-coast-guard-navik-yantrik-recruitment-2026", sector: "Defence", last: "2026-10-21", lastNote: "21 अक्टूबर 2026, शाम 5:30 बजे तक (ssc.gov.in पर)" },
   { slug: "crpf-sports-quota-head-constable-constable-recruitment-2026", sector: "Defence", last: "2026-11-11" },
   { slug: "itbp-constable-gd-sports-quota-recruitment-2026", sector: "Defence", last: "2026-11-01" },
