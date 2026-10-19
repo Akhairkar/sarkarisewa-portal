@@ -1,9 +1,14 @@
 // Job pages in /jobs/ with the facts the hub needs. Title and description are
 // read from each page; last dates were taken from each page's important-dates
 // table (checked 4 Oct 2026). status "expected" = dates are only scheduled.
-export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway" | "Defence" | "Scientific" | "State Govt" | "Health" | "Post" | "PSU"; last: string; lastNote?: string; status?: "expected" };
+export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway" | "Defence" | "Scientific" | "State Govt" | "Health" | "Post" | "PSU" | "Central Govt"; last: string; lastNote?: string; status?: "expected" };
 
 export const JOBS: Job[] = [
+  { slug: "assam-rifles-technical-tradesman-recruitment-2026", sector: "Defence", last: "2026-10-28" },
+  { slug: "supreme-court-junior-court-assistant-recruitment-2026", sector: "Central Govt", last: "2026-10-28" },
+  { slug: "isro-sdsc-shar-recruitment-2026", sector: "Scientific", last: "2026-11-09" },
+  { slug: "income-tax-delhi-sports-quota-recruitment-2026", sector: "Central Govt", last: "2026-11-10", lastNote: "स्पोर्ट्स कोटा" },
+  { slug: "supreme-court-junior-court-attendant-recruitment-2026", sector: "Central Govt", last: "2026-11-25", lastNote: "आवेदन 4 नवंबर 2026 से", status: "expected" },
   { slug: "bpsc-tre-4-teacher-recruitment-2026", sector: "State Govt", last: "2026-10-26", lastNote: "फीस 25/26 अक्टूबर तक" },
   { slug: "cg-vyapam-lecturer-recruitment-2026", sector: "State Govt", last: "2026-10-26", lastNote: "शाम 5 बजे तक" },
   { slug: "dsssb-district-court-recruitment-2026", sector: "State Govt", last: "2026-11-04" },

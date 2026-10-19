@@ -38,7 +38,7 @@ export type DailyJob = {
 };
 
 const DIR = path.join(REPO_ROOT, "jobs-daily");
-const SECTORS: Job["sector"][] = ["SSC", "UPSC", "Banking", "Railway", "Defence", "Scientific", "State Govt", "Health", "Post", "PSU"];
+const SECTORS: Job["sector"][] = ["SSC", "UPSC", "Banking", "Railway", "Defence", "Scientific", "State Govt", "Health", "Post", "PSU", "Central Govt"];
 const esc = (s: unknown) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 const isRows = (v: unknown, n: number) => Array.isArray(v) && v.every((r) => Array.isArray(r) && r.length >= n && r.every((x) => typeof x === "string"));
 const isStrs = (v: unknown) => Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === "string");
