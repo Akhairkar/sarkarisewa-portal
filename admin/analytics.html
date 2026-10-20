@@ -78,7 +78,7 @@
 </table>
 </div>
 <div class="dash-card">
-<h3 style="margin-top:0;">Top pages</h3>
+<h3 style="margin-top:0;">Top pages (shuru se ab tak)</h3>
 <table class="cat-table" id="analytics-top-table">
 <thead><tr><th>Page</th><th>Views</th></tr></thead>
 <tbody><tr><td class="loading" colspan="2">Loading…</td></tr></tbody>
@@ -176,7 +176,7 @@
 
     const topRows = topRes.data || [];
     topBody.innerHTML = topRows.length
-      ? topRows.map((r) => `<tr><td>${escapeHtml(r.page_path)}</td><td>${r.views}</td></tr>`).join("")
+      ? topRows.map((r) => `<tr><td>${escapeHtml(r.page_path === "/" || r.page_path === "/index.html" ? r.page_path + " (Homepage)" : r.page_path)}</td><td>${r.views}</td></tr>`).join("")
       : `<tr><td colspan="2">No page views logged yet.</td></tr>`;
 
     const sourceRows = sourcesRes.data || [];
