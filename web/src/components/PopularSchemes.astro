@@ -1,0 +1,32 @@
+---
+// "लोकप्रिय सरकारी योजनाएं" on the homepage, under the new-jobs grid: 8
+// schemes readers look for most (admin analytics, Oct 2026). Each line is
+// taken from that guide's own description; links only go to our guides.
+const SCHEMES = [
+  { href: "/service/ayushman-bharat.html", emoji: "🏥", name: "आयुष्मान भारत कार्ड", text: "हर साल ₹5 लाख तक कैशलेस इलाज" },
+  { href: "/service/pm-kisan.html", emoji: "🌾", name: "PM किसान सम्मान निधि", text: "किसान परिवारों को सालाना ₹6,000" },
+  { href: "/service/pm-awas-yojana.html", emoji: "🏠", name: "PM आवास योजना", text: "पक्का घर बनाने या खरीदने में मदद" },
+  { href: "/service/pm-mudra-yojana.html", emoji: "💰", name: "मुद्रा लोन योजना", text: "छोटे कारोबार के लिए ₹20 लाख तक लोन" },
+  { href: "/service/mh-ladki-bahin-yojana.html", emoji: "👩", name: "माझी लाडकी बहीण योजना", text: "महाराष्ट्र: महिलाओं को हर महीने ₹1,500" },
+  { href: "/service/mh-bandhkam-kamgar-yojana.html", emoji: "👷", name: "बांधकाम कामगार योजना", text: "महाराष्ट्र: पंजीकरण, शिक्षा व अन्य सहायता" },
+  { href: "/service/pm-surya-ghar-muft-bijli.html", emoji: "☀️", name: "PM सूर्य घर मुफ्त बिजली", text: "सोलर पर ₹78,000 तक सब्सिडी" },
+  { href: "/service/national-social-assistance-programme.html", emoji: "👵", name: "वृद्धा / विधवा पेंशन", text: "BPL परिवारों के बुज़ुर्ग, विधवा, दिव्यांग" },
+];
+---
+<section class="block ps" aria-labelledby="pop-schemes">
+  <div class="block-head"><h2 id="pop-schemes">🏛️ लोकप्रिय सरकारी योजनाएं</h2><a href="/yojana/">सभी योजनाएं ›</a></div>
+  <ul class="nj-grid">
+    {SCHEMES.map((s) => (
+      <li>
+        <a class="nj-card ps-card" href={s.href}>
+          <span class="ps-emoji" aria-hidden="true">{s.emoji}</span>
+          <strong>{s.name}</strong>
+          <small>{s.text}</small>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+<style is:global>
+  .ps-card .ps-emoji { font-size: 1.4rem; line-height: 1; }
+</style>
