@@ -278,10 +278,13 @@ for (const src of SOURCES) {
     continue;
   }
   const have = new Set(seen);
-  const wanted = (i) => src.site || (!NOISE.test(i.text) && POST_KINDS.test(kind(i.text)[1]));
+  // Only our own job pages are posted. Official-site notices are still read
+  // and logged (useful when adding a job page) but never posted: they gave
+  // readers nothing on our site.
+  const wanted = (i) => !!src.site;
   const fresh = items.filter((i) => !have.has(i.key) && wanted(i));
   const skipped = items.filter((i) => !have.has(i.key) && !wanted(i));
-  skipped.forEach((i) => { console.log(`[${src.id}] skipped (not a new recruitment / noise): ${i.text}`); seen.push(i.key); });
+  skipped.forEach((i) => { console.log(`[${src.id}] seen, not posted (official notice): ${i.text}`); seen.push(i.key); });
   let sent = 0;
   for (const it of fresh) {
     // Our own job pages all go out (each is a separate post); official notices are capped.
