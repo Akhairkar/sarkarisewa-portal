@@ -4,6 +4,11 @@
 export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway" | "Defence" | "Scientific" | "State Govt" | "Health" | "Post" | "PSU" | "Central Govt"; last: string; lastNote?: string; status?: "expected" };
 
 export const JOBS: Job[] = [
+  { slug: "tnpsc-group-4-recruitment-2026", sector: "State Govt", last: "2026-11-05", lastNote: "रात 11:59 तक; सुधार 9-11 नवंबर" },
+  { slug: "jkssb-class-4-mts-recruitment-2026", sector: "State Govt", last: "2026-11-03", lastNote: "कुछ रिपोर्टों में बढ़कर 12 नवंबर; jkssb.nic.in पर पुष्टि करें" },
+  { slug: "mpesb-sub-engineer-recruitment-2026", sector: "State Govt", last: "2026-10-27", lastNote: "दोबारा खुला आवेदन; सुधार 28 अक्टूबर तक" },
+  { slug: "wbpsc-sub-surveyor-recruitment-2026", sector: "State Govt", last: "2026-11-09", lastNote: "दोपहर 3 बजे तक" },
+  { slug: "appsc-assistant-statistical-officer-recruitment-2026", sector: "State Govt", last: "2026-11-02", lastNote: "रात 11:59 तक" },
   { slug: "assam-rifles-technical-tradesman-recruitment-2026", sector: "Defence", last: "2026-10-28" },
   { slug: "supreme-court-junior-court-assistant-recruitment-2026", sector: "Central Govt", last: "2026-10-28" },
   { slug: "isro-sdsc-shar-recruitment-2026", sector: "Scientific", last: "2026-11-09" },
