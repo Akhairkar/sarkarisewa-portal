@@ -11,6 +11,7 @@ import Explore from "./Explore.astro";
 import PromoBox from "./PromoBox.astro";
 import PaidTools from "./PaidTools.astro";
 import CscHelp from "./CscHelp.astro";
+import { TELEGRAM_CHANNEL, WHATSAPP_CHANNEL } from "../data/site";
 import DemandBox from "./DemandBox.astro";
 import type { DocGuide } from "../guides/doc/types";
 import { promo as challanPromo } from "../guides/challan/common";
@@ -42,7 +43,9 @@ const promo = g.promo ?? (g.doc === "driving-licence" ? challanPromo : undefined
         <p class="answer-lead" set:html={g.lead} />
         <dl class="facts">{g.facts.map(([k, v]) => <div><dt>{k}</dt><dd set:html={v} /></div>)}</dl>
       </section>
-      {g.demand ? <DemandBox {...g.demand} state={g.state?.hi} /> : <CscHelp state={g.state} doc={g.docHi} href={g.cscHref} />}
+      {Astro.url.pathname.startsWith("/jobs/") ? (
+        <p class="tg-join">🔔 <strong>नई भर्तियां और आखिरी तारीख की याद</strong> सबसे पहले पाएं: <a href={TELEGRAM_CHANNEL} target="_blank" rel="noopener" data-act="tg-join">Telegram चैनल जॉइन करें</a> · <a href={WHATSAPP_CHANNEL} target="_blank" rel="noopener" data-act="wa-join">WhatsApp चैनल</a></p>
+      ) : g.demand ? <DemandBox {...g.demand} state={g.state?.hi} /> : <CscHelp state={g.state} doc={g.docHi} href={g.cscHref} />}
 
       {g.notice && <div class="callout warn"><p set:html={g.notice} /></div>}
       {promo && <PromoBox p={promo} />}
@@ -90,3 +93,8 @@ const promo = g.promo ?? (g.doc === "driving-licence" ? challanPromo : undefined
     </aside>
   </div>
 </Base>
+
+<style is:global>
+  .tg-join { margin: 0 0 16px; padding: 10px 12px; border: 1px solid #93c5fd; background: rgba(37, 99, 235, .06); border-radius: var(--radius-sm, 8px); font-size: .93rem; line-height: 1.5; }
+  .tg-join a { font-weight: 700; }
+</style>

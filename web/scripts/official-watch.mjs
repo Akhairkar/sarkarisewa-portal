@@ -248,6 +248,11 @@ async function send(text) {
 let state = {};
 try { state = JSON.parse(fs.readFileSync(STATE_FILE, "utf8")); } catch { console.log("No saved state: every source starts with a silent baseline."); }
 
+// Quiet hours (India time 10 PM - 7 AM): nothing is posted; unseen items wait.
+const istHour = (new Date().getUTCHours() + 5 + (new Date().getUTCMinutes() + 30 >= 60 ? 1 : 0)) % 24;
+const QUIET = istHour >= 22 || istHour < 7;
+if (QUIET) console.log(`Quiet hours (IST ${istHour}:xx): no posts this run.`);
+
 let posted = 0;
 const report = [];
 for (const src of SOURCES) {
@@ -288,7 +293,9 @@ for (const src of SOURCES) {
   let sent = 0;
   for (const it of fresh) {
     // Our own job pages all go out (each is a separate post); official notices are capped.
-    if (src.site ? sent >= 20 : (sent >= MAX_PER_SOURCE || posted >= MAX_TOTAL)) break;
+    // At most 2 of our job pages per run (runs are 2 hours apart), so the
+    // channel is not flooded; the rest go out in later runs.
+    if (src.site ? (QUIET || sent >= 2) : (sent >= MAX_PER_SOURCE || posted >= MAX_TOTAL)) break;
     const text = src.site ? await siteMessage(it) : message(src, it);
     console.log(`--- ${src.id}\n${text}\n`);
     if (!DRY) {
