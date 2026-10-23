@@ -4,6 +4,11 @@
 export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway" | "Defence" | "Scientific" | "State Govt" | "Health" | "Post" | "PSU" | "Central Govt"; last: string; lastNote?: string; status?: "expected" };
 
 export const JOBS: Job[] = [
+  { slug: "rrb-station-master-recruitment-2026", sector: "Railway", last: "2026-11-25", lastNote: "संभावित: आवेदन 27 अक्टूबर 2026 से (शॉर्ट नोटिस CEN 08/2026)", status: "expected" },
+  { slug: "uco-bank-apprentice-recruitment-2026", sector: "Banking", last: "2026-10-29", lastNote: "अप्रेंटिसशिप, पक्की नौकरी नहीं; परीक्षा 7 नवंबर" },
+  { slug: "lic-hfl-apprentice-recruitment-2026", sector: "PSU", last: "2026-11-01", lastNote: "LIC हाउसिंग फाइनेंस अप्रेंटिसशिप, परीक्षा 7 नवंबर" },
+  { slug: "iocl-western-region-apprentice-recruitment-2026", sector: "PSU", last: "2026-11-04", lastNote: "शाम 5 बजे तक; अप्रेंटिसशिप, बिना परीक्षा" },
+  { slug: "scl-recruitment-2026", sector: "Scientific", last: "2026-11-30", lastNote: "आवेदन 1 नवंबर 2026 से, शाम 5 बजे तक", status: "expected" },
   { slug: "tnpsc-group-4-recruitment-2026", sector: "State Govt", last: "2026-11-05", lastNote: "रात 11:59 तक; सुधार 9-11 नवंबर" },
   { slug: "jkssb-class-4-mts-recruitment-2026", sector: "State Govt", last: "2026-11-03", lastNote: "कुछ रिपोर्टों में बढ़कर 12 नवंबर; jkssb.nic.in पर पुष्टि करें" },
   { slug: "mpesb-sub-engineer-recruitment-2026", sector: "State Govt", last: "2026-10-27", lastNote: "दोबारा खुला आवेदन; सुधार 28 अक्टूबर तक" },
