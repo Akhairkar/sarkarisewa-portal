@@ -9,7 +9,7 @@ export const SITE = {
 export const NAV = [
   { href: "/", label: { hi: "होम", en: "Home" }, icon: "home" },
   { href: "/documents/", label: { hi: "दस्तावेज़", en: "Documents" }, icon: "doc" },
-  { href: "/students/", label: "Students", icon: "cap" },
+  { href: "/jobs/index.html", label: { hi: "नौकरी", en: "Jobs" }, icon: "bag" },
   { href: "/tools/", label: "Tools", icon: "tool" },
   { href: "/paid-services/", label: "Services", icon: "star" },
 ] as const;
@@ -18,6 +18,7 @@ export const TOP_NAV: { href: string; label: Text }[] = [
   { href: "/documents/", label: { hi: "दस्तावेज़", en: "Documents" } },
   { href: "/students/", label: "Students" },
   { href: "/yojana/", label: { hi: "Yojana", en: "Schemes" } },
+  { href: "/jobs/index.html", label: { hi: "नौकरी", en: "Jobs" } },
   { href: "/tools/", label: "Tools" },
   { href: "/near-me/", label: "Near Me" },
   { href: "/states/", label: { hi: "राज्य", en: "States" } },

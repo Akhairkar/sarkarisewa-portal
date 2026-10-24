@@ -293,7 +293,9 @@ const nextMod = {};
 const changedUrls = [];
 const contentHash = (html) => {
   const main = html.match(/<article[\s\S]*<\/article>/)?.[0] ?? html.match(/<main[\s\S]*<\/main>/)?.[0] ?? html;
-  const t = main.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  // The job strip (components/JobStrip.astro) changes whenever a job is
+  // added, on every guide; it is not the page's own content.
+  const t = main.replace(/<section class="job-strip"[\s\S]*?<\/section>/g, "").replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
   return crypto.createHash("sha1").update(t).digest("hex").slice(0, 16);
 };
 const modDate = (loc, html) => {

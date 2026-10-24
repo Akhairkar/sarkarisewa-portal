@@ -35,6 +35,7 @@ export type DailyJob = {
   sources: string[];
   verified: string; // e.g. "19 अक्टूबर 2026"
   published?: string;
+  state?: string; // STATES slug, for state govt jobs
 };
 
 const DIR = path.join(REPO_ROOT, "jobs-daily");
@@ -54,6 +55,7 @@ function check(j: any, file: string): string | null {
   if (!isRows(j.dates, 2) || !isRows(j.fee, 2) || !isRows(j.posts, 2)) return "dates / fee / posts must be lists of text pairs";
   for (const k of ["eligibility", "selection", "howToApply", "sources"]) if (!isStrs(j[k])) return `${k} must be a list of text`;
   if (!Array.isArray(j.faq) || !j.faq.every((f: any) => typeof f?.q === "string" && typeof f?.a === "string")) return "faq must be [{q, a}]";
+  if (j.state !== undefined && !/^[a-z-]{3,40}$/.test(j.state)) return "state: small letters and - only, e.g. uttar-pradesh";
   if (JOBS.some((x) => x.slug === j.slug) || fs.existsSync(path.join(REPO_ROOT, "web/src/pages/jobs", `${j.slug}.astro`))) return "a page with this slug already exists";
   return null;
 }
@@ -72,7 +74,7 @@ function load(): DailyJob[] {
 }
 
 export const DAILY_JOBS = load();
-export const ALL_JOBS: Job[] = [...JOBS, ...DAILY_JOBS.map((d) => ({ slug: d.slug, sector: d.sector, last: d.lastDate, lastNote: d.lastNote }))];
+export const ALL_JOBS: Job[] = [...JOBS, ...DAILY_JOBS.map((d) => ({ slug: d.slug, sector: d.sector, last: d.lastDate, lastNote: d.lastNote, state: d.state }))];
 
 const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "long", year: "numeric" });
 const link = (href: string, text: string) => `<a href="${esc(href)}" target="_blank" rel="noopener nofollow">${esc(text)}</a>`;

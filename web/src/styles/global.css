@@ -122,7 +122,7 @@ table { width: 100%; border-collapse: collapse; }
 .brand-name b { color: var(--c-saffron-700); font-weight: 800; }
 .brand-sub { display: block; font-size: 0.72rem; font-weight: 500; color: var(--c-muted); letter-spacing: 0; }
 .top-nav { display: none; margin-left: auto; gap: 2px; }
-.top-nav a { color: var(--c-text); text-decoration: none; font-weight: 600; font-size: 0.95rem; padding: 8px 12px; border-radius: 10px; }
+.top-nav a { color: var(--c-text); text-decoration: none; font-weight: 600; font-size: 0.95rem; padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
 .top-nav a:hover, .top-nav a[aria-current="page"] { background: var(--c-brand-50); color: var(--c-brand); }
 .header-actions { margin-left: auto; display: flex; gap: 6px; }
 .icon-btn {
@@ -451,6 +451,14 @@ table { width: 100%; border-collapse: collapse; }
 @media (min-width: 900px) and (max-width: 1199px) {
   .brand-sub { display: none; }
   .top-nav a { padding: 8px 8px; font-size: 0.9rem; }
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .top-nav a { padding: 8px 9px; }
+}
+/* 8 menu links: on small laptops show just the logo so the menu fits in one line. */
+@media (min-width: 900px) and (max-width: 1099px) {
+  .brand-name { display: none; }
+  .top-nav a { padding: 8px 7px; }
 }
 @media (max-width: 359px) {
   .site-header .container { padding: 0 10px; gap: 6px; }

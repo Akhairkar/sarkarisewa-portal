@@ -8,6 +8,7 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import CardGrid from "../../components/CardGrid.astro";
 import OfficialLinks from "../../components/OfficialLinks.astro";
 import Faq from "../../components/Faq.astro";
+import JobStrip from "../../components/JobStrip.astro";
 import Explore from "../../components/Explore.astro";
 import { STATES, DOCS, NATIONAL_DOCS } from "../../data/site";
 import { STATE_SCHEMES } from "../../data/schemes";
@@ -171,6 +172,7 @@ const faq = [
     </section>
 
     {portals.length > 0 && <OfficialLinks verified="4 अक्टूबर 2026" links={portals} />}
+    <JobStrip state={st.slug} />
     <Faq items={faq} />
 
     <section class="section" id="dusre-rajya">

@@ -1,0 +1,49 @@
+---
+// Small "नई सरकारी भर्तियां" list near the end of guide pages, so readers
+// who came for one document also see open jobs. 4 lines at most; the
+// page's state first. assemble.mjs leaves the .job-strip section out of the
+// content hash, so new jobs here don't change a page's sitemap lastmod.
+import { jobsFor } from "../lib/open-jobs";
+import { STATES } from "../data/site";
+
+interface Props { state?: string; note?: string; exclude?: string }
+const { state, note, exclude } = Astro.props;
+const jobs = jobsFor(state, 4, exclude);
+const hi = STATES.find((s) => s.slug === state)?.hi;
+const hasState = !!state && jobs.some((j) => j.state === state);
+const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "long" });
+---
+{jobs.length > 0 && (
+  <section class="job-strip" aria-labelledby="job-strip-title">
+    <p class="js-head" id="job-strip-title">🔔 नई सरकारी भर्तियां{hasState && hi ? ` (${hi} और केंद्र)` : ""}</p>
+    {note && <p class="js-note">{note}</p>}
+    <ul>
+      {jobs.map((j) => (
+        <li>
+          <a href={j.href} data-act="job-strip">{j.name}</a>
+          {j.isNew && <span class="js-new">NEW</span>}
+          <small>{j.left <= 3 ? (j.left === 0 ? "आज आखिरी दिन" : `${j.left} दिन बाकी`) : `आखिरी तारीख ${fmt(j.last)}`}</small>
+        </li>
+      ))}
+    </ul>
+    <p class="js-more"><a href="/jobs/index.html" data-act="job-strip">सभी भर्तियां ›</a> · <a href="/jobs/qualification-wise-govt-jobs.html" data-act="job-strip">योग्यता से खोजें ›</a></p>
+  </section>
+)}
+<script is:inline>
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[data-act="job-strip"]');
+    if (a) try { if (window.gtag) gtag("event", "job_strip_click", { to: a.getAttribute("href"), from: location.pathname }); } catch (x) {}
+  });
+</script>
+<style is:global>
+  .job-strip { margin: 20px 0; padding: 12px 14px; border: 1px solid var(--c-line); border-left: 4px solid #f59e0b; border-radius: var(--radius-sm, 10px); background: var(--c-surface); }
+  .job-strip .js-head { margin: 0 0 6px; font-weight: 800; }
+  .job-strip .js-note { margin: 0 0 6px; font-size: .88rem; color: var(--c-muted); }
+  .job-strip ul { list-style: none; margin: 0; padding: 0; }
+  .job-strip li { padding: 6px 0; border-top: 1px dashed var(--c-line); line-height: 1.35; overflow-wrap: anywhere; }
+  .job-strip li:first-child { border-top: 0; }
+  .job-strip li a { font-weight: 700; }
+  .job-strip li small { display: block; color: var(--c-muted); font-size: .8rem; }
+  .job-strip .js-new { display: inline-block; margin-left: 6px; font-size: .66rem; font-weight: 800; padding: 1px 6px; border-radius: 999px; background: #f59e0b; color: #111; vertical-align: middle; }
+  .job-strip .js-more { margin: 8px 0 0; font-size: .9rem; }
+</style>

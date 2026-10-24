@@ -6,6 +6,7 @@ import TaskList from "../components/TaskList.astro";
 import CardGrid from "../components/CardGrid.astro";
 import Faq from "../components/Faq.astro";
 import Explore from "../components/Explore.astro";
+import JobStrip from "../components/JobStrip.astro";
 import { langOf, t, localize, UI } from "../i18n";
 import { exists, pageTitle } from "../lib/repo";
 
@@ -89,6 +90,7 @@ const faq = lang === "en" ? [
   <CardGrid title={L("छात्रवृत्ति (Scholarship)", "Scholarships")} cards={scholarships} id="scholarship" />
   <CardGrid title={L("फॉर्म भरने के फ्री टूल्स", "Free form-filling tools")} cards={tools} id="tools" more={{ href: "/tools/", label: L("सभी टूल्स ›", "All tools ›") }} />
   <CardGrid title={L("छात्रों को अक्सर चाहिए ये प्रमाण पत्र", "Certificates students often need")} cards={docs} id="docs" />
+  {lang !== "en" && <JobStrip />}
   <Faq items={faq} />
   <Explore exclude={["/jobs/index.html"]} />
 </Base>

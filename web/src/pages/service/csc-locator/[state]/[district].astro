@@ -6,6 +6,7 @@ import Base from "../../../../layouts/Base.astro";
 import Breadcrumbs from "../../../../components/Breadcrumbs.astro";
 import OfficialLinks from "../../../../components/OfficialLinks.astro";
 import Faq from "../../../../components/Faq.astro";
+import JobStrip from "../../../../components/JobStrip.astro";
 import CardGrid from "../../../../components/CardGrid.astro";
 import Explore from "../../../../components/Explore.astro";
 import CscTool from "../../../../components/CscTool.astro";
@@ -241,6 +242,7 @@ const faq = [
         ...(portal ? [{ href: portal.url, title: portal.name, note: `${st.hi} के प्रमाण पत्रों का ऑनलाइन आवेदन` }] : []),
         ...(districtSite ? [{ href: districtSite, title: `${p.name} ज़िले की आधिकारिक वेबसाइट` }] : []),
       ]} />
+      <JobStrip state={st.slug} note="इन भर्तियों के ऑनलाइन फॉर्म आपके नज़दीकी CSC पर भी भरवाए जा सकते हैं। फॉर्म भरवाने से पहले नोटिफिकेशन पढ़ लें और सेवा शुल्क पूछ लें।" />
       <Faq items={faq} />
       <Explore />
     </article>

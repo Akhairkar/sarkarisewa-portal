@@ -21,6 +21,8 @@
 
 **पेज नहीं दिखा?** GitHub में **Actions → Deploy site** का आखिरी रन खोलें और लॉग में `[jobs-daily] SKIPPED` खोजें; वहां लिखा होगा कि फाइल में क्या गलत है (जैसे JSON टूटा है, फाइल का नाम slug से नहीं मिलता, तारीख का फॉर्मेट गलत है)। फाइल ठीक करके फिर Commit करें। गलत फाइल से बाकी साइट पर कोई असर नहीं पड़ता।
 
+**राज्य की भर्ती?** `state` लिखने से वह भर्ती उस राज्य के पेजों पर "नई सरकारी भर्तियां" बॉक्स में सबसे ऊपर दिखेगी। केंद्र की भर्ती में `state` न लिखें।
+
 **भर्ती की तारीख बढ़ी?** उसी फाइल में `lastDate` बदलें और Commit करें।
 **नमूना:** `_example.json` देखें (`_` से शुरू होने वाली फाइलें पेज नहीं बनतीं)।
 
@@ -55,6 +57,7 @@ You are filling a job-post data file for a Hindi website from the OFFICIAL recru
   "howToApply": ["आधिकारिक वेबसाइट खोलें ...", "रजिस्ट्रेशन ...", "फॉर्म भरें ...", "फीस भरें और प्रिंट लें"],
   "faq": [{"q": "...?", "a": "..."}, {"q": "...?", "a": "..."}, {"q": "...?", "a": "..."}, {"q": "...?", "a": "..."}],
   "sources": ["नोटिफिकेशन संख्या/तारीख, e.g. SSC नोटिस F.No. ... दिनांक 01.12.2026"],
-  "verified": "today's date in Hindi, e.g. 19 अक्टूबर 2026"
+  "verified": "today's date in Hindi, e.g. 19 अक्टूबर 2026",
+  "state": "ONLY for a state government job: the state in small English letters with -, e.g. uttar-pradesh, bihar, madhya-pradesh, delhi; for a central job leave this line out"
 }
 ```

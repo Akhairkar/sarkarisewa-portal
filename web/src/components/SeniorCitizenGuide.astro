@@ -7,6 +7,7 @@ import OfficialLinks from "./OfficialLinks.astro";
 import PaidTools from "./PaidTools.astro";
 import CscHelp from "./CscHelp.astro";
 import Faq from "./Faq.astro";
+import JobStrip from "./JobStrip.astro";
 import CardGrid from "./CardGrid.astro";
 import StateGrid from "./StateGrid.astro";
 import Explore from "./Explore.astro";
@@ -161,6 +162,7 @@ const toc = [
 
       <PaidTools />
       <OfficialLinks verified={g.verified} links={g.official} />
+      <JobStrip state={g.state?.slug} />
       <Faq items={g.faq} />
       <CardGrid title="इनसे जुड़ी जानकारी" cards={g.related} id="related" />
       <StateGrid doc="senior-citizen-card" current={g.state.slug} title="दूसरे राज्यों में सीनियर सिटीजन कार्ड" />
