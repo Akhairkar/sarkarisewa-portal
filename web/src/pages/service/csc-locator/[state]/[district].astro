@@ -17,6 +17,7 @@ import {
 import { exists } from "../../../../lib/repo";
 import { listings, listingSlug, listingDistrictPage, niceName } from "../../../../lib/csc-listings";
 import EXTRA from "../../../../data/csc-extra-centres.json";
+import { STATE_PORTAL, TOP_DISTRICTS } from "../../../../data/csc-top-districts";
 
 export function getStaticPaths() {
   return cscPages().map((p) => ({ params: { state: p.stateDir, district: p.slug }, props: { p } }));
@@ -62,6 +63,11 @@ const crumbs = [
 ];
 
 const { stateDocs, services, doc } = cscServices(st);
+// Most-visited districts: state portal, all state guides, district website.
+const key = `${p.stateDir}/${p.slug}`;
+const isTop = key in TOP_DISTRICTS;
+const portal = isTop ? STATE_PORTAL[p.stateDir] : undefined;
+const districtSite = TOP_DISTRICTS[key] ?? null;
 
 const faq = [
   lg ? { q: `${p.name} में कितने CSC सेंटर हैं?`, a: `महाराष्ट्र सरकार की 2018 की CSC सूची में ${p.name} ज़िले के ${n} केंद्र ${lg.talukas.length} तालुकों में दर्ज हैं। यह सूची पुरानी है, इसलिए इनमें से कुछ केंद्र बंद हो चुके या बदल चुके हो सकते हैं। जाने से पहले गांव या पंचायत में पूछ लें, या CSC हेल्पलाइन 1800-121-3468 पर पूछें।` } : { q: `${p.name} में कितने CSC सेंटर हैं?`, a: `CSC के रिकॉर्ड के अनुसार ${town ? `${p.name} जिस ${town} ज़िले में है, उसमें` : `${p.name} (${st.name}) में`} ${n} CSC / जन सेवा केंद्र दर्ज हैं, जो ${p.pins} PIN कोड इलाकों में हैं।${topPin ? ` सबसे ज़्यादा केंद्र PIN ${topPin[0]} में हैं (${topPin[1]})।` : ""} ऊपर PIN कोड या "मेरे पास" बटन से अपने सबसे नज़दीकी केंद्र देखें।` },
@@ -187,6 +193,24 @@ const faq = [
         </section>
       )}
 
+      {isTop && (portal || stateDocs.length > 0) && (
+        <section class="section" id="online">
+          <h2>{p.name} में प्रमाण पत्र और सरकारी काम: खुद ऑनलाइन या CSC से</h2>
+          {portal && <p>{st.hi} में आय, जाति और निवास जैसे प्रमाण पत्रों के आवेदन राज्य के पोर्टल <a href={portal.url} target="_blank" rel="noopener nofollow">{portal.name}</a> पर होते हैं। फोन पर पोर्टल चला सकें और कागज़ों की स्कैन कॉपी हो तो आवेदन खुद भी कर सकते हैं; नहीं तो {p.name} के किसी CSC पर संचालक यही फॉर्म भरता है। जो भी तरीका चुनें, आवेदन नंबर ज़रूर संभालकर रखें।</p>}
+          {stateDocs.length > 0 && (<>
+            <h3>{st.hi} के प्रमाण पत्र और कार्ड: कागज़, फीस और आवेदन</h3>
+            <ul class="chips">
+              {stateDocs.map(([s, e, label]) => <li><a href={`/${doc(s)}`}>{e} {label}</a></li>)}
+            </ul>
+          </>)}
+          <ul class="checklist">
+            <li>CSC जाने से पहले <a href="/tools/document-checklist.html">डॉक्यूमेंट चेकलिस्ट</a> से कागज़ तैयार कर लें, ताकि एक ही बार में काम हो जाए।</li>
+            {exists("status-check/index.html") && <li>आवेदन के बाद स्टेटस खुद देखें: <a href="/status-check/index.html">सरकारी आवेदन स्टेटस चेक</a>।</li>}
+            {districtSite && <li>{p.name} ज़िला प्रशासन की सूचनाएं, तहसील और विभागों के संपर्क: <a href={districtSite} target="_blank" rel="noopener nofollow">{districtSite.replace(/^https:\/\//, "").replace(/\/$/, "")}</a> (आधिकारिक वेबसाइट)।</li>}
+          </ul>
+        </section>
+      )}
+
       <div class="ad-slot" aria-hidden="true"></div>
 
       <CscInfo name={p.name} services={services} />
@@ -214,6 +238,8 @@ const faq = [
         { href: "https://csc.gov.in/", title: "CSC e-Governance Services India" },
         { href: "https://uidai.gov.in/", title: "UIDAI: आधार केंद्र और फीस" },
         { href: "tel:18001213468", title: "CSC हेल्पलाइन", note: "1800-121-3468 (टोल-फ्री)" },
+        ...(portal ? [{ href: portal.url, title: portal.name, note: `${st.hi} के प्रमाण पत्रों का ऑनलाइन आवेदन` }] : []),
+        ...(districtSite ? [{ href: districtSite, title: `${p.name} ज़िले की आधिकारिक वेबसाइट` }] : []),
       ]} />
       <Faq items={faq} />
       <Explore />
@@ -231,6 +257,7 @@ const faq = [
           <li><a href="#khojen">नज़दीकी CSC खोजें</a></li>
           {p.top.length > 0 && <li><a href="#pin-code">PIN कोड के हिसाब से</a></li>}
           {(centres.length > 0 || lg) && <li><a href="#list">केंद्रों की लिस्ट</a></li>}
+          {isTop && (portal || stateDocs.length > 0) && <li><a href="#online">प्रमाण पत्र ऑनलाइन</a></li>}
           <li><a href="#sevayen">कौन सी सेवाएं</a></li>
           <li><a href="#fees">फीस</a></li>
           <li><a href="#asli-csc">असली CSC पहचानें</a></li>
