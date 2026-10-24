@@ -11,6 +11,18 @@ import CardGrid from "../components/CardGrid.astro";
   schemaType="WebPage"
   canonical="/404.html"
 >
+  <script is:inline>
+    // Links copied from WhatsApp/Facebook sometimes carry an invisible
+    // character or stray punctuation at the end (e.g. "index.html%E2%81%A0").
+    // Strip it and open the real page.
+    (function () {
+      try {
+        var p = decodeURIComponent(location.pathname);
+        var c = p.replace(/[\s ​-‏⁠﻿.,;:!)'"”’।]+$/, "");
+        if (c && c !== p) location.replace(c + location.search + location.hash);
+      } catch (e) {}
+    })();
+  </script>
   <section class="hero">
     <span class="eyebrow">404</span>
     <h1>यह पेज <em>नहीं मिला</em></h1>
