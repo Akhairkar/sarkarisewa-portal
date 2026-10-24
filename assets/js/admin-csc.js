@@ -68,20 +68,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   function verifyLink(c) {
     const m = digits(c.owner_mobile);
     if (!m) return "";
+    // Short on purpose: one thing to send, no ID proof asked (long messages
+    // asking for IDs look like the fraud messages VLEs are warned about).
     const text = encodeURIComponent([
-      `नमस्ते ${c.owner_name} जी,`,
-      "मैं SarkariSewa India (sarkarisewaindia.com) से बात कर रहा हूं।",
-      `आपने अपना केंद्र "${c.centre_name}" हमारी वेबसाइट पर फ्री लिस्टिंग के लिए भेजा है। आवेदन नंबर: ${c.application_id}`,
-      "जांच के लिए कृपया ये भेजें:",
-      "",
-      "1. केंद्र के बोर्ड की एक फोटो, जिसमें केंद्र का नाम दिखे",
-      "2. CSC ID / VLE ID या कोई प्रमाण (जैसे CSC सर्टिफिकेट या पोर्टल का स्क्रीनशॉट), अगर हो तो",
-      '3. केंद्र की Google Maps लोकेशन (WhatsApp पर "Location" भेज दें)',
-      "",
-      'जांच के बाद आपका केंद्र आपके ज़िले के CSC पेज पर "✓ सत्यापित केंद्र" में सबसे ऊपर दिखेगा, कॉल और WhatsApp बटन के साथ।',
-      "यह सेवा अभी पूरी तरह फ्री है। हम कभी कोई OTP, पासवर्ड या पैसा नहीं मांगते।",
-      "धन्यवाद,",
-      "टीम SarkariSewa India",
+      `नमस्ते ${c.owner_name} जी 🙏`,
+      `SarkariSewa India से बोल रहा हूं। आपका केंद्र "${c.centre_name}" हमारी साइट पर फ्री जोड़ने के लिए आया है।`,
+      "बस केंद्र के बोर्ड की एक फोटो भेज दीजिए, आज ही आपका केंद्र आपके ज़िले के पेज पर दिख जाएगा।",
+      "हम कभी OTP या पैसा नहीं मांगते।",
     ].join("\n"));
     return `<a href="${waLink(m, text)}" target="_blank" rel="noopener">💬 WhatsApp verify</a> · <a href="tel:+91${m}">📞 Call</a>`;
   }
@@ -146,25 +139,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (L.state) out.push({ name: `${L.state.name} के ${ja ? "जन औषधि" : "CSC"} पेज पर "सत्यापित केंद्र" में`, why: "पूरे राज्य के पेज पर भी आपका केंद्र दिखेगा", href: SITE + L.state.href });
     return out;
   }
-  // WhatsApp lines: numbered pages with links and benefits.
+  // WhatsApp lines: one short line per page the centre is listed on.
   function placementLines(c, L) {
     const pages = listedPages(L);
     if (!pages.length) return ["आपका पेज और ज़िले के पेज पर लिस्टिंग अगले कुछ घंटों में तैयार हो जाएगी, हम लिंक भेज देंगे।"];
-    const top = pages.filter((p) => /सबसे ऊपर/.test(p.name)).length;
-    return [
-      `📍 आपका केंद्र अभी SarkariSewa India के *${pages.length} पब्लिक पेज* पर लाइव है${top ? ` (${top} पर सबसे ऊपर)` : ""}:`,
-      "",
-      ...pages.flatMap((p, i) => [`*${i + 1}. ${p.name}*`, p.why, p.href, ""]),
-      "✅ आपका पेज Google के sitemap में जोड़ दिया गया है; कुछ दिनों में Google पर भी दिखने लगेगा।",
-      "",
-      "*इससे आपको क्या फायदा:*",
-      "• पास के लोग सीधे आपको कॉल/WhatsApp करेंगे, बीच में कोई नहीं",
-      "• \"✓ सत्यापित\" बैज से ग्राहक भरोसा करते हैं",
-      "• 24 घंटे ऑनलाइन, दुकान बंद हो तब भी लोग आपका नंबर और सेवाएं देख सकते हैं",
-      "• यह अभी पूरी तरह फ्री है",
-      "",
-      "👉 ऊपर के सभी लिंक एक बार खोलकर देख लें कि जानकारी सही है।",
-    ];
+    return pages.map((p) => `• ${p.name}: ${p.href}`);
   }
   function listedInfo(c, L) {
     if (!L) return '<small style="color:#f59e0b">⏳ Own page not built yet (site rebuilds every 3 hours)</small>';
@@ -186,19 +165,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!c || !L) return;
     const lines = [
       `नमस्ते ${c.owner_name} जी 🙏`,
-      "",
-      `खुशखबरी! आपका केंद्र *${c.centre_name}* अब SarkariSewa India पर लाइव है।`,
-      "",
+      `आपका केंद्र *${c.centre_name}* अब SarkariSewa India पर लाइव है:`,
       ...placementLines(c, L),
-      "",
-      "*ज़्यादा ग्राहकों के लिए 3 आसान काम:*",
-      "1. अपना पेज WhatsApp स्टेटस और ग्रुप में शेयर करें (पेज पर \"शेयर\" बटन है)।",
-      "2. अपने केंद्र की एक साफ फोटो लगाएं और सारी सेवाएं चुनें; वहीं आपको दिखेगा कि कितने लोगों ने पेज देखा और कॉल/WhatsApp किया:",
-      `${SITE}/csc-edit.html?id=${encodeURIComponent(c.application_id)}`,
-      "3. ग्राहक \"SarkariSewa India पर देखा\" लिखकर आएं तो उसी पेज पर हमें बताएं।",
-      "",
-      "कोई सवाल हो तो इसी नंबर पर लिखें।",
-      "धन्यवाद,",
+      "अपना पेज WhatsApp स्टेटस पर शेयर करेंगे तो ज़्यादा लोग देखेंगे।",
       "टीम SarkariSewa India",
     ];
     const link = waLink(digits(c.owner_mobile), encodeURIComponent(lines.join("\n")));
@@ -286,20 +255,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       const lines = resetPassword
         ? [`नमस्ते ${c.owner_name} जी,`, `आपके केंद्र "${c.centre_name}" का नया पासवर्ड: ${code}`, "पुराना पासवर्ड अब काम नहीं करेगा।", `जानकारी बदलने का पेज: ${edit}`, `आवेदन नंबर: ${c.application_id}`, "(पासवर्ड किसी से साझा न करें)", "टीम SarkariSewa India"]
         : [
-          `नमस्ते ${c.owner_name} जी,`,
-          `बधाई हो! आपका केंद्र "${c.centre_name}" SarkariSewa India पर सत्यापित होकर लाइव है (फ्री)।`,
+          `नमस्ते ${c.owner_name} जी 🙏`,
+          `बधाई हो! आपका केंद्र "${c.centre_name}" SarkariSewa India पर लाइव है (फ्री):`,
+          ...(listed[c.application_id] ? placementLines(c, listed[c.application_id]) : [live]),
           "",
-          ...(listed[c.application_id] ? placementLines(c, listed[c.application_id]) : ["आपका पेज:", live, "(ज़िले के पेज पर लिस्टिंग अगले कुछ घंटों में दिखेगी)"]),
-          "",
-          "अपनी सेवाएं, समय और संपर्क आप खुद बदल सकते हैं, कोई कोडिंग नहीं, बस बटन दबाकर:",
-          edit,
-          `आवेदन नंबर: ${c.application_id}`,
-          "मोबाइल: वही जो फॉर्म में दिया था",
-          makeCode ? `पासवर्ड: ${code}` : "पासवर्ड: वही जो पहले भेजा था (भूल गए हों तो बताएं, नया भेज देंगे)",
-          "(पासवर्ड किसी से साझा न करें, इसे संभालकर रखें)",
-          "",
-          'हमारी साइट से आने वाले ग्राहक WhatsApp पर "SarkariSewa India पर देखा" लिखकर आएंगे। ग्राहक मिलें तो ऊपर वाले पेज पर हमें बताएं।',
-          "धन्यवाद,",
+          `सेवाएं, समय या नंबर खुद बदलें: ${edit}`,
+          makeCode ? `आवेदन नंबर: ${c.application_id} · पासवर्ड: ${code}` : `आवेदन नंबर: ${c.application_id} · पासवर्ड: पहले भेजा हुआ (भूल गए तो बताएं)`,
+          "पासवर्ड किसी को न बताएं।",
           "टीम SarkariSewa India",
         ];
       const link = waLink(digits(c.owner_mobile), encodeURIComponent(lines.join("\n")));
