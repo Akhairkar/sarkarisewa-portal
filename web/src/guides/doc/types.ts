@@ -20,6 +20,7 @@ export type DocGuide = {
   // Demand test for a service we may start: shows DemandBox instead of CscHelp.
   demand?: { title: string; text: string; places?: string[]; service: string };
   cscHref?: string; // "go to a CSC yourself" link in the help box (default: the state CSC list)
+  vle?: boolean; // guide for CSC operators: shows "list your centre" instead of the help box
   title: string; // keep the ranking title unless it is wrong
   description: string;
   published: string;

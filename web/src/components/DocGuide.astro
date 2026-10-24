@@ -46,6 +46,8 @@ const promo = g.promo ?? (g.doc === "driving-licence" ? challanPromo : undefined
       </section>
       {Astro.url.pathname.startsWith("/jobs/") ? (
         <p class="tg-join">🔔 <strong>नई भर्तियां और आखिरी तारीख की याद</strong> सबसे पहले पाएं: <a href={TELEGRAM_CHANNEL} target="_blank" rel="noopener" data-act="tg-join">Telegram चैनल जॉइन करें</a> · <a href={WHATSAPP_CHANNEL} target="_blank" rel="noopener" data-act="wa-join">WhatsApp चैनल</a></p>
+      ) : g.vle ? (
+        <p class="tg-join vle-claim">🏪 <strong>पहले से CSC / जन सेवा केंद्र चलाते हैं?</strong> अपना केंद्र SarkariSewa पर फ्री में जोड़ें: आपके ज़िले के पेज पर आपका नाम, सेवाएं और WhatsApp बटन दिखेगा। <a href="/claim-your-csc.html" data-act="vle-claim">अपना केंद्र जोड़ें →</a></p>
       ) : g.demand ? <DemandBox {...g.demand} state={g.state?.hi} /> : <CscHelp state={g.state} doc={g.docHi} href={g.cscHref} />}
 
       {g.notice && <div class="callout warn"><p set:html={g.notice} /></div>}
