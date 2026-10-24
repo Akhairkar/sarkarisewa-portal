@@ -16,6 +16,7 @@ import {
 } from "../../../../lib/csc";
 import { exists } from "../../../../lib/repo";
 import { listings, listingSlug, listingDistrictPage, niceName } from "../../../../lib/csc-listings";
+import EXTRA from "../../../../data/csc-extra-centres.json";
 
 export function getStaticPaths() {
   return cscPages().map((p) => ({ params: { state: p.stateDir, district: p.slug }, props: { p } }));
@@ -26,7 +27,16 @@ const st = stateOf(p.d.dbState);
 const n = p.d.count.toLocaleString("en-IN");
 const lg = p.legacy;
 const meta = lg ? { title: "", description: "" } : oldMeta(p.rel);
-const centres = oldCentres(p.rel, 24);
+// Top pages whose old HTML had no centre list get one from
+// data/csc-extra-centres.json. A point far from the district (bad GPS in the
+// record) gets a map search by address instead.
+const extra = ((EXTRA as Record<string, unknown>)[p.rel] ?? []) as [string, string, string, number | null, number | null][];
+const inDistrict = (lat: number | null, lng: number | null) => lat != null && lng != null && Math.abs(lat - p.lat) < 0.6 && Math.abs(lng - p.lng) < 0.6;
+const old = oldCentres(p.rel, 24);
+const centres = old.length ? old : extra.map(([name, address, pin, lat, lng]) => ({
+  name, address, pin,
+  map: inDistrict(lat, lng) ? `https://www.google.com/maps?q=${lat},${lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} CSC ${address} ${pin}`)}`,
+}));
 const near = nearbyPages(p, 8);
 const stateHref = cscStateHref(p.stateDir);
 const jaHref = janAushadhiHref(p.stateDir, p.slug);
