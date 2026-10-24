@@ -4,6 +4,10 @@
 export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway" | "Defence" | "Scientific" | "State Govt" | "Health" | "Post" | "PSU" | "Central Govt"; last: string; lastNote?: string; status?: "expected" };
 
 export const JOBS: Job[] = [
+  { slug: "upessc-tgt-recruitment-2026", sector: "State Govt", last: "2026-11-23", lastNote: "17,735 पद; परीक्षा 23-24 दिसंबर 2026" },
+  { slug: "upessc-principal-headmaster-recruitment-2026", sector: "State Govt", last: "2026-11-22", lastNote: "प्रधानाचार्य 1,475 + प्रधानाध्यापक 1,172 पद" },
+  { slug: "isro-ursc-technician-driver-recruitment-2026", sector: "Scientific", last: "2026-11-13", lastNote: "10वीं + ITI और ड्राइवर पद" },
+  { slug: "dtu-assistant-professor-recruitment-2026", sector: "State Govt", last: "2026-12-07", lastNote: "शाम 5 बजे तक; लिखित परीक्षा नहीं" },
   { slug: "rrb-station-master-recruitment-2026", sector: "Railway", last: "2026-11-25", lastNote: "संभावित: आवेदन 27 अक्टूबर 2026 से (शॉर्ट नोटिस CEN 08/2026)", status: "expected" },
   { slug: "uco-bank-apprentice-recruitment-2026", sector: "Banking", last: "2026-10-29", lastNote: "अप्रेंटिसशिप, पक्की नौकरी नहीं; परीक्षा 7 नवंबर" },
   { slug: "lic-hfl-apprentice-recruitment-2026", sector: "PSU", last: "2026-11-01", lastNote: "LIC हाउसिंग फाइनेंस अप्रेंटिसशिप, परीक्षा 7 नवंबर" },
