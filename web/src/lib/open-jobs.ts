@@ -34,3 +34,22 @@ export function jobsFor(state?: string, n = 4, exclude?: string): OpenJob[] {
   const india = list.filter((j) => !j.state);
   return [...mine, ...india].slice(0, n);
 }
+
+/** Last dates of our job pages for the deadline calendar
+ * (/deadlines-jobs.json): open ones plus those closed in the last 14 days
+ * (shown there as expired). Expected (unconfirmed) dates are left out. */
+// State filter values of the calendar page (deadline-calendar.js STATES).
+const CAL_STATES = ["maharashtra", "madhya-pradesh", "rajasthan", "uttar-pradesh", "bihar", "gujarat", "karnataka", "delhi"];
+export function jobDeadlines() {
+  const since = new Date(Date.now() - 14 * DAY).toISOString().slice(0, 10);
+  return ALL_JOBS
+    .filter((j) => j.status !== "expected" && j.last >= since && (GUIDES[j.slug] || DAILY[j.slug]))
+    .map((j) => {
+      const g = GUIDES[j.slug], d = DAILY[j.slug];
+      const title = (g?.title ?? d!.title).split(/:| — | \| /)[0].trim();
+      return { slug: `job-${j.slug}`, href: `/jobs/${j.slug}.html`, title_hi: `${title}: आवेदन की आखिरी तारीख`, title_en: `${title}: last date to apply`,
+        description_hi: j.lastNote ?? g?.description ?? d!.description, description_en: "", category: "jobs", deadline_type: "application",
+        state: !j.state ? "all-india" : CAL_STATES.includes(j.state) ? j.state : "other", deadline_date: j.last, official_url: d?.applyLink ?? g?.official?.[0]?.href ?? "" };
+    })
+    .sort((a, b) => a.deadline_date.localeCompare(b.deadline_date));
+}

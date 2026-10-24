@@ -218,7 +218,7 @@
           <span class="dl-tag">${escapeHtml(typeLabel)}</span>
         </div>
         <div class="dl-card__actions">
-          <a class="btn btn-primary" href="${ROOT}tools/deadline-detail.html?slug=${encodeURIComponent(row.slug)}">${tk("dl_check_details", lang() === "hi" ? "विवरण देखें →" : "Check Details →")}</a>
+          <a class="btn btn-primary" href="${row.href ? escapeHtml(row.href) : ROOT + "tools/deadline-detail.html?slug=" + encodeURIComponent(row.slug)}">${tk("dl_check_details", lang() === "hi" ? "विवरण देखें →" : "Check Details →")}</a>
           ${row.official_url ? `<a class="dl-card__official" href="${row.official_url}" target="_blank" rel="noopener noreferrer">${tk("dl_official_portal", lang() === "hi" ? "आधिकारिक पोर्टल ↗" : "Official Portal ↗")}</a>` : ""}
         </div>
       </article>`;
@@ -370,9 +370,22 @@
     });
   }
 
+  // Last dates of the job pages on this site, built with the site
+  // (web/src/pages/deadlines-jobs.json.ts). Shown even if Supabase is down.
+  async function loadJobDeadlines() {
+    try {
+      const r = await fetch(ROOT + "deadlines-jobs.json", { cache: "no-cache" });
+      return r.ok ? await r.json() : [];
+    } catch (e) { return []; }
+  }
+
   async function loadDeadlines() {
-    const client = await getSupabaseClient();
+    const jobsP = loadJobDeadlines();
+    let client = null;
+    try { client = await getSupabaseClient(); } catch (e) { client = null; }
     if (!client) {
+      const jobs = await jobsP;
+      if (jobs.length) { allDeadlines = jobs; renderAll(); return; }
       listEl.innerHTML = `<p class="dl-empty">${tk("dl_error", lang() === "hi" ? "अभी डेटा लोड नहीं हो सका। कृपया बाद में पुनः प्रयास करें।" : "Could not load deadlines right now. Please try again later.")}</p>`;
       return;
     }
@@ -383,10 +396,13 @@
         .eq("status", "published")
         .order("deadline_date", { ascending: true });
       if (error) throw error;
-      allDeadlines = data || [];
+      const jobs = await jobsP;
+      allDeadlines = (data || []).concat(jobs).sort((a, b) => String(a.deadline_date).localeCompare(String(b.deadline_date)));
       renderAll();
     } catch (err) {
       console.error("Failed to load deadlines:", err);
+      const jobs = await jobsP;
+      if (jobs.length) { allDeadlines = jobs; renderAll(); return; }
       listEl.innerHTML = `<p class="dl-empty">${tk("dl_error", lang() === "hi" ? "अभी डेटा लोड नहीं हो सका। कृपया बाद में पुनः प्रयास करें।" : "Could not load deadlines right now. Please try again later.")}</p>`;
     }
   }
