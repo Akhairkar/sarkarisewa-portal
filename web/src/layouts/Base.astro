@@ -5,7 +5,7 @@ import Footer from "../components/Footer.astro";
 import BottomNav from "../components/BottomNav.astro";
 import Subscribe from "../components/Subscribe.astro";
 import LettersBox from "../components/LettersBox.astro";
-import { SITE } from "../data/site";
+import { SITE, ADSENSE } from "../data/site";
 import { langOf, twin, t, UI } from "../i18n";
 
 interface Crumb { label: string; href?: string }
@@ -105,6 +105,8 @@ if (faq.length) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&display=swap" rel="stylesheet" />
   {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  <meta name="google-adsense-account" content={ADSENSE.client} />
+  {ADSENSE.on && <script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE.client}`} crossorigin="anonymous"></script>}
   <slot name="head" />
 </head>
 <body>

@@ -6,6 +6,12 @@ export const SITE = {
   url: "https://sarkarisewaindia.com",
 };
 
+// Google AdSense. The account meta tag is always on (site verification and
+// review); the ad script loads only when `on` is true. To start ads, change
+// false to true (see ADSENSE-ON-KAISE-KARE.md); ad placement is then set in
+// the AdSense dashboard (Auto ads).
+export const ADSENSE = { client: "ca-pub-5006870166883781", on: false };
+
 export const NAV = [
   { href: "/", label: { hi: "होम", en: "Home" }, icon: "home" },
   { href: "/documents/", label: { hi: "दस्तावेज़", en: "Documents" }, icon: "doc" },
