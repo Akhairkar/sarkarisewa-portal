@@ -17,6 +17,7 @@ const rows: [string, string, string, string][] = [
   ["अपडेट पाने का फॉर्म", "मोबाइल नंबर और/या email, चुने गए विषय", "नौकरी, योजना और आखिरी तारीख की खबर भेजना", "जब तक आप हटाने को न कहें"],
   ["अपना CSC जोड़ें / सुधारें फॉर्म", "केंद्र और संचालक का नाम, संचालक का मोबाइल (सिर्फ जांच के लिए, सबको नहीं दिखता), पता, PIN, सेवाएं, समय, ग्राहकों के लिए फोन/WhatsApp नंबर, नक्शे की लोकेशन", "केंद्र की जांच करना और उसे CSC लोकेटर पर दिखाना। ग्राहकों वाले नंबर और पता (आपकी अनुमति से) सबको दिखते हैं", "जब तक लिस्टिंग चालू है, या आप हटाने को कहें"],
   ["पेड रिपोर्ट (GSTIN, RC e-Challan)", "डाला गया GSTIN या गाड़ी नंबर, Razorpay भुगतान/ऑर्डर ID, राशि, समय", "रिपोर्ट बनाना, भुगतान का रिकॉर्ड रखना, रिफंड देना", "हिसाब-किताब और कानूनी ज़रूरत तक"],
+  ["विज्ञापन (Google AdSense), जब चालू हों", "Google और उसके पार्टनर की cookies, डिवाइस और ब्राउज़र की जानकारी, अनुमानित जगह; आपकी इस और दूसरी वेबसाइटों की पिछली विज़िट", "विज्ञापन दिखाना, उनकी गिनती और धोखाधड़ी रोकना", "Google की सेटिंग और नीति के अनुसार"],
   ["ईमेल से संपर्क", "आपका email पता और जो आप लिखें", "आपके सवाल का जवाब देना", "जब तक बात पूरी न हो, फिर ज़रूरत न हो तो हटाया जाता है"],
 ];
 const faq = [
@@ -28,17 +29,17 @@ const faq = [
 ---
 <Base
   title="Privacy Policy | SarkariSewa India"
-  description="SarkariSewa India कौन सी जानकारी लेता है (Analytics, CSC मदद के लिए मोबाइल नंबर, पेड रिपोर्ट), क्यों, कितने समय तक, और DPDP Act 2023 के तहत आपके अधिकार।"
+  description="SarkariSewa India कौन सी जानकारी लेता है (Analytics, विज्ञापन cookies, CSC मदद के लिए मोबाइल नंबर, पेड रिपोर्ट), क्यों, कितने समय तक, और DPDP Act 2023 के तहत आपके अधिकार।"
   breadcrumbs={crumbs}
   faq={faq}
   schemaType="WebPage"
-  modified="2026-10-16"
+  modified="2026-10-25"
 >
   <Breadcrumbs items={crumbs} />
   <article class="page">
     <div>
       <h1>गोपनीयता नीति (Privacy Policy)</h1>
-      <p class="page-intro">यह पेज बताता है कि SarkariSewa India (sarkarisewaindia.com) आपकी कौन सी जानकारी लेता है, क्यों लेता है, कितने समय रखता है और आप उसे कैसे हटवा सकते हैं। अपडेट: 16 अक्टूबर 2026।</p>
+      <p class="page-intro">यह पेज बताता है कि SarkariSewa India (sarkarisewaindia.com) आपकी कौन सी जानकारी लेता है, क्यों लेता है, कितने समय रखता है और आप उसे कैसे हटवा सकते हैं। अपडेट: 25 अक्टूबर 2026।</p>
 
       <div class="callout info"><p><strong>छोटे में:</strong> वेबसाइट पढ़ने के लिए आपको कुछ नहीं देना पड़ता। हम सिर्फ वही जानकारी रखते हैं जो आप खुद किसी फॉर्म में भरते हैं, और वेबसाइट के आंकड़े (कौन सा पेज कितनी बार देखा गया)। हम आधार नंबर, बैंक डिटेल या OTP कभी नहीं मांगते और आपकी जानकारी बेचते नहीं।</p></div>
 
@@ -75,6 +76,7 @@ const faq = [
         <ul class="checklist">
           <li><strong>Google Analytics 4:</strong> वेबसाइट के आंकड़े। Google की <a href="https://policies.google.com/privacy" target="_blank" rel="noopener nofollow">Privacy Policy</a> लागू होती है।</li>
           <li><strong>Supabase:</strong> हमारा डेटाबेस (पेज व्यू, CSC मदद अनुरोध, अपडेट फॉर्म, CSC लिस्टिंग) यहीं रखा जाता है।</li>
+          <li><strong>Google AdSense (विज्ञापन):</strong> इस वेबसाइट पर Google AdSense के विज्ञापन दिख सकते हैं। Google समेत दूसरी कंपनियां (third-party vendors) cookies का इस्तेमाल करके आपकी इस और दूसरी वेबसाइटों की पिछली विज़िट के आधार पर विज्ञापन दिखाती हैं। Google की विज्ञापन cookies से Google और उसके पार्टनर ऐसे विज्ञापन दिखा पाते हैं। आप <a href="https://adssettings.google.com/" target="_blank" rel="noopener nofollow">Google Ads Settings</a> में जाकर अपनी पसंद के हिसाब से (personalized) विज्ञापन बंद कर सकते हैं, या <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener nofollow">aboutads.info</a> पर दूसरी कंपनियों की ऐसी cookies बंद कर सकते हैं। ज़्यादा जानकारी: <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener nofollow">Google पार्टनर साइटों का डेटा कैसे इस्तेमाल करता है</a>।</li>
           <li><strong>Razorpay:</strong> पेड रिपोर्ट का भुगतान। कार्ड, UPI या बैंक की जानकारी Razorpay लेता है, हम नहीं। Razorpay भुगतान के समय आपका मोबाइल/email मांग सकता है; उस पर उनकी नीति लागू होती है।</li>
           <li><strong>होस्टिंग और सर्वर (जैसे Cloudflare):</strong> वेबसाइट और पेड रिपोर्ट की सेवा चलाने के लिए। सर्वर लॉग में IP पता जैसी तकनीकी जानकारी आ सकती है।</li>
           <li><strong>रिपोर्ट के स्रोत:</strong> रिपोर्ट बनाने के लिए GSTIN या गाड़ी नंबर संबंधित सरकारी/अधिकृत डेटा सेवा को भेजा जाता है।</li>
