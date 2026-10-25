@@ -356,7 +356,7 @@ sm = sm.replace(/  <url>\s*<loc>([^<]*)<\/loc>[\s\S]*?<\/url>\n/g, (block, loc) 
 // Older static pages that are indexable, self-canonical and missing from the
 // sitemap (e.g. the GSTIN tool) are added too. Script-filled detail templates
 // are left out.
-const NOT_LISTED = /^(admin|private|partials|account|google|404|search\.html|deadline-detail\.html|csc-centre\.html|csc-edit\.html)/;
+const NOT_LISTED = /^(admin|private|partials|account|google|404|search\.html|deadline-detail\.html|tools\/deadline-detail\.html|csc-centre\.html|csc-edit\.html)/;
 const listed = new Set([...sm.matchAll(/<loc>([^<]*)<\/loc>/g)].map((m) => m[1]));
 for (const rel of listHtml(OUT)) {
   if (NOT_LISTED.test(rel)) continue;
