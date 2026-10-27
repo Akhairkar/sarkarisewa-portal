@@ -6,11 +6,12 @@ export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway"
 // list them first on that state's guides (components/JobStrip.astro).
 
 export const JOBS: Job[] = [
+  { slug: "uppsc-ro-aro-recruitment-2026", sector: "State Govt", last: "2026-11-26", lastNote: "लगभग 501 पद; पहले OTR, सुधार 3 दिसंबर तक", state: "uttar-pradesh" },
   { slug: "upessc-tgt-recruitment-2026", sector: "State Govt", last: "2026-11-23", lastNote: "17,735 पद; परीक्षा 23-24 दिसंबर 2026", state: "uttar-pradesh" },
   { slug: "upessc-principal-headmaster-recruitment-2026", sector: "State Govt", last: "2026-11-22", lastNote: "प्रधानाचार्य 1,475 + प्रधानाध्यापक 1,172 पद", state: "uttar-pradesh" },
   { slug: "isro-ursc-technician-driver-recruitment-2026", sector: "Scientific", last: "2026-11-13", lastNote: "10वीं + ITI और ड्राइवर पद" },
   { slug: "dtu-assistant-professor-recruitment-2026", sector: "State Govt", last: "2026-12-07", lastNote: "शाम 5 बजे तक; लिखित परीक्षा नहीं", state: "delhi" },
-  { slug: "rrb-station-master-recruitment-2026", sector: "Railway", last: "2026-11-25", lastNote: "संभावित: आवेदन 27 अक्टूबर 2026 से (शॉर्ट नोटिस CEN 08/2026)", status: "expected" },
+  { slug: "rrb-station-master-recruitment-2026", sector: "Railway", last: "2026-11-25", lastNote: "रात 11:59 बजे तक; CEN 08/2026, ग्रेजुएट" },
   { slug: "uco-bank-apprentice-recruitment-2026", sector: "Banking", last: "2026-10-29", lastNote: "अप्रेंटिसशिप, पक्की नौकरी नहीं; परीक्षा 7 नवंबर" },
   { slug: "lic-hfl-apprentice-recruitment-2026", sector: "PSU", last: "2026-11-01", lastNote: "LIC हाउसिंग फाइनेंस अप्रेंटिसशिप, परीक्षा 7 नवंबर" },
   { slug: "iocl-western-region-apprentice-recruitment-2026", sector: "PSU", last: "2026-11-04", lastNote: "शाम 5 बजे तक; अप्रेंटिसशिप, बिना परीक्षा" },
