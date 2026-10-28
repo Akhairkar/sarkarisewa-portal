@@ -1,0 +1,14 @@
+# Main site (sarkarisewaindia.com) on Cloudflare Workers static assets.
+# The files come from web/_site (built by `npm run site` in web/).
+# html_handling = "none" keeps every URL exactly as on GitHub Pages:
+# /about.html is served as is, never redirected to /about.
+name = "sarkarisewa-site"
+main = "worker.js"
+compatibility_date = "2026-09-29"
+workers_dev = true
+
+[assets]
+directory = "../../web/_site"
+binding = "ASSETS"
+html_handling = "none"
+not_found_handling = "none"
