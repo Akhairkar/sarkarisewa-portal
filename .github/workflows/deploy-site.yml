@@ -62,11 +62,9 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web/_site
-      # Same files to the Cloudflare Worker (cloudflare/site/). GitHub Pages
-      # stays the live host until the domain is moved, so a failure here
-      # must not stop the Pages deploy.
+      # The live site: sarkarisewaindia.com is served by this Cloudflare
+      # Worker (cloudflare/site/). GitHub Pages below is only a fallback copy.
       - name: Deploy to Cloudflare
-        continue-on-error: true
         run: npx --yes wrangler@4.154.0 deploy --config cloudflare/site/wrangler.toml
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
