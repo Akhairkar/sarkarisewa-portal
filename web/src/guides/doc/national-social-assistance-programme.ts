@@ -13,6 +13,9 @@ import type { DocGuide } from "./types";
 // for 2021-26 without revision of rates); PIB Nov 2025 document (2024-25
 // releases). Annapurna (10 kg food grain per month to eligible elderly not
 // getting IGNOAPS) per NSAP guidelines. State top-up amounts are not listed.
+// 29 Oct 2026: Cabinet decision of 14.10.2026 (renamed Pradhan Mantri Samajik
+// Sahayata Yojana; disability pension changes) noted, details in
+// pm-samajik-sahayata-yojana.ts.
 export const nationalSocialAssistanceProgramme: DocGuide = {
   crumbs: [
     { label: "होम", href: "/" },
@@ -23,8 +26,8 @@ export const nationalSocialAssistanceProgramme: DocGuide = {
   title: "राष्ट्रीय सामाजिक सहायता कार्यक्रम (NSAP) 2026",
   description: "राज्य सामाजिक कल्याण विभागों के माध्यम से बीपीएल परिवारों के वृद्ध, विधवा, और दिव्यांग व्यक्तियों को मासिक पेंशन प्रदान करने वाली छत्र योजना।",
   published: "2024-06-01",
-  modified: "2026-10-15",
-  verified: "15 अक्टूबर 2026",
+  modified: "2026-10-29",
+  verified: "29 अक्टूबर 2026",
   h1: "NSAP पेंशन 2026: वृद्धावस्था, विधवा और दिव्यांग पेंशन, पारिवारिक लाभ योजना, राशि और आवेदन",
   lead: "राष्ट्रीय सामाजिक सहायता कार्यक्रम (NSAP) ग्रामीण विकास मंत्रालय की योजना है, जिसके तहत गरीबी रेखा से नीचे (BPL) परिवारों के बुज़ुर्गों, विधवाओं और गंभीर दिव्यांग व्यक्तियों को हर महीने पेंशन मिलती है, और कमाने वाले सदस्य की मृत्यु पर परिवार को ₹20,000 की एकमुश्त मदद। केंद्र का हिस्सा ₹200 से ₹500 महीना है; ज़्यादातर राज्य अपनी तरफ से राशि जोड़ते हैं, इसलिए असल पेंशन राज्य के हिसाब से अलग होती है।",
   facts: [
@@ -33,7 +36,7 @@ export const nationalSocialAssistanceProgramme: DocGuide = {
     ["पारिवारिक लाभ (NFBS)", "₹20,000 एकमुश्त"],
     ["पोर्टल", '<a href="https://nsap.nic.in/" target="_blank" rel="noopener nofollow">nsap.nic.in</a>'],
   ],
-  notice: "<strong>ध्यान दें:</strong> ऊपर की राशि सिर्फ केंद्र सरकार का हिस्सा है। आपके राज्य में कुल पेंशन कितनी मिलेगी, यह राज्य के समाज कल्याण विभाग की योजना पर निर्भर है। केंद्र ने 2021-26 के लिए NSAP को बिना दर बदले जारी रखा।",
+  notice: "<strong>ध्यान दें:</strong> ऊपर की राशि सिर्फ केंद्र सरकार का हिस्सा है। आपके राज्य में कुल पेंशन कितनी मिलेगी, यह राज्य के समाज कल्याण विभाग की योजना पर निर्भर है। केंद्र ने 2021-26 के लिए NSAP को बिना दर बदले जारी रखा।<br><strong>नया:</strong> 14 अक्टूबर 2026 को केंद्रीय मंत्रिमंडल ने NSAP को 2030-31 तक जारी रखने की मंज़ूरी दी और इसका नाम <strong>प्रधानमंत्री सामाजिक सहायता योजना</strong> कर दिया; दिव्यांग पेंशन अब 40% दिव्यांगता पर मिल सकेगी। <a href=\"/service/pm-samajik-sahayata-yojana.html\">नए नाम और बदलाव पढ़ें</a>।",
   sections: [
     {
       id: "yojnayen",
@@ -93,6 +96,7 @@ export const nationalSocialAssistanceProgramme: DocGuide = {
     { q: "NSAP पेंशन के लिए कहां आवेदन करें?", a: "ग्राम पंचायत/ब्लॉक कार्यालय, नगर निकाय या ज़िला समाज कल्याण कार्यालय में, या राज्य के पेंशन पोर्टल/UMANG ऐप से।" },
   ],
   related: [
+    { href: "/service/pm-samajik-sahayata-yojana.html", emoji: "🆕", title: "प्रधानमंत्री सामाजिक सहायता योजना", text: "NSAP का नया नाम, दिव्यांग पेंशन के नए नियम" },
     { href: "/service/senior-citizen-card.html", emoji: "👴", title: "वरिष्ठ नागरिक कार्ड", text: "राज्यवार पेंशन और कार्ड" },
     { href: "/service/ayushman-bharat-vayo-vandana.html", emoji: "🏥", title: "आयुष्मान वय वंदना", text: "70+ के लिए ₹5 लाख तक इलाज" },
     { href: "/service/udid-disability-card-download.html", emoji: "♿", title: "UDID कार्ड", text: "दिव्यांगता प्रमाण पत्र" },
