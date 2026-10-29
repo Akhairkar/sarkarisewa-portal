@@ -99,3 +99,7 @@ create or replace view public.sahayak_public as
          meets_in_person, online_work, experience_years, about, approved_at
   from public.sahayak_providers where status = 'approved';
 grant select on public.sahayak_public to anon, authenticated;
+
+-- A simple view is updatable and new views get every privilege by default:
+-- visitors may only read it.
+revoke insert, update, delete, truncate, references, trigger on public.sahayak_public from anon, authenticated;
