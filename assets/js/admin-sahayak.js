@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `intent://send/?phone=91${mobile}&text=${t}#Intent;scheme=whatsapp;package=com.whatsapp.w4b;S.browser_fallback_url=${encodeURIComponent(`https://wa.me/91${mobile}?text=${t}`)};end`
       : `https://wa.me/91${mobile}?text=${t}`;
   };
-  const verifyMsg = (p) => `नमस्ते ${p.name} जी, SarkariSewa India से। आपने सेवा सहायक के रूप में जुड़ने का फॉर्म भरा है (${p.district})। पुष्टि के लिए अपनी दुकान/काम की एक फोटो भेज दें। हम कभी OTP या पैसा नहीं मांगते।`;
+  const verifyMsg = (p) => `नमस्ते ${p.name} जी, SarkariSewa India से। आपने सेवा सहायक के रूप में जुड़ने का फॉर्म भरा है (${p.district})। पुष्टि के लिए बस एक वॉइस मैसेज भेज दें कि आप कौन से काम करते हैं और कहां (या कॉल का सही समय बता दें)। दुकान/दफ्तर हो तो उसकी फोटो भी भेज सकते हैं। आधार या कोई कागज़ भेजने की ज़रूरत नहीं। हम कभी OTP या पैसा नहीं मांगते।`;
   const liveMsg = (p) => `नमस्ते ${p.name} जी, आपकी सेवा सहायक लिस्टिंग मंज़ूर हो गई है। अब ${p.district} के लोग आपको SarkariSewa India से कॉल/WhatsApp कर सकेंगे। ग्राहक से OTP न लें और सरकारी फीस सही बताएं।`;
 
   let client = null;
