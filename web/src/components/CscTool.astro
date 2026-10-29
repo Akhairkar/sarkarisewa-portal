@@ -49,7 +49,8 @@ const live = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY, state: dbState, names,
     const map = (r: Row) => /^\d+(\.\d+)?$/.test(r.latitude) && /^\d+(\.\d+)?$/.test(r.longitude)
       ? `https://www.google.com/maps?q=${r.latitude},${r.longitude}`
       : `https://www.google.com/maps/search/${encodeURIComponent(`${r.address} ${r.pincode}`)}`;
-    const card = (r: Row) => `<li class="csc-card"><strong>${esc(r.vle_name)}</strong><span>${esc(r.address)}</span>`
+    const keyOf = (name: string, pin: string) => `${(pin || "").replace(/\D/g, "")}|${(name || "").toLowerCase().replace(/\s+/g, " ").trim()}`.slice(0, 160);
+    const card = (r: Row) => `<li class="csc-card" data-key="${esc(keyOf(r.vle_name, r.pincode))}" data-id="${esc(r.csc_id)}"><strong>${esc(r.vle_name)}</strong><span>${esc(r.address)}</span>`
       + `<span class="pin">PIN ${esc(r.pincode)}${r.km != null ? ` · ${r.km < 1 ? Math.round(r.km * 1000) + " मीटर" : r.km.toFixed(1) + " km"}` : ""}${r.district && r.district !== cfg.names[0] && r.km != null ? ` · ${esc(r.district)}` : ""}</span>`
       + `<a href="${map(r)}" target="_blank" rel="noopener nofollow">रास्ता देखें ↗</a>`
       + `<a class="claim-link" href="/claim-your-csc.html?${new URLSearchParams({ name: r.vle_name ?? "", pin: r.pincode ?? "", district: r.district ?? cfg.names[0] ?? "", state: cfg.state })}">यह आपका केंद्र है? फ्री में Claim करें</a></li>`;
@@ -64,7 +65,46 @@ const live = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY, state: dbState, names,
       let ul = out.querySelector("ul");
       if (!ul) { ul = document.createElement("ul"); ul.className = "csc-list"; out.append(ul); }
       ul.insertAdjacentHTML("beforeend", rows.map(card).join(""));
+      ul.querySelectorAll<HTMLElement>(".csc-card").forEach(addVote);
     }
+
+    // "Was this centre open?" votes (csc_status_votes). Only added after the
+    // visitor interacts, so the indexed page text does not change.
+    const VOTED = "csc-voted";
+    const store = { get(k: string) { try { return localStorage.getItem(k); } catch { return null; } }, set(k: string, v: string) { try { localStorage.setItem(k, v); } catch {} } };
+    let voter = store.get("csc-voter");
+    if (!voter) { voter = Array.from(crypto.getRandomValues(new Uint8Array(12)), (b) => b.toString(16).padStart(2, "0")).join(""); store.set("csc-voter", voter); }
+    const voted: Record<string, number> = (() => { try { return JSON.parse(store.get(VOTED) || "{}"); } catch { return {}; } })();
+    const thanks = (v: number) => v > 0 ? "✓ धन्यवाद! आपने बताया कि यह केंद्र चालू मिला।" : "✓ धन्यवाद! आपने बताया कि यह केंद्र बंद/नहीं मिला।";
+    function addVote(li: HTMLElement) {
+      if (li.querySelector(".csc-vote")) return;
+      const key = li.dataset.key || keyOf(li.querySelector("strong")?.textContent || "", li.querySelector(".pin")?.textContent || "");
+      if (!/^\d{6}\|.{2,}/.test(key)) return; // needs a PIN and a name (old lists without PIN get no buttons)
+      li.dataset.key = key;
+      const box = document.createElement("div");
+      box.className = "csc-vote";
+      box.innerHTML = voted[key] ? `<span>${thanks(voted[key])}</span>`
+        : `<span>क्या आप यहां गए थे? केंद्र चालू मिला?</span><button type="button" data-v="1">👍 हां, चालू</button><button type="button" data-v="-1">👎 बंद / नहीं मिला</button>`;
+      li.append(box);
+    }
+    document.addEventListener("click", (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLButtonElement>(".csc-vote button");
+      if (!b) return;
+      const li = b.closest<HTMLElement>(".csc-card")!, key = li.dataset.key!, v = Number(b.dataset.v);
+      const box = b.parentElement!;
+      box.querySelectorAll("button").forEach((x) => (x.disabled = true));
+      fetch(`${cfg.url}/rest/v1/csc_status_votes`, {
+        method: "POST", headers: { ...head, "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify({ centre_key: key, csc_id: li.dataset.id || null, vote: v, voter, page: location.pathname.slice(0, 200) }),
+      }).then((r) => {
+        if (r.ok || r.status === 409) { voted[key] = v; store.set(VOTED, JSON.stringify(voted)); box.innerHTML = `<span>${thanks(v)}</span>`; if ((window as any).gtag) (window as any).gtag("event", "csc_vote", { vote: v }); }
+        else box.querySelectorAll("button").forEach((x) => (x.disabled = false));
+      }).catch(() => box.querySelectorAll("button").forEach((x) => (x.disabled = false)));
+    });
+    // The district page's printed list gets the buttons on the first scroll or tap.
+    const evs = ["scroll", "pointerdown", "keydown", "touchstart"];
+    const once = () => { evs.forEach((e) => removeEventListener(e, once)); document.querySelectorAll<HTMLElement>("#list .csc-card").forEach(addVote); };
+    evs.forEach((e) => addEventListener(e, once, { passive: true }));
     async function run(label: string, page: (offset: number) => Promise<Row[]>) {
       status.textContent = "खोज रहे हैं…";
       more.hidden = true;

@@ -1,0 +1,138 @@
+---
+// Seva Sahayak box for a state's guide: approved helpers of that state (call /
+// WhatsApp) and a "I need help" form. The HTML is only an empty slot; the box
+// is built after the visitor's first scroll/tap, so the page text that search
+// engines index stays as it was. Data: sahayak_public, sahayak_leads.
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+import { SAHAYAK_SERVICES, SAHAYAK_STATES } from "../data/sahayak";
+import { sahayakDistricts } from "../lib/sahayak";
+
+interface Props { state: { slug: string; hi: string }; service: string; doc: string }
+const { state, service, doc } = Astro.props;
+const on = SAHAYAK_STATES.includes(state.slug);
+const cfg = on ? {
+  url: SUPABASE_URL, key: SUPABASE_ANON_KEY, state: state.slug, stateHi: state.hi, service, doc,
+  districts: sahayakDistricts()[state.slug] ?? [],
+  names: Object.fromEntries(SAHAYAK_SERVICES.map((s) => [s.key, s.hi])),
+} : null;
+---
+{cfg && <div class="sahayak-slot" data-cfg={JSON.stringify(cfg)}></div>}
+
+<script>
+  type P = { id: string; name: string; business_name: string | null; phone: string; whatsapp: string | null; district: string; area: string | null; services: string[]; meets_in_person: boolean; online_work: boolean; experience_years: number | null; about: string | null };
+  const slot = document.querySelector<HTMLElement>(".sahayak-slot");
+  if (slot) {
+    const c = JSON.parse(slot.dataset.cfg!);
+    const esc = (s: unknown) => String(s ?? "").replace(/[&<>"']/g, (x) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[x]!);
+    const head = { apikey: c.key, Authorization: `Bearer ${c.key}`, "Content-Type": "application/json", Prefer: "return=minimal" };
+    const lead = (row: Record<string, unknown>) => fetch(`${c.url}/rest/v1/sahayak_leads`, { method: "POST", headers: head, body: JSON.stringify({ state: c.state, service: c.service, page: location.pathname.slice(0, 200), ...row }), keepalive: true });
+    let all: P[] = [];
+
+    function card(p: P) {
+      const tags = [p.meets_in_person ? '<span class="sh-b meet">🤝 मिलकर काम</span>' : "", p.online_work ? '<span class="sh-b">💻 ऑनलाइन काम</span>' : "", p.experience_years ? `<span class="sh-b">${p.experience_years} साल का अनुभव</span>` : ""].join("");
+      const wa = p.whatsapp || p.phone;
+      const text = encodeURIComponent(`नमस्ते, SarkariSewa India पर आपका नाम देखा। मुझे ${c.doc} बनवाने में मदद चाहिए।`);
+      const svc = (p.services || []).map((k) => c.names[k]).filter(Boolean).slice(0, 6).join(" · ");
+      return `<li class="sh-card"><strong>${esc(p.business_name || p.name)}</strong>${p.business_name ? `<span class="sh-sub">${esc(p.name)}</span>` : ""}`
+        + `<span class="sh-place">📍 ${esc([p.area, p.district].filter(Boolean).join(", "))}</span>`
+        + `<span class="sh-tags2">${tags}</span>${svc ? `<span class="sh-svc">${esc(svc)}</span>` : ""}${p.about ? `<span class="sh-about">${esc(p.about)}</span>` : ""}`
+        + `<span class="sh-btns"><a class="sh-call" data-kind="call" data-id="${esc(p.id)}" href="tel:+91${esc(p.phone)}">📞 कॉल करें</a>`
+        + `<a class="sh-wa" data-kind="whatsapp" data-id="${esc(p.id)}" href="https://wa.me/91${esc(wa)}?text=${text}" target="_blank" rel="noopener nofollow">WhatsApp</a></span></li>`;
+    }
+    function render(list: HTMLElement, district: string) {
+      const rows = district ? all.filter((p) => p.district.toLowerCase() === district.toLowerCase()) : all;
+      list.innerHTML = rows.length ? `<ul class="sh-list">${rows.map(card).join("")}</ul>`
+        : `<p class="sh-empty">${district ? `${esc(district)} में` : `${esc(c.stateHi)} में`} अभी कोई सहायक नहीं जुड़ा है। नीचे "मुझे मदद चाहिए" भरें; इस ज़िले का सहायक जुड़ते ही आपसे संपर्क कर सकेगा।</p>`;
+    }
+    function build() {
+      const opts = c.districts.map((d: string) => `<option value="${esc(d)}">${esc(d)}</option>`).join("");
+      slot!.innerHTML = `<section class="section sahayak-box" id="sahayak">
+        <h2>🤝 ${esc(c.stateHi)} में ${esc(c.doc)} बनवाने में मदद करने वाले सहायक</h2>
+        <p class="sh-intro">खुद फॉर्म नहीं भर पा रहे? अपने ज़िले के सहायक से सीधे बात करें। <strong>🤝 मिलकर काम</strong> वाले सहायक से आप आमने-सामने मिलकर काम करवा सकते हैं।</p>
+        <label class="sh-lbl" for="sh-dist">अपना ज़िला चुनें</label>
+        <select id="sh-dist" class="sh-sel"><option value="">${esc(c.stateHi)} के सभी ज़िले</option>${opts}</select>
+        <div class="sh-out"><p class="sh-empty">लोड हो रहा है…</p></div>
+        <details class="sh-ask"><summary>📝 मुझे मदद चाहिए: अपना नंबर छोड़ें</summary>
+          <form class="sh-req" novalidate>
+            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <label>आपका नाम<input name="name" maxlength="60" required /></label>
+            <label>मोबाइल नंबर<input name="phone" type="tel" inputmode="numeric" maxlength="10" required /></label>
+            <label>ज़िला<select name="district" required><option value="">चुनें</option>${opts}</select></label>
+            <label class="sh-chk"><input type="checkbox" name="meet" /> मैं सहायक से आमने-सामने मिलकर काम करवाना चाहता/चाहती हूं</label>
+            <label class="sh-chk"><input type="checkbox" name="consent" required /> मेरा नाम और नंबर मेरे ज़िले के सहायक को भेजा जा सकता है, ताकि वह मुझसे संपर्क करे।</label>
+            <button type="submit" class="cta">भेजें</button>
+            <p class="sh-msg" role="status" aria-live="polite"></p>
+          </form>
+        </details>
+        <p class="sh-warn">सहायक निजी लोग हैं, सरकारी कर्मचारी नहीं। SarkariSewa India सिर्फ आपको उनसे जोड़ता है; काम, फीस और भुगतान आप दोनों आपस में तय करें, हम किसी की गारंटी नहीं लेते। <strong>किसी को OTP न बताएं</strong>, सरकारी फीस सिर्फ सरकारी पोर्टल/दफ्तर में भरें, और काम से पहले कुल खर्च पूछ लें।</p>
+        <p class="sh-join">क्या आप यह काम करते हैं? <a href="/list-your-service.html">फ्री में सहायक के रूप में जुड़ें →</a></p>
+      </section>`;
+      const box = slot!.querySelector<HTMLElement>(".sahayak-box")!;
+      const out = box.querySelector<HTMLElement>(".sh-out")!;
+      const sel = box.querySelector<HTMLSelectElement>("#sh-dist")!;
+      const form = box.querySelector<HTMLFormElement>(".sh-req")!;
+      sel.addEventListener("change", () => { render(out, sel.value); (form.elements.namedItem("district") as HTMLSelectElement).value = sel.value; });
+      out.addEventListener("click", (e) => {
+        const a = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[data-kind]");
+        if (!a) return;
+        lead({ kind: a.dataset.kind, provider_id: a.dataset.id, district: all.find((p) => p.id === a.dataset.id)?.district ?? null }).catch(() => {});
+        if ((window as any).gtag) (window as any).gtag("event", "sahayak_contact", { kind: a.dataset.kind, state: c.state });
+      });
+      const started = Date.now();
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const f = form.elements as any, msg = form.querySelector<HTMLElement>(".sh-msg")!;
+        if (f.website.value) return;
+        const phone = String(f.phone.value).replace(/\D/g, "").slice(-10);
+        const say = (t: string) => { msg.textContent = t; };
+        if (String(f.name.value).trim().length < 2) return say("⚠️ अपना नाम लिखें।");
+        if (!/^[6-9]\d{9}$/.test(phone)) return say("⚠️ 10 अंकों का सही मोबाइल नंबर लिखें।");
+        if (!f.district.value) return say("⚠️ ज़िला चुनें।");
+        if (!f.consent.checked) return say("⚠️ सहमति वाले बॉक्स पर टिक करें।");
+        if (Date.now() - started < 3000) return say("⚠️ एक बार जानकारी जांच लें, फिर भेजें।");
+        const btn = form.querySelector<HTMLButtonElement>("button")!; btn.disabled = true; say("भेजा जा रहा है…");
+        lead({ kind: "request", name: String(f.name.value).trim().slice(0, 60), phone, district: f.district.value, consent: true, message: f.meet.checked ? "आमने-सामने मिलना चाहते हैं" : null })
+          .then((r) => {
+            if (r.ok) { form.innerHTML = `<p class="sh-ok">✅ आपकी जानकारी मिल गई। ${esc(f.district.value)} का सहायक उपलब्ध होने पर आपसे संपर्क करेगा। कोई आपसे OTP या एडवांस पैसे मांगे तो सावधान रहें।</p>`; if ((window as any).gtag) (window as any).gtag("event", "sahayak_request", { state: c.state }); }
+            else { say("⚠️ अभी भेजा नहीं जा सका। थोड़ी देर बाद फिर कोशिश करें।"); btn.disabled = false; }
+          })
+          .catch(() => { say("⚠️ इंटरनेट की समस्या। थोड़ी देर बाद फिर कोशिश करें।"); btn.disabled = false; });
+      });
+      const q = `state=eq.${encodeURIComponent(c.state)}&services=cs.${encodeURIComponent(`{${c.service}}`)}&order=meets_in_person.desc,approved_at.desc&limit=60`;
+      fetch(`${c.url}/rest/v1/sahayak_public?select=id,name,business_name,phone,whatsapp,district,area,services,meets_in_person,online_work,experience_years,about&${q}`, { headers: { apikey: c.key, Authorization: `Bearer ${c.key}` } })
+        .then((r) => (r.ok ? r.json() : []))
+        .then((rows: P[]) => { all = Array.isArray(rows) ? rows : []; render(out, sel.value); })
+        .catch(() => { all = []; render(out, sel.value); });
+    }
+    // Built on the first scroll or tap, not on load (see the note at the top).
+    const evs = ["scroll", "pointerdown", "keydown", "touchstart"];
+    const once = () => { evs.forEach((e) => removeEventListener(e, once)); build(); };
+    evs.forEach((e) => addEventListener(e, once, { passive: true }));
+  }
+</script>
+
+<style is:global>
+  .sahayak-box { border: 2px solid var(--c-green, #15803d); border-radius: 16px; padding: 16px; background: var(--c-surface, #fff); }
+  .sahayak-box h2 { margin-top: 0; }
+  .sahayak-box .sh-lbl { display: block; font-weight: 700; margin: 8px 0 4px; }
+  .sahayak-box .sh-sel, .sahayak-box .sh-req input:not([type=checkbox]), .sahayak-box .sh-req select { width: 100%; min-height: 44px; padding: 8px 10px; border: 2px solid var(--c-line); border-radius: 10px; font: inherit; background: var(--c-surface, #fff); color: var(--c-text); box-sizing: border-box; }
+  .sahayak-box .sh-list { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 10px; }
+  .sahayak-box .sh-card { border: 1px solid var(--c-line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+  .sahayak-box .sh-sub, .sahayak-box .sh-place, .sahayak-box .sh-svc { font-size: .9rem; color: var(--c-muted); }
+  .sahayak-box .sh-about { font-size: .92rem; }
+  .sahayak-box .sh-tags2 { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sahayak-box .sh-b { font-size: .8rem; border-radius: 999px; padding: 2px 8px; background: #f1f5f9; color: #1f2937; }
+  .sahayak-box .sh-b.meet { background: #dcfce7; color: #14532d; font-weight: 700; }
+  .sahayak-box .sh-btns { display: flex; gap: 8px; margin-top: 6px; }
+  .sahayak-box .sh-btns a { flex: 1; text-align: center; padding: 10px; border-radius: 10px; font-weight: 800; text-decoration: none; }
+  .sahayak-box .sh-call { background: #0f766e; color: #fff; } .sahayak-box .sh-wa { background: #16a34a; color: #fff; }
+  .sahayak-box .sh-empty { color: var(--c-muted); margin: 12px 0; }
+  .sahayak-box .sh-ask { margin: 12px 0; border: 1px dashed var(--c-line); border-radius: 12px; padding: 10px 12px; }
+  .sahayak-box .sh-ask summary { cursor: pointer; font-weight: 800; }
+  .sahayak-box .sh-req label { display: block; font-weight: 700; margin: 8px 0 0; }
+  .sahayak-box .sh-req .sh-chk { display: flex; gap: 8px; align-items: flex-start; font-weight: 600; }
+  .sahayak-box .sh-req button { width: 100%; margin-top: 10px; border: 0; font: inherit; font-weight: 800; height: 46px; cursor: pointer; }
+  .sahayak-box .hp { position: absolute; left: -9999px; }
+  .sahayak-box .sh-warn { font-size: .86rem; background: #fffbeb; border-left: 4px solid #f59e0b; padding: 8px 10px; border-radius: 8px; color: #1f2937; }
+  .sahayak-box .sh-ok { color: #14532d; font-weight: 700; }
+</style>

@@ -8,6 +8,7 @@
     ["analytics.html", "📈 Analytics"],
     ["subscribers.html", "📬 Subscribers"],
     ["csc.html", "🏬 CSC Claims"],
+    ["sahayak.html", "🤝 Seva Sahayak"],
     ["solar.html", "☀️ Solar Leads"],
     ["rc-reports.html", "🚗 RC Challan Reports"],
     ["posters.html", "🖼️ Daily Posters"],

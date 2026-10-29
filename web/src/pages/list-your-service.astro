@@ -1,0 +1,222 @@
+---
+// Seva Sahayak sign-up: people who help others with government forms (online
+// filing, papers at the office) list themselves for free. Saves to
+// sahayak_providers (status pending); the admin approves after a WhatsApp
+// check (admin/sahayak.html). See supabase/sahayak.sql.
+import Base from "../layouts/Base.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import Faq from "../components/Faq.astro";
+import { STATES } from "../data/site";
+import { SAHAYAK_SERVICES, SAHAYAK_STATES } from "../data/sahayak";
+import { sahayakDistricts } from "../lib/sahayak";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+
+const districts = sahayakDistricts();
+const testStates = SAHAYAK_STATES.map((s) => STATES.find((x) => x.slug === s)?.hi).filter(Boolean).join(", ");
+const crumbs = [{ label: "होम", href: "/" }, { label: "सेवा सहायक बनें" }];
+const faq = [
+  { q: "क्या अपनी सेवा लिस्ट करना फ्री है?", a: "हां, अभी लिस्ट करना और ग्राहक पाना पूरी तरह फ्री है। आगे कभी शुल्क शुरू हुआ तो पहले से बताया जाएगा, और नए सहायकों की पहली 20 लीड फ्री रहेंगी।" },
+  { q: "कौन सेवा सहायक बन सकता है?", a: "जो लोग दूसरों के सरकारी फॉर्म ऑनलाइन भरते हैं या कागज़ लेकर दफ्तर में जमा कराने में मदद करते हैं: साइबर कैफे, फोटोकॉपी/टाइपिंग की दुकान, डॉक्यूमेंट राइटर, CSC संचालक, या अपने इलाके में यह काम करने वाला कोई भी भरोसेमंद व्यक्ति।" },
+  { q: "ग्राहक मुझसे कैसे जुड़ेंगे?", a: "मंज़ूरी के बाद आपका नाम, इलाका, सेवाएं और कॉल/WhatsApp बटन आपके राज्य की गाइड पर दिखेंगे। ग्राहक सीधे आपसे बात करेंगे। जो लोग हमारी साइट पर \"मुझे मदद चाहिए\" फॉर्म भरेंगे, उनकी जानकारी भी आपके ज़िले के सहायकों तक पहुंचाई जाएगी।" },
+  { q: "काम का रेट कौन तय करेगा?", a: "आप और ग्राहक आपस में फोन पर बात करके तय करेंगे। सरकारी फीस जितनी है उतनी ही लें, और अपना सेवा शुल्क काम से पहले साफ बताएं।" },
+  { q: "क्या SarkariSewa India काम या पैसे की गारंटी लेता है?", a: "नहीं। हम सिर्फ ग्राहक और सहायक को आपस में जोड़ते हैं। काम, पैसा और भरोसा दोनों पक्षों के बीच की बात है; हम किसी की गारंटी नहीं लेते।" },
+  { q: "\"ग्राहक से मिल सकते हैं\" का क्या मतलब है?", a: "अगर आप ग्राहक से अपनी दुकान/दफ्तर पर या उसके घर के पास आमने-सामने मिल सकते हैं, तो यह टिक करें। आपके नाम के साथ \"🤝 मिलकर काम\" दिखेगा। बहुत से लोग, खासकर बुज़ुर्ग, ऑनलाइन से ज़्यादा आमने-सामने मिलने वाले पर भरोसा करते हैं।" },
+  { q: "मंज़ूरी कितने दिन में मिलेगी?", a: "आम तौर पर 2-3 दिन में। हम आपके दिए नंबर पर WhatsApp करके बात करते हैं। हम कभी OTP, पासवर्ड या पैसा नहीं मांगते।" },
+];
+---
+<Base
+  title="सेवा सहायक बनें: सरकारी फॉर्म भरने का काम करते हैं? फ्री लिस्टिंग, सीधे ग्राहक"
+  description="साइबर कैफे, डॉक्यूमेंट राइटर या फॉर्म भरने में मदद करते हैं? वरिष्ठ नागरिक कार्ड, पेंशन, राशन कार्ड, प्रमाण पत्र के ग्राहक पाएं। फ्री में अपनी सेवा लिस्ट करें।"
+  breadcrumbs={crumbs}
+  faq={faq}
+  schemaType="WebPage"
+  published="2026-10-29"
+  modified="2026-10-29"
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="page sahayak-page">
+    <div>
+      <section class="sh-hero">
+        <p class="sh-kicker">सेवा सहायक · फ्री लिस्टिंग</p>
+        <h1>सरकारी फॉर्म भरने का काम करते हैं? अपनी सेवा फ्री में लिस्ट करें और अपने ज़िले के ग्राहक पाएं</h1>
+        <p class="page-intro">हर महीने हज़ारों लोग हमारी साइट पर <strong>वरिष्ठ नागरिक कार्ड, वृद्धावस्था पेंशन, राशन कार्ड, आय-जाति-निवास प्रमाण पत्र</strong> बनाने का तरीका पढ़ते हैं। इनमें से बहुत से लोग, खासकर बुज़ुर्ग, खुद फॉर्म नहीं भर पाते और किसी भरोसेमंद मदद करने वाले को ढूंढते हैं। अगर आप यह काम करते हैं, तो यहां फ्री में जुड़ें: ग्राहक सीधे आपको कॉल या WhatsApp करेंगे।</p>
+        <ul class="sh-badges">
+          <li><strong>₹0</strong><span>लिस्टिंग फ्री</span></li>
+          <li><strong>सीधे</strong><span>ग्राहक का कॉल/WhatsApp</span></li>
+          <li><strong>आप</strong><span>खुद रेट तय करें</span></li>
+          <li><strong>🤝</strong><span>आमने-सामने मिलने का विकल्प</span></li>
+        </ul>
+        <a class="cta" href="#form">फ्री में जुड़ें</a>
+      </section>
+
+      <section class="section" id="kaun">
+        <h2>कौन जुड़ सकता है</h2>
+        <ul class="checklist">
+          <li><strong>साइबर कैफे, फोटोकॉपी और टाइपिंग की दुकान</strong> जहां लोगों के ऑनलाइन फॉर्म भरे जाते हैं।</li>
+          <li><strong>डॉक्यूमेंट राइटर और आवेदन भरने वाले</strong> जो कागज़ तैयार करके तहसील, नगर निगम, समाज कल्याण या दूसरे दफ्तर में जमा कराने में मदद करते हैं।</li>
+          <li><strong>CSC / जन सेवा केंद्र संचालक</strong> जो अपने केंद्र के बाहर भी ग्राहक लेना चाहते हैं। (सिर्फ केंद्र लिस्ट करना है तो <a href="/claim-your-csc.html">CSC केंद्र जोड़ें</a>।)</li>
+          <li><strong>अपने इलाके में यह काम करने वाला कोई भी भरोसेमंद व्यक्ति</strong> जो सरकारी नियम और फीस ईमानदारी से बताता हो।</li>
+        </ul>
+      </section>
+
+      <section class="section" id="kaise">
+        <h2>यह कैसे काम करता है</h2>
+        <ol class="sh-steps">
+          <li><strong>फॉर्म भरें (2 मिनट):</strong> नाम, मोबाइल, ज़िला, इलाका और आप कौन से काम करते हैं।</li>
+          <li><strong>जांच:</strong> हमारी टीम 2-3 दिन में आपके WhatsApp पर बात करके जानकारी पक्की करती है।</li>
+          <li><strong>आपका नाम गाइड पर:</strong> मंज़ूरी के बाद आपका नाम, इलाका, सेवाएं और कॉल/WhatsApp बटन आपके राज्य की गाइड पर, आपके ज़िले के लोगों को दिखेंगे।</li>
+          <li><strong>सीधे ग्राहक:</strong> ग्राहक आपको कॉल या WhatsApp करेंगे। जो लोग साइट पर "मुझे मदद चाहिए" भरेंगे, उनकी जानकारी भी आपके ज़िले के सहायकों तक पहुंचेगी।</li>
+          <li><strong>आपस में तय करें:</strong> काम, रेट और मिलने की जगह आप और ग्राहक फोन पर तय करेंगे।</li>
+        </ol>
+      </section>
+
+      <section class="section" id="milna">
+        <h2>🤝 आमने-सामने मिलने का विकल्प: भरोसा बढ़ाता है</h2>
+        <p>बहुत से लोग अपने कागज़ और फोन नंबर किसी अनजान को ऑनलाइन भेजने से डरते हैं। अगर आप ग्राहक से <strong>अपनी दुकान/दफ्तर पर या उसके घर के पास</strong> मिल सकते हैं, तो फॉर्म में यह टिक करें। आपके नाम के साथ <strong>"🤝 मिलकर काम"</strong> दिखेगा, और जो ग्राहक ऑनलाइन काम नहीं करवाना चाहते, वे आपसे मिलकर काम करवा सकेंगे। ऐसे ग्राहक को आप तक खुद आना होगा, या आप दोनों मिलने की जगह तय करेंगे।</p>
+      </section>
+
+      <section class="section" id="kaam">
+        <h2>किन कामों के ग्राहक मिलेंगे</h2>
+        <p>अभी शुरुआत <strong>वरिष्ठ नागरिक कार्ड</strong> से हो रही है, जिसकी सबसे ज़्यादा मांग है। पहले {testStates} की गाइड पर सहायक दिखेंगे; बाकी राज्यों के सहायक भी अभी से जुड़ सकते हैं, उनका नाम अगले चरण में दिखेगा।</p>
+        <div class="sh-tags">{SAHAYAK_SERVICES.map((s) => <span>{s.hi}</span>)}</div>
+        <p class="hint">आधार बनवाने/अपडेट के काम सिर्फ UIDAI से मंज़ूर केंद्रों पर होते हैं, इसलिए यह सूची में नहीं है।</p>
+      </section>
+
+      <section class="section sh-rules" id="niyam">
+        <h2>सहायकों के नियम (ज़रूरी)</h2>
+        <ol>
+          <li>ग्राहक से <strong>कभी OTP, बैंक PIN या पासवर्ड न लें</strong>। OTP ग्राहक खुद डाले।</li>
+          <li><strong>सरकारी फीस जितनी है उतनी ही</strong> बताएं, और अपना सेवा शुल्क काम शुरू करने से पहले साफ बताएं।</li>
+          <li>"पक्का पास करा देंगे", "सेटिंग है" जैसे वादे न करें। <strong>रिश्वत या गलत तरीके से कोई काम न करें।</strong></li>
+          <li>गलत या नकली कागज़ से कोई आवेदन न करें।</li>
+          <li>ग्राहक के कागज़ और नंबर सिर्फ उसी काम के लिए इस्तेमाल करें, किसी और को न दें।</li>
+          <li>नियम तोड़ने या ग्राहक की शिकायत पर आपकी लिस्टिंग हटाई जा सकती है।</li>
+        </ol>
+        <p class="sh-note"><strong>गारंटी नहीं:</strong> SarkariSewa India एक निजी वेबसाइट है, सरकारी नहीं। हम सिर्फ ग्राहक और सहायक को आपस में जोड़ते हैं। काम, पैसे का लेन-देन और भरोसा दोनों पक्षों के बीच की बात है; हम किसी काम या भुगतान की गारंटी नहीं लेते।</p>
+      </section>
+
+      <form class="claim-form sh-form" id="form" novalidate>
+        <h2>फ्री में जुड़ें</h2>
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <fieldset>
+          <legend>1. आपकी जानकारी</legend>
+          <div class="grid2">
+            <div><label for="sh-name">आपका नाम *</label><input type="text" id="sh-name" name="name" maxlength="80" required /></div>
+            <div><label for="sh-biz">दुकान / काम का नाम <span class="hint">(हो तो)</span></label><input type="text" id="sh-biz" name="business_name" maxlength="100" /></div>
+            <div><label for="sh-phone">मोबाइल नंबर * <span class="hint">(ग्राहकों को कॉल बटन में दिखेगा)</span></label><input type="tel" id="sh-phone" name="phone" inputmode="numeric" maxlength="10" required /></div>
+            <div><label for="sh-wa">WhatsApp नंबर</label><input type="tel" id="sh-wa" name="whatsapp" inputmode="numeric" maxlength="10" /></div>
+            <div><label for="sh-exp">कितने साल से यह काम कर रहे हैं</label><input type="number" id="sh-exp" name="experience_years" min="0" max="60" /></div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>2. कहां काम करते हैं</legend>
+          <div class="grid2">
+            <div><label for="sh-state">राज्य *</label><select id="sh-state" name="state" required><option value="">चुनें</option>{STATES.map((s) => <option value={s.slug}>{s.hi} ({s.name})</option>)}</select></div>
+            <div><label for="sh-district">ज़िला *</label><input type="text" id="sh-district" name="district" list="sh-districts" maxlength="60" required /><datalist id="sh-districts"></datalist></div>
+          </div>
+          <label for="sh-area">इलाका / कस्बा / दफ्तर के पास <span class="hint">(जैसे "तहसील के सामने, सदर बाज़ार")</span></label>
+          <input type="text" id="sh-area" name="area" maxlength="120" />
+        </fieldset>
+        <fieldset>
+          <legend>3. आप कौन से काम करते हैं *</legend>
+          <div class="checks">{SAHAYAK_SERVICES.map((s) => <label><input type="checkbox" name="services" value={s.key} checked={s.key === "senior-citizen-card"} /> {s.hi}</label>)}</div>
+          <label class="inline"><input type="checkbox" name="online_work" checked /> ग्राहक के भेजे कागज़ों से ऑनलाइन फॉर्म भर देता/देती हूं</label>
+          <label class="inline sh-meet"><input type="checkbox" name="meets_in_person" /> <span><strong>🤝 ग्राहक से आमने-सामने मिल सकता/सकती हूं</strong> (अपनी दुकान/दफ्तर पर या पास में)</span></label>
+          <label for="sh-about">अपने काम के बारे में दो लाइन <span class="hint">(ग्राहकों को दिखेगा)</span></label>
+          <textarea id="sh-about" name="about" maxlength="600" placeholder="जैसे: 8 साल से तहसील के पास फॉर्म भरने और कागज़ जमा कराने का काम करता हूं।"></textarea>
+        </fieldset>
+        <fieldset>
+          <legend>4. सहमति</legend>
+          <label class="inline"><input type="checkbox" name="consent_public" required /> <span>मेरा नाम, इलाका, सेवाएं और ऊपर दिए नंबर साइट पर ग्राहकों को दिखाए जा सकते हैं, और SarkariSewa India जांच के लिए मुझसे WhatsApp/कॉल पर संपर्क कर सकता है।</span></label>
+          <label class="inline"><input type="checkbox" name="agreed_rules" required /> <span>मैंने ऊपर के <a href="#niyam">नियम</a> पढ़ लिए हैं और मानूंगा/मानूंगी। मैं समझता/समझती हूं कि SarkariSewa India किसी काम या भुगतान की गारंटी नहीं लेता।</span></label>
+        </fieldset>
+        <button type="submit" class="cta">फ्री में जुड़ें</button>
+        <p class="claim-msg" id="sh-out" role="status" aria-live="polite"></p>
+      </form>
+
+      <section class="section sh-done" id="sh-done" hidden tabindex="-1">
+        <h2>✅ आपका फॉर्म मिल गया!</h2>
+        <p>हमारी टीम 2-3 दिन में आपके WhatsApp पर संपर्क करेगी। मंज़ूरी के बाद आपका नाम आपके राज्य की गाइड पर दिखने लगेगा।</p>
+        <p>हम कभी OTP, पासवर्ड या पैसा नहीं मांगते। ऐसा कोई कहे तो सावधान रहें।</p>
+        <p><a class="cta secondary" href="/service/senior-citizen-card.html">वरिष्ठ नागरिक कार्ड गाइड देखें</a></p>
+      </section>
+
+      <Faq items={faq} />
+    </div>
+  </article>
+
+  <script is:inline define:vars={{ url: SUPABASE_URL, key: SUPABASE_ANON_KEY, districts }}>
+  (function () {
+    var f = document.getElementById("form"), out = document.getElementById("sh-out"), started = Date.now();
+    var dl = document.getElementById("sh-districts");
+    f.state.addEventListener("change", function () {
+      dl.innerHTML = (districts[f.state.value] || []).map(function (d) { return '<option value="' + d.replace(/"/g, "") + '">'; }).join("");
+    });
+    var mob = function (v) { var d = String(v || "").replace(/\D/g, ""); return d.length > 10 ? d.slice(-10) : d; };
+    f.phone.addEventListener("change", function () { if (!f.whatsapp.value.trim()) f.whatsapp.value = mob(f.phone.value); });
+    function fail(msg, el) {
+      out.textContent = "⚠️ " + msg; out.style.color = "var(--c-red)";
+      (el || out).scrollIntoView({ behavior: "smooth", block: "center" });
+      if (el && el.focus) setTimeout(function () { el.focus(); }, 400);
+    }
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (f.website.value) return;
+      var ph = mob(f.phone.value), wa = mob(f.whatsapp.value);
+      var services = [].map.call(f.querySelectorAll('input[name="services"]:checked'), function (x) { return x.value; });
+      if (f.name.value.trim().length < 2) return fail("अपना नाम लिखें।", f.name);
+      if (!/^[6-9]\d{9}$/.test(ph)) return fail("10 अंकों का सही मोबाइल नंबर भरें।", f.phone);
+      if (wa && !/^[6-9]\d{9}$/.test(wa)) return fail("WhatsApp नंबर 10 अंकों का सही नंबर हो।", f.whatsapp);
+      if (!f.state.value) return fail("राज्य चुनें।", f.state);
+      if (f.district.value.trim().length < 2) return fail("ज़िला लिखें।", f.district);
+      if (!services.length) return fail("कम से कम एक काम चुनें।");
+      if (!f.consent_public.checked || !f.agreed_rules.checked) return fail("सहमति वाले दोनों बॉक्स पर टिक करें।", f.consent_public);
+      if (Date.now() - started < 4000) return fail("कृपया जानकारी एक बार जांच लें, फिर दोबारा भेजें।");
+      var exp = f.experience_years.value ? Math.min(60, Math.max(0, parseInt(f.experience_years.value, 10) || 0)) : null;
+      var row = {
+        name: f.name.value.trim().slice(0, 80), business_name: f.business_name.value.trim().slice(0, 100) || null,
+        phone: ph, whatsapp: wa || null, state: f.state.value, district: f.district.value.trim().slice(0, 60),
+        area: f.area.value.trim().slice(0, 120) || null, services: services,
+        online_work: f.online_work.checked, meets_in_person: f.meets_in_person.checked,
+        experience_years: exp, about: f.about.value.trim().slice(0, 600) || null,
+        consent_public: true, agreed_rules: true,
+      };
+      var btn = f.querySelector("button[type=submit]"); btn.disabled = true; out.style.color = ""; out.textContent = "भेजा जा रहा है…";
+      fetch(url + "/rest/v1/sahayak_providers", {
+        method: "POST",
+        headers: { apikey: key, Authorization: "Bearer " + key, "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify(row),
+      }).then(function (r) {
+        if (r.ok) {
+          f.hidden = true;
+          var done = document.getElementById("sh-done"); done.hidden = false;
+          done.scrollIntoView({ behavior: "smooth", block: "start" }); done.focus({ preventScroll: true });
+          if (window.gtag) gtag("event", "sahayak_signup", { state: row.state });
+          return;
+        }
+        return r.text().then(function (t) {
+          fail(t.indexOf("too many") !== -1 ? "इस नंबर से पहले ही फॉर्म भेजे जा चुके हैं। हम जल्द संपर्क करेंगे।" : "फॉर्म नहीं भेजा जा सका। जानकारी जांचकर फिर कोशिश करें।");
+          btn.disabled = false;
+        });
+      }).catch(function () { fail("इंटरनेट की समस्या। थोड़ी देर बाद फिर भेजें।"); btn.disabled = false; });
+    });
+  })();
+  </script>
+  <style is:global>
+    .sh-hero { background: linear-gradient(135deg, var(--c-green-50, #ecfdf5), #fff7ed); border: 1px solid var(--c-line); border-radius: 18px; padding: 20px 18px; margin: 0 0 18px; }
+    .sh-hero h1 { margin: 6px 0 10px; line-height: 1.3; }
+    .sh-kicker { margin: 0; font-size: .82rem; font-weight: 800; letter-spacing: .02em; color: var(--c-green, #15803d); }
+    .sh-badges { list-style: none; padding: 0; margin: 14px 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    @media (min-width: 640px) { .sh-badges { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    .sh-badges li { background: var(--c-surface, #fff); border: 1px solid var(--c-line); border-radius: 12px; padding: 10px; text-align: center; }
+    .sh-badges strong { display: block; font-size: 1.15rem; color: var(--c-ink); }
+    .sh-badges span { font-size: .82rem; color: var(--c-muted); }
+    .sh-steps { padding-left: 22px; } .sh-steps li { margin: 6px 0; }
+    .sh-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    .sh-tags span { border: 1px solid var(--c-line); border-radius: 999px; padding: 4px 10px; font-size: .88rem; background: var(--c-surface, #fff); }
+    .sh-rules ol { padding-left: 22px; } .sh-rules li { margin: 5px 0; }
+    .sh-note { border-left: 4px solid #f59e0b; background: #fffbeb; color: #1f2937; padding: 10px 12px; border-radius: 8px; }
+    .sh-form h2 { margin-top: 0; }
+    .sh-form .sh-meet { border: 2px dashed var(--c-green, #15803d); border-radius: 12px; padding: 10px 12px; margin: 10px 0; }
+  </style>
+</Base>
