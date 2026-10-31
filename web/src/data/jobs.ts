@@ -6,6 +6,16 @@ export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway"
 // list them first on that state's guides (components/JobStrip.astro).
 
 export const JOBS: Job[] = [
+  { slug: "bel-probationary-engineer-recruitment-2026", sector: "PSU", last: "2026-11-18", lastNote: "रात 11:59 तक; B.E./B.Tech, 350 पद" },
+  { slug: "rrb-isolated-categories-recruitment-2026", sector: "Railway", last: "2026-12-04", lastNote: "आवेदन 5 नवंबर से; CEN 09/2026, लगभग 195 पद" },
+  { slug: "aees-teacher-recruitment-2026", sector: "Central Govt", last: "2026-11-18", lastNote: "कुछ रिपोर्टों में 22 नवंबर; 254 पद, PGT/TGT/PRT" },
+  { slug: "appsc-group-2-recruitment-2026", sector: "State Govt", last: "2026-11-30", lastNote: "आवेदन 10 नवंबर से; 686 पद", state: "andhra-pradesh" },
+  { slug: "jkssb-junior-engineer-civil-recruitment-2026", sector: "State Govt", last: "2026-12-29", lastNote: "आवेदन 30 नवंबर से; सिविल डिप्लोमा, 458 पद", status: "expected", state: "jammu-kashmir" },
+  { slug: "haryana-ration-depot-licence-2026", sector: "State Govt", last: "2026-11-10", lastNote: "डिपो लाइसेंस, सरकारी नौकरी नहीं; सरल पोर्टल", state: "haryana" },
+  { slug: "ibps-server-administrator-assistant-recruitment-2026", sector: "Banking", last: "2026-11-12", lastNote: "IBPS संस्था के अपने पद; अनुभव ज़रूरी" },
+  { slug: "kea-fda-sda-recruitment-2026", sector: "State Govt", last: "2026-11-25", lastNote: "लगभग 5,431 पद; ग्रेजुएट / 12वीं", state: "karnataka" },
+  { slug: "ongc-apprentice-recruitment-2026", sector: "PSU", last: "2026-11-20", lastNote: "अप्रेंटिसशिप, पक्की नौकरी नहीं; NAPS/NATS से" },
+  { slug: "du-non-teaching-assistant-recruitment-2026", sector: "Central Govt", last: "2026-11-09", lastNote: "सीनियर असिस्टेंट, असिस्टेंट; लगभग 126 पद", state: "delhi" },
   { slug: "uppsc-ro-aro-recruitment-2026", sector: "State Govt", last: "2026-11-26", lastNote: "लगभग 501 पद; पहले OTR, सुधार 3 दिसंबर तक", state: "uttar-pradesh" },
   { slug: "upessc-tgt-recruitment-2026", sector: "State Govt", last: "2026-11-23", lastNote: "17,735 पद; परीक्षा 23-24 दिसंबर 2026", state: "uttar-pradesh" },
   { slug: "upessc-principal-headmaster-recruitment-2026", sector: "State Govt", last: "2026-11-22", lastNote: "प्रधानाचार्य 1,475 + प्रधानाध्यापक 1,172 पद", state: "uttar-pradesh" },
