@@ -94,8 +94,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${esc(c.full_address)}<br><small>${esc([c.city, c.district, c.state, c.pincode].filter(Boolean).join(", "))}</small><br><a href="${map}" target="_blank" rel="noopener">Map ↗</a>${services ? `<br><small>${esc(services)}</small>` : ""}</td>
         <td>${esc(c.owner_name)}<br><code>${esc(c.owner_mobile)}</code><br>${verifyLink(c)}<br><small>Public: ${esc(c.public_phone || "-")} / WA ${esc(c.public_whatsapp || "-")}</small></td>
         <td>
-          <button class="theme-toggle-btn" style="background:#10b981; color:#fff; border:none;" onclick="approveCSC('${esc(c.id)}')">Approve</button>
-          <button class="logout-btn" style="margin-left:8px;" onclick="rejectCSC('${esc(c.id)}')">Reject</button>
+          <button class="theme-toggle-btn" style="background:#10b981; color:#fff; border:none; margin-bottom:4px;" onclick="approveCSC('${esc(c.id)}')" title="Board photo received on WhatsApp">✅ Approve (photo received)</button><br>
+          <button class="theme-toggle-btn" style="margin-bottom:4px;" onclick="approveCSC('${esc(c.id)}', true)" title="No photo yet: page shows address and services, no phone">Approve without phone</button><br>
+          <button class="logout-btn" onclick="rejectCSC('${esc(c.id)}')">Reject</button>
         </td>
       </tr>`;
     }).join("");
@@ -123,6 +124,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <button class="theme-toggle-btn" style="margin-bottom:4px;" onclick="copyPage('${esc(c.id)}')">📋 Copy link</button><br>
           <button class="theme-toggle-btn" style="margin-bottom:4px;" onclick="resetPassword('${esc(c.id)}')">🔑 New password</button>
           <small style="display:block;margin-bottom:4px;color:var(--admin-text-muted)">${c.edit_code_hash ? "Password set" : "No password yet"}</small>
+          ${c.public_phone || c.public_whatsapp ? "" : `<button class="theme-toggle-btn" style="background:#10b981; color:#fff; border:none; margin-bottom:4px;" onclick="showPhone('${esc(c.id)}')">📞 Photo received: show phone</button><br>`}
           <button class="logout-btn" onclick="rejectCSC('${esc(c.id)}')">Revoke</button>
         </td>
       </tr>`;
@@ -275,20 +277,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.shareProfile = (id) => sendLinks(id, false);
   window.resetPassword = (id) => sendLinks(id, true);
 
-  window.approveCSC = async (id) => {
+  // Phone and WhatsApp buttons go live only after the board photo arrives on
+  // WhatsApp; without it the page shows address, services and hours only.
+  window.approveCSC = async (id, noPhone) => {
     const c = byId[id];
-    if (!c || !confirm(`Approve "${c.centre_name}"? Make sure you have spoken to the owner first.`)) return;
+    if (!c || !confirm(noPhone ? `Approve "${c.centre_name}" WITHOUT phone/WhatsApp buttons?` : `Approve "${c.centre_name}" with phone? Only if the board photo came from the owner's WhatsApp.`)) return;
     try {
       const client = await getSupabaseClient();
       const now = new Date().toISOString();
       const { error } = await client
         .from("csc_claims")
-        .update({ status: "approved", approved_at: now, reviewed_at: now, profile_url: `csc-centre.html?id=${encodeURIComponent(c.application_id)}`, profile_generated_at: now })
+        .update({ status: "approved", approved_at: now, reviewed_at: now, profile_url: `csc-centre.html?id=${encodeURIComponent(c.application_id)}`, profile_generated_at: now, ...(noPhone ? { public_phone: null, public_whatsapp: null } : {}) })
         .eq("id", id);
       if (error) throw error;
       loadCSCData();
     } catch (err) {
       alert("Error approving: " + err.message);
+    }
+  };
+
+  window.showPhone = async (id) => {
+    const c = byId[id];
+    const m = digits(c && c.owner_mobile);
+    if (!c || !/^[6-9]\d{9}$/.test(m) || !confirm(`Show ${m} as call and WhatsApp number for "${c.centre_name}"?`)) return;
+    try {
+      const client = await getSupabaseClient();
+      const { error } = await client.from("csc_claims").update({ public_phone: m, public_whatsapp: m }).eq("id", id);
+      if (error) throw error;
+      loadCSCData();
+    } catch (err) {
+      alert("Could not update: " + err.message);
     }
   };
 
