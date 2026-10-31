@@ -203,6 +203,6 @@ export const PAID_SERVICES: PaidService[] = [
 // SarkariSewa India WhatsApp Business number (10 digits). Centre owners send
 // their application number and a photo of the centre here to verify. Empty:
 // the verify button is not shown.
-export const SUPPORT_WHATSAPP = "";
+export const SUPPORT_WHATSAPP = "8830190945";
 export const WHATSAPP_CHANNEL = "https://whatsapp.com/channel/0029VbDjAqgEAKWFibyzWr0g";
 export const TELEGRAM_CHANNEL = "https://t.me/sarkarisewaindia";
