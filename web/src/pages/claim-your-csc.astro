@@ -5,7 +5,7 @@
 import Base from "../layouts/Base.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Faq from "../components/Faq.astro";
-import { STATES } from "../data/site";
+import { STATES, SUPPORT_WHATSAPP } from "../data/site";
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
 import { CENTRE_TYPES, SERVICE_CHOICES } from "../lib/centre-types";
 
@@ -17,7 +17,7 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "CSC सेंटर
 const faq = [
   { q: "क्या केंद्र जोड़ना फ्री है?", a: "हां, अभी केंद्र जोड़ना और दिखना पूरी तरह फ्री है। कोई पैसा न दें; SarkariSewa के नाम पर पैसा मांगने वाले से सावधान रहें।" },
   { q: "मेरा केंद्र कब और कहां दिखेगा?", a: "आपका फॉर्म मिलने के बाद हम आपके मोबाइल या WhatsApp पर बात करके जानकारी जांचते हैं। सही पाए जाने पर आपका केंद्र आपके ज़िले के CSC पेज पर 'सत्यापित केंद्र' में सबसे ऊपर और अपने अलग पेज पर दिखेगा, कॉल और WhatsApp बटन के साथ।" },
-  { q: "जांच कैसे होती है?", a: "हम दिए गए नंबर पर कॉल या WhatsApp करते हैं और ज़रूरत हो तो केंद्र की फोटो, CSC ID या VLE प्रमाण मांगते हैं। गलत, नकली या किसी और के केंद्र की जानकारी वाले फॉर्म रद्द कर दिए जाते हैं।" },
+  { q: "जांच कैसे होती है?", a: "फॉर्म भेजने के बाद WhatsApp पर पुष्टि होती है: उसी चैट में केंद्र के बोर्ड की फोटो भेजें। CSC ID / VLE ID ज़रूरी है। फोटो मिलने पर ही आपके पेज पर कॉल और WhatsApp बटन दिखते हैं। गलत, नकली या किसी और के केंद्र की जानकारी वाला आवेदन रद्द कर दिया जाता है।" },
   { q: "मुझे कैसे पता चलेगा कि ग्राहक SarkariSewa से आया?", a: "हमारी साइट से WhatsApp करने वाले ग्राहक का पहला संदेश 'SarkariSewa India पर देखा' से शुरू होता है। आप अपने केंद्र के पेज पर 'मुझे ग्राहक मिले' फॉर्म से हमें बता भी सकते हैं।" },
   { q: "घर बैठे काम की requests कैसे मिलती हैं?", a: "हमारी साइट पर लोग 'घर बैठे CSC से काम' फॉर्म भरते हैं। हम उनके इलाके के सत्यापित केंद्र को WhatsApp पर पहले सिर्फ़ काम और जगह बताते हैं। आप 'हाँ' लिखें, तब ग्राहक का नाम और नंबर भेजते हैं। शर्तें: विनम्र व्यवहार, सरकारी फीस और तय सेवा शुल्क से ज़्यादा नहीं, हर भुगतान की रसीद, बायोमेट्रिक काम सिर्फ़ ग्राहक की मौजूदगी में, और 2 घंटे के अंदर जवाब। जवाब देने वाले केंद्रों को आगे ज़्यादा काम मिलता है। अभी इसका कोई शुल्क नहीं है।" },
   { q: "मेरा निजी नंबर सबको दिखेगा?", a: "नहीं। मालिक का नाम और निजी मोबाइल सिर्फ जांच के लिए है। साइट पर वही नंबर दिखेगा जो आप 'ग्राहकों के लिए' वाले खाने में भरेंगे और दिखाने की अनुमति देंगे।" },
@@ -52,7 +52,7 @@ const faq = [
             <div><label for="centre_type">केंद्र का प्रकार *</label><select id="centre_type" name="centre_type">{TYPES.map((t) => <option value={t.value} data-kind={t.kind}>{t.label}</option>)}</select></div>
             <div><label for="owner_name">संचालक (VLE) का नाम *</label><input type="text" id="owner_name" name="owner_name" maxlength="120" required /></div>
             <div><label for="owner_mobile">संचालक का मोबाइल * <span class="hint">(जांच के लिए, सबको नहीं दिखेगा)</span></label><input type="tel" id="owner_mobile" name="owner_mobile" inputmode="numeric" maxlength="10" required /></div>
-            <div><label for="csc_id" id="csc_id_label">CSC ID / VLE ID <span class="hint">(हो तो ज़रूर भरें, जल्दी सत्यापन)</span></label><input type="text" id="csc_id" name="csc_id" maxlength="40" /></div>
+            <div><label for="csc_id" id="csc_id_label">CSC ID / VLE ID * <span class="hint">(ज़रूरी)</span></label><input type="text" id="csc_id" name="csc_id" maxlength="40" required /></div>
             <div><label for="years">कितने साल से चल रहा है</label><input type="number" id="years" name="years_of_operation" min="0" max="60" /></div>
           </div>
         </fieldset>
@@ -129,11 +129,15 @@ const faq = [
         <h2>✅ आपका आवेदन मिल गया!</h2>
         <p>आपका आवेदन नंबर: <strong id="done-id"></strong> (इसे संभालकर रखें)</p>
         <ol class="steps">
-          <li><strong>जांच (2-3 दिन):</strong> SarkariSewa India की टीम आपके मोबाइल/WhatsApp पर संपर्क करेगी और केंद्र के बोर्ड की फोटो, CSC/VLE ID (हो तो) और लोकेशन मांगेगी।</li>
+          {SUPPORT_WHATSAPP
+            ? <li><strong>अभी WhatsApp से पुष्टि करें:</strong> नीचे का बटन दबाकर संदेश भेजें, फिर <strong>उसी चैट में केंद्र/दुकान के बोर्ड की एक फोटो</strong> भेजें।</li>
+            : <li><strong>WhatsApp पर पुष्टि:</strong> SarkariSewa India की टीम आपके WhatsApp पर संदेश भेजेगी; जवाब में <strong>केंद्र/दुकान के बोर्ड की एक फोटो</strong> भेजें।</li>}
+          <li><strong>फोटो मिलने पर:</strong> आपके पेज पर कॉल और WhatsApp बटन दिखेंगे, ताकि ग्राहक सीधे आपसे बात करें। बिना फोटो के आपका केंद्र पता, सेवाएं और समय के साथ दिखेगा, पर फोन नंबर नहीं।</li>
           <li><strong>आपका अपना पेज:</strong> सत्यापन के बाद आपके केंद्र का अपना पेज बनेगा, जिसका लिंक आपको WhatsApp पर भेजा जाएगा। उस पेज पर आपकी सेवाएं, समय, पता, कॉल और WhatsApp बटन होंगे।</li>
           <li><strong>ज़िले के पेज पर सबसे ऊपर:</strong> आपका केंद्र आपके ज़िले के CSC पेज पर "✓ सत्यापित केंद्र" में सबसे ऊपर दिखेगा, ताकि पास के लोग सीधे आपसे संपर्क करें।</li>
           <li><strong>जानकारी खुद बदलें:</strong> WhatsApp पर एक पासवर्ड भी मिलेगा, जिससे आप बाद में अपनी सेवाएं और समय खुद बदल सकेंगे।</li>
         </ol>
+        {SUPPORT_WHATSAPP && <p><a class="cta wa-verify" id="wa-verify" href="#" target="_blank" rel="noopener">✅ WhatsApp से पुष्टि करें</a></p>}
         <p>यह सेवा अभी पूरी तरह <strong>फ्री</strong> है। हम कभी OTP, पासवर्ड या पैसा नहीं मांगते; ऐसा कोई कहे तो सावधान रहें।</p>
         <p><a class="cta secondary" href="/tools/csc-locator.html">CSC लोकेटर देखें</a></p>
       </section>
@@ -144,7 +148,7 @@ const faq = [
     </div>
   </article>
 
-  <script is:inline define:vars={{ url: SUPABASE_URL, key: SUPABASE_ANON_KEY }}>
+  <script is:inline define:vars={{ url: SUPABASE_URL, key: SUPABASE_ANON_KEY, support: SUPPORT_WHATSAPP }}>
   (function () {
     var f = document.getElementById("claim"), out = document.getElementById("claim-out"), started = Date.now();
     var q = new URLSearchParams(location.search);
@@ -156,7 +160,7 @@ const faq = [
         d.hidden = d.dataset.kind !== kind;
         if (d.hidden) [].forEach.call(d.querySelectorAll("input"), function (i) { i.checked = false; });
       });
-      document.getElementById("csc_id_label").firstChild.textContent = kind === "ja" ? "जन औषधि स्टोर कोड (PMBJK…) " : "CSC ID / VLE ID ";
+      document.getElementById("csc_id_label").firstChild.textContent = kind === "ja" ? "जन औषधि स्टोर कोड (PMBJK…) * " : "CSC ID / VLE ID * ";
     }
     f.centre_type.addEventListener("change", setKind);
     if (q.get("type") === "ja") f.centre_type.value = "Jan Aushadhi Kendra";
@@ -196,6 +200,7 @@ const faq = [
       var om = mob(f.owner_mobile.value), pp = mob(f.public_phone.value), pw = mob(f.public_whatsapp.value);
       if (!f.centre_name.value.trim() || !f.owner_name.value.trim()) err = "केंद्र और संचालक का नाम भरें।";
       else if (!/^[6-9]\d{9}$/.test(om)) err = "संचालक का 10 अंकों का सही मोबाइल नंबर भरें।";
+      else if (f.csc_id.value.trim().length < 4) { fail(/jan aushadhi/i.test(f.centre_type.value) ? "जन औषधि स्टोर कोड भरें।" : "CSC ID / VLE ID भरें। इसके बिना केंद्र नहीं जोड़ा जा सकता।", f.csc_id); return; }
       else if (!f.state.value || !f.district.value.trim() || !f.city.value.trim()) err = "राज्य, ज़िला और शहर/गांव भरें।";
       else if (!/^[1-9]\d{5}$/.test(f.pincode.value.trim())) err = "6 अंकों का सही PIN कोड भरें।";
       else if (f.full_address.value.trim().length < 10) err = "पूरा पता लिखें (कम से कम 10 अक्षर)।";
@@ -230,6 +235,8 @@ const faq = [
           f.hidden = true;
           var done = document.getElementById("claim-done");
           document.getElementById("done-id").textContent = appId;
+          var wv = document.getElementById("wa-verify");
+          if (wv && support) wv.href = "https://wa.me/91" + support + "?text=" + encodeURIComponent("नमस्ते, मैंने SarkariSewa India पर अपना केंद्र जोड़ा है।\nआवेदन नंबर: " + appId + "\nकेंद्र: " + row.centre_name + "\nCSC ID: " + (row.csc_id || "") + "\nमैं इस केंद्र का संचालक हूं। केंद्र के बोर्ड की फोटो अगले संदेश में भेज रहा/रही हूं।");
           done.hidden = false;
           done.scrollIntoView({ behavior: "smooth", block: "start" });
           done.focus({ preventScroll: true });
