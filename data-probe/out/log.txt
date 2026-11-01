@@ -1,9 +1,41 @@
-== gist script
-1124 data-probe/out/gist-PMJAY.r
-== GET https://hospitals.pmjay.gov.in/
-HTTP 000 final https://hospitals.pmjay.gov.in/ size 0
-== GET https://hospitals.pmjay.gov.in/Search/
-HTTP 000 final https://hospitals.pmjay.gov.in/Search/ size 0
-== GET https://hospitals.pmjay.gov.in/Search/empnlWorkFlow.htm
-HTTP 000 final https://hospitals.pmjay.gov.in/Search/empnlWorkFlow.htm size 0
-== links and forms on the pages
+{
+  "ip": "20.221.68.248",
+  "city": "Des Moines",
+  "region": "Iowa",
+  "country": "US",
+  "loc": "41.6005,-93.6091",
+  "org": "AS8075 Microsoft Corporation",
+  "postal": "50309",
+  "timezone": "America/Chicago",
+  "readme": "https://ipinfo.io/missingauth"
+}
+== pmjay-home.html https://hospitals.pmjay.gov.in/
+curl: (28) Failed to connect to hospitals.pmjay.gov.in port 443 after 20000 ms: Timeout was reached
+HTTP 000 type  size 0 ip 
+== pmjay-home-http.html http://hospitals.pmjay.gov.in/
+curl: (28) Failed to connect to hospitals.pmjay.gov.in port 80 after 20002 ms: Timeout was reached
+HTTP 000 type  size 0 ip 
+== pmjay-post-jabalpur.html https://hospitals.pmjay.gov.in/Search/empnlWorkFlow.htm
+curl: (28) Failed to connect to hospitals.pmjay.gov.in port 443 after 20000 ms: Timeout was reached
+HTTP 000 type  size 0 ip 
+== pmjay-main.html https://pmjay.gov.in/
+curl: (28) Failed to connect to pmjay.gov.in port 443 after 20002 ms: Timeout was reached
+HTTP 000 type  size 0 ip 
+== nha-hospital-list.pdf https://nha.gov.in/img/resources/PMJAY-Hospital-List.pdf
+HTTP 403 type text/html size 520 ip 166.117.84.245
+== popsk-list.pdf https://portal1.passportindia.gov.in/AppOnlineProject/pdf/POPSK_List.pdf
+curl: (6) Could not resolve host: portal1.passportindia.gov.in
+HTTP 000 type  size 0 ip 
+== passportindia.html https://www.passportindia.gov.in/
+HTTP 200 type text/html; charset=utf-8 size 849 ip 103.106.106.140
+== datagov.html https://www.data.gov.in/
+HTTP 504 type text/html size 280 ip 23.220.162.80
+== mp-ayushman.html https://ayushmanbharat.mp.gov.in/
+curl: (28) Failed to connect to ayushmanbharat.mp.gov.in port 443 after 20000 ms: Timeout was reached
+HTTP 000 type  size 0 ip 
+== uk-sha.html https://sha.uk.gov.in/
+curl: (28) Failed to connect to sha.uk.gov.in port 443 after 20001 ms: Timeout was reached
+HTTP 000 type  size 0 ip 
+== janaushadhi.html https://janaushadhi.gov.in/
+HTTP 200 type text/html size 3971 ip 103.195.217.113
+14.143.193.104
