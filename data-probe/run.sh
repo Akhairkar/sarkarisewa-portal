@@ -1,15 +1,26 @@
 #!/usr/bin/env bash
-# Probe 1: what the PM-JAY hospital search looks like from a normal server.
+# Probe 2: which official sources answer from a GitHub (non-Indian) server.
 set -u
-O=data-probe/out; mkdir -p "$O"
+O=data-probe/out; rm -rf "$O"; mkdir -p "$O"
 UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
 log() { echo "== $*" | tee -a "$O/log.txt"; }
-log "gist script"
-curl -sL -m 60 "https://gist.githubusercontent.com/apoorv74/2e047db089b1771e283b5b641238cc22/raw/b004c2b0fb48ebad926ac48069f6a74a9b14ab8f/PMJAY.r" -o "$O/gist-PMJAY.r"; wc -c "$O/gist-PMJAY.r" | tee -a "$O/log.txt"
-for u in "https://hospitals.pmjay.gov.in/" "https://hospitals.pmjay.gov.in/Search/" "https://hospitals.pmjay.gov.in/Search/empnlWorkFlow.htm"; do
-  f="$O/$(echo "$u" | sed 's#https://##; s#[/:?&=]#_#g').html"
-  log "GET $u"
-  curl -sL -m 60 -A "$UA" -c "$O/cookies.txt" -b "$O/cookies.txt" -D "$f.headers" -w "HTTP %{http_code} final %{url_effective} size %{size_download}\n" "$u" -o "$f" | tee -a "$O/log.txt"
-done
-log "links and forms on the pages"
-grep -hoE '<form[^>]*>|<select[^>]*>|name="[^"]+"|src="[^"]+\.js[^"]*"|action="[^"]+"' "$O"/*.html | sort | uniq -c | sort -rn | head -80 | tee -a "$O/log.txt"
+curl -s -m 20 https://ipinfo.io/json | tee -a "$O/log.txt"; echo | tee -a "$O/log.txt"
+try() { # name url [extra curl args]
+  local n="$1" u="$2"; shift 2
+  log "$n $u"
+  curl -sS -L -m 60 --connect-timeout 20 -A "$UA" -o "$O/$n" -w "HTTP %{http_code} type %{content_type} size %{size_download} ip %{remote_ip}\n" "$@" "$u" 2>&1 | tee -a "$O/log.txt"
+}
+try pmjay-home.html https://hospitals.pmjay.gov.in/
+try pmjay-home-http.html http://hospitals.pmjay.gov.in/
+try pmjay-post-jabalpur.html https://hospitals.pmjay.gov.in/Search/empnlWorkFlow.htm -X POST --data "actionFlag=ViewRegisteredHosptlsNew&search=Y&appReadOnly=Y&pageNo=1&searchState=23&searchDistrict=411&searchHospType=-1&searchSpeciality=-1&noOfPages=0"
+try pmjay-main.html https://pmjay.gov.in/
+try nha-hospital-list.pdf https://nha.gov.in/img/resources/PMJAY-Hospital-List.pdf
+try popsk-list.pdf https://portal1.passportindia.gov.in/AppOnlineProject/pdf/POPSK_List.pdf
+try passportindia.html https://www.passportindia.gov.in/
+try datagov.html https://www.data.gov.in/
+try mp-ayushman.html https://ayushmanbharat.mp.gov.in/
+try uk-sha.html https://sha.uk.gov.in/
+try janaushadhi.html https://janaushadhi.gov.in/
+dig +short hospitals.pmjay.gov.in | tee -a "$O/log.txt"
+for f in "$O"/*.pdf; do [ -s "$f" ] && (file "$f"; pdftotext -layout "$f" - 2>/dev/null | head -60) >> "$O/pdf-heads.txt"; done
+true
