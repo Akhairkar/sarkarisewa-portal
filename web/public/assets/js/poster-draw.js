@@ -37,7 +37,8 @@
   // logos), 1080 wide, with plain space at the top for the title. One is
   // picked per poster from its id, so a poster keeps the same photo.
   var PHOTOS = {
-    yojana: ["/assets/img/poster/yojana-1.jpg"],
+    yojana: ["/assets/img/poster/yojana-1.jpg", "/assets/img/poster/senior-1.jpg"],
+    alert: ["/assets/img/poster/senior-1.jpg"],
     naukri: ["/assets/img/poster/naukri-1.jpg"],
     document: ["/assets/img/poster/document-1.jpg"],
   };
