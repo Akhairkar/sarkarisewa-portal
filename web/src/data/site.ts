@@ -10,7 +10,7 @@ export const SITE = {
 // review); the ad script loads only when `on` is true. To start ads, change
 // false to true (see ADSENSE-ON-KAISE-KARE.md); ad placement is then set in
 // the AdSense dashboard (Auto ads).
-export const ADSENSE = { client: "ca-pub-5006870166883781", on: false };
+export const ADSENSE = { client: "ca-pub-5006870166883781", on: true };
 
 export const NAV = [
   { href: "/", label: { hi: "होम", en: "Home" }, icon: "home" },
