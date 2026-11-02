@@ -14,7 +14,6 @@
     ["posters.html", "🖼️ Daily Posters"],
     ["push.html", "🔔 Notifications"],
     ["requests.html", "🙋 Service Requests"],
-    ["data.html", "🗂️ Purana DB data"],
   ];
 
   function renderNav() {
