@@ -20,10 +20,11 @@ interface Props {
   ogImage?: string;
   schemaType?: "Article" | "WebPage";
   canonical?: string; // site path, when another page is the main copy
+  noAds?: boolean; // forms, payment and policy pages: no AdSense script
 }
 const {
   title, description, breadcrumbs = [], faq = [], published, modified,
-  noindex = false, canonical: canonicalPath, ogImage = "/assets/img/og-image.png", schemaType = "Article",
+  noindex = false, noAds = false, canonical: canonicalPath, ogImage = "/assets/img/og-image.png", schemaType = "Article",
 } = Astro.props;
 
 const lang = langOf(Astro.url);
@@ -106,7 +107,7 @@ if (faq.length) {
   <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&display=swap" rel="stylesheet" />
   {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   <meta name="google-adsense-account" content={ADSENSE.client} />
-  {ADSENSE.on && <script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE.client}`} crossorigin="anonymous"></script>}
+  {ADSENSE.on && !noAds && <script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE.client}`} crossorigin="anonymous"></script>}
   <slot name="head" />
 </head>
 <body>
