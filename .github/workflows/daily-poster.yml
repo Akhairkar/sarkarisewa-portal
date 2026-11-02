@@ -1,0 +1,56 @@
+name: Daily poster on Telegram
+
+# Every afternoon one poster picture goes to the Telegram channel: the first
+# poster published for the day in the admin panel, or else an open job from
+# our job pages that closes in 3-12 days (web/scripts/daily-poster-telegram.mjs).
+# Secrets: TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL (optional, default
+# @sarkarisewaindia). "Run workflow" sends now; dry_run only builds it.
+on:
+  schedule:
+    # 1:17 PM IST. GitHub may start it a few hours late; it still sends that
+    # day's poster.
+    - cron: "47 7 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only build, do not send"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daily-poster
+  cancel-in-progress: false
+
+jobs:
+  poster:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            web/scripts
+            web/public/assets/js
+            web/public/assets/img/poster
+            web/src/lib
+            web/src/data
+            web/src/guides/jobs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright
+        working-directory: web/scripts
+        run: |
+          npm init -y >/dev/null
+          npm install --no-save playwright@1
+          npx playwright install --with-deps chromium
+      - name: Build and send the poster
+        working-directory: web/scripts
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: node daily-poster-telegram.mjs
