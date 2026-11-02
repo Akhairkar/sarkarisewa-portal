@@ -24,13 +24,13 @@
   // bg: background, card: text panel, ink: title, text: body, accent: chip and
   // highlight, accentInk: text on accent, muted: small print.
   var DESIGNS = {
-    saffron: { label: "केसरिया", bg: ["#ff9933", "#ffb366"], card: "#ffffff", ink: "#1f2937", text: "#374151", accent: "#138808", accentInk: "#ffffff", muted: "#6b7280", band: "#138808" },
-    blue: { label: "नीला", bg: ["#0b3d91", "#1d4ed8"], card: null, ink: "#ffffff", text: "#e5edff", accent: "#facc15", accentInk: "#1f2937", muted: "#c7d2fe", band: "#facc15" },
-    green: { label: "हरा", bg: ["#ecfdf5", "#d1fae5"], card: "#ffffff", ink: "#064e3b", text: "#1f2937", accent: "#059669", accentInk: "#ffffff", muted: "#4b5563", band: "#059669" },
-    dark: { label: "प्रीमियम", bg: ["#0f172a", "#1e293b"], card: null, ink: "#fde68a", text: "#e2e8f0", accent: "#f59e0b", accentInk: "#111827", muted: "#94a3b8", band: "#f59e0b" },
-    // Background photo for the poster's category (PHOTOS); used only when one
-    // is loaded, otherwise it draws like "dark".
-    photo: { label: "फोटो", photo: true, bg: ["#0f172a", "#1e293b"], card: null, ink: "#111827", text: "#1f2937", accent: "#dc2626", accentInk: "#ffffff", muted: "#4b5563", band: "#dc2626" },
+    // ov: colour over the photo's top (title area); pick: which of the
+    // category's photos this design uses, so the designs differ.
+    saffron: { label: "केसरिया", bg: ["#ff9933", "#ffb366"], card: "#ffffff", ink: "#1f2937", text: "#374151", accent: "#138808", accentInk: "#ffffff", muted: "#6b7280", band: "#138808", ov: "255,237,213", pick: 0 },
+    blue: { label: "नीला", bg: ["#0b3d91", "#1d4ed8"], card: null, ink: "#ffffff", text: "#e5edff", accent: "#facc15", accentInk: "#1f2937", muted: "#c7d2fe", band: "#facc15", ov: "11,61,145", pick: 1 },
+    green: { label: "हरा", bg: ["#ecfdf5", "#d1fae5"], card: "#ffffff", ink: "#064e3b", text: "#1f2937", accent: "#059669", accentInk: "#ffffff", muted: "#4b5563", band: "#059669", ov: "236,253,245", pick: 2 },
+    dark: { label: "प्रीमियम", bg: ["#0f172a", "#1e293b"], card: null, ink: "#fde68a", text: "#e2e8f0", accent: "#f59e0b", accentInk: "#111827", muted: "#94a3b8", band: "#f59e0b", ov: "15,23,42", pick: 3 },
+    photo: { label: "फोटो", bg: ["#0f172a", "#1e293b"], card: null, ink: "#111827", text: "#1f2937", accent: "#dc2626", accentInk: "#ffffff", muted: "#4b5563", band: "#dc2626", ov: "255,255,255", pick: 4 },
   };
 
   // Text-free background photos per category (AI-made, no real people or
@@ -40,6 +40,8 @@
     yojana: ["/assets/img/poster/yojana-1.jpg", "/assets/img/poster/senior-1.jpg"],
     alert: ["/assets/img/poster/alert-1.jpg", "/assets/img/poster/senior-1.jpg"],
     naukri: ["/assets/img/poster/naukri-1.jpg"],
+    // Categories without photos of their own use these general ones.
+    _any: ["/assets/img/poster/document-1.jpg", "/assets/img/poster/alert-1.jpg"],
     document: ["/assets/img/poster/document-1.jpg"],
   };
   var photoCache = {};
@@ -55,12 +57,13 @@
       });
     }));
   }
-  function photoFor(post) {
-    var list = PHOTOS[post.category] || [];
+  function photoFor(post, pick) {
+    var list = (PHOTOS[post.category] || []).filter(function (u) { return photoCache[u]; });
+    if (!list.length) list = PHOTOS._any.filter(function (u) { return photoCache[u]; });
     if (!list.length) return null;
     var key = String(post.id || post.title || ""), h = 0;
     for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
-    return photoCache[list[h % list.length]] || null;
+    return photoCache[list[(h + (pick || 0)) % list.length]];
   }
 
   function dateHi(iso) {
@@ -103,11 +106,11 @@
   function draw(canvas, post, opt) {
     opt = opt || {};
     var D = DESIGNS[opt.design] || DESIGNS.saffron;
-    if (D.photo) {
-      var bgImg = photoFor(post);
-      if (bgImg) return drawPhoto(canvas, post, opt, D, bgImg);
-      D = DESIGNS.dark;
-    }
+    // Every design is drawn over a photo when one is loaded; the plain
+    // colour layout below is only the fallback (e.g. the video script).
+    var bgImg = photoFor(post, D.pick);
+    if (bgImg) return drawPhoto(canvas, post, opt, D, bgImg);
+    if (opt.design === "photo") D = DESIGNS.dark;
     var square = opt.size === "square";
     var s = opt.scale || 1, W = 1080, H = square ? 1080 : 1920;
     canvas.width = Math.round(W * s); canvas.height = Math.round(H * s);
@@ -220,7 +223,7 @@
     var r = Math.max(W / img.width, H / img.height), iw = img.width * r, ih = img.height * r;
     ctx.drawImage(img, (W - iw) / 2, square ? H - ih * 0.82 : (H - ih) / 2, iw, ih);
     var top = ctx.createLinearGradient(0, 0, 0, H * (square ? 0.62 : 0.5));
-    top.addColorStop(0, "rgba(255,255,255,0.94)"); top.addColorStop(0.7, "rgba(255,255,255,0.78)"); top.addColorStop(1, "rgba(255,255,255,0)");
+    top.addColorStop(0, "rgba(" + D.ov + ",0.95)"); top.addColorStop(0.7, "rgba(" + D.ov + ",0.82)"); top.addColorStop(1, "rgba(" + D.ov + ",0)");
     ctx.fillStyle = top; ctx.fillRect(0, 0, W, H);
     ctx.fillStyle = D.band; ctx.fillRect(0, 0, W, 18);
 
@@ -255,7 +258,7 @@
     var cy = fTop - cardH - (square ? 20 : 36);
     ctx.fillStyle = "rgba(255,255,255,0.95)"; rrect(ctx, x - 12, cy, w + 24, cardH, 30); ctx.fill();
     var ty = cy + cpad;
-    ctx.fillStyle = D.text;
+    ctx.fillStyle = "#1f2937";
     bLines.forEach(function (l) { ctx.fillText(l, x + cpad - 12, ty); ty += bSize * 1.4; });
     if (post.highlight) {
       ty += 20 - bSize * 0.4 + 6;
