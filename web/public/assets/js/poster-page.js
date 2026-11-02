@@ -160,10 +160,18 @@
   }
 
   user.name = get(KEYS.name); user.line = get(KEYS.line); photoUrl = get(KEYS.photo);
-  Promise.all([SSPoster.ready(), loadPhoto(photoUrl)]).then(function (r) {
+  // Only the photos of the categories on this page are downloaded.
+  function cats() {
+    var c = [];
+    list.querySelectorAll(".poster-item").forEach(function (s) { try { var k = JSON.parse(s.dataset.post).category; if (c.indexOf(k) < 0) c.push(k); } catch (e) {} });
+    return c;
+  }
+  Promise.all([SSPoster.ready(cats()), loadPhoto(photoUrl)]).then(function (r) {
     user.photo = r[1];
     bindForm();
     return fetchNew();
+  }).then(function () {
+    return SSPoster.loadPhotos(cats());
   }).then(function () {
     renderAll();
     list.querySelectorAll(".poster-item").forEach(function (s) { log(s.dataset.id, "view"); });

@@ -37,17 +37,19 @@
   // logos), 1080 wide, with plain space at the top for the title. One is
   // picked per poster from its id, so a poster keeps the same photo.
   var PHOTOS = {
-    yojana: ["/assets/img/poster/yojana-1.jpg", "/assets/img/poster/senior-1.jpg"],
-    alert: ["/assets/img/poster/alert-1.jpg", "/assets/img/poster/senior-1.jpg"],
-    naukri: ["/assets/img/poster/naukri-1.jpg"],
+    yojana: ["/assets/img/poster/yojana-1.jpg", "/assets/img/poster/senior-1.jpg", "/assets/img/poster/yojana-3.jpg", "/assets/img/poster/yojana-4.jpg", "/assets/img/poster/yojana-5.jpg"],
+    alert: ["/assets/img/poster/alert-1.jpg", "/assets/img/poster/alert-2.jpg", "/assets/img/poster/senior-1.jpg"],
+    naukri: ["/assets/img/poster/naukri-1.jpg", "/assets/img/poster/naukri-2.jpg", "/assets/img/poster/naukri-3.jpg"],
+    document: ["/assets/img/poster/document-1.jpg", "/assets/img/poster/document-2.jpg", "/assets/img/poster/document-3.jpg"],
+    deadline: ["/assets/img/poster/deadline-1.jpg", "/assets/img/poster/deadline-2.jpg"],
     // Categories without photos of their own use these general ones.
     _any: ["/assets/img/poster/document-1.jpg", "/assets/img/poster/alert-1.jpg"],
-    document: ["/assets/img/poster/document-1.jpg"],
   };
   var photoCache = {};
-  function loadPhotos() {
-    var all = [];
-    Object.keys(PHOTOS).forEach(function (k) { PHOTOS[k].forEach(function (u) { all.push(u); }); });
+  // cats: only these categories' photos (plus the general ones); none = all.
+  function loadPhotos(cats) {
+    var all = [], keys = cats ? cats.concat("_any") : Object.keys(PHOTOS);
+    keys.forEach(function (k) { (PHOTOS[k] || []).forEach(function (u) { if (!photoCache[u] && all.indexOf(u) < 0) all.push(u); }); });
     return Promise.all(all.map(function (u) {
       return new Promise(function (res) {
         var img = new Image();
@@ -297,13 +299,13 @@
     return canvas;
   }
 
-  function ready() {
+  function ready(cats) {
     var fonts = document.fonts && document.fonts.load
       ? Promise.all(["800 80px Mukta", "700 40px Mukta", "600 36px Mukta", "400 50px Mukta"].map(function (f) { return document.fonts.load(f, "अआ"); })).catch(function () {})
       : Promise.resolve();
-    return Promise.all([fonts, loadPhotos()]);
+    return Promise.all([fonts, loadPhotos(cats)]);
   }
 
 
-  window.SSPoster = { draw: draw, ready: ready, DESIGNS: DESIGNS, CAT: CAT, photoFor: photoFor };
+  window.SSPoster = { draw: draw, ready: ready, loadPhotos: loadPhotos, DESIGNS: DESIGNS, CAT: CAT, photoFor: photoFor };
 })();
