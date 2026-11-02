@@ -33,23 +33,67 @@
     photo: { label: "फोटो", bg: ["#0f172a", "#1e293b"], card: null, ink: "#111827", text: "#1f2937", accent: "#dc2626", accentInk: "#ffffff", muted: "#4b5563", band: "#dc2626", ov: "255,255,255", pick: 4 },
   };
 
-  // Text-free background photos per category (AI-made, no real people or
-  // logos), 1080 wide, with plain space at the top for the title. One is
-  // picked per poster from its id, so a poster keeps the same photo.
-  var PHOTOS = {
-    yojana: ["/assets/img/poster/yojana-1.jpg", "/assets/img/poster/senior-1.jpg", "/assets/img/poster/yojana-3.jpg", "/assets/img/poster/yojana-4.jpg", "/assets/img/poster/yojana-5.jpg"],
-    alert: ["/assets/img/poster/alert-1.jpg", "/assets/img/poster/alert-2.jpg", "/assets/img/poster/senior-1.jpg"],
-    naukri: ["/assets/img/poster/naukri-1.jpg", "/assets/img/poster/naukri-2.jpg", "/assets/img/poster/naukri-3.jpg"],
-    document: ["/assets/img/poster/document-1.jpg", "/assets/img/poster/document-2.jpg", "/assets/img/poster/document-3.jpg"],
-    deadline: ["/assets/img/poster/deadline-1.jpg", "/assets/img/poster/deadline-2.jpg"],
-    // Categories without photos of their own use these general ones.
-    _any: ["/assets/img/poster/document-1.jpg", "/assets/img/poster/alert-1.jpg"],
+  // Text-free background photos (AI-made, no real people or logos), 1080
+  // wide, with plain space at the top for the title. The photo follows what
+  // the poster is about (THEMES, matched on title + text), so a pregnancy
+  // scheme never gets an elderly couple. When no theme matches, the
+  // category's neutral photos are used. One is picked per poster from its
+  // id, so a poster keeps the same photo.
+  var P = function (f) { return "/assets/img/poster/" + f + ".jpg"; };
+  var THEMES = [
+    // women, girls, mothers, widows
+    { re: /मातृ|गर्भ|प्रसव|महिला|बेटी|लाडली|लाडकी|कन्या|सुकन्या|विधवा|बहन|माता|मां |सखी|maternity|pregnan|women|woman|mahila|matru|ladli|ladki|beti|girl|widow|sukanya/i, photos: ["yojana-4", "alert-2", "document-3"] },
+    // health (incl. Ayushman Vay Vandana for 70+)
+    { re: /आयुष्मान|इलाज|अस्पताल|स्वास्थ्य|हेल्थ|बीमारी|दवा|औषधि|वय वंदना|ayushman|health|hospital|treatment|medicine|aushadhi/i, photos: ["yojana-5"] },
+    // elderly, pension, life certificate
+    { re: /पेंशन|पेन्शन|बुज़ुर्ग|बुजुर्ग|वृद्ध|वरिष्ठ|सीनियर|जीवन प्रमाण|पेंशनर|pension|senior|elder|old age|jeevan pramaan|life certificate/i, photos: ["senior-1", "alert-1"] },
+    // farmers
+    { re: /किसान|कृषि|फसल|खेती|खेत|kisan|farmer|crop|agri/i, photos: ["yojana-1"] },
+    // housing, ration, family, gas
+    { re: /आवास|मकान|राशन|परिवार|उज्ज्वला|गैस सिलेंडर|awas|housing|ration|family|ujjwala/i, photos: ["yojana-3"] },
+    // students, exams, admit card, result, scholarship
+    { re: /एडमिट|प्रवेश पत्र|रिजल्ट|परिणाम|परीक्षा|छात्र|छात्रवृत्ति|स्कॉलरशिप|admit card|result|exam|student|scholarship/i, photos: ["naukri-2", "naukri-3"] },
+    // jobs
+    { re: /भर्ती|नौकरी|वैकेंसी|रिक्ति|पदों|अप्रेंटिस|recruitment|vacancy|vacancies|job|apprentice|posts\b/i, photos: ["naukri-1", "deadline-2", "naukri-3"] },
+    // documents and certificates
+    { re: /प्रमाण पत्र|प्रमाणपत्र|सर्टिफिकेट|आधार|पैन कार्ड|पैन |certificate|aadhaar|pan card|document/i, photos: ["document-2", "document-3"] },
+  ];
+  // Neutral photos per category (no particular age or gender of the reader).
+  var DEFAULTS = {
+    yojana: ["document-3", "document-2", "alert-2"],
+    alert: ["alert-2", "document-3", "deadline-1"],
+    naukri: ["naukri-1", "naukri-3", "deadline-2"],
+    document: ["document-2", "document-3"],
+    deadline: ["deadline-1"],
+    _any: ["deadline-1", "document-2"],
   };
+  function photoList(post) {
+    // the title decides first, then the text, then the page address; within
+    // one, the subject named first wins ("वृद्धावस्था, विधवा…" = elderly)
+    var parts = [post.title, [post.body, post.highlight].join(" "), post.page_url];
+    for (var j = 0; j < parts.length; j++) {
+      var text = String(parts[j] || ""), best = null, at = Infinity;
+      for (var i = 0; i < THEMES.length; i++) {
+        var m = text.search(THEMES[i].re);
+        if (m >= 0 && m < at) { at = m; best = THEMES[i]; }
+      }
+      if (best) return best.photos.map(P);
+    }
+    return (DEFAULTS[post.category] || DEFAULTS._any).map(P);
+  }
   var photoCache = {};
-  // cats: only these categories' photos (plus the general ones); none = all.
-  function loadPhotos(cats) {
-    var all = [], keys = cats ? cats.concat("_any") : Object.keys(PHOTOS);
-    keys.forEach(function (k) { (PHOTOS[k] || []).forEach(function (u) { if (!photoCache[u] && all.indexOf(u) < 0) all.push(u); }); });
+  // what: a list of posts (only their photos are downloaded), or nothing for
+  // every photo. (A list of category names is still accepted: their neutral
+  // photos plus all theme photos.)
+  function loadPhotos(what) {
+    var all = [];
+    var add = function (u) { if (!photoCache[u] && all.indexOf(u) < 0) all.push(u); };
+    if (what && what.length && typeof what[0] === "object") what.forEach(function (p) { photoList(p).forEach(add); });
+    else {
+      var keys = what && what.length ? what.concat("_any") : Object.keys(DEFAULTS);
+      keys.forEach(function (k) { (DEFAULTS[k] || []).forEach(function (f) { add(P(f)); }); });
+      THEMES.forEach(function (t) { t.photos.forEach(function (f) { add(P(f)); }); });
+    }
     return Promise.all(all.map(function (u) {
       return new Promise(function (res) {
         var img = new Image();
@@ -60,8 +104,9 @@
     }));
   }
   function photoFor(post, pick) {
-    var list = (PHOTOS[post.category] || []).filter(function (u) { return photoCache[u]; });
-    if (!list.length) list = PHOTOS._any.filter(function (u) { return photoCache[u]; });
+    var list = photoList(post).filter(function (u) { return photoCache[u]; });
+    // never borrow another subject's photo; only the neutral ones
+    if (!list.length) list = DEFAULTS._any.map(P).filter(function (u) { return photoCache[u]; });
     if (!list.length) return null;
     var key = String(post.id || post.title || ""), h = 0;
     for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
@@ -307,5 +352,5 @@
   }
 
 
-  window.SSPoster = { draw: draw, ready: ready, loadPhotos: loadPhotos, DESIGNS: DESIGNS, CAT: CAT, photoFor: photoFor };
+  window.SSPoster = { draw: draw, ready: ready, loadPhotos: loadPhotos, DESIGNS: DESIGNS, CAT: CAT, photoFor: photoFor, photoList: photoList };
 })();

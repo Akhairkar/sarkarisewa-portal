@@ -160,10 +160,10 @@
   }
 
   user.name = get(KEYS.name); user.line = get(KEYS.line); photoUrl = get(KEYS.photo);
-  // Only the photos of the categories on this page are downloaded.
+  // Only the photos the posters on this page need are downloaded.
   function cats() {
     var c = [];
-    list.querySelectorAll(".poster-item").forEach(function (s) { try { var k = JSON.parse(s.dataset.post).category; if (c.indexOf(k) < 0) c.push(k); } catch (e) {} });
+    list.querySelectorAll(".poster-item").forEach(function (s) { try { c.push(JSON.parse(s.dataset.post)); } catch (e) {} });
     return c;
   }
   Promise.all([SSPoster.ready(cats()), loadPhoto(photoUrl)]).then(function (r) {
