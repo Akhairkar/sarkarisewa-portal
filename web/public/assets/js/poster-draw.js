@@ -28,7 +28,39 @@
     blue: { label: "नीला", bg: ["#0b3d91", "#1d4ed8"], card: null, ink: "#ffffff", text: "#e5edff", accent: "#facc15", accentInk: "#1f2937", muted: "#c7d2fe", band: "#facc15" },
     green: { label: "हरा", bg: ["#ecfdf5", "#d1fae5"], card: "#ffffff", ink: "#064e3b", text: "#1f2937", accent: "#059669", accentInk: "#ffffff", muted: "#4b5563", band: "#059669" },
     dark: { label: "प्रीमियम", bg: ["#0f172a", "#1e293b"], card: null, ink: "#fde68a", text: "#e2e8f0", accent: "#f59e0b", accentInk: "#111827", muted: "#94a3b8", band: "#f59e0b" },
+    // Background photo for the poster's category (PHOTOS); used only when one
+    // is loaded, otherwise it draws like "dark".
+    photo: { label: "फोटो", photo: true, bg: ["#0f172a", "#1e293b"], card: null, ink: "#111827", text: "#1f2937", accent: "#dc2626", accentInk: "#ffffff", muted: "#4b5563", band: "#dc2626" },
   };
+
+  // Text-free background photos per category (AI-made, no real people or
+  // logos), 1080 wide, with plain space at the top for the title. One is
+  // picked per poster from its id, so a poster keeps the same photo.
+  var PHOTOS = {
+    yojana: ["/assets/img/poster/yojana-1.jpg"],
+    naukri: ["/assets/img/poster/naukri-1.jpg"],
+    document: ["/assets/img/poster/document-1.jpg"],
+  };
+  var photoCache = {};
+  function loadPhotos() {
+    var all = [];
+    Object.keys(PHOTOS).forEach(function (k) { PHOTOS[k].forEach(function (u) { all.push(u); }); });
+    return Promise.all(all.map(function (u) {
+      return new Promise(function (res) {
+        var img = new Image();
+        img.onload = function () { photoCache[u] = img; res(); };
+        img.onerror = function () { res(); };
+        img.src = u;
+      });
+    }));
+  }
+  function photoFor(post) {
+    var list = PHOTOS[post.category] || [];
+    if (!list.length) return null;
+    var key = String(post.id || post.title || ""), h = 0;
+    for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+    return photoCache[list[h % list.length]] || null;
+  }
 
   function dateHi(iso) {
     var d = iso ? new Date(iso + "T00:00:00") : new Date();
@@ -70,6 +102,11 @@
   function draw(canvas, post, opt) {
     opt = opt || {};
     var D = DESIGNS[opt.design] || DESIGNS.saffron;
+    if (D.photo) {
+      var bgImg = photoFor(post);
+      if (bgImg) return drawPhoto(canvas, post, opt, D, bgImg);
+      D = DESIGNS.dark;
+    }
     var square = opt.size === "square";
     var s = opt.scale || 1, W = 1080, H = square ? 1080 : 1920;
     canvas.width = Math.round(W * s); canvas.height = Math.round(H * s);
@@ -168,10 +205,101 @@
     return canvas;
   }
 
-  function ready() {
-    if (!document.fonts || !document.fonts.load) return Promise.resolve();
-    return Promise.all(["800 80px Mukta", "700 40px Mukta", "600 36px Mukta", "400 50px Mukta"].map(function (f) { return document.fonts.load(f, "अआ"); })).catch(function () {});
+  // Photo design: picture fills the poster, title on the light top area, the
+  // details in a white card above a dark footer with the visitor's name and QR.
+  function drawPhoto(canvas, post, opt, D, img) {
+    var square = opt.size === "square";
+    var s = opt.scale || 1, W = 1080, H = square ? 1080 : 1920;
+    canvas.width = Math.round(W * s); canvas.height = Math.round(H * s);
+    var ctx = canvas.getContext("2d");
+    ctx.setTransform(s, 0, 0, s, 0, 0);
+    ctx.textBaseline = "top";
+
+    // Cover-fit; a square poster keeps the lower (subject) part of the photo.
+    var r = Math.max(W / img.width, H / img.height), iw = img.width * r, ih = img.height * r;
+    ctx.drawImage(img, (W - iw) / 2, square ? H - ih * 0.82 : (H - ih) / 2, iw, ih);
+    var top = ctx.createLinearGradient(0, 0, 0, H * (square ? 0.62 : 0.5));
+    top.addColorStop(0, "rgba(255,255,255,0.94)"); top.addColorStop(0.7, "rgba(255,255,255,0.78)"); top.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = top; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = D.band; ctx.fillRect(0, 0, W, 18);
+
+    var pad = 72, x = pad, w = W - pad * 2, y = square ? 60 : 120;
+    var user = opt.user && (opt.user.name || opt.user.photo) ? opt.user : null;
+
+    ctx.font = "700 40px " + FONT;
+    var chip = CAT[post.category] || "सरकारी जानकारी", cw = ctx.measureText(chip).width + 56;
+    ctx.fillStyle = D.accent; rrect(ctx, x, y, cw, 70, 35); ctx.fill();
+    ctx.fillStyle = D.accentInk; ctx.fillText(chip, x + 28, y + 12);
+    ctx.font = "600 36px " + FONT; ctx.fillStyle = D.muted;
+    var dt = dateHi(post.publish_date);
+    ctx.fillText(dt, x + w - ctx.measureText(dt).width, y + 16);
+    y += square ? 100 : 120;
+
+    var tSize = square ? 64 : 88;
+    ctx.font = "800 " + tSize + "px " + FONT; ctx.fillStyle = D.ink;
+    wrap(ctx, post.title, w, 3).forEach(function (l) { ctx.fillText(l, x, y); y += tSize * 1.22; });
+    ctx.fillStyle = D.accent; ctx.fillRect(x, y + 10, 120, 8);
+
+    // Dark footer (visitor + QR), then the white details card above it.
+    var footerH = square ? 170 : 250, userH = user ? (square ? 120 : 170) : 0;
+    var fTop = H - footerH - userH - (square ? 20 : 40);
+    ctx.fillStyle = "rgba(15,23,42,0.88)"; ctx.fillRect(0, fTop, W, H - fTop);
+    ctx.fillStyle = D.band; ctx.fillRect(0, H - 14, W, 14);
+
+    var bSize = square ? 36 : 48, hSize = square ? 36 : 46, cpad = square ? 26 : 36;
+    ctx.font = "400 " + bSize + "px " + FONT;
+    var bLines = wrap(ctx, post.body, w - cpad * 2, square ? 3 : 4);
+    var hb = post.highlight ? (square ? 62 : 80) : 0;
+    var cardH = cpad * 2 + bLines.length * bSize * 1.4 + (hb ? hb + 20 : 0);
+    var cy = fTop - cardH - (square ? 20 : 36);
+    ctx.fillStyle = "rgba(255,255,255,0.95)"; rrect(ctx, x - 12, cy, w + 24, cardH, 30); ctx.fill();
+    var ty = cy + cpad;
+    ctx.fillStyle = D.text;
+    bLines.forEach(function (l) { ctx.fillText(l, x + cpad - 12, ty); ty += bSize * 1.4; });
+    if (post.highlight) {
+      ty += 20 - bSize * 0.4 + 6;
+      ctx.font = "700 " + hSize + "px " + FONT;
+      var hl = wrap(ctx, post.highlight, w - cpad * 2 - 60, 1)[0], hw = ctx.measureText(hl).width + 60;
+      ctx.fillStyle = D.accent; rrect(ctx, x + cpad - 12, ty, hw, hb, 16); ctx.fill();
+      ctx.fillStyle = D.accentInk; ctx.fillText(hl, x + cpad + 18, ty + (hb - hSize) / 2 - 4);
+    }
+
+    var fy = fTop + (square ? 16 : 26);
+    if (user) {
+      var ph = square ? 96 : 130, ux = x;
+      if (user.photo) {
+        ctx.save(); ctx.beginPath(); ctx.arc(ux + ph / 2, fy + ph / 2, ph / 2, 0, Math.PI * 2); ctx.clip();
+        ctx.drawImage(user.photo, ux, fy, ph, ph); ctx.restore();
+        ctx.lineWidth = 6; ctx.strokeStyle = D.accent; ctx.beginPath(); ctx.arc(ux + ph / 2, fy + ph / 2, ph / 2, 0, Math.PI * 2); ctx.stroke();
+        ux += ph + 30;
+      }
+      ctx.fillStyle = "#ffffff"; ctx.font = "800 " + (square ? 46 : 58) + "px " + FONT;
+      ctx.fillText(wrap(ctx, user.name || "", W - pad - ux, 1)[0] || "", ux, fy + (user.line ? 0 : ph / 4));
+      if (user.line) {
+        ctx.font = "600 " + (square ? 32 : 40) + "px " + FONT; ctx.fillStyle = "#cbd5e1";
+        ctx.fillText(wrap(ctx, user.line, W - pad - ux, 1)[0], ux, fy + (square ? 56 : 74));
+      }
+    }
+    var qs = square ? 130 : 190, qy = H - footerH + (square ? 10 : 20);
+    var url = "https://" + SITE + (post.page_url || "/poster/") + "?utm_source=poster";
+    qr(ctx, url, x, qy, qs, "#111827", "#ffffff");
+    var bx = x + qs + 30;
+    ctx.fillStyle = "#ffffff"; ctx.font = "800 " + (square ? 42 : 52) + "px " + FONT;
+    ctx.fillText("SarkariSewa India", bx, qy + (square ? 4 : 10));
+    ctx.font = "600 " + (square ? 28 : 36) + "px " + FONT; ctx.fillStyle = "#cbd5e1";
+    ctx.fillText("पूरी जानकारी के लिए QR स्कैन करें", bx, qy + (square ? 56 : 76));
+    ctx.font = "400 " + (square ? 24 : 30) + "px " + FONT;
+    ctx.fillText(SITE + " · निजी सेवा, सरकारी वेबसाइट नहीं", bx, qy + (square ? 94 : 126));
+    return canvas;
   }
 
-  window.SSPoster = { draw: draw, ready: ready, DESIGNS: DESIGNS, CAT: CAT };
+  function ready() {
+    var fonts = document.fonts && document.fonts.load
+      ? Promise.all(["800 80px Mukta", "700 40px Mukta", "600 36px Mukta", "400 50px Mukta"].map(function (f) { return document.fonts.load(f, "अआ"); })).catch(function () {})
+      : Promise.resolve();
+    return Promise.all([fonts, loadPhotos()]);
+  }
+
+
+  window.SSPoster = { draw: draw, ready: ready, DESIGNS: DESIGNS, CAT: CAT, photoFor: photoFor };
 })();

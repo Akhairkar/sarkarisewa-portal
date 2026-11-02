@@ -89,6 +89,7 @@
     var post = JSON.parse(sec.dataset.post), box = sec.querySelector(".poster-designs");
     box.innerHTML = "";
     Object.keys(SSPoster.DESIGNS).forEach(function (d) {
+      if (SSPoster.DESIGNS[d].photo && !SSPoster.photoFor(post)) return; // no photo for this category
       var fig = document.createElement("figure"); fig.className = "pd " + size;
       var c = document.createElement("canvas");
       SSPoster.draw(c, post, { design: d, size: size, user: activeUser(), scale: 0.32 });
