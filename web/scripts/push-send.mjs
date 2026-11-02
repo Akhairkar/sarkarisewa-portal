@@ -58,7 +58,7 @@ for (const c of q.campaigns) {
   for (let i = 0; i < subs.length; i += 50) {
     await Promise.all(subs.slice(i, i + 50).map(async (s) => {
       try {
-        await webpush.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, payload, { TTL: 12 * 3600, urgency: "normal" });
+        await webpush.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, payload, { TTL: 12 * 3600, urgency: "high" });
         sent++;
       } catch (e) {
         failed++;
