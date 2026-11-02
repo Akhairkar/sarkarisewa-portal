@@ -1,0 +1,46 @@
+name: Send browser notifications
+
+# Sends the notifications written on admin/push.html (Supabase push_campaigns)
+# to the browsers that pressed the "सूचना पाएं" button. Every 20 minutes in the
+# day; most runs only check and stop. Secret: PUSH_SEND_KEY.
+on:
+  schedule:
+    # 7:30 AM to 9:30 PM IST
+    - cron: "*/20 2-15 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: push-send
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            web/scripts
+            web/src/lib
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Anything to send?
+        id: check
+        working-directory: web/scripts
+        env:
+          PUSH_SEND_KEY: ${{ secrets.PUSH_SEND_KEY }}
+        run: node push-send.mjs check
+      - name: Send
+        if: steps.check.outputs.send == '1'
+        working-directory: web/scripts
+        env:
+          PUSH_SEND_KEY: ${{ secrets.PUSH_SEND_KEY }}
+        run: |
+          npm init -y >/dev/null
+          npm install --no-save web-push@3.6.7
+          node push-send.mjs send

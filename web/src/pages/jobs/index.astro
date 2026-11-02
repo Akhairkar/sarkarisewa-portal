@@ -6,6 +6,7 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import CardGrid from "../../components/CardGrid.astro";
 import Faq from "../../components/Faq.astro";
 import Explore from "../../components/Explore.astro";
+import PushBox from "../../components/PushBox.astro";
 import { ALL_JOBS as JOBS, DAILY_JOBS } from "../../lib/daily-jobs";
 import { oldMeta } from "../../lib/csc";
 import fs from "node:fs";
@@ -95,6 +96,7 @@ const faq = [
     </>
   ))}
   <p class="job-empty" hidden>इस खोज से कोई भर्ती नहीं मिली। दूसरा शब्द आज़माएं।</p>
+  <PushBox topic="naukri" />
 
   <CardGrid title="फॉर्म भरने से पहले ये टूल" id="tools" cards={[
     { href: "/exams/index.html", emoji: "📅", title: { hi: "Exam Calendar", en: "Exam Calendar" }, text: { hi: "SSC, Railway, Bank, UPSC की तारीखें", en: "Exam dates" } },

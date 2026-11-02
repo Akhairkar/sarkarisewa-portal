@@ -1,0 +1,128 @@
+---
+// "सूचना पाएं" box: browser notifications for one topic.
+//   yojana : schemes (senior citizen guides; big button for elderly visitors)
+//   naukri : jobs and exams (job pages)
+// The HTML is only an empty slot; the box is built after the visitor's first
+// scroll/tap, so the page text that search engines index stays as it was.
+// Permission is asked only when the button is pressed. Data: Supabase RPCs
+// push_public_key / push_subscribe / push_unsubscribe (supabase/push.sql).
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
+import { TELEGRAM_CHANNEL } from "../data/site";
+
+interface Props { topic: "yojana" | "naukri" }
+const { topic } = Astro.props;
+const cfg = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY, topic, tg: TELEGRAM_CHANNEL };
+---
+<div class="push-slot" data-cfg={JSON.stringify(cfg)}></div>
+
+<script>
+  const slots = document.querySelectorAll<HTMLElement>(".push-slot");
+  const TXT: Record<string, { h: string; p: string; btn: string; done: string }> = {
+    yojana: {
+      h: "🔔 नई सरकारी योजना और पेंशन की खबर सीधे फोन पर",
+      p: "नई योजना, पेंशन, आखिरी तारीख: ज़रूरी खबर आते ही आपके फोन पर सूचना आएगी।",
+      btn: "🔔 योजना की सूचना पाएं (मुफ्त)",
+      done: "✅ चालू हो गया! नई योजना की खबर आपके फोन पर आएगी।",
+    },
+    naukri: {
+      h: "🔔 नई भर्ती की सूचना सीधे फोन पर",
+      p: "नई भर्ती, एडमिट कार्ड, रिजल्ट और आखिरी तारीख की याद: खबर आते ही फोन पर सूचना।",
+      btn: "🔔 नौकरी की सूचना पाएं (मुफ्त)",
+      done: "✅ चालू हो गया! नई भर्ती की सूचना आपके फोन पर आएगी।",
+    },
+  };
+  const b64 = (s: string) => {
+    const p = (s + "=".repeat((4 - (s.length % 4)) % 4)).replace(/-/g, "+").replace(/_/g, "/");
+    return Uint8Array.from(atob(p), (c) => c.charCodeAt(0));
+  };
+
+  slots.forEach((slot) => {
+    const c = JSON.parse(slot.dataset.cfg!);
+    const t = TXT[c.topic];
+    const flag = `ss_push_${c.topic}`;
+    const store = { get: (k: string) => { try { return localStorage.getItem(k); } catch { return null; } },
+      set: (k: string, v: string | null) => { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} } };
+    const rpc = (name: string, args: object) => fetch(`${c.url}/rest/v1/rpc/${name}`, {
+      method: "POST", headers: { apikey: c.key, Authorization: `Bearer ${c.key}`, "Content-Type": "application/json" }, body: JSON.stringify(args),
+    }).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json(); });
+    const ios = /iPhone|iPad|iPod/.test(navigator.userAgent);
+    const standalone = matchMedia("(display-mode: standalone)").matches || (navigator as any).standalone;
+    const ok = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+
+    let box: HTMLElement, msg: HTMLElement, btn: HTMLButtonElement;
+    const say = (html: string, kind = "") => { msg.className = `push-msg ${kind}`; msg.innerHTML = html; };
+    const showOn = () => {
+      btn.hidden = true;
+      say(`${t.done}<br><small>दिन में ज़्यादा से ज़्यादा 1-2 सूचना। बंद करनी हो तो सूचना पर "बंद करें" दबाएं या यहां:</small> <button type="button" class="push-off">सूचना बंद करें</button>`, "on");
+    };
+
+    async function on() {
+      if (!ok) {
+        if (ios && !standalone) return say(`iPhone पर: नीचे <strong>Share (⬆️)</strong> दबाएं → <strong>"Add to Home Screen"</strong>। फिर होम स्क्रीन से SarkariSewa खोलकर यह बटन दबाएं।`, "warn");
+        return say(`आपके ब्राउज़र में यह सुविधा नहीं है। Chrome में खोलें या <a href="${c.tg}" target="_blank" rel="noopener">Telegram चैनल</a> जॉइन करें।`, "warn");
+      }
+      if (Notification.permission === "denied") return say(`आपने इस वेबसाइट की सूचनाएं बंद (Block) की हुई हैं। Chrome में ऊपर पता वाली पट्टी में <strong>🔒 / ⚙️</strong> निशान दबाएं → <strong>Notifications</strong> → <strong>Allow</strong>, फिर बटन दोबारा दबाएं।`, "warn");
+      btn.disabled = true;
+      say("एक पल… फोन पूछेगा, तो <strong>Allow / अनुमति दें</strong> दबाएं।");
+      try {
+        const pub: string | null = await rpc("push_public_key", {});
+        if (!pub) { btn.disabled = false; return say("यह सुविधा कुछ दिन में शुरू होगी। तब तक Telegram चैनल से जुड़ें।", "warn"); }
+        const reg = await navigator.serviceWorker.register("/sw.js");
+        await navigator.serviceWorker.ready;
+        const perm = await Notification.requestPermission();
+        if (perm !== "granted") { btn.disabled = false; return say(`अनुमति नहीं मिली। सूचना चाहिए तो बटन दोबारा दबाकर <strong>Allow</strong> चुनें।`, "warn"); }
+        const sub = (await reg.pushManager.getSubscription()) || (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64(pub) }));
+        const j = sub.toJSON();
+        await rpc("push_subscribe", { p_endpoint: j.endpoint, p_p256dh: j.keys!.p256dh, p_auth: j.keys!.auth, p_topic: c.topic, p_page: location.pathname });
+        store.set(flag, "1");
+        showOn();
+      } catch (e) {
+        btn.disabled = false;
+        say("अभी चालू नहीं हो पाया। थोड़ी देर बाद दोबारा कोशिश करें।", "warn");
+      }
+    }
+    async function off() {
+      try {
+        const reg = await navigator.serviceWorker.getRegistration("/");
+        const sub = reg && (await reg.pushManager.getSubscription());
+        if (sub) {
+          await rpc("push_unsubscribe", { p_endpoint: sub.endpoint, p_topic: c.topic });
+          const other = c.topic === "yojana" ? "naukri" : "yojana";
+          if (!store.get(`ss_push_${other}`)) await sub.unsubscribe();
+        }
+      } catch {}
+      store.set(flag, null);
+      btn.hidden = false; btn.disabled = false;
+      say("सूचना बंद हो गई। दोबारा चाहिए तो बटन दबाएं।");
+    }
+
+    function build() {
+      slot.innerHTML = `<section class="push-box push-${c.topic}"><p class="push-h">${t.h}</p><p class="push-p">${t.p}</p>
+        <button type="button" class="push-btn" data-act="push-on-${c.topic}">${t.btn}</button>
+        <p class="push-msg"><small>कोई नाम या मोबाइल नंबर नहीं लिया जाता। दिन में ज़्यादा से ज़्यादा 1-2 सूचना, कभी भी बंद करें।</small></p></section>`;
+      box = slot.querySelector(".push-box")!;
+      msg = box.querySelector(".push-msg")!;
+      btn = box.querySelector(".push-btn")!;
+      btn.addEventListener("click", on);
+      box.addEventListener("click", (e) => { if ((e.target as HTMLElement).closest(".push-off")) off(); });
+      if (store.get(flag) && ok && Notification.permission === "granted") showOn();
+    }
+    // Built on the first scroll or tap, not on load (see the note at the top).
+    const evs = ["scroll", "pointerdown", "keydown", "touchstart"];
+    const once = () => { evs.forEach((e) => removeEventListener(e, once)); build(); };
+    evs.forEach((e) => addEventListener(e, once, { passive: true }));
+  });
+</script>
+
+<style is:global>
+  .push-box { border: 2px solid var(--c-saffron, #f59e0b); background: var(--c-saffron-50, #fffbeb); border-radius: 16px; padding: 14px 16px; margin: 16px 0; color: #1f2937; }
+  .push-box .push-h { font-weight: 800; font-size: 1.08rem; margin: 0 0 4px; }
+  .push-box .push-p { margin: 0 0 10px; }
+  .push-box .push-btn { width: 100%; min-height: 54px; border: 0; border-radius: 12px; background: #b45309; color: #fff; font: inherit; font-weight: 800; font-size: 1.1rem; cursor: pointer; }
+  .push-box.push-yojana .push-btn { min-height: 64px; font-size: 1.25rem; }
+  .push-box .push-btn:disabled { opacity: .7; cursor: wait; }
+  .push-box .push-msg { margin: 8px 0 0; font-size: .95rem; }
+  .push-box .push-msg.on { color: #14532d; font-weight: 700; }
+  .push-box .push-msg.warn { background: #fff; border-left: 4px solid #b45309; padding: 8px 10px; border-radius: 8px; }
+  .push-box .push-off { border: 1px solid #94a3b8; background: #fff; color: #1f2937; border-radius: 8px; padding: 4px 10px; font: inherit; font-size: .9rem; cursor: pointer; }
+</style>

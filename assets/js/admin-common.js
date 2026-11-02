@@ -12,6 +12,7 @@
     ["solar.html", "☀️ Solar Leads"],
     ["rc-reports.html", "🚗 RC Challan Reports"],
     ["posters.html", "🖼️ Daily Posters"],
+    ["push.html", "🔔 Notifications"],
     ["requests.html", "🙋 Service Requests"],
     ["data.html", "🗂️ Purana DB data"],
   ];
