@@ -115,14 +115,18 @@ const cfg = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY, topic, tg: TELEGRAM_CHA
 </script>
 
 <style is:global>
-  .push-box { border: 2px solid var(--c-saffron, #f59e0b); background: var(--c-saffron-50, #fffbeb); border-radius: 16px; padding: 14px 16px; margin: 16px 0; color: #1f2937; }
+  /* fixed light colours (same in dark mode) so the text is always readable */
+  .push-box { border: 2px solid #22d3ee; background: #ecfeff; border-radius: 16px; padding: 14px 16px; margin: 16px 0; color: #0f2a33; }
+  .push-box .push-h, .push-box .push-p, .push-box .push-msg { color: #0f2a33; }
   .push-box .push-h { font-weight: 800; font-size: 1.08rem; margin: 0 0 4px; }
   .push-box .push-p { margin: 0 0 10px; }
-  .push-box .push-btn { width: 100%; min-height: 54px; border: 0; border-radius: 12px; background: #b45309; color: #fff; font: inherit; font-weight: 800; font-size: 1.1rem; cursor: pointer; }
+  .push-box .push-btn { width: 100%; min-height: 54px; border: 0; border-radius: 12px; background: #0e7490; color: #fff; font: inherit; font-weight: 800; font-size: 1.1rem; cursor: pointer; }
   .push-box.push-yojana .push-btn { min-height: 64px; font-size: 1.25rem; }
   .push-box .push-btn:disabled { opacity: .7; cursor: wait; }
   .push-box .push-msg { margin: 8px 0 0; font-size: .95rem; }
-  .push-box .push-msg.on { color: #14532d; font-weight: 700; }
-  .push-box .push-msg.warn { background: #fff; border-left: 4px solid #b45309; padding: 8px 10px; border-radius: 8px; }
+  .push-box .push-msg small { color: #334155; }
+  .push-box a { color: #0e7490; }
+  .push-box .push-msg.on { color: #065f46; font-weight: 700; }
+  .push-box .push-msg.warn { background: #fff; border-left: 4px solid #0e7490; padding: 8px 10px; border-radius: 8px; }
   .push-box .push-off { border: 1px solid #94a3b8; background: #fff; color: #1f2937; border-radius: 8px; padding: 4px 10px; font: inherit; font-size: .9rem; cursor: pointer; }
 </style>
