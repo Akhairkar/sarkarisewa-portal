@@ -6,6 +6,9 @@ export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway"
 // list them first on that state's guides (components/JobStrip.astro).
 
 export const JOBS: Job[] = [
+  { slug: "tgpsc-mpso-aso-recruitment-2026", sector: "State Govt", last: "2026-11-27", lastNote: "शाम 5 बजे तक; स्टैटिस्टिक्स ग्रेजुएट, 102 पद", state: "telangana" },
+  { slug: "grse-journeyman-driver-recruitment-2026", sector: "PSU", last: "2026-11-28", lastNote: "रात 11:59 तक; 10वीं + ITI, 58 पद" },
+  { slug: "opsc-scientific-officer-recruitment-2026", sector: "State Govt", last: "2026-11-26", lastNote: "आवेदन 6 नवंबर से; फोरेंसिक, 89 पद", state: "odisha" },
   { slug: "bel-probationary-engineer-recruitment-2026", sector: "PSU", last: "2026-11-18", lastNote: "रात 11:59 तक; B.E./B.Tech, 350 पद" },
   { slug: "rrb-isolated-categories-recruitment-2026", sector: "Railway", last: "2026-12-04", lastNote: "आवेदन 5 नवंबर से; CEN 09/2026, लगभग 195 पद" },
   { slug: "aees-teacher-recruitment-2026", sector: "Central Govt", last: "2026-11-18", lastNote: "कुछ रिपोर्टों में 22 नवंबर; 254 पद, PGT/TGT/PRT" },
