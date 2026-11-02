@@ -64,21 +64,35 @@ const cfg = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY, topic, tg: TELEGRAM_CHA
       if (Notification.permission === "denied") return say(`आपने इस वेबसाइट की सूचनाएं बंद (Block) की हुई हैं। Chrome में ऊपर पता वाली पट्टी में <strong>🔒 / ⚙️</strong> निशान दबाएं → <strong>Notifications</strong> → <strong>Allow</strong>, फिर बटन दोबारा दबाएं।`, "warn");
       btn.disabled = true;
       say("एक पल… फोन पूछेगा, तो <strong>Allow / अनुमति दें</strong> दबाएं।");
+      let step = "permission";
       try {
+        // ask first, while the tap still counts as the visitor's action
+        const perm = Notification.permission === "granted" ? "granted" : await Notification.requestPermission();
+        if (perm !== "granted") { btn.disabled = false; return say(`अनुमति नहीं मिली। सूचना चाहिए तो बटन दोबारा दबाकर <strong>Allow</strong> चुनें।`, "warn"); }
+        step = "key";
         const pub: string | null = await rpc("push_public_key", {});
         if (!pub) { btn.disabled = false; return say("यह सुविधा कुछ दिन में शुरू होगी। तब तक Telegram चैनल से जुड़ें।", "warn"); }
-        const reg = await navigator.serviceWorker.register("/sw.js");
-        await navigator.serviceWorker.ready;
-        const perm = await Notification.requestPermission();
-        if (perm !== "granted") { btn.disabled = false; return say(`अनुमति नहीं मिली। सूचना चाहिए तो बटन दोबारा दबाकर <strong>Allow</strong> चुनें।`, "warn"); }
-        const sub = (await reg.pushManager.getSubscription()) || (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64(pub) }));
+        step = "worker";
+        const reg = await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+        if (!reg.active) await Promise.race([navigator.serviceWorker.ready, new Promise((_, no) => setTimeout(() => no(new Error("worker timeout")), 15000))]);
+        step = "subscribe";
+        const key = b64(pub);
+        let sub = await reg.pushManager.getSubscription();
+        if (sub) {
+          const old = sub.options && sub.options.applicationServerKey ? new Uint8Array(sub.options.applicationServerKey) : null;
+          if (old && old.join() !== key.join()) { await sub.unsubscribe(); sub = null; }
+        }
+        if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+        step = "save";
         const j = sub.toJSON();
         await rpc("push_subscribe", { p_endpoint: j.endpoint, p_p256dh: j.keys!.p256dh, p_auth: j.keys!.auth, p_topic: c.topic, p_page: location.pathname });
         store.set(flag, "1");
         showOn();
-      } catch (e) {
+      } catch (e: any) {
         btn.disabled = false;
-        say("अभी चालू नहीं हो पाया। थोड़ी देर बाद दोबारा कोशिश करें।", "warn");
+        const why = `${step}: ${e && (e.name || "")} ${e && (e.message || e)}`.slice(0, 160).replace(/[<>&]/g, "");
+        const hint = step === "subscribe" ? " यह ब्राउज़र सूचना नहीं ले पा रहा। फोन के <strong>Chrome</strong> ऐप में साइट खोलकर (WhatsApp/Telegram के अंदर नहीं) दोबारा दबाएं।" : " थोड़ी देर बाद दोबारा कोशिश करें।";
+        say(`अभी चालू नहीं हो पाया।${hint}<br><small>(${why})</small>`, "warn");
       }
     }
     async function off() {
