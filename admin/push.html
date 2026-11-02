@@ -49,9 +49,10 @@
 <h3 style="margin-top:0;">Write a notification</h3>
 <form id="pu-form" style="display:grid; gap:10px; max-width:560px;">
 <label>Topic<br><select name="topic" required style="width:100%; padding:8px;"><option value="yojana">योजना (schemes)</option><option value="naukri">नौकरी (jobs)</option></select></label>
+<label>⚡ Quick fill: choose and the form fills itself<br><select id="pu-quick" style="width:100%; padding:8px;"><option value="">Loading…</option></select></label>
 <label>Title (max 70) <small id="pu-tc"></small><br><input name="title" maxlength="70" required style="width:100%; padding:8px;" placeholder="जीवन प्रमाण पत्र: 30 नवंबर तक जमा करें"></label>
-<label>Text (max 200) <small id="pu-bc"></small><br><textarea name="body" maxlength="200" rows="3" required style="width:100%; padding:8px;" placeholder="पेंशन न रुके, इसलिए घर बैठे फोन से जमा करने का तरीका देखें।"></textarea></label>
-<label>Page on our site<br><input name="url" required style="width:100%; padding:8px;" placeholder="/service/jeevan-pramaan-life-certificate.html"></label>
+<label>Text (max 200) <small id="pu-bc"></small><br><select id="pu-tpl" style="width:100%; padding:8px; margin-bottom:6px;"><option value="">Ready text: choose one, or write your own below</option></select><textarea name="body" maxlength="200" rows="3" required style="width:100%; padding:8px;" placeholder="पेंशन न रुके, इसलिए घर बैठे फोन से जमा करने का तरीका देखें।"></textarea></label>
+<label>Page on our site<br><input name="url" required list="pu-pages" autocomplete="off" style="width:100%; padding:8px;" placeholder="Type a few letters: jeevan, pension, ssc…"><datalist id="pu-pages"></datalist></label>
 <div id="pu-preview" style="border:1px solid var(--admin-border, #ccc); border-radius:10px; padding:10px; font-size:0.9rem;"></div>
 <button class="theme-toggle-btn" type="submit" id="pu-send">Queue to send</button>
 <p id="pu-msg" style="margin:0; font-size:0.9rem;"></p>
