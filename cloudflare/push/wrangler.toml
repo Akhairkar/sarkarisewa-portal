@@ -1,0 +1,11 @@
+# Sends the browser notifications queued on admin/push.html (Supabase
+# push_campaigns). A cron trigger checks the queue every 5 minutes from
+# 7:30 AM to 9:25 PM IST; no public URL. Secret: PUSH_SEND_KEY (set by
+# .github/workflows/deploy-push-worker.yml from the GitHub secret).
+name = "sarkarisewa-push"
+main = "worker.js"
+compatibility_date = "2026-09-29"
+workers_dev = false
+
+[triggers]
+crons = ["*/5 2-15 * * *"]
