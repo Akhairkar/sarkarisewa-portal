@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (st.error) throw st.error;
       const s = st.data;
       stats.innerHTML = `योजना: <strong>${s.yojana}</strong> · नौकरी: <strong>${s.naukri}</strong> · stopped: ${s.stopped} · new in 7 days: ${s.last7}`
-        + (s.ready ? "" : `<br><span style="color:#b91c1c;">Not ready yet: send key or VAPID keys missing (run the push-send workflow once after setting PUSH_SEND_KEY).</span>`);
+        + (s.ready ? "" : `<br><span style="color:#b91c1c;">Not ready yet: send key or VAPID keys missing (PUSH_SEND_KEY / VAPID keys).</span>`);
       const rows = cs.data || [];
       list.innerHTML = rows.length ? rows.map((c) => `<tr><td>${when(c.created_at)}</td><td>${esc(TOPIC[c.topic])}</td>
         <td><strong>${esc(c.title)}</strong><br><small>${esc(c.body)}</small><br><small>${esc(c.url)}</small></td>
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const { error } = await client.from("push_campaigns").insert(row);
     $("pu-send").disabled = false;
     if (error) { msg.textContent = "Not queued: " + error.message; return; }
-    msg.textContent = "Queued. It will go out within about 20 minutes.";
+    msg.textContent = "Queued. It will go out within about 5 minutes (7:30 AM to 9:25 PM).";
     form.reset(); fillChoices(); preview(); load();
   });
   list.addEventListener("click", async (e) => {

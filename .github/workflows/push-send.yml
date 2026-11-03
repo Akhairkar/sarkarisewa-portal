@@ -1,12 +1,10 @@
 name: Send browser notifications
 
-# Sends the notifications written on admin/push.html (Supabase push_campaigns)
-# to the browsers that pressed the "सूचना पाएं" button. Every 20 minutes in the
-# day; most runs only check and stop. Secret: PUSH_SEND_KEY.
+# Manual backup only. The notifications written on admin/push.html are sent
+# by the Cloudflare worker in cloudflare/push every 5 minutes (GitHub ran the
+# old schedule too rarely). "Run workflow" here sends anything queued now.
+# Secret: PUSH_SEND_KEY.
 on:
-  schedule:
-    # 7:30 AM to 9:30 PM IST
-    - cron: "*/20 2-15 * * *"
   workflow_dispatch:
 
 permissions:
