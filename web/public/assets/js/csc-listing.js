@@ -161,7 +161,7 @@
     var place = uniq([c.locality, c.city, c.district]);
     var hrs = hoursFull(c.working_hours), sn = since(c.years_of_operation);
     var map = c.latitude && c.longitude ? "https://www.google.com/maps?q=" + c.latitude + "," + c.longitude : c.full_address ? "https://www.google.com/maps/search/" + encodeURIComponent(c.full_address + " " + (c.pincode || "")) : "";
-    var li = function (a) { return '<ul class="checklist">' + a.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>"; };
+    var li = function (a) { return '<ul class="checklist svc-chips">' + a.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>"; };
     var waLink = wa ? "https://wa.me/91" + wa + "?text=" + waText : "";
     var photo = /^https:\/\/[a-z0-9]+\.supabase\.co\/storage\/v1\/object\/public\/csc-photos\//.test(c.photo_url || "")
       ? '<img class="csc-photo" src="' + esc(c.photo_url) + '" alt="' + esc(name) + '" width="1200" height="800" decoding="async" />' : "";
