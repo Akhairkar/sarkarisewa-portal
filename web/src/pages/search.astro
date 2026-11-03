@@ -5,6 +5,7 @@ import Base from "../layouts/Base.astro";
 import SearchBox from "../components/SearchBox.astro";
 import TaskList from "../components/TaskList.astro";
 import { POPULAR_TASKS } from "../data/site";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
 ---
 <Base
   title="खोजें: सरकारी सेवाएं, योजनाएं और टूल्स | SarkariSewa India"
@@ -16,6 +17,7 @@ import { POPULAR_TASKS } from "../data/site";
     <h1>खोजें</h1>
     <SearchBox />
     <p class="sr-status" id="search-status" role="status" aria-live="polite"></p>
+    <span id="sq-cfg" hidden data-url={SUPABASE_URL} data-key={SUPABASE_ANON_KEY}></span>
   </section>
 
   <section class="block" id="results-block" hidden>
@@ -106,6 +108,37 @@ import { POPULAR_TASKS } from "../data/site";
       moreBtn.hidden = shown >= matches.length;
     }
 
+    // Search log (supabase/search-queries.sql): which words people search and
+    // whether anything was found, to know which problems still need a page.
+    // Only the words: digit runs of 4+ become "#", e-mails are dropped.
+    var CFG = document.getElementById("sq-cfg").dataset, pending = null, logged = {};
+    function clean(q) { return q.replace(/\S+@\S+/g, " ").replace(/\d{4,}/g, "#").replace(/\s+/g, " ").trim().slice(0, 80); }
+    function flush(clicked, minMs) {
+      var p = pending;
+      if (!p || Date.now() - p.at < (minMs || 0)) return;
+      pending = null;
+      var q = clean(p.q), key = norm(q) + "|" + (clicked || "");
+      if (q.length < 2 || logged[key]) return;
+      logged[key] = 1;
+      try {
+        fetch(CFG.url + "/rest/v1/search_queries", {
+          method: "POST", keepalive: true,
+          headers: { apikey: CFG.key, Authorization: "Bearer " + CFG.key, "Content-Type": "application/json", Prefer: "return=minimal" },
+          body: JSON.stringify({ q: q, results: Math.min(p.n, 5000), clicked: clicked || null })
+        }).catch(function () {});
+      } catch (e) {}
+    }
+    function track(q, n) {
+      if (pending && norm(pending.q) === norm(q)) { pending.n = n; return; }
+      flush(null, 2500);
+      pending = q ? { q: q, n: n, at: Date.now() } : null;
+    }
+    resultsEl.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("a.result");
+      if (a) flush(a.getAttribute("href").slice(0, 200), 0);
+    });
+    addEventListener("pagehide", function () { flush(null, 1000); });
+    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") flush(null, 1000); });
     function run(q) {
       q = (q || "").trim();
       if (!q) { block.hidden = true; empty.hidden = false; statusEl.textContent = ""; return; }
@@ -116,6 +149,7 @@ import { POPULAR_TASKS } from "../data/site";
         ? "“" + q + "” के लिए " + matches.length + " नतीजे"
         : "“" + q + "” के लिए कुछ नहीं मिला। छोटा या दूसरा शब्द आज़माएं, जैसे “राशन” या “pension”।";
       render(true);
+      track(q, matches.length);
     }
 
     var params = new URLSearchParams(location.search);

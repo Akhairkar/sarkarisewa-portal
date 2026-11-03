@@ -13,6 +13,7 @@
     ["rc-reports.html", "🚗 RC Challan Reports"],
     ["posters.html", "🖼️ Daily Posters"],
     ["push.html", "🔔 Notifications"],
+    ["searches.html", "🔍 Site Searches"],
     ["requests.html", "🙋 Service Requests"],
   ];
 
