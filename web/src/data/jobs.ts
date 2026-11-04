@@ -6,6 +6,11 @@ export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway"
 // list them first on that state's guides (components/JobStrip.astro).
 
 export const JOBS: Job[] = [
+  { slug: "phhc-chowkidar-recruitment-2026", sector: "State Govt", last: "2026-11-21", lastNote: "रात 11:59 तक; हाई कोर्ट चंडीगढ़, 22 पद", state: "chandigarh" },
+  { slug: "rites-assistant-manager-mechanical-recruitment-2026", sector: "PSU", last: "2026-11-20", lastNote: "कॉन्ट्रैक्ट; मैकेनिकल + अनुभव, 27 पद, परीक्षा 29 नवंबर" },
+  { slug: "svsu-skill-instructor-recruitment-2026", sector: "State Govt", last: "2026-11-23", lastNote: "45 पद, 21 विषय; अनुभव ज़रूरी", state: "haryana" },
+  { slug: "cg-police-bastar-fighter-recruitment-2026", sector: "State Govt", last: "2026-12-12", lastNote: "शाम 5 बजे तक, ऑफलाइन; ज़िलेवार, 10वीं पास", state: "chhattisgarh" },
+  { slug: "jharkhand-home-guard-latehar-recruitment-2026", sector: "State Govt", last: "2026-12-01", lastNote: "आवेदन 17 नवंबर से; 457 पद, 7वीं/10वीं पास", state: "jharkhand" },
   { slug: "tgpsc-mpso-aso-recruitment-2026", sector: "State Govt", last: "2026-11-27", lastNote: "शाम 5 बजे तक; स्टैटिस्टिक्स ग्रेजुएट, 102 पद", state: "telangana" },
   { slug: "grse-journeyman-driver-recruitment-2026", sector: "PSU", last: "2026-11-28", lastNote: "रात 11:59 तक; 10वीं + ITI, 58 पद" },
   { slug: "opsc-scientific-officer-recruitment-2026", sector: "State Govt", last: "2026-11-26", lastNote: "आवेदन 6 नवंबर से; फोरेंसिक, 89 पद", state: "odisha" },
