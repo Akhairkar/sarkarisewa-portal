@@ -1,8 +1,8 @@
 name: Deploy site
 
 # Builds the new Astro pages (web/), lays them over the old static site and
-# publishes the result to GitHub Pages. Requires Settings -> Pages -> Source:
-# "GitHub Actions".
+# deploys the result to Cloudflare (cloudflare/site/), which serves
+# sarkarisewaindia.com. GitHub Pages is no longer used (stopped 4 Nov 2026).
 on:
   push:
     branches: [main]
@@ -13,8 +13,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -59,11 +57,8 @@ jobs:
           # Pages whose content changed or are new (from assemble.mjs).
           cp web/changed-urls.txt web/indexnow-urls.txt 2>/dev/null || : > web/indexnow-urls.txt
           wc -l web/indexnow-urls.txt
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: web/_site
       # The live site: sarkarisewaindia.com is served by this Cloudflare
-      # Worker (cloudflare/site/). GitHub Pages below is only a fallback copy.
+      # Worker (cloudflare/site/).
       - name: Deploy to Cloudflare
         run: npx --yes wrangler@4.154.0 deploy --config cloudflare/site/wrangler.toml
         env:
@@ -77,19 +72,9 @@ jobs:
             web/indexnow-urls.txt
           retention-days: 1
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
-
   # After the new pages are live, tell IndexNow engines what changed.
   indexnow:
-    needs: deploy
+    needs: build
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
