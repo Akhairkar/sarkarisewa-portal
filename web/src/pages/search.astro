@@ -59,7 +59,11 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
       rj: "rajasthan", br: "bihar", jh: "jharkhand", gj: "gujarat", pb: "punjab", hr: "haryana", ka: "karnataka", od: "odisha"
     };
 
-    function norm(s) { return s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim(); }
+    // "15,000" and "15000" match each other; ₹ and other signs are dropped.
+    function norm(s) { return s.toLowerCase().replace(/(\d),(?=\d)/g, "$1").replace(/[^\p{L}\p{M}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim(); }
+    // Filler words people type ("pf 15000 wali scheme", "ration card kaise banaye")
+    // that are not in page titles; they must not make a search find nothing.
+    var STOP = { wali: 1, wala: 1, wale: 1, ki: 1, ka: 1, ke: 1, ko: 1, se: 1, me: 1, mein: 1, hai: 1, kya: 1, kaise: 1, kare: 1, karen: 1, karein: 1, karna: 1, aur: 1, the: 1, of: 1, for: 1, how: 1, to: 1, "की": 1, "का": 1, "के": 1, "को": 1, "से": 1, "में": 1, "है": 1, "क्या": 1, "कैसे": 1, "वाली": 1, "वाला": 1, "और": 1 };
     function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
     function section(url) {
       if (/\/csc-locator\//.test(url)) return "CSC सेंटर";
@@ -73,21 +77,31 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
     }
 
     function search(q) {
-      var words = norm(q).split(" ").filter(Boolean).map(function (w) { return ABBR[w] || w; });
+      var all = norm(q).split(" ").filter(Boolean);
+      var words = all.filter(function (w) { return !STOP[w]; });
+      if (!words.length) words = all;
+      words = words.map(function (w) { return ABBR[w] || w; });
       if (!words.length) return [];
+      var res = find(q, words, 0);
+      // Nothing with every word: for 3+ words, allow one word to be missing
+      // ("pf 15000 scheme" finds the Rs 15,000 first-job scheme).
+      if (!res.length && words.length >= 3) res = find(q, words, 1);
+      return res;
+    }
+    function find(q, words, allowMiss) {
       var res = [];
       for (var i = 0; i < INDEX.length; i++) {
         var url = INDEX[i][0], title = INDEX[i][1];
         var hay = norm(title + " " + url.replace(/[\/\-.]/g, " "));
-        var score = 0, ok = true;
+        var score = 0, miss = 0;
         for (var j = 0; j < words.length; j++) {
           var w = words[j], alt = SYN[w];
           var hit = hay.indexOf(w) !== -1 || (alt && hay.indexOf(alt) !== -1);
-          if (!hit) { ok = false; break; }
+          if (!hit) { if (++miss > allowMiss) break; continue; }
           var t = norm(title);
           if (t.indexOf(w) !== -1 || (alt && t.indexOf(alt) !== -1)) score += 3; else score += 1;
         }
-        if (!ok) continue;
+        if (miss > allowMiss) continue;
         if (norm(title).indexOf(norm(q)) !== -1) score += 5;
         // Prefer guides over the many CSC / Jan Aushadhi listing pages.
         if (/\/(csc-locator|jan-aushadhi)\//.test(url) && !/csc|सीएससी|औषधि|aushadhi|kendra|केंद्र/i.test(q)) score -= 2;
@@ -110,9 +124,10 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
 
     // Search log (supabase/search-queries.sql): which words people search and
     // whether anything was found, to know which problems still need a page.
-    // Only the words: digit runs of 4+ become "#", e-mails are dropped.
+    // Only the words: digit runs of 7+ (phone, Aadhaar, application numbers)
+    // become "#", e-mails are dropped; amounts like 15000 stay.
     var CFG = document.getElementById("sq-cfg").dataset, pending = null, logged = {};
-    function clean(q) { return q.replace(/\S+@\S+/g, " ").replace(/\d{4,}/g, "#").replace(/\s+/g, " ").trim().slice(0, 80); }
+    function clean(q) { return q.replace(/\S+@\S+/g, " ").replace(/\d{7,}/g, "#").replace(/\s+/g, " ").trim().slice(0, 80); }
     function flush(clicked, minMs) {
       var p = pending;
       if (!p || Date.now() - p.at < (minMs || 0)) return;

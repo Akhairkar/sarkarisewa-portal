@@ -1,5 +1,5 @@
 -- What visitors type in the site search (/search.html), to find problems the
--- site has no page for yet. Only the words are kept: digit runs of 4+ are
+-- site has no page for yet. Only the words are kept: digit runs of 7+ are
 -- replaced by '#' in the browser (no phone, Aadhaar or application numbers),
 -- no session, IP or name. Visitors can only insert; admins read.
 create table if not exists public.search_queries (
@@ -8,7 +8,7 @@ create table if not exists public.search_queries (
   q text not null,
   results int not null default 0,
   clicked text,
-  constraint search_queries_q check (length(q) between 2 and 80 and q !~ '[0-9]{4,}'),
+  constraint search_queries_q check (length(q) between 2 and 80 and q !~ '[0-9]{7,}'),
   constraint search_queries_results check (results between 0 and 5000),
   constraint search_queries_clicked check (clicked is null or (clicked ~ '^/[A-Za-z0-9/_.%-]*$' and length(clicked) <= 200))
 );
@@ -46,3 +46,8 @@ begin
 end $$;
 revoke execute on function public.search_stats(int) from public, anon;
 grant execute on function public.search_stats(int) to authenticated;
+
+-- 4 Nov 2026: allow amounts like 15000 in searches (only 7+ digit runs, i.e.
+-- phone/Aadhaar/application numbers, are blocked). For a table made earlier:
+alter table public.search_queries drop constraint if exists search_queries_q;
+alter table public.search_queries add constraint search_queries_q check (length(q) between 2 and 80 and q !~ '[0-9]{7,}');
