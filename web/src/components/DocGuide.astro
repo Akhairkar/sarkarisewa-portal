@@ -18,9 +18,13 @@ import PushBox from "./PushBox.astro";
 import type { DocGuide } from "../guides/doc/types";
 import { promo as challanPromo } from "../guides/challan/common";
 import { langOf } from "../i18n";
+import { jobPostingFor } from "../lib/job-posting";
 
 interface Props { g: DocGuide; canonical?: string }
 const { g, canonical } = Astro.props;
+// Open vacancy pages in /jobs/ also carry JobPosting data (lib/job-posting.ts).
+const jobSlug = Astro.url.pathname.match(/^\/jobs\/([^/]+?)(?:\.html)?\/?$/)?.[1];
+const jobPosting = jobSlug ? jobPostingFor(jobSlug, g) : null;
 const en = langOf(Astro.url) === "en";
 const L = (hi: string, e: string) => (en ? e : hi);
 const crumbs = g.crumbs ?? [
@@ -33,7 +37,7 @@ const crumbs = g.crumbs ?? [
 // box unless the guide sets its own.
 const promo = g.promo ?? (g.doc === "driving-licence" ? challanPromo : undefined);
 ---
-<Base title={g.title} description={g.description} breadcrumbs={crumbs} faq={g.faq} published={g.published} modified={g.modified} canonical={canonical}>
+<Base title={g.title} description={g.description} breadcrumbs={crumbs} faq={g.faq} published={g.published} modified={g.modified} canonical={canonical} extraSchema={jobPosting ? [jobPosting] : []}>
   <Breadcrumbs items={crumbs} />
   <div class="page has-aside">
     <article>

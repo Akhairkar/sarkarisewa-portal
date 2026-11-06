@@ -21,10 +21,11 @@ interface Props {
   schemaType?: "Article" | "WebPage";
   canonical?: string; // site path, when another page is the main copy
   noAds?: boolean; // forms, payment and policy pages: no AdSense script
+  extraSchema?: Record<string, unknown>[]; // more JSON-LD blocks (e.g. JobPosting)
 }
 const {
   title, description, breadcrumbs = [], faq = [], published, modified,
-  noindex = false, noAds = false, canonical: canonicalPath, ogImage = "/assets/img/og-image.png", schemaType = "Article",
+  noindex = false, noAds = false, canonical: canonicalPath, ogImage = "/assets/img/og-image.png", schemaType = "Article", extraSchema = [],
 } = Astro.props;
 
 const lang = langOf(Astro.url);
@@ -69,6 +70,7 @@ if (faq.length) {
     mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
   });
 }
+schema.push(...extraSchema);
 ---
 <!doctype html>
 <html lang={lang}>
