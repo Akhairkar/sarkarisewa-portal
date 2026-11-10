@@ -29,9 +29,18 @@ const meta = oldTitle(d.rel);
 // A district name used in two states (Hamirpur, Bilaspur, Pratapgarh…) gets
 // the state in its title; otherwise both pages had the same title.
 const shared = jaStates().filter((x) => x.districts.some((y) => y.name.toLowerCase() === place.toLowerCase())).length > 1;
-const title = shared
+// Test (10 Nov 2026): the ten districts that get the most Search Console
+// impressions for "jan aushadhi kendra near me" carry "Near Me" in the title,
+// the words people type. Compare their CTR with the other districts later.
+const NEAR_ME = new Set(["rajasthan/jaipur", "bihar/patna", "uttar-pradesh/prayagraj", "uttar-pradesh/ghaziabad", "chhattisgarh/raipur", "maharashtra/mumbai-suburban", "haryana/gurugram", "madhya-pradesh/gwalior", "uttarakhand/dehradun", "delhi/new-delhi"]);
+const title = NEAR_ME.has(`${s.slug}/${d.slug}`)
+  ? `${place} Jan Aushadhi Kendra Near Me 2026: ${n >= 20 ? `${n} Stores` : "Address & Phone"}`
+  : shared
   ? `${place} (${s.name}) Jan Aushadhi Kendra 2026 | SarkariSewa India`
   : meta.title || `${place} Jan Aushadhi Kendra 2026 | SarkariSewa India`;
+// A state with one district (Chandigarh, Lakshadweep) has a state page and a
+// district page with the same list; the state page is the main copy.
+const mainCopy = s.districts.length === 1 ? `/service/jan-aushadhi/${s.slug}.html` : undefined;
 const description = `${place} (${s.name}) में ${n} प्रधानमंत्री जन औषधि केंद्र: पूरा पता, PIN, फोन नंबर और नक्शा। 50-80% सस्ती जेनेरिक दवा, नज़दीकी केंद्र खोजें।`;
 const cscDir = { "andaman-nicobar": "andaman-and-nicobar", "jammu-kashmir": "jammu-and-kashmir" }[s.slug] ?? s.slug;
 const csc = [`service/csc-locator/${cscDir}/${d.slug}.html`].find((r) => exists(r));
@@ -51,7 +60,7 @@ const faq = [
   { q: "जन औषधि केंद्र की शिकायत कहां करें?", a: "ज़्यादा MRP, बिल न देना या जन औषधि के नाम पर ब्रांडेड दवा बेचने की शिकायत PMBI के टोल-फ्री नंबर 1800-180-8080 पर करें। केंद्र का PMBJK कोड बताएं, जो इस पेज की लिस्ट में हर केंद्र के साथ दिया है।" },
 ];
 ---
-<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} modified="2026-10-04">
+<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} modified="2026-10-04" canonical={mainCopy}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "ItemList",

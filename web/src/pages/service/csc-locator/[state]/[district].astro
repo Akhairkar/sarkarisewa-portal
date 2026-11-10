@@ -80,7 +80,7 @@ const faq = [
 ];
 
 ---
-<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} modified="2026-10-03" canonical={p.canonical}>
+<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} modified="2026-10-03" canonical={p.canonical ?? (p.stateDir === p.slug && ["chandigarh", "lakshadweep"].includes(p.stateDir) ? stateHref ?? undefined : undefined)}>
   {!lg && <script slot="head" type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "ItemList",
