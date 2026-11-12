@@ -34,7 +34,8 @@ export type DailyJob = {
   faq: { q: string; a: string }[];
   sources: string[];
   verified: string; // e.g. "19 अक्टूबर 2026"
-  published?: string;
+  published?: string; // YYYY-MM-DD; optional, defaults to the "verified" date
+  modified?: string; // YYYY-MM-DD; optional, defaults to the "verified" date
   state?: string; // STATES slug, for state govt jobs
 };
 
@@ -80,6 +81,18 @@ const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("hi-IN",
 const link = (href: string, text: string) => `<a href="${esc(href)}" target="_blank" rel="noopener nofollow">${esc(text)}</a>`;
 const host = (u: string) => u.replace(/^https?:\/\//, "").replace(/\/.*$/, "");
 
+const HI_MONTHS = ["जनवरी", "फ़रवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
+/** "11 नवंबर 2026" -> "2026-11-11"; undefined if it can't be read. */
+export function verifiedIso(v: string): string | undefined {
+  const m = v.trim().match(/^(\d{1,2})\s+(\S+)\s+(\d{4})$/);
+  if (!m) return undefined;
+  let i = HI_MONTHS.indexOf(m[2]);
+  if (i < 0) return undefined;
+  if (i > 2) i -= 1; // "फ़रवरी" and "फरवरी" are both February
+  else if (i === 2) i = 1;
+  return `${m[3]}-${String(i + 1).padStart(2, "0")}-${m[1].padStart(2, "0")}`;
+}
+
 /** The DocGuide page for a daily job. All text from the file is escaped. */
 export function dailyGuide(d: DailyJob): DocGuide {
   const today = new Date().toISOString().slice(0, 10);
@@ -89,8 +102,10 @@ export function dailyGuide(d: DailyJob): DocGuide {
     docHi: d.title.split(/[:|]/)[0].trim(),
     title: d.title,
     description: d.description,
-    published: d.published ?? today,
-    modified: today,
+    // Dates in the page's schema must change only when the page content does,
+    // not on every build: use the date the data was last verified.
+    published: d.published ?? d.modified ?? verifiedIso(d.verified) ?? today,
+    modified: d.modified ?? verifiedIso(d.verified) ?? today,
     verified: d.verified,
     h1: d.h1,
     lead: `<strong>स्थिति: ${open ? "आवेदन चालू" : "आवेदन बंद"}।</strong> ${esc(d.organisation)} ने ${esc(d.totalPosts)} पदों की भर्ती निकाली है। ऑनलाइन आवेदन की आखिरी तारीख <strong>${fmt(d.lastDate)}</strong>${d.lastNote ? ` (${esc(d.lastNote)})` : ""} है। आवेदन सिर्फ आधिकारिक वेबसाइट ${link(d.applyLink, host(d.applyLink))} पर करें।`,

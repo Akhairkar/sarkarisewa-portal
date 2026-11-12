@@ -3,7 +3,7 @@
 // homepage grid (NewJobs) and the small strip on guide pages (JobStrip).
 // Built with the site (every 2 hours), so finished jobs drop off on their own.
 import type { DocGuide } from "../guides/doc/types";
-import { ALL_JOBS, DAILY_JOBS } from "./daily-jobs";
+import { ALL_JOBS, DAILY_JOBS, verifiedIso } from "./daily-jobs";
 
 const GUIDES = Object.fromEntries(
   Object.entries(import.meta.glob<Record<string, DocGuide>>("../guides/jobs/*.ts", { eager: true }))
@@ -20,7 +20,7 @@ export const OPEN_JOBS: OpenJob[] = ALL_JOBS
   .filter((j) => j.status !== "expected" && j.last >= today && (GUIDES[j.slug] || DAILY[j.slug]))
   .map((j) => {
     const title = GUIDES[j.slug]?.title ?? DAILY[j.slug]!.title;
-    const published = GUIDES[j.slug]?.published ?? DAILY[j.slug]?.published ?? today;
+    const published = GUIDES[j.slug]?.published ?? (DAILY[j.slug] ? DAILY[j.slug]!.published ?? verifiedIso(DAILY[j.slug]!.verified) : undefined) ?? today;
     const [name, ...rest] = title.split(/:| — | \| /);
     return { slug: j.slug, href: `/jobs/${j.slug}.html`, name: name.trim(), sub: rest.join(" ").trim(), last: j.last, published, isNew: days(published, today) <= 7, left: days(today, j.last), state: j.state };
   })

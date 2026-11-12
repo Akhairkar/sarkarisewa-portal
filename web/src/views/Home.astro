@@ -9,6 +9,7 @@ import Faq from "../components/Faq.astro";
 import { SITE, POPULAR_TASKS, PAID_SERVICES, STATES } from "../data/site";
 import { langOf, t, localize } from "../i18n";
 import { exists } from "../lib/repo";
+import { TOOL_TOTAL } from "../lib/tool-groups";
 
 const lang = langOf(Astro.url);
 const L = (hi: string, en: string) => (lang === "en" ? en : hi);
@@ -136,7 +137,7 @@ const faq = lang === "en" ? [
     </div>
   </section>
 
-  <CardGrid title={L("काम के फ्री टूल्स 🛠️", "Free tools 🛠️")} cards={tools} id="tools" more={{ href: "/tools/", label: L("सभी 24 टूल्स ›", "All 24 tools ›") }} />
+  <CardGrid title={L("काम के फ्री टूल्स 🛠️", "Free tools 🛠️")} cards={tools} id="tools" more={{ href: "/tools/", label: L(`सभी ${TOOL_TOTAL} टूल्स ›`, `All ${TOOL_TOTAL} tools ›`) }} />
 
   <section class="block" aria-labelledby="near">
     <div class="block-head"><h2 id="near">{L("आपके पास", "Near you")}</h2><a href={localize("/near-me/", lang)}>{L("सभी राज्य ›", "All states ›")}</a></div>
