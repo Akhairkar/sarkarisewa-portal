@@ -95,5 +95,5 @@ export const dadraNagarHaveliDamanDiu: LabourGuide = {
     { href: "/service/ayushman-bharat.html", emoji: "🏥", title: "आयुष्मान कार्ड", text: "₹5 लाख तक मुफ्त इलाज" },
     { href: "/tools/document-checklist.html", emoji: "📋", title: "डॉक्यूमेंट चेकलिस्ट", text: "आवेदन से पहले कागज़ तैयार करें" },
   ],
-  csc: "/service/csc-locator/dadra-nagar-haveli-daman-diu.html",
+  csc: "/tools/csc-locator.html",
 };

@@ -21,7 +21,7 @@ export const dadraNagarHaveliDamanDiu: SeniorGuide = {
       "<strong>सत्यापन का इंतज़ार करें।</strong> कितने दिन लगेंगे, यह रसीद लेते समय पूछ लें।",
       "<strong>देरी हो तो शिकायत करें।</strong> Elderline <a href=\"tel:14567\">14567</a> पर कॉल करें (सुबह 8 से रात 8 बजे, हर दिन, फ्री)।",
     ],
-    after: "चल नहीं सकते या कार्यालय दूर है? परिवार का कोई सदस्य आपके दस्तावेज़ लेकर जा सकता है, या नज़दीकी <a href=\"/service/csc-locator/dadra-nagar-haveli-daman-diu.html\">CSC सेंटर</a> से मदद ले सकते हैं।",
+    after: "चल नहीं सकते या कार्यालय दूर है? परिवार का कोई सदस्य आपके दस्तावेज़ लेकर जा सकता है, या नज़दीकी <a href=\"/tools/csc-locator.html\">CSC सेंटर</a> से मदद ले सकते हैं।",
   },
   documents: [
     ...baseDocuments,
@@ -55,5 +55,5 @@ export const dadraNagarHaveliDamanDiu: SeniorGuide = {
     ...commonFaq,
   ],
   related: relatedFor("dadra-nagar-haveli-daman-diu", "दादरा नगर हवेली और दमन दीव"),
-  csc: "/service/csc-locator/dadra-nagar-haveli-daman-diu.html",
+  csc: "/tools/csc-locator.html",
 };

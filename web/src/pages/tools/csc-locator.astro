@@ -12,7 +12,9 @@ import CscTool from "../../components/CscTool.astro";
 import CscInfo from "../../components/CscInfo.astro";
 import { STATES } from "../../data/site";
 import { CSC_STATE, stateTotals, cscPages, cscServices } from "../../lib/csc";
-import { exists } from "../../lib/repo";
+import fs from "node:fs";
+import path from "node:path";
+import { exists, REPO_ROOT } from "../../lib/repo";
 import { listings, listingSlug, listingDistrictPage, niceName } from "../../lib/csc-listings";
 import { typeOf } from "../../lib/centre-types";
 
@@ -21,7 +23,9 @@ const alt: Record<string, string[]> = {
   "jammu-kashmir": ["jammu-and-kashmir", "jammu-kashmir"],
   "dadra-nagar-haveli-daman-diu": ["dadra-nagar-haveli-daman-diu", "dadra-and-nagar-haveli-and-daman-and-diu", "dnh-dd"],
 };
-const pick = (slug: string) => (alt[slug] ?? [slug]).map((s) => `service/csc-locator/${s}.html`).find(exists);
+// An old redirect page that sends straight back to this tool is not a state page: skip it.
+const backHere = (rel: string) => { try { return /url=\/tools\/csc-locator\.html/.test(fs.readFileSync(path.join(REPO_ROOT, rel), "utf8").slice(0, 1500)); } catch { return false; } };
+const pick = (slug: string) => (alt[slug] ?? [slug]).map((s) => `service/csc-locator/${s}.html`).find((r) => exists(r) && !backHere(r));
 const states = STATES.map((s) => ({ ...s, href: pick(s.slug) })).filter((s) => s.href);
 const total = [...new Set(Object.values(CSC_STATE))].reduce((n, st) => n + stateTotals(st).total, 0);
 const totalText = `${Math.floor(total / 100000)} लाख+`;

@@ -46,7 +46,7 @@ export const mpbcdcYojana: DocGuide = {
         head: ["योजना", "प्रकल्प सीमा", "पैसा कैसे बंटता है"],
         rows: [
           ['<a href="/service/mpbcdc-subsidy-yojana.html">अनुदान योजना</a>', "₹50,000 तक", "50% अनुदान (अधिकतम ₹25,000), बाकी बैंक कर्ज"],
-          ['<a href="/service/mpbcdc-seed-capital-yojana.html">बीज भांडवल योजना</a>', "₹50,001 से ₹5,00,000", "बैंक 75%, महामंडळ 20% (अधिकतम ₹50,000 अनुदान सहित, 4% ब्याज, 5 साल में वापसी), आवेदक 5%"],
+          ['बीज भांडवल योजना', "₹50,001 से ₹5,00,000", "बैंक 75%, महामंडळ 20% (अधिकतम ₹50,000 अनुदान सहित, 4% ब्याज, 5 साल में वापसी), आवेदक 5%"],
           ['<a href="/service/mpbcdc-direct-loan-yojana.html">थेट कर्ज योजना</a>', "₹1,00,000 तक", "₹50,000 तक अनुदान, ₹45,000 महामंडळ का कर्ज (4% सालाना, 36 महीने), आवेदक ₹5,000"],
         ],
       },
@@ -115,7 +115,6 @@ export const mpbcdcYojana: DocGuide = {
   related: [
     { href: "/service/mpbcdc-direct-loan-yojana.html", emoji: "📉", title: "थेट कर्ज योजना", text: "₹1 लाख तक, 4% ब्याज" },
     { href: "/service/mpbcdc-subsidy-yojana.html", emoji: "🎁", title: "50% अनुदान योजना", text: "₹50,000 तक के व्यवसाय" },
-    { href: "/service/mpbcdc-seed-capital-yojana.html", emoji: "🌱", title: "बीज भांडवल योजना", text: "₹5 लाख तक के व्यवसाय" },
     { href: "/service/mh-caste-certificate.html", emoji: "🪪", title: "जाति प्रमाण पत्र (महाराष्ट्र)", text: "आवेदन के लिए ज़रूरी" },
     { href: "/service/mh-income-certificate.html", emoji: "💰", title: "आय प्रमाण पत्र (महाराष्ट्र)", text: "उत्पन्नाचा दाखला" },
     { href: "/service/stand-up-india.html", emoji: "🏦", title: "स्टैंड-अप इंडिया", text: "SC/ST व महिलाओं के लिए बैंक कर्ज" },

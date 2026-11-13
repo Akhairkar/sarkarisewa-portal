@@ -105,7 +105,6 @@ export const mpbcdcSubsidyYojana: DocGuide = {
   related: [
     { href: "/service/mpbcdc-yojana.html", emoji: "💸", title: "MPBCDC की सभी योजनाएं", text: "अनुदान, बीज भांडवल, थेट कर्ज" },
     { href: "/service/mpbcdc-direct-loan-yojana.html", emoji: "📉", title: "थेट कर्ज योजना", text: "₹1 लाख तक, 4% ब्याज" },
-    { href: "/service/mpbcdc-seed-capital-yojana.html", emoji: "🌱", title: "बीज भांडवल योजना", text: "₹5 लाख तक के व्यवसाय" },
     { href: "/service/mh-caste-certificate.html", emoji: "🪪", title: "जाति प्रमाण पत्र (महाराष्ट्र)", text: "आवेदन के लिए ज़रूरी" },
     { href: "/service/mh-income-certificate.html", emoji: "💰", title: "आय प्रमाण पत्र (महाराष्ट्र)", text: "उत्पन्नाचा दाखला" },
   ],

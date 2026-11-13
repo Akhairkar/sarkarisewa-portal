@@ -155,11 +155,11 @@ export const dadraNagarHaveliDamanDiuRationCard: DocGuide = {
     { href: "/states/dadra-nagar-haveli-daman-diu-domicile-certificate.html", emoji: "🏠", title: "DNH-DD निवास प्रमाण पत्र", text: "डोमिसाइल सर्टिफिकेट" },
     { href: "/states/dadra-nagar-haveli-daman-diu-birth-certificate.html", emoji: "👶", title: "DNH-DD जन्म प्रमाण पत्र", text: "बच्चे का नाम जोड़ने के लिए" },
     { href: "/service/aadhaar-card.html", emoji: "🆔", title: "आधार कार्ड", text: "बायोमेट्रिक और मोबाइल अपडेट" },
-    { href: "/service/csc-locator/dadra-nagar-haveli-daman-diu.html", emoji: "📍", title: "DNH-DD CSC सेंटर", text: "नज़दीकी केंद्र" },
+    { href: "/tools/csc-locator.html", emoji: "📍", title: "DNH-DD CSC सेंटर", text: "नज़दीकी केंद्र" },
   ],
   otherStatesTitle: "दूसरे राज्यों में राशन कार्ड",
   aside: [
     { href: "https://diu.gov.in/service-category/food-and-civil-supply-department/", label: "📋 सेवाएं और कागज़ (दीव)" },
-    { href: "/service/csc-locator/dadra-nagar-haveli-daman-diu.html", label: "📍 नज़दीकी CSC" },
+    { href: "/tools/csc-locator.html", label: "📍 नज़दीकी CSC" },
   ],
 };

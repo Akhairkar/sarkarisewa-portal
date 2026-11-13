@@ -229,8 +229,25 @@ for (const rel of listHtml(DIST)) {
   // Hand-listed moves from Search Console's 404 report (scripts/moved-urls.json).
   try { Object.assign(moves, JSON.parse(fs.readFileSync(path.join(WEB, "scripts", "moved-urls.json"), "utf8"))); } catch (e) {}
 
+  // Never send a visitor through two redirects: if the target is itself a moved
+  // URL or an older redirect page, point at its final destination instead.
+  const finalTo = (to) => {
+    for (let i = 0; i < 3; i++) {
+      const rel = to.replace(/^\//, "");
+      if (moves[rel] && moves[rel] !== to) { to = moves[rel]; continue; }
+      const f = path.join(OUT, rel);
+      if (fs.existsSync(f) && fs.statSync(f).isFile()) {
+        const h = fs.readFileSync(f, "utf8").slice(0, 1500);
+        const m = /http-equiv="refresh"/i.test(h) && h.match(/rel="canonical" href="https:\/\/sarkarisewaindia\.com([^"]*)"/);
+        if (m && m[1] !== to) { to = m[1]; continue; }
+      }
+      break;
+    }
+    return to;
+  };
   let made = 0;
-  for (const [from, to] of Object.entries(moves)) {
+  for (const [from, to0] of Object.entries(moves)) {
+    const to = finalTo(to0);
     const file = path.join(OUT, from);
     if (fs.existsSync(file) || !fs.existsSync(path.join(OUT, to.endsWith("/") ? to + "index.html" : to))) continue;
     fs.mkdirSync(path.dirname(file), { recursive: true });
