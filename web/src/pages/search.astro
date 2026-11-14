@@ -59,6 +59,12 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
       rj: "rajasthan", br: "bihar", jh: "jharkhand", gj: "gujarat", pb: "punjab", hr: "haryana", ka: "karnataka", od: "odisha"
     };
 
+    // Common Hinglish misspellings -> the spelling the index understands.
+    var SPELL = {
+      rashan: "ration", rasan: "ration", rashn: "ration", labar: "labour", labor: "labour", mazdoor: "labour", majdoor: "labour",
+      votar: "voter", vottar: "voter", downlod: "download", dowload: "download", dwnload: "download", dow: "download", downld: "download",
+      sadi: "विवाह", shadi: "विवाह", shaadi: "विवाह", pention: "pension", penshan: "pension", adhar: "aadhaar", addhar: "aadhaar"
+    };
     // "15,000" and "15000" match each other; ₹ and other signs are dropped.
     function norm(s) { return s.toLowerCase().replace(/(\d),(?=\d)/g, "$1").replace(/[^\p{L}\p{M}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim(); }
     // Filler words people type ("pf 15000 wali scheme", "ration card kaise banaye")
@@ -80,7 +86,7 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../lib/supabase-public";
       var all = norm(q).split(" ").filter(Boolean);
       var words = all.filter(function (w) { return !STOP[w]; });
       if (!words.length) words = all;
-      words = words.map(function (w) { return ABBR[w] || w; });
+      words = words.map(function (w) { return ABBR[w] || SPELL[w] || w; });
       if (!words.length) return [];
       var res = find(q, words, 0);
       // Nothing with every word: for 3+ words, allow one word to be missing
