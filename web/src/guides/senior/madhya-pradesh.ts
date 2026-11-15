@@ -6,7 +6,7 @@ const SS = "<a href=\"https://socialsecurity.mp.gov.in/\" target=\"_blank\" rel=
 export const madhyaPradesh: SeniorGuide = {
   state: { slug: "madhya-pradesh", hi: "मध्य प्रदेश" },
   title: "Madhya Pradesh Senior Citizen Card 2026: Apply & Status",
-  description: "MP में सीनियर सिटीजन कार्ड कहाँ बनता है, ज़रूरी दस्तावेज़, समग्र ID से वृद्धावस्था पेंशन ₹600 का आवेदन और 70+ के लिए आयुष्मान वय वंदना कार्ड। Official links के साथ।",
+  description: "MP में सीनियर सिटीजन कार्ड कहाँ बनता है, ज़रूरी दस्तावेज़, समग्र ID से वृद्धावस्था पेंशन ₹600 का आवेदन और 70+ के लिए आयुष्मान वय वंदना कार्ड।",
   published: "2026-08-01",
   modified: "2026-10-04",
   verified: "4 अक्टूबर 2026",

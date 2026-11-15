@@ -18,7 +18,7 @@ import type { LabourGuide } from "./types";
 export const uttarPradesh: LabourGuide = {
   state: { slug: "uttar-pradesh", hi: "उत्तर प्रदेश" },
   title: "Uttar Pradesh Labour Card (BOCW) 2026 | SarkariSewa India",
-  description: "उत्तर प्रदेश लेबर कार्ड (श्रमिक पंजीयन, UPBOCW) 2026: uplmis.in पर रजिस्ट्रेशन, 90 दिन का प्रमाण पत्र, ज़रूरी कागज़ और बोर्ड की योजनाएं: ₹55,000 कन्या विवाह, ₹5.25 लाख दुर्घटना मृत्यु सहायता, संत रविदास छात्रवृत्ति।",
+  description: "उत्तर प्रदेश लेबर कार्ड (UPBOCW) 2026: uplmis.in पर रजिस्ट्रेशन, 90 दिन का प्रमाण पत्र, ज़रूरी कागज़ और योजनाएं: ₹55,000 कन्या विवाह, ₹5.25 लाख दुर्घटना सहायता।",
   published: "2024-06-01",
   modified: "2026-10-05",
   verified: "5 अक्टूबर 2026",

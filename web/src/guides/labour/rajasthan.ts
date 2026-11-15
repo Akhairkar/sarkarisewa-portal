@@ -19,7 +19,7 @@ import type { LabourGuide } from "./types";
 export const rajasthan: LabourGuide = {
   state: { slug: "rajasthan", hi: "राजस्थान" },
   title: "Rajasthan Labour Card (BOCW) 2026: Apply & Status | SarkariSewa",
-  description: "राजस्थान लेबर कार्ड (श्रमिक पंजीयन) 2026: SSO ID से LDMS पोर्टल पर आवेदन, नवीनीकरण, स्टेटस जांच और बोर्ड की योजनाएं: ₹55,000 शुभशक्ति, ₹20,000-21,000 प्रसूति सहायता, ₹5 लाख दुर्घटना मृत्यु सहायता।",
+  description: "राजस्थान लेबर कार्ड (श्रमिक पंजीयन) 2026: SSO ID से LDMS पर आवेदन, नवीनीकरण, स्टेटस जांच और योजनाएं: ₹55,000 शुभशक्ति, ₹20,000-21,000 प्रसूति सहायता।",
   published: "2024-06-01",
   modified: "2026-10-05",
   verified: "5 अक्टूबर 2026",

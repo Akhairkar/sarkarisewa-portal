@@ -6,7 +6,7 @@ const ED = "<a href=\"https://edistrict.delhigovt.nic.in/\" target=\"_blank\" re
 export const delhi: SeniorGuide = {
   state: { slug: "delhi", hi: "दिल्ली" },
   title: "Delhi Senior Citizen Card 2026: Apply & Status | SarkariSewa",
-  description: "दिल्ली में सीनियर सिटीजन कार्ड: e-District से आवेदन, Delhi Police senior citizen registration, वृद्धावस्था पेंशन ₹2,500/₹3,000 और 70+ के लिए आयुष्मान वय वंदना कार्ड।",
+  description: "दिल्ली में सीनियर सिटीजन कार्ड: e-District से आवेदन, Delhi Police रजिस्ट्रेशन, वृद्धावस्था पेंशन ₹2,500/₹3,000 और 70+ के लिए आयुष्मान वय वंदना कार्ड।",
   published: "2026-08-01",
   modified: "2026-10-04",
   verified: "4 अक्टूबर 2026",

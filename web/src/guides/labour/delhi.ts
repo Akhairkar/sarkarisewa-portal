@@ -6,7 +6,7 @@ import type { LabourGuide } from "./types";
 export const delhi: LabourGuide = {
   state: { slug: "delhi", hi: "दिल्ली" },
   title: "Delhi Labour Card (BOCW) 2026: Apply & Status | SarkariSewa India",
-  description: "दिल्ली लेबर कार्ड (BOCW) 2026: नए पोर्टल dbocwwb.delhi.gov.in पर रजिस्ट्रेशन, अब कोई फीस नहीं, 90 दिन का कार्य प्रमाण पत्र, स्टेटस, ई-कार्ड डाउनलोड और ₹3,000 पेंशन समेत सभी योजनाएं।",
+  description: "दिल्ली लेबर कार्ड (BOCW) 2026: dbocwwb.delhi.gov.in पर रजिस्ट्रेशन, अब कोई फीस नहीं, 90 दिन का कार्य प्रमाण पत्र, स्टेटस, ई-कार्ड डाउनलोड और ₹3,000 पेंशन।",
   published: "2024-06-01",
   modified: "2026-10-04",
   verified: "4 अक्टूबर 2026",

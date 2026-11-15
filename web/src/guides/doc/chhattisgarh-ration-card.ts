@@ -28,7 +28,7 @@ export const chhattisgarhRationCard: DocGuide = {
   doc: "ration-card",
   docHi: "राशन कार्ड",
   title: "Chhattisgarh Ration Card 2026: Apply & Status",
-  description: "छत्तीसगढ़ राशन कार्ड 2026: सेवा सेतु / लोक सेवा केंद्र, जनपद पंचायत या नगरीय निकाय में आवेदन, khadya.cg.nic.in पर कार्ड विवरण, नवीनीकरण, e-KYC और हेल्पलाइन 1800-233-3663 / 1967।",
+  description: "छत्तीसगढ़ राशन कार्ड 2026: सेवा सेतु / लोक सेवा केंद्र में आवेदन, khadya.cg.nic.in पर कार्ड विवरण, नवीनीकरण, e-KYC और हेल्पलाइन 1800-233-3663 / 1967।",
   published: "2026-08-01",
   modified: "2026-10-13",
   verified: "13 अक्टूबर 2026",
