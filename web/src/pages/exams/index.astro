@@ -23,10 +23,10 @@ const BODIES: { id: string; title: string; emoji: string; re: RegExp; site: stri
 // (verified 16 Oct 2026); `p` marks dates the page itself calls "संभावित".
 type Ev = { s: string; e: string; l: string; p?: boolean; d?: string };
 const EVENTS: Record<string, Ev[]> = {
-  "rrb-ntpc-ug-2026": [{ s: "2026-10-15", e: "2026-11-13", l: "आवेदन" }],
+  "rrb-ntpc-ug-2026": [{ s: "2026-10-15", e: "2026-11-15", l: "आवेदन" }],
   "railway-rrb-exam-schedule-2026-2027": [
     { s: "2026-10-08", e: "2026-11-06", l: "NTPC ग्रेजुएट आवेदन" },
-    { s: "2026-10-15", e: "2026-11-13", l: "NTPC 12वीं पास आवेदन" },
+    { s: "2026-10-15", e: "2026-11-15", l: "NTPC 12वीं पास आवेदन" },
     { s: "2026-10-27", e: "2026-10-30", l: "JE CBT-1" },
   ],
   "rrb-group-d-2026": [{ s: "2026-08-03", e: "2026-08-21", l: "CBT" }],
@@ -66,7 +66,7 @@ const statusOf = (slug: string): string => {
   if (on) return `🟢 अभी चालू: ${on.l} (${dmy(on.s)} से ${dmy(on.e)})`;
   const next = ev.filter((x) => x.s > today).sort((a, b) => a.s.localeCompare(b.s))[0];
   if (next) return `🟡 जल्द: ${next.l}, ${next.d ?? dmy(next.s)}${next.p ? " (संभावित)" : ""}`;
-  if (slug === "rrb-ntpc-ug-2026") return "🔴 आवेदन बंद (आखिरी तारीख 13 नवंबर निकल चुकी); CBT की तारीख अभी घोषित नहीं";
+  if (slug === "rrb-ntpc-ug-2026") return "🔴 आवेदन बंद (आखिरी तारीख 15 नवंबर निकल चुकी); CBT की तारीख अभी घोषित नहीं";
   return "🔴 समाप्त: इसकी सभी तय तारीखें निकल चुकीं";
 };
 const toCard = (p: (typeof pages)[number], emoji: string) => {
