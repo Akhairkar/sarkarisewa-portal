@@ -137,7 +137,7 @@ export const haryanaEmploymentExchange: DocGuide = {
       list: [
         '<strong>National Career Service (NCS):</strong> केंद्र सरकार का पोर्टल <a href="https://www.ncs.gov.in/" target="_blank" rel="noopener nofollow">ncs.gov.in</a>; टोल-फ्री हेल्पलाइन <strong>1514</strong>।',
         "<strong>सरकारी भर्तियां:</strong> HSSC, HPSC, SSC, रेलवे जैसी भर्तियों में आवेदन उनकी अपनी वेबसाइट पर होता है; रोज़गार कार्यालय का पंजीकरण उनके लिए अलग से ज़रूरी नहीं होता।",
-        '<strong>नई भर्तियां:</strong> हमारे <a href="/jobs/index.html">नौकरी पेज</a> और <a href="/exams/index.html">Exam Calendar</a> पर देखें।',
+        '<strong>नई भर्तियां:</strong> हमारे <a href="/jobs/index.html">नौकरी पेज</a> और <a href="/exams/">Exam Calendar</a> पर देखें।',
       ],
     },
   ],
@@ -160,7 +160,7 @@ export const haryanaEmploymentExchange: DocGuide = {
     { href: "/jobs/index.html", emoji: "🎯", title: "नई सरकारी नौकरियां", text: "भर्ती, योग्यता और आखिरी तारीख" },
     { href: "/states/haryana-domicile-certificate.html", emoji: "🏠", title: "हरियाणा निवास प्रमाण पत्र", text: "15 साल निवास की शर्त, कागज़" },
     { href: "/states/haryana-caste-certificate.html", emoji: "📜", title: "हरियाणा जाति प्रमाण पत्र", text: "SC/BC प्रमाण पत्र" },
-    { href: "/exams/index.html", emoji: "📅", title: "Exam Calendar", text: "SSC, Railway, Bank की तारीखें" },
+    { href: "/exams/", emoji: "📅", title: "Exam Calendar", text: "SSC, Railway, Bank की तारीखें" },
     { href: "/tools/age-calculator.html", emoji: "⏳", title: "Exam Age Calculator", text: "कट-ऑफ तारीख पर सही उम्र" },
     { href: "/tools/document-compressor.html", emoji: "🗜️", title: "फोटो / Signature Resizer", text: "फॉर्म के साइज़ में, फ्री" },
   ],

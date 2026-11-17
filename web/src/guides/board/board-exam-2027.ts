@@ -64,7 +64,7 @@ export const boardExam2027: DocGuide = {
   ],
   related: [
     { href: "/students/", emoji: "🎓", title: "Students Hub", text: "छात्रवृत्ति, प्रमाण पत्र, टूल्स" },
-    { href: "/exams/index.html", emoji: "📅", title: "Exam Calendar", text: "प्रतियोगी परीक्षाएं" },
+    { href: "/exams/", emoji: "📅", title: "Exam Calendar", text: "प्रतियोगी परीक्षाएं" },
     { href: "/tools/age-calculator.html", emoji: "🎂", title: "उम्र कैलकुलेटर", text: "फॉर्म के लिए उम्र" },
   ],
   aside: [

@@ -60,6 +60,6 @@ export const mpBoardExam2027: DocGuide = {
   ],
   official: [{"href": "https://mpbse.nic.in/", "title": "माध्यमिक शिक्षा मंडल, MP (MPBSE)", "note": "टाइम टेबल, प्रवेश पत्र, रिजल्ट"}],
   faq: [{"q": "MP बोर्ड 12वीं परीक्षा 2027 कब से है?", "a": "17 फरवरी से 19 मार्च 2027 तक, सुबह 9 से 12 बजे।"}, {"q": "MP बोर्ड 10वीं परीक्षा 2027 कब से है?", "a": "24 फरवरी से 18 मार्च 2027 तक।"}, {"q": "जून 2027 वाली तारीखें क्या हैं?", "a": "वह पूरक (सप्लीमेंट्री) परीक्षा है, मुख्य परीक्षा नहीं।"}, {"q": "पास होने के लिए कितने नंबर चाहिए?", "a": "हर विषय में आमतौर पर कम से कम 33%।"}],
-  related: [{"href": "/board-exam/", "emoji": "📚", "title": "सभी बोर्ड परीक्षा 2027", "text": "राज्यवार टाइम टेबल"}, {"href": "/students/", "emoji": "🎓", "title": "Students Hub", "text": "छात्रवृत्ति, प्रमाण पत्र, टूल्स"}, {"href": "/exams/index.html", "emoji": "📅", "title": "Exam Calendar", "text": "प्रतियोगी परीक्षाओं की तारीखें"}],
+  related: [{"href": "/board-exam/", "emoji": "📚", "title": "सभी बोर्ड परीक्षा 2027", "text": "राज्यवार टाइम टेबल"}, {"href": "/students/", "emoji": "🎓", "title": "Students Hub", "text": "छात्रवृत्ति, प्रमाण पत्र, टूल्स"}, {"href": "/exams/", "emoji": "📅", "title": "Exam Calendar", "text": "प्रतियोगी परीक्षाओं की तारीखें"}],
   aside: [{"href": "https://mpbse.nic.in/", "label": "📄 MP बोर्ड टाइम टेबल"}, {"href": "/board-exam/", "label": "📚 सभी बोर्ड"}],
 };

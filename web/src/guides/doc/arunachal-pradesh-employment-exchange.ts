@@ -69,7 +69,7 @@ export const arunachalPradeshEmploymentExchange: DocGuide = {
       "title": "नौकरी खोजने के और सरकारी रास्ते",
       "list": [
         "<strong>National Career Service (NCS):</strong> <a href=\"https://www.ncs.gov.in/\" target=\"_blank\" rel=\"noopener nofollow\">ncs.gov.in</a>; टोल-फ्री हेल्पलाइन <strong>1514</strong>।",
-        "<strong>नई भर्तियां:</strong> हमारे <a href=\"/jobs/index.html\">नौकरी पेज</a> और <a href=\"/exams/index.html\">Exam Calendar</a> पर देखें।"
+        "<strong>नई भर्तियां:</strong> हमारे <a href=\"/jobs/index.html\">नौकरी पेज</a> और <a href=\"/exams/\">Exam Calendar</a> पर देखें।"
       ]
     }
   ],
@@ -113,7 +113,7 @@ export const arunachalPradeshEmploymentExchange: DocGuide = {
       "text": "भर्ती, योग्यता और आखिरी तारीख"
     },
     {
-      "href": "/exams/index.html",
+      "href": "/exams/",
       "emoji": "📅",
       "title": "Exam Calendar",
       "text": "SSC, Railway, Bank की तारीखें"

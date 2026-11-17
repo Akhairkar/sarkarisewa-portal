@@ -99,7 +99,7 @@ export const opscScientificOfficerRecruitment2026: DocGuide = {
   ],
   related: [
     { href: "/jobs/qualification-wise-govt-jobs.html", emoji: "🎓", title: "योग्यता के अनुसार नौकरी", text: "पोस्ट ग्रेजुएट की भर्तियां" },
-    { href: "/exams/index.html", emoji: "📅", title: "Exam Calendar", text: "परीक्षा की तारीखें" },
+    { href: "/exams/", emoji: "📅", title: "Exam Calendar", text: "परीक्षा की तारीखें" },
     { href: "/tools/age-calculator.html", emoji: "🎂", title: "उम्र कैलकुलेटर", text: "कट-ऑफ तारीख पर उम्र" },
   ],
   aside: [

@@ -89,7 +89,7 @@ export const delhiEmploymentExchange: DocGuide = {
       list: [
         '<strong>National Career Service (NCS):</strong> केंद्र सरकार का पोर्टल <a href="https://www.ncs.gov.in/" target="_blank" rel="noopener nofollow">ncs.gov.in</a>, जहां पूरे देश की नौकरियां और जॉब फेयर दिखते हैं।',
         "<strong>सरकारी भर्तियां:</strong> SSC, रेलवे, DSSSB जैसी भर्तियां अपनी अलग वेबसाइट पर निकलती हैं; रोज़गार कार्यालय का पंजीकरण उनके लिए अलग से ज़रूरी नहीं है।",
-        '<strong>नई भर्तियों की जानकारी:</strong> हमारे <a href="/jobs/index.html">नौकरी पेज</a> और <a href="/exams/index.html">Exam Calendar</a> पर देखें।',
+        '<strong>नई भर्तियों की जानकारी:</strong> हमारे <a href="/jobs/index.html">नौकरी पेज</a> और <a href="/exams/">Exam Calendar</a> पर देखें।',
       ],
     },
     {
@@ -121,7 +121,7 @@ export const delhiEmploymentExchange: DocGuide = {
   ],
   related: [
     { href: "/jobs/index.html", emoji: "🎯", title: "नई सरकारी नौकरियां", text: "भर्ती, योग्यता और आखिरी तारीख" },
-    { href: "/exams/index.html", emoji: "📅", title: "Exam Calendar", text: "SSC, Railway, Bank की तारीखें" },
+    { href: "/exams/", emoji: "📅", title: "Exam Calendar", text: "SSC, Railway, Bank की तारीखें" },
     { href: "/tools/age-calculator.html", emoji: "⏳", title: "Exam Age Calculator", text: "कट-ऑफ तारीख पर सही उम्र" },
     { href: "/states/delhi-caste-certificate.html", emoji: "📜", title: "दिल्ली जाति प्रमाण पत्र", text: "SC/ST/OBC प्रमाण पत्र" },
     { href: "/states/delhi-labour-card.html", emoji: "👷", title: "दिल्ली लेबर कार्ड", text: "निर्माण मज़दूरों के लिए, मुफ्त" },

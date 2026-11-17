@@ -72,7 +72,7 @@ export const FOOTER: { title: Text; links: { href: string; label: Text }[] }[] =
     links: [
       { href: "/students/", label: "Students hub" },
       { href: "/jobs/index.html", label: { hi: "सरकारी नौकरी", en: "Government jobs" } },
-      { href: "/exams/index.html", label: "Exam Calendar" },
+      { href: "/exams/", label: "Exam Calendar" },
       { href: "/tools/age-calculator.html", label: "Age Calculator" },
       { href: "/tools/document-compressor.html", label: "Photo/PDF Resizer" },
     ],

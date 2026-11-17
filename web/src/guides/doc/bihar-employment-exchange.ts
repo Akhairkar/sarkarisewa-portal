@@ -91,7 +91,7 @@ export const biharEmploymentExchange: DocGuide = {
       list: [
         '<strong>National Career Service (NCS):</strong> केंद्र सरकार का पोर्टल <a href="https://www.ncs.gov.in/" target="_blank" rel="noopener nofollow">ncs.gov.in</a>; टोल-फ्री हेल्पलाइन <strong>1514</strong>। DET पोर्टल पर भी NCS का लिंक है।',
         "<strong>सरकारी भर्तियां:</strong> BPSC, BSSC, बिहार पुलिस, SSC, रेलवे जैसी भर्तियों में आवेदन उनकी अपनी वेबसाइट पर होता है।",
-        '<strong>नई भर्तियां:</strong> हमारे <a href="/jobs/index.html">नौकरी पेज</a> और <a href="/exams/index.html">Exam Calendar</a> पर देखें।',
+        '<strong>नई भर्तियां:</strong> हमारे <a href="/jobs/index.html">नौकरी पेज</a> और <a href="/exams/">Exam Calendar</a> पर देखें।',
       ],
     },
   ],
@@ -112,7 +112,7 @@ export const biharEmploymentExchange: DocGuide = {
     { href: "/states/bihar-domicile-certificate.html", emoji: "🏠", title: "बिहार निवास प्रमाण पत्र", text: "आवासीय प्रमाण पत्र के कागज़" },
     { href: "/states/bihar-caste-certificate.html", emoji: "📜", title: "बिहार जाति प्रमाण पत्र", text: "SC/ST/OBC प्रमाण पत्र" },
     { href: "/states/bihar-income-certificate.html", emoji: "💰", title: "बिहार आय प्रमाण पत्र", text: "RTPS से आवेदन" },
-    { href: "/exams/index.html", emoji: "📅", title: "Exam Calendar", text: "SSC, Railway, Bank की तारीखें" },
+    { href: "/exams/", emoji: "📅", title: "Exam Calendar", text: "SSC, Railway, Bank की तारीखें" },
     { href: "/tools/document-compressor.html", emoji: "🗜️", title: "फोटो / Signature Resizer", text: "फॉर्म के साइज़ में, फ्री" },
   ],
   otherStatesTitle: "दूसरे राज्यों में रोज़गार कार्यालय पंजीकरण",

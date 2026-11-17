@@ -104,7 +104,7 @@ export const uttarPradeshEmploymentExchange: DocGuide = {
       list: [
         '<strong>National Career Service (NCS):</strong> <a href="https://www.ncs.gov.in/" target="_blank" rel="noopener nofollow">ncs.gov.in</a>; टोल-फ्री हेल्पलाइन <strong>1514</strong>।',
         "<strong>सरकारी भर्तियां:</strong> UPSSSC, UPPSC, पुलिस भर्ती बोर्ड आदि में आवेदन उनकी अपनी वेबसाइट पर होता है।",
-        '<strong>नई भर्तियां:</strong> हमारे <a href="/jobs/index.html">नौकरी पेज</a> और <a href="/exams/index.html">Exam Calendar</a> पर देखें।',
+        '<strong>नई भर्तियां:</strong> हमारे <a href="/jobs/index.html">नौकरी पेज</a> और <a href="/exams/">Exam Calendar</a> पर देखें।',
       ],
     },
   ],
@@ -123,7 +123,7 @@ export const uttarPradeshEmploymentExchange: DocGuide = {
   ],
   related: [
     { href: "/jobs/index.html", emoji: "🎯", title: "नई सरकारी नौकरियां", text: "भर्ती, योग्यता और आखिरी तारीख" },
-    { href: "/exams/index.html", emoji: "📅", title: "Exam Calendar", text: "SSC, Railway, Bank की तारीखें" },
+    { href: "/exams/", emoji: "📅", title: "Exam Calendar", text: "SSC, Railway, Bank की तारीखें" },
     { href: "/states/uttar-pradesh-caste-certificate.html", emoji: "📜", title: "उत्तर प्रदेश जाति प्रमाण पत्र", text: "SC/ST/OBC प्रमाण पत्र" },
     { href: "/states/uttar-pradesh-domicile-certificate.html", emoji: "🏠", title: "उत्तर प्रदेश निवास प्रमाण पत्र", text: "डोमिसाइल सर्टिफिकेट" },
     { href: "/tools/age-calculator.html", emoji: "⏳", title: "Exam Age Calculator", text: "कट-ऑफ तारीख पर सही उम्र" },
