@@ -272,7 +272,7 @@ export const FINDER_JOBS: FinderJob[] = [
     age: [18, 30],
     ageNote: "उम्र 1 जनवरी 2027 को गिनी जाएगी। OBC 3, SC/ST 5 साल, दिव्यांग को नियमानुसार छूट। विस्तृत CEN में पुष्टि करें।",
     pay: "Level-2 और Level-3",
-    cycle: "हर साल; CEN 07/2026 का फॉर्म 15 अक्टूबर–13 नवंबर 2026",
+    cycle: "हर साल; CEN 07/2026 का फॉर्म 15 अक्टूबर–15 नवंबर 2026 (बढ़ाई गई)",
     official: "https://www.rrbapply.gov.in/",
     page: "/exams/rrb-ntpc-ug-2026.html",
     source: "RRB CEN 07/2026 (NTPC Undergraduate), रिपोर्टों से",

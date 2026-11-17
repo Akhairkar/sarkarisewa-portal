@@ -63,7 +63,7 @@ export const JOBS: Job[] = [
   { slug: "punjab-court-clerk-recruitment-2026", sector: "State Govt", last: "2026-11-04", lastNote: "शाम 4 बजे तक", state: "punjab" },
   { slug: "upsssc-sports-directorate-recruitment-2026", sector: "State Govt", last: "2026-11-04", lastNote: "फीस समायोजन/सुधार 11 नवंबर 2026 तक", state: "uttar-pradesh" },
   { slug: "upsssc-inter-level-recruitment-2026", sector: "State Govt", last: "2026-12-01", lastNote: "आवेदन 10 नवंबर 2026 से शुरू होगा", status: "expected", state: "uttar-pradesh" },
-  { slug: "rrb-ntpc-recruitment-2026", sector: "Railway", last: "2026-11-13", lastNote: "ग्रेजुएट पद 6 नवंबर, 12वीं पास पद 13 नवंबर 2026" },
+  { slug: "rrb-ntpc-recruitment-2026", sector: "Railway", last: "2026-11-15", lastNote: "ग्रेजुएट पद 6 नवंबर, 12वीं पास पद 15 नवंबर 2026 (बढ़ाई गई)" },
   { slug: "upsc-civil-services-ias-ifs-2027", sector: "UPSC", last: "2027-02-02", lastNote: "संभावित: नोटिफिकेशन 13 जनवरी, आखिरी तारीख 2 फरवरी 2027", status: "expected" },
   { slug: "sbi-clerk-junior-associate-recruitment-2026", sector: "Banking", last: "2026-08-31" },
   { slug: "upsc-advertisement-11-2026-212-posts", sector: "UPSC", last: "2026-10-02", lastNote: "लद्दाख के पद: 9 अक्टूबर 2026" },
