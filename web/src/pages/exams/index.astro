@@ -18,9 +18,61 @@ const BODIES: { id: string; title: string; emoji: string; re: RegExp; site: stri
   { id: "railway", title: "रेलवे (RRB)", emoji: "🟢", re: /^(rrb|railway)/, site: "rrbapply.gov.in" },
   { id: "bank", title: "बैंक (IBPS / SBI)", emoji: "🟠", re: /^(ibps|banking|sbi)/, site: "ibps.in" },
 ];
-const toCard = (p: (typeof pages)[number], emoji: string) => ({
-  href: p.href, emoji, title: cleanTitle(p.g.title), text: short(p.g.description), badge: isCalendar(p.slug) ? "कैलेंडर" : undefined,
-});
+// Status line on each card, worked out at build time (the site redeploys
+// every 2 hours). Dates are the ones already published on each exam page
+// (verified 16 Oct 2026); `p` marks dates the page itself calls "संभावित".
+type Ev = { s: string; e: string; l: string; p?: boolean; d?: string };
+const EVENTS: Record<string, Ev[]> = {
+  "rrb-ntpc-ug-2026": [{ s: "2026-10-15", e: "2026-11-13", l: "आवेदन" }],
+  "railway-rrb-exam-schedule-2026-2027": [
+    { s: "2026-10-08", e: "2026-11-06", l: "NTPC ग्रेजुएट आवेदन" },
+    { s: "2026-10-15", e: "2026-11-13", l: "NTPC 12वीं पास आवेदन" },
+    { s: "2026-10-27", e: "2026-10-30", l: "JE CBT-1" },
+  ],
+  "rrb-group-d-2026": [{ s: "2026-08-03", e: "2026-08-21", l: "CBT" }],
+  "ssc-cgl-2026": [
+    { s: "2026-09-30", e: "2026-10-30", l: "टियर-1" },
+    { s: "2026-12-01", e: "2026-12-31", l: "टियर-2", p: true, d: "दिसंबर 2026" },
+  ],
+  "ssc-exam-calendar-2026-2027": [
+    { s: "2026-11-02", e: "2026-11-06", l: "JE पेपर-1" },
+    { s: "2026-11-20", e: "2026-11-28", l: "SI (दिल्ली पुलिस, CAPF) परीक्षा" },
+    { s: "2026-11-30", e: "2026-12-31", l: "CHSL टियर-1" },
+  ],
+  "upsc-cse-2026": [{ s: "2026-05-24", e: "2026-08-21", l: "प्रीलिम्स और मेन्स" }],
+  "upsc-annual-exam-calendar-2027": [
+    { s: "2026-12-02", e: "2026-12-22", l: "NDA/CDS (I) फॉर्म" },
+    { s: "2027-05-23", e: "2027-05-23", l: "CSE 2027 प्रीलिम्स" },
+    { s: "2027-09-19", e: "2027-09-19", l: "NDA/CDS (II) परीक्षा" },
+  ],
+  "ibps-po-2026": [{ s: "2026-08-22", e: "2026-10-04", l: "प्रीलिम्स और मेन्स" }],
+  "ibps-clerk-2026": [
+    { s: "2026-10-10", e: "2026-10-11", l: "प्रीलिम्स" },
+    { s: "2026-12-27", e: "2026-12-27", l: "मेन्स", p: true },
+  ],
+  "banking-ibps-sbi-calendar-2026-2027": [
+    { s: "2026-11-21", e: "2026-11-22", l: "IBPS RRB स्केल-I प्रीलिम्स", p: true },
+    { s: "2026-12-06", e: "2026-12-13", l: "IBPS RRB ऑफिस असिस्टेंट प्रीलिम्स", p: true },
+    { s: "2026-12-27", e: "2026-12-27", l: "IBPS क्लर्क मेन्स", p: true },
+  ],
+};
+const today = new Date(Date.now() + 5.5 * 3600e3).toISOString().slice(0, 10);
+const HI = ["जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"];
+const dmy = (d: string) => `${Number(d.slice(8))} ${HI[Number(d.slice(5, 7)) - 1]}${d.slice(0, 4) === today.slice(0, 4) ? "" : " " + d.slice(0, 4)}`;
+const statusOf = (slug: string): string => {
+  const ev = EVENTS[slug];
+  if (!ev) return "";
+  const on = ev.find((x) => x.s <= today && today <= x.e);
+  if (on) return `🟢 अभी चालू: ${on.l} (${dmy(on.s)} से ${dmy(on.e)})`;
+  const next = ev.filter((x) => x.s > today).sort((a, b) => a.s.localeCompare(b.s))[0];
+  if (next) return `🟡 जल्द: ${next.l}, ${next.d ?? dmy(next.s)}${next.p ? " (संभावित)" : ""}`;
+  if (slug === "rrb-ntpc-ug-2026") return "🔴 आवेदन बंद (आखिरी तारीख 13 नवंबर निकल चुकी); CBT की तारीख अभी घोषित नहीं";
+  return "🔴 समाप्त: इसकी सभी तय तारीखें निकल चुकीं";
+};
+const toCard = (p: (typeof pages)[number], emoji: string) => {
+  const st = statusOf(p.slug);
+  return { href: p.href, emoji, title: cleanTitle(p.g.title), text: st ? `${st}. ${short(p.g.description)}` : short(p.g.description), badge: isCalendar(p.slug) ? "कैलेंडर" : undefined };
+};
 const groups = [
   ...BODIES.map((b) => ({ ...b, list: pages.filter((p) => b.re.test(p.slug)) })),
   { id: "other", title: "अन्य परीक्षाएं", emoji: "📅", re: /$^/, site: "", list: pages.filter((p) => !BODIES.some((b) => b.re.test(p.slug))) },
@@ -52,7 +104,7 @@ const faq = [
   breadcrumbs={crumbs}
   faq={faq}
   schemaType="WebPage"
-  modified="2026-10-16"
+  modified="2026-11-17"
 >
   <Breadcrumbs items={crumbs} />
   <section class="hero">
