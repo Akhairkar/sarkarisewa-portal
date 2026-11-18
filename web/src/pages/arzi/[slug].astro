@@ -21,6 +21,9 @@ const crumbs = [{ label: "होम", href: "/" }, { label: "आवेदन प
 const related = l.related
   .filter((h) => exists(h.slice(1)))
   .map((h) => ({ href: h, emoji: "📘", title: { hi: pageTitle(h.slice(1)).split(/[:|]/)[0].trim() || h, en: "" }, text: { hi: "पूरी जानकारी पढ़ें", en: "" } }));
+const toolCards = (l.tools ?? [])
+  .filter((x) => exists(x.href.slice(1)) || LETTERS.some((y) => letterHref(y) === x.href))
+  .map((x) => ({ href: x.href, emoji: x.emoji, title: { hi: x.title, en: "" }, text: { hi: x.text, en: "" } }));
 const sameCat = LETTERS.filter((x) => x.category === l.category && x.slug !== l.slug).slice(0, 8)
   .map((x) => ({ href: letterHref(x), emoji: x.emoji, title: x.short, text: { hi: "फॉर्मेट और बनाएं", en: "Format" } }));
 const others = LETTERS.filter((x) => x.category !== l.category).slice(0, 6)
@@ -72,6 +75,7 @@ const others = LETTERS.filter((x) => x.category !== l.category).slice(0, 6)
 
       <div class="callout info"><p>यह एक नमूना है, कानूनी सलाह नहीं। जिस दफ्तर में पत्र देना है, उसका अपना फॉर्म या फॉर्मेट हो तो वही इस्तेमाल करें। SarkariSewa India एक निजी वेबसाइट है, सरकारी नहीं।</p></div>
 
+      {toolCards.length > 0 && <CardGrid title="इससे जुड़े Tools और सेवाएं" cards={toolCards} id="tools" />}
       {related.length > 0 && <CardGrid title="इससे जुड़ी पूरी जानकारी" cards={related} id="related" />}
       {sameCat.length > 0 && <CardGrid title={`${cat.title.hi}: और फॉर्मेट`} cards={sameCat} id="same" />}
       {l.official && l.official.length > 0 && <OfficialLinks verified={l.verified} links={l.official} />}

@@ -41,6 +41,9 @@ export type Letter = {
   notice?: string; // html warning shown above the builder
   official?: { href: string; title: string; note?: string }[];
   related: string[]; // site paths of guides / tools this letter belongs to
+  // Optional "related tools and services" grid with explicit titles; only
+  // shown when present, so older formats render exactly as before.
+  tools?: { href: string; emoji: string; title: string; text: string }[];
   faq: { q: string; a: string }[];
   published: string;
   modified: string;
