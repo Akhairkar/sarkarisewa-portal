@@ -18,9 +18,38 @@ export function getStaticPaths() {
 const { l } = Astro.props as { l: Letter };
 const cat = CATEGORIES[l.category];
 const crumbs = [{ label: "होम", href: "/" }, { label: "आवेदन पत्र", href: "/arzi/" }, { label: l.short.hi }];
+// pageTitle() only finds titles of old static pages and some guide types, so
+// pages built from other sources used to show their raw path as the card
+// title. These names are the pages' own titles; a link with no known title
+// is left out instead of showing a path.
+const TITLE_FALLBACK: Record<string, string> = {
+  "/support/helpline-directory.html": "All Govt Helpline Numbers 2026",
+  "/support/rti-guide.html": "RTI Online Filing Guide 2026",
+  "/students/": "Students के लिए योजनाएं और जानकारी",
+  "/digilocker/apaar-id.html": "DigiLocker से APAAR ID कार्ड कैसे डाउनलोड करें",
+  "/digilocker/aadhaar.html": "DigiLocker से आधार कार्ड कैसे डाउनलोड करें",
+  "/digilocker/cbse-marksheet.html": "DigiLocker से CBSE मार्कशीट कैसे डाउनलोड करें",
+  "/digilocker/state-board-marksheet.html": "DigiLocker से राज्य बोर्ड की मार्कशीट",
+  "/digilocker/degree-certificate.html": "DigiLocker से डिग्री और यूनिवर्सिटी मार्कशीट",
+  "/affidavit/": "एफिडेविट (शपथ पत्र)",
+  "/affidavit/lost-document.html": "दस्तावेज़ खोने का एफिडेविट",
+  "/affidavit/income.html": "आय का एफिडेविट / Income Self Declaration",
+  "/affidavit/date-of-birth.html": "जन्मतिथि का एफिडेविट और जन्म प्रमाण पत्र सुधार",
+  "/affidavit/name-change.html": "नाम बदलने का एफिडेविट और गजट प्रक्रिया",
+  "/affidavit/one-and-same-person.html": "वन एंड सेम पर्सन एफिडेविट",
+  "/rent-agreement/": "रेंट एग्रीमेंट गाइड",
+  "/rent-agreement/format.html": "रेंट एग्रीमेंट फॉर्मेट",
+  "/rent-agreement/tenant-police-verification.html": "किरायेदार पुलिस वेरिफिकेशन",
+  "/documents/": "सरकारी दस्तावेज़ और प्रमाण पत्र",
+  "/tools/income-tax-calculator.html": "Income Tax Calculator 2026-27",
+  "/tools/epf-calculator.html": "EPF Calculator 2026",
+  "/tools/hra-calculator.html": "HRA Exemption Calculator 2026",
+  "/tools/gratuity-calculator.html": "Gratuity Calculator 2026",
+};
 const related = l.related
   .filter((h) => exists(h.slice(1)))
-  .map((h) => ({ href: h, emoji: "📘", title: { hi: pageTitle(h.slice(1)).split(/[:|]/)[0].trim() || h, en: "" }, text: { hi: "पूरी जानकारी पढ़ें", en: "" } }));
+  .map((h) => ({ href: h, emoji: "📘", title: { hi: pageTitle(h.slice(1)).split(/[:|]/)[0].trim() || TITLE_FALLBACK[h] || "", en: "" }, text: { hi: "पूरी जानकारी पढ़ें", en: "" } }))
+  .filter((c) => c.title.hi);
 const toolCards = (l.tools ?? [])
   .filter((x) => exists(x.href.slice(1)) || LETTERS.some((y) => letterHref(y) === x.href))
   .map((x) => ({ href: x.href, emoji: x.emoji, title: { hi: x.title, en: "" }, text: { hi: x.text, en: "" } }));
