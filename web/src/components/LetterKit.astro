@@ -159,7 +159,50 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   root.querySelectorAll("[data-kit-act]").forEach(function (b) {
     b.addEventListener("click", function () {
       var w = b.dataset.for, act = b.dataset.kitAct, paper = root.querySelector('[data-paper="' + w + '"]');
-      if (w === "appeal" && !validateFields(data.appealFields, form, "प्रथम अपील")) return;
+      if (w === "appeal") {
+        if (!validateFields(data.appealFields, form, "प्रथम अपील")) return;
+        var applicationDate = parseDate(form.elements.appdate && form.elements.appdate.value);
+        var officeReceivedDate = parseDate(form.elements.receiveddate && form.elements.receiveddate.value);
+        var replyDate = parseDate(form.elements.replydate && form.elements.replydate.value);
+        var firstAppealDate = parseDate(form.elements.appealdate && form.elements.appealdate.value);
+        var status = form.elements.status && form.elements.status.value;
+        if (!applicationDate || !firstAppealDate) {
+          msg.textContent = "RTI आवेदन और प्रथम अपील की तारीख DD/MM/YYYY या DD-MM-YYYY प्रारूप में सही भरें।";
+          (form.elements.appdate || form.elements.appealdate).focus();
+          return;
+        }
+        if (form.elements.receiveddate && form.elements.receiveddate.value.trim() && !officeReceivedDate) {
+          msg.textContent = "दफ्तर में आवेदन पहुंचने की वैध तारीख भरें।";
+          form.elements.receiveddate.focus();
+          return;
+        }
+        if (form.elements.replydate && form.elements.replydate.value.trim() && !replyDate) {
+          msg.textContent = "PIO के जवाब की वैध तारीख भरें।";
+          form.elements.replydate.focus();
+          return;
+        }
+        if (officeReceivedDate && officeReceivedDate < applicationDate) {
+          msg.textContent = "दफ्तर में आवेदन पहुंचने की तारीख, RTI आवेदन भेजने की तारीख से पहले नहीं हो सकती।";
+          form.elements.receiveddate.focus();
+          return;
+        }
+        if (firstAppealDate < applicationDate) {
+          msg.textContent = "प्रथम अपील की तारीख मूल RTI आवेदन की तारीख से पहले नहीं हो सकती।";
+          form.elements.appealdate.focus();
+          return;
+        }
+        var replyBaseDate = officeReceivedDate || applicationDate;
+        if (replyDate && replyDate < replyBaseDate) {
+          msg.textContent = "PIO के जवाब की तारीख, आवेदन दफ्तर पहुंचने की तारीख से पहले नहीं हो सकती।";
+          form.elements.replydate.focus();
+          return;
+        }
+        if (status !== "आवेदन के 30 दिन में कोई जवाब नहीं मिला" && replyDate && firstAppealDate < replyDate) {
+          msg.textContent = "जवाब मिलने के आधार पर अपील कर रहे हैं तो प्रथम अपील की तारीख जवाब मिलने से पहले नहीं हो सकती।";
+          form.elements.appealdate.focus();
+          return;
+        }
+      }
       if (w === "secondAppeal") {
         if (!validateFields(data.secondAppealFields || [], secondForm, "द्वितीय अपील")) return;
         var outcome = secondForm.elements.faaOutcome && secondForm.elements.faaOutcome.value;
