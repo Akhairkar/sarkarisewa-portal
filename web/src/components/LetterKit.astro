@@ -65,7 +65,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   var locked = root.querySelector(".kit-locked"), open = root.querySelector(".kit-open"), msg = root.querySelector(".kit-msg");
   var payBtn = root.querySelector("[data-kit-pay]"), form = root.querySelector(".kit-form"), secondForm = root.querySelector(".kit-second-form");
   var recoveryInput = root.querySelector("#kit-recovery-code"), recoveryBtn = root.querySelector("[data-kit-recover]");
-  var data = null, price = 20;
+  var data = null, price = 20, activeRecoveryCode = "", cloudSaveTimer = null;
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var ev = function (n, p) { try { if (window.gtag) gtag("event", n, p || {}); } catch (e) {} };
   var today = function () { var d = new Date(); return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear(); };
@@ -117,6 +117,17 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
       var x = v[k]; if (html) return x ? esc(x) : '<span class="lt-blank">__________</span>'; return x || "__________";
     });
   }
+  function scheduleCloudSave(appealDraft, secondDraft) {
+    if (!activeRecoveryCode) return;
+    if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
+    cloudSaveTimer = setTimeout(function () {
+      post("/kit/save", {
+        recovery_code: activeRecoveryCode,
+        application: main,
+        drafts: { appeal: appealDraft, secondAppeal: secondDraft }
+      }).catch(function () {});
+    }, 1200);
+  }
   function render() {
     ["appeal", "reminder", "secondAppeal"].forEach(function (w) {
       var el = root.querySelector('[data-paper="' + w + '"]');
@@ -128,6 +139,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
       (data.secondAppealFields || []).forEach(function (f) { s2[f.key] = secondForm.elements[f.key].value; });
       localStorage.setItem(SAVE + "_form", JSON.stringify(s));
       localStorage.setItem(SAVE + "_second_form", JSON.stringify(s2));
+      scheduleCloudSave(s, s2);
     } catch (e) {}
   }
   function buildFields(target, fields, storageKey) {
@@ -169,7 +181,10 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
       if (!r || !r.success) throw new Error(r && r.error || "Recovery नहीं हो सकी।");
       var payload = r.data.payload || {};
       main = payload.application || {};
+      activeRecoveryCode = code;
       try {
+        if (payload.drafts && payload.drafts.appeal) localStorage.setItem(SAVE + "_form", JSON.stringify(payload.drafts.appeal));
+        if (payload.drafts && payload.drafts.secondAppeal) localStorage.setItem(SAVE + "_second_form", JSON.stringify(payload.drafts.secondAppeal));
         localStorage.setItem(SRC, JSON.stringify(main));
         localStorage.setItem(SAVE, JSON.stringify({ application: main, source: root.dataset.src, recovered: true }));
       } catch (e) {}
@@ -360,6 +375,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
           post("/kit/verify", Object.assign({ kit: KIT }, body)).then(function (r) {
             if (!r.success) throw new Error(r.error || "verify");
             main = application;
+            activeRecoveryCode = r.data.recovery_code || "";
             try { body.source = root.dataset.src; localStorage.setItem(SAVE, JSON.stringify(body)); } catch (e) {}
             ev("purchase", { transaction_id: p.razorpay_payment_id, value: price, currency: "INR", items: item });
             msg.textContent = ""; unlock(r.data); open.scrollIntoView({ behavior: "smooth", block: "start" });
