@@ -736,7 +736,7 @@ async function createKitOrder(env, kit, application, source) {
 }
 
 async function verifyKitPayment(body, env) {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, kit, application, source } = body || {};
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, kit, application, source, recovery_payload } = body || {};
   if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !KITS[kit] || !validKitApplication(application)) {
     return { success: false, status: 400, error: "Required payment details are missing" };
   }
@@ -773,7 +773,90 @@ async function verifyKitPayment(body, env) {
   }
   if (payment.status !== "captured") return { success: false, status: 400, error: "Payment is not captured" };
   const k = KITS[kit];
-  return { success: true, status: 200, data: { kit, appealFields: k.appealFields, secondAppealFields: k.secondAppealFields, templates: k.templates, checklist: k.checklist } };
+  let recovery = null;
+  if (env.SUPABASE_SERVICE_ROLE_KEY && env.RTI_RECOVERY_ENCRYPTION_KEY) {
+    try {
+      recovery = await createRecoveryRecord({
+        paymentId: razorpay_payment_id, kit, source: pageSource,
+        payload: { application: normalizeKitApplication(application), drafts: recovery_payload && typeof recovery_payload === "object" ? recovery_payload : {} }
+      }, env);
+    } catch {}
+  }
+  return { success: true, status: 200, data: { kit, recovery_code: recovery, recovery_available: Boolean(recovery), appealFields: k.appealFields, secondAppealFields: k.secondAppealFields, templates: k.templates, checklist: k.checklist } };
+}
+
+
+// RTI recovery payloads are encrypted in the Worker before reaching Supabase.
+function recoveryCode() {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes = crypto.getRandomValues(new Uint8Array(20));
+  let raw = "";
+  for (const b of bytes) raw += alphabet[b % alphabet.length];
+  return raw.match(/.{1,5}/g).join("-");
+}
+async function recoveryDigest(value) {
+  const bytes = new TextEncoder().encode(String(value || "").replace(/-/g, "").toUpperCase());
+  return bytesToHex(await crypto.subtle.digest("SHA-256", bytes));
+}
+async function recoveryCryptoKey(env) {
+  const secret = String(env.RTI_RECOVERY_ENCRYPTION_KEY || "").trim();
+  if (secret.length < 32) throw new Error("RTI recovery encryption key is not configured");
+  const raw = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(secret));
+  return crypto.subtle.importKey("raw", raw, { name: "AES-GCM" }, false, ["encrypt", "decrypt"]);
+}
+async function encryptRecovery(payload, env) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, await recoveryCryptoKey(env), new TextEncoder().encode(JSON.stringify(payload)));
+  const b64 = (bytes) => btoa(String.fromCharCode(...new Uint8Array(bytes))).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/g, "");
+  return { payload_ciphertext: b64(encrypted), payload_iv: b64(iv) };
+}
+async function supabaseRecoveryRequest(path, env, options = {}) {
+  const serviceKey = String(env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
+  if (!serviceKey) throw new Error("Supabase recovery service key is not configured");
+  return fetch(SUPABASE_URL + "/rest/v1/" + path, {
+    ...options,
+    headers: {
+      apikey: serviceKey, Authorization: "Bearer " + serviceKey,
+      "Content-Type": "application/json",
+      Prefer: options.method === "POST" ? "return=minimal" : "return=representation",
+      ...(options.headers || {})
+    }
+  });
+}
+async function createRecoveryRecord({ paymentId, kit, source, payload }, env) {
+  const code = recoveryCode();
+  const hash = await recoveryDigest(code);
+  const encrypted = await encryptRecovery(payload, env);
+  const response = await supabaseRecoveryRequest("rti_kit_recovery", env, {
+    method: "POST",
+    body: JSON.stringify({
+      recovery_code_hash: hash, payment_id: paymentId, kit,
+      source_hash: await kitSourceHash(source),
+      payload_ciphertext: encrypted.payload_ciphertext, payload_iv: encrypted.payload_iv
+    })
+  });
+  if (!response.ok) throw new Error("Unable to save RTI recovery record");
+  return code;
+}
+async function recoverKit(body, env) {
+  const code = String(body?.recovery_code || "").trim().toUpperCase();
+  if (!/^[A-HJ-NP-Z2-9]{5}(?:-[A-HJ-NP-Z2-9]{5}){3}$/.test(code)) return { success: false, status: 400, error: "Invalid recovery code" };
+  const hash = await recoveryDigest(code);
+  const response = await supabaseRecoveryRequest("rti_kit_recovery?select=payload_ciphertext,payload_iv,kit,expires_at,revoked_at&recovery_code_hash=eq." + hash + "&limit=1", env);
+  if (!response.ok) return { success: false, status: 503, error: "Recovery service unavailable" };
+  const row = (await response.json())[0];
+  if (!row || row.revoked_at || Date.parse(row.expires_at) <= Date.now()) return { success: false, status: 404, error: "Recovery code not found or expired" };
+  try {
+    const decode = (s) => {
+      let v = String(s).replaceAll("-", "+").replaceAll("_", "/");
+      while (v.length % 4) v += "=";
+      return Uint8Array.from(atob(v), ch => ch.charCodeAt(0));
+    };
+    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: decode(row.payload_iv) }, await recoveryCryptoKey(env), decode(row.payload_ciphertext));
+    return { success: true, status: 200, data: { kit: row.kit, payload: JSON.parse(new TextDecoder().decode(plain)) } };
+  } catch {
+    return { success: false, status: 500, error: "Unable to decrypt recovery data" };
+  }
 }
 
 export default {
@@ -827,6 +910,15 @@ export default {
         return json({ success: result.success, ...(result.success ? { data: result.data } : { error: result.error }) }, result.status, headers);
       } catch {
         return json({ success: false, error: "Payment verification service unavailable" }, 502, headers);
+      }
+    }
+
+    if (request.method === "POST" && url.pathname === "/kit/recover") {
+      try {
+        const result = await recoverKit(await request.json(), env);
+        return json({ success: result.success, ...(result.success ? { data: result.data } : { error: result.error }) }, result.status, headers);
+      } catch {
+        return json({ success: false, error: "Recovery service unavailable" }, 503, headers);
       }
     }
 
