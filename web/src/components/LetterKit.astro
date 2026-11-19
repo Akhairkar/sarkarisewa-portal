@@ -95,7 +95,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
       if (f.type === "select") { el = document.createElement("select"); f.options.forEach(function (o) { var op = document.createElement("option"); op.value = o; op.textContent = o; el.appendChild(op); }); }
       else if (f.type === "textarea") { el = document.createElement("textarea"); el.rows = 3; }
       else { el = document.createElement("input"); el.type = "text"; }
-      el.name = f.key; lab.appendChild(el);
+      el.name = f.key; if (f.required) { el.required = true; el.setAttribute("aria-required", "true"); } lab.appendChild(el);
       if (f.hint) { var sm = document.createElement("small"); sm.textContent = f.hint; lab.appendChild(sm); }
       form.appendChild(lab);
     });
@@ -107,9 +107,25 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   }
   function unlock(d) { data = d; locked.hidden = true; open.hidden = false; build(); }
 
+  function validateAppeal() {
+    var required = data.appealFields.filter(function (f) { return f.required; });
+    for (var i = 0; i < required.length; i++) {
+      var field = form.elements[required[i].key];
+      if (field && !String(field.value || "").trim()) {
+        msg.textContent = "प्रथम अपील तैयार करने से पहले यह जानकारी भरें: " + required[i].label;
+        field.focus();
+        if (field.reportValidity) field.reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
+
   root.querySelectorAll("[data-kit-act]").forEach(function (b) {
     b.addEventListener("click", function () {
       var w = b.dataset.for, act = b.dataset.kitAct, paper = root.querySelector('[data-paper="' + w + '"]');
+      if (w === "appeal" && !validateAppeal()) return;
+      msg.textContent = "";
       ev("kit_" + act, { kit: KIT, part: w });
       if (act === "print") { document.body.classList.add("lt-printing"); paper.classList.add("lt-print-me"); window.print(); setTimeout(function () { document.body.classList.remove("lt-printing"); paper.classList.remove("lt-print-me"); }, 500); }
       else if (act === "wa") window.open("https://wa.me/?text=" + encodeURIComponent(text(w, false)), "_blank", "noopener");
