@@ -19,12 +19,24 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
     <li><strong>समय सीमा और अगला कदम</strong> – 30 दिन, प्रथम अपील, 90 दिन में द्वितीय अपील</li>
     <li>प्रिंट / A4 PDF और WhatsApp पर भेजने की सुविधा</li>
   </ul>
+  <div class="kit-recovery">
+    <h3>पहले खरीदी हुई किट वापस खोलें</h3>
+    <label for="kit-recovery-code">Recovery Code</label>
+    <input id="kit-recovery-code" type="text" maxlength="23" autocomplete="off" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" aria-describedby="kit-recovery-help">
+    <button type="button" class="cta secondary" data-kit-recover>Recovery Code से खोलें</button>
+    <p id="kit-recovery-help" class="kit-note">पहले खरीदी हुई किट का सुरक्षित रखा गया कोड यहाँ डालें।</p>
+  </div>
   <div class="kit-locked">
     <button type="button" class="cta" data-kit-pay>₹20 देकर किट खोलें</button>
     <p class="kit-note">भुगतान Razorpay से (UPI, कार्ड, नेट बैंकिंग)। यह डिजिटल सामग्री है और भुगतान के बाद तुरंत खुलती है। भुगतान हो जाए पर किट न खुले तो <a href="/contact.html">हमें बताएं</a>। यह कानूनी सलाह नहीं, एक नमूना है।</p>
   </div>
   <div class="kit-open" hidden>
-    <div class="callout ok"><p>✅ किट खुल गया। यह इसी फोन/ब्राउज़र में याद रहेगा।</p></div>
+    <div class="callout ok"><p>✅ किट खुल गया।</p></div>
+    <div class="kit-recovery-result" hidden>
+      <strong>आपका Recovery Code</strong>
+      <p class="kit-recovery-code"></p>
+      <p class="kit-note">इसे सुरक्षित रखें। दूसरे डिवाइस पर किट खोलने के लिए इसकी जरूरत होगी। यह कोड दोबारा नहीं दिखाया जाएगा।</p>
+    </div>
     <h3>1. अपील की जानकारी भरें</h3>
     <form class="lt-form kit-form" autocomplete="on"></form>
     <h3>2. प्रथम अपील पत्र</h3>
@@ -52,6 +64,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   var W = root.dataset.worker, KIT = root.dataset.kit, SRC = "ss_letter_" + root.dataset.src, SAVE = "ss_kit_" + KIT + "_" + root.dataset.src;
   var locked = root.querySelector(".kit-locked"), open = root.querySelector(".kit-open"), msg = root.querySelector(".kit-msg");
   var payBtn = root.querySelector("[data-kit-pay]"), form = root.querySelector(".kit-form"), secondForm = root.querySelector(".kit-second-form");
+  var recoveryInput = root.querySelector("#kit-recovery-code"), recoveryBtn = root.querySelector("[data-kit-recover]");
   var data = null, price = 20;
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var ev = function (n, p) { try { if (window.gtag) gtag("event", n, p || {}); } catch (e) {} };
@@ -140,7 +153,32 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
     secondForm.addEventListener("input", render); secondForm.addEventListener("change", render);
     render();
   }
-  function unlock(d) { data = d; locked.hidden = true; open.hidden = false; build(); }
+  function unlock(d) {
+    data = d; locked.hidden = true; open.hidden = false; build();
+    if (d.recovery_code) {
+      var panel = root.querySelector(".kit-recovery-result");
+      panel.hidden = false;
+      panel.querySelector(".kit-recovery-code").textContent = d.recovery_code;
+    }
+  }
+  recoveryBtn.addEventListener("click", function () {
+    var code = String(recoveryInput.value || "").trim().toUpperCase();
+    if (!code) { msg.textContent = "Recovery Code डालें।"; recoveryInput.focus(); return; }
+    recoveryBtn.disabled = true; msg.textContent = "आपका डेटा खोजा जा रहा है…";
+    post("/kit/recover", { recovery_code: code }).then(function (r) {
+      if (!r || !r.success) throw new Error(r && r.error || "Recovery नहीं हो सकी।");
+      var payload = r.data.payload || {};
+      main = payload.application || {};
+      try {
+        localStorage.setItem(SRC, JSON.stringify(main));
+        localStorage.setItem(SAVE, JSON.stringify({ application: main, source: root.dataset.src, recovered: true }));
+      } catch (e) {}
+      msg.textContent = "✅ Recovery सफल रही। आपकी किट खुल गई।";
+      unlock(r.data);
+    }).catch(function () {
+      msg.textContent = "Recovery नहीं हो सकी। कोड जाँचें और दोबारा कोशिश करें।";
+    }).finally(function () { recoveryBtn.disabled = false; });
+  });
 
   function validateFields(fields, target, label) {
     var required = fields.filter(function (f) { return f.required; });
@@ -346,6 +384,10 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
 .kit-note { color: var(--c-muted); font-size: .82rem; margin: 8px 0 0; }
 .kit [hidden] { display: none !important; }
 .kit-form { margin-bottom: 14px; }
+.kit-recovery { margin: 14px 0; padding: 12px; border: 1px dashed var(--c-line); border-radius: 8px; }
+.kit-recovery input { display: block; width: 100%; margin: 7px 0; padding: 10px; border: 1px solid var(--c-line); border-radius: 6px; background: var(--c-bg, #fff); color: inherit; }
+.kit-recovery-result { margin: 12px 0; padding: 12px; border: 1px solid var(--c-primary, #1d4ed8); border-radius: 8px; overflow-wrap: anywhere; }
+.kit-recovery-code { font-weight: 800; letter-spacing: .06em; font-size: 1.15rem; }
 
 /* Keep paid RTI documents clean when the user prints or saves them as PDF. */
 @media print {
