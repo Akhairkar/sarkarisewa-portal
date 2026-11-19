@@ -838,6 +838,27 @@ async function createRecoveryRecord({ paymentId, kit, source, payload }, env) {
   if (!response.ok) throw new Error("Unable to save RTI recovery record");
   return code;
 }
+async function saveRecoveryKit(body, env) {
+  const code = String(body?.recovery_code || "").trim().toUpperCase();
+  const application = body?.application;
+  const drafts = body?.drafts && typeof body.drafts === "object" ? body.drafts : {};
+  if (!/^[A-HJ-NP-Z2-9]{5}(?:-[A-HJ-NP-Z2-9]{5}){3}$/.test(code) || !validKitApplication(application)) {
+    return { success: false, status: 400, error: "Invalid recovery details" };
+  }
+  const payload = { application: normalizeKitApplication(application), drafts };
+  const serialized = JSON.stringify(payload);
+  if (serialized.length > 30000) return { success: false, status: 413, error: "Recovery data is too large" };
+  const encrypted = await encryptRecovery(payload, env);
+  const hash = await recoveryDigest(code);
+  const response = await supabaseRecoveryRequest(
+    "rti_kit_recovery?recovery_code_hash=eq." + hash + "&revoked_at=is.null&expires_at=gt." + encodeURIComponent(new Date().toISOString()),
+    env,
+    { method: "PATCH", body: JSON.stringify({ payload_ciphertext: encrypted.payload_ciphertext, payload_iv: encrypted.payload_iv, updated_at: new Date().toISOString() }) }
+  );
+  if (!response.ok) return { success: false, status: 503, error: "Unable to save recovery data" };
+  return { success: true, status: 200 };
+}
+
 async function recoverKit(body, env) {
   const code = String(body?.recovery_code || "").trim().toUpperCase();
   if (!/^[A-HJ-NP-Z2-9]{5}(?:-[A-HJ-NP-Z2-9]{5}){3}$/.test(code)) return { success: false, status: 400, error: "Invalid recovery code" };
@@ -920,6 +941,15 @@ export default {
         return json({ success: result.success, ...(result.success ? { data: result.data } : { error: result.error }) }, result.status, headers);
       } catch {
         return json({ success: false, error: "Recovery service unavailable" }, 503, headers);
+      }
+    }
+
+    if (request.method === "POST" && url.pathname === "/kit/save") {
+      try {
+        const result = await saveRecoveryKit(await request.json(), env);
+        return json({ success: result.success, ...(result.success ? {} : { error: result.error }) }, result.status, headers);
+      } catch {
+        return json({ success: false, error: "Recovery save unavailable" }, 503, headers);
       }
     }
 
