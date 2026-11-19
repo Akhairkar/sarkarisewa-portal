@@ -56,6 +56,14 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var ev = function (n, p) { try { if (window.gtag) gtag("event", n, p || {}); } catch (e) {} };
   var today = function () { var d = new Date(); return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear(); };
+  function parseDate(value) {
+    var s = String(value || "").trim(), m;
+    if ((m = /^(\\d{4})-(\\d{2})-(\\d{2})$/.exec(s))) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    if ((m = /^(\\d{1,2})[\\/-](\\d{1,2})[\\/-](\\d{4})$/.exec(s))) return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+    return null;
+  }
+  function addDays(date, days) { var d = new Date(date.getFullYear(), date.getMonth(), date.getDate()); d.setDate(d.getDate() + days); return d; }
+  function formatDate(date) { return ("0" + date.getDate()).slice(-2) + "/" + ("0" + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear(); }
   var main = {};
   function readMain() {
     try { main = JSON.parse(localStorage.getItem(SRC) || "{}"); } catch (e) { main = {}; }
@@ -71,6 +79,10 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
     var v = { name: main.name || "", address: main.address || "", phone: main.phone || "", subject: main.subject || "", place: main.place || "", date: main.date || today(), pio: main.office || "" };
     data.appealFields.forEach(function (f) { var el = form.elements[f.key]; v[f.key] = el ? el.value.trim() : ""; });
     (data.secondAppealFields || []).forEach(function (f) { var el = secondForm.elements[f.key]; v[f.key] = el ? el.value.trim() : ""; });
+    if (v.faaOutcome === "45 दिन तक FAA का कोई आदेश नहीं मिला") {
+      var filed = parseDate(v.faadate);
+      v.faaDueDate = filed ? formatDate(addDays(filed, 45)) : "";
+    }
     if (!v.pio && main.office) v.pio = main.office;
     return v;
   }
@@ -107,7 +119,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
       var el;
       if (f.type === "select") { el = document.createElement("select"); var choose = document.createElement("option"); choose.value = ""; choose.textContent = "कृपया चुनें"; el.appendChild(choose); f.options.forEach(function (o) { var op = document.createElement("option"); op.value = o; op.textContent = o; el.appendChild(op); }); }
       else if (f.type === "textarea") { el = document.createElement("textarea"); el.rows = 3; }
-      else { el = document.createElement("input"); el.type = "text"; }
+      else { el = document.createElement("input"); el.type = f.type === "date" ? "date" : "text"; }
       el.name = f.key; if (f.required) { el.required = true; el.setAttribute("aria-required", "true"); } lab.appendChild(el);
       if (f.hint) { var sm = document.createElement("small"); sm.textContent = f.hint; lab.appendChild(sm); }
       target.appendChild(lab);
@@ -143,7 +155,32 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
     b.addEventListener("click", function () {
       var w = b.dataset.for, act = b.dataset.kitAct, paper = root.querySelector('[data-paper="' + w + '"]');
       if (w === "appeal" && !validateFields(data.appealFields, form, "प्रथम अपील")) return;
-      if (w === "secondAppeal" && !validateFields(data.secondAppealFields || [], secondForm, "द्वितीय अपील")) return;
+      if (w === "secondAppeal") {
+        if (!validateFields(data.secondAppealFields || [], secondForm, "द्वितीय अपील")) return;
+        var outcome = secondForm.elements.faaOutcome && secondForm.elements.faaOutcome.value;
+        var filed = parseDate(secondForm.elements.faadate && secondForm.elements.faadate.value);
+        var appealFiled = parseDate(secondForm.elements.secondAppealDate && secondForm.elements.secondAppealDate.value);
+        var orderReceived = parseDate(secondForm.elements.faaOrderDate && secondForm.elements.faaOrderDate.value);
+        if (outcome !== "45 दिन तक FAA का कोई आदेश नहीं मिला" && !orderReceived) {
+          msg.textContent = "FAA का आदेश मिला है तो आदेश प्राप्त होने की तारीख भरें।";
+          if (secondForm.elements.faaOrderDate) secondForm.elements.faaOrderDate.focus();
+          return;
+        }
+        if (outcome === "45 दिन तक FAA का कोई आदेश नहीं मिला" && filed && appealFiled) {
+          var earliest = addDays(filed, 45);
+          if (appealFiled < earliest) {
+            msg.textContent = "FAA को अधिकतम 45 दिन का समय पूरा होने के बाद ही बिना आदेश वाली द्वितीय अपील दाखिल करें। समय-सीमा की गणना वास्तविक प्राप्ति/परिस्थितियों के अनुसार जाँचें।";
+            secondForm.elements.secondAppealDate.focus();
+            return;
+          }
+        }
+        var deadlineBase = outcome === "45 दिन तक FAA का कोई आदेश नहीं मिला" && filed ? addDays(filed, 45) : orderReceived;
+        if (deadlineBase && appealFiled && appealFiled > addDays(deadlineBase, 90) && !String(secondForm.elements.delayReason && secondForm.elements.delayReason.value || "").trim()) {
+          msg.textContent = "90 दिन की अवधि बीत चुकी है। द्वितीय अपील में देरी का वास्तविक कारण भरें और विलंब माफी का अनुरोध जोड़ें।";
+          if (secondForm.elements.delayReason) secondForm.elements.delayReason.focus();
+          return;
+        }
+      }
       msg.textContent = "";
       ev("kit_" + act, { kit: KIT, part: w });
       if (act === "print") { document.body.classList.add("lt-printing"); paper.classList.add("lt-print-me"); window.print(); setTimeout(function () { document.body.classList.remove("lt-printing"); paper.classList.remove("lt-print-me"); }, 500); }
