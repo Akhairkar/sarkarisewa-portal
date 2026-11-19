@@ -232,7 +232,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
     if (!window.Razorpay) { msg.textContent = "भुगतान का पेज लोड नहीं हुआ। पेज रीफ्रेश करके दोबारा कोशिश करें।"; return; }
     payBtn.disabled = true; msg.textContent = "भुगतान शुरू हो रहा है…";
     var item = [{ item_id: "rti_kit", item_name: "RTI पूरा किट", price: price, quantity: 1 }];
-    post("/kit/create-order", { kit: KIT, application: application }).then(function (o) {
+    post("/kit/create-order", { kit: KIT, application: application, source: root.dataset.src }).then(function (o) {
       if (!o.success) throw new Error(o.error || "order");
       ev("begin_checkout", { value: price, currency: "INR", items: item });
       var rz = new Razorpay({
@@ -241,7 +241,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
         modal: { ondismiss: function () { ev("checkout_cancel", { kit: KIT }); payBtn.disabled = false; msg.textContent = ""; } },
         handler: function (p) {
           msg.textContent = "भुगतान की जांच हो रही है…";
-          var body = { razorpay_order_id: p.razorpay_order_id, razorpay_payment_id: p.razorpay_payment_id, razorpay_signature: p.razorpay_signature, application: application };
+          var body = { razorpay_order_id: p.razorpay_order_id, razorpay_payment_id: p.razorpay_payment_id, razorpay_signature: p.razorpay_signature, application: application, source: root.dataset.src };
           post("/kit/verify", Object.assign({ kit: KIT }, body)).then(function (r) {
             if (!r.success) throw new Error(r.error || "verify");
             main = application;
