@@ -187,6 +187,11 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
           secondForm.elements.faaOrderDate.focus();
           return;
         }
+        if (outcome !== "45 दिन तक FAA का कोई आदेश नहीं मिला" && orderReceived && appealFiled && appealFiled < orderReceived) {
+          msg.textContent = "द्वितीय अपील दाखिल करने की तारीख FAA का आदेश प्राप्त होने की तारीख से पहले नहीं हो सकती।";
+          secondForm.elements.secondAppealDate.focus();
+          return;
+        }
         if (outcome === "45 दिन तक FAA का कोई आदेश नहीं मिला" && filed && appealFiled) {
           var earliest = addDays(filed, 45);
           if (appealFiled < earliest) {
