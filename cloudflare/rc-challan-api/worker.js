@@ -683,7 +683,11 @@ async function verifyKitPayment(body, env) {
   if (!orderResult.response.ok) return { success: false, status: 400, error: "Unable to verify Razorpay order" };
   const order = orderResult.data;
   const applicationHash = await kitApplicationHash(application);
-  if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit || order.notes?.application_hash !== applicationHash) {
+  // New orders are bound to the exact free RTI application. Older paid
+  // orders did not store an application hash, so retain their re-open access
+  // after the same signed payment and captured-payment checks below.
+  const savedApplicationHash = order.notes?.application_hash;
+  if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit || (savedApplicationHash && savedApplicationHash !== applicationHash)) {
     return { success: false, status: 400, error: "Order does not match this kit or RTI application" };
   }
   const paymentResult = await razorpayRequest(`/payments/${encodeURIComponent(razorpay_payment_id)}`, env, { method: "GET" });
