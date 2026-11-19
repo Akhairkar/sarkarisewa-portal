@@ -33,7 +33,13 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
     <h3>3. स्मरण पत्र (अपील से पहले)</h3>
     <div class="lt-paper kit-paper" data-paper="reminder"></div>
     <div class="lt-actions"><button type="button" class="cta" data-kit-act="print" data-for="reminder">🖨️ प्रिंट / PDF</button><button type="button" class="cta secondary" data-kit-act="wa" data-for="reminder">WhatsApp</button><button type="button" class="cta secondary" data-kit-act="copy" data-for="reminder">कॉपी</button></div>
-    <h3>4. आगे क्या करें</h3>
+    <h3>4. द्वितीय अपील की जानकारी</h3>
+    <p class="kit-note">यदि प्रथम अपील के बाद भी समाधान नहीं मिला, या FAA ने अधिकतम 45 दिनों में आदेश नहीं दिया, तो लागू स्थिति के अनुसार यह मसौदा भरें। आयोग का चुनाव संबंधित सरकारी प्राधिकरण के आधार पर करें।</p>
+    <form class="lt-form kit-second-form" autocomplete="on"></form>
+    <h3>5. द्वितीय अपील पत्र (धारा 19(3))</h3>
+    <div class="lt-paper kit-paper" data-paper="secondAppeal"></div>
+    <div class="lt-actions"><button type="button" class="cta" data-kit-act="print" data-for="secondAppeal">🖨️ प्रिंट / PDF</button><button type="button" class="cta secondary" data-kit-act="wa" data-for="secondAppeal">WhatsApp</button><button type="button" class="cta secondary" data-kit-act="copy" data-for="secondAppeal">कॉपी</button></div>
+    <h3>6. आगे क्या करें</h3>
     <ul class="checklist kit-check"></ul>
   </div>
   <p class="lt-msg kit-msg" role="status"></p>
@@ -45,7 +51,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   var root = document.getElementById("kit"); if (!root) return;
   var W = root.dataset.worker, KIT = root.dataset.kit, SRC = "ss_letter_" + root.dataset.src, SAVE = "ss_kit_" + KIT;
   var locked = root.querySelector(".kit-locked"), open = root.querySelector(".kit-open"), msg = root.querySelector(".kit-msg");
-  var payBtn = root.querySelector("[data-kit-pay]"), form = root.querySelector(".kit-form");
+  var payBtn = root.querySelector("[data-kit-pay]"), form = root.querySelector(".kit-form"), secondForm = root.querySelector(".kit-second-form");
   var data = null, price = 20;
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var ev = function (n, p) { try { if (window.gtag) gtag("event", n, p || {}); } catch (e) {} };
@@ -64,6 +70,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   function values() {
     var v = { name: main.name || "", address: main.address || "", phone: main.phone || "", subject: main.subject || "", place: main.place || "", date: main.date || today(), pio: main.office || "" };
     data.appealFields.forEach(function (f) { var el = form.elements[f.key]; v[f.key] = el ? el.value.trim() : ""; });
+    (data.secondAppealFields || []).forEach(function (f) { var el = secondForm.elements[f.key]; v[f.key] = el ? el.value.trim() : ""; });
     if (!v.pio && main.office) v.pio = main.office;
     return v;
   }
@@ -81,15 +88,21 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
     });
   }
   function render() {
-    ["appeal", "reminder"].forEach(function (w) {
+    ["appeal", "reminder", "secondAppeal"].forEach(function (w) {
       var el = root.querySelector('[data-paper="' + w + '"]');
       el.innerHTML = text(w, true).split(/\n{2,}/).map(function (p) { return "<p>" + p.replace(/\n/g, "<br>") + "</p>"; }).join("");
     });
-    try { var s = {}; data.appealFields.forEach(function (f) { s[f.key] = form.elements[f.key].value; }); localStorage.setItem(SAVE + "_form", JSON.stringify(s)); } catch (e) {}
+    try {
+      var s = {}, s2 = {};
+      data.appealFields.forEach(function (f) { s[f.key] = form.elements[f.key].value; });
+      (data.secondAppealFields || []).forEach(function (f) { s2[f.key] = secondForm.elements[f.key].value; });
+      localStorage.setItem(SAVE + "_form", JSON.stringify(s));
+      localStorage.setItem(SAVE + "_second_form", JSON.stringify(s2));
+    } catch (e) {}
   }
-  function build() {
-    form.innerHTML = "";
-    data.appealFields.forEach(function (f) {
+  function buildFields(target, fields, storageKey) {
+    target.innerHTML = "";
+    fields.forEach(function (f) {
       var lab = document.createElement("label"); var sp = document.createElement("span"); sp.textContent = f.label + (f.required ? " *" : ""); lab.appendChild(sp);
       var el;
       if (f.type === "select") { el = document.createElement("select"); f.options.forEach(function (o) { var op = document.createElement("option"); op.value = o; op.textContent = o; el.appendChild(op); }); }
@@ -97,22 +110,27 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
       else { el = document.createElement("input"); el.type = "text"; }
       el.name = f.key; if (f.required) { el.required = true; el.setAttribute("aria-required", "true"); } lab.appendChild(el);
       if (f.hint) { var sm = document.createElement("small"); sm.textContent = f.hint; lab.appendChild(sm); }
-      form.appendChild(lab);
+      target.appendChild(lab);
     });
+    try { var savedFields = JSON.parse(localStorage.getItem(storageKey) || "{}"); Object.keys(savedFields).forEach(function (k) { if (target.elements[k] && savedFields[k]) target.elements[k].value = savedFields[k]; }); } catch (e) {}
+  }
+  function build() {
+    buildFields(form, data.appealFields, SAVE + "_form");
+    buildFields(secondForm, data.secondAppealFields || [], SAVE + "_second_form");
     var pio = form.elements.pio; if (pio && main.office && !pio.value) pio.value = main.office;
-    try { var s = JSON.parse(localStorage.getItem(SAVE + "_form") || "{}"); Object.keys(s).forEach(function (k) { if (form.elements[k] && s[k]) form.elements[k].value = s[k]; }); } catch (e) {}
     var ck = root.querySelector(".kit-check"); ck.innerHTML = data.checklist.map(function (x) { return "<li>" + x + "</li>"; }).join("");
     form.addEventListener("input", render); form.addEventListener("change", render);
+    secondForm.addEventListener("input", render); secondForm.addEventListener("change", render);
     render();
   }
   function unlock(d) { data = d; locked.hidden = true; open.hidden = false; build(); }
 
-  function validateAppeal() {
-    var required = data.appealFields.filter(function (f) { return f.required; });
+  function validateFields(fields, target, label) {
+    var required = fields.filter(function (f) { return f.required; });
     for (var i = 0; i < required.length; i++) {
-      var field = form.elements[required[i].key];
+      var field = target.elements[required[i].key];
       if (field && !String(field.value || "").trim()) {
-        msg.textContent = "प्रथम अपील तैयार करने से पहले यह जानकारी भरें: " + required[i].label;
+        msg.textContent = label + " तैयार करने से पहले यह जानकारी भरें: " + required[i].label;
         field.focus();
         if (field.reportValidity) field.reportValidity();
         return false;
@@ -124,7 +142,8 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   root.querySelectorAll("[data-kit-act]").forEach(function (b) {
     b.addEventListener("click", function () {
       var w = b.dataset.for, act = b.dataset.kitAct, paper = root.querySelector('[data-paper="' + w + '"]');
-      if (w === "appeal" && !validateAppeal()) return;
+      if (w === "appeal" && !validateFields(data.appealFields, form, "प्रथम अपील")) return;
+      if (w === "secondAppeal" && !validateFields(data.secondAppealFields || [], secondForm, "द्वितीय अपील")) return;
       msg.textContent = "";
       ev("kit_" + act, { kit: KIT, part: w });
       if (act === "print") { document.body.classList.add("lt-printing"); paper.classList.add("lt-print-me"); window.print(); setTimeout(function () { document.body.classList.remove("lt-printing"); paper.classList.remove("lt-print-me"); }, 500); }
