@@ -575,11 +575,10 @@ const KITS = {
     secondAppealFields: [
       { key: "commission", label: "किस आयोग में अपील करेंगे", type: "select", required: true, options: ["केंद्रीय सूचना आयोग (CIC) – केंद्रीय सरकारी प्राधिकरण", "राज्य सूचना आयोग (SIC) – राज्य सरकारी प्राधिकरण"] , hint: "केंद्र/राज्य का चुनाव संबंधित PIO वाले सरकारी प्राधिकरण के अनुसार करें" },
       { key: "commissionAddress", label: "सूचना आयोग का पता (यदि उपलब्ध हो)", type: "textarea" },
-      { key: "faadate", label: "प्रथम अपील दाखिल करने की तारीख", required: true, hint: "वास्तविक दाखिल तारीख लिखें" },
+      { key: "faadate", label: "प्रथम अपील दाखिल करने की तारीख", type: "date", required: true, hint: "वास्तविक दाखिल तारीख लिखें" },
       { key: "faaOutcome", label: "प्रथम अपील का परिणाम", type: "select", required: true, options: ["FAA का आदेश मिला, पर संतुष्टि नहीं है", "FAA ने सूचना देने से मना किया", "45 दिन तक FAA का कोई आदेश नहीं मिला"] },
-      { key: "faaOrderDate", label: "FAA के आदेश की तारीख (यदि आदेश मिला हो)", hint: "आदेश न मिला हो तो खाली छोड़ें" },
-      { key: "faaDueDate", label: "FAA के निर्णय की अधिकतम समय-सीमा की तारीख (आदेश न मिला हो)", hint: "प्रथम अपील प्राप्त होने से सामान्यतः 30 दिन; लिखित कारण के साथ अधिकतम 45 दिन" },
-      { key: "secondAppealDate", label: "द्वितीय अपील दाखिल करने की तारीख", required: true },
+      { key: "faaOrderDate", label: "FAA का आदेश आपको प्राप्त होने की तारीख", type: "date", hint: "आदेश मिलने वाले दोनों विकल्पों में यह तारीख जरूरी है; आदेश न मिला हो तो खाली छोड़ें" },
+      { key: "secondAppealDate", label: "द्वितीय अपील दाखिल करने की तारीख", type: "date", required: true },
       { key: "secondGrounds", label: "द्वितीय अपील के मुख्य आधार", type: "textarea", required: true, hint: "कौन-सी सूचना नहीं मिली, आदेश में क्या त्रुटि है, या FAA ने निर्णय क्यों नहीं दिया" },
       { key: "secondRelief", label: "आयोग से क्या राहत चाहते हैं", type: "textarea", required: true, hint: "उदाहरण: पूरी सूचना, प्रमाणित प्रतियां, लागू होने पर क्षतिपूर्ति/दंड पर विचार" },
       { key: "delayReason", label: "90 दिन से देरी हुई हो तो कारण (अन्यथा खाली छोड़ें)", type: "textarea", hint: "देरी माफ करने का अनुरोध तभी जोड़ें जब वास्तव में देरी हुई हो" },
@@ -636,8 +635,8 @@ const KITS = {
 मूल RTI आवेदन दिनांक: {{appdate}}
 प्रथम अपील दाखिल दिनांक: {{faadate}}
 प्रथम अपील का परिणाम: {{faaOutcome}}
-FAA आदेश दिनांक (यदि मिला हो): {{faaOrderDate}}
-FAA निर्णय की अधिकतम समय-सीमा (यदि आदेश नहीं मिला): {{faaDueDate}}
+FAA आदेश प्राप्त होने की तारीख (यदि आदेश मिला हो): {{faaOrderDate}}
+FAA का आदेश न मिलने पर 45 दिन की अवधि समाप्त होने की तारीख: {{faaDueDate}}
 
 द्वितीय अपील के तथ्य और आधार:
 {{secondGrounds}}
