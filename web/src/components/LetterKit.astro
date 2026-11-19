@@ -215,4 +215,49 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
 .kit-note { color: var(--c-muted); font-size: .82rem; margin: 8px 0 0; }
 .kit [hidden] { display: none !important; }
 .kit-form { margin-bottom: 14px; }
+
+/* Keep paid RTI documents clean when the user prints or saves them as PDF. */
+@page { size: A4; margin: 18mm 17mm; }
+@media print {
+  body.lt-printing .kit .kit-paper.lt-print-me {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #fff !important;
+    color: #111 !important;
+    font-family: "Noto Sans Devanagari", "Nirmala UI", "Mangal", sans-serif;
+    font-size: 12pt;
+    line-height: 1.7;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  body.lt-printing .kit .kit-paper.lt-print-me::before {
+    display: block;
+    margin: 0 0 18pt;
+    padding: 0 0 8pt;
+    border-bottom: 1px solid #777;
+    font-size: 10pt;
+    font-weight: 700;
+    color: #333;
+  }
+  body.lt-printing .kit .kit-paper[data-paper="appeal"].lt-print-me::before { content: "SarkariSewa India | RTI प्रथम अपील"; }
+  body.lt-printing .kit .kit-paper[data-paper="reminder"].lt-print-me::before { content: "SarkariSewa India | RTI स्मरण पत्र"; }
+  body.lt-printing .kit .kit-paper[data-paper="secondAppeal"].lt-print-me::before { content: "SarkariSewa India | RTI द्वितीय अपील"; }
+  body.lt-printing .kit .kit-paper.lt-print-me p {
+    margin: 0 0 11pt;
+    orphans: 3;
+    widows: 3;
+  }
+  body.lt-printing .kit .kit-paper.lt-print-me .lt-blank { color: #111; }
+}
 </style>
