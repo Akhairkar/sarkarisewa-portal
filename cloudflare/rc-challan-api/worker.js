@@ -556,9 +556,13 @@ const KITS = {
     // s.19(3) second appeal within 90 days, s.19(6) first appeal decided in 30
     // days, at most 45 in total with reasons recorded.
     appealFields: [
-      { key: "appellate", label: "प्रथम अपीलीय अधिकारी का पद और दफ्तर का पता", type: "textarea", required: true, hint: "PIO से ऊपर के अधिकारी; जवाब में या दफ्तर की वेबसाइट पर नाम मिलता है" },
+      { key: "appellate", label: "प्रथम अपीलीय अधिकारी (FAA) का पद और दफ्तर का पता", type: "textarea", required: true, hint: "PIO से वरिष्ठ अधिकारी; PIO को ही अपील न भेजें" },
       { key: "pio", label: "जन सूचना अधिकारी (PIO) का पद और दफ्तर", type: "textarea", required: true },
       { key: "appdate", label: "RTI आवेदन भेजने की तारीख", required: true, hint: "जैसे 05/10/2026" },
+      { key: "receiveddate", label: "दफ्तर में आवेदन पहुंचने की तारीख (यदि पता हो)" },
+      { key: "regno", label: "RTI Registration / आवेदन नंबर (यदि मिला हो)" },
+      { key: "mode", label: "आवेदन भेजने का तरीका (ऑनलाइन/डाक/हाथ से)" },
+      { key: "tracking", label: "डाक ट्रैकिंग नंबर / रसीद नंबर (यदि हो)" },
       { key: "status", label: "क्या हुआ", type: "select", options: [
         "आवेदन के 30 दिन में कोई जवाब नहीं मिला",
         "जवाब मिला, पर जानकारी अधूरी या गलत है",
@@ -627,8 +631,27 @@ const KITS = {
   },
 };
 
-async function createKitOrder(env, kit) {
+function normalizeKitApplication(application) {
+  const keys = ["name", "address", "phone", "office", "subject", "info", "period", "fee", "place", "date"];
+  const out = {};
+  for (const key of keys) out[key] = String(application?.[key] || "").trim().slice(0, 5000);
+  return out;
+}
+function validKitApplication(application) {
+  const app = normalizeKitApplication(application);
+  return ["name", "address", "office", "subject", "info"].every((key) => app[key].length > 0);
+}
+async function kitApplicationHash(application) {
+  const app = normalizeKitApplication(application);
+  const bytes = new TextEncoder().encode(JSON.stringify(app));
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function createKitOrder(env, kit, application) {
   if (!KITS[kit]) throw new Error("Invalid kit");
+  if (!validKitApplication(application)) throw new Error("Complete the free RTI application first");
+  const applicationHash = await kitApplicationHash(application);
   const receipt = `KIT_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
   const result = await razorpayRequest("/orders", env, {
     method: "POST",
@@ -636,7 +659,7 @@ async function createKitOrder(env, kit) {
       amount: kitPrice(env),
       currency: getCurrency(env),
       receipt,
-      notes: { service: KITS[kit].name, website: "SarkariSewaIndia", kit }
+      notes: { service: KITS[kit].name, website: "SarkariSewaIndia", kit, application_hash: applicationHash }
     })
   });
   if (!result.response.ok || !result.data.id) {
@@ -648,8 +671,8 @@ async function createKitOrder(env, kit) {
 }
 
 async function verifyKitPayment(body, env) {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, kit } = body || {};
-  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !KITS[kit]) {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, kit, application } = body || {};
+  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !KITS[kit] || !validKitApplication(application)) {
     return { success: false, status: 400, error: "Required payment details are missing" };
   }
   const expected = await generateRazorpaySignature(razorpay_order_id, razorpay_payment_id, keySecret(env));
@@ -659,8 +682,9 @@ async function verifyKitPayment(body, env) {
   const orderResult = await razorpayRequest(`/orders/${encodeURIComponent(razorpay_order_id)}`, env, { method: "GET" });
   if (!orderResult.response.ok) return { success: false, status: 400, error: "Unable to verify Razorpay order" };
   const order = orderResult.data;
-  if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit) {
-    return { success: false, status: 400, error: "Order does not match this kit" };
+  const applicationHash = await kitApplicationHash(application);
+  if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit || order.notes?.application_hash !== applicationHash) {
+    return { success: false, status: 400, error: "Order does not match this kit or RTI application" };
   }
   const paymentResult = await razorpayRequest(`/payments/${encodeURIComponent(razorpay_payment_id)}`, env, { method: "GET" });
   if (!paymentResult.response.ok) return { success: false, status: 400, error: "Unable to verify payment" };
@@ -717,10 +741,10 @@ export default {
     if (request.method === "POST" && url.pathname === "/kit/create-order") {
       try {
         const body = await request.json();
-        const order = await createKitOrder(env, body.kit);
+        const order = await createKitOrder(env, body.kit, body.application);
         return json({ success: true, key_id: keyId(env), order_id: order.id, amount: kitPrice(env), currency: getCurrency(env) }, 200, headers);
       } catch (error) {
-        const bad = error.message === "Invalid kit";
+        const bad = error.message === "Invalid kit" || error.message === "Complete the free RTI application first";
         return json({ success: false, error: bad ? error.message : "Unable to create payment order" }, bad ? 400 : 502, headers);
       }
     }

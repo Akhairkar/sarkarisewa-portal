@@ -11,10 +11,11 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
 ---
 <section class="section kit" id="kit" data-kit={l.kit} data-src={l.slug} data-worker={WORKER} aria-labelledby="kit-title">
   <h2 id="kit-title">📦 RTI पूरा किट – सिर्फ ₹20</h2>
-  <p class="kit-lead">ऊपर का RTI आवेदन मुफ्त है। लेकिन जवाब न आए या अधूरा आए तो अगला कदम क्या है? किट में वह सब तैयार मिलता है:</p>
+  <p class="kit-lead">पहले ऊपर दिया गया मुफ्त RTI आवेदन पूरा करें। उसी आवेदन की जानकारी से यह किट अपने आप भरेगा। जवाब न आए या अधूरा आए तो अगला कदम क्या है, वह भी मिलेगा:</p>
+  <p class="kit-prerequisite" role="status">🔒 किट खरीदने से पहले ऊपर के मुफ्त फॉर्म में नाम, पता, दफ्तर, विषय और मांगी गई जानकारी भरना जरूरी है। आपकी जानकारी इसी डिवाइस में रहती है; भुगतान के समय केवल किट बनाने के लिए Worker तक भेजी जाती है।</p>
   <ul class="checklist">
     <li><strong>प्रथम अपील का तैयार पत्र</strong> (धारा 19(1)) – आपकी जानकारी अपने आप भरी हुई</li>
-    <li><strong>स्मरण पत्र</strong> – अपील से पहले PIO को याद दिलाने के लिए</li>
+    <li><strong>स्मरण पत्र</strong> – वैकल्पिक; प्रथम अपील से पहले देना कानूनी शर्त नहीं है</li>
     <li><strong>समय सीमा और अगला कदम</strong> – 30 दिन, प्रथम अपील, 90 दिन में द्वितीय अपील</li>
     <li>प्रिंट / A4 PDF और WhatsApp पर भेजने की सुविधा</li>
   </ul>
@@ -50,11 +51,18 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   var ev = function (n, p) { try { if (window.gtag) gtag("event", n, p || {}); } catch (e) {} };
   var today = function () { var d = new Date(); return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear(); };
   var main = {};
-  try { main = JSON.parse(localStorage.getItem(SRC) || "{}"); } catch (e) {}
+  function readMain() {
+    try { main = JSON.parse(localStorage.getItem(SRC) || "{}"); } catch (e) { main = {}; }
+    return main;
+  }
+  readMain();
+  function completeMain(app) {
+    return ["name", "address", "office", "subject", "info"].every(function (k) { return String(app[k] || "").trim().length > 0; });
+  }
   function post(path, body) { return fetch(W + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then(function (r) { return r.json(); }); }
 
   function values() {
-    var v = { name: main.name || "", address: main.address || "", phone: main.phone || "", subject: main.subject || "", place: main.place || "", date: today(), pio: main.office || "" };
+    var v = { name: main.name || "", address: main.address || "", phone: main.phone || "", subject: main.subject || "", place: main.place || "", date: main.date || today(), pio: main.office || "" };
     data.appealFields.forEach(function (f) { var el = form.elements[f.key]; v[f.key] = el ? el.value.trim() : ""; });
     if (!v.pio && main.office) v.pio = main.office;
     return v;
@@ -112,14 +120,21 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   // Returning buyer: same payment re-opens the kit on this device.
   try {
     var saved = JSON.parse(localStorage.getItem(SAVE) || "null");
-    if (saved) post("/kit/verify", Object.assign({ kit: KIT }, saved)).then(function (r) { if (r && r.success) unlock(r.data); }).catch(function () {});
+    if (saved && saved.application) post("/kit/verify", Object.assign({ kit: KIT }, saved)).then(function (r) { if (r && r.success) { main = saved.application; unlock(r.data); } }).catch(function () {});
   } catch (e) {}
 
   payBtn.addEventListener("click", function () {
+    var application = readMain();
+    if (!completeMain(application)) {
+      msg.textContent = "पहले ऊपर मुफ्त RTI फॉर्म में नाम, पता, दफ्तर, विषय और मांगी गई जानकारी भरें। फिर ₹20 किट खोलें।";
+      var builder = document.querySelector(".lt-form");
+      if (builder) builder.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
     if (!window.Razorpay) { msg.textContent = "भुगतान का पेज लोड नहीं हुआ। पेज रीफ्रेश करके दोबारा कोशिश करें।"; return; }
     payBtn.disabled = true; msg.textContent = "भुगतान शुरू हो रहा है…";
     var item = [{ item_id: "rti_kit", item_name: "RTI पूरा किट", price: price, quantity: 1 }];
-    post("/kit/create-order", { kit: KIT }).then(function (o) {
+    post("/kit/create-order", { kit: KIT, application: application }).then(function (o) {
       if (!o.success) throw new Error(o.error || "order");
       ev("begin_checkout", { value: price, currency: "INR", items: item });
       var rz = new Razorpay({
@@ -128,9 +143,10 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
         modal: { ondismiss: function () { ev("checkout_cancel", { kit: KIT }); payBtn.disabled = false; msg.textContent = ""; } },
         handler: function (p) {
           msg.textContent = "भुगतान की जांच हो रही है…";
-          var body = { razorpay_order_id: p.razorpay_order_id, razorpay_payment_id: p.razorpay_payment_id, razorpay_signature: p.razorpay_signature };
+          var body = { razorpay_order_id: p.razorpay_order_id, razorpay_payment_id: p.razorpay_payment_id, razorpay_signature: p.razorpay_signature, application: application };
           post("/kit/verify", Object.assign({ kit: KIT }, body)).then(function (r) {
             if (!r.success) throw new Error(r.error || "verify");
+            main = application;
             try { localStorage.setItem(SAVE, JSON.stringify(body)); } catch (e) {}
             ev("purchase", { transaction_id: p.razorpay_payment_id, value: price, currency: "INR", items: item });
             msg.textContent = ""; unlock(r.data); open.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -149,6 +165,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
 .kit { border: 1px solid var(--c-line); border-radius: 12px; padding: 16px; background: var(--c-bg-soft, rgba(29,78,216,.04)); }
 .kit h3 { margin: 18px 0 8px; font-size: 1.05rem; }
 .kit-lead { margin: 0 0 8px; }
+.kit-prerequisite { border-left: 3px solid var(--c-primary, #1d4ed8); padding: 9px 12px; margin: 10px 0; background: var(--c-bg, #fff); border-radius: 6px; font-size: .9rem; }
 .kit-locked { margin-top: 10px; }
 .kit-locked .cta { display: inline-block; }
 .kit-note { color: var(--c-muted); font-size: .82rem; margin: 8px 0 0; }
