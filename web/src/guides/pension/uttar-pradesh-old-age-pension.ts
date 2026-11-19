@@ -38,6 +38,7 @@ export const upOldAgePension: DocGuide = {
       title: "इसके साथ ये काम भी देखें",
       intro: "पेंशन के लिए आमतौर पर इन चीज़ों की ज़रूरत पड़ती है। जो पहले से बना हो, उसे छोड़ दें:",
       list: [
+        "<a href=\"/states/uttar-pradesh.html\">उत्तर प्रदेश की सभी सरकारी सेवाएं</a> – UP के सभी सेवा पेज एक जगह",
         "<a href=\"/states/uttar-pradesh-income-certificate.html\">UP आय प्रमाण पत्र</a> – पेंशन आवेदन में आय का प्रमाण लगता है",
         "<a href=\"/states/uttar-pradesh-senior-citizen-card.html\">UP सीनियर सिटीजन कार्ड</a> – बुजुर्गों के लिए अलग सुविधाएं",
         "<a href=\"/states/uttar-pradesh-ration-card.html\">UP राशन कार्ड</a> और <a href=\"/states/uttar-pradesh-labour-card.html\">श्रमिक कार्ड</a>",
@@ -120,6 +121,8 @@ export const upOldAgePension: DocGuide = {
     { q: "पेंशन न आए तो क्या करें?", a: "पोर्टल पर स्टेटस देखें, बैंक खाते का आधार लिंक जांचें और फिर ज़िले के समाज कल्याण कार्यालय में लिखित शिकायत दें।" },
   ],
   related: [
+    { href: "/states/uttar-pradesh.html", emoji: "🏛️", title: "UP की सभी सरकारी सेवाएं", text: "राशन, श्रमिक, प्रमाण पत्र और बाकी" },
+    { href: "/jobs/index.html", emoji: "💼", title: "सरकारी नौकरी", text: "नई भर्तियां और आखिरी तारीख" },
     { href: "/states/uttar-pradesh-senior-citizen-card.html", emoji: "👴", title: "UP सीनियर सिटीजन कार्ड", text: "आवेदन और फायदे" },
     { href: "/states/uttar-pradesh-income-certificate.html", emoji: "📄", title: "UP आय प्रमाण पत्र", text: "पेंशन के लिए ज़रूरी" },
     { href: "/states/uttar-pradesh-ration-card.html", emoji: "🍚", title: "UP राशन कार्ड", text: "आवेदन और सुधार" },
