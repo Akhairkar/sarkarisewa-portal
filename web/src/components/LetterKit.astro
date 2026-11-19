@@ -1,0 +1,157 @@
+---
+// Paid add-on under the RTI letter builder (Rs 20, Razorpay). The free letter
+// above stays free (copy, print/PDF, WhatsApp). The kit adds a ready first
+// appeal (s.19(1)), a reminder letter and a step-by-step checklist. The kit
+// text is returned by the worker only after the payment is verified, so it is
+// not in this page's source. Form values stay in the browser.
+import type { Letter } from "../letters/types";
+interface Props { l: Letter }
+const { l } = Astro.props;
+const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
+---
+<section class="section kit" id="kit" data-kit={l.kit} data-src={l.slug} data-worker={WORKER} aria-labelledby="kit-title">
+  <h2 id="kit-title">📦 RTI पूरा किट – सिर्फ ₹20</h2>
+  <p class="kit-lead">ऊपर का RTI आवेदन मुफ्त है। लेकिन जवाब न आए या अधूरा आए तो अगला कदम क्या है? किट में वह सब तैयार मिलता है:</p>
+  <ul class="checklist">
+    <li><strong>प्रथम अपील का तैयार पत्र</strong> (धारा 19(1)) – आपकी जानकारी अपने आप भरी हुई</li>
+    <li><strong>स्मरण पत्र</strong> – अपील से पहले PIO को याद दिलाने के लिए</li>
+    <li><strong>समय सीमा और अगला कदम</strong> – 30 दिन, प्रथम अपील, 90 दिन में द्वितीय अपील</li>
+    <li>प्रिंट / A4 PDF और WhatsApp पर भेजने की सुविधा</li>
+  </ul>
+  <div class="kit-locked">
+    <button type="button" class="cta" data-kit-pay>₹20 देकर किट खोलें</button>
+    <p class="kit-note">भुगतान Razorpay से (UPI, कार्ड, नेट बैंकिंग)। यह डिजिटल सामग्री है और भुगतान के बाद तुरंत खुलती है। भुगतान हो जाए पर किट न खुले तो <a href="/contact.html">हमें बताएं</a>। यह कानूनी सलाह नहीं, एक नमूना है।</p>
+  </div>
+  <div class="kit-open" hidden>
+    <div class="callout ok"><p>✅ किट खुल गया। यह इसी फोन/ब्राउज़र में याद रहेगा।</p></div>
+    <h3>1. अपील की जानकारी भरें</h3>
+    <form class="lt-form kit-form" autocomplete="on"></form>
+    <h3>2. प्रथम अपील पत्र</h3>
+    <div class="lt-paper kit-paper" data-paper="appeal"></div>
+    <div class="lt-actions"><button type="button" class="cta" data-kit-act="print" data-for="appeal">🖨️ प्रिंट / PDF</button><button type="button" class="cta secondary" data-kit-act="wa" data-for="appeal">WhatsApp</button><button type="button" class="cta secondary" data-kit-act="copy" data-for="appeal">कॉपी</button></div>
+    <h3>3. स्मरण पत्र (अपील से पहले)</h3>
+    <div class="lt-paper kit-paper" data-paper="reminder"></div>
+    <div class="lt-actions"><button type="button" class="cta" data-kit-act="print" data-for="reminder">🖨️ प्रिंट / PDF</button><button type="button" class="cta secondary" data-kit-act="wa" data-for="reminder">WhatsApp</button><button type="button" class="cta secondary" data-kit-act="copy" data-for="reminder">कॉपी</button></div>
+    <h3>4. आगे क्या करें</h3>
+    <ul class="checklist kit-check"></ul>
+  </div>
+  <p class="lt-msg kit-msg" role="status"></p>
+  <script is:inline src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+</section>
+
+<script is:inline>
+(function () {
+  var root = document.getElementById("kit"); if (!root) return;
+  var W = root.dataset.worker, KIT = root.dataset.kit, SRC = "ss_letter_" + root.dataset.src, SAVE = "ss_kit_" + KIT;
+  var locked = root.querySelector(".kit-locked"), open = root.querySelector(".kit-open"), msg = root.querySelector(".kit-msg");
+  var payBtn = root.querySelector("[data-kit-pay]"), form = root.querySelector(".kit-form");
+  var data = null, price = 20;
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var ev = function (n, p) { try { if (window.gtag) gtag("event", n, p || {}); } catch (e) {} };
+  var today = function () { var d = new Date(); return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear(); };
+  var main = {};
+  try { main = JSON.parse(localStorage.getItem(SRC) || "{}"); } catch (e) {}
+  function post(path, body) { return fetch(W + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then(function (r) { return r.json(); }); }
+
+  function values() {
+    var v = { name: main.name || "", address: main.address || "", phone: main.phone || "", subject: main.subject || "", place: main.place || "", date: today(), pio: main.office || "" };
+    data.appealFields.forEach(function (f) { var el = form.elements[f.key]; v[f.key] = el ? el.value.trim() : ""; });
+    if (!v.pio && main.office) v.pio = main.office;
+    return v;
+  }
+  function fill(tpl, v) {
+    var lines = tpl.split("\n").filter(function (line) {
+      var keys = (line.match(/\{\{(\w+)\}\}/g) || []).map(function (m) { return m.slice(2, -2); });
+      return !keys.length || keys.some(function (k) { return v[k]; });
+    }).join("\n");
+    return lines;
+  }
+  function text(which, html) {
+    var v = values();
+    return fill(data.templates[which], v).replace(/\{\{(\w+)\}\}/g, function (_, k) {
+      var x = v[k]; if (html) return x ? esc(x) : '<span class="lt-blank">__________</span>'; return x || "__________";
+    });
+  }
+  function render() {
+    ["appeal", "reminder"].forEach(function (w) {
+      var el = root.querySelector('[data-paper="' + w + '"]');
+      el.innerHTML = text(w, true).split(/\n{2,}/).map(function (p) { return "<p>" + p.replace(/\n/g, "<br>") + "</p>"; }).join("");
+    });
+    try { var s = {}; data.appealFields.forEach(function (f) { s[f.key] = form.elements[f.key].value; }); localStorage.setItem(SAVE + "_form", JSON.stringify(s)); } catch (e) {}
+  }
+  function build() {
+    form.innerHTML = "";
+    data.appealFields.forEach(function (f) {
+      var lab = document.createElement("label"); var sp = document.createElement("span"); sp.textContent = f.label + (f.required ? " *" : ""); lab.appendChild(sp);
+      var el;
+      if (f.type === "select") { el = document.createElement("select"); f.options.forEach(function (o) { var op = document.createElement("option"); op.value = o; op.textContent = o; el.appendChild(op); }); }
+      else if (f.type === "textarea") { el = document.createElement("textarea"); el.rows = 3; }
+      else { el = document.createElement("input"); el.type = "text"; }
+      el.name = f.key; lab.appendChild(el);
+      if (f.hint) { var sm = document.createElement("small"); sm.textContent = f.hint; lab.appendChild(sm); }
+      form.appendChild(lab);
+    });
+    var pio = form.elements.pio; if (pio && main.office && !pio.value) pio.value = main.office;
+    try { var s = JSON.parse(localStorage.getItem(SAVE + "_form") || "{}"); Object.keys(s).forEach(function (k) { if (form.elements[k] && s[k]) form.elements[k].value = s[k]; }); } catch (e) {}
+    var ck = root.querySelector(".kit-check"); ck.innerHTML = data.checklist.map(function (x) { return "<li>" + x + "</li>"; }).join("");
+    form.addEventListener("input", render); form.addEventListener("change", render);
+    render();
+  }
+  function unlock(d) { data = d; locked.hidden = true; open.hidden = false; build(); }
+
+  root.querySelectorAll("[data-kit-act]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var w = b.dataset.for, act = b.dataset.kitAct, paper = root.querySelector('[data-paper="' + w + '"]');
+      ev("kit_" + act, { kit: KIT, part: w });
+      if (act === "print") { document.body.classList.add("lt-printing"); paper.classList.add("lt-print-me"); window.print(); setTimeout(function () { document.body.classList.remove("lt-printing"); paper.classList.remove("lt-print-me"); }, 500); }
+      else if (act === "wa") window.open("https://wa.me/?text=" + encodeURIComponent(text(w, false)), "_blank", "noopener");
+      else (navigator.clipboard ? navigator.clipboard.writeText(text(w, false)) : Promise.reject()).then(function () { msg.textContent = "✅ कॉपी हो गया।"; }, function () { msg.textContent = "कॉपी नहीं हो सका, पत्र चुनकर कॉपी करें।"; });
+    });
+  });
+
+  // Returning buyer: same payment re-opens the kit on this device.
+  try {
+    var saved = JSON.parse(localStorage.getItem(SAVE) || "null");
+    if (saved) post("/kit/verify", Object.assign({ kit: KIT }, saved)).then(function (r) { if (r && r.success) unlock(r.data); }).catch(function () {});
+  } catch (e) {}
+
+  payBtn.addEventListener("click", function () {
+    if (!window.Razorpay) { msg.textContent = "भुगतान का पेज लोड नहीं हुआ। पेज रीफ्रेश करके दोबारा कोशिश करें।"; return; }
+    payBtn.disabled = true; msg.textContent = "भुगतान शुरू हो रहा है…";
+    var item = [{ item_id: "rti_kit", item_name: "RTI पूरा किट", price: price, quantity: 1 }];
+    post("/kit/create-order", { kit: KIT }).then(function (o) {
+      if (!o.success) throw new Error(o.error || "order");
+      ev("begin_checkout", { value: price, currency: "INR", items: item });
+      var rz = new Razorpay({
+        key: o.key_id, amount: o.amount, currency: o.currency, order_id: o.order_id,
+        name: "SarkariSewa India", description: "RTI पूरा किट",
+        modal: { ondismiss: function () { ev("checkout_cancel", { kit: KIT }); payBtn.disabled = false; msg.textContent = ""; } },
+        handler: function (p) {
+          msg.textContent = "भुगतान की जांच हो रही है…";
+          var body = { razorpay_order_id: p.razorpay_order_id, razorpay_payment_id: p.razorpay_payment_id, razorpay_signature: p.razorpay_signature };
+          post("/kit/verify", Object.assign({ kit: KIT }, body)).then(function (r) {
+            if (!r.success) throw new Error(r.error || "verify");
+            try { localStorage.setItem(SAVE, JSON.stringify(body)); } catch (e) {}
+            ev("purchase", { transaction_id: p.razorpay_payment_id, value: price, currency: "INR", items: item });
+            msg.textContent = ""; unlock(r.data); open.scrollIntoView({ behavior: "smooth", block: "start" });
+          }).catch(function () { payBtn.disabled = false; msg.textContent = "भुगतान हुआ पर किट नहीं खुला। अपना भुगतान ID " + p.razorpay_payment_id + " लेकर हमें बताएं, हम तुरंत ठीक करेंगे।"; });
+        }
+      });
+      rz.on("payment.failed", function () { ev("checkout_fail", { kit: KIT }); payBtn.disabled = false; msg.textContent = "भुगतान पूरा नहीं हुआ। आपके पैसे नहीं कटे होंगे; चाहें तो दोबारा कोशिश करें।"; });
+      rz.open();
+    }).catch(function () { payBtn.disabled = false; msg.textContent = "अभी भुगतान शुरू नहीं हो सका। थोड़ी देर बाद कोशिश करें।"; });
+  });
+  ev("kit_view", { kit: KIT });
+})();
+</script>
+
+<style is:global>
+.kit { border: 1px solid var(--c-line); border-radius: 12px; padding: 16px; background: var(--c-bg-soft, rgba(29,78,216,.04)); }
+.kit h3 { margin: 18px 0 8px; font-size: 1.05rem; }
+.kit-lead { margin: 0 0 8px; }
+.kit-locked { margin-top: 10px; }
+.kit-locked .cta { display: inline-block; }
+.kit-note { color: var(--c-muted); font-size: .82rem; margin: 8px 0 0; }
+.kit [hidden] { display: none !important; }
+.kit-form { margin-bottom: 14px; }
+</style>

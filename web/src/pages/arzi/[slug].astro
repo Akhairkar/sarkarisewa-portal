@@ -8,6 +8,7 @@ import CardGrid from "../../components/CardGrid.astro";
 import OfficialLinks from "../../components/OfficialLinks.astro";
 import Explore from "../../components/Explore.astro";
 import LetterBuilder from "../../components/LetterBuilder.astro";
+import LetterKit from "../../components/LetterKit.astro";
 import { LETTERS, letterHref } from "../../letters";
 import { CATEGORIES, type Letter } from "../../letters/types";
 import { exists, pageTitle } from "../../lib/repo";
@@ -74,6 +75,7 @@ const others = LETTERS.filter((x) => x.category !== l.category).slice(0, 6)
       {l.notice && <div class="callout warn"><p set:html={l.notice} /></div>}
 
       <LetterBuilder l={l} />
+      {l.kit && <LetterKit l={l} />}
 
       <section class="section" id="kab">
         <h2>यह पत्र कब काम आता है</h2>

@@ -16,6 +16,7 @@ import type { Letter } from "../types";
 export const rtiApplicationFormat: Letter = {
   slug: "rti-application-format",
   category: "rti",
+  kit: "rti",
   emoji: "📨",
   title: "RTI Application Format in Hindi 2026: सूचना का अधिकार आवेदन पत्र",
   description: "RTI आवेदन का तैयार फॉर्मेट (हिंदी/English): अपनी जानकारी भरें, प्रिंट या PDF करें। ₹10 फीस, BPL को छूट, 30 दिन में जवाब, ऑनलाइन RTI और पहली अपील की जानकारी।",

@@ -538,6 +538,148 @@ async function verifyPaymentAndGetChallans(body, env) {
   return apiResult;
 }
 
+
+// ---- Paid letter kits (Rs 20): "RTI पूरा किट" -------------------------------
+// Separate from the RC report flow above. Order -> checkout -> verify; after a
+// verified, captured payment the worker returns the kit text, so the paid
+// content is not in the public page. Re-opening a kit with the same payment
+// is allowed (nothing is billed per call).
+const KIT_PRICE_DEFAULT = 2000; // paise
+const kitPrice = (env) => { const v = Number(env.KIT_PRICE || KIT_PRICE_DEFAULT); return Number.isInteger(v) && v > 0 ? v : KIT_PRICE_DEFAULT; };
+
+const KITS = {
+  rti: {
+    name: "RTI Complete Kit",
+    // {{key}} placeholders are filled in the browser. Sources: RTI Act 2005
+    // s.7(1) 30 days (48 hours for life or liberty), s.19(1) first appeal
+    // within 30 days of the expiry of the period or of receiving the decision,
+    // s.19(3) second appeal within 90 days, s.19(6) first appeal decided in 30
+    // days, at most 45 in total with reasons recorded.
+    appealFields: [
+      { key: "appellate", label: "प्रथम अपीलीय अधिकारी का पद और दफ्तर का पता", type: "textarea", required: true, hint: "PIO से ऊपर के अधिकारी; जवाब में या दफ्तर की वेबसाइट पर नाम मिलता है" },
+      { key: "pio", label: "जन सूचना अधिकारी (PIO) का पद और दफ्तर", type: "textarea", required: true },
+      { key: "appdate", label: "RTI आवेदन भेजने की तारीख", required: true, hint: "जैसे 05/10/2026" },
+      { key: "status", label: "क्या हुआ", type: "select", options: [
+        "आवेदन के 30 दिन में कोई जवाब नहीं मिला",
+        "जवाब मिला, पर जानकारी अधूरी या गलत है",
+        "जानकारी देने से मना कर दिया गया",
+      ] },
+      { key: "replydate", label: "जवाब की तारीख (मिला हो तो)" },
+      { key: "grounds", label: "अपील का कारण (संक्षेप में)", type: "textarea", required: true, hint: "जैसे: मांगे गए बिंदु 2 और 3 का जवाब नहीं दिया गया" },
+    ],
+    templates: {
+      appeal: `सेवा में,
+प्रथम अपीलीय अधिकारी,
+{{appellate}}
+
+विषय: सूचना का अधिकार अधिनियम 2005 की धारा 19(1) के तहत प्रथम अपील
+
+महोदय/महोदया,
+
+1. अपीलकर्ता का नाम: {{name}}
+   पता: {{address}}
+   मोबाइल: {{phone}}
+
+2. जिस जन सूचना अधिकारी के निर्णय या चुप्पी के विरुद्ध अपील है: {{pio}}
+
+3. मैंने दिनांक {{appdate}} को धारा 6(1) के तहत विषय "{{subject}}" पर सूचना मांगी थी।
+
+4. स्थिति: {{status}}. {{replydate}}
+
+5. अपील का आधार: {{grounds}}
+
+प्रार्थना: कृपया जन सूचना अधिकारी को निर्देश दें कि मांगी गई सूचना नियमानुसार शीघ्र उपलब्ध कराई जाए।
+
+संलग्न: (1) RTI आवेदन की कॉपी (2) डाक रसीद/ट्रैकिंग (3) फीस की रसीद या पोस्टल ऑर्डर की कॉपी (4) PIO का जवाब, यदि मिला हो।
+
+स्थान: {{place}}
+दिनांक: {{date}}
+
+भवदीय,
+{{name}}`,
+      reminder: `सेवा में,
+जन सूचना अधिकारी,
+{{pio}}
+
+विषय: RTI आवेदन दिनांक {{appdate}} पर सूचना हेतु स्मरण पत्र – {{subject}}
+
+महोदय/महोदया,
+
+मैंने दिनांक {{appdate}} को सूचना का अधिकार अधिनियम 2005 की धारा 6(1) के तहत उपरोक्त विषय पर आवेदन भेजा था। अधिनियम की धारा 7(1) के अनुसार सूचना 30 दिन के भीतर देनी होती है, पर मुझे अभी तक {{status}}।
+
+कृपया मांगी गई सूचना शीघ्र उपलब्ध कराएं। अन्यथा मुझे धारा 19(1) के तहत प्रथम अपील करनी पड़ेगी।
+
+भवदीय,
+{{name}}
+{{address}}
+मोबाइल: {{phone}}
+दिनांक: {{date}}`,
+    },
+    checklist: [
+      "आवेदन <strong>स्पीड पोस्ट या रजिस्टर्ड डाक</strong> से भेजें; रसीद और ट्रैकिंग नंबर संभालकर रखें। यही आपका सबूत है।",
+      "आवेदन की पूरी कॉपी और <strong>फीस का सबूत</strong> (पोस्टल ऑर्डर नंबर या रसीद) अपने पास रखें। फीस केंद्र के दफ्तरों में ₹10 है; राज्य के दफ्तरों में राज्य के नियम लागू होते हैं।",
+      "जवाब की समय सीमा <strong>30 दिन</strong> है (जीवन या स्वतंत्रता का मामला हो तो 48 घंटे)। गिनती दफ्तर में आवेदन पहुंचने की तारीख से करें।",
+      "30 दिन में जवाब न मिले या जवाब से संतुष्टि न हो, तो पहले <strong>स्मरण पत्र</strong> दें और फिर <strong>प्रथम अपील</strong> करें। अपील की समय सीमा: 30 दिन की अवधि खत्म होने से या जवाब मिलने से <strong>30 दिन</strong> के भीतर।",
+      "प्रथम अपील आम तौर पर 30 दिन में तय होनी चाहिए; कारण लिखकर कुल 45 दिन तक बढ़ाई जा सकती है।",
+      "प्रथम अपील से भी संतुष्टि न मिले तो <strong>द्वितीय अपील</strong> केंद्रीय या राज्य सूचना आयोग में, निर्णय की तारीख (या जब निर्णय होना था) से <strong>90 दिन</strong> के भीतर।",
+      "आवेदन में कारण बताना ज़रूरी नहीं है; सिर्फ अपना संपर्क पता लिखें और हर बिंदु अलग लाइन में पूछें।",
+    ],
+  },
+};
+
+async function createKitOrder(env, kit) {
+  if (!KITS[kit]) throw new Error("Invalid kit");
+  const receipt = `KIT_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
+  const result = await razorpayRequest("/orders", env, {
+    method: "POST",
+    body: JSON.stringify({
+      amount: kitPrice(env),
+      currency: getCurrency(env),
+      receipt,
+      notes: { service: KITS[kit].name, website: "SarkariSewaIndia", kit }
+    })
+  });
+  if (!result.response.ok || !result.data.id) {
+    const error = new Error(result.data?.error?.description || "Unable to create Razorpay order");
+    error.razorpay_status = result.response.status;
+    throw error;
+  }
+  return result.data;
+}
+
+async function verifyKitPayment(body, env) {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, kit } = body || {};
+  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !KITS[kit]) {
+    return { success: false, status: 400, error: "Required payment details are missing" };
+  }
+  const expected = await generateRazorpaySignature(razorpay_order_id, razorpay_payment_id, keySecret(env));
+  if (!timingSafeEqual(expected, String(razorpay_signature))) {
+    return { success: false, status: 400, error: "Invalid payment signature" };
+  }
+  const orderResult = await razorpayRequest(`/orders/${encodeURIComponent(razorpay_order_id)}`, env, { method: "GET" });
+  if (!orderResult.response.ok) return { success: false, status: 400, error: "Unable to verify Razorpay order" };
+  const order = orderResult.data;
+  if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit) {
+    return { success: false, status: 400, error: "Order does not match this kit" };
+  }
+  const paymentResult = await razorpayRequest(`/payments/${encodeURIComponent(razorpay_payment_id)}`, env, { method: "GET" });
+  if (!paymentResult.response.ok) return { success: false, status: 400, error: "Unable to verify payment" };
+  const payment = paymentResult.data;
+  if (payment.order_id !== razorpay_order_id || payment.amount !== kitPrice(env) || payment.currency !== getCurrency(env)) {
+    return { success: false, status: 400, error: "Payment does not match the order" };
+  }
+  if (payment.status === "authorized") {
+    const capture = await razorpayRequest(`/payments/${encodeURIComponent(razorpay_payment_id)}/capture`, env, {
+      method: "POST", body: JSON.stringify({ amount: kitPrice(env), currency: getCurrency(env) })
+    });
+    if (!capture.response.ok || capture.data?.status !== "captured") return { success: false, status: 400, error: "Payment could not be captured" };
+    payment.status = "captured";
+  }
+  if (payment.status !== "captured") return { success: false, status: 400, error: "Payment is not captured" };
+  const k = KITS[kit];
+  return { success: true, status: 200, data: { kit, appealFields: k.appealFields, templates: k.templates, checklist: k.checklist } };
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
@@ -566,6 +708,26 @@ export default {
       try {
         const body = await request.json();
         const result = await verifyPaymentAndGetChallans(body, env);
+        return json({ success: result.success, ...(result.success ? { data: result.data } : { error: result.error }) }, result.status, headers);
+      } catch {
+        return json({ success: false, error: "Payment verification service unavailable" }, 502, headers);
+      }
+    }
+
+    if (request.method === "POST" && url.pathname === "/kit/create-order") {
+      try {
+        const body = await request.json();
+        const order = await createKitOrder(env, body.kit);
+        return json({ success: true, key_id: keyId(env), order_id: order.id, amount: kitPrice(env), currency: getCurrency(env) }, 200, headers);
+      } catch (error) {
+        const bad = error.message === "Invalid kit";
+        return json({ success: false, error: bad ? error.message : "Unable to create payment order" }, bad ? 400 : 502, headers);
+      }
+    }
+
+    if (request.method === "POST" && url.pathname === "/kit/verify") {
+      try {
+        const result = await verifyKitPayment(await request.json(), env);
         return json({ success: result.success, ...(result.success ? { data: result.data } : { error: result.error }) }, result.status, headers);
       } catch {
         return json({ success: false, error: "Payment verification service unavailable" }, 502, headers);
