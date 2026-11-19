@@ -13,13 +13,16 @@ create table if not exists public.rti_kit_recovery (
   payload_iv text not null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  expires_at timestamptz not null default (now() + interval '5 years'),
+  expires_at timestamptz not null default (now() + interval '30 days'),
   revoked_at timestamptz,
   constraint rti_kit_recovery_code_hash_format check (recovery_code_hash ~ '^[a-f0-9]{64}$'),
   constraint rti_kit_recovery_source_hash_format check (source_hash ~ '^[a-f0-9]{64}$'),
   constraint rti_kit_recovery_iv_format check (payload_iv ~ '^[A-Za-z0-9_-]{16,32}$')
 );
 
+-- Rows older than expires_at (30 days) are deleted by the Worker on each new
+-- purchase and can also be removed with:
+--   delete from public.rti_kit_recovery where expires_at < now();
 create index if not exists rti_kit_recovery_expiry_idx
   on public.rti_kit_recovery (expires_at)
   where revoked_at is null;

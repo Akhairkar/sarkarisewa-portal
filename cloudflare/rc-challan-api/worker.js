@@ -824,6 +824,8 @@ async function supabaseRecoveryRequest(path, env, options = {}) {
   });
 }
 async function createRecoveryRecord({ paymentId, kit, source, payload }, env) {
+  // Keep recovery data only for its short life: delete expired rows first.
+  try { await supabaseRecoveryRequest("rti_kit_recovery?expires_at=lt." + encodeURIComponent(new Date().toISOString()), env, { method: "DELETE" }); } catch {}
   const code = recoveryCode();
   const hash = await recoveryDigest(code);
   const encrypted = await encryptRecovery(payload, env);
