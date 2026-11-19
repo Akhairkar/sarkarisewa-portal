@@ -702,10 +702,13 @@ async function kitApplicationHash(application) {
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-async function createKitOrder(env, kit, application) {
+async function createKitOrder(env, kit, application, source) {
   if (!KITS[kit]) throw new Error("Invalid kit");
   if (!validKitApplication(application)) throw new Error("Complete the free RTI application first");
+  const pageSource = String(source || "").trim().slice(0, 200);
+  if (!pageSource) throw new Error("Missing RTI page source");
   const applicationHash = await kitApplicationHash(application);
+  const sourceHash = await kitApplicationHash({ source: pageSource });
   const receipt = `KIT_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
   const result = await razorpayRequest("/orders", env, {
     method: "POST",
@@ -713,7 +716,7 @@ async function createKitOrder(env, kit, application) {
       amount: kitPrice(env),
       currency: getCurrency(env),
       receipt,
-      notes: { service: KITS[kit].name, website: "SarkariSewaIndia", kit, application_hash: applicationHash }
+      notes: { service: KITS[kit].name, website: "SarkariSewaIndia", kit, application_hash: applicationHash, source_hash: sourceHash }
     })
   });
   if (!result.response.ok || !result.data.id) {
@@ -725,7 +728,7 @@ async function createKitOrder(env, kit, application) {
 }
 
 async function verifyKitPayment(body, env) {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, kit, application } = body || {};
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, kit, application, source } = body || {};
   if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !KITS[kit] || !validKitApplication(application)) {
     return { success: false, status: 400, error: "Required payment details are missing" };
   }
@@ -737,11 +740,14 @@ async function verifyKitPayment(body, env) {
   if (!orderResult.response.ok) return { success: false, status: 400, error: "Unable to verify Razorpay order" };
   const order = orderResult.data;
   const applicationHash = await kitApplicationHash(application);
-  // New orders are bound to the exact free RTI application. Older paid
+  const pageSource = String(source || "").trim().slice(0, 200);
+  // New orders are bound to both the exact free RTI application and its page. Older paid
   // orders did not store an application hash, so retain their re-open access
   // after the same signed payment and captured-payment checks below.
   const savedApplicationHash = order.notes?.application_hash;
-  if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit || (savedApplicationHash && savedApplicationHash !== applicationHash)) {
+  const savedSourceHash = order.notes?.source_hash;
+  const sourceHash = pageSource ? await kitApplicationHash({ source: pageSource }) : "";
+  if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit || (savedApplicationHash && savedApplicationHash !== applicationHash) || (savedSourceHash && savedSourceHash !== sourceHash)) {
     return { success: false, status: 400, error: "Order does not match this kit or RTI application" };
   }
   const paymentResult = await razorpayRequest(`/payments/${encodeURIComponent(razorpay_payment_id)}`, env, { method: "GET" });
@@ -799,7 +805,7 @@ export default {
     if (request.method === "POST" && url.pathname === "/kit/create-order") {
       try {
         const body = await request.json();
-        const order = await createKitOrder(env, body.kit, body.application);
+        const order = await createKitOrder(env, body.kit, body.application, body.source);
         return json({ success: true, key_id: keyId(env), order_id: order.id, amount: kitPrice(env), currency: getCurrency(env) }, 200, headers);
       } catch (error) {
         const bad = error.message === "Invalid kit" || error.message === "Complete the free RTI application first";
