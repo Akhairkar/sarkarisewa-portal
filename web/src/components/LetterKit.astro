@@ -105,7 +105,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
     fields.forEach(function (f) {
       var lab = document.createElement("label"); var sp = document.createElement("span"); sp.textContent = f.label + (f.required ? " *" : ""); lab.appendChild(sp);
       var el;
-      if (f.type === "select") { el = document.createElement("select"); f.options.forEach(function (o) { var op = document.createElement("option"); op.value = o; op.textContent = o; el.appendChild(op); }); }
+      if (f.type === "select") { el = document.createElement("select"); var choose = document.createElement("option"); choose.value = ""; choose.textContent = "कृपया चुनें"; el.appendChild(choose); f.options.forEach(function (o) { var op = document.createElement("option"); op.value = o; op.textContent = o; el.appendChild(op); }); }
       else if (f.type === "textarea") { el = document.createElement("textarea"); el.rows = 3; }
       else { el = document.createElement("input"); el.type = "text"; }
       el.name = f.key; if (f.required) { el.required = true; el.setAttribute("aria-required", "true"); } lab.appendChild(el);
