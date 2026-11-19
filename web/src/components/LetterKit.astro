@@ -181,6 +181,11 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
           form.elements.replydate.focus();
           return;
         }
+        if (status !== "आवेदन के 30 दिन में कोई जवाब नहीं मिला" && !replyDate) {
+          msg.textContent = "जवाब मिलने के आधार पर अपील कर रहे हैं तो जवाब मिलने की तारीख भरें।";
+          form.elements.replydate.focus();
+          return;
+        }
         if (officeReceivedDate && officeReceivedDate < applicationDate) {
           msg.textContent = "दफ्तर में आवेदन पहुंचने की तारीख, RTI आवेदन भेजने की तारीख से पहले नहीं हो सकती।";
           form.elements.receiveddate.focus();
@@ -200,6 +205,14 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
         if (status !== "आवेदन के 30 दिन में कोई जवाब नहीं मिला" && replyDate && firstAppealDate < replyDate) {
           msg.textContent = "जवाब मिलने के आधार पर अपील कर रहे हैं तो प्रथम अपील की तारीख जवाब मिलने से पहले नहीं हो सकती।";
           form.elements.appealdate.focus();
+          return;
+        }
+        var firstAppealDeadline = status === "आवेदन के 30 दिन में कोई जवाब नहीं मिला"
+          ? addDays(replyBaseDate, 60)
+          : (replyDate ? addDays(replyDate, 30) : null);
+        if (firstAppealDeadline && firstAppealDate > firstAppealDeadline && !String(form.elements.firstDelayReason && form.elements.firstDelayReason.value || "").trim()) {
+          msg.textContent = "प्रथम अपील की सामान्य 30 दिन की समय-सीमा बीत चुकी है। देरी का वास्तविक कारण लिखें और विलंब माफी का अनुरोध जोड़ें।";
+          if (form.elements.firstDelayReason) form.elements.firstDelayReason.focus();
           return;
         }
       }
