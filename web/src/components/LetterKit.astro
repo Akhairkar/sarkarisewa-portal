@@ -251,7 +251,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
           }).catch(function () { payBtn.disabled = false; msg.textContent = "भुगतान हुआ पर किट नहीं खुला। अपना भुगतान ID " + p.razorpay_payment_id + " लेकर हमें बताएं, हम तुरंत ठीक करेंगे।"; });
         }
       });
-      rz.on("payment.failed", function () { ev("checkout_fail", { kit: KIT }); payBtn.disabled = false; msg.textContent = "भुगतान पूरा नहीं हुआ। आपके पैसे नहीं कटे होंगे; चाहें तो दोबारा कोशिश करें।"; });
+      rz.on("payment.failed", function () { ev("checkout_fail", { kit: KIT }); payBtn.disabled = false; msg.textContent = "भुगतान पूरा नहीं हुआ या बैंक से पुष्टि नहीं मिली। दोबारा भुगतान करने से पहले अपने बैंक/UPI ऐप में स्थिति जाँचें। राशि कट गई हो तो दोबारा भुगतान न करें; भुगतान विवरण लेकर हमें संपर्क करें।"; });
       rz.open();
     }).catch(function () { payBtn.disabled = false; msg.textContent = "अभी भुगतान शुरू नहीं हो सका। थोड़ी देर बाद कोशिश करें।"; });
   });
