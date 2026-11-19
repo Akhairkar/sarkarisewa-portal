@@ -572,6 +572,17 @@ const KITS = {
       { key: "replydate", label: "जवाब की तारीख (मिला हो तो)" },
       { key: "grounds", label: "अपील का कारण (संक्षेप में)", type: "textarea", required: true, hint: "जैसे: मांगे गए बिंदु 2 और 3 का जवाब नहीं दिया गया" },
     ],
+    secondAppealFields: [
+      { key: "commission", label: "किस आयोग में अपील करेंगे", type: "select", required: true, options: ["केंद्रीय सूचना आयोग (CIC) – केंद्रीय सरकारी प्राधिकरण", "राज्य सूचना आयोग (SIC) – राज्य सरकारी प्राधिकरण"] , hint: "केंद्र/राज्य का चुनाव संबंधित PIO वाले सरकारी प्राधिकरण के अनुसार करें" },
+      { key: "commissionAddress", label: "सूचना आयोग का पता (यदि उपलब्ध हो)", type: "textarea" },
+      { key: "faadate", label: "प्रथम अपील दाखिल करने की तारीख", required: true, hint: "वास्तविक दाखिल तारीख लिखें" },
+      { key: "faaOutcome", label: "प्रथम अपील का परिणाम", type: "select", required: true, options: ["FAA का आदेश मिला, पर संतुष्टि नहीं है", "FAA ने सूचना देने से मना किया", "45 दिन तक FAA का कोई आदेश नहीं मिला"] },
+      { key: "faaOrderDate", label: "FAA के आदेश की तारीख (यदि आदेश मिला हो)", hint: "आदेश न मिला हो तो खाली छोड़ें" },
+      { key: "secondAppealDate", label: "द्वितीय अपील दाखिल करने की तारीख", required: true },
+      { key: "secondGrounds", label: "द्वितीय अपील के मुख्य आधार", type: "textarea", required: true, hint: "कौन-सी सूचना नहीं मिली, आदेश में क्या त्रुटि है, या FAA ने निर्णय क्यों नहीं दिया" },
+      { key: "secondRelief", label: "आयोग से क्या राहत चाहते हैं", type: "textarea", required: true, hint: "उदाहरण: पूरी सूचना, प्रमाणित प्रतियां, लागू होने पर क्षतिपूर्ति/दंड पर विचार" },
+      { key: "delayReason", label: "90 दिन से देरी हुई हो तो कारण (अन्यथा खाली छोड़ें)", type: "textarea", hint: "देरी माफ करने का अनुरोध तभी जोड़ें जब वास्तव में देरी हुई हो" },
+    ],
     templates: {
       appeal: `सेवा में,
 प्रथम अपीलीय अधिकारी,
@@ -607,6 +618,39 @@ const KITS = {
 
 भवदीय,
 {{name}}`,
+      secondAppeal: `सेवा में,
+आयुक्त महोदय/महोदया,
+{{commission}}
+{{commissionAddress}}
+
+विषय: सूचना का अधिकार अधिनियम, 2005 की धारा 19(3) के अंतर्गत द्वितीय अपील
+
+अपीलकर्ता:
+नाम: {{name}}
+पता: {{address}}
+मोबाइल: {{phone}}
+
+संबंधित लोक प्राधिकरण / PIO: {{pio}}
+मूल RTI आवेदन दिनांक: {{appdate}}
+प्रथम अपील दाखिल दिनांक: {{faadate}}
+प्रथम अपील का परिणाम: {{faaOutcome}}
+FAA आदेश दिनांक (यदि मिला हो): {{faaOrderDate}}
+
+द्वितीय अपील के तथ्य और आधार:
+{{secondGrounds}}
+
+मांगी गई राहत:
+{{secondRelief}}
+
+{{delayReason}}
+
+संलग्नक: (1) मूल RTI आवेदन (2) आवेदन भेजने/प्राप्ति का प्रमाण (3) PIO का उत्तर, यदि मिला हो (4) प्रथम अपील और प्राप्ति का प्रमाण (5) FAA का आदेश, यदि मिला हो (6) अन्य संबंधित दस्तावेज।
+
+स्थान: {{place}}
+दिनांक: {{secondAppealDate}}
+
+भवदीय,
+{{name}}`,
       reminder: `सेवा में,
 जन सूचना अधिकारी,
 {{pio}}
@@ -632,6 +676,8 @@ const KITS = {
       "30 दिन में जवाब न मिले या जवाब से संतुष्टि न हो, तो <strong>प्रथम अपील</strong> की जा सकती है। स्मरण पत्र देना वैकल्पिक है, कानूनी शर्त नहीं। अपील की समय सीमा: 30 दिन की अवधि खत्म होने से या जवाब मिलने से <strong>30 दिन</strong> के भीतर।",
       "प्रथम अपील आम तौर पर 30 दिन में तय होनी चाहिए; कारण लिखकर कुल 45 दिन तक बढ़ाई जा सकती है।",
       "प्रथम अपील से भी संतुष्टि न मिले तो <strong>द्वितीय अपील</strong> केंद्रीय या राज्य सूचना आयोग में, निर्णय की तारीख (या जब निर्णय होना था) से <strong>90 दिन</strong> के भीतर।",
+      "द्वितीय अपील के लिए केंद्रीय सरकारी प्राधिकरण हो तो CIC और राज्य सरकारी प्राधिकरण हो तो संबंधित SIC चुनें।",
+      "धारा 19(3) के तहत द्वितीय अपील सामान्यतः FAA के निर्णय की तारीख से 90 दिन में करें; FAA का निर्णय समय पर न मिले तो निर्णय जिस तारीख तक होना चाहिए था, उस आधार पर समय सीमा जाँचें। पर्याप्त कारण होने पर आयोग विलंब स्वीकार कर सकता है।",
       "आवेदन में कारण बताना ज़रूरी नहीं है; सिर्फ अपना संपर्क पता लिखें और हर बिंदु अलग लाइन में पूछें।",
     ],
   },
@@ -711,7 +757,7 @@ async function verifyKitPayment(body, env) {
   }
   if (payment.status !== "captured") return { success: false, status: 400, error: "Payment is not captured" };
   const k = KITS[kit];
-  return { success: true, status: 200, data: { kit, appealFields: k.appealFields, templates: k.templates, checklist: k.checklist } };
+  return { success: true, status: 200, data: { kit, appealFields: k.appealFields, secondAppealFields: k.secondAppealFields, templates: k.templates, checklist: k.checklist } };
 }
 
 export default {
