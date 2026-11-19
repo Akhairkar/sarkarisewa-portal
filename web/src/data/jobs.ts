@@ -42,7 +42,7 @@ export const JOBS: Job[] = [
   { slug: "mpesb-sub-engineer-recruitment-2026", sector: "State Govt", last: "2026-10-27", lastNote: "दोबारा खुला आवेदन; सुधार 28 अक्टूबर तक", state: "madhya-pradesh" },
   { slug: "wbpsc-sub-surveyor-recruitment-2026", sector: "State Govt", last: "2026-11-09", lastNote: "दोपहर 3 बजे तक", state: "west-bengal" },
   { slug: "appsc-assistant-statistical-officer-recruitment-2026", sector: "State Govt", last: "2026-11-02", lastNote: "रात 11:59 तक", state: "andhra-pradesh" },
-  { slug: "assam-rifles-technical-tradesman-recruitment-2026", sector: "Defence", last: "2026-10-28" },
+  { slug: "assam-rifles-technical-tradesman-recruitment-2026", sector: "Defence", last: "2026-12-14", lastNote: "नई अधिसूचना; 354 पद, पुराने उम्मीदवार दोबारा आवेदन करें" },
   { slug: "supreme-court-junior-court-assistant-recruitment-2026", sector: "Central Govt", last: "2026-10-28" },
   { slug: "isro-sdsc-shar-recruitment-2026", sector: "Scientific", last: "2026-11-09" },
   { slug: "income-tax-delhi-sports-quota-recruitment-2026", sector: "Central Govt", last: "2026-11-10", lastNote: "स्पोर्ट्स कोटा" },
