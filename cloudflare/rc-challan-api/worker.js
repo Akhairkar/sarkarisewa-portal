@@ -853,7 +853,7 @@ async function recoverKit(body, env) {
       return Uint8Array.from(atob(v), ch => ch.charCodeAt(0));
     };
     const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: decode(row.payload_iv) }, await recoveryCryptoKey(env), decode(row.payload_ciphertext));
-    return { success: true, status: 200, data: { kit: row.kit, payload: JSON.parse(new TextDecoder().decode(plain)) } };
+    const k = KITS[row.kit];\n    return { success: true, status: 200, data: { kit: row.kit, payload: JSON.parse(new TextDecoder().decode(plain)), appealFields: k.appealFields, secondAppealFields: k.secondAppealFields, templates: k.templates, checklist: k.checklist } };
   } catch {
     return { success: false, status: 500, error: "Unable to decrypt recovery data" };
   }
