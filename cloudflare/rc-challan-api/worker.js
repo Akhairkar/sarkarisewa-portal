@@ -703,6 +703,12 @@ async function kitApplicationHash(application) {
   const digest = await crypto.subtle.digest("SHA-256", bytes);
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
 }
+async function kitSourceHash(source) {
+  const value = String(source || "").trim().slice(0, 200);
+  const bytes = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+}
 
 async function createKitOrder(env, kit, application, source) {
   if (!KITS[kit]) throw new Error("Invalid kit");
@@ -710,7 +716,7 @@ async function createKitOrder(env, kit, application, source) {
   const pageSource = String(source || "").trim().slice(0, 200);
   if (!pageSource) throw new Error("Missing RTI page source");
   const applicationHash = await kitApplicationHash(application);
-  const sourceHash = await kitApplicationHash({ source: pageSource });
+  const sourceHash = await kitSourceHash(pageSource);
   const receipt = `KIT_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
   const result = await razorpayRequest("/orders", env, {
     method: "POST",
@@ -748,7 +754,7 @@ async function verifyKitPayment(body, env) {
   // after the same signed payment and captured-payment checks below.
   const savedApplicationHash = order.notes?.application_hash;
   const savedSourceHash = order.notes?.source_hash;
-  const sourceHash = pageSource ? await kitApplicationHash({ source: pageSource }) : "";
+  const sourceHash = pageSource ? await kitSourceHash(pageSource) : "";
   if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit || (savedApplicationHash && savedApplicationHash !== applicationHash) || (savedSourceHash && savedSourceHash !== sourceHash)) {
     return { success: false, status: 400, error: "Order does not match this kit or RTI application" };
   }
