@@ -166,9 +166,25 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
         var filed = parseDate(secondForm.elements.faadate && secondForm.elements.faadate.value);
         var appealFiled = parseDate(secondForm.elements.secondAppealDate && secondForm.elements.secondAppealDate.value);
         var orderReceived = parseDate(secondForm.elements.faaOrderDate && secondForm.elements.faaOrderDate.value);
+        var originalDate = parseDate(main.date);
+        if (!filed || !appealFiled) {
+          msg.textContent = "प्रथम अपील प्राप्त होने और द्वितीय अपील दाखिल करने की वैध तारीख भरें।";
+          (secondForm.elements.faadate || secondForm.elements.secondAppealDate).focus();
+          return;
+        }
+        if (originalDate && filed < originalDate) {
+          msg.textContent = "FAA को प्रथम अपील मिलने की तारीख मूल RTI आवेदन की तारीख से पहले नहीं हो सकती। तारीख जाँचें।";
+          secondForm.elements.faadate.focus();
+          return;
+        }
         if (outcome !== "45 दिन तक FAA का कोई आदेश नहीं मिला" && !orderReceived) {
-          msg.textContent = "FAA का आदेश मिला है तो आदेश प्राप्त होने की तारीख भरें।";
+          msg.textContent = "FAA का आदेश मिला है तो आदेश प्राप्त होने की वैध तारीख भरें।";
           if (secondForm.elements.faaOrderDate) secondForm.elements.faaOrderDate.focus();
+          return;
+        }
+        if (orderReceived && filed && orderReceived < filed) {
+          msg.textContent = "FAA आदेश प्राप्त होने की तारीख, FAA को प्रथम अपील मिलने की तारीख से पहले नहीं हो सकती।";
+          secondForm.elements.faaOrderDate.focus();
           return;
         }
         if (outcome === "45 दिन तक FAA का कोई आदेश नहीं मिला" && filed && appealFiled) {
