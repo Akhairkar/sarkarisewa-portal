@@ -856,6 +856,8 @@ async function saveRecoveryKit(body, env) {
     { method: "PATCH", body: JSON.stringify({ payload_ciphertext: encrypted.payload_ciphertext, payload_iv: encrypted.payload_iv, updated_at: new Date().toISOString() }) }
   );
   if (!response.ok) return { success: false, status: 503, error: "Unable to save recovery data" };
+  const updated = await response.json();
+  if (!Array.isArray(updated) || updated.length !== 1) return { success: false, status: 404, error: "Recovery code not found or expired" };
   return { success: true, status: 200 };
 }
 
