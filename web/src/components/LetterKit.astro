@@ -194,7 +194,19 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   // draft on this device so those verified payments remain accessible.
   try {
     var saved = JSON.parse(localStorage.getItem(SAVE) || "null");
-    if (saved && saved.razorpay_order_id && saved.razorpay_payment_id && saved.razorpay_signature) {
+    if (!saved) {
+      var legacy = JSON.parse(localStorage.getItem("ss_kit_" + KIT) || "null");
+      var currentDraft = readMain();
+      var sameLegacyApplication = legacy && legacy.application && completeMain(legacy.application) &&
+        ["name", "address", "phone", "office", "subject", "info", "period", "fee", "place", "date"].every(function (k) {
+          return String(legacy.application[k] || "").trim() === String(currentDraft[k] || "").trim();
+        });
+      if (legacy && (legacy.source === root.dataset.src || (!legacy.source && sameLegacyApplication))) {
+        saved = legacy;
+        localStorage.setItem(SAVE, JSON.stringify(saved));
+      }
+    }
+    if (saved && (!saved.source || saved.source === root.dataset.src) && saved.razorpay_order_id && saved.razorpay_payment_id && saved.razorpay_signature) {
       var savedApplication = saved.application || readMain();
       if (completeMain(savedApplication)) {
         post("/kit/verify", Object.assign({ kit: KIT, application: savedApplication }, saved)).then(function (r) {
@@ -228,7 +240,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
           post("/kit/verify", Object.assign({ kit: KIT }, body)).then(function (r) {
             if (!r.success) throw new Error(r.error || "verify");
             main = application;
-            try { localStorage.setItem(SAVE, JSON.stringify(body)); } catch (e) {}
+            try { body.source = root.dataset.src; localStorage.setItem(SAVE, JSON.stringify(body)); } catch (e) {}
             ev("purchase", { transaction_id: p.razorpay_payment_id, value: price, currency: "INR", items: item });
             msg.textContent = ""; unlock(r.data); open.scrollIntoView({ behavior: "smooth", block: "start" });
           }).catch(function () { payBtn.disabled = false; msg.textContent = "भुगतान हुआ पर किट नहीं खुला। अपना भुगतान ID " + p.razorpay_payment_id + " लेकर हमें बताएं, हम तुरंत ठीक करेंगे।"; });
