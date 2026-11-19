@@ -6,6 +6,9 @@ export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway"
 // list them first on that state's guides (components/JobStrip.astro).
 
 export const JOBS: Job[] = [
+  { slug: "rrc-central-railway-apprentice-recruitment-2026", sector: "Railway", last: "2026-12-02", lastNote: "शाम 5 बजे तक; 2,861 सीटें, 10वीं + ITI, बिना परीक्षा" },
+  { slug: "coconut-development-board-recruitment-2026", sector: "Central Govt", last: "2026-12-21", lastNote: "आवेदन 21 नवंबर से; 35 पद, LDC से अधिकारी तक", status: "expected" },
+  { slug: "nlc-india-executive-recruitment-2026", sector: "PSU", last: "2026-12-19", lastNote: "शाम 5 बजे तक; आवेदन 20 नवंबर से; 145 पद, अनुभव ज़रूरी", status: "expected" },
   { slug: "phhc-chowkidar-recruitment-2026", sector: "State Govt", last: "2026-11-21", lastNote: "रात 11:59 तक; हाई कोर्ट चंडीगढ़, 22 पद", state: "chandigarh" },
   { slug: "rites-assistant-manager-mechanical-recruitment-2026", sector: "PSU", last: "2026-11-20", lastNote: "कॉन्ट्रैक्ट; मैकेनिकल + अनुभव, 27 पद, परीक्षा 29 नवंबर" },
   { slug: "svsu-skill-instructor-recruitment-2026", sector: "State Govt", last: "2026-11-23", lastNote: "45 पद, 21 विषय; अनुभव ज़रूरी", state: "haryana" },

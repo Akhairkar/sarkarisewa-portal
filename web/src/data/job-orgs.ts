@@ -7,6 +7,9 @@
 export type JobOrg = { org: string; type?: "FULL_TIME" | "CONTRACTOR" | "OTHER" };
 
 export const JOB_ORGS: Record<string, JobOrg> = {
+  "rrc-central-railway-apprentice-recruitment-2026": { org: "Railway Recruitment Cell, Central Railway, Mumbai", type: "OTHER" },
+  "coconut-development-board-recruitment-2026": { org: "Coconut Development Board, Kochi" },
+  "nlc-india-executive-recruitment-2026": { org: "NLC India Limited" },
   "phhc-chowkidar-recruitment-2026": { org: "Punjab and Haryana High Court, Chandigarh" },
   "rites-assistant-manager-mechanical-recruitment-2026": { org: "RITES Ltd", type: "CONTRACTOR" },
   "svsu-skill-instructor-recruitment-2026": { org: "Shri Vishwakarma Skill University, Palwal" },
