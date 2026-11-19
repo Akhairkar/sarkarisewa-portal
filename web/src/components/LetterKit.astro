@@ -118,9 +118,18 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   });
 
   // Returning buyer: same payment re-opens the kit on this device.
+  // Older purchases predate application binding; reuse the saved free-form
+  // draft on this device so those verified payments remain accessible.
   try {
     var saved = JSON.parse(localStorage.getItem(SAVE) || "null");
-    if (saved && saved.application) post("/kit/verify", Object.assign({ kit: KIT }, saved)).then(function (r) { if (r && r.success) { main = saved.application; unlock(r.data); } }).catch(function () {});
+    if (saved && saved.razorpay_order_id && saved.razorpay_payment_id && saved.razorpay_signature) {
+      var savedApplication = saved.application || readMain();
+      if (completeMain(savedApplication)) {
+        post("/kit/verify", Object.assign({ kit: KIT, application: savedApplication }, saved)).then(function (r) {
+          if (r && r.success) { main = savedApplication; unlock(r.data); }
+        }).catch(function () {});
+      }
+    }
   } catch (e) {}
 
   payBtn.addEventListener("click", function () {
