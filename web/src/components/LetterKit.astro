@@ -49,7 +49,7 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
 <script is:inline>
 (function () {
   var root = document.getElementById("kit"); if (!root) return;
-  var W = root.dataset.worker, KIT = root.dataset.kit, SRC = "ss_letter_" + root.dataset.src, SAVE = "ss_kit_" + KIT;
+  var W = root.dataset.worker, KIT = root.dataset.kit, SRC = "ss_letter_" + root.dataset.src, SAVE = "ss_kit_" + KIT + "_" + root.dataset.src;
   var locked = root.querySelector(".kit-locked"), open = root.querySelector(".kit-open"), msg = root.querySelector(".kit-msg");
   var payBtn = root.querySelector("[data-kit-pay]"), form = root.querySelector(".kit-form"), secondForm = root.querySelector(".kit-second-form");
   var data = null, price = 20;
