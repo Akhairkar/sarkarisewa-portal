@@ -1,0 +1,37 @@
+name: RTI kit branch checks
+
+on:
+  push:
+    branches:
+      - feature/rti-kit-upgrade
+    paths:
+      - "web/**"
+      - "cloudflare/rc-challan-api/worker.js"
+      - ".github/workflows/rti-kit-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rti-kit-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install web dependencies
+        run: npm ci
+        working-directory: web
+      - name: Build Astro site
+        run: npm run site
+        working-directory: web
+      - name: Check RTI Worker JavaScript syntax
+        run: node --check cloudflare/rc-challan-api/worker.js

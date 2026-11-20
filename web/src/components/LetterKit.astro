@@ -11,19 +11,33 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
 ---
 <section class="section kit" id="kit" data-kit={l.kit} data-src={l.slug} data-worker={WORKER} aria-labelledby="kit-title">
   <h2 id="kit-title">📦 RTI पूरा किट – सिर्फ ₹20</h2>
-  <p class="kit-lead">ऊपर का RTI आवेदन मुफ्त है। लेकिन जवाब न आए या अधूरा आए तो अगला कदम क्या है? किट में वह सब तैयार मिलता है:</p>
+  <p class="kit-lead">पहले ऊपर दिया गया मुफ्त RTI आवेदन पूरा करें। उसी आवेदन की जानकारी से यह किट अपने आप भरेगा। जवाब न आए या अधूरा आए तो अगला कदम क्या है, वह भी मिलेगा:</p>
+  <p class="kit-prerequisite" role="status">🔒 किट खरीदने से पहले ऊपर के मुफ्त फॉर्म में नाम, पता, दफ्तर, विषय और मांगी गई जानकारी भरना जरूरी है। आपकी जानकारी मुफ्त फॉर्म में इसी डिवाइस पर रहती है। किट खरीदने पर, किट बनाने और दूसरे फोन पर 30 दिन तक खोलने (Recovery Code) के लिए यह जानकारी हमारे सर्वर पर भेजी जाती है और एन्क्रिप्ट करके <strong>30 दिन</strong> तक रखी जाती है, फिर मिटा दी जाती है। हटवाने के लिए <a href="mailto:sarkarisewaindia@gmail.com">sarkarisewaindia@gmail.com</a> पर लिखें; विवरण <a href="/privacy-policy.html">गोपनीयता नीति</a> में है।</p>
   <ul class="checklist">
     <li><strong>प्रथम अपील का तैयार पत्र</strong> (धारा 19(1)) – आपकी जानकारी अपने आप भरी हुई</li>
-    <li><strong>स्मरण पत्र</strong> – अपील से पहले PIO को याद दिलाने के लिए</li>
+    <li><strong>स्मरण पत्र</strong> – वैकल्पिक; प्रथम अपील से पहले देना कानूनी शर्त नहीं है</li>
     <li><strong>समय सीमा और अगला कदम</strong> – 30 दिन, प्रथम अपील, 90 दिन में द्वितीय अपील</li>
     <li>प्रिंट / A4 PDF और WhatsApp पर भेजने की सुविधा</li>
   </ul>
+  <div class="kit-recovery">
+    <h3>पहले खरीदी हुई किट वापस खोलें</h3>
+    <label for="kit-recovery-code">Recovery Code</label>
+    <input id="kit-recovery-code" type="text" maxlength="23" autocomplete="off" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" aria-describedby="kit-recovery-help">
+    <button type="button" class="cta secondary" data-kit-recover>Recovery Code से खोलें</button>
+    <p id="kit-recovery-help" class="kit-note">पहले खरीदी हुई किट का सुरक्षित रखा गया कोड यहाँ डालें।</p>
+  </div>
   <div class="kit-locked">
     <button type="button" class="cta" data-kit-pay>₹20 देकर किट खोलें</button>
     <p class="kit-note">भुगतान Razorpay से (UPI, कार्ड, नेट बैंकिंग)। यह डिजिटल सामग्री है और भुगतान के बाद तुरंत खुलती है। भुगतान हो जाए पर किट न खुले तो <a href="/contact.html">हमें बताएं</a>। यह कानूनी सलाह नहीं, एक नमूना है।</p>
   </div>
   <div class="kit-open" hidden>
-    <div class="callout ok"><p>✅ किट खुल गया। यह इसी फोन/ब्राउज़र में याद रहेगा।</p></div>
+    <div class="callout ok"><p>✅ किट खुल गया।</p></div>
+    <div class="kit-recovery-result" hidden>
+      <strong>आपका Recovery Code</strong>
+      <p class="kit-recovery-code"></p>
+      <button type="button" class="cta secondary" data-kit-copy-code>📋 कोड कॉपी करें</button>
+      <p class="kit-note">इसे सुरक्षित रखें। दूसरे डिवाइस पर किट खोलने के लिए इसकी जरूरत होगी। यह कोड दोबारा नहीं दिखाया जाएगा, इसलिए अभी कॉपी करें या स्क्रीनशॉट लें।</p>
+    </div>
     <h3>1. अपील की जानकारी भरें</h3>
     <form class="lt-form kit-form" autocomplete="on"></form>
     <h3>2. प्रथम अपील पत्र</h3>
@@ -32,7 +46,13 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
     <h3>3. स्मरण पत्र (अपील से पहले)</h3>
     <div class="lt-paper kit-paper" data-paper="reminder"></div>
     <div class="lt-actions"><button type="button" class="cta" data-kit-act="print" data-for="reminder">🖨️ प्रिंट / PDF</button><button type="button" class="cta secondary" data-kit-act="wa" data-for="reminder">WhatsApp</button><button type="button" class="cta secondary" data-kit-act="copy" data-for="reminder">कॉपी</button></div>
-    <h3>4. आगे क्या करें</h3>
+    <h3>4. द्वितीय अपील की जानकारी</h3>
+    <p class="kit-note">FAA का आदेश मिल गया हो तो सामान्यतः आदेश प्राप्त होने से 90 दिनों के भीतर द्वितीय अपील करें। आदेश न मिला हो तो CIC के दिशा-निर्देशों के अनुसार FAA को प्रथम अपील प्राप्त होने के 45 दिन पूरे होने के बाद द्वितीय अपील की जा सकती है; 90 दिनों की अवधि उस 45-दिन की अवधि समाप्त होने से गिनी जाती है। देर होने पर पर्याप्त कारण देकर विलंब माफी मांगी जा सकती है। राज्य आयोग के लागू नियम भी जाँचें।</p>
+    <form class="lt-form kit-second-form" autocomplete="on"></form>
+    <h3>5. द्वितीय अपील पत्र (धारा 19(3))</h3>
+    <div class="lt-paper kit-paper" data-paper="secondAppeal"></div>
+    <div class="lt-actions"><button type="button" class="cta" data-kit-act="print" data-for="secondAppeal">🖨️ प्रिंट / PDF</button><button type="button" class="cta secondary" data-kit-act="wa" data-for="secondAppeal">WhatsApp</button><button type="button" class="cta secondary" data-kit-act="copy" data-for="secondAppeal">कॉपी</button></div>
+    <h3>6. आगे क्या करें</h3>
     <ul class="checklist kit-check"></ul>
   </div>
   <p class="lt-msg kit-msg" role="status"></p>
@@ -42,20 +62,46 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
 <script is:inline>
 (function () {
   var root = document.getElementById("kit"); if (!root) return;
-  var W = root.dataset.worker, KIT = root.dataset.kit, SRC = "ss_letter_" + root.dataset.src, SAVE = "ss_kit_" + KIT;
+  var W = root.dataset.worker, KIT = root.dataset.kit, SRC = "ss_letter_" + root.dataset.src, SAVE = "ss_kit_" + KIT + "_" + root.dataset.src;
   var locked = root.querySelector(".kit-locked"), open = root.querySelector(".kit-open"), msg = root.querySelector(".kit-msg");
-  var payBtn = root.querySelector("[data-kit-pay]"), form = root.querySelector(".kit-form");
-  var data = null, price = 20;
+  var payBtn = root.querySelector("[data-kit-pay]"), form = root.querySelector(".kit-form"), secondForm = root.querySelector(".kit-second-form");
+  var recoveryInput = root.querySelector("#kit-recovery-code"), recoveryBtn = root.querySelector("[data-kit-recover]");
+  var data = null, price = 20, activeRecoveryCode = "", cloudSaveTimer = null;
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var ev = function (n, p) { try { if (window.gtag) gtag("event", n, p || {}); } catch (e) {} };
   var today = function () { var d = new Date(); return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear(); };
+  function parseDate(value) {
+    var s = String(value || "").trim(), m, year, month, day, date;
+    if ((m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s))) {
+      year = Number(m[1]); month = Number(m[2]); day = Number(m[3]);
+    } else if ((m = /^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/.exec(s))) {
+      day = Number(m[1]); month = Number(m[2]); year = Number(m[3]);
+    } else return null;
+    date = new Date(year, month - 1, day);
+    if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null;
+    return date;
+  }
+  function addDays(date, days) { var d = new Date(date.getFullYear(), date.getMonth(), date.getDate()); d.setDate(d.getDate() + days); return d; }
+  function formatDate(date) { return ("0" + date.getDate()).slice(-2) + "/" + ("0" + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear(); }
   var main = {};
-  try { main = JSON.parse(localStorage.getItem(SRC) || "{}"); } catch (e) {}
+  function readMain() {
+    try { main = JSON.parse(localStorage.getItem(SRC) || "{}"); } catch (e) { main = {}; }
+    return main;
+  }
+  readMain();
+  function completeMain(app) {
+    return ["name", "address", "office", "subject", "info"].every(function (k) { return String(app[k] || "").trim().length > 0; });
+  }
   function post(path, body) { return fetch(W + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then(function (r) { return r.json(); }); }
 
   function values() {
-    var v = { name: main.name || "", address: main.address || "", phone: main.phone || "", subject: main.subject || "", place: main.place || "", date: today(), pio: main.office || "" };
+    var v = { name: main.name || "", address: main.address || "", phone: main.phone || "", subject: main.subject || "", place: main.place || "", date: main.date || today(), pio: main.office || "" };
     data.appealFields.forEach(function (f) { var el = form.elements[f.key]; v[f.key] = el ? el.value.trim() : ""; });
+    (data.secondAppealFields || []).forEach(function (f) { var el = secondForm.elements[f.key]; v[f.key] = el ? el.value.trim() : ""; });
+    if (v.faaOutcome === "45 दिन तक FAA का कोई आदेश नहीं मिला") {
+      var filed = parseDate(v.faadate);
+      v.faaDueDate = filed ? formatDate(addDays(filed, 45)) : "";
+    }
     if (!v.pio && main.office) v.pio = main.office;
     return v;
   }
@@ -72,36 +118,210 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
       var x = v[k]; if (html) return x ? esc(x) : '<span class="lt-blank">__________</span>'; return x || "__________";
     });
   }
+  function scheduleCloudSave(appealDraft, secondDraft) {
+    if (!activeRecoveryCode) return;
+    if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
+    cloudSaveTimer = setTimeout(function () {
+      post("/kit/save", {
+        recovery_code: activeRecoveryCode,
+        application: main,
+        drafts: { appeal: appealDraft, secondAppeal: secondDraft }
+      }).catch(function () {});
+    }, 1200);
+  }
   function render() {
-    ["appeal", "reminder"].forEach(function (w) {
+    ["appeal", "reminder", "secondAppeal"].forEach(function (w) {
       var el = root.querySelector('[data-paper="' + w + '"]');
       el.innerHTML = text(w, true).split(/\n{2,}/).map(function (p) { return "<p>" + p.replace(/\n/g, "<br>") + "</p>"; }).join("");
     });
-    try { var s = {}; data.appealFields.forEach(function (f) { s[f.key] = form.elements[f.key].value; }); localStorage.setItem(SAVE + "_form", JSON.stringify(s)); } catch (e) {}
+    try {
+      var s = {}, s2 = {};
+      data.appealFields.forEach(function (f) { s[f.key] = form.elements[f.key].value; });
+      (data.secondAppealFields || []).forEach(function (f) { s2[f.key] = secondForm.elements[f.key].value; });
+      localStorage.setItem(SAVE + "_form", JSON.stringify(s));
+      localStorage.setItem(SAVE + "_second_form", JSON.stringify(s2));
+      scheduleCloudSave(s, s2);
+    } catch (e) {}
   }
-  function build() {
-    form.innerHTML = "";
-    data.appealFields.forEach(function (f) {
+  function buildFields(target, fields, storageKey) {
+    target.innerHTML = "";
+    fields.forEach(function (f) {
       var lab = document.createElement("label"); var sp = document.createElement("span"); sp.textContent = f.label + (f.required ? " *" : ""); lab.appendChild(sp);
       var el;
-      if (f.type === "select") { el = document.createElement("select"); f.options.forEach(function (o) { var op = document.createElement("option"); op.value = o; op.textContent = o; el.appendChild(op); }); }
+      if (f.type === "select") { el = document.createElement("select"); var choose = document.createElement("option"); choose.value = ""; choose.textContent = "कृपया चुनें"; el.appendChild(choose); f.options.forEach(function (o) { var op = document.createElement("option"); op.value = o; op.textContent = o; el.appendChild(op); }); }
       else if (f.type === "textarea") { el = document.createElement("textarea"); el.rows = 3; }
-      else { el = document.createElement("input"); el.type = "text"; }
-      el.name = f.key; lab.appendChild(el);
+      else { el = document.createElement("input"); el.type = f.type === "date" ? "date" : "text"; }
+      el.name = f.key; if (f.required) { el.required = true; el.setAttribute("aria-required", "true"); } lab.appendChild(el);
       if (f.hint) { var sm = document.createElement("small"); sm.textContent = f.hint; lab.appendChild(sm); }
-      form.appendChild(lab);
+      target.appendChild(lab);
     });
+    try { var savedFields = JSON.parse(localStorage.getItem(storageKey) || "{}"); Object.keys(savedFields).forEach(function (k) { if (target.elements[k] && savedFields[k]) target.elements[k].value = savedFields[k]; }); } catch (e) {}
+  }
+  function build() {
+    buildFields(form, data.appealFields, SAVE + "_form");
+    buildFields(secondForm, data.secondAppealFields || [], SAVE + "_second_form");
     var pio = form.elements.pio; if (pio && main.office && !pio.value) pio.value = main.office;
-    try { var s = JSON.parse(localStorage.getItem(SAVE + "_form") || "{}"); Object.keys(s).forEach(function (k) { if (form.elements[k] && s[k]) form.elements[k].value = s[k]; }); } catch (e) {}
     var ck = root.querySelector(".kit-check"); ck.innerHTML = data.checklist.map(function (x) { return "<li>" + x + "</li>"; }).join("");
     form.addEventListener("input", render); form.addEventListener("change", render);
+    secondForm.addEventListener("input", render); secondForm.addEventListener("change", render);
     render();
   }
-  function unlock(d) { data = d; locked.hidden = true; open.hidden = false; build(); }
+  function unlock(d) {
+    data = d; locked.hidden = true; open.hidden = false; build();
+    if (d.recovery_code) {
+      var panel = root.querySelector(".kit-recovery-result");
+      panel.hidden = false;
+      panel.querySelector(".kit-recovery-code").textContent = d.recovery_code;
+      var cb = panel.querySelector("[data-kit-copy-code]");
+      cb.onclick = function () {
+        (navigator.clipboard ? navigator.clipboard.writeText(d.recovery_code) : Promise.reject()).then(function () { msg.textContent = "✅ कोड कॉपी हो गया। इसे WhatsApp पर खुद को भेज लें या स्क्रीनशॉट लें।"; }, function () { msg.textContent = "कॉपी नहीं हो सका; कोड का स्क्रीनशॉट ले लें।"; });
+      };
+    }
+  }
+  recoveryBtn.addEventListener("click", function () {
+    var code = String(recoveryInput.value || "").trim().toUpperCase();
+    if (!code) { msg.textContent = "Recovery Code डालें।"; recoveryInput.focus(); return; }
+    recoveryBtn.disabled = true; msg.textContent = "आपका डेटा खोजा जा रहा है…";
+    post("/kit/recover", { recovery_code: code }).then(function (r) {
+      if (!r || !r.success) throw new Error(r && r.error || "Recovery नहीं हो सकी।");
+      var payload = r.data.payload || {};
+      main = payload.application || {};
+      activeRecoveryCode = code;
+      try {
+        if (payload.drafts && payload.drafts.appeal) localStorage.setItem(SAVE + "_form", JSON.stringify(payload.drafts.appeal));
+        if (payload.drafts && payload.drafts.secondAppeal) localStorage.setItem(SAVE + "_second_form", JSON.stringify(payload.drafts.secondAppeal));
+        localStorage.setItem(SRC, JSON.stringify(main));
+        localStorage.setItem(SAVE, JSON.stringify({ application: main, source: root.dataset.src, recovered: true }));
+      } catch (e) {}
+      msg.textContent = "✅ Recovery सफल रही। आपकी किट खुल गई।";
+      unlock(r.data);
+    }).catch(function () {
+      msg.textContent = "Recovery नहीं हो सकी। कोड जाँचें और दोबारा कोशिश करें।";
+    }).finally(function () { recoveryBtn.disabled = false; });
+  });
+
+  function validateFields(fields, target, label) {
+    var required = fields.filter(function (f) { return f.required; });
+    for (var i = 0; i < required.length; i++) {
+      var field = target.elements[required[i].key];
+      if (field && !String(field.value || "").trim()) {
+        msg.textContent = label + " तैयार करने से पहले यह जानकारी भरें: " + required[i].label;
+        field.focus();
+        if (field.reportValidity) field.reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
 
   root.querySelectorAll("[data-kit-act]").forEach(function (b) {
     b.addEventListener("click", function () {
       var w = b.dataset.for, act = b.dataset.kitAct, paper = root.querySelector('[data-paper="' + w + '"]');
+      if (w === "appeal") {
+        if (!validateFields(data.appealFields, form, "प्रथम अपील")) return;
+        var applicationDate = parseDate(form.elements.appdate && form.elements.appdate.value);
+        var officeReceivedDate = parseDate(form.elements.receiveddate && form.elements.receiveddate.value);
+        var replyDate = parseDate(form.elements.replydate && form.elements.replydate.value);
+        var firstAppealDate = parseDate(form.elements.appealdate && form.elements.appealdate.value);
+        var status = form.elements.status && form.elements.status.value;
+        if (!applicationDate || !firstAppealDate) {
+          msg.textContent = "RTI आवेदन और प्रथम अपील की तारीख DD/MM/YYYY या DD-MM-YYYY प्रारूप में सही भरें।";
+          (form.elements.appdate || form.elements.appealdate).focus();
+          return;
+        }
+        if (form.elements.receiveddate && form.elements.receiveddate.value.trim() && !officeReceivedDate) {
+          msg.textContent = "दफ्तर में आवेदन पहुंचने की वैध तारीख भरें।";
+          form.elements.receiveddate.focus();
+          return;
+        }
+        if (form.elements.replydate && form.elements.replydate.value.trim() && !replyDate) {
+          msg.textContent = "PIO के जवाब की वैध तारीख भरें।";
+          form.elements.replydate.focus();
+          return;
+        }
+        if (status !== "आवेदन के 30 दिन में कोई जवाब नहीं मिला" && !replyDate) {
+          msg.textContent = "जवाब मिलने के आधार पर अपील कर रहे हैं तो जवाब मिलने की तारीख भरें।";
+          form.elements.replydate.focus();
+          return;
+        }
+        if (officeReceivedDate && officeReceivedDate < applicationDate) {
+          msg.textContent = "दफ्तर में आवेदन पहुंचने की तारीख, RTI आवेदन भेजने की तारीख से पहले नहीं हो सकती।";
+          form.elements.receiveddate.focus();
+          return;
+        }
+        if (firstAppealDate < applicationDate) {
+          msg.textContent = "प्रथम अपील की तारीख मूल RTI आवेदन की तारीख से पहले नहीं हो सकती।";
+          form.elements.appealdate.focus();
+          return;
+        }
+        var replyBaseDate = officeReceivedDate || applicationDate;
+        if (replyDate && replyDate < replyBaseDate) {
+          msg.textContent = "PIO के जवाब की तारीख, आवेदन दफ्तर पहुंचने की तारीख से पहले नहीं हो सकती।";
+          form.elements.replydate.focus();
+          return;
+        }
+        if (status !== "आवेदन के 30 दिन में कोई जवाब नहीं मिला" && replyDate && firstAppealDate < replyDate) {
+          msg.textContent = "जवाब मिलने के आधार पर अपील कर रहे हैं तो प्रथम अपील की तारीख जवाब मिलने से पहले नहीं हो सकती।";
+          form.elements.appealdate.focus();
+          return;
+        }
+        var firstAppealDeadline = status === "आवेदन के 30 दिन में कोई जवाब नहीं मिला"
+          ? addDays(replyBaseDate, 60)
+          : (replyDate ? addDays(replyDate, 30) : null);
+        if (firstAppealDeadline && firstAppealDate > firstAppealDeadline && !String(form.elements.firstDelayReason && form.elements.firstDelayReason.value || "").trim()) {
+          msg.textContent = "प्रथम अपील की सामान्य 30 दिन की समय-सीमा बीत चुकी है। देरी का वास्तविक कारण लिखें और विलंब माफी का अनुरोध जोड़ें।";
+          if (form.elements.firstDelayReason) form.elements.firstDelayReason.focus();
+          return;
+        }
+      }
+      if (w === "secondAppeal") {
+        if (!validateFields(data.secondAppealFields || [], secondForm, "द्वितीय अपील")) return;
+        var outcome = secondForm.elements.faaOutcome && secondForm.elements.faaOutcome.value;
+        var filed = parseDate(secondForm.elements.faadate && secondForm.elements.faadate.value);
+        var appealFiled = parseDate(secondForm.elements.secondAppealDate && secondForm.elements.secondAppealDate.value);
+        var orderReceived = parseDate(secondForm.elements.faaOrderDate && secondForm.elements.faaOrderDate.value);
+        var originalDate = parseDate(main.date);
+        if (!filed || !appealFiled) {
+          msg.textContent = "प्रथम अपील प्राप्त होने और द्वितीय अपील दाखिल करने की वैध तारीख भरें।";
+          (secondForm.elements.faadate || secondForm.elements.secondAppealDate).focus();
+          return;
+        }
+        if (originalDate && filed < originalDate) {
+          msg.textContent = "FAA को प्रथम अपील मिलने की तारीख मूल RTI आवेदन की तारीख से पहले नहीं हो सकती। तारीख जाँचें।";
+          secondForm.elements.faadate.focus();
+          return;
+        }
+        if (outcome !== "45 दिन तक FAA का कोई आदेश नहीं मिला" && !orderReceived) {
+          msg.textContent = "FAA का आदेश मिला है तो आदेश प्राप्त होने की वैध तारीख भरें।";
+          if (secondForm.elements.faaOrderDate) secondForm.elements.faaOrderDate.focus();
+          return;
+        }
+        if (orderReceived && filed && orderReceived < filed) {
+          msg.textContent = "FAA आदेश प्राप्त होने की तारीख, FAA को प्रथम अपील मिलने की तारीख से पहले नहीं हो सकती।";
+          secondForm.elements.faaOrderDate.focus();
+          return;
+        }
+        if (outcome !== "45 दिन तक FAA का कोई आदेश नहीं मिला" && orderReceived && appealFiled && appealFiled < orderReceived) {
+          msg.textContent = "द्वितीय अपील दाखिल करने की तारीख FAA का आदेश प्राप्त होने की तारीख से पहले नहीं हो सकती।";
+          secondForm.elements.secondAppealDate.focus();
+          return;
+        }
+        if (outcome === "45 दिन तक FAA का कोई आदेश नहीं मिला" && filed && appealFiled) {
+          var earliest = addDays(filed, 45);
+          if (appealFiled < earliest) {
+            msg.textContent = "FAA को अधिकतम 45 दिन का समय पूरा होने के बाद ही बिना आदेश वाली द्वितीय अपील दाखिल करें। समय-सीमा की गणना वास्तविक प्राप्ति/परिस्थितियों के अनुसार जाँचें।";
+            secondForm.elements.secondAppealDate.focus();
+            return;
+          }
+        }
+        var deadlineBase = outcome === "45 दिन तक FAA का कोई आदेश नहीं मिला" && filed ? addDays(filed, 45) : orderReceived;
+        if (deadlineBase && appealFiled && appealFiled > addDays(deadlineBase, 90) && !String(secondForm.elements.delayReason && secondForm.elements.delayReason.value || "").trim()) {
+          msg.textContent = "90 दिन की अवधि बीत चुकी है। द्वितीय अपील में देरी का वास्तविक कारण भरें और विलंब माफी का अनुरोध जोड़ें।";
+          if (secondForm.elements.delayReason) secondForm.elements.delayReason.focus();
+          return;
+        }
+      }
+      msg.textContent = "";
       ev("kit_" + act, { kit: KIT, part: w });
       if (act === "print") { document.body.classList.add("lt-printing"); paper.classList.add("lt-print-me"); window.print(); setTimeout(function () { document.body.classList.remove("lt-printing"); paper.classList.remove("lt-print-me"); }, 500); }
       else if (act === "wa") window.open("https://wa.me/?text=" + encodeURIComponent(text(w, false)), "_blank", "noopener");
@@ -110,16 +330,44 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
   });
 
   // Returning buyer: same payment re-opens the kit on this device.
+  // Older purchases predate application binding; reuse the saved free-form
+  // draft on this device so those verified payments remain accessible.
   try {
     var saved = JSON.parse(localStorage.getItem(SAVE) || "null");
-    if (saved) post("/kit/verify", Object.assign({ kit: KIT }, saved)).then(function (r) { if (r && r.success) unlock(r.data); }).catch(function () {});
+    if (!saved) {
+      var legacy = JSON.parse(localStorage.getItem("ss_kit_" + KIT) || "null");
+      var currentDraft = readMain();
+      var sameLegacyApplication = legacy && legacy.application && completeMain(legacy.application) &&
+        ["name", "address", "phone", "office", "subject", "info", "period", "fee", "place", "date"].every(function (k) {
+          return String(legacy.application[k] || "").trim() === String(currentDraft[k] || "").trim();
+        });
+      if (legacy && (legacy.source === root.dataset.src || (!legacy.source && sameLegacyApplication))) {
+        saved = legacy;
+        localStorage.setItem(SAVE, JSON.stringify(saved));
+      }
+    }
+    if (saved && (!saved.source || saved.source === root.dataset.src) && saved.razorpay_order_id && saved.razorpay_payment_id && saved.razorpay_signature) {
+      var savedApplication = saved.application || readMain();
+      if (completeMain(savedApplication)) {
+        post("/kit/verify", Object.assign({ kit: KIT, application: savedApplication }, saved)).then(function (r) {
+          if (r && r.success) { main = savedApplication; unlock(r.data); }
+        }).catch(function () {});
+      }
+    }
   } catch (e) {}
 
   payBtn.addEventListener("click", function () {
+    var application = readMain();
+    if (!completeMain(application)) {
+      msg.textContent = "पहले ऊपर मुफ्त RTI फॉर्म में नाम, पता, दफ्तर, विषय और मांगी गई जानकारी भरें। फिर ₹20 किट खोलें।";
+      var builder = document.querySelector(".lt-form");
+      if (builder) builder.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
     if (!window.Razorpay) { msg.textContent = "भुगतान का पेज लोड नहीं हुआ। पेज रीफ्रेश करके दोबारा कोशिश करें।"; return; }
     payBtn.disabled = true; msg.textContent = "भुगतान शुरू हो रहा है…";
     var item = [{ item_id: "rti_kit", item_name: "RTI पूरा किट", price: price, quantity: 1 }];
-    post("/kit/create-order", { kit: KIT }).then(function (o) {
+    post("/kit/create-order", { kit: KIT, application: application, source: root.dataset.src }).then(function (o) {
       if (!o.success) throw new Error(o.error || "order");
       ev("begin_checkout", { value: price, currency: "INR", items: item });
       var rz = new Razorpay({
@@ -128,16 +376,18 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
         modal: { ondismiss: function () { ev("checkout_cancel", { kit: KIT }); payBtn.disabled = false; msg.textContent = ""; } },
         handler: function (p) {
           msg.textContent = "भुगतान की जांच हो रही है…";
-          var body = { razorpay_order_id: p.razorpay_order_id, razorpay_payment_id: p.razorpay_payment_id, razorpay_signature: p.razorpay_signature };
+          var body = { razorpay_order_id: p.razorpay_order_id, razorpay_payment_id: p.razorpay_payment_id, razorpay_signature: p.razorpay_signature, application: application, source: root.dataset.src };
           post("/kit/verify", Object.assign({ kit: KIT }, body)).then(function (r) {
             if (!r.success) throw new Error(r.error || "verify");
-            try { localStorage.setItem(SAVE, JSON.stringify(body)); } catch (e) {}
+            main = application;
+            activeRecoveryCode = r.data.recovery_code || "";
+            try { body.source = root.dataset.src; localStorage.setItem(SAVE, JSON.stringify(body)); } catch (e) {}
             ev("purchase", { transaction_id: p.razorpay_payment_id, value: price, currency: "INR", items: item });
             msg.textContent = ""; unlock(r.data); open.scrollIntoView({ behavior: "smooth", block: "start" });
           }).catch(function () { payBtn.disabled = false; msg.textContent = "भुगतान हुआ पर किट नहीं खुला। अपना भुगतान ID " + p.razorpay_payment_id + " लेकर हमें बताएं, हम तुरंत ठीक करेंगे।"; });
         }
       });
-      rz.on("payment.failed", function () { ev("checkout_fail", { kit: KIT }); payBtn.disabled = false; msg.textContent = "भुगतान पूरा नहीं हुआ। आपके पैसे नहीं कटे होंगे; चाहें तो दोबारा कोशिश करें।"; });
+      rz.on("payment.failed", function () { ev("checkout_fail", { kit: KIT }); payBtn.disabled = false; msg.textContent = "भुगतान पूरा नहीं हुआ या बैंक से पुष्टि नहीं मिली। दोबारा भुगतान करने से पहले अपने बैंक/UPI ऐप में स्थिति जाँचें। राशि कट गई हो तो दोबारा भुगतान न करें; भुगतान विवरण लेकर हमें संपर्क करें।"; });
       rz.open();
     }).catch(function () { payBtn.disabled = false; msg.textContent = "अभी भुगतान शुरू नहीं हो सका। थोड़ी देर बाद कोशिश करें।"; });
   });
@@ -149,9 +399,58 @@ const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
 .kit { border: 1px solid var(--c-line); border-radius: 12px; padding: 16px; background: var(--c-bg-soft, rgba(29,78,216,.04)); }
 .kit h3 { margin: 18px 0 8px; font-size: 1.05rem; }
 .kit-lead { margin: 0 0 8px; }
+.kit-prerequisite { border-left: 3px solid var(--c-primary, #1d4ed8); padding: 9px 12px; margin: 10px 0; background: var(--c-bg, #fff); border-radius: 6px; font-size: .9rem; }
 .kit-locked { margin-top: 10px; }
 .kit-locked .cta { display: inline-block; }
 .kit-note { color: var(--c-muted); font-size: .82rem; margin: 8px 0 0; }
 .kit [hidden] { display: none !important; }
 .kit-form { margin-bottom: 14px; }
+.kit-recovery { margin: 14px 0; padding: 12px; border: 1px dashed var(--c-line); border-radius: 8px; }
+.kit-recovery input { display: block; width: 100%; margin: 7px 0; padding: 10px; border: 1px solid var(--c-line); border-radius: 6px; background: var(--c-bg, #fff); color: inherit; }
+.kit-recovery-result { margin: 12px 0; padding: 12px; border: 1px solid var(--c-primary, #1d4ed8); border-radius: 8px; overflow-wrap: anywhere; }
+.kit-recovery-code { font-weight: 800; letter-spacing: .06em; font-size: 1.15rem; }
+
+/* Keep paid RTI documents clean when the user prints or saves them as PDF. */
+@media print {
+  body.lt-printing .kit .kit-paper.lt-print-me {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #fff !important;
+    color: #111 !important;
+    font-family: "Noto Sans Devanagari", "Nirmala UI", "Mangal", sans-serif;
+    font-size: 12pt;
+    line-height: 1.7;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  body.lt-printing .kit .kit-paper.lt-print-me::before {
+    display: block;
+    margin: 0 0 18pt;
+    padding: 0 0 8pt;
+    border-bottom: 1px solid #777;
+    font-size: 10pt;
+    font-weight: 700;
+    color: #333;
+  }
+  body.lt-printing .kit .kit-paper[data-paper="appeal"].lt-print-me::before { content: "SarkariSewa India | RTI प्रथम अपील"; }
+  body.lt-printing .kit .kit-paper[data-paper="reminder"].lt-print-me::before { content: "SarkariSewa India | RTI स्मरण पत्र"; }
+  body.lt-printing .kit .kit-paper[data-paper="secondAppeal"].lt-print-me::before { content: "SarkariSewa India | RTI द्वितीय अपील"; }
+  body.lt-printing .kit .kit-paper.lt-print-me p {
+    margin: 0 0 11pt;
+    orphans: 3;
+    widows: 3;
+  }
+  body.lt-printing .kit .kit-paper.lt-print-me .lt-blank { color: #111; }
+}
 </style>

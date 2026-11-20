@@ -556,16 +556,33 @@ const KITS = {
     // s.19(3) second appeal within 90 days, s.19(6) first appeal decided in 30
     // days, at most 45 in total with reasons recorded.
     appealFields: [
-      { key: "appellate", label: "प्रथम अपीलीय अधिकारी का पद और दफ्तर का पता", type: "textarea", required: true, hint: "PIO से ऊपर के अधिकारी; जवाब में या दफ्तर की वेबसाइट पर नाम मिलता है" },
+      { key: "appellate", label: "प्रथम अपीलीय अधिकारी (FAA) का पद और दफ्तर का पता", type: "textarea", required: true, hint: "PIO से वरिष्ठ अधिकारी; PIO को ही अपील न भेजें" },
       { key: "pio", label: "जन सूचना अधिकारी (PIO) का पद और दफ्तर", type: "textarea", required: true },
       { key: "appdate", label: "RTI आवेदन भेजने की तारीख", required: true, hint: "जैसे 05/10/2026" },
-      { key: "status", label: "क्या हुआ", type: "select", options: [
+      { key: "receiveddate", label: "दफ्तर में आवेदन पहुंचने की तारीख (यदि पता हो)" },
+      { key: "regno", label: "RTI Registration / आवेदन नंबर (यदि मिला हो)" },
+      { key: "mode", label: "आवेदन भेजने का तरीका (ऑनलाइन/डाक/हाथ से)" },
+      { key: "tracking", label: "डाक ट्रैकिंग नंबर / रसीद नंबर (यदि हो)" },
+      { key: "appealdate", label: "प्रथम अपील दाखिल करने की तारीख", required: true, hint: "आज की तारीख या वास्तविक दाखिल तारीख" },
+      { key: "status", label: "क्या हुआ", type: "select", required: true, options: [
         "आवेदन के 30 दिन में कोई जवाब नहीं मिला",
-        "जवाब मिला, पर जानकारी अधूरी या गलत है",
+        "जवाब मिला, पर जानकारी अधूरी, गलत या भ्रामक है",
         "जानकारी देने से मना कर दिया गया",
       ] },
       { key: "replydate", label: "जवाब की तारीख (मिला हो तो)" },
+      { key: "firstDelayReason", label: "प्रथम अपील में 30 दिन से अधिक देरी हुई हो तो कारण (अन्यथा खाली छोड़ें)", type: "textarea", hint: "देरी माफ करने का अनुरोध और वास्तविक कारण लिखें; पर्याप्त कारण स्वीकार करना FAA के विवेक पर है" },
       { key: "grounds", label: "अपील का कारण (संक्षेप में)", type: "textarea", required: true, hint: "जैसे: मांगे गए बिंदु 2 और 3 का जवाब नहीं दिया गया" },
+    ],
+    secondAppealFields: [
+      { key: "commission", label: "किस आयोग में अपील करेंगे", type: "select", required: true, options: ["केंद्रीय सूचना आयोग (CIC) – केंद्रीय सरकारी प्राधिकरण", "राज्य सूचना आयोग (SIC) – राज्य सरकारी प्राधिकरण"] , hint: "केंद्र/राज्य का चुनाव संबंधित PIO वाले सरकारी प्राधिकरण के अनुसार करें" },
+      { key: "commissionAddress", label: "सूचना आयोग का पता (यदि उपलब्ध हो)", type: "textarea" },
+      { key: "faadate", label: "FAA के कार्यालय में प्रथम अपील प्राप्त होने की तारीख", type: "date", required: true, hint: "डाक डिलीवरी, ऑनलाइन रसीद या कार्यालय की प्राप्ति मुहर वाली तारीख लिखें; केवल भेजने की तारीख नहीं" },
+      { key: "faaOutcome", label: "प्रथम अपील का परिणाम", type: "select", required: true, options: ["FAA का आदेश मिला, पर संतुष्टि नहीं है", "FAA ने सूचना देने से मना किया", "45 दिन तक FAA का कोई आदेश नहीं मिला"] },
+      { key: "faaOrderDate", label: "FAA का आदेश आपको प्राप्त होने की तारीख", type: "date", hint: "आदेश मिलने वाले दोनों विकल्पों में यह तारीख जरूरी है; आदेश न मिला हो तो खाली छोड़ें" },
+      { key: "secondAppealDate", label: "द्वितीय अपील दाखिल करने की तारीख", type: "date", required: true },
+      { key: "secondGrounds", label: "द्वितीय अपील के मुख्य आधार", type: "textarea", required: true, hint: "कौन-सी सूचना नहीं मिली, आदेश में क्या त्रुटि है, या FAA ने निर्णय क्यों नहीं दिया" },
+      { key: "secondRelief", label: "आयोग से क्या राहत चाहते हैं", type: "textarea", required: true, hint: "उदाहरण: पूरी सूचना, प्रमाणित प्रतियां, लागू होने पर क्षतिपूर्ति/दंड पर विचार" },
+      { key: "delayReason", label: "90 दिन से देरी हुई हो तो कारण (अन्यथा खाली छोड़ें)", type: "textarea", hint: "देरी माफ करने का अनुरोध तभी जोड़ें जब वास्तव में देरी हुई हो" },
     ],
     templates: {
       appeal: `सेवा में,
@@ -583,17 +600,58 @@ const KITS = {
 2. जिस जन सूचना अधिकारी के निर्णय या चुप्पी के विरुद्ध अपील है: {{pio}}
 
 3. मैंने दिनांक {{appdate}} को धारा 6(1) के तहत विषय "{{subject}}" पर सूचना मांगी थी।
+   आवेदन कार्यालय में प्राप्त होने की तारीख: {{receiveddate}}
+   आवेदन / पंजीकरण संख्या: {{regno}}
+   भेजने का माध्यम: {{mode}}
+   डाक रसीद / ट्रैकिंग संख्या: {{tracking}}
 
-4. स्थिति: {{status}}. {{replydate}}
+4. स्थिति: {{status}}
+   PIO के उत्तर की तारीख (यदि मिला हो): {{replydate}}
+   प्रथम अपील में देरी का कारण (यदि लागू हो): {{firstDelayReason}}
 
 5. अपील का आधार: {{grounds}}
 
-प्रार्थना: कृपया जन सूचना अधिकारी को निर्देश दें कि मांगी गई सूचना नियमानुसार शीघ्र उपलब्ध कराई जाए।
+प्रार्थना: कृपया अभिलेखों और तथ्यों की जांच कर, मांगी गई सूचना अधिनियम के अनुसार उपलब्ध कराने तथा आवश्यक कारणयुक्त आदेश पारित करने की कृपा करें।
 
 संलग्न: (1) RTI आवेदन की कॉपी (2) डाक रसीद/ट्रैकिंग (3) फीस की रसीद या पोस्टल ऑर्डर की कॉपी (4) PIO का जवाब, यदि मिला हो।
 
 स्थान: {{place}}
-दिनांक: {{date}}
+दिनांक: {{appealdate}}
+
+भवदीय,
+{{name}}`,
+      secondAppeal: `सेवा में,
+आयुक्त महोदय/महोदया,
+{{commission}}
+{{commissionAddress}}
+
+विषय: सूचना का अधिकार अधिनियम, 2005 की धारा 19(3) के अंतर्गत द्वितीय अपील
+
+अपीलकर्ता:
+नाम: {{name}}
+पता: {{address}}
+मोबाइल: {{phone}}
+
+संबंधित लोक प्राधिकरण / PIO: {{pio}}
+प्रथम अपीलीय अधिकारी (FAA): {{appellate}}
+मूल RTI आवेदन दिनांक: {{appdate}}
+FAA द्वारा प्रथम अपील प्राप्त दिनांक: {{faadate}}
+प्रथम अपील का परिणाम: {{faaOutcome}}
+FAA आदेश प्राप्त होने की तारीख (यदि आदेश मिला हो): {{faaOrderDate}}
+FAA का आदेश न मिलने पर 45 दिन की अवधि समाप्त होने की तारीख: {{faaDueDate}}
+
+द्वितीय अपील के तथ्य और आधार:
+{{secondGrounds}}
+
+मांगी गई राहत:
+{{secondRelief}}
+
+देरी माफी का अनुरोध / कारण (यदि लागू): {{delayReason}}
+
+संलग्नक: (1) मूल RTI आवेदन (2) आवेदन भेजने/प्राप्ति का प्रमाण (3) PIO का उत्तर, यदि मिला हो (4) प्रथम अपील और उसकी प्राप्ति का प्रमाण (5) FAA का आदेश, यदि मिला हो (6) दस्तावेजों की सूची / इंडेक्स (7) द्वितीय अपील की प्रति लोक प्राधिकरण को भेजने का प्रमाण, जहाँ आयोग के नियमों में आवश्यक हो (8) अन्य संबंधित दस्तावेज।
+
+स्थान: {{place}}
+दिनांक: {{secondAppealDate}}
 
 भवदीय,
 {{name}}`,
@@ -619,16 +677,46 @@ const KITS = {
       "आवेदन <strong>स्पीड पोस्ट या रजिस्टर्ड डाक</strong> से भेजें; रसीद और ट्रैकिंग नंबर संभालकर रखें। यही आपका सबूत है।",
       "आवेदन की पूरी कॉपी और <strong>फीस का सबूत</strong> (पोस्टल ऑर्डर नंबर या रसीद) अपने पास रखें। फीस केंद्र के दफ्तरों में ₹10 है; राज्य के दफ्तरों में राज्य के नियम लागू होते हैं।",
       "जवाब की समय सीमा <strong>30 दिन</strong> है (जीवन या स्वतंत्रता का मामला हो तो 48 घंटे)। गिनती दफ्तर में आवेदन पहुंचने की तारीख से करें।",
-      "30 दिन में जवाब न मिले या जवाब से संतुष्टि न हो, तो पहले <strong>स्मरण पत्र</strong> दें और फिर <strong>प्रथम अपील</strong> करें। अपील की समय सीमा: 30 दिन की अवधि खत्म होने से या जवाब मिलने से <strong>30 दिन</strong> के भीतर।",
+      "30 दिन में जवाब न मिले या जवाब से संतुष्टि न हो, तो <strong>प्रथम अपील</strong> की जा सकती है। स्मरण पत्र देना वैकल्पिक है, कानूनी शर्त नहीं। अपील की समय सीमा: 30 दिन की अवधि खत्म होने से या जवाब मिलने से <strong>30 दिन</strong> के भीतर।",
       "प्रथम अपील आम तौर पर 30 दिन में तय होनी चाहिए; कारण लिखकर कुल 45 दिन तक बढ़ाई जा सकती है।",
       "प्रथम अपील से भी संतुष्टि न मिले तो <strong>द्वितीय अपील</strong> केंद्रीय या राज्य सूचना आयोग में, निर्णय की तारीख (या जब निर्णय होना था) से <strong>90 दिन</strong> के भीतर।",
+      "द्वितीय अपील के लिए केंद्रीय सरकारी प्राधिकरण हो तो CIC और राज्य सरकारी प्राधिकरण हो तो संबंधित SIC चुनें।",
+      "धारा 19(3) के तहत FAA का आदेश मिल जाए तो सामान्यतः उसकी प्राप्ति से 90 दिन में द्वितीय अपील करें। आदेश न मिले तो FAA द्वारा प्रथम अपील प्राप्त किए जाने की तारीख से अधिकतम 45 दिन पूरे होने के बाद अपील करें और 90 दिन की अवधि उस 45-दिन की अवधि समाप्त होने से गिनें; राज्य आयोग के लागू नियम भी जाँचें। पर्याप्त कारण होने पर आयोग विलंब स्वीकार कर सकता है।",
       "आवेदन में कारण बताना ज़रूरी नहीं है; सिर्फ अपना संपर्क पता लिखें और हर बिंदु अलग लाइन में पूछें।",
     ],
   },
 };
 
-async function createKitOrder(env, kit) {
+function normalizeKitApplication(application) {
+  const keys = ["name", "address", "phone", "office", "subject", "info", "period", "fee", "place", "date"];
+  const out = {};
+  for (const key of keys) out[key] = String(application?.[key] || "").trim().slice(0, 5000);
+  return out;
+}
+function validKitApplication(application) {
+  const app = normalizeKitApplication(application);
+  return ["name", "address", "office", "subject", "info"].every((key) => app[key].length > 0);
+}
+async function kitApplicationHash(application) {
+  const app = normalizeKitApplication(application);
+  const bytes = new TextEncoder().encode(JSON.stringify(app));
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+}
+async function kitSourceHash(source) {
+  const value = String(source || "").trim().slice(0, 200);
+  const bytes = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function createKitOrder(env, kit, application, source) {
   if (!KITS[kit]) throw new Error("Invalid kit");
+  if (!validKitApplication(application)) throw new Error("Complete the free RTI application first");
+  const pageSource = String(source || "").trim().slice(0, 200);
+  if (!pageSource) throw new Error("Missing RTI page source");
+  const applicationHash = await kitApplicationHash(application);
+  const sourceHash = await kitSourceHash(pageSource);
   const receipt = `KIT_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
   const result = await razorpayRequest("/orders", env, {
     method: "POST",
@@ -636,7 +724,7 @@ async function createKitOrder(env, kit) {
       amount: kitPrice(env),
       currency: getCurrency(env),
       receipt,
-      notes: { service: KITS[kit].name, website: "SarkariSewaIndia", kit }
+      notes: { service: KITS[kit].name, website: "SarkariSewaIndia", kit, application_hash: applicationHash, source_hash: sourceHash }
     })
   });
   if (!result.response.ok || !result.data.id) {
@@ -648,8 +736,8 @@ async function createKitOrder(env, kit) {
 }
 
 async function verifyKitPayment(body, env) {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, kit } = body || {};
-  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !KITS[kit]) {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, kit, application, source, recovery_payload } = body || {};
+  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !KITS[kit] || !validKitApplication(application)) {
     return { success: false, status: 400, error: "Required payment details are missing" };
   }
   const expected = await generateRazorpaySignature(razorpay_order_id, razorpay_payment_id, keySecret(env));
@@ -659,8 +747,16 @@ async function verifyKitPayment(body, env) {
   const orderResult = await razorpayRequest(`/orders/${encodeURIComponent(razorpay_order_id)}`, env, { method: "GET" });
   if (!orderResult.response.ok) return { success: false, status: 400, error: "Unable to verify Razorpay order" };
   const order = orderResult.data;
-  if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit) {
-    return { success: false, status: 400, error: "Order does not match this kit" };
+  const applicationHash = await kitApplicationHash(application);
+  const pageSource = String(source || "").trim().slice(0, 200);
+  // New orders are bound to both the exact free RTI application and its page. Older paid
+  // orders did not store an application hash, so retain their re-open access
+  // after the same signed payment and captured-payment checks below.
+  const savedApplicationHash = order.notes?.application_hash;
+  const savedSourceHash = order.notes?.source_hash;
+  const sourceHash = pageSource ? await kitSourceHash(pageSource) : "";
+  if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit || (savedApplicationHash && savedApplicationHash !== applicationHash) || (savedSourceHash && savedSourceHash !== sourceHash)) {
+    return { success: false, status: 400, error: "Order does not match this kit or RTI application" };
   }
   const paymentResult = await razorpayRequest(`/payments/${encodeURIComponent(razorpay_payment_id)}`, env, { method: "GET" });
   if (!paymentResult.response.ok) return { success: false, status: 400, error: "Unable to verify payment" };
@@ -677,7 +773,116 @@ async function verifyKitPayment(body, env) {
   }
   if (payment.status !== "captured") return { success: false, status: 400, error: "Payment is not captured" };
   const k = KITS[kit];
-  return { success: true, status: 200, data: { kit, appealFields: k.appealFields, templates: k.templates, checklist: k.checklist } };
+  let recovery = null;
+  if (env.SUPABASE_SERVICE_ROLE_KEY && env.RTI_RECOVERY_ENCRYPTION_KEY) {
+    try {
+      recovery = await createRecoveryRecord({
+        paymentId: razorpay_payment_id, kit, source: pageSource,
+        payload: { application: normalizeKitApplication(application), drafts: recovery_payload && typeof recovery_payload === "object" ? recovery_payload : {} }
+      }, env);
+    } catch {}
+  }
+  return { success: true, status: 200, data: { kit, recovery_code: recovery, recovery_available: Boolean(recovery), appealFields: k.appealFields, secondAppealFields: k.secondAppealFields, templates: k.templates, checklist: k.checklist } };
+}
+
+
+// RTI recovery payloads are encrypted in the Worker before reaching Supabase.
+function recoveryCode() {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes = crypto.getRandomValues(new Uint8Array(20));
+  let raw = "";
+  for (const b of bytes) raw += alphabet[b % alphabet.length];
+  return raw.match(/.{1,5}/g).join("-");
+}
+async function recoveryDigest(value) {
+  const bytes = new TextEncoder().encode(String(value || "").replace(/-/g, "").toUpperCase());
+  return bytesToHex(await crypto.subtle.digest("SHA-256", bytes));
+}
+async function recoveryCryptoKey(env) {
+  const secret = String(env.RTI_RECOVERY_ENCRYPTION_KEY || "").trim();
+  if (secret.length < 32) throw new Error("RTI recovery encryption key is not configured");
+  const raw = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(secret));
+  return crypto.subtle.importKey("raw", raw, { name: "AES-GCM" }, false, ["encrypt", "decrypt"]);
+}
+async function encryptRecovery(payload, env) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, await recoveryCryptoKey(env), new TextEncoder().encode(JSON.stringify(payload)));
+  const b64 = (bytes) => btoa(String.fromCharCode(...new Uint8Array(bytes))).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/g, "");
+  return { payload_ciphertext: b64(encrypted), payload_iv: b64(iv) };
+}
+async function supabaseRecoveryRequest(path, env, options = {}) {
+  const serviceKey = String(env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
+  if (!serviceKey) throw new Error("Supabase recovery service key is not configured");
+  return fetch(SUPABASE_URL + "/rest/v1/" + path, {
+    ...options,
+    headers: {
+      apikey: serviceKey, Authorization: "Bearer " + serviceKey,
+      "Content-Type": "application/json",
+      Prefer: options.method === "POST" ? "return=minimal" : "return=representation",
+      ...(options.headers || {})
+    }
+  });
+}
+async function createRecoveryRecord({ paymentId, kit, source, payload }, env) {
+  // Keep recovery data only for its short life: delete expired rows first.
+  try { await supabaseRecoveryRequest("rti_kit_recovery?expires_at=lt." + encodeURIComponent(new Date().toISOString()), env, { method: "DELETE" }); } catch {}
+  const code = recoveryCode();
+  const hash = await recoveryDigest(code);
+  const encrypted = await encryptRecovery(payload, env);
+  const response = await supabaseRecoveryRequest("rti_kit_recovery", env, {
+    method: "POST",
+    body: JSON.stringify({
+      recovery_code_hash: hash, payment_id: paymentId, kit,
+      source_hash: await kitSourceHash(source),
+      payload_ciphertext: encrypted.payload_ciphertext, payload_iv: encrypted.payload_iv
+    })
+  });
+  if (!response.ok) throw new Error("Unable to save RTI recovery record");
+  return code;
+}
+async function saveRecoveryKit(body, env) {
+  const code = String(body?.recovery_code || "").trim().toUpperCase();
+  const application = body?.application;
+  const drafts = body?.drafts && typeof body.drafts === "object" ? body.drafts : {};
+  if (!/^[A-HJ-NP-Z2-9]{5}(?:-[A-HJ-NP-Z2-9]{5}){3}$/.test(code) || !validKitApplication(application)) {
+    return { success: false, status: 400, error: "Invalid recovery details" };
+  }
+  const payload = { application: normalizeKitApplication(application), drafts };
+  const serialized = JSON.stringify(payload);
+  if (serialized.length > 30000) return { success: false, status: 413, error: "Recovery data is too large" };
+  const encrypted = await encryptRecovery(payload, env);
+  const hash = await recoveryDigest(code);
+  const response = await supabaseRecoveryRequest(
+    "rti_kit_recovery?recovery_code_hash=eq." + hash + "&revoked_at=is.null&expires_at=gt." + encodeURIComponent(new Date().toISOString()),
+    env,
+    { method: "PATCH", body: JSON.stringify({ payload_ciphertext: encrypted.payload_ciphertext, payload_iv: encrypted.payload_iv, updated_at: new Date().toISOString() }) }
+  );
+  if (!response.ok) return { success: false, status: 503, error: "Unable to save recovery data" };
+  const updated = await response.json();
+  if (!Array.isArray(updated) || updated.length !== 1) return { success: false, status: 404, error: "Recovery code not found or expired" };
+  return { success: true, status: 200 };
+}
+
+async function recoverKit(body, env) {
+  const code = String(body?.recovery_code || "").trim().toUpperCase();
+  if (!/^[A-HJ-NP-Z2-9]{5}(?:-[A-HJ-NP-Z2-9]{5}){3}$/.test(code)) return { success: false, status: 400, error: "Invalid recovery code" };
+  const hash = await recoveryDigest(code);
+  const response = await supabaseRecoveryRequest("rti_kit_recovery?select=payload_ciphertext,payload_iv,kit,expires_at,revoked_at&recovery_code_hash=eq." + hash + "&limit=1", env);
+  if (!response.ok) return { success: false, status: 503, error: "Recovery service unavailable" };
+  const row = (await response.json())[0];
+  if (!row || row.revoked_at || Date.parse(row.expires_at) <= Date.now()) return { success: false, status: 404, error: "Recovery code not found or expired" };
+  try {
+    const decode = (s) => {
+      let v = String(s).replaceAll("-", "+").replaceAll("_", "/");
+      while (v.length % 4) v += "=";
+      return Uint8Array.from(atob(v), ch => ch.charCodeAt(0));
+    };
+    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: decode(row.payload_iv) }, await recoveryCryptoKey(env), decode(row.payload_ciphertext));
+    const k = KITS[row.kit];
+    return { success: true, status: 200, data: { kit: row.kit, payload: JSON.parse(new TextDecoder().decode(plain)), appealFields: k.appealFields, secondAppealFields: k.secondAppealFields, templates: k.templates, checklist: k.checklist } };
+  } catch {
+    return { success: false, status: 500, error: "Unable to decrypt recovery data" };
+  }
 }
 
 export default {
@@ -717,10 +922,10 @@ export default {
     if (request.method === "POST" && url.pathname === "/kit/create-order") {
       try {
         const body = await request.json();
-        const order = await createKitOrder(env, body.kit);
+        const order = await createKitOrder(env, body.kit, body.application, body.source);
         return json({ success: true, key_id: keyId(env), order_id: order.id, amount: kitPrice(env), currency: getCurrency(env) }, 200, headers);
       } catch (error) {
-        const bad = error.message === "Invalid kit";
+        const bad = error.message === "Invalid kit" || error.message === "Complete the free RTI application first";
         return json({ success: false, error: bad ? error.message : "Unable to create payment order" }, bad ? 400 : 502, headers);
       }
     }
@@ -731,6 +936,24 @@ export default {
         return json({ success: result.success, ...(result.success ? { data: result.data } : { error: result.error }) }, result.status, headers);
       } catch {
         return json({ success: false, error: "Payment verification service unavailable" }, 502, headers);
+      }
+    }
+
+    if (request.method === "POST" && url.pathname === "/kit/recover") {
+      try {
+        const result = await recoverKit(await request.json(), env);
+        return json({ success: result.success, ...(result.success ? { data: result.data } : { error: result.error }) }, result.status, headers);
+      } catch {
+        return json({ success: false, error: "Recovery service unavailable" }, 503, headers);
+      }
+    }
+
+    if (request.method === "POST" && url.pathname === "/kit/save") {
+      try {
+        const result = await saveRecoveryKit(await request.json(), env);
+        return json({ success: result.success, ...(result.success ? {} : { error: result.error }) }, result.status, headers);
+      } catch {
+        return json({ success: false, error: "Recovery save unavailable" }, 503, headers);
       }
     }
 
