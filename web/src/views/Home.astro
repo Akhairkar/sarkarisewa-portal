@@ -10,6 +10,8 @@ import { SITE, POPULAR_TASKS, PAID_SERVICES, STATES } from "../data/site";
 import { langOf, t, localize } from "../i18n";
 import { exists } from "../lib/repo";
 import { TOOL_TOTAL } from "../lib/tool-groups";
+import { LETTERS } from "../letters";
+import { CATEGORIES, type LetterCategory } from "../letters/types";
 
 const lang = langOf(Astro.url);
 const L = (hi: string, en: string) => (lang === "en" ? en : hi);
@@ -19,6 +21,18 @@ const states = STATES.filter((s) => exists(`states/${s.slug}.html`));
 const TOP = ["uttar-pradesh", "bihar", "maharashtra", "madhya-pradesh", "rajasthan", "delhi", "haryana", "gujarat"];
 const topStates = TOP.map((slug) => states.find((s) => s.slug === slug)).filter(Boolean) as typeof states;
 const moreStates = states.filter((s) => !TOP.includes(s.slug));
+
+const arzi = [
+  { href: "/arzi/rti-application-format.html", emoji: "📨", title: L("RTI आवेदन पत्र", "RTI application"), text: L("सूचना मांगने का तैयार फॉर्मेट", "Ready format to seek information") },
+  { href: "/arzi/salary-not-paid-complaint-labour-office.html", emoji: "💰", title: L("वेतन न मिलने की शिकायत", "Salary not paid complaint"), text: L("श्रम कार्यालय के लिए", "For the labour office") },
+  { href: "/arzi/old-age-pension-application-letter.html", emoji: "👴", title: L("वृद्धा पेंशन आवेदन", "Old age pension application"), text: L("पेंशन के लिए तैयार पत्र", "Ready letter for pension") },
+  { href: "/arzi/bank-kyc-update-application.html", emoji: "🏦", title: L("बैंक KYC अपडेट", "Bank KYC update"), text: L("बैंक को आवेदन", "Application to the bank") },
+  { href: "/arzi/office-leave-application.html", emoji: "📝", title: L("ऑफिस छुट्टी का आवेदन", "Office leave application"), text: L("नौकरी और दफ्तर के लिए", "For job and office") },
+  { href: "/arzi/income-certificate-application-letter.html", emoji: "📄", title: L("आय प्रमाण पत्र आवेदन", "Income certificate application"), text: L("तहसील के लिए तैयार पत्र", "Ready letter for the tehsil") },
+];
+const arziCats = (Object.keys(CATEGORIES) as LetterCategory[])
+  .map((c) => ({ c, meta: CATEGORIES[c], n: LETTERS.filter((l) => l.category === c).length }))
+  .filter((g) => g.n);
 
 const students = [
   { href: "/jobs/index.html", emoji: "🎯", title: L("नई सरकारी नौकरियां", "Latest government jobs"), text: L("भर्ती, योग्यता और आखिरी तारीख", "Vacancies, eligibility, last dates") },
@@ -110,6 +124,15 @@ const faq = lang === "en" ? [
         {moreStates.map((s) => <a href={`/states/${s.slug}.html`}>{lang === "en" ? s.name : s.hi}<small>{lang === "en" ? s.hi : s.name}</small></a>)}
       </div>
     </details>
+  </section>
+
+  <section class="block" aria-labelledby="arzi">
+    <div class="block-head"><h2 id="arzi">{L("आवेदन पत्र और शिकायत पत्र ✍️", "Application & complaint letters ✍️")}</h2><a href="/arzi/">{L("सभी आवेदन पत्र ›", "All letters ›")}</a></div>
+    <p class="block-lead">{L(`${LETTERS.length}+ तैयार फॉर्मेट: जानकारी भरें, पत्र बनाएं, प्रिंट या PDF करें। फ्री।`, `${LETTERS.length}+ ready formats: fill in, generate, print or save as PDF. Free.`)}</p>
+    <TaskList items={arzi} />
+    <ul class="chips" aria-label={L("आवेदन पत्र की श्रेणियां", "Letter categories")}>
+      {arziCats.map((g) => <li><a href={`/arzi/#${g.c}`}>{g.meta.emoji} {g.meta.title.hi} <small>({g.n})</small></a></li>)}
+    </ul>
   </section>
 
   <section class="block" aria-labelledby="students">
