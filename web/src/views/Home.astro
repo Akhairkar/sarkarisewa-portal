@@ -129,8 +129,8 @@ const faq = lang === "en" ? [
   <section class="block" aria-labelledby="arzi">
     <div class="block-head"><h2 id="arzi">{L("आवेदन पत्र और शिकायत पत्र ✍️", "Application & complaint letters ✍️")}</h2><a href="/arzi/">{L("सभी आवेदन पत्र ›", "All letters ›")}</a></div>
     <p class="block-lead">{L(`${LETTERS.length}+ तैयार फॉर्मेट: जानकारी भरें, पत्र बनाएं, प्रिंट या PDF करें। फ्री।`, `${LETTERS.length}+ ready formats: fill in, generate, print or save as PDF. Free.`)}</p>
-    <TaskList items={arzi} />
-    <ul class="chips" aria-label={L("आवेदन पत्र की श्रेणियां", "Letter categories")}>
+    <div class="arzi-compact"><TaskList items={arzi} /></div>
+    <ul class="chips arzi-chips" aria-label={L("आवेदन पत्र की श्रेणियां", "Letter categories")}>
       {arziCats.map((g) => <li><a href={`/arzi/#${g.c}`}>{g.meta.emoji} {g.meta.title.hi} <small>({g.n})</small></a></li>)}
     </ul>
   </section>
@@ -180,3 +180,13 @@ const faq = lang === "en" ? [
     .more-states[open] summary { margin-bottom: 10px; }
   </style>
 </Base>
+
+<style is:global>
+  .arzi-compact .tasks { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .arzi-compact .task { padding: 10px; gap: 8px; align-items: flex-start; }
+  .arzi-compact .task .emoji { width: 34px; height: 34px; font-size: 1.15rem; border-radius: 10px; }
+  .arzi-compact .task strong { font-size: 0.92rem; }
+  .arzi-compact .task small, .arzi-compact .task .go { display: none; }
+  .arzi-chips { flex-wrap: nowrap; overflow-x: auto; margin-top: 12px; padding-bottom: 6px; }
+  .arzi-chips a { white-space: nowrap; }
+</style>
