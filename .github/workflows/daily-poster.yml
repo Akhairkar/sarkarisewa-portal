@@ -1,8 +1,8 @@
 name: Daily poster on Telegram
 
 # Every afternoon one poster picture goes to the Telegram channel: the first
-# poster published for the day in the admin panel, or else an open job from
-# our job pages that closes in 3-12 days (web/scripts/daily-poster-telegram.mjs).
+# poster published for the day in the admin panel, or else a page we added in the
+# last 3 days, or else an open job from our job pages that closes in 3-12 days (web/scripts/daily-poster-telegram.mjs).
 # Secrets: TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL (optional, default
 # @sarkarisewaindia). "Run workflow" sends now; dry_run only builds it.
 on:
@@ -37,7 +37,9 @@ jobs:
             web/public/assets/img/poster
             web/src/lib
             web/src/data
-            web/src/guides/jobs
+            web/src/guides
+            web/src/pages/jobs
+            web/src/pages/states
       - uses: actions/setup-node@v4
         with:
           node-version: 22

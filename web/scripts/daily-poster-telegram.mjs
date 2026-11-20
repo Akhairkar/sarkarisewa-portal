@@ -3,9 +3,10 @@
 // and the page link. Run by .github/workflows/daily-poster.yml.
 //
 // Which poster: the first poster published for today in the admin panel
-// (Supabase daily_posters); if there is none, an open job from our own job
-// pages whose last date is 3-12 days away (one per day, in turn), so the
-// channel still gets a useful poster on days nothing was written.
+// (Supabase daily_posters); if there is none, one of the pages we added in the
+// last 3 days (guides/**, "published" date, taken in turn so each new page gets
+// its day); if none is that new, an open job whose last date is 3-12 days away
+// (one per day, in turn), so the channel still gets a useful poster daily.
 //
 // Env: TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL (default @sarkarisewaindia),
 //      POSTER_DATE (YYYY-MM-DD, default today in IST), DRY_RUN=1 to only build
@@ -39,7 +40,47 @@ async function adminPoster() {
   return (await res.json())[0] || null;
 }
 
-// 2. Otherwise an open job closing in 3-12 days (web/src/data/jobs.ts and the
+// 2. Otherwise a page published in the last 3 days. Each page under
+// src/pages/{jobs,states}/ that renders a guide gives us the URL; the guide
+// file gives the published date, title and description.
+function newPagePoster() {
+  const dayOf = (iso) => Math.floor(Date.parse(iso + "T00:00:00Z") / 864e5);
+  const jobsSrc = fs.readFileSync(path.join(WEB, "src", "data", "jobs.ts"), "utf8");
+  const jobLast = Object.fromEntries([...jobsSrc.matchAll(/\{ slug: "([^"]+)", sector: "[^"]+", last: "(\d{4}-\d{2}-\d{2})"/g)].map((m) => [m[1], m[2]]));
+  const found = [];
+  for (const dir of ["jobs", "states"]) {
+    const pdir = path.join(WEB, "src", "pages", dir);
+    if (!fs.existsSync(pdir)) continue;
+    for (const f of fs.readdirSync(pdir).filter((x) => x.endsWith(".astro") && !x.startsWith("["))) {
+      const m = fs.readFileSync(path.join(pdir, f), "utf8").match(/from "\.\.\/\.\.\/guides\/([^"]+)"/);
+      if (!m) continue;
+      const gf = path.join(WEB, "src", "guides", m[1] + ".ts");
+      if (!fs.existsSync(gf)) continue;
+      const g = fs.readFileSync(gf, "utf8");
+      const field = (k) => (g.match(new RegExp(`\\n  ${k}: "((?:[^"\\\\]|\\\\.)*)"`)) || [])[1]?.replace(/\\"/g, '"') || "";
+      const pub = field("published");
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(pub)) continue;
+      const age = DAY - dayOf(pub);
+      if (age < 0 || age > 2) continue;
+      const slug = f.replace(/\.astro$/, "");
+      if (dir === "jobs" && jobLast[slug] && dayOf(jobLast[slug]) < DAY) continue; // closed
+      const fact = (g.match(/facts: \[\s*\["([^"]+)", "((?:[^"\\]|\\.)*)"\]/) || []);
+      found.push({
+        id: `page-${dir}-${slug}`, pub, slug, dir,
+        title: (field("title") || field("h1")).slice(0, 110),
+        body: field("description").replace(/\s+/g, " ").slice(0, 170),
+        highlight: fact[1] ? `${fact[1]}: ${fact[2].replace(/<[^>]+>/g, "")}`.slice(0, 80) : "",
+        page_url: `/${dir}/${slug}.html`,
+      });
+    }
+  }
+  if (!found.length) return null;
+  found.sort((a, b) => b.pub.localeCompare(a.pub) || a.slug.localeCompare(b.slug));
+  const p = found[DAY % found.length];
+  return { ...p, publish_date: DATE, category: p.dir === "jobs" ? "naukri" : "alert", source_label: null };
+}
+
+// 3. Otherwise an open job closing in 3-12 days (web/src/data/jobs.ts and the
 // job guide's docHi/description)
 function jobPoster() {
   const src = fs.readFileSync(path.join(WEB, "src", "data", "jobs.ts"), "utf8");
@@ -67,11 +108,11 @@ function jobPoster() {
   };
 }
 
-const post = (await adminPoster()) || jobPoster();
+const post = (await adminPoster().catch((e) => { console.log("Admin posters not reachable:", e.message); return null; })) || newPagePoster() || jobPoster();
 if (!post) { console.log(`No poster for ${DATE}: nothing to send.`); process.exit(0); }
 console.log(`Poster for ${DATE}: ${post.title} (${post.id})`);
 
-// 3. Draw it in Chromium; a small local server gives poster-draw.js its photos.
+// 4. Draw it in Chromium; a small local server gives poster-draw.js its photos.
 const TYPES = { ".js": "text/javascript", ".jpg": "image/jpeg", ".png": "image/png" };
 const server = http.createServer((req, res) => {
   if (req.url === "/") {
