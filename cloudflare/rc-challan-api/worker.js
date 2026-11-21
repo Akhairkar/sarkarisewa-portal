@@ -685,20 +685,194 @@ FAA का आदेश न मिलने पर 45 दिन की अवध
       "आवेदन में कारण बताना ज़रूरी नहीं है; सिर्फ अपना संपर्क पता लिखें और हर बिंदु अलग लाइन में पूछें।",
     ],
   },
+  consumer: {
+    name: "Consumer Complaint Kit",
+    // Sources (checked 21 Nov 2026): Consumer Protection Act 2019 s.34 (District
+    // Commission; value of goods/services paid up to Rs 50 lakh under the 2021
+    // Jurisdiction Rules), s.35 (complaint), s.69 (two years from the cause of
+    // action; delay can be condoned for sufficient cause), s.2(1) "consumer"
+    // excludes goods bought for resale or commercial purpose; Consumer
+    // Protection (E-Commerce) Rules 2020 r.4(4)-(5): grievance officer named on
+    // the platform, acknowledges in 48 hours, redresses in one month; NCH 1915;
+    // e-Jagriti for online filing; no fee up to Rs 5 lakh. A legal notice is not
+    // a legal precondition for a consumer complaint (except special laws such as
+    // the Carriers Act s.10), but it is good evidence of a demand.
+    // appealFields = notice form, secondAppealFields = commission complaint form
+    // (same response shape as the RTI kit so recovery stays generic).
+    appealFields: [
+      { key: "firstdate", label: "पहली लिखित शिकायत भेजने की तारीख", type: "date", required: true, hint: "जिस दिन दुकान/कंपनी को पत्र या ईमेल भेजा" },
+      { key: "firstmode", label: "पहली शिकायत कैसे भेजी", type: "select", required: true, options: ["स्पीड पोस्ट / रजिस्टर्ड डाक", "ईमेल", "कंपनी का ऐप / वेबसाइट / चैट", "हाथ से (रिसीविंग पर)"] },
+      { key: "tracking", label: "डाक ट्रैकिंग नंबर / ईमेल की तारीख / शिकायत नंबर (यदि हो)" },
+      { key: "outcome", label: "अब तक क्या हुआ", type: "select", required: true, options: [
+        "कोई जवाब नहीं मिला",
+        "जवाब मिला, पर समाधान नहीं हुआ",
+        "मरम्मत/बदलाव हुआ, पर समस्या फिर आई",
+        "साफ़ मना कर दिया गया",
+      ] },
+      { key: "lastreply", label: "कंपनी/दुकान का आखिरी जवाब या कार्रवाई (तारीख के साथ)", type: "textarea", hint: "जैसे: 12/10 को इंजीनियर आया, ठीक नहीं किया; या कोई जवाब नहीं" },
+      { key: "refund", label: "आप कितनी रकम वापस/मुआवजा मांग रहे हैं (₹)", hint: "सामान की कीमत और, यदि चाहें, मानसिक कष्ट व केस खर्च का मुआवजा अलग-अलग लिखें" },
+      { key: "noticedays", label: "नोटिस मिलने के बाद कितने दिन का समय दें", type: "select", required: true, options: ["15", "7", "30"] },
+      { key: "platform", label: "ऑनलाइन खरीद हो तो प्लेटफॉर्म/ऐप का नाम (अन्यथा खाली छोड़ें)", hint: "जैसे Amazon, Flipkart, किसी कंपनी की वेबसाइट; दुकान से खरीदा हो तो खाली छोड़ें" },
+      { key: "grievance", label: "शिकायत अधिकारी का नाम/ईमेल (यदि प्लेटफॉर्म पर दिखता हो)", hint: "ई-कॉमर्स नियम 2020 के अनुसार प्लेटफॉर्म को शिकायत अधिकारी का नाम और संपर्क दिखाना होता है" },
+      { key: "noticedate", label: "नोटिस भेजने की तारीख", type: "date", required: true },
+    ],
+    secondAppealFields: [
+      { key: "commission", label: "जिला उपभोक्ता आयोग का नाम और शहर", type: "textarea", required: true, hint: "जैसे: जिला उपभोक्ता विवाद प्रतितोषण आयोग, आरा (भोजपुर)। जहां आप रहते हैं, जहां विपक्षी का दफ्तर है या जहां विवाद हुआ, वहां दायर हो सकता है" },
+      { key: "opposite", label: "विपक्षी पक्षकारों के नाम और पते (दुकान, कंपनी, सेवा देने वाला)", type: "textarea", required: true },
+      { key: "causedate", label: "शिकायत का कारण पैदा होने की तारीख", type: "date", required: true, hint: "जिस दिन खराबी सामने आई या सेवा में कमी हुई/मना किया गया" },
+      { key: "valuepaid", label: "सामान/सेवा के लिए कुल चुकाई गई रकम (₹)", required: true, hint: "आयोग का चुनाव इसी रकम से होता है, मांगे गए मुआवजे से नहीं" },
+      { key: "defect", label: "खराबी / सेवा में कमी का ब्योरा (तारीख और घटनाक्रम के साथ)", type: "textarea", required: true },
+      { key: "claim", label: "आप आयोग से क्या राहत चाहते हैं", type: "textarea", required: true, hint: "जैसे: ₹__ वापस, ₹__ मानसिक कष्ट का मुआवजा, ₹__ केस खर्च, ब्याज" },
+      { key: "docs", label: "संलग्न दस्तावेजों की सूची", type: "textarea", hint: "बिल, वारंटी, पहली शिकायत, नोटिस, डाक रसीद, फोटो आदि; हर एक का नाम लिखें" },
+      { key: "complaintdate", label: "शिकायत दायर करने की तारीख", type: "date", required: true },
+      { key: "delayReason", label: "कारण पैदा होने से 2 साल से देरी हुई हो तो कारण (अन्यथा खाली छोड़ें)", type: "textarea", hint: "धारा 69 में पर्याप्त कारण बताने पर आयोग देरी माफ कर सकता है; यह आयोग के विवेक पर है" },
+    ],
+    templates: {
+      appeal: `सेवा में,
+{{company}}
+
+विषय: उपभोक्ता संरक्षण अधिनियम, 2019 के अंतर्गत नोटिस – {{product}} में दोष/सेवा में कमी
+
+महोदय/महोदया,
+
+मैं {{name}}, निवासी {{address}} (मोबाइल: {{phone}}), आपको यह नोटिस निम्नलिखित तथ्यों के आधार पर भेज रहा/रही हूं:
+
+1. मैंने दिनांक {{buydate}} को {{product}} खरीदा/सेवा ली। बिल/इनवॉइस संख्या: {{bill}}। इसके लिए ₹{{amount}} का भुगतान किया।
+   ऑनलाइन खरीद का प्लेटफॉर्म (यदि लागू): {{platform}}
+
+2. समस्या का विवरण:
+{{problem}}
+
+3. मैंने दिनांक {{firstdate}} को {{firstmode}} से लिखित शिकायत की थी। डाक/शिकायत संदर्भ: {{tracking}}
+   अब तक की स्थिति: {{outcome}}
+   आपकी ओर से आखिरी जवाब/कार्रवाई: {{lastreply}}
+
+4. यह सामान में दोष या सेवा में कमी का मामला है, जो उपभोक्ता संरक्षण अधिनियम, 2019 के अंतर्गत आता है। आपकी लापरवाही से मुझे आर्थिक नुकसान और मानसिक कष्ट हुआ है।
+
+मांग: इस नोटिस के मिलने के {{noticedays}} दिन के भीतर मेरी मांग "{{demand}}" पूरी करें और मुझे लिखित में सूचित करें।
+मांगी गई रकम (वापसी/मुआवजा): ₹{{refund}}
+
+तय समय में समाधान न होने पर मुझे मजबूर होकर जिला उपभोक्ता विवाद प्रतितोषण आयोग में शिकायत दायर करनी पड़ेगी, जिसमें मैं सामान/सेवा की कीमत की वापसी, मुआवजा, ब्याज और केस का खर्च मांगूंगा/मांगूंगी। इसकी सारी जिम्मेदारी आपकी होगी।
+
+संलग्न: (1) बिल/इनवॉइस की कॉपी (2) वारंटी कार्ड (यदि हो) (3) पहली शिकायत और उसकी डाक रसीद/ईमेल (4) अब तक का पत्राचार, फोटो आदि।
+
+स्थान: {{place}}
+दिनांक: {{noticedate}}
+
+भवदीय,
+{{name}}
+{{address}}
+मोबाइल: {{phone}}`,
+      reminder: `सेवा में,
+शिकायत अधिकारी / नोडल अधिकारी (Grievance Officer),
+{{company}}
+{{platform}}
+{{grievance}}
+
+विषय: शिकायत की अनुस्मारक सूचना – {{product}} (बिल संख्या {{bill}}) – शिकायत दिनांक {{firstdate}}
+
+महोदय/महोदया,
+
+मैंने दिनांक {{firstdate}} को आपको {{product}} के संबंध में लिखित शिकायत भेजी थी, पर अभी तक मेरा मामला हल नहीं हुआ है। अब तक की स्थिति: {{outcome}}।
+
+समस्या का सार:
+{{problem}}
+
+उपभोक्ता संरक्षण (ई-कॉमर्स) नियम, 2020 के नियम 4(5) के अनुसार ई-कॉमर्स इकाई का शिकायत अधिकारी शिकायत की प्राप्ति 48 घंटे में स्वीकार करता है और एक महीने के भीतर निवारण करता है। यदि आप ई-कॉमर्स प्लेटफॉर्म/विक्रेता हैं, तो कृपया इसके अनुसार कार्रवाई करें।
+
+मेरी मांग: {{demand}}।
+
+कृपया शिकायत संख्या और की गई कार्रवाई की जानकारी मुझे लिखित में दें। समाधान न होने पर मैं राष्ट्रीय उपभोक्ता हेल्पलाइन (1915 / consumerhelpline.gov.in) और जिला उपभोक्ता आयोग का सहारा लूंगा/लूंगी।
+
+भवदीय,
+{{name}}
+{{address}}
+मोबाइल: {{phone}}
+दिनांक: {{date}}`,
+      secondAppeal: `माननीय जिला उपभोक्ता विवाद प्रतितोषण आयोग,
+{{commission}}
+
+उपभोक्ता शिकायत संख्या ______ / 2026
+
+(उपभोक्ता संरक्षण अधिनियम, 2019 की धारा 35 के अंतर्गत)
+
+शिकायतकर्ता:
+{{name}}, निवासी {{address}}, मोबाइल: {{phone}}
+
+बनाम
+
+विपक्षी पक्षकार:
+{{opposite}}
+
+शिकायत
+
+माननीय महोदय/महोदया,
+
+1. पक्षकार: शिकायतकर्ता ने विपक्षी से {{product}} खरीदा/सेवा ली और उसके लिए ₹{{valuepaid}} का भुगतान किया। शिकायतकर्ता उपभोक्ता संरक्षण अधिनियम, 2019 के अर्थ में "उपभोक्ता" है। सामान/सेवा व्यावसायिक प्रयोजन के लिए नहीं ली गई।
+
+2. अधिकार क्षेत्र: चुकाई गई कीमत ₹{{valuepaid}} जिला आयोग के आर्थिक अधिकार क्षेत्र में है। इस आयोग को शिकायत सुनने का क्षेत्रीय अधिकार भी है, क्योंकि शिकायतकर्ता, विपक्षी का कार्यालय या वाद का कारण इसी क्षेत्र में है।
+
+3. तथ्य: शिकायतकर्ता ने दिनांक {{buydate}} को बिल/इनवॉइस संख्या {{bill}} पर {{product}} प्राप्त किया।
+{{defect}}
+
+4. वाद का कारण: दिनांक {{causedate}} को पैदा हुआ।
+
+5. परिसीमा: यह शिकायत धारा 69 के अंतर्गत निर्धारित दो वर्ष की अवधि के भीतर दायर की जा रही है।
+देरी हो तो कारण (यदि लागू): {{delayReason}}
+
+6. पूर्व पत्राचार: शिकायतकर्ता ने दिनांक {{firstdate}} को विपक्षी को लिखित शिकायत और दिनांक {{noticedate}} को नोटिस भेजा। स्थिति: {{outcome}}।
+
+7. दोष/सेवा में कमी: उपरोक्त तथ्यों से स्पष्ट है कि सामान में दोष है / सेवा में कमी है। यह विपक्षी की कमी और अनुचित व्यापार व्यवहार के अंतर्गत आता है।
+
+प्रार्थना:
+{{claim}}
+
+शिकायतकर्ता यह भी प्रार्थना करता/करती है कि आयोग उचित समझे अन्य राहत भी प्रदान करे।
+
+संलग्न दस्तावेज:
+{{docs}}
+
+सत्यापन: मैं {{name}} सत्यापित करता/करती हूं कि उपरोक्त कथन मेरी जानकारी और विश्वास के अनुसार सत्य हैं।
+
+स्थान: {{place}}
+दिनांक: {{complaintdate}}
+
+शिकायतकर्ता
+{{name}}`,
+    },
+    checklist: [
+      "<strong>पहले सबूत जमा करें:</strong> बिल/इनवॉइस, वारंटी कार्ड, भुगतान का सबूत (UPI/कार्ड/बैंक), खराबी की फोटो-वीडियो, कस्टमर केयर शिकायत नंबर, ईमेल/चैट के स्क्रीनशॉट। असली बिल अपने पास रखें।",
+      "<strong>कदम 1:</strong> मुफ्त शिकायत पत्र दुकान और कंपनी को दें और रसीद लें। स्पीड पोस्ट या रजिस्टर्ड डाक से भेजें; ईमेल भी करें।",
+      "<strong>कदम 2:</strong> समय सीमा (7, 15 या 30 दिन) में हल न हो तो ऊपर का <strong>नोटिस</strong> भेजें। कानूनन उपभोक्ता आयोग में जाने से पहले नोटिस देना जरूरी नहीं है, पर इससे आपकी मांग का लिखित सबूत बनता है। कुछ खास कानूनों (जैसे कैरियर एक्ट, 1865, की धारा 10 का मामला) में पहले नोटिस जरूरी हो सकता है।",
+      "<strong>कदम 3 (ऑनलाइन खरीद):</strong> ई-कॉमर्स प्लेटफॉर्म को शिकायत अधिकारी का नाम और संपर्क दिखाना होता है; नियम 4(5) के अनुसार वह 48 घंटे में शिकायत स्वीकार और एक महीने में निवारण करता है। इसी के लिए दूसरा पत्र है।",
+      "<strong>कदम 4:</strong> <strong>राष्ट्रीय उपभोक्ता हेल्पलाइन (NCH)</strong>: 1915 पर कॉल या WhatsApp 8800001915। यह कंपनी तक शिकायत पहुंचाकर हल कराने की कोशिश करती है; यह अदालत नहीं है।",
+      "<strong>कदम 5:</strong> फिर भी हल न हो तो <strong>जिला उपभोक्ता आयोग</strong> में शिकायत। <a href=\"https://e-jagriti.gov.in/\" target=\"_blank\" rel=\"noopener nofollow\">e-Jagriti</a> पोर्टल से ऑनलाइन दायर हो सकती है; वकील जरूरी नहीं।",
+      "<strong>समय सीमा:</strong> कारण पैदा होने से <strong>2 साल</strong> के भीतर (धारा 69)। पर्याप्त कारण हो तो आयोग देरी माफ कर सकता है, पर इसे पक्का न मानें।",
+      "<strong>कौन सा आयोग:</strong> चुकाई गई कीमत ₹50 लाख तक → जिला; ₹50 लाख से ₹2 करोड़ → राज्य; ₹2 करोड़ से ऊपर → राष्ट्रीय। यह चुकाई गई कीमत से तय होता है, मांगे गए मुआवजे से नहीं।",
+      "<strong>फीस:</strong> ₹5 लाख तक की कीमत पर आयोग में कोई फीस नहीं लगती। उससे ऊपर के लिए e-Jagriti पर मौजूदा फीस देख लें।",
+      "<strong>किसे उपभोक्ता नहीं माना जाता:</strong> जो सामान दोबारा बेचने या व्यावसायिक प्रयोजन से खरीदा गया हो। अपने उपयोग के लिए खरीदे सामान/सेवा पर शिकायत की जा सकती है।",
+      "शिकायत शांत, तथ्यों और तारीखों वाली रखें। असली दस्तावेज अपने पास रखें और कॉपी लगाएं। यह कानूनी सलाह नहीं, एक नमूना है; बड़ी रकम के मामले में वकील से सलाह लें।",
+    ],
+  },
 };
 
-function normalizeKitApplication(application) {
-  const keys = ["name", "address", "phone", "office", "subject", "info", "period", "fee", "place", "date"];
+// Each kit has its own free-form fields (the free letter above the kit box).
+// RTI keeps its original keys and order, so existing payments still match.
+const KIT_APP = {
+  rti: { keys: ["name", "address", "phone", "office", "subject", "info", "period", "fee", "place", "date"], required: ["name", "address", "office", "subject", "info"], need: "Complete the free RTI application first" },
+  consumer: { keys: ["company", "name", "address", "phone", "product", "bill", "buydate", "amount", "problem", "demand", "days", "place", "date"], required: ["company", "name", "address", "product", "buydate", "problem"], need: "Complete the free consumer complaint first" },
+};
+function normalizeKitApplication(application, kit = "rti") {
   const out = {};
-  for (const key of keys) out[key] = String(application?.[key] || "").trim().slice(0, 5000);
+  for (const key of (KIT_APP[kit] || KIT_APP.rti).keys) out[key] = String(application?.[key] || "").trim().slice(0, 5000);
   return out;
 }
-function validKitApplication(application) {
-  const app = normalizeKitApplication(application);
-  return ["name", "address", "office", "subject", "info"].every((key) => app[key].length > 0);
+function validKitApplication(application, kit = "rti") {
+  const app = normalizeKitApplication(application, kit);
+  return (KIT_APP[kit] || KIT_APP.rti).required.every((key) => app[key].length > 0);
 }
-async function kitApplicationHash(application) {
-  const app = normalizeKitApplication(application);
+async function kitApplicationHash(application, kit = "rti") {
+  const app = normalizeKitApplication(application, kit);
   const bytes = new TextEncoder().encode(JSON.stringify(app));
   const digest = await crypto.subtle.digest("SHA-256", bytes);
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
@@ -712,10 +886,10 @@ async function kitSourceHash(source) {
 
 async function createKitOrder(env, kit, application, source) {
   if (!KITS[kit]) throw new Error("Invalid kit");
-  if (!validKitApplication(application)) throw new Error("Complete the free RTI application first");
+  if (!validKitApplication(application, kit)) throw new Error(KIT_APP[kit].need);
   const pageSource = String(source || "").trim().slice(0, 200);
-  if (!pageSource) throw new Error("Missing RTI page source");
-  const applicationHash = await kitApplicationHash(application);
+  if (!pageSource) throw new Error("Missing page source");
+  const applicationHash = await kitApplicationHash(application, kit);
   const sourceHash = await kitSourceHash(pageSource);
   const receipt = `KIT_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
   const result = await razorpayRequest("/orders", env, {
@@ -737,7 +911,7 @@ async function createKitOrder(env, kit, application, source) {
 
 async function verifyKitPayment(body, env) {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature, kit, application, source, recovery_payload } = body || {};
-  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !KITS[kit] || !validKitApplication(application)) {
+  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !KITS[kit] || !validKitApplication(application, kit)) {
     return { success: false, status: 400, error: "Required payment details are missing" };
   }
   const expected = await generateRazorpaySignature(razorpay_order_id, razorpay_payment_id, keySecret(env));
@@ -747,7 +921,7 @@ async function verifyKitPayment(body, env) {
   const orderResult = await razorpayRequest(`/orders/${encodeURIComponent(razorpay_order_id)}`, env, { method: "GET" });
   if (!orderResult.response.ok) return { success: false, status: 400, error: "Unable to verify Razorpay order" };
   const order = orderResult.data;
-  const applicationHash = await kitApplicationHash(application);
+  const applicationHash = await kitApplicationHash(application, kit);
   const pageSource = String(source || "").trim().slice(0, 200);
   // New orders are bound to both the exact free RTI application and its page. Older paid
   // orders did not store an application hash, so retain their re-open access
@@ -756,7 +930,7 @@ async function verifyKitPayment(body, env) {
   const savedSourceHash = order.notes?.source_hash;
   const sourceHash = pageSource ? await kitSourceHash(pageSource) : "";
   if (order.amount !== kitPrice(env) || order.currency !== getCurrency(env) || order.notes?.kit !== kit || (savedApplicationHash && savedApplicationHash !== applicationHash) || (savedSourceHash && savedSourceHash !== sourceHash)) {
-    return { success: false, status: 400, error: "Order does not match this kit or RTI application" };
+    return { success: false, status: 400, error: "Order does not match this kit or application" };
   }
   const paymentResult = await razorpayRequest(`/payments/${encodeURIComponent(razorpay_payment_id)}`, env, { method: "GET" });
   if (!paymentResult.response.ok) return { success: false, status: 400, error: "Unable to verify payment" };
@@ -778,7 +952,7 @@ async function verifyKitPayment(body, env) {
     try {
       recovery = await createRecoveryRecord({
         paymentId: razorpay_payment_id, kit, source: pageSource,
-        payload: { application: normalizeKitApplication(application), drafts: recovery_payload && typeof recovery_payload === "object" ? recovery_payload : {} }
+        payload: { application: normalizeKitApplication(application, kit), drafts: recovery_payload && typeof recovery_payload === "object" ? recovery_payload : {} }
       }, env);
     } catch {}
   }
@@ -843,17 +1017,18 @@ async function createRecoveryRecord({ paymentId, kit, source, payload }, env) {
 async function saveRecoveryKit(body, env) {
   const code = String(body?.recovery_code || "").trim().toUpperCase();
   const application = body?.application;
+  const kit = body?.kit && KITS[body.kit] ? body.kit : "rti";
   const drafts = body?.drafts && typeof body.drafts === "object" ? body.drafts : {};
-  if (!/^[A-HJ-NP-Z2-9]{5}(?:-[A-HJ-NP-Z2-9]{5}){3}$/.test(code) || !validKitApplication(application)) {
+  if (!/^[A-HJ-NP-Z2-9]{5}(?:-[A-HJ-NP-Z2-9]{5}){3}$/.test(code) || !validKitApplication(application, kit)) {
     return { success: false, status: 400, error: "Invalid recovery details" };
   }
-  const payload = { application: normalizeKitApplication(application), drafts };
+  const payload = { application: normalizeKitApplication(application, kit), drafts };
   const serialized = JSON.stringify(payload);
   if (serialized.length > 30000) return { success: false, status: 413, error: "Recovery data is too large" };
   const encrypted = await encryptRecovery(payload, env);
   const hash = await recoveryDigest(code);
   const response = await supabaseRecoveryRequest(
-    "rti_kit_recovery?recovery_code_hash=eq." + hash + "&revoked_at=is.null&expires_at=gt." + encodeURIComponent(new Date().toISOString()),
+    "rti_kit_recovery?recovery_code_hash=eq." + hash + "&kit=eq." + kit + "&revoked_at=is.null&expires_at=gt." + encodeURIComponent(new Date().toISOString()),
     env,
     { method: "PATCH", body: JSON.stringify({ payload_ciphertext: encrypted.payload_ciphertext, payload_iv: encrypted.payload_iv, updated_at: new Date().toISOString() }) }
   );
@@ -925,7 +1100,7 @@ export default {
         const order = await createKitOrder(env, body.kit, body.application, body.source);
         return json({ success: true, key_id: keyId(env), order_id: order.id, amount: kitPrice(env), currency: getCurrency(env) }, 200, headers);
       } catch (error) {
-        const bad = error.message === "Invalid kit" || error.message === "Complete the free RTI application first";
+        const bad = error.message === "Invalid kit" || Object.values(KIT_APP).some((k) => k.need === error.message);
         return json({ success: false, error: bad ? error.message : "Unable to create payment order" }, bad ? 400 : 502, headers);
       }
     }

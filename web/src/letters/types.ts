@@ -43,7 +43,7 @@ export type Letter = {
   related: string[]; // site paths of guides / tools this letter belongs to
   // Optional "related tools and services" grid with explicit titles; only
   // shown when present, so older formats render exactly as before.
-  kit?: "rti"; // paid add-on (Rs 20) shown under the builder; see components/LetterKit.astro
+  kit?: "rti" | "consumer"; // paid add-on (Rs 20) shown under the builder; see components/LetterKit.astro (rti) and ConsumerKit.astro (consumer)
     tools?: { href: string; emoji: string; title: string; text: string }[];
   faq: { q: string; a: string }[];
   published: string;

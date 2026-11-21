@@ -20,6 +20,7 @@ import type { Letter } from "../types";
 export const consumerComplaintLetter: Letter = {
   slug: "consumer-complaint-letter",
   category: "complaint",
+  kit: "consumer",
   emoji: "🧾",
   title: "Consumer Complaint Letter in Hindi 2026: खराब सामान शिकायत पत्र",
   description: "खराब सामान या सेवा में कमी पर दुकान/कंपनी को शिकायत पत्र (हिंदी/English)। हल न हो तो हेल्पलाइन 1915 और उपभोक्ता आयोग (e-Jagriti) का रास्ता।",

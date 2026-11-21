@@ -1,0 +1,371 @@
+---
+// Paid add-on under the consumer complaint letter builder (Rs 20, Razorpay).
+// The free complaint letter stays free. The kit adds a legal notice, a
+// grievance-officer / e-commerce escalation letter, a District Commission
+// complaint draft (s.35 Consumer Protection Act 2019) and a step-by-step
+// checklist. The kit text is returned by the worker only after the payment is
+// verified, so it is not in this page's source. Same flow as LetterKit (RTI).
+import type { Letter } from "../letters/types";
+interface Props { l: Letter }
+const { l } = Astro.props;
+const WORKER = "https://sarkarisewa-rc-challan-api.khairkar92.workers.dev";
+---
+<section class="section kit" id="kit" data-kit={l.kit} data-src={l.slug} data-worker={WORKER} aria-labelledby="kit-title">
+  <h2 id="kit-title">📦 उपभोक्ता शिकायत पूरा किट – सिर्फ ₹20</h2>
+  <p class="kit-lead">पहले ऊपर का मुफ्त शिकायत पत्र पूरा करें। उसी की जानकारी से यह किट अपने आप भरेगा। दुकान/कंपनी न सुने तो अगला कदम क्या है, कानून के हिसाब से वह भी मिलेगा:</p>
+  <p class="kit-prerequisite" role="status">🔒 किट खरीदने से पहले ऊपर के मुफ्त फॉर्म में दुकान/कंपनी, आपका नाम-पता, सामान, खरीद की तारीख और समस्या भरना जरूरी है। आपकी जानकारी मुफ्त फॉर्म में इसी डिवाइस पर रहती है। किट खरीदने पर, किट बनाने और दूसरे फोन पर 30 दिन तक खोलने (Recovery Code) के लिए यह जानकारी हमारे सर्वर पर भेजी जाती है और एन्क्रिप्ट करके <strong>30 दिन</strong> तक रखी जाती है, फिर मिटा दी जाती है। हटवाने के लिए <a href="mailto:sarkarisewaindia@gmail.com">sarkarisewaindia@gmail.com</a> पर लिखें; विवरण <a href="/privacy-policy.html">गोपनीयता नीति</a> में है।</p>
+  <ul class="checklist">
+    <li><strong>कानूनी नोटिस</strong> – आपकी जानकारी अपने आप भरी हुई; 7/15/30 दिन का समय</li>
+    <li><strong>शिकायत अधिकारी / ई-कॉमर्स पत्र</strong> – ऑनलाइन खरीद पर नियम 4(5) के हवाले से</li>
+    <li><strong>जिला उपभोक्ता आयोग का शिकायत मसौदा</strong> (धारा 35) – अधिकार क्षेत्र, परिसीमा (2 साल), प्रार्थना और संलग्न सूची के साथ</li>
+    <li><strong>पूरा रास्ता</strong> – हेल्पलाइन 1915, e-Jagriti, कौन सा आयोग, फीस, समय सीमा</li>
+    <li>प्रिंट / A4 PDF और WhatsApp पर भेजने की सुविधा</li>
+  </ul>
+  <div class="kit-recovery">
+    <h3>पहले खरीदी हुई किट वापस खोलें</h3>
+    <label for="kit-recovery-code">Recovery Code</label>
+    <input id="kit-recovery-code" type="text" maxlength="23" autocomplete="off" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" aria-describedby="kit-recovery-help">
+    <button type="button" class="cta secondary" data-kit-recover>Recovery Code से खोलें</button>
+    <p id="kit-recovery-help" class="kit-note">पहले खरीदी हुई किट का सुरक्षित रखा गया कोड यहाँ डालें।</p>
+  </div>
+  <div class="kit-locked">
+    <button type="button" class="cta" data-kit-pay>₹20 देकर किट खोलें</button>
+    <p class="kit-note">भुगतान Razorpay से (UPI, कार्ड, नेट बैंकिंग)। यह डिजिटल सामग्री है और भुगतान के बाद तुरंत खुलती है। भुगतान हो जाए पर किट न खुले तो <a href="/contact.html">हमें बताएं</a>। यह कानूनी सलाह नहीं, एक नमूना है; बड़ी रकम के मामले में वकील से सलाह लें।</p>
+  </div>
+  <div class="kit-open" hidden>
+    <div class="callout ok"><p>✅ किट खुल गया।</p></div>
+    <div class="kit-recovery-result" hidden>
+      <strong>आपका Recovery Code</strong>
+      <p class="kit-recovery-code"></p>
+      <button type="button" class="cta secondary" data-kit-copy-code>📋 कोड कॉपी करें</button>
+      <p class="kit-note">इसे सुरक्षित रखें। दूसरे डिवाइस पर किट खोलने के लिए इसकी जरूरत होगी। यह कोड दोबारा नहीं दिखाया जाएगा, इसलिए अभी कॉपी करें या स्क्रीनशॉट लें।</p>
+    </div>
+    <h3>1. नोटिस की जानकारी भरें</h3>
+    <form class="lt-form kit-form" autocomplete="on"></form>
+    <h3>2. कानूनी नोटिस</h3>
+    <div class="lt-paper kit-paper" data-paper="appeal"></div>
+    <div class="lt-actions"><button type="button" class="cta" data-kit-act="print" data-for="appeal">🖨️ प्रिंट / PDF</button><button type="button" class="cta secondary" data-kit-act="wa" data-for="appeal">WhatsApp</button><button type="button" class="cta secondary" data-kit-act="copy" data-for="appeal">कॉपी</button></div>
+    <h3>3. शिकायत अधिकारी / ई-कॉमर्स को पत्र</h3>
+    <div class="lt-paper kit-paper" data-paper="reminder"></div>
+    <div class="lt-actions"><button type="button" class="cta" data-kit-act="print" data-for="reminder">🖨️ प्रिंट / PDF</button><button type="button" class="cta secondary" data-kit-act="wa" data-for="reminder">WhatsApp</button><button type="button" class="cta secondary" data-kit-act="copy" data-for="reminder">कॉपी</button></div>
+    <h3>4. आयोग में शिकायत की जानकारी</h3>
+    <p class="kit-note">आयोग का चुनाव चुकाई गई कीमत से होता है: ₹50 लाख तक जिला आयोग, ₹50 लाख से ₹2 करोड़ राज्य आयोग, उससे ऊपर राष्ट्रीय आयोग। यह मसौदा जिला आयोग के लिए है। शिकायत कारण पैदा होने से 2 साल के भीतर करें।</p>
+    <form class="lt-form kit-second-form" autocomplete="on"></form>
+    <h3>5. जिला उपभोक्ता आयोग में शिकायत (धारा 35)</h3>
+    <div class="lt-paper kit-paper" data-paper="secondAppeal"></div>
+    <div class="lt-actions"><button type="button" class="cta" data-kit-act="print" data-for="secondAppeal">🖨️ प्रिंट / PDF</button><button type="button" class="cta secondary" data-kit-act="wa" data-for="secondAppeal">WhatsApp</button><button type="button" class="cta secondary" data-kit-act="copy" data-for="secondAppeal">कॉपी</button></div>
+    <h3>6. आगे क्या करें</h3>
+    <ul class="checklist kit-check"></ul>
+  </div>
+  <p class="lt-msg kit-msg" role="status"></p>
+  <script is:inline src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+</section>
+
+<script is:inline>
+(function () {
+  var root = document.getElementById("kit"); if (!root) return;
+  var W = root.dataset.worker, KIT = root.dataset.kit, SRC = "ss_letter_" + root.dataset.src, SAVE = "ss_kit_" + KIT + "_" + root.dataset.src;
+  var locked = root.querySelector(".kit-locked"), open = root.querySelector(".kit-open"), msg = root.querySelector(".kit-msg");
+  var payBtn = root.querySelector("[data-kit-pay]"), form = root.querySelector(".kit-form"), secondForm = root.querySelector(".kit-second-form");
+  var recoveryInput = root.querySelector("#kit-recovery-code"), recoveryBtn = root.querySelector("[data-kit-recover]");
+  var data = null, price = 20, activeRecoveryCode = "", cloudSaveTimer = null;
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var ev = function (n, p) { try { if (window.gtag) gtag("event", n, p || {}); } catch (e) {} };
+  var today = function () { var d = new Date(); return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear(); };
+  function parseDate(value) {
+    var s = String(value || "").trim(), m, year, month, day, date;
+    if ((m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s))) {
+      year = Number(m[1]); month = Number(m[2]); day = Number(m[3]);
+    } else if ((m = /^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/.exec(s))) {
+      day = Number(m[1]); month = Number(m[2]); year = Number(m[3]);
+    } else return null;
+    date = new Date(year, month - 1, day);
+    if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null;
+    return date;
+  }
+  function addDays(date, days) { var d = new Date(date.getFullYear(), date.getMonth(), date.getDate()); d.setDate(d.getDate() + days); return d; }
+  function formatDate(date) { return ("0" + date.getDate()).slice(-2) + "/" + ("0" + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear(); }
+  var main = {};
+  function readMain() {
+    try { main = JSON.parse(localStorage.getItem(SRC) || "{}"); } catch (e) { main = {}; }
+    return main;
+  }
+  readMain();
+  function completeMain(app) {
+    return ["company", "name", "address", "product", "buydate", "problem"].every(function (k) { return String(app[k] || "").trim().length > 0; });
+  }
+  function post(path, body) { return fetch(W + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then(function (r) { return r.json(); }); }
+
+  function values() {
+    var v = {};
+    ["company", "name", "address", "phone", "product", "bill", "buydate", "amount", "problem", "demand", "days", "place"].forEach(function (k) { v[k] = main[k] || ""; });
+    v.date = main.date || today();
+    data.appealFields.forEach(function (f) { var el = form.elements[f.key]; v[f.key] = el ? el.value.trim() : ""; });
+    (data.secondAppealFields || []).forEach(function (f) { var el = secondForm.elements[f.key]; v[f.key] = el ? el.value.trim() : ""; });
+    ["firstdate", "noticedate", "causedate", "complaintdate", "buydate"].forEach(function (k) {
+      var d = parseDate(v[k]); if (d) v[k] = formatDate(d);
+    });
+    if (!v.valuepaid && main.amount) v.valuepaid = main.amount;
+    return v;
+  }
+  function fill(tpl, v) {
+    var lines = tpl.split("\n").filter(function (line) {
+      var keys = (line.match(/\{\{(\w+)\}\}/g) || []).map(function (m) { return m.slice(2, -2); });
+      return !keys.length || keys.some(function (k) { return v[k]; });
+    }).join("\n");
+    return lines;
+  }
+  function text(which, html) {
+    var v = values();
+    return fill(data.templates[which], v).replace(/\{\{(\w+)\}\}/g, function (_, k) {
+      var x = v[k]; if (html) return x ? esc(x) : '<span class="lt-blank">__________</span>'; return x || "__________";
+    });
+  }
+  function scheduleCloudSave(appealDraft, secondDraft) {
+    if (!activeRecoveryCode) return;
+    if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
+    cloudSaveTimer = setTimeout(function () {
+      post("/kit/save", {
+        recovery_code: activeRecoveryCode,
+        kit: KIT, application: main,
+        drafts: { appeal: appealDraft, secondAppeal: secondDraft }
+      }).catch(function () {});
+    }, 1200);
+  }
+  function render() {
+    ["appeal", "reminder", "secondAppeal"].forEach(function (w) {
+      var el = root.querySelector('[data-paper="' + w + '"]');
+      el.innerHTML = text(w, true).split(/\n{2,}/).map(function (p) { return "<p>" + p.replace(/\n/g, "<br>") + "</p>"; }).join("");
+    });
+    try {
+      var s = {}, s2 = {};
+      data.appealFields.forEach(function (f) { s[f.key] = form.elements[f.key].value; });
+      (data.secondAppealFields || []).forEach(function (f) { s2[f.key] = secondForm.elements[f.key].value; });
+      localStorage.setItem(SAVE + "_form", JSON.stringify(s));
+      localStorage.setItem(SAVE + "_second_form", JSON.stringify(s2));
+      scheduleCloudSave(s, s2);
+    } catch (e) {}
+  }
+  function buildFields(target, fields, storageKey) {
+    target.innerHTML = "";
+    fields.forEach(function (f) {
+      var lab = document.createElement("label"); var sp = document.createElement("span"); sp.textContent = f.label + (f.required ? " *" : ""); lab.appendChild(sp);
+      var el;
+      if (f.type === "select") { el = document.createElement("select"); var choose = document.createElement("option"); choose.value = ""; choose.textContent = "कृपया चुनें"; el.appendChild(choose); f.options.forEach(function (o) { var op = document.createElement("option"); op.value = o; op.textContent = o; el.appendChild(op); }); }
+      else if (f.type === "textarea") { el = document.createElement("textarea"); el.rows = 3; }
+      else { el = document.createElement("input"); el.type = f.type === "date" ? "date" : "text"; }
+      el.name = f.key; if (f.required) { el.required = true; el.setAttribute("aria-required", "true"); } lab.appendChild(el);
+      if (f.hint) { var sm = document.createElement("small"); sm.textContent = f.hint; lab.appendChild(sm); }
+      target.appendChild(lab);
+    });
+    try { var savedFields = JSON.parse(localStorage.getItem(storageKey) || "{}"); Object.keys(savedFields).forEach(function (k) { if (target.elements[k] && savedFields[k]) target.elements[k].value = savedFields[k]; }); } catch (e) {}
+  }
+  function build() {
+    buildFields(form, data.appealFields, SAVE + "_form");
+    buildFields(secondForm, data.secondAppealFields || [], SAVE + "_second_form");
+    var vp = secondForm.elements.valuepaid; if (vp && main.amount && !vp.value) vp.value = main.amount;
+    var opp = secondForm.elements.opposite; if (opp && main.company && !opp.value) opp.value = main.company;
+    var ck = root.querySelector(".kit-check"); ck.innerHTML = data.checklist.map(function (x) { return "<li>" + x + "</li>"; }).join("");
+    form.addEventListener("input", render); form.addEventListener("change", render);
+    secondForm.addEventListener("input", render); secondForm.addEventListener("change", render);
+    render();
+  }
+  function unlock(d) {
+    data = d; locked.hidden = true; open.hidden = false; build();
+    if (d.recovery_code) {
+      var panel = root.querySelector(".kit-recovery-result");
+      panel.hidden = false;
+      panel.querySelector(".kit-recovery-code").textContent = d.recovery_code;
+      var cb = panel.querySelector("[data-kit-copy-code]");
+      cb.onclick = function () {
+        (navigator.clipboard ? navigator.clipboard.writeText(d.recovery_code) : Promise.reject()).then(function () { msg.textContent = "✅ कोड कॉपी हो गया। इसे WhatsApp पर खुद को भेज लें या स्क्रीनशॉट लें।"; }, function () { msg.textContent = "कॉपी नहीं हो सका; कोड का स्क्रीनशॉट ले लें।"; });
+      };
+    }
+  }
+  recoveryBtn.addEventListener("click", function () {
+    var code = String(recoveryInput.value || "").trim().toUpperCase();
+    if (!code) { msg.textContent = "Recovery Code डालें।"; recoveryInput.focus(); return; }
+    recoveryBtn.disabled = true; msg.textContent = "आपका डेटा खोजा जा रहा है…";
+    post("/kit/recover", { recovery_code: code }).then(function (r) {
+      if (!r || !r.success) throw new Error(r && r.error || "Recovery नहीं हो सकी।");
+      var payload = r.data.payload || {};
+      main = payload.application || {};
+      activeRecoveryCode = code;
+      try {
+        if (payload.drafts && payload.drafts.appeal) localStorage.setItem(SAVE + "_form", JSON.stringify(payload.drafts.appeal));
+        if (payload.drafts && payload.drafts.secondAppeal) localStorage.setItem(SAVE + "_second_form", JSON.stringify(payload.drafts.secondAppeal));
+        localStorage.setItem(SRC, JSON.stringify(main));
+        localStorage.setItem(SAVE, JSON.stringify({ application: main, source: root.dataset.src, recovered: true }));
+      } catch (e) {}
+      msg.textContent = "✅ Recovery सफल रही। आपकी किट खुल गई।";
+      unlock(r.data);
+    }).catch(function () {
+      msg.textContent = "Recovery नहीं हो सकी। कोड जाँचें और दोबारा कोशिश करें।";
+    }).finally(function () { recoveryBtn.disabled = false; });
+  });
+
+  function validateFields(fields, target, label) {
+    var required = fields.filter(function (f) { return f.required; });
+    for (var i = 0; i < required.length; i++) {
+      var field = target.elements[required[i].key];
+      if (field && !String(field.value || "").trim()) {
+        msg.textContent = label + " तैयार करने से पहले यह जानकारी भरें: " + required[i].label;
+        field.focus();
+        if (field.reportValidity) field.reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  root.querySelectorAll("[data-kit-act]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var w = b.dataset.for, act = b.dataset.kitAct, paper = root.querySelector('[data-paper="' + w + '"]');
+      if (w === "appeal") {
+        if (!validateFields(data.appealFields, form, "नोटिस")) return;
+        var firstDate = parseDate(form.elements.firstdate && form.elements.firstdate.value);
+        var noticeDate = parseDate(form.elements.noticedate && form.elements.noticedate.value);
+        if (!firstDate || !noticeDate) { msg.textContent = "पहली शिकायत और नोटिस की सही तारीख भरें।"; (form.elements.firstdate || form.elements.noticedate).focus(); return; }
+        if (noticeDate < firstDate) { msg.textContent = "नोटिस की तारीख पहली शिकायत की तारीख से पहले नहीं हो सकती।"; form.elements.noticedate.focus(); return; }
+      }
+      if (w === "reminder") {
+        if (!validateFields(data.appealFields.filter(function (f) { return f.key === "firstdate" || f.key === "outcome"; }), form, "शिकायत अधिकारी का पत्र")) return;
+      }
+      if (w === "secondAppeal") {
+        if (!validateFields(data.secondAppealFields || [], secondForm, "आयोग की शिकायत")) return;
+        var cause = parseDate(secondForm.elements.causedate && secondForm.elements.causedate.value);
+        var filedOn = parseDate(secondForm.elements.complaintdate && secondForm.elements.complaintdate.value);
+        if (!cause || !filedOn) { msg.textContent = "शिकायत का कारण और दायर करने की तारीख सही भरें।"; (secondForm.elements.causedate || secondForm.elements.complaintdate).focus(); return; }
+        if (filedOn < cause) { msg.textContent = "शिकायत दायर करने की तारीख, कारण पैदा होने की तारीख से पहले नहीं हो सकती।"; secondForm.elements.complaintdate.focus(); return; }
+        var limit = new Date(cause.getFullYear() + 2, cause.getMonth(), cause.getDate());
+        if (filedOn > limit && !String(secondForm.elements.delayReason && secondForm.elements.delayReason.value || "").trim()) {
+          msg.textContent = "कारण पैदा होने से 2 साल (धारा 69) बीत चुके हैं। देरी का वास्तविक कारण भरें; देरी माफ करना आयोग के विवेक पर है।";
+          if (secondForm.elements.delayReason) secondForm.elements.delayReason.focus();
+          return;
+        }
+        var paid = Number(String(secondForm.elements.valuepaid.value).replace(/[^0-9.]/g, ""));
+        if (paid > 5000000) {
+          msg.textContent = "चुकाई गई कीमत ₹50 लाख से ऊपर है। ऐसे मामले राज्य या राष्ट्रीय आयोग में जाते हैं, यह मसौदा जिला आयोग के लिए है। वकील से सलाह लें।";
+          secondForm.elements.valuepaid.focus();
+          return;
+        }
+      }
+      msg.textContent = "";
+      ev("kit_" + act, { kit: KIT, part: w });
+      if (act === "print") { document.body.classList.add("lt-printing"); paper.classList.add("lt-print-me"); window.print(); setTimeout(function () { document.body.classList.remove("lt-printing"); paper.classList.remove("lt-print-me"); }, 500); }
+      else if (act === "wa") window.open("https://wa.me/?text=" + encodeURIComponent(text(w, false)), "_blank", "noopener");
+      else (navigator.clipboard ? navigator.clipboard.writeText(text(w, false)) : Promise.reject()).then(function () { msg.textContent = "✅ कॉपी हो गया।"; }, function () { msg.textContent = "कॉपी नहीं हो सका, पत्र चुनकर कॉपी करें।"; });
+    });
+  });
+
+  // Returning buyer: the same verified payment re-opens the kit on this device.
+  try {
+    var saved = JSON.parse(localStorage.getItem(SAVE) || "null");
+    if (saved && saved.source === root.dataset.src && saved.razorpay_order_id && saved.razorpay_payment_id && saved.razorpay_signature) {
+      var savedApplication = saved.application || readMain();
+      if (completeMain(savedApplication)) {
+        post("/kit/verify", Object.assign({ kit: KIT, application: savedApplication }, saved)).then(function (r) {
+          if (r && r.success) { main = savedApplication; unlock(r.data); }
+        }).catch(function () {});
+      }
+    }
+  } catch (e) {}
+
+  payBtn.addEventListener("click", function () {
+    var application = readMain();
+    if (!completeMain(application)) {
+      msg.textContent = "पहले ऊपर मुफ्त फॉर्म में दुकान/कंपनी, नाम, पता, सामान, खरीद की तारीख और समस्या भरें। फिर ₹20 किट खोलें।";
+      var builder = document.querySelector(".lt-form");
+      if (builder) builder.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    if (!window.Razorpay) { msg.textContent = "भुगतान का पेज लोड नहीं हुआ। पेज रीफ्रेश करके दोबारा कोशिश करें।"; return; }
+    payBtn.disabled = true; msg.textContent = "भुगतान शुरू हो रहा है…";
+    var item = [{ item_id: "consumer_kit", item_name: "उपभोक्ता शिकायत पूरा किट", price: price, quantity: 1 }];
+    post("/kit/create-order", { kit: KIT, application: application, source: root.dataset.src }).then(function (o) {
+      if (!o.success) throw new Error(o.error || "order");
+      ev("begin_checkout", { value: price, currency: "INR", items: item });
+      var rz = new Razorpay({
+        key: o.key_id, amount: o.amount, currency: o.currency, order_id: o.order_id,
+        name: "SarkariSewa India", description: "उपभोक्ता शिकायत पूरा किट",
+        modal: { ondismiss: function () { ev("checkout_cancel", { kit: KIT }); payBtn.disabled = false; msg.textContent = ""; } },
+        handler: function (p) {
+          msg.textContent = "भुगतान की जांच हो रही है…";
+          var body = { razorpay_order_id: p.razorpay_order_id, razorpay_payment_id: p.razorpay_payment_id, razorpay_signature: p.razorpay_signature, application: application, source: root.dataset.src };
+          post("/kit/verify", Object.assign({ kit: KIT }, body)).then(function (r) {
+            if (!r.success) throw new Error(r.error || "verify");
+            main = application;
+            activeRecoveryCode = r.data.recovery_code || "";
+            try { body.source = root.dataset.src; localStorage.setItem(SAVE, JSON.stringify(body)); } catch (e) {}
+            ev("purchase", { transaction_id: p.razorpay_payment_id, value: price, currency: "INR", items: item });
+            msg.textContent = ""; unlock(r.data); open.scrollIntoView({ behavior: "smooth", block: "start" });
+          }).catch(function () { payBtn.disabled = false; msg.textContent = "भुगतान हुआ पर किट नहीं खुला। अपना भुगतान ID " + p.razorpay_payment_id + " लेकर हमें बताएं, हम तुरंत ठीक करेंगे।"; });
+        }
+      });
+      rz.on("payment.failed", function () { ev("checkout_fail", { kit: KIT }); payBtn.disabled = false; msg.textContent = "भुगतान पूरा नहीं हुआ या बैंक से पुष्टि नहीं मिली। दोबारा भुगतान करने से पहले अपने बैंक/UPI ऐप में स्थिति जाँचें। राशि कट गई हो तो दोबारा भुगतान न करें; भुगतान विवरण लेकर हमें संपर्क करें।"; });
+      rz.open();
+    }).catch(function () { payBtn.disabled = false; msg.textContent = "अभी भुगतान शुरू नहीं हो सका। थोड़ी देर बाद कोशिश करें।"; });
+  });
+  ev("kit_view", { kit: KIT });
+})();
+</script>
+
+<style is:global>
+.kit { border: 1px solid var(--c-line); border-radius: 12px; padding: 16px; background: var(--c-bg-soft, rgba(29,78,216,.04)); }
+.kit h3 { margin: 18px 0 8px; font-size: 1.05rem; }
+.kit-lead { margin: 0 0 8px; }
+.kit-prerequisite { border-left: 3px solid var(--c-primary, #1d4ed8); padding: 9px 12px; margin: 10px 0; background: var(--c-bg, #fff); border-radius: 6px; font-size: .9rem; }
+.kit-locked { margin-top: 10px; }
+.kit-locked .cta { display: inline-block; }
+.kit-note { color: var(--c-muted); font-size: .82rem; margin: 8px 0 0; }
+.kit [hidden] { display: none !important; }
+.kit-form { margin-bottom: 14px; }
+.kit-recovery { margin: 14px 0; padding: 12px; border: 1px dashed var(--c-line); border-radius: 8px; }
+.kit-recovery input { display: block; width: 100%; margin: 7px 0; padding: 10px; border: 1px solid var(--c-line); border-radius: 6px; background: var(--c-bg, #fff); color: inherit; }
+.kit-recovery-result { margin: 12px 0; padding: 12px; border: 1px solid var(--c-primary, #1d4ed8); border-radius: 8px; overflow-wrap: anywhere; }
+.kit-recovery-code { font-weight: 800; letter-spacing: .06em; font-size: 1.15rem; }
+
+/* Keep paid consumer-kit documents clean when the user prints or saves them as PDF. */
+@media print {
+  body.lt-printing .kit .kit-paper.lt-print-me {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #fff !important;
+    color: #111 !important;
+    font-family: "Noto Sans Devanagari", "Nirmala UI", "Mangal", sans-serif;
+    font-size: 12pt;
+    line-height: 1.7;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  body.lt-printing .kit .kit-paper.lt-print-me::before {
+    display: block;
+    margin: 0 0 18pt;
+    padding: 0 0 8pt;
+    border-bottom: 1px solid #777;
+    font-size: 10pt;
+    font-weight: 700;
+    color: #333;
+  }
+  body.lt-printing .kit .kit-paper[data-paper="appeal"].lt-print-me::before { content: "SarkariSewa India | उपभोक्ता कानूनी नोटिस"; }
+  body.lt-printing .kit .kit-paper[data-paper="reminder"].lt-print-me::before { content: "SarkariSewa India | शिकायत अधिकारी को पत्र"; }
+  body.lt-printing .kit .kit-paper[data-paper="secondAppeal"].lt-print-me::before { content: "SarkariSewa India | जिला आयोग शिकायत मसौदा"; }
+  body.lt-printing .kit .kit-paper.lt-print-me p {
+    margin: 0 0 11pt;
+    orphans: 3;
+    widows: 3;
+  }
+  body.lt-printing .kit .kit-paper.lt-print-me .lt-blank { color: #111; }
+}
+</style>
