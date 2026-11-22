@@ -59,8 +59,10 @@
   (async function checkExisting() {
     const client = await getSupabaseClient();
     if (!client) return;
-    const { data } = await client.auth.getSession();
-    if (data && data.session) window.location.href = "dashboard.html";
+    const { data, error } = await client.auth.getSession();
+    if (!error && data?.session?.user?.app_metadata?.role === "admin") {
+      window.location.href = "dashboard.html";
+    }
   })();
 
   form.addEventListener("submit", async function (e) {
@@ -79,10 +81,20 @@
     submitBtn.disabled = true;
     submitBtn.textContent = "Logging in…";
 
-    const { error } = await client.auth.signInWithPassword({ email, password });
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
 
     if (error) {
       errorEl.textContent = "Incorrect email or password.";
+      errorEl.style.display = "block";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Log in";
+      return;
+    }
+
+    // Admin privileges must come from trusted Supabase app_metadata.
+    if (data?.user?.app_metadata?.role !== "admin") {
+      await client.auth.signOut();
+      errorEl.textContent = "This account is not authorized for admin access.";
       errorEl.style.display = "block";
       submitBtn.disabled = false;
       submitBtn.textContent = "Log in";
