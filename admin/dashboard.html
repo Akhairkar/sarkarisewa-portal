@@ -28,6 +28,7 @@ a.ov-stat{text-decoration:none;color:inherit}
 .data-table th{color:var(--admin-text-muted);font-size:.74rem;text-transform:uppercase}
 @media(max-width:900px){.ov-grid{grid-template-columns:repeat(2,1fr)}.ov-links{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.ov-links{grid-template-columns:1fr}}
+.dash-analytics-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}.dash-muted{color:var(--admin-text-muted);font-size:.8rem;margin:5px 0}.dash-insight-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.dash-insight-grid>div{min-width:0;padding:14px;border:1px solid var(--admin-border);border-radius:12px;background:var(--admin-bg-subtle)}.dash-insight-grid h4{margin:0 0 12px;font-size:.9rem;color:var(--admin-text-main)}.dash-rank-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--admin-border);font-size:.8rem}.dash-rank-row:last-child{border-bottom:0}.dash-rank-name{overflow-wrap:anywhere;color:var(--admin-text-sub)}.dash-rank-value{font-weight:700;color:var(--admin-text-main);white-space:nowrap}.dash-bars{display:flex;align-items:flex-end;gap:4px;height:130px;overflow-x:auto;padding:4px 0}.dash-bar-item{flex:1;min-width:9px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:4px}.dash-bar{width:100%;min-height:2px;background:var(--admin-primary);border-radius:4px 4px 0 0}.dash-bar-label{font-size:.62rem;color:var(--admin-text-muted);white-space:nowrap}@media(max-width:650px){.dash-insight-grid{grid-template-columns:1fr}.dash-card{padding:16px!important}}
 </style>
 </head>
 <body>
@@ -47,6 +48,21 @@ a.ov-stat{text-decoration:none;color:inherit}
 <div class="ov-stat"><b id="v-total">—</b><span>Total visitors</span></div>
 <div class="ov-stat"><b id="v-views">—</b><span>Total page views</span></div>
 </div></section>
+<section class="dash-card">
+  <div class="dash-analytics-head">
+    <div><h3 style="margin:0">Traffic Insights</h3><p class="dash-muted">Website ke actual Supabase analytics records</p></div>
+    <label for="traffic-range">Period
+      <select id="traffic-range"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option></select>
+    </label>
+  </div>
+  <div class="dash-insight-grid">
+    <div><h4>Daily page views</h4><div id="traffic-daily" class="dash-bars"><p class="dash-muted">Loading…</p></div></div>
+    <div><h4>Top pages</h4><div id="traffic-pages" class="dash-rank-list"><p class="dash-muted">Loading…</p></div></div>
+    <div><h4>Traffic sources</h4><div id="traffic-sources" class="dash-rank-list"><p class="dash-muted">Loading…</p></div></div>
+    <div><h4>Devices</h4><div id="traffic-devices" class="dash-rank-list"><p class="dash-muted">Loading…</p></div></div>
+  </div>
+  <p class="dash-muted" id="traffic-status" role="status">Analytics data loading…</p>
+</section>
 <section class="dash-card"><h3 style="margin-top:0">Kaam baaki (to do)</h3>
 <div class="ov-grid">
 <a class="ov-stat" href="requests.html"><b id="c-leads">—</b><span>Open CSC leads</span></a>
@@ -87,6 +103,53 @@ a.ov-stat{text-decoration:none;color:inherit}
     if (filter) q = filter(q);
     return q.then(r => r.error ? null : r.count);
   };
+  const range = document.getElementById("traffic-range");
+  const status = document.getElementById("traffic-status");
+  const safeNumber = value => Number(value || 0).toLocaleString("en-IN");
+  const renderRows = (id, rows, nameKey, valueKey) => {
+    const host = document.getElementById(id);
+    host.replaceChildren();
+    if (!rows || !rows.length) { host.textContent = "No data available"; return; }
+    rows.forEach(row => {
+      const line = document.createElement("div"); line.className = "dash-rank-row";
+      const name = document.createElement("span"); name.className = "dash-rank-name"; name.textContent = row[nameKey] || "(not set)";
+      const value = document.createElement("strong"); value.className = "dash-rank-value"; value.textContent = safeNumber(row[valueKey]);
+      line.append(name, value); host.append(line);
+    });
+  };
+  async function loadTraffic() {
+    status.textContent = "Refreshing traffic insights…";
+    const days = Number(range.value) || 30;
+    const [daily, pages, sources, devices] = await Promise.all([
+      client.rpc("analytics_daily_views", { days_count: days }),
+      client.rpc("analytics_top_pages", { limit_count: 10 }),
+      client.rpc("analytics_traffic_sources"),
+      client.rpc("analytics_device_types")
+    ]);
+    const failed = [daily, pages, sources, devices].some(result => result.error);
+    renderRows("traffic-pages", pages.error ? [] : pages.data, "page_path", "views");
+    renderRows("traffic-sources", sources.error ? [] : sources.data, "traffic_source", "views");
+    renderRows("traffic-devices", devices.error ? [] : devices.data, "device_type", "views");
+    const host = document.getElementById("traffic-daily"); host.replaceChildren();
+    const rows = daily.error ? [] : (daily.data || []);
+    if (!rows.length) host.textContent = "No daily data available";
+    else {
+      const max = Math.max(1, ...rows.map(row => Number(row.views) || 0));
+      rows.forEach(row => {
+        const item = document.createElement("div"); item.className = "dash-bar-item";
+        const bar = document.createElement("div"); bar.className = "dash-bar";
+        bar.style.height = Math.max(2, (Number(row.views) / max) * 100) + "%";
+        bar.title = row.day + ": " + safeNumber(row.views) + " views";
+        const label = document.createElement("span"); label.className = "dash-bar-label";
+        label.textContent = String(row.day || "").slice(5);
+        item.append(bar, label); host.append(item);
+      });
+    }
+    status.textContent = failed ? "Kuch analytics queries fail hui hain. Supabase SQL/RLS setup aur permissions check karein." : "Data period: last " + days + " days. Counts are page views, not unique visitors.";
+  }
+  range.addEventListener("change", loadTraffic);
+  loadTraffic();
+
   const s = await client.rpc("analytics_summary");
   if (!s.error && s.data && s.data[0]) {
     const r = s.data[0];
