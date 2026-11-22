@@ -8,13 +8,14 @@
   const HEARTBEAT_MS = 45000; // 45 seconds heartbeat
   const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes (GA4 standard)
 
-  // 1. ADMIN EXCLUSION (Persistent)
-  // Set a flag if the user ever visits /admin/
-  if (location.pathname.includes('/admin')) {
-    localStorage.setItem('ss_admin_bypass', '1');
-  }
-  // If flag is set, don't track anything for this browser
-  if (localStorage.getItem('ss_admin_bypass') === '1') return;
+  // 1. ADMIN EXCLUSION (current page only)
+  // Exclude admin routes without permanently excluding this browser. The old
+  // persistent localStorage flag also suppressed future public-site visits
+  // made from the same browser after an admin session.
+  if (location.pathname.toLowerCase().includes('/admin/')) return;
+
+  // Clean up the legacy flag left by earlier versions. It is no longer used.
+  try { localStorage.removeItem('ss_admin_bypass'); } catch (e) {}
 
   // 2. BOT & CRAWLER FILTERING
   function isBot() {
