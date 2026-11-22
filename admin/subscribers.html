@@ -102,12 +102,12 @@ $("export").onclick=()=>{
 };
 (async function(){
   try{
-    SUPABASE_CLIENT=await getSupabaseClient(); if(!SUPABASE_CLIENT)throw new Error("Backend not configured");
-    const {data}=await SUPABASE_CLIENT.auth.getSession(); if(!data||!data.session){location.href="login.html";return}
-    $("whoami").textContent="Logged in as "+data.session.user.email; $("dash-loading").hidden=true; $("dash-wrap").hidden=false; await load();
-  }catch(e){$("dash-loading").innerHTML="<p>Could not load subscribers: "+esc(e.message||e)+"</p>"}
+    SUPABASE_CLIENT=await adminGuard();
+    await load();
+  }catch(e){
+    console.error("Admin subscribers initialization failed:",e);
+  }
 })();
-$("logout").addEventListener("click",async()=>{if(SUPABASE_CLIENT)await SUPABASE_CLIENT.auth.signOut();location.href="login.html"});
 </script>
 </body>
 </html>
