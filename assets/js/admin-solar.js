@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const when = (d) => new Date(d).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   const host = (u) => { try { return u ? new URL(u).hostname.replace(/^www\./, "") : "direct"; } catch (e) { return "direct"; } };
-  let rows = [];
+  let rows = [], adminClient = null;
 
   const top = (title, map) => `<div class="dash-card" style="margin:0;"><strong>${title}</strong><ol style="margin:6px 0 0; padding-left:18px; font-size:0.85rem;">${Object.entries(map).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([k, v]) => `<li>${esc(k)}: <b>${v}</b></li>`).join("") || "<li>-</li>"}</ol></div>`;
   const tally = (f) => rows.reduce((m, r) => { const k = f(r) || "-"; m[k] = (m[k] || 0) + 1; return m; }, {});
@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
   async function load() {
     list.innerHTML = '<tr><td colspan="6">Loading…</td></tr>';
     try {
-      const client = await getSupabaseClient();
+      const client = adminClient;
+      if (!client) throw new Error("Admin session is not initialized.");
       const { data, error } = await client.from("solar_leads").select("*").order("created_at", { ascending: false }).limit(2000);
       if (error) throw error;
       rows = data || [];
@@ -48,7 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
   list.addEventListener("change", async (e) => {
     const sel = e.target.closest("select[data-id]");
     if (!sel) return;
-    const client = await getSupabaseClient();
+    const client = adminClient;
+    if (!client) { alert("Admin access required."); return; }
     const { error } = await client.from("solar_leads").update({ status: sel.value }).eq("id", sel.dataset.id);
     if (error) alert("Could not update: " + error.message);
     else { const r = rows.find((x) => String(x.id) === sel.dataset.id); if (r) r.status = sel.value; render(); }
@@ -63,5 +65,5 @@ document.addEventListener("DOMContentLoaded", () => {
     a.download = `solar-leads-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
   });
-  load();
+  (async () => { try { adminClient = await adminGuard(); await load(); } catch (e) { console.error("Solar admin access failed:", e); list.innerHTML = `<tr><td colspan="6">Admin access required.</td></tr>`; } })();
 });
