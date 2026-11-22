@@ -721,3 +721,50 @@ a.ov-stat:hover,.rv-stat:hover,.mm-stat:hover,.sub-stat:hover {
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* Mobile usability pass — admin stylesheet only. */
+@media (max-width: 900px) {
+  html, body { max-width: 100%; overflow-x: clip; }
+  .admin-layout, .admin-main { min-width: 0; }
+  .admin-sidebar { max-width: 100%; }
+  .admin-nav {
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+  .admin-nav-item { scroll-snap-align: start; min-height: 42px; }
+  .admin-sidebar-footer button,
+  .admin-sidebar-footer a { min-height: 42px; }
+  .admin-main .table-wrap,
+  .admin-main .al-wrap,
+  .admin-main .rv-table-wrap,
+  .admin-main .mm-table-wrap,
+  .admin-main .sub-table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (max-width: 560px) {
+  .admin-sidebar { position: sticky; top: 0; }
+  .admin-sidebar-brand { min-height: 42px; }
+  .admin-sidebar-title { font-size: .96rem; }
+  .admin-sidebar-subtitle { font-size: .62rem; }
+  .admin-main .admin-topbar,
+  .admin-main .admin-topbar-actions { width: 100%; }
+  .admin-main .admin-topbar-actions { flex-wrap: wrap; gap: 8px; }
+  .admin-main .admin-topbar-actions > * { max-width: 100%; }
+  .admin-main button,
+  .admin-main input:not([type=checkbox]):not([type=radio]),
+  .admin-main select,
+  .admin-main textarea { max-width: 100%; }
+  .admin-main .dash-card { min-width: 0; overflow-wrap: anywhere; }
+  .admin-main .stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+  .admin-main .stat-num { font-size: 1.35rem !important; }
+  .admin-card-login { max-width: 100%; }
+}
+@media (max-width: 360px) {
+  .admin-main .stat-grid { grid-template-columns: minmax(0,1fr) !important; }
+  .admin-main { padding-left: 10px; padding-right: 10px; }
+}
