@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>System Health — SarkariSewa Admin</title><meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/admin-theme.css?v=4">
+<script defer src="../assets/js/admin-theme-toggle.js"></script>
+<style>
+.sh-intro{color:var(--admin-text-muted);font-size:.88rem;line-height:1.6;max-width:850px}
+.sh-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.sh-item{border:1px solid var(--admin-border);border-radius:14px;padding:17px;background:var(--admin-surface);min-width:0}
+.sh-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sh-title{font-weight:750;color:var(--admin-text-main)}
+.sh-state{font-size:.72rem;font-weight:800;border-radius:999px;padding:5px 10px;background:var(--admin-bg-subtle);color:var(--admin-text-muted);white-space:nowrap}
+.sh-state.ok{color:var(--admin-accent-teal);background:rgba(45,212,191,.12)}
+.sh-state.warn{color:var(--admin-accent-amber);background:rgba(245,158,11,.12)}
+.sh-state.fail{color:var(--admin-accent-rose);background:rgba(244,63,94,.12)}
+.sh-detail{font-size:.81rem;color:var(--admin-text-muted);line-height:1.55;margin:10px 0 0;overflow-wrap:anywhere}
+.sh-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.sh-btn{border:1px solid var(--admin-border);border-radius:9px;padding:9px 13px;background:var(--admin-surface);color:var(--admin-text-main);font:600 .82rem var(--admin-font-body);cursor:pointer;text-decoration:none}
+.sh-btn.primary{background:var(--admin-primary);border-color:var(--admin-primary);color:#fff}
+.sh-meta{font-size:.78rem;color:var(--admin-text-muted)}
+.sh-note{padding:13px 15px;border:1px solid var(--admin-border);border-radius:12px;background:var(--admin-bg-subtle);font-size:.82rem;line-height:1.6;color:var(--admin-text-sub)}
+@media(max-width:650px){.sh-grid{grid-template-columns:1fr}.sh-item{padding:14px}}
+</style>
+</head>
+<body>
+<div class="admin-layout" id="dash-wrap" hidden>
+<aside class="admin-sidebar"><div class="admin-sidebar-brand"><div class="admin-sidebar-logo">S</div><div><div class="admin-sidebar-title">SarkariSewa</div><div class="admin-sidebar-subtitle">Admin Console</div></div></div><nav class="admin-nav"></nav>
+<div class="admin-sidebar-footer"><button class="theme-toggle-btn" type="button">☀️ Light Mode</button><div id="whoami" class="sh-meta">Loading…</div><button class="logout-btn" id="logout" style="width:100%">Log out</button></div></aside>
+<main class="admin-main">
+<div class="admin-topbar"><div class="admin-page-title"><h1>System Health Monitor</h1><p class="sh-intro">Read-only checks for the admin session, Supabase analytics, and public site resources. No settings, records, payments, or deployments are changed.</p></div><div class="sh-actions"><button class="sh-btn primary" id="refresh" type="button">↻ Run checks</button></div></div>
+<section class="dash-card"><div class="sh-head"><h3 style="margin:0">Current system status</h3><span class="sh-meta" id="checked-at">Not checked yet</span></div><p class="sh-intro" id="overall" role="status">Waiting for checks…</p><div class="sh-grid" id="checks" aria-live="polite">
+<div class="sh-item"><div class="sh-title">Admin authentication</div><p class="sh-detail">Checking session…</p></div>
+<div class="sh-item"><div class="sh-title">Supabase analytics</div><p class="sh-detail">Waiting…</p></div>
+<div class="sh-item"><div class="sh-title">Public site response</div><p class="sh-detail">Waiting…</p></div>
+<div class="sh-item"><div class="sh-title">Site statistics resource</div><p class="sh-detail">Waiting…</p></div>
+</div></section>
+<section class="dash-card"><h3 style="margin-top:0">External service consoles</h3><p class="sh-intro">These links open provider dashboards. This page does not claim live API/payment health without an authenticated server-side health endpoint.</p><div class="sh-actions">
+<a class="sh-btn" href="https://supabase.com/dashboard/project/yjxsgkqspmhxndvhnjcd" target="_blank" rel="noopener">Supabase project ↗</a>
+<a class="sh-btn" href="https://dash.cloudflare.com/" target="_blank" rel="noopener">Cloudflare ↗</a>
+<a class="sh-btn" href="https://dashboard.razorpay.com/app/payments" target="_blank" rel="noopener">Razorpay ↗</a>
+<a class="sh-btn" href="https://github.com/Akhairkar/sarkarisewa-portal/actions" target="_blank" rel="noopener">GitHub Actions ↗</a>
+<a class="sh-btn" href="https://www.google.com/adsense/" target="_blank" rel="noopener">AdSense ↗</a>
+</div></section>
+<section class="dash-card"><h3 style="margin-top:0">Monitoring boundaries</h3><div class="sh-note"><strong>Important:</strong> browser-side checks confirm only that the current browser can reach the tested resource. They do not prove database write health, payment settlement, Worker execution, backups, or provider uptime. Those require dedicated server-side health endpoints and credentials kept off the client.</div></section>
+</main></div>
+<div class="admin-wrap-login" id="dash-loading"><p class="loading">Checking admin access…</p></div>
+<script src="../assets/js/supabase-client.js"></script><script src="../assets/js/admin-common.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+function card(title,state,detail){return '<article class="sh-item"><div class="sh-head"><span class="sh-title">'+adminEsc(title)+'</span><span class="sh-state '+state+'">'+(state==="ok"?"HEALTHY":state==="warn"?"LIMITED":"CHECK FAILED")+'</span></div><p class="sh-detail">'+adminEsc(detail)+'</p></article>'}
+async function timedFetch(url){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),8000);try{return await fetch(url,{method:"GET",cache:"no-store",credentials:"same-origin",signal:controller.signal})}finally{clearTimeout(timer)}}
+async function runChecks(client){
+ $("refresh").disabled=true;$("refresh").textContent="Checking…";$("overall").textContent="Running read-only checks…";
+ const results=[];
+ try{const {data,error}=await client.auth.getSession();if(error)throw error;if(data?.session){results.push(card("Admin authentication","ok","Authenticated admin session is active. Role gate was passed by adminGuard()."))}else{results.push(card("Admin authentication","fail","No active session was returned."))}}catch(e){results.push(card("Admin authentication","fail",e.message||"Session check failed."))}
+ try{const {data,error}=await client.rpc("analytics_summary");if(error)throw error;const s=data?.[0]||{};results.push(card("Supabase analytics","ok","analytics_summary RPC responded. Total page views: "+Number(s.total_views||0).toLocaleString("en-IN")+". Unique visitors: "+Number(s.total_visitors||0).toLocaleString("en-IN")+"."))}catch(e){results.push(card("Supabase analytics","fail","Analytics RPC unavailable: "+(e.message||"Unknown error")+". Check SQL deployment and authenticated RLS permissions."))}
+ try{const r=await timedFetch("../robots.txt");if(!r.ok)throw new Error("HTTP "+r.status);results.push(card("Public site response","ok","robots.txt responded with HTTP "+r.status+". This confirms this resource is reachable from the current browser."))}catch(e){results.push(card("Public site response","fail",e.name==="AbortError"?"Request timed out after 8 seconds.":e.message||"Request failed."))}
+ try{const r=await timedFetch("../site-stats.json");if(!r.ok)throw new Error("HTTP "+r.status);const data=await r.json();const built=data.built?new Date(data.built).toLocaleString("en-IN",{timeZone:"Asia/Kolkata"}):"build timestamp unavailable";results.push(card("Site statistics resource","ok","site-stats.json returned valid JSON. Last build: "+built+"."))}catch(e){results.push(card("Site statistics resource","warn","Resource unavailable or invalid: "+(e.message||"Unknown error")+". Some dashboard content counts may not load."))}
+ $("checks").innerHTML=results.join("");const states=[...$("checks").querySelectorAll(".sh-state")];const bad=states.filter(x=>x.classList.contains("fail")).length;const limited=states.filter(x=>x.classList.contains("warn")).length;
+ $("overall").textContent=bad?"Checks completed: "+bad+" item(s) need attention." : limited?"Core checks completed with "+limited+" limited item(s).":"All implemented browser-side checks passed. External payment/API providers are not probed.";
+ $("checked-at").textContent="Last checked: "+new Date().toLocaleString("en-IN",{timeZone:"Asia/Kolkata"});
+ $("refresh").disabled=false;$("refresh").textContent="↻ Run checks";
+}
+(async()=>{try{const client=await adminGuard();$("refresh").addEventListener("click",()=>runChecks(client));await runChecks(client)}catch(e){console.error("System health monitor:",e)}})();
+</script>
+</body></html>
