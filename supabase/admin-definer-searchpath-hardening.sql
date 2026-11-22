@@ -28,6 +28,8 @@ alter function public.service_interest_log(text, text, text, text) set search_pa
 alter function public.service_request_submit(text, text, text, text, text, text, text, boolean, text) set search_path = pg_catalog, public, extensions;
 alter function public.poster_log(uuid, text, text, text, boolean) set search_path = pg_catalog, public, extensions;
 alter function public.csc_status_votes_limit() set search_path = pg_catalog, public, extensions;
+alter function public.search_stats(int) set search_path = pg_catalog, public, extensions;
+alter function public.is_admin() set search_path = pg_catalog, public, auth;
 
 -- The heartbeat already uses an empty search_path and fully-qualified names.
 -- Analytics SECURITY INVOKER functions are intentionally not altered here.
