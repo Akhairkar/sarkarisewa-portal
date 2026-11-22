@@ -1,0 +1,6 @@
+---
+import DocGuide from "../../components/DocGuide.astro";
+import { STATE_GUIDES } from "../../guides/bhatta/states";
+const g = STATE_GUIDES.find((x) => x.slug === "maharashtra")!.guide;
+---
+<DocGuide g={g} />
