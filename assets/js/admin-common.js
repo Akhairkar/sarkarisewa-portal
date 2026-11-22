@@ -5,6 +5,7 @@
 (function () {
   const NAV = [
     ["dashboard.html", "📊 Overview"],
+    ["content.html", "🗂️ Content Inventory"],
     ["analytics.html", "📈 Analytics"],
     ["subscribers.html", "📬 Subscribers"],
     ["csc.html", "🏬 CSC Claims"],
