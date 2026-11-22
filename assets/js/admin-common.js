@@ -8,6 +8,7 @@
     ["content.html", "🗂️ Content Inventory"],
     ["content-review.html", "📝 Content Review Queue"],
     ["access-control.html", "🔐 Access Control"],
+    ["security-audit.html", "🛡️ Security Audit"],
     ["seo.html", "🔎 SEO Control Center"],
     ["api-payments.html", "🔌 API & Payments"],
     ["analytics.html", "📈 Analytics"],
