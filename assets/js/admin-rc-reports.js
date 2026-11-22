@@ -2,18 +2,20 @@
 // Paid RC challan reports (rc_reports, written by the Worker): what each
 // customer saw (number of challans, amount, list), refunds and failures, and
 // a summary of how many reports had zero challans.
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const list = document.getElementById("rc-list");
   const summary = document.getElementById("rc-summary");
   const count = document.getElementById("rc-count");
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const when = (d) => new Date(d).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  let adminClient = null;
   const tile = (label, value, note) => `<div class="dash-card" style="margin:0;"><div style="font-size:0.8rem;color:var(--admin-text-muted)">${label}</div><div style="font-size:1.6rem;font-weight:800">${value}</div>${note ? `<small>${note}</small>` : ""}</div>`;
 
   async function load() {
     list.innerHTML = '<tr><td colspan="5">Loading…</td></tr>';
     try {
-      const client = await getSupabaseClient();
+      const client = adminClient;
+      if (!client) throw new Error("Admin session is not initialized.");
       const { data, error } = await client.from("rc_reports").select("*").order("created_at", { ascending: false }).limit(2000);
       if (error) throw error;
       const rows = (data || []).filter((r) => !/^pay_TEST/.test(r.payment_id));
@@ -42,5 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   document.getElementById("rc-refresh").addEventListener("click", load);
-  load();
+  try { adminClient = await adminGuard(); await load(); }
+  catch (e) { console.error("RC reports admin access failed:", e); list.innerHTML = `<tr><td colspan="5">Admin access required.</td></tr>`; }
 });
