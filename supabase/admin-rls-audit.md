@@ -64,7 +64,8 @@ The migration deliberately does not change `subscribers`, `csc_leads`, `csc_feed
 2. Added `admin-module-rls-hardening.sql` with least-privilege column grants for CSC claims, Sahayak providers, service requests, and solar leads, plus read-only browser access for RC reports.
 3. Updated `content-change-requests.sql` so fresh schema setup grants UPDATE only on review-decision fields.
 4. Added `admin-leads-notifications-rls.sql` for subscriber, CSC/Sahayak lead, status-vote and push campaign grants.
-5. Added `content-change-requests-hardening.sql` as a transaction-wrapped migration for an existing deployment. It resets browser table privileges and re-grants only SELECT, INSERT, and the five permitted UPDATE columns. It does not change or delete rows.
+5. Added `admin-rpc-grants-hardening.sql` to explicitly scope poster table privileges and push RPC execution grants.
+6. Added `content-change-requests-hardening.sql` as a transaction-wrapped migration for an existing deployment. It resets browser table privileges and re-grants only SELECT, INSERT, and the five permitted UPDATE columns. It does not change or delete rows.
 
 ## Subscriber, lead and notification grant hardening
 
@@ -83,6 +84,17 @@ Added `supabase/admin-leads-notifications-rls.sql`:
 The push sender's SECURITY DEFINER RPCs remain the intended server-side path for delivery counts and subscription cleanup. Public subscriber and lead submission policies are retained/recreated. The migration does not change or delete rows.
 
 Important: subscriber signup still has table-level INSERT because the repository's subscriber schema has evolved beyond the original base columns and the exact set of public signup fields is not fully established from the checked-in base schema. This does not grant public read/update/delete. A future schema inventory can narrow INSERT to explicit columns once every signup/Telegram flow is mapped.
+
+## Poster and push RPC privilege hardening
+
+Added `supabase/admin-rpc-grants-hardening.sql`:
+
+- `daily_posters`: explicit SELECT for anon/authenticated, explicit INSERT/UPDATE/DELETE for authenticated, with RLS limiting writes to admins and reads to published rows.
+- `poster_events`: authenticated SELECT only for admins; no direct browser INSERT/UPDATE/DELETE. Event writes remain through `poster_log()`.
+- Push sender RPCs (`push_save_vapid`, `push_queue`, `push_report`, `push_pending`): removes implicit PUBLIC and authenticated EXECUTE, then grants EXECUTE only to the anon API role. Each function still validates the private `PUSH_SEND_KEY`; the Supabase anon key is not that secret.
+- Visitor push RPCs (`push_public_key`, `push_subscribe`, `push_unsubscribe`): removes implicit PUBLIC EXECUTE and explicitly grants anon/authenticated execution.
+
+The migration does not alter records. It assumes the referenced tables and functions were created by `daily-posters.sql` and `push.sql`.
 
 ## Remaining checks before calling the database secure
 
