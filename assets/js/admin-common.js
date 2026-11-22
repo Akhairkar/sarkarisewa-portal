@@ -15,6 +15,7 @@
     ["push.html", "🔔 Notifications"],
     ["searches.html", "🔍 Site Searches"],
     ["requests.html", "🙋 Service Requests"],
+    ["activity.html", "🧾 Activity Logs"],
   ];
 
   function renderNav() {
@@ -63,7 +64,27 @@
     if (loading) loading.hidden = true;
     const wrap = document.getElementById("dash-wrap");
     if (wrap) wrap.hidden = false;
+    await window.adminLog(client, "page_view", location.pathname.split("/").pop());
     return client;
+  };
+
+  // Best-effort audit trail. Store only the admin identity and page/action metadata;
+  // never record form values, customer details, tokens, or request payloads.
+  window.adminLog = async function (client, action, resource) {
+    try {
+      const { data } = await client.auth.getUser();
+      const user = data?.user;
+      if (!user || user.app_metadata?.role !== "admin") return;
+      const { error } = await client.from("admin_activity_logs").insert({
+        actor_id: user.id,
+        actor_email: user.email || null,
+        action: String(action || "view").slice(0, 40),
+        resource: String(resource || location.pathname.split("/").pop() || "admin").slice(0, 120)
+      });
+      if (error) console.warn("Admin activity log was not saved:", error.message);
+    } catch (error) {
+      console.warn("Admin activity logging unavailable:", error);
+    }
   };
 
   window.adminEsc = function (v) {
