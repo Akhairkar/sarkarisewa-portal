@@ -44,11 +44,26 @@ The following admin scripts were also inspected for their browser-side access ga
 
 These browser-side checks prevent an unauthorised session from using the admin UI, but they are **not a substitute for database RLS**. The source set inspected here does not contain authoritative table-creation / policy migrations for all of these legacy tables. Their live RLS policies and grants therefore remain **unverified**. In particular, verify that public submission endpoints retain only the intended INSERT permissions, that public users cannot SELECT customer records, and that only trusted admins or server-side service-role code can update review/status fields.
 
+## Additional legacy-table grant hardening
+
+A new migration, `supabase/admin-module-rls-hardening.sql`, narrows browser privileges for the tables used by legacy admin modules:
+
+| Table | Browser permissions after migration | Notes |
+|---|---|---|
+| `csc_claims` | Authenticated SELECT; column-limited UPDATE | Public claim INSERT is not revoked. Admin UI update columns were matched against CSC and Requests scripts. DELETE is revoked because no admin UI delete action exists. |
+| `sahayak_providers` | Authenticated SELECT; UPDATE only `status` and `approved_at` | Public signup INSERT remains unchanged. |
+| `service_requests` | Authenticated SELECT + DELETE; UPDATE only workflow/assignment/review fields | Public submissions continue through the existing SECURITY DEFINER submit function. |
+| `solar_leads` | Authenticated SELECT; UPDATE only `status` | Public INSERT is not revoked. Explicit admin SELECT/UPDATE policies are added. Existing legacy policies must still be inspected in the live database; permissive RLS policies combine with OR semantics. |
+| `rc_reports` | Authenticated SELECT only; no direct browser writes | Intended Worker writes continue through the existing SECURITY DEFINER logging function. |
+
+The migration deliberately does not change `subscribers`, `csc_leads`, `csc_feedback`, `csc_status_votes`, or `sahayak_leads` grants because their public INSERT / admin SELECT flows need a separate exact grant review. It also does not create missing tables or alter any records.
+
 ## Changes made in this audit
 
 1. Added `adminGuard()` to the CSC, Sahayak, Solar Leads, and RC Reports browser modules before any protected reads or writes.
-2. Updated `content-change-requests.sql` so fresh schema setup grants UPDATE only on review-decision fields.
-3. Added `content-change-requests-hardening.sql` as a transaction-wrapped migration for an existing deployment. It resets browser table privileges and re-grants only SELECT, INSERT, and the five permitted UPDATE columns. It does not change or delete rows.
+2. Added `admin-module-rls-hardening.sql` with least-privilege column grants for CSC claims, Sahayak providers, service requests, and solar leads, plus read-only browser access for RC reports.
+3. Updated `content-change-requests.sql` so fresh schema setup grants UPDATE only on review-decision fields.
+4. Added `content-change-requests-hardening.sql` as a transaction-wrapped migration for an existing deployment. It resets browser table privileges and re-grants only SELECT, INSERT, and the five permitted UPDATE columns. It does not change or delete rows.
 
 ## Remaining checks before calling the database secure
 
