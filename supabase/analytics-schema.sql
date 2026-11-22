@@ -81,44 +81,50 @@ alter table active_sessions add column if not exists last_seen timestamptz not n
 
 alter table active_sessions enable row level security;
 
--- Explicit least-privilege grants. Anonymous clients can create a heartbeat
--- and update only its mutable telemetry columns; they cannot change the
--- session key or read the active-session table.
+-- No direct anonymous table access. Heartbeats are written through the
+-- narrowly scoped analytics_heartbeat() RPC below.
 revoke all on public.active_sessions from public, anon, authenticated;
-grant insert on public.active_sessions to anon;
-grant update (page_path, last_seen) on public.active_sessions to anon;
 grant select on public.active_sessions to authenticated;
 
 drop policy if exists "Anonymous visitors can upsert their own session" on active_sessions;
-create policy "Anonymous visitors can upsert their own session"
-  on active_sessions for insert
-  to anon
-  with check (
-    auth.role() = 'anon'
-    and page_path ~ '^/'
-    and length(page_path) <= 500
-    and last_seen >= now() - interval '5 minutes'
-    and last_seen <= now() + interval '2 minutes'
-  );
-
 drop policy if exists "Anonymous visitors can update their own session" on active_sessions;
-create policy "Anonymous visitors can update their own session"
-  on active_sessions for update
-  to anon
-  using (auth.role() = 'anon')
-  with check (
-    auth.role() = 'anon'
-    and page_path ~ '^/'
-    and length(page_path) <= 500
-    and last_seen >= now() - interval '5 minutes'
-    and last_seen <= now() + interval '2 minutes'
-  );
-
 drop policy if exists "Authenticated admin can read active_sessions" on active_sessions;
 create policy "Authenticated admin can read active_sessions"
   on active_sessions for select
   to authenticated
   using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
+
+-- Anonymous users cannot read or write the table directly. This RPC accepts
+-- only a session identifier and path, uses server time, validates inputs,
+-- and updates only that session row. Session IDs remain untrusted telemetry.
+revoke all on function public.analytics_heartbeat(text, text) from public, anon, authenticated;
+create or replace function public.analytics_heartbeat(p_session_id text, p_page_path text)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if auth.role() <> 'anon' then
+    raise exception 'Anonymous analytics role required';
+  end if;
+  if p_session_id is null or length(p_session_id) < 8 or length(p_session_id) > 100
+     or p_session_id !~ '^[A-Za-z0-9-]+$' then
+    raise exception 'Invalid analytics session identifier';
+  end if;
+  if p_page_path is null or p_page_path !~ '^/' or length(p_page_path) > 500 then
+    raise exception 'Invalid analytics page path';
+  end if;
+
+  insert into public.active_sessions (session_id, page_path, last_seen)
+  values (p_session_id, p_page_path, now())
+  on conflict (session_id) do update
+    set page_path = excluded.page_path,
+        last_seen = now();
+end;
+$$;
+revoke all on function public.analytics_heartbeat(text, text) from public, anon, authenticated;
+grant execute on function public.analytics_heartbeat(text, text) to anon;
 
 -- ---------------------------------------------------------------------------
 -- 3. RPC functions the dashboard's Analytics tab calls directly
