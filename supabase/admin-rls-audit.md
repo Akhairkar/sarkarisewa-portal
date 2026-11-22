@@ -63,7 +63,26 @@ The migration deliberately does not change `subscribers`, `csc_leads`, `csc_feed
 1. Added `adminGuard()` to the CSC, Sahayak, Solar Leads, and RC Reports browser modules before any protected reads or writes.
 2. Added `admin-module-rls-hardening.sql` with least-privilege column grants for CSC claims, Sahayak providers, service requests, and solar leads, plus read-only browser access for RC reports.
 3. Updated `content-change-requests.sql` so fresh schema setup grants UPDATE only on review-decision fields.
-4. Added `content-change-requests-hardening.sql` as a transaction-wrapped migration for an existing deployment. It resets browser table privileges and re-grants only SELECT, INSERT, and the five permitted UPDATE columns. It does not change or delete rows.
+4. Added `admin-leads-notifications-rls.sql` for subscriber, CSC/Sahayak lead, status-vote and push campaign grants.
+5. Added `content-change-requests-hardening.sql` as a transaction-wrapped migration for an existing deployment. It resets browser table privileges and re-grants only SELECT, INSERT, and the five permitted UPDATE columns. It does not change or delete rows.
+
+## Subscriber, lead and notification grant hardening
+
+Added `supabase/admin-leads-notifications-rls.sql`:
+
+| Table | Browser permissions after migration |
+|---|---|
+| `subscribers` | Public INSERT; admin-only SELECT; no browser UPDATE/DELETE |
+| `csc_leads` | Visitor INSERT on event columns; admin-only SELECT |
+| `csc_feedback` | Visitor INSERT on feedback columns; admin-only SELECT |
+| `sahayak_leads` | Visitor INSERT on lead columns; admin-only SELECT |
+| `csc_status_votes` | Visitor INSERT on vote columns; admin-only SELECT |
+| `push_campaigns` | Admin SELECT; admin INSERT of campaign content; admin UPDATE of status only |
+| `push_subscriptions`, `push_config` | No direct browser table access; existing RPC interfaces remain the access path |
+
+The push sender's SECURITY DEFINER RPCs remain the intended server-side path for delivery counts and subscription cleanup. Public subscriber and lead submission policies are retained/recreated. The migration does not change or delete rows.
+
+Important: subscriber signup still has table-level INSERT because the repository's subscriber schema has evolved beyond the original base columns and the exact set of public signup fields is not fully established from the checked-in base schema. This does not grant public read/update/delete. A future schema inventory can narrow INSERT to explicit columns once every signup/Telegram flow is mapped.
 
 ## Remaining checks before calling the database secure
 
