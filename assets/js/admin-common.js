@@ -14,6 +14,7 @@
     ["analytics.html", "📈 Analytics"],
     ["health.html", "🩺 System Health"],
     ["backup.html", "💾 Backup & Recovery"],
+    ["alerts.html", "🔔 Alert Center"],
     ["subscribers.html", "📬 Subscribers"],
     ["csc.html", "🏬 CSC Claims"],
     ["sahayak.html", "🤝 Seva Sahayak"],
