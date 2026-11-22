@@ -7,6 +7,7 @@
     ["dashboard.html", "📊 Overview"],
     ["content.html", "🗂️ Content Inventory"],
     ["content-review.html", "📝 Content Review Queue"],
+    ["access-control.html", "🔐 Access Control"],
     ["seo.html", "🔎 SEO Control Center"],
     ["api-payments.html", "🔌 API & Payments"],
     ["analytics.html", "📈 Analytics"],
