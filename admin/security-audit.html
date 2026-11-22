@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security Audit — SarkariSewa Admin</title><meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/admin-theme.css?v=4">
+<script defer src="../assets/js/admin-theme-toggle.js"></script>
+<style>
+.sa-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.sa-card{padding:15px;border:1px solid var(--admin-border);border-radius:13px;background:var(--admin-surface);min-width:0}.sa-card h3{margin:0 0 8px;font-size:.94rem}.sa-value{font-size:1.2rem;font-weight:800;overflow-wrap:anywhere}.sa-muted{font-size:.8rem;color:var(--admin-text-muted);line-height:1.55}.sa-status{display:inline-flex;padding:4px 9px;border-radius:20px;font-size:.72rem;font-weight:700;background:var(--admin-bg);color:var(--admin-text-muted)}.sa-ok{color:#0f9f76;background:rgba(16,185,129,.12)}.sa-warn{color:#b7791f;background:rgba(245,158,11,.13)}.sa-list{display:grid;gap:9px}.sa-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--admin-border)}.sa-row:last-child{border-bottom:0}.sa-row strong{font-size:.83rem}.sa-note{padding:13px;border:1px solid var(--admin-border);border-radius:11px;background:var(--admin-bg);font-size:.82rem;line-height:1.6}.sa-table-wrap{overflow:auto}.sa-table{width:100%;min-width:650px;border-collapse:collapse}.sa-table th,.sa-table td{text-align:left;padding:10px;border-bottom:1px solid var(--admin-border);font-size:.8rem}.sa-table th{color:var(--admin-text-muted);font-size:.7rem;text-transform:uppercase}
+@media(max-width:760px){.sa-grid{grid-template-columns:1fr 1fr}}@media(max-width:440px){.sa-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="admin-layout" id="dash-wrap" hidden>
+<aside class="admin-sidebar"><div class="admin-sidebar-brand"><div class="admin-sidebar-logo">S</div><div><div class="admin-sidebar-title">SarkariSewa</div><div class="admin-sidebar-subtitle">Admin Console</div></div></div><nav class="admin-nav"></nav><div class="admin-sidebar-footer"><button class="theme-toggle-btn" type="button">☀️ Light Mode</button><div id="whoami" class="sa-muted">Loading…</div><button class="logout-btn" id="logout" style="width:100%">Log out</button></div></aside>
+<main class="admin-main">
+<div class="admin-topbar"><div class="admin-page-title"><h1>Security Audit Center</h1><p class="sa-muted">Read-only review of the current admin session and security controls defined in this repository.</p></div></div>
+<section class="dash-card"><div class="sa-grid">
+<div class="sa-card"><h3>Trusted admin role</h3><div class="sa-value" id="sa-role">Checking…</div><span class="sa-muted">Supabase app_metadata.role</span></div>
+<div class="sa-card"><h3>Session expiry</h3><div class="sa-value" id="sa-expiry">Checking…</div><span class="sa-muted" id="sa-expiry-note">Token expiry timestamp; no token is displayed</span></div>
+<div class="sa-card"><h3>User metadata role</h3><div class="sa-value" id="sa-user-role">Checking…</div><span class="sa-muted">Editable metadata is never trusted for authorization</span></div>
+</div><p id="sa-session-status" class="sa-muted" role="status" style="margin-top:13px">Inspecting session…</p></section>
+<section class="dash-card"><h2 style="margin-top:0">Session security checks</h2><div id="sa-checks" class="sa-list"><span class="sa-muted">Loading checks…</span></div></section>
+<section class="dash-card"><h2 style="margin-top:0">Repository RLS policy inventory</h2><p class="sa-muted">These results describe SQL files on this branch only. They do not prove that migrations were applied to the connected Supabase project.</p><div class="sa-table-wrap"><table class="sa-table"><thead><tr><th>SQL file</th><th>Definition found</th><th>Scope / limitation</th><th>Live status</th></tr></thead><tbody>
+<tr><td><code>analytics-schema.sql</code></td><td>RLS enabled; analytics RPCs use SECURITY INVOKER</td><td>Anonymous page-view insert; admin select policies; anonymous active-session upsert/update policies</td><td><span class="sa-status sa-warn">Not verified</span></td></tr>
+<tr><td><code>admin-activity-logs.sql</code></td><td>Admin-only select/insert policies</td><td>Actor must match auth.uid(); no update/delete grants or policies</td><td><span class="sa-status sa-warn">Not verified</span></td></tr>
+<tr><td><code>content-change-requests.sql</code></td><td>Admin-only select/insert/update policies</td><td>No delete policy; approval does not publish public pages</td><td><span class="sa-status sa-warn">Not verified</span></td></tr>
+<tr><td><code>premium-memberships.sql</code></td><td>Admin-only select policy</td><td>No browser insert/update/delete grants or policies</td><td><span class="sa-status sa-warn">Not verified</span></td></tr>
+</tbody></table></div></section>
+<section class="dash-card"><h2 style="margin-top:0">Security review notes</h2><div class="sa-note"><strong>Important:</strong> the anonymous <code>active_sessions</code> UPDATE policy in the current analytics SQL checks only <code>auth.role() = 'anon'</code>. It does not bind an update to ownership of a particular session row. Consider redesigning this with server-side session validation or a safer write-only RPC before relying on the table for trusted presence data.</div><div class="sa-note" style="margin-top:10px"><strong>Deployment boundary:</strong> this audit page does not execute SQL, change roles, rotate credentials, modify RLS, or call payment/API providers. SQL files must be reviewed and applied separately, then verified against live policies.</div></section>
+</main></div>
+<div id="dash-loading"><p class="loading">Checking admin access…</p></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="../assets/js/supabase-client.js"></script><script src="../assets/js/admin-common.js"></script>
+<script>
+function saRow(label,detail,status,warning=false){return '<div class="sa-row"><div><strong>'+adminEsc(label)+'</strong><div class="sa-muted">'+adminEsc(detail)+'</div></div><span class="sa-status '+(warning?'sa-warn':'sa-ok')+'">'+adminEsc(status)+'</span></div>'}
+(async()=>{try{
+ const client=await adminGuard();const {data,error}=await client.auth.getSession();if(error||!data?.session)throw error||new Error("No active session");
+ const s=data.session,u=s.user||{},app=u.app_metadata||{},userMeta=u.user_metadata||{},isAdmin=app.role==="admin",hasUserRole=Object.prototype.hasOwnProperty.call(userMeta,"role");
+ document.getElementById("sa-role").textContent=isAdmin?"ADMIN":"NOT ADMIN";
+ document.getElementById("sa-role").style.color=isAdmin?"#0f9f76":"#d97706";
+ document.getElementById("sa-user-role").textContent=hasUserRole?"Present — ignored":"Not present";
+ const expiry=Number(s.expires_at||0),now=Math.floor(Date.now()/1000),remaining=expiry-now;
+ document.getElementById("sa-expiry").textContent=expiry?new Date(expiry*1000).toLocaleString("en-IN",{timeZone:"Asia/Kolkata"}):"Unavailable";
+ document.getElementById("sa-expiry-note").textContent=expiry?(remaining>0?Math.floor(remaining/60)+" minutes remaining":"Session expiry timestamp has passed"):"Supabase did not return expires_at";
+ document.getElementById("sa-session-status").textContent="Session inspected for "+(u.email||"authenticated user")+". Access token and refresh token are never rendered.";
+ const checks=[
+ ["Trusted role source","Authorization uses app_metadata.role, not user_metadata.",isAdmin?"PASS":"FAIL",!isAdmin],
+ ["Editable metadata ignored","Any user_metadata.role claim is not used for admin authorization.",hasUserRole?"PRESENT — IGNORED":"CLEAR",hasUserRole],
+ ["Session expiry visibility","Expiry timestamp is read without exposing credentials.",expiry?(remaining>0?"VALID AT CHECK TIME":"EXPIRED AT CHECK TIME"):"NOT RETURNED",!expiry||remaining<=0],
+ ["Shared admin guard","This page passed adminGuard() before rendering the audit.", "PASS",false],
+ ["Login role gate","Repository login code checks app_metadata.role after password sign-in.", "STATIC CHECK",false]
+ ];
+ document.getElementById("sa-checks").innerHTML=checks.map(x=>saRow(x[0],x[1],x[2],x[3])).join("");
+ }catch(e){document.getElementById("sa-session-status").textContent="Session audit could not complete: "+e.message;document.getElementById("sa-checks").innerHTML=saRow("Session inspection","No session details could be read.","UNAVAILABLE",true);}})();
+</script>
+</body></html>

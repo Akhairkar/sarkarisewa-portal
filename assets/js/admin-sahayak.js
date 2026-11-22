@@ -4,7 +4,7 @@
 // (sahayak_leads), and the CSC "was it open?" votes (csc_status_votes).
 // All user-submitted text is escaped before it is shown.
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const $ = (id) => document.getElementById(id);
   const pending = $("sh-pending"), approved = $("sh-approved"), requests = $("sh-requests"), votes = $("sh-votes");
   if (!pending) return;
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function load() {
     try {
-      if (!client) client = await getSupabaseClient();
+      if (!client) throw new Error("Admin session is not initialized.");
       const [prov, leads, vt] = await Promise.all([
         client.from("sahayak_providers").select("*").order("created_at", { ascending: false }).limit(500),
         client.from("sahayak_leads").select("*").order("created_at", { ascending: false }).limit(500),
@@ -87,5 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
     load();
   });
   $("sh-refresh").addEventListener("click", load);
-  load();
+  try { client = await adminGuard(); await load(); }
+  catch (e) { console.error("Sahayak admin access failed:", e); empty(pending, 7, "Admin access required."); }
 });
