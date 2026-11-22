@@ -16,6 +16,7 @@
     ["searches.html", "🔍 Site Searches"],
     ["requests.html", "🙋 Service Requests"],
     ["activity.html", "🧾 Activity Logs"],
+    ["revenue.html", "💰 Revenue & AdSense"],
   ];
 
   function renderNav() {
