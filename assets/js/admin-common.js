@@ -6,6 +6,7 @@
   const NAV = [
     ["dashboard.html", "📊 Overview"],
     ["content.html", "🗂️ Content Inventory"],
+    ["content-review.html", "📝 Content Review Queue"],
     ["seo.html", "🔎 SEO Control Center"],
     ["api-payments.html", "🔌 API & Payments"],
     ["analytics.html", "📈 Analytics"],
