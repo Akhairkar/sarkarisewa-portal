@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Inventory — SarkariSewa Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/admin-theme.css?v=4">
+<script defer src="../assets/js/admin-theme-toggle.js"></script>
+<style>
+.cm-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.cm-stat{padding:16px;border:1px solid var(--admin-border);border-radius:14px;background:var(--admin-surface)}.cm-stat b{display:block;font-size:1.5rem;color:var(--admin-text)}.cm-stat span{font-size:.8rem;color:var(--admin-text-muted)}.cm-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.cm-toolbar input,.cm-toolbar select{min-height:42px;padding:9px 12px;border:1px solid var(--admin-border);border-radius:10px;background:var(--admin-surface);color:var(--admin-text)}.cm-toolbar input{flex:1;min-width:220px}.cm-table-wrap{overflow:auto}.cm-table{width:100%;min-width:650px;border-collapse:collapse}.cm-table th,.cm-table td{padding:11px 10px;text-align:left;border-bottom:1px solid var(--admin-border);font-size:.82rem;vertical-align:top}.cm-table th{color:var(--admin-text-muted);font-size:.72rem;text-transform:uppercase}.cm-table a{color:var(--admin-primary);overflow-wrap:anywhere}.cm-note{color:var(--admin-text-muted);font-size:.85rem}.cm-status{padding:10px 12px;border:1px solid var(--admin-border);border-radius:10px;margin:12px 0;color:var(--admin-text-muted)}@media(max-width:760px){.cm-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:420px){.cm-stats{grid-template-columns:1fr 1fr}.cm-stat{padding:12px}.cm-stat b{font-size:1.2rem}}
+</style>
+</head>
+<body>
+<div class="admin-layout" id="dash-wrap" hidden>
+<aside class="admin-sidebar">
+<div class="admin-sidebar-brand"><div class="admin-sidebar-logo">S</div><div><div class="admin-sidebar-title">SarkariSewa</div><div class="admin-sidebar-subtitle">Admin Console</div></div></div>
+<nav class="admin-nav"></nav>
+<div class="admin-sidebar-footer"><button type="button" class="theme-toggle-btn">☀️ Light Mode</button><div style="font-size:.78rem;color:var(--admin-text-muted)" id="whoami">Loading…</div><button class="logout-btn" id="logout" style="width:100%">Log out</button></div>
+</aside>
+<main class="admin-main">
+<div class="admin-topbar"><div class="admin-page-title"><h1>Content Inventory</h1><p class="cm-note">Sitemap-based read-only overview of published URLs. No page content is edited here.</p></div></div>
+<section class="dash-card">
+<div class="cm-stats">
+<div class="cm-stat"><b id="cm-total">—</b><span>URLs found</span></div>
+<div class="cm-stat"><b id="cm-jobs">—</b><span>Job URLs</span></div>
+<div class="cm-stat"><b id="cm-schemes">—</b><span>Scheme URLs</span></div>
+<div class="cm-stat"><b id="cm-other">—</b><span>Other URLs</span></div>
+</div>
+<div class="cm-status" id="cm-status" role="status" aria-live="polite">Checking public sitemap…</div>
+<div class="cm-toolbar">
+<input id="cm-search" type="search" placeholder="Search URL…" aria-label="Search URLs">
+<select id="cm-section" aria-label="Filter by section"><option value="all">All sections</option><option value="jobs">Jobs</option><option value="schemes">Schemes</option><option value="services">Services</option><option value="tools">Tools</option><option value="other">Other</option></select>
+<button class="admin-btn" id="cm-refresh" type="button">Refresh sitemap</button>
+</div>
+<div class="cm-table-wrap"><table class="cm-table"><thead><tr><th>Page URL</th><th>Section</th><th>Last modified</th></tr></thead><tbody id="cm-rows"><tr><td colspan="3">Loading…</td></tr></tbody></table></div>
+<p class="cm-note" id="cm-count"></p>
+</section>
+</main>
+</div>
+<div class="admin-wrap-login" id="dash-loading"><p class="loading">Verifying admin access…</p></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script>
+let inventory=[];
+(async function init(){try{await adminGuard();await loadInventory();}catch(error){console.error("Content inventory init failed:",error);}})();
+function sectionFor(url){const p=new URL(url).pathname.toLowerCase();if(p.startsWith("/jobs/")||p.includes("/job-"))return"jobs";if(/yojana|scheme|pm-kisan|ayushman|pension|ujjwala|awas/.test(p))return"schemes";if(p.startsWith("/service")||p.startsWith("/services/"))return"services";if(p.startsWith("/tools/")||p.includes("calculator"))return"tools";return"other";}
+function safeDate(value){if(!value)return"—";const d=new Date(value);return Number.isNaN(d.getTime())?"—":d.toLocaleDateString("en-IN",{year:"numeric",month:"short",day:"2-digit"});}
+async function sitemapUrls(url,seen=new Set(),depth=0){if(depth>3||seen.has(url))return[];seen.add(url);const response=await fetch(url,{cache:"no-store",credentials:"same-origin"});if(!response.ok)throw new Error("Sitemap request failed ("+response.status+")");const xml=new DOMParser().parseFromString(await response.text(),"application/xml");if(xml.querySelector("parsererror"))throw new Error("Sitemap XML could not be parsed");const root=xml.documentElement.localName;const nodes=[...xml.getElementsByTagNameNS("*",root==="sitemapindex"?"sitemap":"url")];if(root==="sitemapindex"){const nested=nodes.map(n=>n.getElementsByTagNameNS("*","loc")[0]?.textContent?.trim()).filter(Boolean).filter(u=>new URL(u).origin===location.origin);const groups=await Promise.all(nested.map(u=>sitemapUrls(u,seen,depth+1)));return groups.flat();}if(root!=="urlset")throw new Error("Unsupported sitemap format");return nodes.map(n=>({url:n.getElementsByTagNameNS("*","loc")[0]?.textContent?.trim(),lastmod:n.getElementsByTagNameNS("*","lastmod")[0]?.textContent?.trim()||""})).filter(x=>{try{return x.url&&new URL(x.url).origin===location.origin;}catch{return false;}});}
+async function loadInventory(){const status=document.getElementById("cm-status");status.textContent="Reading sitemap.xml…";document.getElementById("cm-rows").innerHTML="<tr><td colspan='3'>Loading…</td></tr>";try{inventory=await sitemapUrls(new URL("../sitemap.xml",location.href).href);const counts={jobs:0,schemes:0,services:0,tools:0,other:0};inventory.forEach(x=>counts[sectionFor(x.url)]++);document.getElementById("cm-total").textContent=inventory.length;document.getElementById("cm-jobs").textContent=counts.jobs;document.getElementById("cm-schemes").textContent=counts.schemes;document.getElementById("cm-other").textContent=counts.other+counts.services+counts.tools;status.textContent="Loaded "+inventory.length+" same-origin URLs from the public sitemap. This is an inventory, not an indexation report.";renderRows();}catch(error){inventory=[];["cm-total","cm-jobs","cm-schemes","cm-other"].forEach(id=>document.getElementById(id).textContent="—");status.textContent="Could not read sitemap: "+error.message+". Check that ../sitemap.xml is publicly accessible.";document.getElementById("cm-rows").innerHTML="<tr><td colspan='3'>Sitemap unavailable.</td></tr>";document.getElementById("cm-count").textContent="No URL data is being assumed or fabricated.";}}
+function renderRows(){const q=document.getElementById("cm-search").value.trim().toLowerCase(),section=document.getElementById("cm-section").value;const rows=inventory.filter(x=>(!q||x.url.toLowerCase().includes(q))&&(section==="all"||sectionFor(x.url)===section));document.getElementById("cm-rows").innerHTML=rows.length?rows.slice(0,300).map(x=>{const label=sectionFor(x.url);return"<tr><td><a href='"+x.url.replace(/&/g,"&amp;").replace(/'/g,"&#39;")+"' target='_blank' rel='noopener noreferrer'>"+x.url.replace(/&/g,"&amp;").replace(/</g,"&lt;")+"</a></td><td>"+label+"</td><td>"+safeDate(x.lastmod)+"</td></tr>";}).join(""):"<tr><td colspan='3'>No matching URLs.</td></tr>";document.getElementById("cm-count").textContent="Showing "+Math.min(rows.length,300)+" of "+rows.length+" matching URLs (maximum 300 rows displayed).";}
+document.getElementById("cm-search").addEventListener("input",renderRows);document.getElementById("cm-section").addEventListener("change",renderRows);document.getElementById("cm-refresh").addEventListener("click",loadInventory);
+</script>
+</body>
+</html>
