@@ -65,7 +65,8 @@ The migration deliberately does not change `subscribers`, `csc_leads`, `csc_feed
 3. Updated `content-change-requests.sql` so fresh schema setup grants UPDATE only on review-decision fields.
 4. Added `admin-leads-notifications-rls.sql` for subscriber, CSC/Sahayak lead, status-vote and push campaign grants.
 5. Added `admin-rpc-grants-hardening.sql` to explicitly scope poster table privileges and push RPC execution grants.
-6. Added `content-change-requests-hardening.sql` as a transaction-wrapped migration for an existing deployment. It resets browser table privileges and re-grants only SELECT, INSERT, and the five permitted UPDATE columns. It does not change or delete rows.
+6. Added `admin-definer-searchpath-hardening.sql` to revoke untrusted schema CREATE and pin SECURITY DEFINER search paths.
+7. Added `content-change-requests-hardening.sql` as a transaction-wrapped migration for an existing deployment. It resets browser table privileges and re-grants only SELECT, INSERT, and the five permitted UPDATE columns. It does not change or delete rows.
 
 ## Subscriber, lead and notification grant hardening
 
@@ -95,6 +96,17 @@ Added `supabase/admin-rpc-grants-hardening.sql`:
 - Visitor push RPCs (`push_public_key`, `push_subscribe`, `push_unsubscribe`): removes implicit PUBLIC EXECUTE and explicitly grants anon/authenticated execution.
 
 The migration does not alter records. It assumes the referenced tables and functions were created by `daily-posters.sql` and `push.sql`.
+
+## SECURITY DEFINER search-path hardening
+
+Added `supabase/admin-definer-searchpath-hardening.sql`:
+
+- Revokes schema-level CREATE on `public` from `PUBLIC`, `anon`, and `authenticated`, while retaining schema USAGE for API roles.
+- Pins the search path for the checked-in push, service-request, poster logging and CSC vote trigger SECURITY DEFINER functions to `pg_catalog, public, extensions`.
+- The anonymous analytics heartbeat already uses an empty search path and fully-qualified object names, so it is left unchanged.
+- This prevents untrusted API roles from creating shadow objects in `public` and places system catalog functions ahead of application schemas.
+
+This migration assumes the listed functions already exist. It does not change rows. Review compatibility with any custom deployment process that legitimately creates objects in `public` as anon/authenticated before applying.
 
 ## Remaining checks before calling the database secure
 
