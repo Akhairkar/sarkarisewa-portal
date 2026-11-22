@@ -44,6 +44,12 @@ create index if not exists page_views_session_idx on page_views (session_id);
 
 alter table page_views enable row level security;
 
+-- Explicit least-privilege table grants: anonymous visitors may insert
+-- telemetry only; authenticated users receive no table access by default.
+revoke all on public.page_views from public, anon, authenticated;
+grant insert on public.page_views to anon;
+grant select on public.page_views to authenticated;
+
 -- The public site can insert its own page view, but can never read any
 -- back — and crucially, a row can only be inserted while there is NO
 -- logged-in Supabase auth session on the request (matches the client-side
@@ -75,20 +81,43 @@ alter table active_sessions add column if not exists last_seen timestamptz not n
 
 alter table active_sessions enable row level security;
 
+-- Explicit least-privilege grants. Anonymous clients can create a heartbeat
+-- and update only its mutable telemetry columns; they cannot change the
+-- session key or read the active-session table.
+revoke all on public.active_sessions from public, anon, authenticated;
+grant insert on public.active_sessions to anon;
+grant update (page_path, last_seen) on public.active_sessions to anon;
+grant select on public.active_sessions to authenticated;
+
 drop policy if exists "Anonymous visitors can upsert their own session" on active_sessions;
 create policy "Anonymous visitors can upsert their own session"
   on active_sessions for insert
-  with check (auth.role() = 'anon');
+  to anon
+  with check (
+    auth.role() = 'anon'
+    and page_path ~ '^/'
+    and length(page_path) <= 500
+    and last_seen >= now() - interval '5 minutes'
+    and last_seen <= now() + interval '2 minutes'
+  );
 
 drop policy if exists "Anonymous visitors can update their own session" on active_sessions;
 create policy "Anonymous visitors can update their own session"
   on active_sessions for update
+  to anon
   using (auth.role() = 'anon')
-  with check (auth.role() = 'anon');
+  with check (
+    auth.role() = 'anon'
+    and page_path ~ '^/'
+    and length(page_path) <= 500
+    and last_seen >= now() - interval '5 minutes'
+    and last_seen <= now() + interval '2 minutes'
+  );
 
 drop policy if exists "Authenticated admin can read active_sessions" on active_sessions;
 create policy "Authenticated admin can read active_sessions"
   on active_sessions for select
+  to authenticated
   using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
 
 -- ---------------------------------------------------------------------------
