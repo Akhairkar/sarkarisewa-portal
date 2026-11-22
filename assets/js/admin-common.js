@@ -34,11 +34,22 @@
       if (loading) loading.innerHTML = "<p class='loading'>Backend not configured.</p>";
       throw new Error("Backend not configured");
     }
-    const { data } = await client.auth.getSession();
-    if (!data || !data.session) {
+    const { data, error } = await client.auth.getSession();
+    if (error || !data || !data.session) {
       location.href = "login.html";
       throw new Error("Not logged in");
     }
+
+    // Only trusted app_metadata can grant admin access. user_metadata is
+    // user-editable and must never be used for authorization.
+    const appRole = data.session.user?.app_metadata?.role;
+    if (appRole !== "admin") {
+      if (loading) loading.innerHTML = "<p class='loading'>This account does not have admin access.</p>";
+      const wrap = document.getElementById("dash-wrap");
+      if (wrap) wrap.hidden = true;
+      throw new Error("Admin role required");
+    }
+
     const who = document.getElementById("whoami");
     if (who) who.textContent = "Logged in as " + data.session.user.email;
     const logout = document.getElementById("logout");
