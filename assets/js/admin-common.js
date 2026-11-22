@@ -12,6 +12,7 @@
     ["seo.html", "🔎 SEO Control Center"],
     ["api-payments.html", "🔌 API & Payments"],
     ["analytics.html", "📈 Analytics"],
+    ["health.html", "🩺 System Health"],
     ["subscribers.html", "📬 Subscribers"],
     ["csc.html", "🏬 CSC Claims"],
     ["sahayak.html", "🤝 Seva Sahayak"],
