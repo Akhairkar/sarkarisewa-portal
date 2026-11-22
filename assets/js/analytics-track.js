@@ -174,9 +174,10 @@
         // Keep session alive
         sessionStorage.setItem("ss_session_active", Date.now().toString());
         
-        client.from("active_sessions")
-          .upsert({ session_id: sessionId, page_path: pagePath, last_seen: new Date().toISOString() }, { onConflict: "session_id" })
-          .then(() => {}, () => {});
+        client.rpc("analytics_heartbeat", {
+          p_session_id: sessionId,
+          p_page_path: pagePath
+        }).then(() => {}, () => {});
       };
       
       heartbeat(); // Fire immediately
