@@ -13,6 +13,7 @@
     ["api-payments.html", "🔌 API & Payments"],
     ["analytics.html", "📈 Analytics"],
     ["health.html", "🩺 System Health"],
+    ["backup.html", "💾 Backup & Recovery"],
     ["subscribers.html", "📬 Subscribers"],
     ["csc.html", "🏬 CSC Claims"],
     ["sahayak.html", "🤝 Seva Sahayak"],
