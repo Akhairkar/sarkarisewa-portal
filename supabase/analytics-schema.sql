@@ -98,7 +98,7 @@ drop function if exists analytics_summary();
 create function analytics_summary()
 returns table (total_visitors bigint, today_visitors bigint, online_users bigint, total_views bigint)
 language sql
-security definer
+security invoker
 set search_path = public
 as $$
   select
@@ -112,7 +112,7 @@ drop function if exists analytics_top_pages(int);
 create function analytics_top_pages(limit_count int default 10)
 returns table (page_path text, views bigint)
 language sql
-security definer
+security invoker
 set search_path = public
 as $$
   select page_path, count(*) as views
@@ -126,7 +126,7 @@ drop function if exists analytics_traffic_sources();
 create function analytics_traffic_sources()
 returns table (traffic_source text, views bigint)
 language sql
-security definer
+security invoker
 set search_path = public
 as $$
   select traffic_source, count(*) as views
@@ -139,7 +139,7 @@ drop function if exists analytics_device_types();
 create function analytics_device_types()
 returns table (device_type text, views bigint)
 language sql
-security definer
+security invoker
 set search_path = public
 as $$
   select device_type, count(*) as views
@@ -152,7 +152,7 @@ drop function if exists analytics_daily_views(int);
 create function analytics_daily_views(days_count int default 30)
 returns table (day date, views bigint)
 language sql
-security definer
+security invoker
 set search_path = public
 as $$
   select date(created_at) as day, count(*) as views
