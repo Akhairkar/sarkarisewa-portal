@@ -108,6 +108,24 @@ Added `supabase/admin-definer-searchpath-hardening.sql`:
 
 This migration assumes the listed functions already exist. It does not change rows. Review compatibility with any custom deployment process that legitimately creates objects in `public` as anon/authenticated before applying.
 
+## Additional application-table and RPC review
+
+The following checked-in schema files were reviewed for ownership policies, public access and function execution:
+
+| Surface | Source-level finding |
+|---|---|
+| `project_report_drafts` | RLS limits all operations to rows where `auth.uid() = user_id`. This is an owner-scoped draft, not an admin-wide table. |
+| `customers` | RLS limits INSERT, SELECT and UPDATE to the authenticated user's own `id`; no public SELECT policy is defined. |
+| `comments` | Public SELECT is limited to visible comments and public INSERT is constrained by name/message length and initial visible status. Admin moderation policies use `public.is_admin()` in the security-hardening migration. Public visible-on-insert may attract spam; changing moderation behavior is a product decision and was not changed here. |
+| `search_queries` | Visitors can INSERT only; admin SELECT is protected by `public.is_admin()`. Input constraints limit query length, 7+ digit runs, result count and clicked path. |
+| `search_stats(int)` | SECURITY DEFINER checks `public.is_admin()`; added to the function search-path hardening migration. Its `p_days` input is not range-limited in the current function, so very large ranges may be expensive. |
+| `csc_centres` / `csc_nearby` | Public listing access is limited to selected location/contact display columns by the CSC nearby migration; the nearest-centre function is SECURITY INVOKER and bounds coordinates, degree range and result count. The separate `csc_centres` and legacy `csc_centers` spellings appear in different migrations and must be reconciled against the live schema before applying grants. |
+| `services`, `blog_posts`, `job_alerts`, `exam_calendar`, `deadlines` | Public read policies are intended for published rows; admin write/read policies check trusted `app_metadata.role`. Existing source migrations do not uniformly define explicit table grants, so actual grants still need live inspection. |
+
+The search-path hardening migration now also pins `public.search_stats(int)` and `public.is_admin()`. The latter is an invoker SQL helper, not a SECURITY DEFINER function; the explicit path simply makes its schema dependencies deterministic.
+
+No additional broad grants or policies were added for these tables because they have user-owned or public-facing workflows, and changing their privileges without verifying the deployed table names, grants and callers could break existing site features.
+
 ## Remaining checks before calling the database secure
 
 - Apply the reviewed migrations in Supabase SQL Editor only after an operator reviews them.
