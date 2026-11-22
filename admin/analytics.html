@@ -110,26 +110,13 @@
   let SUPABASE_CLIENT = null;
 
   (async function init() {
-    SUPABASE_CLIENT = await getSupabaseClient();
-    if (!SUPABASE_CLIENT) {
-      document.getElementById("dash-loading").innerHTML = "<p class='loading'>Backend not configured.</p>";
-      return;
+    try {
+      SUPABASE_CLIENT = await adminGuard();
+      await loadAnalytics();
+    } catch (error) {
+      console.error("Admin analytics initialization failed:", error);
     }
-    const { data } = await SUPABASE_CLIENT.auth.getSession();
-    if (!data || !data.session) {
-      window.location.href = "login.html";
-      return;
-    }
-    document.getElementById("whoami").textContent = "Logged in as " + data.session.user.email;
-    document.getElementById("dash-loading").hidden = true;
-    document.getElementById("dash-wrap").hidden = false;
-    loadAnalytics();
   })();
-
-  document.getElementById("logout").addEventListener("click", async function () {
-    if (SUPABASE_CLIENT) await SUPABASE_CLIENT.auth.signOut();
-    window.location.href = "login.html";
-  });
 
   function escapeHtml(str) {
     const div = document.createElement("div");
