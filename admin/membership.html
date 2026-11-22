@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Premium Membership — SarkariSewa Admin</title><meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/admin-theme.css?v=3">
+<script defer src="../assets/js/admin-theme-toggle.js"></script>
+<style>
+.mm-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.mm-stat{padding:15px;border:1px solid var(--admin-border);border-radius:12px;background:var(--admin-surface)}.mm-stat b{display:block;font-size:1.4rem;color:var(--admin-text)}.mm-stat span,.mm-muted{font-size:.8rem;color:var(--admin-text-muted)}.mm-toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:12px}.mm-toolbar input,.mm-toolbar select{padding:9px 11px;border:1px solid var(--admin-border);border-radius:9px;background:var(--admin-surface);color:var(--admin-text)}.mm-toolbar input{min-width:210px;flex:1}.mm-table-wrap{overflow:auto}.mm-table{width:100%;min-width:850px;border-collapse:collapse}.mm-table th,.mm-table td{padding:10px;border-bottom:1px solid var(--admin-border);text-align:left;font-size:.82rem}.mm-table th{font-size:.72rem;color:var(--admin-text-muted);text-transform:uppercase}.mm-note{padding:12px;border:1px solid var(--admin-border);border-radius:10px;font-size:.83rem;line-height:1.5;color:var(--admin-text-muted)}@media(max-width:760px){.mm-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style></head><body>
+<div class="admin-layout" id="dash-wrap" hidden>
+<aside class="admin-sidebar"><div class="admin-sidebar-brand"><div class="admin-sidebar-logo">S</div><div><div class="admin-sidebar-title">SarkariSewa</div><div class="admin-sidebar-subtitle">Admin Console</div></div></div><nav class="admin-nav"></nav><div class="admin-sidebar-footer"><button class="theme-toggle-btn" type="button">☀️ Light Mode</button><div id="whoami" class="mm-muted">Loading…</div><button class="logout-btn" id="logout" style="width:100%">Log out</button></div></aside>
+<main class="admin-main"><div class="admin-topbar"><div class="admin-page-title"><h1>Premium Membership</h1><p class="mm-muted">Ad-free plan subscriptions, payment status and expiry tracking.</p></div></div>
+<section class="dash-card"><div class="mm-stats">
+<div class="mm-stat"><b id="total">—</b><span>Total membership records</span></div>
+<div class="mm-stat"><b id="active">—</b><span>Active and unexpired</span></div>
+<div class="mm-stat"><b id="expired">—</b><span>Expired</span></div>
+<div class="mm-stat"><b id="revenue">₹—</b><span>Captured plan amount*</span></div>
+</div><p class="mm-muted" style="margin-top:10px">*Sum of records marked active, expired or cancelled; excludes pending and refunded. This is recorded plan value, not a bank settlement figure.</p><p id="status" class="mm-muted" role="status">Loading membership records…</p></section>
+<section class="dash-card"><div class="mm-toolbar"><input id="search" type="search" placeholder="Search member email or reference"><select id="state"><option value="">All statuses</option><option value="active">Active</option><option value="expired">Expired</option><option value="cancelled">Cancelled</option><option value="pending">Pending</option><option value="refunded">Refunded</option></select><select id="plan"><option value="">All plans</option><option value="daily_ad_free">₹1 / day</option><option value="monthly_ad_free">₹30 / month</option></select><button id="refresh" class="theme-toggle-btn" type="button">Refresh</button></div>
+<div class="mm-table-wrap"><table class="mm-table"><thead><tr><th>Member</th><th>Reference</th><th>Plan</th><th>Amount</th><th>Status</th><th>Start</th><th>Expiry</th><th>Payment Ref</th></tr></thead><tbody id="rows"><tr><td colspan="8">Loading…</td></tr></tbody></table></div></section>
+<div class="mm-note"><strong>Safety:</strong> This is a read-only reporting screen. It cannot activate, extend, cancel or refund a membership. Those actions must be performed by a trusted server-side workflow after verifying the payment provider. The reporting table is populated only after a secure importer is configured. No sample or fabricated customer records are displayed.</div>
+</main></div><div id="dash-loading"><p class="loading">Checking admin access…</p></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="../assets/js/supabase-client.js"></script><script src="../assets/js/admin-common.js"></script>
+<script>
+let client=null,records=[];const $=id=>document.getElementById(id);
+const esc=v=>adminEsc(v);const inr=v=>new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:2}).format(Number(v)||0);
+const date=v=>v?new Date(v).toLocaleString("en-IN",{timeZone:"Asia/Kolkata"}):"—";
+function render(){
+ const q=$("search").value.trim().toLowerCase(),state=$("state").value,plan=$("plan").value;
+ const list=records.filter(r=>(!q||[r.member_email,r.member_reference,r.payment_reference].join(" ").toLowerCase().includes(q))&&(!state||r.status===state)&&(!plan||r.plan_code===plan));
+ $("rows").innerHTML=list.length?list.map(r=>'<tr><td>'+esc(r.member_email||"—")+'</td><td>'+esc(r.member_reference)+'</td><td>'+ (r.plan_code==="daily_ad_free"?"₹1 / day":"₹30 / month")+'</td><td>'+esc(inr(r.amount_inr))+'</td><td>'+esc(r.status)+'</td><td>'+esc(date(r.starts_at))+'</td><td>'+esc(date(r.expires_at))+'</td><td>'+esc(r.payment_reference||"—")+'</td></tr>').join(""):'<tr><td colspan="8">No membership records match these filters.</td></tr>';
+}
+async function load(){
+ $("status").textContent="Loading verified membership records…";
+ const {data,error}=await client.from("premium_memberships").select("member_reference,member_email,plan_code,amount_inr,status,starts_at,expires_at,payment_reference").order("updated_at",{ascending:false}).limit(2000);
+ if(error){$("rows").innerHTML='<tr><td colspan="8">Apply supabase/premium-memberships.sql first. '+esc(error.message)+'</td></tr>';$("status").textContent="Database setup required. No membership data is being guessed.";return;}
+ records=data||[];const now=Date.now();
+ const active=records.filter(r=>r.status==="active"&&(!r.expires_at||new Date(r.expires_at).getTime()>now)).length;
+ const expired=records.filter(r=>r.status==="expired"||(r.status==="active"&&r.expires_at&&new Date(r.expires_at).getTime()<=now)).length;
+ const recognized=records.filter(r=>["active","expired","cancelled"].includes(r.status));
+ $("total").textContent=records.length.toLocaleString("en-IN");$("active").textContent=active.toLocaleString("en-IN");$("expired").textContent=expired.toLocaleString("en-IN");
+ $("revenue").textContent=inr(recognized.reduce((sum,r)=>sum+Number(r.amount_inr||0),0));
+ $("status").textContent=records.length+" membership record(s) loaded · read-only view.";
+ render();
+}
+["search","state","plan"].forEach(id=>$(id).addEventListener(id==="search"?"input":"change",render));$("refresh").addEventListener("click",load);
+(async()=>{try{client=await adminGuard();await load()}catch(e){console.error("Membership center initialization failed:",e)}})();
+</script></body></html>
