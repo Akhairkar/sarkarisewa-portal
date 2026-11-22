@@ -51,15 +51,15 @@ a.ov-stat{text-decoration:none;color:inherit}
 <section class="dash-card">
   <div class="dash-analytics-head">
     <div><h3 style="margin:0">Traffic Insights</h3><p class="dash-muted">Website ke actual Supabase analytics records</p></div>
-    <label for="traffic-range">Period
+    <label for="traffic-range">Daily chart period
       <select id="traffic-range"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option></select>
     </label>
   </div>
   <div class="dash-insight-grid">
-    <div><h4>Daily page views</h4><div id="traffic-daily" class="dash-bars"><p class="dash-muted">Loading…</p></div></div>
-    <div><h4>Top pages</h4><div id="traffic-pages" class="dash-rank-list"><p class="dash-muted">Loading…</p></div></div>
-    <div><h4>Traffic sources</h4><div id="traffic-sources" class="dash-rank-list"><p class="dash-muted">Loading…</p></div></div>
-    <div><h4>Devices</h4><div id="traffic-devices" class="dash-rank-list"><p class="dash-muted">Loading…</p></div></div>
+    <div><h4>Daily page views</h4><div id="traffic-daily" class="dash-bars" role="img" aria-label="Daily page views chart"><p class="dash-muted">Loading…</p></div></div>
+    <div><h4>Top pages <span class="dash-muted">(all time)</span></h4><div id="traffic-pages" class="dash-rank-list"><p class="dash-muted">Loading…</p></div></div>
+    <div><h4>Traffic sources <span class="dash-muted">(all time)</span></h4><div id="traffic-sources" class="dash-rank-list"><p class="dash-muted">Loading…</p></div></div>
+    <div><h4>Devices <span class="dash-muted">(all time)</span></h4><div id="traffic-devices" class="dash-rank-list"><p class="dash-muted">Loading…</p></div></div>
   </div>
   <p class="dash-muted" id="traffic-status" role="status">Analytics data loading…</p>
 </section>
@@ -145,7 +145,7 @@ a.ov-stat{text-decoration:none;color:inherit}
         item.append(bar, label); host.append(item);
       });
     }
-    status.textContent = failed ? "Kuch analytics queries fail hui hain. Supabase SQL/RLS setup aur permissions check karein." : "Data period: last " + days + " days. Counts are page views, not unique visitors.";
+    status.textContent = failed ? "Kuch analytics queries fail hui hain. Supabase SQL/RLS setup aur permissions check karein." : "Daily chart: last " + days + " days. Top pages, sources aur devices: all-time totals. Counts are page views, not unique visitors.";
   }
   range.addEventListener("change", loadTraffic);
   loadTraffic();
