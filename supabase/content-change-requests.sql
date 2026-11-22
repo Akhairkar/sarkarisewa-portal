@@ -30,7 +30,10 @@ create index if not exists content_change_requests_path_idx
 alter table public.content_change_requests enable row level security;
 revoke all on public.content_change_requests from anon, public;
 revoke all on public.content_change_requests from authenticated;
-grant select, insert, update on public.content_change_requests to authenticated;
+grant select, insert on public.content_change_requests to authenticated;
+-- Reviewers may update decision metadata only; proposal content and creator fields stay immutable.
+grant update (status, admin_note, reviewed_by, reviewed_at, updated_at)
+  on public.content_change_requests to authenticated;
 
 drop policy if exists "Admins can read content change requests" on public.content_change_requests;
 create policy "Admins can read content change requests"
