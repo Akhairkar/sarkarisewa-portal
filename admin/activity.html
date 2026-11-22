@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activity Logs — SarkariSewa Admin</title><meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/admin-theme.css?v=3">
+<script defer src="../assets/js/admin-theme-toggle.js"></script>
+<style>
+.al-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.al-toolbar input,.al-toolbar select{padding:10px 12px;border:1px solid var(--admin-border);border-radius:9px;background:var(--admin-surface);color:var(--admin-text)}
+.al-wrap{overflow:auto}.al-table{width:100%;min-width:650px;border-collapse:collapse}.al-table th,.al-table td{padding:11px 10px;border-bottom:1px solid var(--admin-border);text-align:left;font-size:.83rem}.al-table th{font-size:.73rem;color:var(--admin-text-muted);text-transform:uppercase}.al-muted{font-size:.82rem;color:var(--admin-text-muted)}
+</style></head><body>
+<div class="admin-layout" id="dash-wrap" hidden>
+<aside class="admin-sidebar"><div class="admin-sidebar-brand"><div class="admin-sidebar-logo">S</div><div><div class="admin-sidebar-title">SarkariSewa</div><div class="admin-sidebar-subtitle">Admin Console</div></div></div><nav class="admin-nav"></nav>
+<div class="admin-sidebar-footer"><button class="theme-toggle-btn" type="button">☀️ Light Mode</button><div id="whoami" style="font-size:.78rem;color:var(--admin-text-muted)">Loading…</div><button class="logout-btn" id="logout" style="width:100%">Log out</button></div></aside>
+<main class="admin-main"><div class="admin-topbar"><div class="admin-page-title"><h1>Activity Logs</h1><p class="al-muted">Admin page access history. Customer data and form contents are not recorded.</p></div></div>
+<section class="dash-card"><div class="al-toolbar"><input id="search" type="search" placeholder="Search admin email or page"><select id="period"><option value="1">Last 24 hours</option><option value="7" selected>Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select><button class="theme-toggle-btn" id="refresh" type="button">Refresh</button></div>
+<p id="status" class="al-muted" role="status">Loading activity…</p><div class="al-wrap"><table class="al-table"><thead><tr><th>Date &amp; time (IST)</th><th>Admin</th><th>Action</th><th>Page / resource</th></tr></thead><tbody id="rows"><tr><td colspan="4">Loading…</td></tr></tbody></table></div></section></main></div>
+<div class="admin-wrap-login" id="dash-loading"><p class="loading">Checking admin access…</p></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="../assets/js/supabase-client.js"></script><script src="../assets/js/admin-common.js"></script>
+<script>
+let client=null,logs=[];const $=id=>document.getElementById(id);const esc=v=>adminEsc(v);
+function render(){
+ const q=$("search").value.trim().toLowerCase();
+ const filtered=logs.filter(x=>[x.actor_email,x.action,x.resource].join(" ").toLowerCase().includes(q));
+ $("rows").innerHTML=filtered.length?filtered.map(x=>'<tr><td>'+esc(new Date(x.created_at).toLocaleString("en-IN",{timeZone:"Asia/Kolkata"}))+'</td><td>'+esc(x.actor_email||x.actor_id)+'</td><td>'+esc(x.action)+'</td><td>'+esc(x.resource)+'</td></tr>').join(""):'<tr><td colspan="4">No activity found for this period.</td></tr>';
+ $("status").textContent=filtered.length+" record(s) shown · Latest 500 records maximum";
+}
+async function load(){
+ $("status").textContent="Loading activity…";const days=Number($("period").value)||7;
+ const since=new Date(Date.now()-days*86400000).toISOString();
+ const {data,error}=await client.from("admin_activity_logs").select("id,actor_id,actor_email,action,resource,created_at").gte("created_at",since).order("created_at",{ascending:false}).limit(500);
+ if(error){$("rows").innerHTML='<tr><td colspan="4">Could not load logs. Apply supabase/admin-activity-logs.sql first. '+esc(error.message)+'</td></tr>';$("status").textContent="Activity log database setup required.";return}
+ logs=data||[];render();
+}
+$("search").addEventListener("input",render);$("period").addEventListener("change",load);$("refresh").addEventListener("click",load);
+(async()=>{try{client=await adminGuard();await load()}catch(e){console.error("Activity log page failed:",e)}})();
+</script></body></html>
