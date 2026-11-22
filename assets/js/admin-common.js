@@ -83,7 +83,9 @@
       const query=q.trim().toLocaleLowerCase();
       const pages=NAV.map(([href,label])=>({label:label.replace(/^\S+\s/,""),icon:label.split(" ")[0],href,detail:"Admin page",group:"Pages"}));
       const shortcuts=actions.map(x=>({...x,icon:"↗",group:"Quick actions"}));
-      let list=[...shortcuts,...pages];
+      let recent=[];
+      if(!query){try{const saved=JSON.parse(sessionStorage.getItem("admin_recent_pages")||"[]");recent=saved.map(href=>pages.find(x=>x.href===href)).filter(Boolean).map(x=>({...x,group:"Recently opened"}));}catch(_){}}
+      let list=[...recent,...shortcuts,...pages];
       if(query)list=list.filter(x=>(x.label+" "+x.href+" "+x.detail).toLocaleLowerCase().includes(query));
       return list.slice(0,30);
     }
