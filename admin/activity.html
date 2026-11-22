@@ -5,32 +5,71 @@
 <link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/admin-theme.css?v=4">
 <script defer src="../assets/js/admin-theme-toggle.js"></script>
 <style>
-.al-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.al-toolbar input,.al-toolbar select{padding:10px 12px;border:1px solid var(--admin-border);border-radius:9px;background:var(--admin-surface);color:var(--admin-text)}
-.al-wrap{overflow:auto}.al-table{width:100%;min-width:650px;border-collapse:collapse}.al-table th,.al-table td{padding:11px 10px;border-bottom:1px solid var(--admin-border);text-align:left;font-size:.83rem}.al-table th{font-size:.73rem;color:var(--admin-text-muted);text-transform:uppercase}.al-muted{font-size:.82rem;color:var(--admin-text-muted)}
+.al-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.al-toolbar input,.al-toolbar select{min-width:150px;padding:10px 12px;border:1px solid var(--admin-border);border-radius:9px;background:var(--admin-surface);color:var(--admin-text)}
+.al-wrap{overflow:auto}.al-table{width:100%;min-width:680px;border-collapse:collapse}.al-table th,.al-table td{padding:11px 10px;border-bottom:1px solid var(--admin-border);text-align:left;font-size:.83rem;vertical-align:top}.al-table th{font-size:.73rem;color:var(--admin-text-muted);text-transform:uppercase}.al-muted{font-size:.82rem;color:var(--admin-text-muted)}
+.al-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px}.al-pages{display:flex;align-items:center;gap:8px}.al-btn{padding:9px 12px;border:1px solid var(--admin-border);border-radius:9px;background:var(--admin-surface);color:var(--admin-text);cursor:pointer}.al-btn:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:600px){.al-toolbar>*{flex:1 1 100%;width:100%;box-sizing:border-box}.al-controls{align-items:flex-start;flex-direction:column}}
 </style></head><body>
 <div class="admin-layout" id="dash-wrap" hidden>
 <aside class="admin-sidebar"><div class="admin-sidebar-brand"><div class="admin-sidebar-logo">S</div><div><div class="admin-sidebar-title">SarkariSewa</div><div class="admin-sidebar-subtitle">Admin Console</div></div></div><nav class="admin-nav"></nav>
 <div class="admin-sidebar-footer"><button class="theme-toggle-btn" type="button">☀️ Light Mode</button><div id="whoami" style="font-size:.78rem;color:var(--admin-text-muted)">Loading…</div><button class="logout-btn" id="logout" style="width:100%">Log out</button></div></aside>
-<main class="admin-main"><div class="admin-topbar"><div class="admin-page-title"><h1>Activity Logs</h1><p class="al-muted">Admin page access history. Customer data and form contents are not recorded.</p></div></div>
-<section class="dash-card"><div class="al-toolbar"><input id="search" type="search" placeholder="Search admin email or page"><select id="period"><option value="1">Last 24 hours</option><option value="7" selected>Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select><button class="theme-toggle-btn" id="refresh" type="button">Refresh</button></div>
-<p id="status" class="al-muted" role="status">Loading activity…</p><div class="al-wrap"><table class="al-table"><thead><tr><th>Date &amp; time (IST)</th><th>Admin</th><th>Action</th><th>Page / resource</th></tr></thead><tbody id="rows"><tr><td colspan="4">Loading…</td></tr></tbody></table></div></section></main></div>
+<main class="admin-main"><div class="admin-topbar"><div class="admin-page-title"><h1>Activity Logs</h1><p class="al-muted">Append-only admin audit metadata. Customer data and form contents are not recorded.</p></div></div>
+<section class="dash-card">
+<div class="al-toolbar">
+<input id="search" type="search" placeholder="Search admin, action or resource" aria-label="Search activity logs">
+<select id="actionFilter" aria-label="Filter by action"><option value="">All actions</option></select>
+<select id="period" aria-label="Date range"><option value="1">Last 24 hours</option><option value="7" selected>Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select>
+<button class="al-btn" id="refresh" type="button">↻ Refresh</button><button class="al-btn" id="export" type="button">↓ Export CSV</button>
+</div>
+<p id="status" class="al-muted" role="status" aria-live="polite">Loading activity…</p>
+<div class="al-wrap"><table class="al-table"><thead><tr><th>Date &amp; time (IST)</th><th>Admin</th><th>Action</th><th>Page / resource</th></tr></thead><tbody id="rows"><tr><td colspan="4">Loading…</td></tr></tbody></table></div>
+<div class="al-controls"><span id="pageInfo" class="al-muted">—</span><div class="al-pages"><button class="al-btn" id="prev" type="button" disabled>← Previous</button><button class="al-btn" id="next" type="button" disabled>Next →</button></div></div>
+<p class="al-muted">Showing up to the latest 500 records returned by the database. CSV export includes only records currently loaded and matching your filters.</p>
+</section></main></div>
 <div class="admin-wrap-login" id="dash-loading"><p class="loading">Checking admin access…</p></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="../assets/js/supabase-client.js"></script><script src="../assets/js/admin-common.js"></script>
 <script>
-let client=null,logs=[];const $=id=>document.getElementById(id);const esc=v=>adminEsc(v);
+let client=null,logs=[],page=0;const PAGE_SIZE=50;const $=id=>document.getElementById(id);const esc=v=>adminEsc(v);
+function filteredLogs(){
+ const q=$("search").value.trim().toLocaleLowerCase(),action=$("actionFilter").value;
+ return logs.filter(x=>(!action||x.action===action)&&[x.actor_email,x.actor_id,x.action,x.resource].join(" ").toLocaleLowerCase().includes(q));
+}
 function render(){
- const q=$("search").value.trim().toLowerCase();
- const filtered=logs.filter(x=>[x.actor_email,x.action,x.resource].join(" ").toLowerCase().includes(q));
- $("rows").innerHTML=filtered.length?filtered.map(x=>'<tr><td>'+esc(new Date(x.created_at).toLocaleString("en-IN",{timeZone:"Asia/Kolkata"}))+'</td><td>'+esc(x.actor_email||x.actor_id)+'</td><td>'+esc(x.action)+'</td><td>'+esc(x.resource)+'</td></tr>').join(""):'<tr><td colspan="4">No activity found for this period.</td></tr>';
- $("status").textContent=filtered.length+" record(s) shown · Latest 500 records maximum";
+ const filtered=filteredLogs(),pages=Math.max(1,Math.ceil(filtered.length/PAGE_SIZE));page=Math.min(page,pages-1);
+ const start=page*PAGE_SIZE,shown=filtered.slice(start,start+PAGE_SIZE);
+ $("rows").innerHTML=shown.length?shown.map(x=>'<tr><td>'+esc(new Date(x.created_at).toLocaleString("en-IN",{timeZone:"Asia/Kolkata"}))+'</td><td>'+esc(x.actor_email||x.actor_id)+'</td><td>'+esc(x.action)+'</td><td>'+esc(x.resource)+'</td></tr>').join(""):'<tr><td colspan="4">No activity found for the selected filters.</td></tr>';
+ $("status").textContent=filtered.length+" matching record(s) · "+logs.length+" loaded";
+ $("pageInfo").textContent=filtered.length?("Showing "+(start+1)+"–"+Math.min(start+PAGE_SIZE,filtered.length)+" of "+filtered.length):"No matching records";
+ $("prev").disabled=page===0;$("next").disabled=page>=pages-1;
+}
+function populateActions(){
+ const select=$("actionFilter"),current=select.value,actions=[...new Set(logs.map(x=>x.action).filter(Boolean))].sort();
+ select.innerHTML='<option value="">All actions</option>'+actions.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join("");
+ if(actions.includes(current))select.value=current;
 }
 async function load(){
- $("status").textContent="Loading activity…";const days=Number($("period").value)||7;
- const since=new Date(Date.now()-days*86400000).toISOString();
- const {data,error}=await client.from("admin_activity_logs").select("id,actor_id,actor_email,action,resource,created_at").gte("created_at",since).order("created_at",{ascending:false}).limit(500);
- if(error){$("rows").innerHTML='<tr><td colspan="4">Could not load logs. Apply supabase/admin-activity-logs.sql first. '+esc(error.message)+'</td></tr>';$("status").textContent="Activity log database setup required.";return}
- logs=data||[];render();
+ $("status").textContent="Loading activity…";$("refresh").disabled=true;
+ const days=Number($("period").value)||7,since=new Date(Date.now()-days*86400000).toISOString();
+ try{
+  const {data,error}=await client.from("admin_activity_logs").select("id,actor_id,actor_email,action,resource,created_at").gte("created_at",since).order("created_at",{ascending:false}).limit(500);
+  if(error)throw error;
+  logs=data||[];page=0;populateActions();render();
+ }catch(error){
+  logs=[];$("rows").innerHTML='<tr><td colspan="4">Could not load logs. Confirm the existing admin_activity_logs SQL setup and authenticated admin permissions. '+esc(error.message||"Request failed")+'</td></tr>';
+  $("status").textContent="Activity log could not be loaded.";
+  $("pageInfo").textContent="—";$("prev").disabled=true;$("next").disabled=true;
+ }finally{$("refresh").disabled=false;}
 }
-$("search").addEventListener("input",render);$("period").addEventListener("change",load);$("refresh").addEventListener("click",load);
+function exportCsv(){
+ const rows=filteredLogs();if(!rows.length){$("status").textContent="No matching records to export.";return;}
+ const columns=["created_at","actor_email","actor_id","action","resource"];
+ const cell=value=>{let s=String(value??"");if(/^[=+@\\-\\t\\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';};
+ const csv=[columns.join(","),...rows.map(row=>columns.map(key=>cell(key==="created_at"?new Date(row[key]).toISOString():row[key])).join(","))].join("\r\n");
+ const blob=new Blob(["\\uFEFF",csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="admin-activity-logs-"+new Date().toISOString().slice(0,10)+".csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+$("search").addEventListener("input",()=>{page=0;render();});$("actionFilter").addEventListener("change",()=>{page=0;render();});$("period").addEventListener("change",load);
+$("refresh").addEventListener("click",load);$("export").addEventListener("click",exportCsv);
+$("prev").addEventListener("click",()=>{page=Math.max(0,page-1);render();});$("next").addEventListener("click",()=>{page++;render();});
 (async()=>{try{client=await adminGuard();await load()}catch(e){console.error("Activity log page failed:",e)}})();
 </script></body></html>
