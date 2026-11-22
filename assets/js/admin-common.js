@@ -21,6 +21,7 @@
     ["activity.html", "🧾 Activity Logs"],
     ["revenue.html", "💰 Revenue & AdSense"],
     ["membership.html", "⭐ Premium Membership"],
+    ["membership-lifecycle.html", "⏳ Membership Lifecycle"],
   ];
 
   function renderNav() {
