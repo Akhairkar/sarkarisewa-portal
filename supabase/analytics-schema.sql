@@ -44,12 +44,6 @@ create index if not exists page_views_session_idx on page_views (session_id);
 
 alter table page_views enable row level security;
 
--- Explicit least-privilege table grants: anonymous visitors may insert
--- telemetry only; authenticated users receive no table access by default.
-revoke all on public.page_views from public, anon, authenticated;
-grant insert on public.page_views to anon;
-grant select on public.page_views to authenticated;
-
 -- The public site can insert its own page view, but can never read any
 -- back — and crucially, a row can only be inserted while there is NO
 -- logged-in Supabase auth session on the request (matches the client-side
@@ -81,49 +75,21 @@ alter table active_sessions add column if not exists last_seen timestamptz not n
 
 alter table active_sessions enable row level security;
 
--- No direct anonymous table access. Heartbeats are written through the
--- narrowly scoped analytics_heartbeat() RPC below.
-revoke all on public.active_sessions from public, anon, authenticated;
-grant select on public.active_sessions to authenticated;
-
 drop policy if exists "Anonymous visitors can upsert their own session" on active_sessions;
+create policy "Anonymous visitors can upsert their own session"
+  on active_sessions for insert
+  with check (auth.role() = 'anon');
+
 drop policy if exists "Anonymous visitors can update their own session" on active_sessions;
+create policy "Anonymous visitors can update their own session"
+  on active_sessions for update
+  using (auth.role() = 'anon')
+  with check (auth.role() = 'anon');
+
 drop policy if exists "Authenticated admin can read active_sessions" on active_sessions;
 create policy "Authenticated admin can read active_sessions"
   on active_sessions for select
-  to authenticated
   using (coalesce((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin', false));
-
--- Anonymous users cannot read or write the table directly. This RPC accepts
--- only a session identifier and path, uses server time, validates inputs,
--- and updates only that session row. Session IDs remain untrusted telemetry.
-create or replace function public.analytics_heartbeat(p_session_id text, p_page_path text)
-returns void
-language plpgsql
-security definer
-set search_path = ''
-as $$
-begin
-  if auth.role() <> 'anon' then
-    raise exception 'Anonymous analytics role required';
-  end if;
-  if p_session_id is null or length(p_session_id) < 8 or length(p_session_id) > 100
-     or p_session_id !~ '^[A-Za-z0-9-]+$' then
-    raise exception 'Invalid analytics session identifier';
-  end if;
-  if p_page_path is null or p_page_path !~ '^/' or length(p_page_path) > 500 then
-    raise exception 'Invalid analytics page path';
-  end if;
-
-  insert into public.active_sessions (session_id, page_path, last_seen)
-  values (p_session_id, p_page_path, now())
-  on conflict (session_id) do update
-    set page_path = excluded.page_path,
-        last_seen = now();
-end;
-$$;
-revoke all on function public.analytics_heartbeat(text, text) from public, anon, authenticated;
-grant execute on function public.analytics_heartbeat(text, text) to anon;
 
 -- ---------------------------------------------------------------------------
 -- 3. RPC functions the dashboard's Analytics tab calls directly
@@ -132,7 +98,7 @@ drop function if exists analytics_summary();
 create function analytics_summary()
 returns table (total_visitors bigint, today_visitors bigint, online_users bigint, total_views bigint)
 language sql
-security invoker
+security definer
 set search_path = public
 as $$
   select
@@ -146,7 +112,7 @@ drop function if exists analytics_top_pages(int);
 create function analytics_top_pages(limit_count int default 10)
 returns table (page_path text, views bigint)
 language sql
-security invoker
+security definer
 set search_path = public
 as $$
   select page_path, count(*) as views
@@ -160,7 +126,7 @@ drop function if exists analytics_traffic_sources();
 create function analytics_traffic_sources()
 returns table (traffic_source text, views bigint)
 language sql
-security invoker
+security definer
 set search_path = public
 as $$
   select traffic_source, count(*) as views
@@ -173,7 +139,7 @@ drop function if exists analytics_device_types();
 create function analytics_device_types()
 returns table (device_type text, views bigint)
 language sql
-security invoker
+security definer
 set search_path = public
 as $$
   select device_type, count(*) as views
@@ -186,7 +152,7 @@ drop function if exists analytics_daily_views(int);
 create function analytics_daily_views(days_count int default 30)
 returns table (day date, views bigint)
 language sql
-security invoker
+security definer
 set search_path = public
 as $$
   select date(created_at) as day, count(*) as views
