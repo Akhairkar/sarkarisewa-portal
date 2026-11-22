@@ -97,7 +97,6 @@ create policy "Authenticated admin can read active_sessions"
 -- Anonymous users cannot read or write the table directly. This RPC accepts
 -- only a session identifier and path, uses server time, validates inputs,
 -- and updates only that session row. Session IDs remain untrusted telemetry.
-revoke all on function public.analytics_heartbeat(text, text) from public, anon, authenticated;
 create or replace function public.analytics_heartbeat(p_session_id text, p_page_path text)
 returns void
 language plpgsql
