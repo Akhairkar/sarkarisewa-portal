@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const refreshBtn = document.getElementById("csc-refresh-btn");
   if (!pendingList || !approvedList) return;
 
+  const adminClient = await adminGuard();
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const digits = (s) => { const d = String(s || "").replace(/\D/g, ""); return d.length > 10 ? d.slice(-10) : d; };
   const day = (d) => (d ? new Date(d).toLocaleDateString("en-IN") : "");
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     approvedList.innerHTML = '<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>';
     try {
       if (typeof getSupabaseClient !== "function") throw new Error("Supabase client not available.");
-      const client = await getSupabaseClient();
+      const client = adminClient;
       if (!client) throw new Error("Could not initialize Supabase.");
 
       listed = await fetch("/csc-centre/listings.json?t=" + Date.now()).then((r) => (r.ok ? r.json() : { rows: [] })).then((j) => Object.fromEntries((j.rows || []).map((x) => [x.id, x]))).catch(() => ({}));
@@ -175,7 +176,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const link = waLink(digits(c.owner_mobile), encodeURIComponent(lines.join("\n")));
     window.open(link, "_blank") || (window.location.href = link);
     try {
-      const client = await getSupabaseClient();
+      const client = adminClient;
       await client.from("csc_claims").update({ admin_notes: `${c.admin_notes ? c.admin_notes + "\n" : ""}[listed-msg] ${new Date().toISOString()}` }).eq("id", id);
       loadCSCData();
     } catch (e) { /* the message itself was opened; marking is best effort */ }
@@ -184,7 +185,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Owner photos go live at once; remove one that is not a real centre photo.
   window.removePhoto = async (id) => {
     if (!confirm("Remove this photo from the centre page?")) return;
-    const client = await getSupabaseClient();
+    const client = adminClient;
     const { error } = await client.from("csc_claims").update({ photo_url: null, updated_at: new Date().toISOString() }).eq("id", id);
     if (error) alert("Could not remove: " + error.message); else loadCSCData();
   };
@@ -247,7 +248,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       let code = "";
       if (makeCode) {
         code = newCode();
-        const client = await getSupabaseClient();
+        const client = adminClient;
         const { error } = await client.from("csc_claims").update({ edit_code_hash: await sha256(code) }).eq("id", id);
         if (error) throw error;
         c.edit_code_hash = "set";
@@ -283,7 +284,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const c = byId[id];
     if (!c || !confirm(noPhone ? `Approve "${c.centre_name}" WITHOUT phone/WhatsApp buttons?` : `Approve "${c.centre_name}" with phone? Only if the board photo came from the owner's WhatsApp.`)) return;
     try {
-      const client = await getSupabaseClient();
+      const client = adminClient;
       const now = new Date().toISOString();
       const { error } = await client
         .from("csc_claims")
@@ -301,7 +302,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const m = digits(c && c.owner_mobile);
     if (!c || !/^[6-9]\d{9}$/.test(m) || !confirm(`Show ${m} as call and WhatsApp number for "${c.centre_name}"?`)) return;
     try {
-      const client = await getSupabaseClient();
+      const client = adminClient;
       const { error } = await client.from("csc_claims").update({ public_phone: m, public_whatsapp: m }).eq("id", id);
       if (error) throw error;
       loadCSCData();
@@ -314,7 +315,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const reason = prompt("Enter rejection/revocation reason:");
     if (reason === null) return;
     try {
-      const client = await getSupabaseClient();
+      const client = adminClient;
       const { error } = await client
         .from("csc_claims")
         .update({ status: "rejected", rejection_reason: reason, reviewed_at: new Date().toISOString() })
