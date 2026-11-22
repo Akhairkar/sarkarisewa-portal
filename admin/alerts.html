@@ -5,7 +5,6 @@
 <main class="admin-main"><div class="admin-topbar"><div class="admin-page-title"><h1>🔔 Notification & Alert Center</h1><p style="color:var(--admin-text-muted);font-size:.86rem">Operational alerts from existing admin data sources. Counts only; no customer details or payment payloads.</p></div></div>
 <section class="dash-card"><div class="al-toolbar"><div><h3 style="margin:0">Live source checks</h3><p id="al-updated" class="al-muted">Not checked yet.</p></div><button class="theme-toggle-btn" id="al-refresh" type="button">↻ Refresh alerts</button></div><div id="al-summary" class="al-muted" role="status" style="margin-top:10px">Waiting for admin access…</div></section>
 <section class="dash-card"><h3 style="margin-top:0">Alert overview</h3><div class="al-grid">
-<div class="al-card"><div class="al-toolbar"><h3>Failed payment reports</h3><span class="al-state" id="al-pay-state">Checking</span></div><div class="al-count" id="al-pay-count">—</div><div class="al-muted">Records with status “failed” in premium_payment_reports.</div></div>
 <div class="al-card"><div class="al-toolbar"><h3>Queued push campaigns</h3><span class="al-state" id="al-push-state">Checking</span></div><div class="al-count" id="al-push-count">—</div><div class="al-muted">Campaigns awaiting dispatch in push_campaigns.</div></div>
 <div class="al-card"><div class="al-toolbar"><h3>Service requests</h3><span class="al-state" id="al-req-state">Checking</span></div><div class="al-count" id="al-req-count">—</div><div class="al-muted">Total request records. Open/closed split is not inferred.</div></div>
 <div class="al-card"><div class="al-toolbar"><h3>Admin activity entries</h3><span class="al-state" id="al-log-state">Checking</span></div><div class="al-count" id="al-log-count">—</div><div class="al-muted">Audit log records available to this admin session.</div></div>
@@ -17,7 +16,6 @@
 <script>
 const $=id=>document.getElementById(id),fmt=v=>new Intl.NumberFormat("en-IN").format(Number(v)||0);
 const specs=[
- {key:"pay",table:"premium_payment_reports",filter:["status","eq","failed"],label:"Failed payment reports",meaning:"Payment report mirror only"},
  {key:"push",table:"push_campaigns",filter:["status","eq","queued"],label:"Queued push campaigns",meaning:"Waiting in the push campaign queue"},
  {key:"req",table:"service_requests",label:"Service requests",meaning:"All records; no status assumptions"},
  {key:"log",table:"admin_activity_logs",label:"Admin activity entries",meaning:"Audit log row count"}

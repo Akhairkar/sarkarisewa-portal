@@ -1,4 +1,7 @@
-/* Admin-only Light / Dark theme controller. */
+/* Admin-only Light / Dark theme controller.
+   Only the sidebar-footer switch is a theme toggle. Other buttons reuse the
+   .theme-toggle-btn class purely for styling (Refresh, Save draft, Publish...),
+   so they must never be relabelled or bound here. */
 (function () {
   const KEY = "admin-theme";
   function readTheme() {
@@ -8,7 +11,7 @@
     const next = theme === "light" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
     try { localStorage.setItem(KEY, next); } catch (_) {}
-    document.querySelectorAll(".theme-toggle-btn").forEach((btn) => {
+    document.querySelectorAll(".admin-sidebar-footer .theme-toggle-btn").forEach((btn) => {
       const label = next === "dark" ? "☀️ Light mode" : "🌙 Dark mode";
       btn.textContent = label;
       btn.setAttribute("aria-label", "Switch to " + (next === "dark" ? "light" : "dark") + " theme");
@@ -17,7 +20,7 @@
   }
   applyTheme(readTheme());
   function bind() {
-    document.querySelectorAll(".theme-toggle-btn").forEach((btn) => {
+    document.querySelectorAll(".admin-sidebar-footer .theme-toggle-btn").forEach((btn) => {
       if (btn.dataset.adminThemeBound === "1") return;
       btn.dataset.adminThemeBound = "1";
       btn.addEventListener("click", () => {

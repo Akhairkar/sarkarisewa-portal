@@ -6,11 +6,9 @@
   const NAV = [
     ["dashboard.html", "📊 Overview"],
     ["content.html", "🗂️ Content Inventory"],
-    ["content-review.html", "📝 Content Review Queue"],
     ["access-control.html", "🔐 Access Control"],
     ["security-audit.html", "🛡️ Security Audit"],
     ["seo.html", "🔎 SEO Control Center"],
-    ["api-payments.html", "🔌 API & Payments"],
     ["analytics.html", "📈 Analytics"],
     ["health.html", "🩺 System Health"],
     ["backup.html", "💾 Backup & Recovery"],
@@ -25,9 +23,6 @@
     ["searches.html", "🔍 Site Searches"],
     ["requests.html", "🙋 Service Requests"],
     ["activity.html", "🧾 Activity Logs"],
-    ["revenue.html", "💰 Revenue & AdSense"],
-    ["membership.html", "⭐ Premium Membership"],
-    ["membership-lifecycle.html", "⏳ Membership Lifecycle"],
   ];
 
   function renderNav() {
@@ -72,11 +67,8 @@
       {label:"System Health Monitor",href:"health.html",detail:"Review admin-side system checks"},
       {label:"Backup & Recovery",href:"backup.html",detail:"Review backup readiness and recovery steps"},
       {label:"Notification & Alert Center",href:"alerts.html",detail:"Review payment, push, request and audit counts"},
-      {label:"API & Payment Operations",href:"api-payments.html",detail:"Inspect payment and RC report records"},
       {label:"Admin Activity Logs",href:"activity.html",detail:"Review administrator audit entries"},
-      {label:"Content Review Queue",href:"content-review.html",detail:"Review pending content changes"},
       {label:"Service Requests",href:"requests.html",detail:"Review incoming service requests"},
-      {label:"Premium Membership",href:"membership.html",detail:"Review membership records"}
     ];
     let items=[],active=0;
     function allItems(q){
