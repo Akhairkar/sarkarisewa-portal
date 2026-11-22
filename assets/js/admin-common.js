@@ -7,6 +7,7 @@
     ["dashboard.html", "📊 Overview"],
     ["content.html", "🗂️ Content Inventory"],
     ["seo.html", "🔎 SEO Control Center"],
+    ["api-payments.html", "🔌 API & Payments"],
     ["analytics.html", "📈 Analytics"],
     ["subscribers.html", "📬 Subscribers"],
     ["csc.html", "🏬 CSC Claims"],
