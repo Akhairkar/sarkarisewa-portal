@@ -93,7 +93,7 @@ const ld = {
   url: pageUrl,
 };
 ---
-<Base title={title} description={description} breadcrumbs={crumbs} faq={faq} modified={(c.updated_at ?? c.approved_at ?? "").slice(0, 10) || undefined} schemaType="WebPage">
+<Base noAds title={title} description={description} breadcrumbs={crumbs} faq={faq} modified={(c.updated_at ?? c.approved_at ?? "").slice(0, 10) || undefined} schemaType="WebPage">
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(ld)} />
   <Breadcrumbs items={crumbs} />
   <div class="page has-aside">
