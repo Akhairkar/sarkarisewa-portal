@@ -173,8 +173,10 @@
         // Keep session alive
         sessionStorage.setItem("ss_session_active", Date.now().toString());
         
-        client.from("active_sessions")
-          .upsert({ session_id: sessionId, page_path: pagePath, last_seen: new Date().toISOString() }, { onConflict: "session_id" })
+        // Goes through a database function: a direct upsert is refused by the
+        // table's row-level security (anonymous visitors cannot read it), which
+        // is why "Online now" stayed 0.
+        Promise.resolve(client.rpc("analytics_heartbeat", { p_session_id: sessionId, p_page_path: pagePath }))
           .then(() => {}, () => {});
       };
       
