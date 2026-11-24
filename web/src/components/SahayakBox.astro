@@ -52,7 +52,7 @@ const cfg = on ? {
         <label class="sh-lbl" for="sh-dist">अपना ज़िला चुनें</label>
         <select id="sh-dist" class="sh-sel"><option value="">${esc(c.stateHi)} के सभी ज़िले</option>${opts}</select>
         <div class="sh-out"><p class="sh-empty">लोड हो रहा है…</p></div>
-        <details class="sh-ask"><summary>📝 मुझे मदद चाहिए: अपना नंबर छोड़ें</summary>
+        <details class="sh-ask" open><summary>📝 मुझे मदद चाहिए: अपना नंबर छोड़ें</summary>
           <form class="sh-req" novalidate>
             <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <label>आपका नाम<input name="name" maxlength="60" required /></label>
@@ -68,6 +68,7 @@ const cfg = on ? {
         <p class="sh-join">क्या आप यह काम करते हैं? <a href="/list-your-service.html">फ्री में सहायक के रूप में जुड़ें →</a></p>
       </section>`;
       const box = slot!.querySelector<HTMLElement>(".sahayak-box")!;
+      if ((window as any).gtag) (window as any).gtag("event", "sahayak_view", { state: c.state, service: c.service });
       const out = box.querySelector<HTMLElement>(".sh-out")!;
       const sel = box.querySelector<HTMLSelectElement>("#sh-dist")!;
       const form = box.querySelector<HTMLFormElement>(".sh-req")!;
