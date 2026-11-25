@@ -6,6 +6,11 @@ export type Job = { slug: string; sector: "SSC" | "UPSC" | "Banking" | "Railway"
 // list them first on that state's guides (components/JobStrip.astro).
 
 export const JOBS: Job[] = [
+  { slug: "rrc-northern-railway-apprentice-recruitment-2026", sector: "Railway", last: "2026-12-11", lastNote: "रात 11:59 तक; 4,651 सीटें, 10वीं + ITI, बिना परीक्षा" },
+  { slug: "asrb-icar-technical-assistant-recruitment-2026", sector: "Central Govt", last: "2026-12-17", lastNote: "आवेदन 18 नवंबर से; 1,393 पद, T-3 और T-4" },
+  { slug: "exim-bank-management-trainee-manager-recruitment-2026", sector: "Banking", last: "2026-12-11", lastNote: "आवेदन 27 नवंबर से; 120 पद, MT और मैनेजर", status: "expected" },
+  { slug: "nsic-executive-recruitment-2026", sector: "PSU", last: "2026-12-14", lastNote: "ऑनलाइन; हार्ड कॉपी 21 दिसंबर तक; 83 पद" },
+  { slug: "bhel-engineer-supervisor-trainee-recruitment-2026", sector: "PSU", last: "2026-12-28", lastNote: "रात 11:45 तक; आवेदन 25 नवंबर से; 415 पद", status: "expected" },
   { slug: "rrc-central-railway-apprentice-recruitment-2026", sector: "Railway", last: "2026-12-02", lastNote: "शाम 5 बजे तक; 2,861 सीटें, 10वीं + ITI, बिना परीक्षा" },
   { slug: "coconut-development-board-recruitment-2026", sector: "Central Govt", last: "2026-12-21", lastNote: "आवेदन 21 नवंबर से; 35 पद, LDC से अधिकारी तक", status: "expected" },
   { slug: "nlc-india-executive-recruitment-2026", sector: "PSU", last: "2026-12-19", lastNote: "शाम 5 बजे तक; आवेदन 20 नवंबर से; 145 पद, अनुभव ज़रूरी", status: "expected" },
