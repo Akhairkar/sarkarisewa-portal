@@ -27,7 +27,7 @@
 <div class="topline"><span>PARTNER NETWORK</span><a href="./index.html">← Back to dashboard preview</a></div>
 <div class="form-head"><h2 id="heading">Create your partner account</h2><p id="subheading">A few details to get your business started.</p></div>
 <div class="tabs"><button class="tab active" id="registerTab" type="button">Create account</button><button class="tab" id="loginTab" type="button">Log in</button></div>
-<div class="notice">Preview interface only. Account creation and login will be enabled after secure Supabase Auth integration.</div>
+<div class="notice">Secure Auth client scaffold added. Configure the public Supabase project URL and publishable key in config.js. Partner profile activation and dashboard access are a separate next step.</div>
 <form id="registerForm">
 <div class="field-grid">
 <div class="field"><label for="fullName">Your full name</label><input id="fullName" name="fullName" autocomplete="name" placeholder="e.g. Akash Khairkar" required></div>
@@ -54,16 +54,8 @@
 <div class="fineprint">Your password will be securely managed by the authentication provider. We will never store plain-text passwords in partner records.</div>
 </div></main></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script>
-const $=id=>document.getElementById(id), reg=$('registerForm'), login=$('loginForm');
-function show(mode){const isReg=mode==='register';reg.classList.toggle('hidden',!isReg);login.classList.toggle('hidden',isReg);$('registerTab').classList.toggle('active',isReg);$('loginTab').classList.toggle('active',!isReg);$('heading').textContent=isReg?'Create your partner account':'Welcome back';$('subheading').textContent=isReg?'A few details to get your business started.':'Log in to manage your leads and grow your business.'}
-$('registerTab').addEventListener('click',()=>show('register'));$('loginTab').addEventListener('click',()=>show('login'));
-document.querySelectorAll('.show-pass').forEach(b=>b.addEventListener('click',()=>{const f=$(b.dataset.target);f.type=f.type==='password'?'text':'password';b.textContent=f.type==='password'?'Show':'Hide'}));
-function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200)}
-reg.addEventListener('submit',e=>{e.preventDefault();if($('password').value!==$('confirmPassword').value){$('confirmPassword').setCustomValidity('Passwords do not match');$('confirmPassword').reportValidity();return}$('confirmPassword').setCustomValidity('');toast('Preview only — secure account registration is not connected yet.')});
-$('confirmPassword').addEventListener('input',()=>$('confirmPassword').setCustomValidity(''));
-login.addEventListener('submit',e=>{e.preventDefault();toast('Preview only — partner login is not connected yet.')});
-$('forgotLink').addEventListener('click',e=>{e.preventDefault();toast('Password recovery will be enabled with Supabase Auth.')});
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
+<script src="./auth-client.js"></script>
 </body>
 </html>
