@@ -538,3 +538,105 @@ revoke all on function public.partner_get_portal_access() from public, anon;
 grant execute on function public.partner_get_portal_access() to authenticated;
 comment on function public.partner_get_portal_access() is
   'Returns only the current authenticated partner approval state and entitlement summary for the portal gate.';
+
+-- Live partner dashboard RPC. Customer details are returned only to the
+-- authenticated partner who owns the exclusive assignment, and only after approval.
+create or replace function public.partner_get_dashboard_data()
+returns jsonb
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
+declare
+  v_user_id uuid := auth.uid();
+  v_profile record;
+  v_entitlement record;
+  v_total integer;
+  v_offered integer;
+  v_accepted integer;
+  v_active integer;
+  v_completed integer;
+  v_leads jsonb;
+begin
+  if v_user_id is null then raise exception 'Authentication required'; end if;
+
+  select p.account_status, p.verification_status, p.business_name, p.owner_name,
+         p.partner_type, p.state, p.district, p.phone
+    into v_profile
+  from partner_network.partner_profiles p
+  where p.user_id = v_user_id;
+
+  if not found then raise exception 'Partner profile not found'; end if;
+  if v_profile.account_status <> 'active' or v_profile.verification_status <> 'verified' then
+    raise exception 'Partner approval required';
+  end if;
+
+  select e.free_leads_granted, e.free_leads_used, e.premium_status
+    into v_entitlement
+  from partner_network.partner_entitlements e
+  where e.partner_id = v_user_id;
+
+  select count(*)::integer,
+         count(*) filter (where status = 'offered')::integer,
+         count(*) filter (where status in ('accepted','contacted'))::integer,
+         count(*) filter (where status = 'in_progress')::integer,
+         count(*) filter (where status = 'completed')::integer
+    into v_total, v_offered, v_accepted, v_active, v_completed
+  from partner_network.lead_assignments
+  where partner_id = v_user_id;
+
+  select coalesce(jsonb_agg(jsonb_build_object(
+    'assignment_id', x.id,
+    'lead_id', x.lead_id,
+    'assigned_at', x.assigned_at,
+    'status', x.status,
+    'service_name', x.service_name,
+    'state', x.state,
+    'district', x.district,
+    'customer_name', x.customer_name,
+    'customer_phone', x.customer_phone,
+    'customer_details', x.customer_details
+  ) order by x.assigned_at desc), '[]'::jsonb)
+    into v_leads
+  from (
+    select a.id, a.lead_id, a.assigned_at, a.status,
+           l.service_name, l.state, l.district, l.customer_name,
+           l.customer_phone, l.customer_details
+    from partner_network.lead_assignments a
+    join partner_network.customer_leads l on l.id = a.lead_id
+    where a.partner_id = v_user_id
+    order by a.assigned_at desc
+    limit 50
+  ) x;
+
+  return jsonb_build_object(
+    'profile', jsonb_build_object(
+      'business_name', v_profile.business_name,
+      'owner_name', v_profile.owner_name,
+      'partner_type', v_profile.partner_type,
+      'state', v_profile.state,
+      'district', v_profile.district,
+      'phone', v_profile.phone
+    ),
+    'entitlement', jsonb_build_object(
+      'free_leads_granted', coalesce(v_entitlement.free_leads_granted, 10),
+      'free_leads_used', coalesce(v_entitlement.free_leads_used, 0),
+      'free_leads_remaining', greatest(coalesce(v_entitlement.free_leads_granted, 10) - coalesce(v_entitlement.free_leads_used, 0), 0),
+      'premium_status', coalesce(v_entitlement.premium_status, 'not_eligible')
+    ),
+    'stats', jsonb_build_object(
+      'total', coalesce(v_total, 0),
+      'offered', coalesce(v_offered, 0),
+      'accepted', coalesce(v_accepted, 0),
+      'in_progress', coalesce(v_active, 0),
+      'completed', coalesce(v_completed, 0)
+    ),
+    'leads', v_leads
+  );
+end;
+$$;
+
+revoke all on function public.partner_get_dashboard_data() from public, anon;
+grant execute on function public.partner_get_dashboard_data() to authenticated;
+comment on function public.partner_get_dashboard_data() is
+  'Returns the approved partner own profile, quota, aggregate stats and latest 50 exclusively assigned leads.';
