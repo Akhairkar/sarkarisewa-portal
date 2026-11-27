@@ -65,3 +65,16 @@ Use only synthetic data and the standalone noindex demo enquiry page.
 - Admin allowlist is intentionally empty. Do not bypass this with a guessed UUID or direct client write.
 - Browser-based signup, email confirmation, partner isolation, lead routing, notification delivery and quota behavior remain end-to-end tests, not yet passed.
 - Security Advisor's remaining SECURITY DEFINER findings include the intentionally public consent-backed intake RPC and authenticated RPCs guarded internally by partner/Admin authorization checks. Review those functions before any production release.
+
+
+## Repeatable browser-auth source regression checks
+
+Run this from the repository root with Node.js 18 or newer:
+
+```sh
+node --test partner-network/auth-source.test.mjs
+```
+
+The test file checks source-level invariants for public-only browser configuration, signup metadata, profile completion RPC usage, login/recovery APIs, session/profile gating, pending/rejected/suspended account restrictions, and the demo page's Edge Function gateway path.
+
+These are static regression checks. They do not execute Supabase Auth, send email, create accounts, prove RLS isolation, or replace the two-account browser test matrix above. A passing result must not be described as an end-to-end or penetration test.
