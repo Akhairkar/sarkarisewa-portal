@@ -88,7 +88,8 @@ Deno.serve(async (req: Request) => {
   }
   const expectedHost = new URL(origin).hostname;
   if (!verification.success || verification.hostname !== expectedHost) {
-    return json({ error: "Bot verification failed" }, 403, origin);\n  }
+    return json({ error: "Bot verification failed" }, 403, origin);
+  }
 
   const fields = [
     "p_page_path", "p_service_code", "p_service_name", "p_state",
