@@ -1,7 +1,7 @@
 (() => {
  const cfg=window.PARTNER_SUPABASE_CONFIG||window.SUPABASE_CONFIG;
  const loginPanel=document.getElementById('loginPanel'),app=document.getElementById('adminApp'),notice=document.getElementById('loginNotice'),signOut=document.getElementById('signOut');
- let client=null,partners=[];
+ let client=null,partners=[],leads=[];
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const statusOf=p=>p.verification_status==='rejected'?'rejected':p.account_status;
  function tell(msg){notice.textContent=msg;}
@@ -24,6 +24,35 @@
   partners=Array.isArray(data.partners)?data.partners:[];
   const s=data.stats||{};['total','pending','active','suspended'].forEach(k=>document.getElementById(k+'Count').textContent=Number(s[k])||0);
   render();
+  await loadLeads();
+ }
+ function renderLeads(){
+  const q=document.getElementById('searchLeads').value.trim().toLowerCase();
+  const f=document.getElementById('leadStatusFilter').value;
+  const rows=leads.filter(l=>(f==='all'||l.lead_status===f)&&[
+   l.customer_name,l.customer_phone,l.service_name,l.state,l.district,
+   l.partner_business_name,l.partner_phone,l.id
+  ].some(v=>String(v||'').toLowerCase().includes(q)));
+  const target=document.getElementById('leadList');
+  if(!rows.length){target.innerHTML='<div class="empty">No customer enquiries match this filter.</div>';return;}
+  target.innerHTML=rows.map(l=>{
+   const assigned=!!l.assignment_id;
+   const partner=assigned
+    ? '<p><b>Assigned to:</b> '+esc(l.partner_business_name||'Partner')+' · '+esc(l.partner_phone||'')+' · '+esc(l.assignment_status||'offered')+'</p>'
+    : '<p class="unmatched-note">Not assigned · waiting for an eligible verified partner</p>';
+   const retry=l.lead_status==='new'&&!assigned
+    ? '<button data-lead-action="retry" data-id="'+esc(l.id)+'" class="primary small">Retry matching</button>'
+    : '';
+   return '<article class="partner-row"><div class="partner-main"><div class="partner-avatar">L</div><div class="partner-info"><div class="partner-title">'+esc(l.customer_name)+' <span class="tag '+esc(l.lead_status)+'">'+esc(l.lead_status)+'</span></div><p>'+esc(l.customer_phone)+' · '+esc(l.service_name)+'</p><p>'+esc([l.district,l.state].filter(Boolean).join(', '))+' · '+esc(l.page_path)+'</p>'+partner+(l.customer_details?'<p><b>Details:</b> '+esc(l.customer_details)+'</p>':'')+'<small>Received '+esc(new Date(l.created_at).toLocaleString('en-IN'))+' · Ref '+esc(l.id)+'</small></div></div><div class="partner-actions">'+retry+'</div></article>';
+  }).join('');
+ }
+ async function loadLeads(){
+  const target=document.getElementById('leadList');
+  target.innerHTML='<div class="loading">Loading customer enquiries…</div>';
+  const {data,error}=await client.rpc('partner_admin_get_leads',{p_status:document.getElementById('leadStatusFilter').value,p_limit:200});
+  if(error){target.innerHTML='<div class="empty">Unable to load customer enquiries. '+esc(error.message)+'</div>';return;}
+  leads=Array.isArray(data)?data:[];
+  renderLeads();
  }
  async function enter(){
   const {data,error}=await client.rpc('partner_admin_is_authorized');
@@ -35,6 +64,19 @@
  document.getElementById('refresh').addEventListener('click',load);
  document.getElementById('searchPartners').addEventListener('input',render);
  document.getElementById('statusFilter').addEventListener('change',render);
+ document.getElementById('searchLeads').addEventListener('input',renderLeads);
+ document.getElementById('leadStatusFilter').addEventListener('change',loadLeads);
+ document.getElementById('refreshLeads').addEventListener('click',loadLeads);
+ document.getElementById('leadList').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-lead-action="retry"]');if(!b)return;
+  const lead=leads.find(x=>x.id===b.dataset.id);if(!lead)return;
+  if(!window.confirm('Retry matching for this new enquiry from '+lead.customer_name+'?'))return;
+  b.disabled=true;
+  const {data,error}=await client.rpc('partner_admin_retry_lead',{p_lead_id:lead.id});
+  if(error){window.alert('Retry failed: '+error.message);b.disabled=false;return;}
+  window.alert(data?.assigned?'Lead successfully assigned to an eligible partner.':('No assignment: '+(data?.reason||'No eligible partner found.')));
+  await loadLeads();
+ });
  document.getElementById('partnerList').addEventListener('click',async e=>{
   const b=e.target.closest('[data-action]');if(!b)return;
   const action=b.dataset.action,partnerId=b.dataset.id;
