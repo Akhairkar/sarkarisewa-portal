@@ -820,7 +820,7 @@ begin
         and a.district is not null and lower(trim(a.district))=lower(trim(v_lead.district))) then 0 else 1 end,
     (select count(*) from partner_network.lead_assignments la where la.partner_id=p.user_id and la.assigned_at>now()-interval '7 days') asc,
     p.created_at asc
-  for update of p,e skip locked limit 1;
+  limit 1 for update of p,e skip locked;
   if v_partner_id is null then return jsonb_build_object('assigned',false,'reason','no_eligible_partner'); end if;
   insert into partner_network.lead_assignments(lead_id,partner_id,status) values(p_lead_id,v_partner_id,'offered') returning id into v_assignment_id;
   return jsonb_build_object('assigned',true,'assignment_id',v_assignment_id,'partner_id',v_partner_id);
