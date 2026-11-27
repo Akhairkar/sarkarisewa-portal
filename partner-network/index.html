@@ -12,6 +12,21 @@
   <link rel="stylesheet" href="./partner.css">
 </head>
 <body>
+  <main class="access-gate" id="accessGate" aria-live="polite">
+    <section class="access-card">
+      <div class="access-brand"><span class="access-mark">ss<span>.</span></span><span><b>partner studio</b><small>by SarkariSewaIndia</small></span></div>
+      <div class="access-orb" aria-hidden="true">✦</div>
+      <p class="access-eyebrow" id="accessEyebrow">SECURE PARTNER WORKSPACE</p>
+      <h1 id="accessTitle">Checking your partner access…</h1>
+      <p class="access-copy" id="accessMessage">Please wait while we verify your signed-in account and approval status.</p>
+      <div class="access-status" id="accessStatus">Verifying session</div>
+      <div class="access-actions">
+        <a class="access-primary" id="accessLogin" href="./auth.html">Partner login</a>
+        <button class="access-secondary" id="accessSignOut" type="button" hidden>Sign out</button>
+      </div>
+      <p class="access-foot">Your account and customer lead information are protected. Dashboard data will appear only after approval and live integration.</p>
+    </section>
+  </main>
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
       <a class="brand" href="#" aria-label="Partner Studio home">
@@ -174,6 +189,9 @@
     </main>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./portal-guard.js"></script>
   <script src="./partner.js"></script>
 </body>
 </html>
