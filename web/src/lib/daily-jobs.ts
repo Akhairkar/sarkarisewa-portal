@@ -95,8 +95,21 @@ export function verifiedIso(v: string): string | undefined {
 
 /** The DocGuide page for a daily job. All text from the file is escaped. */
 export function dailyGuide(d: DailyJob): DocGuide {
-  const today = new Date().toISOString().slice(0, 10);
-  const open = d.lastDate >= today;
+  const now = new Date();
+  const dateParts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+  const datePart = (type: string) => dateParts.find((p) => p.type === type)?.value ?? "";
+  const today = `${datePart("year")}-${datePart("month")}-${datePart("day")}`;
+  const timeParts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(now);
+  const nowMinutes = Number(timeParts.find((p) => p.type === "hour")?.value ?? "0") * 60 + Number(timeParts.find((p) => p.type === "minute")?.value ?? "0");
+  const deadline = d.lastNote?.match(/(सुबह|दोपहर|शाम|रात)\\s*(\\d{1,2})(?::(\\d{2}))?\\s*बजे/);
+  let deadlineMinutes: number | undefined;
+  if (deadline) {
+    let hour = Number(deadline[2]);
+    if ((deadline[1] === "शाम" || deadline[1] === "रात") && hour < 12) hour += 12;
+    if (deadline[1] === "सुबह" && hour === 12) hour = 0;
+    deadlineMinutes = hour * 60 + Number(deadline[3] ?? "0");
+  }
+  const open = d.lastDate > today || (d.lastDate === today && (deadlineMinutes === undefined || nowMinutes < deadlineMinutes));
   return {
     crumbs: [{ label: "होम", href: "/" }, { label: "सरकारी नौकरी", href: "/jobs/index.html" }, { label: d.title.split(/[:|]/)[0].trim() }],
     docHi: d.title.split(/[:|]/)[0].trim(),

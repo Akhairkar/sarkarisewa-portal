@@ -9,7 +9,7 @@ export const JOBS: Job[] = [
   { slug: "exim-bank-management-trainee-manager-recruitment-2026", sector: "Banking", last: "2026-12-11", lastNote: "आवेदन 27 नवंबर से; 120 पद, MT और मैनेजर", status: "expected" },
   { slug: "nsic-executive-recruitment-2026", sector: "PSU", last: "2026-12-14", lastNote: "ऑनलाइन; हार्ड कॉपी 21 दिसंबर तक; 83 पद" },
   { slug: "bhel-engineer-supervisor-trainee-recruitment-2026", sector: "PSU", last: "2026-12-28", lastNote: "रात 11:45 तक; आवेदन 25 नवंबर से; 415 पद", status: "expected" },
-  { slug: "rrc-central-railway-apprentice-recruitment-2026", sector: "Railway", last: "2026-12-02", lastNote: "शाम 5 बजे तक; 2,861 सीटें, 10वीं + ITI, बिना परीक्षा" },
+  { slug: "rrc-central-railway-apprentice-recruitment-2026", sector: "Railway", last: "2026-12-02", lastNote: "शाम 5 बजे तक; 3,809 provisional स्लॉट (2,861 + 948 P-Way), 10वीं + ITI" },
   { slug: "coconut-development-board-recruitment-2026", sector: "Central Govt", last: "2026-12-21", lastNote: "आवेदन 21 नवंबर से; 35 पद, LDC से अधिकारी तक", status: "expected" },
   { slug: "nlc-india-executive-recruitment-2026", sector: "PSU", last: "2026-12-19", lastNote: "शाम 5 बजे तक; आवेदन 20 नवंबर से; 145 पद, अनुभव ज़रूरी", status: "expected" },
   { slug: "phhc-chowkidar-recruitment-2026", sector: "State Govt", last: "2026-11-21", lastNote: "रात 11:59 तक; हाई कोर्ट चंडीगढ़, 22 पद", state: "chandigarh" },

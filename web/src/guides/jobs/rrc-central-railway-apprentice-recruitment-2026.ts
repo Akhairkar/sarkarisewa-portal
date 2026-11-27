@@ -1,19 +1,10 @@
 import type { DocGuide } from "../doc/types";
 
-// Sources (checked 19 Nov 2026; rrccr.com could not be opened from the
-// sandbox, so a detailed extract of the notice on govtjobsalert.in was used;
-// search results from karmasandhan.com, resultbharat.com, mysarkarinaukri.com
-// and freejobalert.com show the same 2,861 figure):
-// - Notice RRC/CR/AA/2026 dated 03.11.2026; 2,861 Act Apprentice slots
-//   (provisional); an addendum of 09.11.2026 adds Engineering (P-Way) slots
-//   without a revised total; online 03 Nov - 02 Dec 2026 (17:00) at rrccr.com;
-//   clusters Mumbai 1,712, Bhusawal 500, Pune 271, Nagpur 221, Solapur 157;
-//   10th min 50% + NCVT ITI in the trade; age 15-24 as on 03.11.2026, SC/ST 5 /
-//   OBC 3 / PwBD 10 yrs relaxation; fee Rs 100 (nil for SC/ST/PwBD/women);
-//   merit = average of 10th % and ITI %; stipend reported Rs 9,600 a month for
-//   one year; no right to absorption in Railways.
-// Not confirmed: unit and trade totals (the source says some totals in the
-// PDF do not match their rows), revised total after the addendum.
+// Sources: official RRC/CR notification RRC/CR/AA/2026 dated 03.11.2026
+// and official addendum dated 09.11.2026 (Engineering P-Way). The original
+// notification has 2,861 slots; the addendum adds 948 P-Way slots. Their
+// combined arithmetic is 3,809 provisional slots; the addendum does not
+// print a revised grand total. Both official PDFs are linked below.
 export const rrcCentralRailwayApprenticeRecruitment2026: DocGuide = {
   crumbs: [
     { label: "होम", href: "/" },
@@ -24,17 +15,17 @@ export const rrcCentralRailwayApprenticeRecruitment2026: DocGuide = {
   title: "मध्य रेलवे RRC अप्रेंटिस भर्ती 2026: 2861 पद, 10वीं+ITI",
   description: "मध्य रेलवे (RRC CR) अप्रेंटिस 2026: 2,861 सीटें, 10वीं (50%) + ITI, बिना परीक्षा मेरिट से चयन। आवेदन 2 दिसंबर 2026 तक rrccr.com पर।",
   published: "2026-11-19",
-  modified: "2026-11-19",
-  verified: "19 नवंबर 2026",
+  modified: "2026-11-27",
+  verified: "27 नवंबर 2026 (आधिकारिक नोटिफिकेशन और addendum)",
   h1: "मध्य रेलवे RRC अप्रेंटिस भर्ती 2026: 2,861 सीटों पर आवेदन चालू",
-  lead: "<strong>स्थिति: आवेदन चालू।</strong> रेलवे भर्ती प्रकोष्ठ (RRC), मध्य रेलवे ने नोटिस RRC/CR/AA/2026 (3 नवंबर 2026) के तहत <strong>2,861 एक्ट अप्रेंटिस</strong> सीटें (अस्थायी संख्या) निकाली हैं। 10वीं (कम से कम 50%) और संबंधित ट्रेड में ITI पास युवा <strong>3 नवंबर से 2 दिसंबर 2026 (शाम 5 बजे)</strong> तक rrccr.com पर आवेदन कर सकते हैं। चयन बिना परीक्षा, 10वीं और ITI के अंकों की मेरिट से होगा।",
+  lead: "<strong>स्थिति: आवेदन चालू।</strong> RRC मध्य रेलवे की 3 नवंबर 2026 की अधिसूचना में <strong>2,861 स्लॉट</strong> थे। 9 नवंबर के आधिकारिक addendum ने सभी पांच clusters में Engineering (P-Way) unit जोड़कर <strong>948 अतिरिक्त स्लॉट</strong> दिए। दोनों दस्तावेज़ों को मिलाकर <strong>3,809 provisional slots</strong> होते हैं (यह जोड़ है; addendum में नया grand total नहीं छपा)। 10वीं में कम से कम 50% और संबंधित ट्रेड में ITI वाले उम्मीदवार <strong>2 दिसंबर 2026 शाम 5 बजे</strong> तक आवेदन कर सकते हैं।",
   facts: [
-    ["कुल सीटें", "2,861 (अस्थायी; अप्रेंटिसशिप)"],
+    ["कुल स्लॉट", "3,809 (2,861 मूल + 948 P-Way addendum; provisional)"],
     ["आखिरी तारीख", "2 दिसंबर 2026 (शाम 5:00 बजे)"],
     ["योग्यता", "10वीं 50% + संबंधित ट्रेड में ITI"],
     ["आवेदन", "<a href=\"https://www.rrccr.com/\" target=\"_blank\" rel=\"noopener nofollow\">rrccr.com</a>"],
   ],
-  notice: "यह अप्रेंटिसशिप (प्रशिक्षण) है, पक्की रेलवे नौकरी नहीं; नोटिस के अनुसार ट्रेनिंग के बाद रेलवे में नौकरी का अधिकार नहीं मिलता। RRC मध्य रेलवे की वेबसाइट हमारे सिस्टम से नहीं खुल सकी, इसलिए जानकारी नोटिस के विस्तृत सार से ली गई है। 9 नवंबर 2026 के संशोधन में इंजीनियरिंग (P-Way) सीटें जुड़ी हैं और कुछ यूनिट-वार आंकड़े आपस में मेल नहीं खाते, इसलिए सीटों के आंकड़े और ट्रेड नोटिस में ज़रूर मिलाएं। हम सरकारी वेबसाइट नहीं हैं।",
+  notice: "यह अप्रेंटिसशिप (प्रशिक्षण) है, पक्की रेलवे नौकरी नहीं; ट्रेनिंग के बाद रेलवे में नौकरी का अधिकार नहीं मिलता। मूल अधिसूचना में 2,861 स्लॉट हैं और 9 नवंबर 2026 के आधिकारिक addendum में Engineering (P-Way) के 948 अतिरिक्त स्लॉट हैं। 3,809 कुल provisional slots का आंकड़ा दोनों दस्तावेज़ जोड़कर निकाला गया है; addendum स्वयं revised grand total नहीं देता। आवेदन से पहले दोनों PDF और अपने ट्रेड/यूनिट की vacancy आधिकारिक वेबसाइट पर मिलाएं। यह निजी सूचना पेज है, रेलवे की वेबसाइट नहीं.",
   sections: [
     {
       id: "tarikh",
@@ -56,15 +47,17 @@ export const rrcCentralRailwayApprenticeRecruitment2026: DocGuide = {
       table: {
         head: ["क्लस्टर", "सीटें"],
         rows: [
-          ["मुंबई", "1,712"],
-          ["भुसावल", "500"],
-          ["पुणे", "271"],
-          ["नागपुर", "221"],
-          ["सोलापुर", "157"],
-          ["<strong>कुल (अस्थायी)</strong>", "<strong>2,861</strong>"],
+          ["मुंबई", "1,712 मूल + 232 P-Way = 1,944"],
+          ["भुसावल", "500 मूल + 212 P-Way = 712"],
+          ["पुणे", "271 मूल + 163 P-Way = 434"],
+          ["नागपुर", "221 मूल + 229 P-Way = 450"],
+          ["सोलापुर", "157 मूल + 112 P-Way = 269"],
+          ["<strong>मूल अधिसूचना</strong>", "<strong>2,861</strong>"],
+          ["<strong>P-Way addendum</strong>", "<strong>948</strong>"],
+          ["<strong>दोनों का जोड़ (provisional)</strong>", "<strong>3,809</strong>"],
         ],
       },
-      callout: { kind: "info", html: "रिपोर्टों के अनुसार सबसे ज़्यादा सीटें फिटर, इलेक्ट्रीशियन, वेल्डर, मैकेनिक (डीज़ल) और कारपेंटर में हैं। संशोधन के बाद का कुल आंकड़ा और ट्रेड-वार सीटें नोटिस में देखें।" },
+      callout: { kind: "info", html: "9 नवंबर के addendum में Engineering (P-Way) के लिए अलग trade-wise और cluster-wise slots दिए गए हैं। जिन उम्मीदवारों ने 9 नवंबर 2026 या उससे पहले आवेदन जमा किया था, वे अपने trade के अनुसार P-Way unit preference जोड़ने के लिए form edit और resubmit कर सकते हैं।" },
     },
     {
       id: "patrata",
@@ -112,9 +105,13 @@ export const rrcCentralRailwayApprenticeRecruitment2026: DocGuide = {
     },
   ],
   official: [
-    { href: "https://www.rrccr.com/", title: "RRC मध्य रेलवे", note: "नोटिस RRC/CR/AA/2026 और ऑनलाइन फॉर्म" },
+    { href: "https://rrccr.com/rrwc/Files/7131ab94-6fc8-45c1-a2ed-f9191914dcbd.pdf", title: "मूल अधिसूचना RRC/CR/AA/2026 (3 नवंबर 2026)", note: "2,861 मूल स्लॉट" },
+    { href: "https://www.rrccr.com/rrwc/Files/f3eac96f-d89e-422b-8e7f-fd17de727582.pdf", title: "Engineering (P-Way) Addendum (9 नवंबर 2026)", note: "948 अतिरिक्त स्लॉट; trade-wise विवरण" },
+    { href: "https://www.rrccr.com/", title: "RRC मध्य रेलवे", note: "आधिकारिक वेबसाइट और ऑनलाइन फॉर्म" },
   ],
   faq: [
+    { q: "मध्य रेलवे अप्रेंटिस 2026 में कुल कितने स्लॉट हैं?", a: "मूल नोटिफिकेशन के 2,861 स्लॉट और 9 नवंबर के addendum के 948 P-Way स्लॉट मिलाकर 3,809 provisional स्लॉट होते हैं। addendum में नया grand total नहीं छपा है।" },
+    { q: "अगर पहले आवेदन कर दिया है तो P-Way unit जोड़ सकते हैं?", a: "जिन उम्मीदवारों ने 9 नवंबर 2026 या उससे पहले आवेदन जमा किया था, वे अपने trade के अनुसार Engineering (P-Way) unit preference जोड़ने के लिए आवेदन edit और resubmit कर सकते हैं।" },
     { q: "मध्य रेलवे अप्रेंटिस 2026 का फॉर्म कब तक भरें?", a: "2 दिसंबर 2026 को शाम 5 बजे तक rrccr.com पर।" },
     { q: "क्या कोई परीक्षा होगी?", a: "नहीं। चयन 10वीं और ITI के प्रतिशत के औसत से बनी मेरिट से होगा।" },
     { q: "क्या यह पक्की रेलवे नौकरी है?", a: "नहीं। यह अप्रेंटिसशिप है; नोटिस के अनुसार रेलवे में नौकरी का अधिकार नहीं मिलता।" },
@@ -122,6 +119,7 @@ export const rrcCentralRailwayApprenticeRecruitment2026: DocGuide = {
     { q: "क्या इंजीनियरिंग डिप्लोमा वाले आवेदन कर सकते हैं?", a: "रिपोर्टों के अनुसार नहीं; यह 10वीं + ITI वालों के लिए है। पक्का नोटिस में देखें।" },
   ],
   related: [
+    { href: "/jobs/rrc-central-railway-act-apprentice-recruitment-2026.html", emoji: "🛤️", title: "RRC CR P-Way addendum", text: "948 अतिरिक्त स्लॉट और cluster-wise totals" },
     { href: "/jobs/rrc-nwr-jaipur-apprentice-recruitment-2026.html", emoji: "🚆", title: "RRC NWR अप्रेंटिस 2026", text: "उत्तर पश्चिम रेलवे की अप्रेंटिस भर्ती" },
     { href: "/jobs/rrb-ntpc-recruitment-2026.html", emoji: "🚆", title: "RRB NTPC 2026", text: "12वीं और ग्रेजुएट के लिए रेलवे भर्ती" },
     { href: "/tools/age-calculator.html", emoji: "🎂", title: "उम्र कैलकुलेटर", text: "उम्र सीमा जांचें" },
