@@ -73,7 +73,8 @@ This is a database-driven module, not a generated page per partner.
 - [x] Add one isolated noindex/nofollow demo enquiry page; existing service pages remain untouched.
 - [ ] Connect only approved service pages using a reusable enquiry component after separate approval.
 - [x] Auto-attempt routing immediately after a public enquiry is inserted (database trigger; unmatched leads remain new for trusted retry).
-- [ ] Add admin lead management, unmatched-lead retry controls and legacy partner invitation/import.
+- [x] Add Admin-only lead directory, customer enquiry details, assignment visibility and audited unmatched-lead retry controls.
+- [ ] Add legacy partner invitation/import.
 - [ ] Add browser push + in-dashboard notifications.
 - [ ] Add performance-based eligibility and premium feature controls.
 - [ ] Test RLS with two partner accounts, Admin, anonymous visitor and service-role routing.
@@ -122,3 +123,12 @@ File: `supabase/partner-network-foundation.sql`
 - Successful submission creates a lead through `public.partner_submit_customer_lead`. A database AFTER INSERT trigger immediately attempts exclusive routing; the lead remains `new` if no eligible partner is available. The UI confirms matching was attempted without promising an assignment.
 - To test after approved setup: review/deploy the SQL migration, configure the public Supabase URL and publishable key in `config.js`, then open this page on the feature branch. No production site changes are made by this commit.
 - Existing service pages must remain untouched until the owner explicitly approves a later integration.
+
+
+### Admin lead operations
+
+- The Admin Control Center now has a separate Customer Enquiries panel.
+- `public.partner_admin_get_leads(status, limit)` returns up to 200 recent leads with assignment and assigned-partner summary, only after the Admin allowlist check.
+- `public.partner_admin_retry_lead(lead_id)` permits an allowlisted Admin to retry only a lead still in `new` state. The result is written to `partner_network.admin_lead_action_history`.
+- Customer name, phone and enquiry details are visible only in this Admin-only RPC and to the partner who owns an assignment through the partner dashboard RPC.
+- Admin page changes are still feature-branch drafts; SQL has not been executed and the UI has not been runtime-tested.
