@@ -55,3 +55,22 @@ The 10 Advisor warnings are therefore **not treated as proof of a vulnerability*
 ## Safety boundary
 
 This review and its checks apply only to the isolated test project and feature branch. No production Supabase project, production website, `main` branch, merge or deployment was changed.
+
+
+## Follow-up: profile column-level authorization check
+
+The initial concern about the own-profile UPDATE policy was checked against actual PostgreSQL column privileges.
+
+- Authenticated users can update only the intended editable profile fields: `business_name`, `owner_name`, `phone`, `state`, `district`, `pincode`, and `csc_id`.
+- Authenticated users cannot update `user_id`, `partner_type`, `email`, `partner_origin`, `verification_status`, `account_status`, `profile_completion`, or timestamps.
+- The only non-internal trigger on `partner_profiles` is the AFTER INSERT entitlement initializer; no profile UPDATE trigger was found.
+- Therefore, the own-row UPDATE policy does not currently allow a partner to self-approve or change account status through direct table UPDATE. This specific concern is **not a confirmed vulnerability**.
+- Keep column-level UPDATE grants narrow. Any future editable profile field must be explicitly reviewed before granting UPDATE.
+
+## Additional RLS observations
+
+- `customer_leads` SELECT policy exposes only leads with an assignment whose `partner_id = auth.uid()`.
+- `lead_assignments`, `lead_status_history`, and `partner_entitlements` SELECT policies scope rows to the current partner.
+- `partner_profiles` INSERT policy requires own `user_id`, `partner_origin='self_registration'`, and pending verification/account status.
+- `partner_services` and `partner_service_areas` INSERT/DELETE policies require `partner_id = auth.uid()`; neither table grants authenticated UPDATE.
+- The `partner_network` schema has USAGE for authenticated/service_role and no USAGE for anon. Neither anon nor authenticated can CREATE in this schema or public.
