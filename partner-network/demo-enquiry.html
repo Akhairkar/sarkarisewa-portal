@@ -65,51 +65,76 @@ footer{text-align:center;color:#a0a2b0;font-size:10px;padding:0 15px 25px}
 <div class="field full"><label for="details">What help do you need? (optional)</label><textarea id="details" name="details" maxlength="800" placeholder="Add a short description. Do not enter passwords, OTPs or sensitive identity numbers."></textarea></div>
 </div>
 <label class="consent"><input id="consent" type="checkbox" required><span>I agree that SarkariSewaIndia may share my name, mobile number and enquiry details with one relevant, verified service partner for the purpose of responding to this request. I understand this is a demo flow.</span></label>
+<div id="turnstile-container" class="field full" style="margin:14px 0"></div>
 <button id="submitBtn" type="submit">Submit enquiry securely →</button>
 <div id="status" class="status" role="status" aria-live="polite"></div>
 </form>
 </section>
 </main>
 <footer>Independent partner platform · This demonstration does not represent a government service or agency.</footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <script src="./config.js"></script>
 <script>
 (() => {
- const form=document.getElementById('enquiryForm');
- const button=document.getElementById('submitBtn');
- const status=document.getElementById('status');
- const show=(message,kind)=>{status.textContent=message;status.className='status show '+kind;};
- form.addEventListener('submit',async event=>{
+ const form=document.getElementById("enquiryForm");
+ const button=document.getElementById("submitBtn");
+ const status=document.getElementById("status");
+ const cfg=window.PARTNER_SUPABASE_CONFIG||{};
+ let token="";
+ let widgetId=null;
+ let renderTimer=null;
+ const show=(message,kind)=>{status.textContent=message;status.className="status show "+kind;};
+ const setupReady=()=>cfg.url&&cfg.publishableKey&&!cfg.url.includes("YOUR_SUPABASE")&&!cfg.publishableKey.includes("YOUR_SUPABASE")&&cfg.turnstileSiteKey&&!cfg.turnstileSiteKey.includes("YOUR_TURNSTILE");
+ const renderCaptcha=()=>{
+  if(!setupReady()||!window.turnstile||widgetId!==null)return;
+  widgetId=window.turnstile.render("#turnstile-container",{
+   sitekey:cfg.turnstileSiteKey,theme:"light",
+   callback:value=>{token=value;},
+   "expired-callback":()=>{token="";},
+   "error-callback":()=>{token="";}
+  });
+ };
+ renderTimer=setInterval(()=>{if(window.turnstile){renderCaptcha();if(widgetId!==null)clearInterval(renderTimer);}},250);
+ form.addEventListener("submit",async event=>{
   event.preventDefault();
-  const cfg=window.PARTNER_SUPABASE_CONFIG||{};
-  if(!window.supabase||!cfg.url||!cfg.publishableKey||cfg.url.includes('YOUR_SUPABASE')||cfg.publishableKey.includes('YOUR_SUPABASE')){
-   show('Demo setup pending: configure the Supabase project URL and public publishable key in config.js, then deploy the reviewed SQL migration. No enquiry was sent.','err');return;
+  if(!setupReady()){
+   show("Demo setup pending: configure Supabase public settings and the Turnstile site key, then deploy the enquiry gateway with its server secrets. No enquiry was sent.","err");return;
   }
-  const selected=document.getElementById('service').selectedOptions[0];
-  const phone=document.getElementById('phone').value.replace(/\D/g,'').slice(-10);
-  if(!/^[6-9]\d{9}$/.test(phone)){show('Please enter a valid 10-digit Indian mobile number.','err');return;}
-  button.disabled=true;button.textContent='Submitting…';
+  if(!token){show("Please complete the bot verification before submitting.","err");return;}
+  const selected=document.getElementById("service").selectedOptions[0];
+  const phone=document.getElementById("phone").value.replace(/\D/g,"").slice(-10);
+  if(!/^[6-9]\d{9}$/.test(phone)){show("Please enter a valid 10-digit Indian mobile number.","err");return;}
+  button.disabled=true;button.textContent="Submitting…";
   try{
-   const client=window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:false,autoRefreshToken:false}});
-   const {data,error}=await client.rpc('partner_submit_customer_lead',{
-    p_page_path:location.pathname,
-    p_service_code:document.getElementById('service').value,
-    p_service_name:selected.dataset.name,
-    p_state:document.getElementById('state').value.trim(),
-    p_district:document.getElementById('district').value.trim(),
-    p_customer_name:document.getElementById('customerName').value.trim(),
-    p_customer_phone:phone,
-    p_customer_details:document.getElementById('details').value.trim()||null,
-    p_consent_share:document.getElementById('consent').checked,
-    p_consent_version:'partner-demo-v1'
+   const response=await fetch(cfg.url.replace(/\/$/,"")+"/functions/v1/partner-submit-enquiry",{
+    method:"POST",
+    headers:{"Content-Type":"application/json","apikey":cfg.publishableKey,"Authorization":"Bearer "+cfg.publishableKey},
+    body:JSON.stringify({
+     p_page_path:location.pathname,
+     p_service_code:document.getElementById("service").value,
+     p_service_name:selected.dataset.name,
+     p_state:document.getElementById("state").value.trim(),
+     p_district:document.getElementById("district").value.trim(),
+     p_customer_name:document.getElementById("customerName").value.trim(),
+     p_customer_phone:phone,
+     p_customer_details:document.getElementById("details").value.trim()||null,
+     p_consent_share:document.getElementById("consent").checked,
+     p_consent_version:"partner-demo-v1",
+     turnstile_token:token
+    })
    });
-   if(error)throw error;
-   if(!data){show('This enquiry could not be accepted because of a recent duplicate or submission limit. Please try again later.','err');return;}
+   token="";
+   if(window.turnstile&&widgetId!==null)window.turnstile.reset(widgetId);
+   const result=await response.json();
+   if(!response.ok)throw new Error(result?.error||"Enquiry gateway rejected the request.");
+   if(!result.accepted){show("This enquiry could not be accepted because of a recent duplicate or submission limit. Please try again later.","err");return;}
    form.reset();
-   show('Enquiry received successfully. Reference: '+data+'. The system has attempted to match your request with an eligible verified service partner. If no matching partner is available yet, your request remains queued for review.','ok');
+   show("Enquiry received successfully. Reference: "+result.reference+". The system has attempted to match your request with an eligible verified service partner. If no matching partner is available yet, your request remains queued for review.","ok");
   }catch(error){
-   show('Enquiry could not be submitted. '+(error?.message||'Please check the Supabase setup and try again.'),'err');
-  }finally{button.disabled=false;button.textContent='Submit enquiry securely →';}
+   token="";
+   if(window.turnstile&&widgetId!==null)window.turnstile.reset(widgetId);
+   show("Enquiry could not be submitted. "+(error?.message||"Please check the gateway setup and try again."),"err");
+  }finally{button.disabled=false;button.textContent="Submit enquiry securely →";}
  });
 })();
 </script>
