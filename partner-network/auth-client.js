@@ -140,6 +140,7 @@
         toast(status === "active"
           ? "Partner profile saved. Your account is active."
           : "Account created. Your partner profile is saved and awaiting admin verification/activation.");
+        window.location.assign("./index.html");
       } else {
         toast("Registration received. Confirm your email, then log in to finish saving your partner profile.");
       }
@@ -169,9 +170,9 @@
       if (error) throw error;
       const status = await savePartnerProfile(data.user);
       toast(status === "active"
-        ? "Login successful. Your partner account is active; dashboard connection is the next phase."
+        ? "Login successful. Your partner account is active."
         : "Login successful. Partner profile saved; your account is awaiting admin verification/activation.");
-      login.reset();
+      window.location.assign("./index.html");
     } catch (error) {
       toast(error.message || "Login failed or partner profile could not be saved.", true);
     } finally {
