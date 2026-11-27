@@ -7,6 +7,7 @@ const auth = read("./auth-client.js");
 const guard = read("./portal-guard.js");
 const config = read("./config.js");
 const demo = read("./demo-enquiry.html");
+const gateway = read("../supabase/functions/partner-submit-enquiry/index.ts");
 
 test("browser configuration contains public placeholders only", () => {
   assert.match(config, /publishableKey/);
@@ -50,4 +51,44 @@ test("portal gates pending, rejected and suspended accounts", () => {
 test("public enquiry page does not call the database intake RPC directly", () => {
   assert.match(demo, /partner-submit-enquiry/);
   assert.doesNotMatch(demo, /rpc\(["']partner_submit_customer_lead["']/);
+});
+
+
+test("public gateway enforces exact Origin allowlist and POST-only intake", () => {
+  assert.match(gateway, /allowedOrigins\.includes\(origin\)/);
+  assert.match(gateway, /req\.method !== "POST"/);
+  assert.match(gateway, /Origin not allowed/);
+});
+
+test("public gateway bounds request size and rejects invalid JSON shapes", () => {
+  assert.match(gateway, /16_384/);
+  assert.match(gateway, /Array\.isArray\(parsed\)/);
+  assert.match(gateway, /Invalid JSON body/);
+});
+
+test("public gateway verifies Turnstile token and origin hostname", () => {
+  assert.match(gateway, /TURNSTILE_SECRET_KEY/);
+  assert.match(gateway, /challenges\.cloudflare\.com\/turnstile\/v0\/siteverify/);
+  assert.match(gateway, /verification\.hostname !== expectedHost/);
+});
+
+test("public gateway requires explicit consent before intake", () => {
+  assert.match(gateway, /p_consent_share !== true/);
+  assert.match(gateway, /Consent is required/);
+});
+
+test("service-role key is read only inside the server gateway", () => {
+  assert.match(gateway, /Deno\.env\.get\("SUPABASE_SERVICE_ROLE_KEY"\)/);
+  assert.match(gateway, /createClient\(supabaseUrl, serviceKey/);
+  assert.doesNotMatch(demo, /SUPABASE_SERVICE_ROLE_KEY|service_role/i);
+});
+
+test("gateway hides raw database errors and calls the restricted intake RPC", () => {
+  assert.match(gateway, /rpc\("partner_submit_customer_lead", rpcArgs\)/);
+  assert.match(gateway, /Do not return raw database errors/);
+  assert.doesNotMatch(gateway, /return json\(\{[^}]*error: error\.message/);
+});
+
+test("gateway source contains no escaped newline syntax defect", () => {
+  assert.doesNotMatch(gateway, /\\\\n\s*\}/);
 });
