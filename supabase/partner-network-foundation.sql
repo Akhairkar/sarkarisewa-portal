@@ -791,41 +791,117 @@ comment on table partner_network.admin_memberships is
 comment on function public.partner_admin_review_partner(uuid,text,text) is
   'Admin-only partner approval/rejection/suspension/reactivation with immutable action audit.';
 
--- Trusted lead routing RPC. Only Supabase service_role may call it.
-create or replace function public.partner_route_customer_lead(p_lead_id uuid)
-returns jsonb language plpgsql security definer set search_path = pg_catalog as $$
+
+-- Internal routing primitive. It is invoked by the lead-insert trigger and by
+-- the service-role-only retry wrapper. No browser role receives EXECUTE.
+create or replace function partner_network.route_new_customer_lead(p_lead_id uuid)
+returns jsonb
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
 declare
   v_lead partner_network.customer_leads%rowtype;
   v_partner_id uuid;
   v_assignment_id uuid;
 begin
-  if coalesce(auth.role(),'') <> 'service_role' then raise exception 'Trusted routing service required'; end if;
   if p_lead_id is null then raise exception 'Lead ID required'; end if;
-  select * into v_lead from partner_network.customer_leads where id=p_lead_id for update;
+
+  select * into v_lead
+  from partner_network.customer_leads
+  where id=p_lead_id
+  for update;
+
   if not found then raise exception 'Lead not found'; end if;
-  if v_lead.lead_status <> 'new' then return jsonb_build_object('assigned',false,'reason','lead_not_new'); end if;
+  if v_lead.lead_status <> 'new' then
+    return jsonb_build_object('assigned',false,'reason','lead_not_new');
+  end if;
+
   select p.user_id into v_partner_id
   from partner_network.partner_profiles p
   join partner_network.partner_entitlements e on e.partner_id=p.user_id
   join partner_network.partner_services s on s.partner_id=p.user_id
-  where p.account_status='active' and p.verification_status='verified'
+  where p.account_status='active'
+    and p.verification_status='verified'
     and s.service_code=v_lead.service_code
-    and exists (select 1 from partner_network.partner_service_areas a
-      where a.partner_id=p.user_id and lower(trim(a.state))=lower(trim(v_lead.state))
-        and (a.district is null or lower(trim(a.district))=lower(trim(v_lead.district))))
+    and exists (
+      select 1 from partner_network.partner_service_areas a
+      where a.partner_id=p.user_id
+        and lower(trim(a.state))=lower(trim(v_lead.state))
+        and (a.district is null or lower(trim(a.district))=lower(trim(v_lead.district)))
+    )
     and (e.free_leads_used < e.free_leads_granted or e.premium_status='active')
   order by
-    case when exists (select 1 from partner_network.partner_service_areas a
-      where a.partner_id=p.user_id and lower(trim(a.state))=lower(trim(v_lead.state))
-        and a.district is not null and lower(trim(a.district))=lower(trim(v_lead.district))) then 0 else 1 end,
-    (select count(*) from partner_network.lead_assignments la where la.partner_id=p.user_id and la.assigned_at>now()-interval '7 days') asc,
+    case when exists (
+      select 1 from partner_network.partner_service_areas a
+      where a.partner_id=p.user_id
+        and lower(trim(a.state))=lower(trim(v_lead.state))
+        and a.district is not null
+        and lower(trim(a.district))=lower(trim(v_lead.district))
+    ) then 0 else 1 end,
+    (select count(*) from partner_network.lead_assignments la
+      where la.partner_id=p.user_id
+        and la.assigned_at > now()-interval '7 days') asc,
     p.created_at asc
-  limit 1 for update of p,e skip locked;
-  if v_partner_id is null then return jsonb_build_object('assigned',false,'reason','no_eligible_partner'); end if;
-  insert into partner_network.lead_assignments(lead_id,partner_id,status) values(p_lead_id,v_partner_id,'offered') returning id into v_assignment_id;
-  return jsonb_build_object('assigned',true,'assignment_id',v_assignment_id,'partner_id',v_partner_id);
-exception when unique_violation then return jsonb_build_object('assigned',false,'reason','already_assigned');
-end; $$;
+  limit 1
+  for update of p,e skip locked;
+
+  if v_partner_id is null then
+    return jsonb_build_object('assigned',false,'reason','no_eligible_partner');
+  end if;
+
+  insert into partner_network.lead_assignments(lead_id,partner_id,status)
+  values(p_lead_id,v_partner_id,'offered')
+  returning id into v_assignment_id;
+
+  update partner_network.customer_leads
+  set lead_status='assigned', assigned_at=now()
+  where id=p_lead_id;
+
+  return jsonb_build_object('assigned',true,'assignment_id',v_assignment_id);
+exception
+  when unique_violation then
+    return jsonb_build_object('assigned',false,'reason','already_assigned');
+end;
+$$;
+
+-- Every accepted public enquiry attempts matching immediately in the same
+-- database transaction. If no partner matches, the lead remains 'new' for retry.
+create or replace function partner_network.route_customer_lead_after_insert()
+returns trigger
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
+begin
+  perform partner_network.route_new_customer_lead(new.id);
+  return new;
+end;
+$$;
+
+drop trigger if exists customer_lead_auto_route on partner_network.customer_leads;
+create trigger customer_lead_auto_route
+after insert on partner_network.customer_leads
+for each row execute function partner_network.route_customer_lead_after_insert();
+
+-- Trusted retry endpoint. Browser/anon/authenticated roles cannot execute it.
+create or replace function public.partner_route_customer_lead(p_lead_id uuid)
+returns jsonb
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
+begin
+  if coalesce(auth.role(),'') <> 'service_role' then
+    raise exception 'Trusted routing service required';
+  end if;
+  return partner_network.route_new_customer_lead(p_lead_id);
+end;
+$$;
+
+revoke all on function partner_network.route_new_customer_lead(uuid) from public,anon,authenticated,service_role;
+revoke all on function partner_network.route_customer_lead_after_insert() from public,anon,authenticated,service_role;
 revoke all on function public.partner_route_customer_lead(uuid) from public,anon,authenticated;
 grant execute on function public.partner_route_customer_lead(uuid) to service_role;
-comment on function public.partner_route_customer_lead(uuid) is 'Service-role-only exclusive routing by service and state/district. Prefers exact district match, balances recent volume, and atomically charges quota.'
+comment on function public.partner_route_customer_lead(uuid) is
+  'Service-role-only retry for an unmatched lead. New leads are routed automatically by the customer_lead_auto_route trigger.';
