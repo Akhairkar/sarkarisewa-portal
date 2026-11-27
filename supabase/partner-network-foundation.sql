@@ -349,7 +349,7 @@ grant usage, select on all sequences in schema partner_network to service_role;
 grant select on partner_network.partner_profiles to authenticated;
 grant insert (user_id, partner_type, business_name, owner_name, email, phone, state, district, pincode, csc_id)
   on partner_network.partner_profiles to authenticated;
-grant update (partner_type, business_name, owner_name, email, phone, state, district, pincode, csc_id)
+grant update (business_name, owner_name, phone, state, district, pincode, csc_id)
   on partner_network.partner_profiles to authenticated;
 
 grant select, insert, delete on partner_network.partner_services to authenticated;
@@ -464,10 +464,8 @@ begin
     v_email, v_phone, trim(p_state), trim(p_district)
   )
   on conflict (user_id) do update set
-    partner_type = excluded.partner_type,
     business_name = excluded.business_name,
     owner_name = excluded.owner_name,
-    email = excluded.email,
     phone = excluded.phone,
     state = excluded.state,
     district = excluded.district
