@@ -17,6 +17,9 @@ and the feature branch `feature/business-partner-network`.
 2. Add only those public values to `partner-network/config.js` on this feature branch.
 3. Configure Auth email confirmation and recovery URLs for the isolated preview origin.
 4. Confirm the Auth email provider can deliver confirmation messages.
+6. Create a Cloudflare Turnstile widget for the exact isolated preview hostname; add its site key to `partner-network/config.js` as `turnstileSiteKey`.
+7. Set Edge Function secrets `TURNSTILE_SECRET_KEY` and `ALLOWED_ORIGINS` (exact comma-separated HTTPS origins) in the test project. `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` must remain server-side.
+8. Deploy `partner-submit-enquiry` only to the test project. Its function-specific `verify_jwt = false` setting is intentional: the function itself enforces exact Origin allowlisting and Turnstile hostname verification. The gateway still requires the public `apikey` header.
 5. Keep the Admin allowlist empty until the owner verifies the intended Admin Auth UUID and approves a separate test-only allowlist action.
 
 ## Partner account test matrix
