@@ -70,8 +70,9 @@ This is a database-driven module, not a generated page per partner.
 - [x] Add approved-partner dashboard RPC draft and live renderer for own assigned leads, quota and aggregate counts (SQL draft only; not deployed or runtime-tested).
 - [x] Add admin allowlist, partner directory and approve/reject/suspend/reactivate RPC/UI (SQL draft only; no admin seeded or runtime-tested).
 - [x] Add service-role-only routing RPC draft and internal Edge Function (exclusive assignment + atomic quota; not deployed or runtime-tested).
-- [ ] Connect only approved service pages using a reusable enquiry component.
-- [ ] Connect lead intake to trusted routing invocation; add legacy partner invitation/import and admin lead controls.
+- [x] Add one isolated noindex/nofollow demo enquiry page; existing service pages remain untouched.
+- [ ] Connect only approved service pages using a reusable enquiry component after separate approval.
+- [ ] Connect accepted demo/public enquiries to trusted routing invocation; add legacy partner invitation/import and admin lead controls.
 - [ ] Add browser push + in-dashboard notifications.
 - [ ] Add performance-based eligibility and premium feature controls.
 - [ ] Test RLS with two partner accounts, Admin, anonymous visitor and service-role routing.
@@ -110,3 +111,13 @@ File: `supabase/partner-network-foundation.sql`
 - Edge Function: `supabase/functions/partner-route-lead/index.ts`. It accepts POST with a lead UUID and requires the exact server-side service-role bearer secret. The secret is read only from Edge Function environment and is never embedded in frontend code.
 - No browser or anonymous caller can invoke the routing RPC directly. The Edge Function is not yet deployed, and the public lead-intake flow is not yet wired to invoke it. A trusted server-side event/queue integration is the next required step; do not expose the service-role key to make this work.
 - No SQL has been run and no function has been deployed.
+
+
+### Isolated customer enquiry demo
+
+- Demo page: `partner-network/demo-enquiry.html` (feature branch only).
+- The page has `noindex,nofollow`, is not linked from existing service pages, and does not edit any current public service page, title, metadata, canonical, URL, CSS or sitemap.
+- The form requires explicit consent before sending customer contact details to the public intake RPC. It validates mobile format and uses only the public Supabase publishable/anon key from `config.js`.
+- Successful submission creates a lead through `public.partner_submit_customer_lead`. It does **not** yet automatically assign the lead. The UI explicitly says the lead is awaiting trusted routing.
+- To test after approved setup: review/deploy the SQL migration, configure the public Supabase URL and publishable key in `config.js`, then open this page on the feature branch. No production site changes are made by this commit.
+- Existing service pages must remain untouched until the owner explicitly approves a later integration.
