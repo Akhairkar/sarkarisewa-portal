@@ -640,3 +640,153 @@ revoke all on function public.partner_get_dashboard_data() from public, anon;
 grant execute on function public.partner_get_dashboard_data() to authenticated;
 comment on function public.partner_get_dashboard_data() is
   'Returns the approved partner own profile, quota, aggregate stats and latest 50 exclusively assigned leads.';
+
+-- Admin authorization is an explicit allowlist. No browser/user-facing flow can
+-- insert or promote an admin. Bootstrap the first owner manually in Supabase SQL
+-- Editor only after verifying that Auth user ID through a trusted process.
+create table if not exists partner_network.admin_memberships (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  admin_role text not null check (admin_role in ('owner','admin','support')),
+  is_active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists partner_network.admin_action_history (
+  id bigint generated always as identity primary key,
+  actor_user_id uuid not null references auth.users(id) on delete restrict,
+  target_partner_id uuid references partner_network.partner_profiles(user_id) on delete set null,
+  action text not null check (action in ('approve','reject','suspend','reactivate')),
+  note text check (note is null or length(note) <= 500),
+  created_at timestamptz not null default now()
+);
+
+alter table partner_network.admin_memberships enable row level security;
+alter table partner_network.admin_action_history enable row level security;
+revoke all on partner_network.admin_memberships, partner_network.admin_action_history from public, anon, authenticated;
+grant all privileges on partner_network.admin_memberships, partner_network.admin_action_history to service_role;
+
+create or replace function public.partner_admin_is_authorized()
+returns boolean
+language sql
+stable
+security definer
+set search_path = pg_catalog
+as $$
+  select exists (
+    select 1 from partner_network.admin_memberships m
+    where m.user_id = auth.uid() and m.is_active = true
+  );
+$$;
+revoke all on function public.partner_admin_is_authorized() from public, anon;
+grant execute on function public.partner_admin_is_authorized() to authenticated;
+
+create or replace function public.partner_admin_get_overview()
+returns jsonb
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
+declare
+  v_total integer;
+  v_pending integer;
+  v_active integer;
+  v_suspended integer;
+  v_partners jsonb;
+begin
+  if auth.uid() is null or not public.partner_admin_is_authorized() then
+    raise exception 'Admin access required';
+  end if;
+
+  select count(*)::integer,
+         count(*) filter (where account_status = 'pending')::integer,
+         count(*) filter (where account_status = 'active' and verification_status = 'verified')::integer,
+         count(*) filter (where account_status = 'suspended')::integer
+    into v_total, v_pending, v_active, v_suspended
+  from partner_network.partner_profiles;
+
+  select coalesce(jsonb_agg(to_jsonb(p) order by p.created_at desc), '[]'::jsonb)
+    into v_partners
+  from (
+    select p.user_id, p.partner_type, p.business_name, p.owner_name, p.email,
+           p.phone, p.state, p.district, p.partner_origin, p.verification_status,
+           p.account_status, p.created_at,
+           coalesce(e.free_leads_granted,10) as free_leads_granted,
+           coalesce(e.free_leads_used,0) as free_leads_used,
+           coalesce(e.premium_status,'not_eligible') as premium_status
+    from partner_network.partner_profiles p
+    left join partner_network.partner_entitlements e on e.partner_id = p.user_id
+    order by p.created_at desc
+    limit 200
+  ) p;
+
+  return jsonb_build_object(
+    'stats',jsonb_build_object('total',coalesce(v_total,0),'pending',coalesce(v_pending,0),'active',coalesce(v_active,0),'suspended',coalesce(v_suspended,0)),
+    'partners',v_partners
+  );
+end;
+$$;
+revoke all on function public.partner_admin_get_overview() from public, anon;
+grant execute on function public.partner_admin_get_overview() to authenticated;
+
+create or replace function public.partner_admin_review_partner(
+  p_partner_id uuid,
+  p_decision text,
+  p_note text default null
+) returns jsonb
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
+declare
+  v_actor uuid := auth.uid();
+  v_verification text;
+  v_account text;
+begin
+  if v_actor is null or not public.partner_admin_is_authorized() then
+    raise exception 'Admin access required';
+  end if;
+  if p_decision not in ('approve','reject','suspend','reactivate') then
+    raise exception 'Invalid admin decision';
+  end if;
+
+  select verification_status, account_status
+    into v_verification, v_account
+  from partner_network.partner_profiles
+  where user_id = p_partner_id
+  for update;
+  if not found then raise exception 'Partner not found'; end if;
+
+  if p_decision = 'approve' then
+    update partner_network.partner_profiles
+      set verification_status='verified', account_status='active', updated_at=now()
+      where user_id=p_partner_id;
+  elsif p_decision = 'reject' then
+    update partner_network.partner_profiles
+      set verification_status='rejected', account_status='pending', updated_at=now()
+      where user_id=p_partner_id;
+  elsif p_decision = 'suspend' then
+    update partner_network.partner_profiles
+      set account_status='suspended', updated_at=now()
+      where user_id=p_partner_id;
+  else
+    if v_verification <> 'verified' then
+      raise exception 'Only verified partners can be reactivated';
+    end if;
+    update partner_network.partner_profiles
+      set account_status='active', updated_at=now()
+      where user_id=p_partner_id;
+  end if;
+
+  insert into partner_network.admin_action_history(actor_user_id,target_partner_id,action,note)
+  values(v_actor,p_partner_id,p_decision,nullif(left(trim(coalesce(p_note,'')),500),''));
+
+  return jsonb_build_object('success',true,'decision',p_decision);
+end;
+$$;
+revoke all on function public.partner_admin_review_partner(uuid,text,text) from public, anon;
+grant execute on function public.partner_admin_review_partner(uuid,text,text) to authenticated;
+
+comment on table partner_network.admin_memberships is
+  'Admin allowlist. Add first owner manually in trusted Supabase SQL Editor; never expose writes to client roles.';
+comment on function public.partner_admin_review_partner(uuid,text,text) is
+  'Admin-only partner approval/rejection/suspension/reactivation with immutable action audit.';
