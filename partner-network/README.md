@@ -60,7 +60,7 @@ This is a database-driven module, not a generated page per partner.
 - [x] Inspect existing Supabase Auth, CSC and service-request foundations.
 - [x] Add additive database foundation migration (not executed).
 - [ ] Review migration against the live Supabase schema and current policies.
-- [x] Add responsive partner registration/login UI preview (`auth.html`).\n- [ ] Connect registration, password login, email verification, password reset and profile completion to Supabase Auth.
+- [x] Add responsive partner registration/login UI preview (`auth.html`).\n- [x] Wire registration, password login and password-reset requests to the Supabase Auth client scaffold.\n- [ ] Configure the project URL/publishable key and verify email confirmation + recovery redirects.\n- [ ] Add secure partner profile creation/activation and authenticated dashboard guards.
 - [ ] Build responsive partner dashboard and lead workflow.
 - [ ] Build trusted lead-routing Edge Function (exclusive assignment + atomic quota).
 - [ ] Connect only approved service pages using a reusable enquiry component.
