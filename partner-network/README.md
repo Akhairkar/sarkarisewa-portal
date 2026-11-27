@@ -65,7 +65,8 @@ This is a database-driven module, not a generated page per partner.
 - [x] Wire registration, password login and password-reset requests to the Supabase Auth client scaffold.
 - [ ] Configure the project URL/publishable key and verify email confirmation + recovery redirects.
 - [x] Add the authenticated profile-completion RPC and client onboarding call (SQL draft only; not deployed or live-tested).
-- [ ] Add admin approval/activation and authenticated dashboard guards.
+- [x] Add authenticated portal gate: checks session + own approval status via a minimal RPC; hides all sample dashboard metrics and lead rows.
+- [ ] Build the live data-backed partner dashboard and admin approval/activation workflow.
 - [ ] Build responsive partner dashboard and lead workflow.
 - [ ] Build trusted lead-routing Edge Function (exclusive assignment + atomic quota).
 - [ ] Connect only approved service pages using a reusable enquiry component.
@@ -80,3 +81,11 @@ This is a database-driven module, not a generated page per partner.
 File: `supabase/partner-network-foundation.sql`
 
 **Do not run this migration yet.** It is a reviewable, additive draft. The existing Supabase project must be checked for schema exposure settings, roles, existing objects, auth configuration and migration order first. No SQL has been executed against the live database.
+
+
+### Portal access guard
+
+- `portal-guard.js` keeps the sample dashboard hidden and checks the Supabase Auth session before any portal access state is displayed.
+- `public.partner_get_portal_access()` returns only the current user's profile approval state and starter entitlement summary. It never returns lead or customer contact data.
+- Only `account_status = active` AND `verification_status = verified` passes the approval gate. Even approved partners see a dashboard-integration notice until real lead data is connected; demo figures are not presented as real.
+- This guard depends on the SQL draft being reviewed and deployed. It is not live until Supabase credentials and migrations are configured.
