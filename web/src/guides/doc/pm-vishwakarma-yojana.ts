@@ -1,22 +1,10 @@
 import type { DocGuide } from "./types";
 
-// Sources (checked 15 Oct 2026, via search extracts; pmvishwakarma.gov.in and
-// india.gov.in pages were not reachable from here): india.gov.in spotlight
-// "Pradhan Mantri Vishwakarma Scheme" and myScheme "pmv" (Ministry of MSME;
-// loans up to ₹3 lakh in two tranches ₹1 lakh (18 months) and ₹2 lakh (30
-// months), 5% concessional rate with Government interest subvention capped at
-// 8%, credit guarantee fee borne by Government; toolkit incentive up to
-// ₹15,000 as e-voucher at start of Basic Training; stipend ₹500/day; Basic
-// Training 5-7 days (40 hours), Advanced Training 15 days+; second tranche
-// needs standard loan account + digital transactions or advanced training);
-// Drishti IAS / PSU Connect reports of the PIB release for 3 years (17 Sep
-// 2026): about 30 lakh registered after three-stage verification, ~18.15 lakh
-// toolkits, ~6.18 lakh loans worth ~₹5,300 crore, outlay ₹13,000 crore
-// FY 2023-24 to 2027-28, 18 trades; PIB Aug 2024 annexure (enrolments by
-// state). Eligibility (18+, one per family, no PMEGP/PM SVANidhi/Mudra loan
-// in last 5 years, CSC-only registration, Gram Panchayat/ULB -> District
-// Implementation Committee -> Screening Committee) from scheme summaries.
-// Helpline numbers conflict between sources, so none is given.
+// Official progress figures: PIB, Ministry of MSME, 18 September 2026
+// (30 lakh registered; 24.50 lakh basic training; 18.15 lakh toolkits;
+// 6.18 lakh loans worth ₹5,297 crore). Eligibility exceptions for fully
+// repaid PM MUDRA / PM SVANidhi loans are reflected from official scheme
+// guidance; applicants should still confirm their individual case on portal.
 export const pmVishwakarmaYojana: DocGuide = {
   crumbs: [
     { label: "होम", href: "/" },
@@ -92,6 +80,7 @@ export const pmVishwakarmaYojana: DocGuide = {
     },
   ],
   official: [
+    { href: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2311768&lang=2&reg=48", title: "PIB: PM Vishwakarma 3rd anniversary progress (18 Sep 2026)", note: "Official registration, training, toolkit and loan figures" },
     { href: "https://pmvishwakarma.gov.in/", title: "पीएम विश्वकर्मा पोर्टल", note: "रजिस्ट्रेशन CSC से; स्टेटस और संपर्क" },
     { href: "https://msme.gov.in/", title: "MSME मंत्रालय" },
     { href: "https://www.myscheme.gov.in/schemes/pmv", title: "myScheme: PM Vishwakarma" },
