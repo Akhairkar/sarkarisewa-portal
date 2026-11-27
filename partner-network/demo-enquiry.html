@@ -94,7 +94,12 @@ footer{text-align:center;color:#a0a2b0;font-size:10px;padding:0 15px 25px}
    "error-callback":()=>{token="";}
   });
  };
- renderTimer=setInterval(()=>{if(window.turnstile){renderCaptcha();if(widgetId!==null)clearInterval(renderTimer);}},250);
+ let renderAttempts=0;
+ renderTimer=setInterval(()=>{
+  renderAttempts++;
+  if(window.turnstile){renderCaptcha();clearInterval(renderTimer);}
+  else if(renderAttempts>=40)clearInterval(renderTimer);
+ },250);
  form.addEventListener("submit",async event=>{
   event.preventDefault();
   if(!setupReady()){
