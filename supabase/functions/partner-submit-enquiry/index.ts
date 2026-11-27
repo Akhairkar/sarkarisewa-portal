@@ -42,9 +42,22 @@ Deno.serve(async (req: Request) => {
     return json({ error: "Enquiry gateway is not configured" }, 503, origin);
   }
 
+  const contentLength = Number(req.headers.get("content-length") || "0");
+  if (Number.isFinite(contentLength) && contentLength > 16_384) {
+    return json({ error: "Request body is too large" }, 413, origin);
+  }
+
   let body: Record<string, unknown>;
   try {
-    body = await req.json();
+    const rawBody = await req.text();
+    if (new TextEncoder().encode(rawBody).byteLength > 16_384) {
+      return json({ error: "Request body is too large" }, 413, origin);
+    }
+    const parsed: unknown = JSON.parse(rawBody);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return json({ error: "Invalid JSON body" }, 400, origin);
+    }
+    body = parsed as Record<string, unknown>;
   } catch {
     return json({ error: "Invalid JSON body" }, 400, origin);
   }
