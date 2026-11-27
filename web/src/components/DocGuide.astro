@@ -9,7 +9,6 @@ import CardGrid from "./CardGrid.astro";
 import StateGrid from "./StateGrid.astro";
 import Explore from "./Explore.astro";
 import PromoBox from "./PromoBox.astro";
-import PaidTools from "./PaidTools.astro";
 import CscHelp from "./CscHelp.astro";
 import { TELEGRAM_CHANNEL, WHATSAPP_CHANNEL } from "../data/site";
 import DemandBox from "./DemandBox.astro";
@@ -82,7 +81,6 @@ const promo = g.promo ?? (g.doc === "driving-licence" ? challanPromo : undefined
       ))}
 
       <OfficialLinks verified={g.verified} links={g.official} />
-      <PaidTools exclude={promo ? [promo.href] : []} />
       {promo && <PromoBox p={promo} compact />}
       {!en && !Astro.url.pathname.startsWith("/jobs/") && <JobStrip state={g.state?.slug} />}
       <Faq items={g.faq} />
