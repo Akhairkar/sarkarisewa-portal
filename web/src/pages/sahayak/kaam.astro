@@ -1,0 +1,128 @@
+---
+// Private page for an approved Seva Sahayak helper: how many visitors
+// contacted them and the help requests assigned to them. The helper opens a
+// private link with a secret in the #fragment (never sent to the server or
+// analytics); the page asks the sahayak_dashboard function for their data.
+// Not indexed, no ads. See supabase/sahayak-dashboard.sql.
+import Base from "../../layouts/Base.astro";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../../lib/supabase-public";
+import { SAHAYAK_SERVICES } from "../../data/sahayak";
+import { STATES } from "../../data/site";
+
+const cfg = {
+  url: SUPABASE_URL, key: SUPABASE_ANON_KEY,
+  names: Object.fromEntries(SAHAYAK_SERVICES.map((s) => [s.key, s.hi])),
+  states: Object.fromEntries(STATES.map((s) => [s.slug, s.hi])),
+};
+---
+<Base noAds noindex
+  title="मेरा सेवा सहायक पेज | SarkariSewa India"
+  description="सेवा सहायक के लिए निजी पेज: कितने लोगों ने संपर्क किया और आपको कौन सी रिक्वेस्ट मिली।"
+  schemaType="WebPage"
+>
+  <meta name="referrer" content="no-referrer" />
+  <script is:inline>
+    // Read the secret from #k=..., keep it for this browser, and remove it from the address bar.
+    (function () {
+      try {
+        var m = /[#&]k=([a-f0-9]{32})/.exec(location.hash || "");
+        if (m) { localStorage.setItem("ss_sahayak_k", m[1]); history.replaceState(null, "", location.pathname); }
+      } catch (e) {}
+    })();
+  </script>
+  <article class="page kaam-page">
+    <div>
+      <h1>🤝 मेरा सेवा सहायक पेज</h1>
+      <p class="kaam-note">यह पेज सिर्फ आपके लिए है। इसका लिंक किसी को न भेजें।</p>
+      <div id="kaam" data-cfg={JSON.stringify(cfg)}><p class="kaam-load">लोड हो रहा है…</p></div>
+    </div>
+  </article>
+</Base>
+
+<script>
+  const root = document.getElementById("kaam")!;
+  const c = JSON.parse(root.dataset.cfg!);
+  const esc = (s: unknown) => String(s ?? "").replace(/[&<>"']/g, (x) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[x]!);
+  const head = { apikey: c.key, Authorization: `Bearer ${c.key}`, "Content-Type": "application/json" };
+  let token = "";
+  try { token = localStorage.getItem("ss_sahayak_k") || ""; } catch (e) {}
+  const rpc = (fn: string, args: Record<string, unknown>) => fetch(`${c.url}/rest/v1/rpc/${fn}`, { method: "POST", headers: head, body: JSON.stringify(args) }).then((r) => (r.ok ? r.json() : null));
+  const day = (d: string) => new Date(d).toLocaleDateString("hi-IN", { day: "numeric", month: "short", year: "numeric" });
+  const ST: Record<string, string> = { new: "🆕 नई", contacted: "📞 संपर्क किया", done: "✅ काम हो गया", no_response: "🔕 जवाब नहीं मिला" };
+
+  function stat(n: unknown, label: string) { return `<div class="kaam-stat"><strong>${esc(n)}</strong><span>${label}</span></div>`; }
+
+  function reqCard(r: any) {
+    const text = encodeURIComponent("नमस्ते " + r.name + " जी, SarkariSewa India से आपकी रिक्वेस्ट मिली थी। मैं आपकी मदद कर सकता/सकती हूं। कब बात कर सकते हैं?");
+    const btn = (s: string, t: string) => `<button class="kaam-b${r.status === s ? " on" : ""}" data-id="${esc(r.id)}" data-s="${s}">${t}</button>`;
+    return `<li class="kaam-req"><div class="kaam-top"><strong>${esc(r.name)}</strong><span class="kaam-st">${ST[r.status] || esc(r.status)}</span></div>`
+      + `<span class="kaam-meta">${esc(c.names[r.service] || r.service || "")} · 📍 ${esc(r.district)} · ${day(r.date)}</span>`
+      + (r.message ? `<span class="kaam-meta">📝 ${esc(r.message)}</span>` : "")
+      + `<span class="kaam-btns"><a class="kaam-call" href="tel:+91${esc(r.phone)}">📞 ${esc(r.phone)}</a><a class="kaam-wa" href="https://wa.me/91${esc(r.phone)}?text=${text}" target="_blank" rel="noopener nofollow">WhatsApp</a></span>`
+      + `<span class="kaam-btns kaam-set">${btn("contacted", "संपर्क किया")}${btn("done", "काम हो गया")}${btn("no_response", "जवाब नहीं मिला")}</span></li>`;
+  }
+
+  function preview(d: any, rows: any[]) {
+    const me = rows[0];
+    if (!me) return "";
+    const tags = [me.meets_in_person ? '<span class="kaam-tag g">🤝 मिलकर काम</span>' : "", me.online_work ? '<span class="kaam-tag">💻 ऑनलाइन काम</span>' : "", me.experience_years ? `<span class="kaam-tag">${esc(me.experience_years)} साल का अनुभव</span>` : ""].join("");
+    const svc = (me.services || []).map((k: string) => c.names[k]).filter(Boolean).slice(0, 6).join(" · ");
+    return `<section class="kaam-sec"><h2>आपकी लिस्टिंग ऐसी दिखती है</h2><p class="kaam-meta">यह कार्ड ${esc(c.states[d.state] || d.state)} की वरिष्ठ नागरिक कार्ड गाइड पर ग्राहकों को दिखता है।</p>`
+      + `<div class="kaam-card"><strong>${esc(me.business_name || me.name)}</strong>`
+      + `<span class="kaam-meta">📍 ${esc([me.area, me.district].filter(Boolean).join(", "))}</span><span class="kaam-tags">${tags}</span>`
+      + (svc ? `<span class="kaam-meta">${esc(svc)}</span>` : "") + (me.about ? `<span>${esc(me.about)}</span>` : "")
+      + `<span class="kaam-btns"><span class="kaam-call">📞 कॉल करें</span><span class="kaam-wa">WhatsApp</span></span></div>`
+      + `<p class="kaam-meta">कुछ बदलवाना हो तो हमें WhatsApp करें।</p></section>`;
+  }
+
+  async function load() {
+    const d = await rpc("sahayak_dashboard", { p_token: token });
+    if (!d) {
+      root.innerHTML = `<p class="kaam-err">⚠️ यह लिंक सही नहीं है, या आपकी लिस्टिंग अभी मंज़ूर नहीं हुई है। हमारे भेजे हुए लिंक को दोबारा खोलें।</p>`;
+      return;
+    }
+    const pub = await fetch(`${c.url}/rest/v1/sahayak_public?select=name,business_name,district,area,services,meets_in_person,online_work,experience_years,about&id=eq.${encodeURIComponent(d.id)}`, { headers: { apikey: c.key, Authorization: `Bearer ${c.key}` } }).then((r) => (r.ok ? r.json() : [])).catch(() => []);
+    const reqs: any[] = d.requests || [];
+    root.innerHTML = `<p class="kaam-hi">नमस्ते <strong>${esc(d.business || d.name)}</strong> जी 🙏 · 📍 ${esc(d.district)}</p>`
+      + `<div class="kaam-stats">${stat(d.contacts30, "पिछले 30 दिन में कॉल/WhatsApp")}${stat((d.calls || 0) + (d.whatsapp || 0), "कुल संपर्क")}${stat(d.assigned, "आपको मिली रिक्वेस्ट")}${stat(d.done, "पूरे हुए काम")}</div>`
+      + `<section class="kaam-sec"><h2>आपको मिली रिक्वेस्ट</h2>` + (reqs.length ? `<ul class="kaam-list">${reqs.map(reqCard).join("")}</ul>`
+        : `<p class="kaam-meta">अभी कोई रिक्वेस्ट नहीं आई। जैसे ही आपके ज़िले का कोई व्यक्ति "मुझे मदद चाहिए" भरेगा, वह यहां दिखेगी।</p>`) + `</section>`
+      + preview(d, pub)
+      + `<p class="kaam-warn">ग्राहक से OTP न लें, सरकारी फीस जितनी है उतनी ही बताएं और अपना सेवा शुल्क काम से पहले साफ बताएं। काम, पैसा और भरोसा आपके और ग्राहक के बीच की बात है।</p>`;
+  }
+
+  root.addEventListener("click", async (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-s]");
+    if (!b) return;
+    b.disabled = true;
+    const ok = await rpc("sahayak_set_lead_status", { p_token: token, p_lead: Number(b.dataset.id), p_status: b.dataset.s });
+    if (ok) await load(); else { b.disabled = false; alert("अभी सेव नहीं हो सका। थोड़ी देर बाद फिर कोशिश करें।"); }
+  });
+  load().catch(() => { root.innerHTML = `<p class="kaam-err">⚠️ इंटरनेट की समस्या। थोड़ी देर बाद फिर कोशिश करें।</p>`; });
+</script>
+
+<style is:global>
+  .kaam-page { max-width: 720px; margin: 0 auto; }
+  .kaam-note { color: var(--c-muted); font-size: .9rem; }
+  .kaam-hi { font-size: 1.05rem; }
+  .kaam-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0; }
+  .kaam-stat { border: 2px solid var(--c-line); border-radius: 14px; padding: 12px; background: var(--c-surface, #fff); display: flex; flex-direction: column; gap: 2px; }
+  .kaam-stat strong { font-size: 1.8rem; line-height: 1.1; }
+  .kaam-stat span { font-size: .85rem; color: var(--c-muted); }
+  .kaam-sec { margin: 20px 0; }
+  .kaam-list { list-style: none; padding: 0; margin: 10px 0; display: grid; gap: 10px; }
+  .kaam-req, .kaam-card { border: 1px solid var(--c-line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; background: var(--c-surface, #fff); }
+  .kaam-top { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .kaam-st { font-size: .85rem; font-weight: 700; }
+  .kaam-meta { font-size: .9rem; color: var(--c-muted); }
+  .kaam-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .kaam-btns a, .kaam-btns > span { flex: 1; text-align: center; padding: 10px; border-radius: 10px; font-weight: 800; text-decoration: none; min-width: 120px; }
+  .kaam-call { background: #0f766e; color: #fff; } .kaam-wa { background: #16a34a; color: #fff; }
+  .kaam-b { flex: 1; min-height: 40px; border: 2px solid var(--c-line); border-radius: 10px; background: transparent; color: inherit; font: inherit; font-weight: 700; cursor: pointer; }
+  .kaam-b.on { border-color: #16a34a; background: #dcfce7; color: #14532d; }
+  .kaam-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .kaam-tag { font-size: .8rem; border-radius: 999px; padding: 2px 8px; background: #f1f5f9; color: #1f2937; }
+  .kaam-tag.g { background: #dcfce7; color: #14532d; font-weight: 700; }
+  .kaam-warn { font-size: .86rem; background: #fffbeb; border-left: 4px solid #f59e0b; padding: 8px 10px; border-radius: 8px; color: #1f2937; }
+  .kaam-err { color: #b91c1c; font-weight: 700; }
+</style>

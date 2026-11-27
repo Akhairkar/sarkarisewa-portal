@@ -51,19 +51,33 @@ document.addEventListener("DOMContentLoaded", async () => {
       </tr>`).join("");
 
       const live = rows.filter((p) => p.status === "approved");
-      if (!live.length) empty(approved, 6, "No approved helpers yet.");
+      const assignedBy = {};
+      leadRows.filter((l) => l.kind === "request" && l.assigned_to).forEach((l) => { const a = (assignedBy[l.assigned_to] ??= { n: 0, done: 0 }); a.n++; if (l.status === "done") a.done++; });
+      const link = (p) => `${location.origin}/sahayak/kaam.html#k=${p.dash_token}`;
+      const dashMsg = (p) => `नमस्ते ${p.name} जी, SarkariSewa India से। यह आपका निजी पेज है: ${link(p)}\nइसमें दिखेगा कि कितने लोगों ने आपसे संपर्क किया और आपको कौन सी रिक्वेस्ट मिली। यह लिंक किसी को न भेजें।`;
+      if (!live.length) empty(approved, 8, "No approved helpers yet.");
       else approved.innerHTML = live.map((p) => {
         const c = contacts[p.id] || {};
+        const a = assignedBy[p.id] || { n: 0, done: 0 };
         return `<tr><td>${day(p.approved_at)}</td><td><strong>${esc(p.business_name || p.name)}</strong></td><td>${esc(p.phone)}<br><a href="${wa(p.whatsapp || p.phone, liveMsg(p))}" target="_blank" rel="noopener">Send "you are live"</a></td>
-          <td>${esc(p.district)}, ${esc(p.state)}</td><td>📞 ${c.call || 0} · WhatsApp ${c.whatsapp || 0}</td>
+          <td>${esc(p.district)}, ${esc(p.state)}</td><td>📞 ${c.call || 0} · WhatsApp ${c.whatsapp || 0}</td><td>${a.n} / ${a.done}</td>
+          <td><a href="${wa(p.whatsapp || p.phone, dashMsg(p))}" target="_blank" rel="noopener">Send private page link</a><br><small><a href="${esc(link(p))}" target="_blank" rel="noopener">Open as helper</a></small></td>
           <td><button class="theme-toggle-btn" data-act="rejected" data-id="${esc(p.id)}">Remove</button></td></tr>`;
       }).join("");
 
       const reqs = leadRows.filter((l) => l.kind === "request");
       const helpersIn = (l) => live.filter((p) => p.state === l.state && p.district.toLowerCase() === String(l.district || "").toLowerCase()).length;
-      if (!reqs.length) empty(requests, 6, "No help requests yet.");
+      const byId = Object.fromEntries(live.map((p) => [p.id, p]));
+      const assignCell = (l) => {
+        const opts = live.slice().sort((x, y) => (y.state === l.state) - (x.state === l.state))
+          .map((p) => `<option value="${esc(p.id)}"${l.assigned_to === p.id ? " selected" : ""}>${esc(p.business_name || p.name)} (${esc(p.district)})</option>`).join("");
+        const h = byId[l.assigned_to];
+        const tell = h ? `<br><a href="${wa(h.whatsapp || h.phone, `नमस्ते ${h.name} जी, आपको SarkariSewa India से नई रिक्वेस्ट मिली है (${l.district}). अपना पेज खोलें: ${location.origin}/sahayak/kaam.html#k=${h.dash_token}`)}" target="_blank" rel="noopener">Tell helper</a>` : "";
+        return `<select class="sh-assign" data-lead="${esc(l.id)}"><option value="">— unassigned —</option>${opts}</select><br><small>${esc(l.status)}</small>${tell}`;
+      };
+      if (!reqs.length) empty(requests, 7, "No help requests yet.");
       else requests.innerHTML = reqs.map((l) => `<tr><td>${day(l.created_at)}</td><td>${esc(l.state)} / ${esc(l.district)}<br><small>${esc(l.service)}</small></td><td>${esc(l.name)}</td>
-        <td>${esc(l.phone)}</td><td>${esc(l.message)}</td><td>${helpersIn(l)}</td></tr>`).join("");
+        <td>${esc(l.phone)}</td><td>${esc(l.message)}</td><td>${helpersIn(l)}</td><td>${assignCell(l)}</td></tr>`).join("");
 
       const agg = {};
       (vt.data || []).forEach((v) => { const a = (agg[v.centre_key] ??= { up: 0, down: 0, last: v.created_at }); if (v.vote > 0) a.up++; else a.down++; });
@@ -84,6 +98,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const patch = { status, approved_at: status === "approved" ? new Date().toISOString() : null };
     const { error } = await client.from("sahayak_providers").update(patch).eq("id", b.dataset.id);
     if (error) { alert("Could not update: " + error.message); b.disabled = false; return; }
+    load();
+  });
+  document.addEventListener("change", async (e) => {
+    const sel = e.target.closest("select.sh-assign");
+    if (!sel) return;
+    sel.disabled = true;
+    const patch = sel.value ? { assigned_to: sel.value, assigned_at: new Date().toISOString(), status: "new" } : { assigned_to: null, assigned_at: null, status: "new" };
+    const { error } = await client.from("sahayak_leads").update(patch).eq("id", sel.dataset.lead);
+    if (error) alert("Could not assign: " + error.message);
     load();
   });
   $("sh-refresh").addEventListener("click", load);
