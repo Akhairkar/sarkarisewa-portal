@@ -1,19 +1,9 @@
 import type { DocGuide } from "./types";
 
-// Sources (checked 15 Oct 2026; gst.gov.in not reachable from the sandbox,
-// search-result extracts used): GST Council newsletter October 2025
-// (gstcouncil.gov.in/sites/default/files/2025-11/october_issue_0.pdf) and
-// tallysolutions.com / taxguru.in summaries of Notification on Rule 9A/14A
-// CGST Rules (simplified registration from 1 Nov 2025 for applicants whose
-// B2B output tax is up to ₹2.5 lakh a month: option in FORM GST REG-01,
-// Aadhaar authentication of primary authorised signatory and one
-// promoter/partner, grant within 3 working days, one registration per PAN per
-// State under this option, exit by REG-32). Thresholds (s.22 CGST Act and
-// Notification 10/2019-CT: ₹40 lakh goods / ₹20 lakh services, ₹20/₹10 lakh in
-// special category States), compulsory registration cases (s.24), Rule 9
-// timelines (7 working days; 30 days where physical verification) and nil fee
-// are from the Act/Rules as published on cbic-gst.gov.in. Old page gave no
-// numbers; GSTN helpdesk 1800-103-4786.
+// Sources: CBIC GST Rules and the GST Council / Gazette notifications for
+// registration thresholds, Rule 9A/14A, and the conditional exemption for
+// small intra-State e-commerce goods suppliers. State-specific processing
+// guidance is not treated as a nationwide rule. GSTN helpdesk 1800-103-4786.
 export const gst: DocGuide = {
   crumbs: [
     { label: "होम", href: "/" },
@@ -24,10 +14,10 @@ export const gst: DocGuide = {
   title: "जीएसटी पंजीकरण 2026",
   description: "वस्तु एवं सेवा कर पंजीकरण और फाइलिंग पोर्टल। जीएसटी पंजीकरण के लिए आधिकारिक लिंक, ज़रूरी दस्तावेज़, पात्रता और आवेदन प्रक्रिया की पूरी जानकारी।",
   published: "2024-06-01",
-  modified: "2026-10-15",
-  verified: "15 अक्टूबर 2026",
+  modified: "2026-11-27",
+  verified: "27 नवंबर 2026 (CBIC/GST Council नियम)",
   h1: "GST पंजीकरण (GST Registration): किसे ज़रूरी, कागज़, REG-01 भरने के स्टेप और नया 3 दिन वाला नियम",
-  lead: "GST पंजीकरण gst.gov.in पर Form GST REG-01 भरकर मुफ्त होता है। सामान्य राज्यों में सिर्फ माल बेचने वाले का सालाना टर्नओवर ₹40 लाख और सेवा देने वाले का ₹20 लाख पार होने पर पंजीकरण ज़रूरी है (कुछ विशेष श्रेणी राज्यों में ₹20 लाख / ₹10 लाख)। अंतर-राज्यीय माल बिक्री, ई-कॉमर्स पर बिक्री जैसे कुछ मामलों में टर्नओवर कम होने पर भी पंजीकरण लेना पड़ता है। 1 नवंबर 2025 से छोटे B2B कारोबार के लिए 3 कार्य दिवस में पंजीकरण का सरल विकल्प भी है।",
+  lead: "GST पंजीकरण gst.gov.in पर Form GST REG-01 भरकर मुफ्त होता है। सामान्य राज्यों में exclusive goods suppliers के लिए ₹40 लाख और services या mixed supplies के लिए ₹20 लाख की सीमा लागू है; कुछ राज्यों में सीमा अलग है। Inter-State taxable goods supply और section 24 की दूसरी स्थितियों में threshold से नीचे भी registration लग सकता है। E-commerce पर goods बेचने वाले कुछ छोटे intra-State suppliers को PAN, portal enrolment और अन्य शर्तों के साथ छूट मिल सकती है। Rule 14A में पात्र छोटे taxpayers के लिए 3 working days का विकल्प है।",
   facts: [
     ["पोर्टल", '<a href="https://www.gst.gov.in/" target="_blank" rel="noopener nofollow">gst.gov.in</a>'],
     ["फॉर्म", "GST REG-01 (सामान्य करदाता)"],
@@ -45,12 +35,12 @@ export const gst: DocGuide = {
           ["सेवा देना (या माल + सेवा), टर्नओवर ₹20 लाख से ज़्यादा (सामान्य राज्य)", "ज़रूरी"],
           ["विशेष श्रेणी राज्य (जैसे पूर्वोत्तर के कुछ राज्य)", "सीमा कम: माल ₹20 लाख, सेवा ₹10 लाख (राज्य के अनुसार)"],
           ["दूसरे राज्य में माल बेचना (inter-state supply of goods)", "टर्नओवर कितना भी हो, ज़रूरी"],
-          ["Amazon/Flipkart जैसे ई-कॉमर्स पर माल बेचना", "आमतौर पर ज़रूरी"],
+          ["Amazon/Flipkart जैसे ECO पर goods supply", "आमतौर पर registration; लेकिन eligible छोटे intra-State suppliers Notification 34/2023 के तहत PAN और portal enrolment सहित शर्तें पूरी करके छूट ले सकते हैं"],
           ["रिवर्स चार्ज में टैक्स भरने वाले, कैज़ुअल टैक्सेबल पर्सन, ई-कॉमर्स ऑपरेटर", "ज़रूरी"],
           ["सीमा से कम टर्नओवर", "स्वेच्छा से (voluntary) ले सकते हैं"],
         ],
       },
-      callout: { kind: "info", html: "टर्नओवर में पूरे देश में एक ही PAN पर हुई कुल बिक्री (टैक्स वाली, बिना टैक्स वाली और निर्यात) गिनी जाती है। संदेह हो तो CA से सलाह लें।" },
+      callout: { kind: "info", html: "टर्नओवर में पूरे देश में एक ही PAN पर हुई कुल बिक्री (टैक्स वाली, बिना टैक्स वाली और निर्यात) गिनी जाती है। E-commerce छूट केवल निर्धारित शर्तों के साथ intra-State goods suppliers के लिए है; inter-State goods supply की अनुमति नहीं। अपनी स्थिति CA से जांचें।" },
     },
     {
       id: "kagaz",
@@ -60,7 +50,7 @@ export const gst: DocGuide = {
         "मालिक/पार्टनर/डायरेक्टर का आधार, फोटो और मोबाइल-ईमेल",
         "कारोबार का प्रमाण: पार्टनरशिप डीड, कंपनी का सर्टिफिकेट ऑफ इनकॉर्पोरेशन आदि (प्रोप्राइटर के लिए ज़रूरी नहीं)",
         "कारोबार की जगह का प्रमाण: बिजली बिल/प्रॉपर्टी टैक्स रसीद, और किराए पर हो तो किराया-नामा या मालिक का सहमति पत्र",
-        "बैंक खाते का विवरण (पासबुक/कैंसिल चेक/स्टेटमेंट)",
+        "बैंक खाते का विवरण उपलब्ध हो तो दें; नियम 10A के अनुसार पंजीकरण मिलने के 30 दिन के भीतर या पहली GSTR-1/IFF से पहले, जो पहले हो, PAN पर खुले बैंक खाते का विवरण देना होता है।",
         "अधिकृत हस्ताक्षरकर्ता का ऑथराइज़ेशन लेटर/बोर्ड रेज़ोल्यूशन (प्रोप्राइटर के अलावा)",
       ],
     },
@@ -84,11 +74,11 @@ export const gst: DocGuide = {
         rows: [
           ["आधार प्रमाणीकरण सफल, कोई जांच नहीं", "आमतौर पर 7 कार्य दिवस"],
           ["जगह की भौतिक जांच (physical verification) ज़रूरी", "30 दिन तक"],
-          ["<strong>नया सरल विकल्प (Rule 14A)</strong>: B2B बिक्री पर हर महीने का आउटपुट टैक्स ₹2.5 लाख तक", "3 कार्य दिवस में (1 नवंबर 2025 से)"],
+          ["<strong>Rule 14A</strong>: छोटे taxpayer, मुख्यतः unregistered customers को supply या registered customers को ITC pass-through का monthly output tax ₹2.5 लाख से कम", "3 कार्य दिवस में (1 नवंबर 2025 से; शर्तों के साथ)"],
         ],
       },
       list: [
-        "Rule 14A का विकल्प REG-01 में ही एक सवाल के रूप में चुनना होता है।",
+        "Rule 14A का विकल्प REG-01 में चुनना होता है। यह मुख्यतः unregistered customers को supply करने वाले छोटे taxpayers या registered customers को monthly ITC pass-through ₹2.5 लाख से कम रखने वालों के लिए है।",
         "इसमें मुख्य अधिकृत हस्ताक्षरकर्ता और कम से कम एक प्रमोटर/पार्टनर का आधार प्रमाणीकरण ज़रूरी है।",
         "इस विकल्प में एक राज्य में एक PAN पर एक ही पंजीकरण मिलता है। बाद में बाहर निकलने के लिए REG-32 भरना होता है।",
       ],
@@ -108,14 +98,16 @@ export const gst: DocGuide = {
   official: [
     { href: "https://www.gst.gov.in/", title: "GST पोर्टल (GSTN)", note: "नया पंजीकरण, स्टेटस, रिटर्न" },
     { href: "https://cbic-gst.gov.in/", title: "CBIC GST", note: "कानून, नियम, नोटिफिकेशन" },
+    { href: "https://www.gstcouncil.gov.in/en/node/4096", title: "Notification 10/2019-Central Tax", note: "Exclusive goods suppliers की threshold exemption" },
+    { href: "https://gstcouncil.gov.in/sites/default/files/2024-05/gst-ct-34-2023.pdf", title: "Notification 34/2023-Central Tax", note: "छोटे intra-State e-commerce goods suppliers की शर्तें" },
     { href: "https://www.gstcouncil.gov.in/", title: "GST काउंसिल" },
     { href: "tel:18001034786", title: "GST हेल्पडेस्क", note: "1800-103-4786" },
   ],
   faq: [
     { q: "GST पंजीकरण की फीस कितनी है?", a: "gst.gov.in पर पंजीकरण की कोई सरकारी फीस नहीं है। CA/कंसल्टेंट से कराएं तो उनकी फीस अलग है।" },
     { q: "कितने टर्नओवर पर GST लेना ज़रूरी है?", a: "सामान्य राज्यों में सिर्फ माल बेचने पर ₹40 लाख और सेवा देने पर ₹20 लाख सालाना टर्नओवर पार होने पर। कुछ विशेष श्रेणी राज्यों में यह सीमा ₹20 लाख और ₹10 लाख है।" },
-    { q: "क्या कम टर्नओवर में भी GST लेना पड़ सकता है?", a: "हां। दूसरे राज्य में माल बेचने, ई-कॉमर्स पर माल बेचने, रिवर्स चार्ज में टैक्स भरने जैसे मामलों में टर्नओवर कम होने पर भी पंजीकरण ज़रूरी है।" },
-    { q: "GST नंबर कितने दिन में मिलता है?", a: "आधार प्रमाणीकरण हो जाए और कोई जांच न हो तो आमतौर पर 7 कार्य दिवस में; भौतिक जांच हो तो 30 दिन तक। छोटे B2B कारोबार नए Rule 14A विकल्प में 3 कार्य दिवस में पंजीकरण पा सकते हैं।" },
+    { q: "क्या कम टर्नओवर में भी GST लेना पड़ सकता है?", a: "हां। Inter-State taxable goods supply, reverse charge और section 24 की अन्य स्थितियों में compulsory registration हो सकता है। लेकिन eligible छोटे intra-State e-commerce goods suppliers PAN और portal enrolment सहित Notification 34/2023 की शर्तें पूरी करके छूट ले सकते हैं।" },
+    { q: "GST नंबर कितने दिन में मिलता है?", a: "सफल Aadhaar authentication के बाद सामान्य Rule 9 प्रक्रिया में 7 working days तक; physical verification या Aadhaar authentication न होने पर 30 days तक लग सकते हैं। पात्र Rule 14A या risk-based Rule 9A applicants को 3 working days में electronic grant का विकल्प है।" },
     { q: "आवेदन का स्टेटस कैसे देखें?", a: "gst.gov.in पर Services → Registration → Track Application Status में ARN डालकर।" },
   ],
   related: [
