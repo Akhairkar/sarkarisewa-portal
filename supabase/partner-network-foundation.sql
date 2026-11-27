@@ -905,3 +905,92 @@ revoke all on function public.partner_route_customer_lead(uuid) from public,anon
 grant execute on function public.partner_route_customer_lead(uuid) to service_role;
 comment on function public.partner_route_customer_lead(uuid) is
   'Service-role-only retry for an unmatched lead. New leads are routed automatically by the customer_lead_auto_route trigger.';
+
+
+-- Admin-only lead operations and retry audit.
+create table if not exists partner_network.admin_lead_action_history (
+  id bigint generated always as identity primary key,
+  actor_user_id uuid not null references auth.users(id) on delete restrict,
+  lead_id uuid not null references partner_network.customer_leads(id) on delete restrict,
+  action text not null check (action in ('retry_routing')),
+  result jsonb not null,
+  created_at timestamptz not null default now()
+);
+alter table partner_network.admin_lead_action_history enable row level security;
+revoke all on partner_network.admin_lead_action_history from public,anon,authenticated;
+grant all privileges on partner_network.admin_lead_action_history to service_role;
+
+create or replace function public.partner_admin_get_leads(
+  p_status text default 'all',
+  p_limit integer default 100
+) returns jsonb
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
+declare
+  v_leads jsonb;
+begin
+  if auth.uid() is null or not public.partner_admin_is_authorized() then
+    raise exception 'Admin access required';
+  end if;
+  if p_status not in ('all','new','assigned','in_progress','completed','cancelled','spam') then
+    raise exception 'Invalid lead status filter';
+  end if;
+  if p_limit is null or p_limit < 1 or p_limit > 200 then
+    raise exception 'Lead limit must be between 1 and 200';
+  end if;
+
+  select coalesce(jsonb_agg(to_jsonb(x) order by x.created_at desc),'[]'::jsonb)
+  into v_leads
+  from (
+    select l.id,l.created_at,l.page_path,l.service_code,l.service_name,
+      l.state,l.district,l.customer_name,l.customer_phone,l.customer_details,
+      l.lead_status,l.assigned_at,a.id as assignment_id,a.status as assignment_status,
+      p.business_name as partner_business_name,p.phone as partner_phone
+    from partner_network.customer_leads l
+    left join partner_network.lead_assignments a on a.lead_id=l.id
+    left join partner_network.partner_profiles p on p.user_id=a.partner_id
+    where p_status='all' or l.lead_status=p_status
+    order by l.created_at desc
+    limit p_limit
+  ) x;
+  return v_leads;
+end;
+$$;
+revoke all on function public.partner_admin_get_leads(text,integer) from public,anon;
+grant execute on function public.partner_admin_get_leads(text,integer) to authenticated;
+
+create or replace function public.partner_admin_retry_lead(p_lead_id uuid)
+returns jsonb
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
+declare
+  v_status text;
+  v_result jsonb;
+  v_actor uuid := auth.uid();
+begin
+  if v_actor is null or not public.partner_admin_is_authorized() then
+    raise exception 'Admin access required';
+  end if;
+  if p_lead_id is null then raise exception 'Lead ID required'; end if;
+
+  select lead_status into v_status
+  from partner_network.customer_leads
+  where id=p_lead_id
+  for update;
+  if not found then raise exception 'Lead not found'; end if;
+  if v_status <> 'new' then
+    return jsonb_build_object('assigned',false,'reason','lead_not_new');
+  end if;
+
+  v_result := partner_network.route_new_customer_lead(p_lead_id);
+  insert into partner_network.admin_lead_action_history(actor_user_id,lead_id,action,result)
+  values(v_actor,p_lead_id,'retry_routing',v_result);
+  return v_result;
+end;
+$$;
+revoke all on function public.partner_admin_retry_lead(uuid) from public,anon;
+grant execute on function public.partner_admin_retry_lead(uuid) to authenticated;
