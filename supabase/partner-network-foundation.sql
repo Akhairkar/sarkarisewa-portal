@@ -146,19 +146,20 @@ create or replace function partner_network.charge_free_lead_quota()
 returns trigger language plpgsql security definer set search_path = partner_network, public as $$
 declare
   v_status text;
+  v_verification text;
   v_used integer;
   v_granted integer;
   v_premium text;
 begin
-  select p.account_status, e.free_leads_used, e.free_leads_granted, e.premium_status
-    into v_status, v_used, v_granted, v_premium
+  select p.account_status, p.verification_status, e.free_leads_used, e.free_leads_granted, e.premium_status
+    into v_status, v_verification, v_used, v_granted, v_premium
   from partner_network.partner_profiles p
   join partner_network.partner_entitlements e on e.partner_id = p.user_id
   where p.user_id = new.partner_id
   for update of e;
 
-  if not found or v_status <> 'active' then
-    raise exception 'Partner is not active or has no entitlement';
+  if not found or v_status <> 'active' or v_verification <> 'verified' then
+    raise exception 'Partner is not verified and active or has no entitlement';
   end if;
 
   if v_used < v_granted then
