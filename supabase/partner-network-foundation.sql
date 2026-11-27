@@ -1,0 +1,405 @@
+-- SarkariSewa India — Business Partner Network foundation
+-- Phase 1 only. Review and run manually in Supabase SQL Editor after approval.
+-- This migration is additive: it does not alter existing CSC, account, service-request,
+-- analytics, authentication, or public-site tables.
+--
+-- Security model:
+--   * Partners authenticate with Supabase Auth (email + password at signup).
+--   * Public visitors can submit a consent-backed enquiry only through the RPC below.
+--   * A partner can read only leads assigned to their own auth user.
+--   * Assignment is exclusive (one partner per lead) and must be performed by a
+--     trusted server/Edge Function using service_role; never expose service_role.
+--   * Every partner starts with 10 free assignments. Quota is charged atomically.
+--   * Premium entitlement is a future, admin-controlled extension; no payments here.
+
+create extension if not exists pgcrypto;
+create schema if not exists partner_network;
+
+create table if not exists partner_network.partner_profiles (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  partner_type text not null check (partner_type in (
+    'csc_vle','existing_business','new_business','cyber_cafe','consultant','other'
+  )),
+  business_name text not null check (length(trim(business_name)) between 2 and 120),
+  owner_name text not null check (length(trim(owner_name)) between 2 and 80),
+  email text not null,
+  phone text not null check (phone ~ '^[6-9][0-9]{9}$'),
+  state text not null check (length(trim(state)) between 2 and 60),
+  district text not null check (length(trim(district)) between 2 and 60),
+  pincode text check (pincode is null or pincode ~ '^[1-9][0-9]{5}$'),
+  csc_id text,
+  partner_origin text not null default 'self_registration'
+    check (partner_origin in ('self_registration','admin_invited','legacy_import')),
+  verification_status text not null default 'pending'
+    check (verification_status in ('pending','verified','rejected')),
+  account_status text not null default 'pending'
+    check (account_status in ('pending','active','suspended')),
+  profile_completion smallint not null default 0 check (profile_completion between 0 and 100),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists partner_profiles_location_idx
+  on partner_network.partner_profiles (lower(state), lower(district), account_status);
+create index if not exists partner_profiles_type_idx
+  on partner_network.partner_profiles (partner_type, verification_status);
+
+create table if not exists partner_network.partner_services (
+  id uuid primary key default gen_random_uuid(),
+  partner_id uuid not null references partner_network.partner_profiles(user_id) on delete cascade,
+  service_code text not null check (length(service_code) between 2 and 80),
+  service_name text not null check (length(service_name) between 2 and 120),
+  created_at timestamptz not null default now(),
+  unique (partner_id, service_code)
+);
+create index if not exists partner_services_code_idx
+  on partner_network.partner_services (service_code, partner_id);
+
+create table if not exists partner_network.partner_service_areas (
+  id uuid primary key default gen_random_uuid(),
+  partner_id uuid not null references partner_network.partner_profiles(user_id) on delete cascade,
+  state text not null check (length(trim(state)) between 2 and 60),
+  district text,
+  created_at timestamptz not null default now(),
+  unique (partner_id, state, district)
+);
+create index if not exists partner_service_areas_location_idx
+  on partner_network.partner_service_areas (lower(state), lower(coalesce(district,'')));
+
+create table if not exists partner_network.partner_entitlements (
+  partner_id uuid primary key references partner_network.partner_profiles(user_id) on delete cascade,
+  free_leads_granted integer not null default 10 check (free_leads_granted >= 0),
+  free_leads_used integer not null default 0 check (free_leads_used >= 0 and free_leads_used <= free_leads_granted),
+  premium_status text not null default 'not_eligible'
+    check (premium_status in ('not_eligible','eligible','active','paused')),
+  premium_since timestamptz,
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists partner_network.customer_leads (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  page_path text not null check (length(page_path) between 1 and 300),
+  service_code text not null check (length(service_code) between 2 and 80),
+  service_name text not null check (length(service_name) between 2 and 120),
+  state text not null check (length(trim(state)) between 2 and 60),
+  district text not null check (length(trim(district)) between 2 and 60),
+  customer_name text not null check (length(trim(customer_name)) between 2 and 80),
+  customer_phone text not null check (customer_phone ~ '^[6-9][0-9]{9}$'),
+  customer_details text check (customer_details is null or length(customer_details) <= 800),
+  consent_share boolean not null check (consent_share),
+  consent_version text not null check (length(consent_version) between 1 and 40),
+  lead_status text not null default 'new'
+    check (lead_status in ('new','assigned','in_progress','completed','cancelled','spam')),
+  assigned_at timestamptz,
+  retention_review_at timestamptz not null default (now() + interval '180 days')
+);
+create index if not exists customer_leads_routing_idx
+  on partner_network.customer_leads (service_code, lower(state), lower(district), created_at);
+create index if not exists customer_leads_phone_created_idx
+  on partner_network.customer_leads (customer_phone, created_at desc);
+
+create table if not exists partner_network.lead_assignments (
+  id uuid primary key default gen_random_uuid(),
+  lead_id uuid not null unique references partner_network.customer_leads(id) on delete restrict,
+  partner_id uuid not null references partner_network.partner_profiles(user_id) on delete restrict,
+  assigned_at timestamptz not null default now(),
+  status text not null default 'offered'
+    check (status in ('offered','accepted','rejected','contacted','in_progress','completed','disputed','invalid','expired')),
+  quota_charged boolean not null default true,
+  partner_note text check (partner_note is null or length(partner_note) <= 500),
+  updated_at timestamptz not null default now()
+);
+create index if not exists lead_assignments_partner_status_idx
+  on partner_network.lead_assignments (partner_id, status, assigned_at desc);
+
+create table if not exists partner_network.lead_status_history (
+  id bigint generated always as identity primary key,
+  assignment_id uuid not null references partner_network.lead_assignments(id) on delete restrict,
+  partner_id uuid not null references partner_network.partner_profiles(user_id) on delete restrict,
+  old_status text,
+  new_status text not null,
+  changed_at timestamptz not null default now(),
+  note text
+);
+create index if not exists lead_status_history_assignment_idx
+  on partner_network.lead_status_history (assignment_id, changed_at desc);
+
+-- A new profile automatically receives exactly 10 free leads.
+create or replace function partner_network.create_partner_entitlement()
+returns trigger language plpgsql security definer set search_path = partner_network, public as $$
+begin
+  insert into partner_network.partner_entitlements (partner_id, free_leads_granted, free_leads_used)
+  values (new.user_id, 10, 0)
+  on conflict (partner_id) do nothing;
+  return new;
+end;
+$$;
+
+drop trigger if exists partner_profile_entitlement_init on partner_network.partner_profiles;
+create trigger partner_profile_entitlement_init
+after insert on partner_network.partner_profiles
+for each row execute function partner_network.create_partner_entitlement();
+
+-- Assignment and quota charge are one transaction. A trusted server performs the insert.
+create or replace function partner_network.charge_free_lead_quota()
+returns trigger language plpgsql security definer set search_path = partner_network, public as $$
+declare
+  v_status text;
+  v_used integer;
+  v_granted integer;
+  v_premium text;
+begin
+  select p.account_status, e.free_leads_used, e.free_leads_granted, e.premium_status
+    into v_status, v_used, v_granted, v_premium
+  from partner_network.partner_profiles p
+  join partner_network.partner_entitlements e on e.partner_id = p.user_id
+  where p.user_id = new.partner_id
+  for update of e;
+
+  if not found or v_status <> 'active' then
+    raise exception 'Partner is not active or has no entitlement';
+  end if;
+
+  if v_used < v_granted then
+    update partner_network.partner_entitlements
+      set free_leads_used = free_leads_used + 1, updated_at = now()
+      where partner_id = new.partner_id;
+    new.quota_charged := true;
+  elsif v_premium = 'active' then
+    new.quota_charged := false;
+  else
+    raise exception 'Free lead quota exhausted';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists lead_assignment_charge_quota on partner_network.lead_assignments;
+create trigger lead_assignment_charge_quota
+before insert on partner_network.lead_assignments
+for each row execute function partner_network.charge_free_lead_quota();
+
+-- Keep a permanent status audit trail and synchronize the lead's broad status.
+create or replace function partner_network.log_lead_status_change()
+returns trigger language plpgsql security definer set search_path = partner_network, public as $$
+begin
+  if tg_op = 'INSERT' then
+    insert into partner_network.lead_status_history
+      (assignment_id, partner_id, old_status, new_status)
+    values (new.id, new.partner_id, null, new.status);
+  elsif new.status is distinct from old.status then
+    insert into partner_network.lead_status_history
+      (assignment_id, partner_id, old_status, new_status, note)
+    values (new.id, new.partner_id, old.status, new.status, new.partner_note);
+  end if;
+
+  update partner_network.customer_leads
+    set lead_status = case
+      when new.status in ('accepted','contacted') then 'assigned'
+      when new.status = 'in_progress' then 'in_progress'
+      when new.status = 'completed' then 'completed'
+      when new.status in ('invalid','expired') then 'cancelled'
+      else lead_status
+    end,
+    assigned_at = coalesce(assigned_at, new.assigned_at)
+    where id = new.lead_id;
+  return new;
+end;
+$$;
+
+drop trigger if exists lead_assignment_audit on partner_network.lead_assignments;
+create trigger lead_assignment_audit
+after insert or update of status on partner_network.lead_assignments
+for each row execute function partner_network.log_lead_status_change();
+
+-- Public enquiry intake. It stores contact details only after explicit consent.
+-- Returns the new lead UUID; returns NULL for duplicate/rate-limited requests.
+create or replace function public.partner_submit_customer_lead(
+  p_page_path text,
+  p_service_code text,
+  p_service_name text,
+  p_state text,
+  p_district text,
+  p_customer_name text,
+  p_customer_phone text,
+  p_customer_details text,
+  p_consent_share boolean,
+  p_consent_version text
+) returns uuid
+language plpgsql security definer
+set search_path = partner_network, public, pg_temp
+as $$
+declare
+  v_phone text := right(regexp_replace(coalesce(p_customer_phone,''), '\D', '', 'g'), 10);
+  v_name text := left(trim(coalesce(p_customer_name,'')), 80);
+  v_lead_id uuid;
+begin
+  if not coalesce(p_consent_share,false)
+    or v_phone !~ '^[6-9][0-9]{9}$'
+    or length(v_name) < 2
+    or length(trim(coalesce(p_state,''))) < 2
+    or length(trim(coalesce(p_district,''))) < 2
+    or length(trim(coalesce(p_service_code,''))) < 2
+    or length(trim(coalesce(p_service_name,''))) < 2
+    or coalesce(p_consent_version,'') = '' then
+    raise exception 'Invalid enquiry or missing consent';
+  end if;
+
+  perform pg_advisory_xact_lock(hashtextextended(v_phone, 0));
+
+  if exists (
+    select 1 from partner_network.customer_leads
+    where customer_phone = v_phone
+      and service_code = left(trim(p_service_code),80)
+      and created_at > now() - interval '24 hours'
+  ) then
+    return null;
+  end if;
+
+  if (select count(*) from partner_network.customer_leads
+      where customer_phone = v_phone and created_at > now() - interval '24 hours') >= 3 then
+    return null;
+  end if;
+
+  if (select count(*) from partner_network.customer_leads
+      where created_at > now() - interval '10 minutes') >= 100 then
+    return null;
+  end if;
+
+  insert into partner_network.customer_leads (
+    page_path, service_code, service_name, state, district,
+    customer_name, customer_phone, customer_details,
+    consent_share, consent_version
+  ) values (
+    left(trim(p_page_path),300), left(trim(p_service_code),80), left(trim(p_service_name),120),
+    left(trim(p_state),60), left(trim(p_district),60), v_name, v_phone,
+    nullif(left(trim(coalesce(p_customer_details,'')),800),''),
+    true, left(trim(p_consent_version),40)
+  ) returning id into v_lead_id;
+
+  return v_lead_id;
+end;
+$$;
+
+revoke all on function public.partner_submit_customer_lead(text,text,text,text,text,text,text,text,boolean,text) from public;
+grant execute on function public.partner_submit_customer_lead(text,text,text,text,text,text,text,text,boolean,text) to anon, authenticated;
+
+-- Partner status updates are constrained to their own assigned lead.
+create or replace function public.partner_update_lead_status(
+  p_assignment_id uuid,
+  p_new_status text,
+  p_note text default null
+) returns boolean
+language plpgsql security definer
+set search_path = partner_network, public, pg_temp
+as $$
+declare
+  v_current text;
+  v_partner uuid := auth.uid();
+begin
+  if v_partner is null then raise exception 'Authentication required'; end if;
+  if p_new_status not in ('accepted','rejected','contacted','in_progress','completed','disputed') then
+    raise exception 'Invalid status';
+  end if;
+
+  select status into v_current
+  from partner_network.lead_assignments
+  where id = p_assignment_id and partner_id = v_partner
+  for update;
+
+  if not found then raise exception 'Lead not found'; end if;
+
+  if not (
+    (v_current = 'offered' and p_new_status in ('accepted','rejected'))
+    or (v_current = 'accepted' and p_new_status in ('contacted','in_progress','disputed'))
+    or (v_current = 'contacted' and p_new_status in ('in_progress','disputed'))
+    or (v_current = 'in_progress' and p_new_status in ('completed','disputed'))
+  ) then
+    raise exception 'Invalid status transition';
+  end if;
+
+  update partner_network.lead_assignments
+    set status = p_new_status, partner_note = nullif(left(trim(coalesce(p_note,'')),500),''),
+        updated_at = now()
+    where id = p_assignment_id and partner_id = v_partner;
+  return true;
+end;
+$$;
+revoke all on function public.partner_update_lead_status(uuid,text,text) from public;
+grant execute on function public.partner_update_lead_status(uuid,text,text) to authenticated;
+
+-- RLS: private schema tables are not exposed through PostgREST by default.
+-- Explicit grants and policies below are intentionally narrow.
+alter table partner_network.partner_profiles enable row level security;
+alter table partner_network.partner_services enable row level security;
+alter table partner_network.partner_service_areas enable row level security;
+alter table partner_network.partner_entitlements enable row level security;
+alter table partner_network.customer_leads enable row level security;
+alter table partner_network.lead_assignments enable row level security;
+alter table partner_network.lead_status_history enable row level security;
+
+revoke all on all tables in schema partner_network from public, anon, authenticated;
+revoke all on all sequences in schema partner_network from public, anon, authenticated;
+grant usage on schema partner_network to authenticated;
+grant usage on schema partner_network to service_role;
+grant all privileges on all tables in schema partner_network to service_role;
+grant usage, select on all sequences in schema partner_network to service_role;
+
+grant select on partner_network.partner_profiles to authenticated;
+grant insert (user_id, partner_type, business_name, owner_name, email, phone, state, district, pincode, csc_id)
+  on partner_network.partner_profiles to authenticated;
+grant update (business_name, owner_name, phone, state, district, pincode, csc_id)
+  on partner_network.partner_profiles to authenticated;
+
+grant select, insert, delete on partner_network.partner_services to authenticated;
+grant select, insert, delete on partner_network.partner_service_areas to authenticated;
+grant select on partner_network.partner_entitlements to authenticated;
+grant select on partner_network.customer_leads to authenticated;
+grant select on partner_network.lead_assignments to authenticated;
+grant select on partner_network.lead_status_history to authenticated;
+
+create policy partner_profile_read_own on partner_network.partner_profiles
+  for select to authenticated using (user_id = auth.uid());
+create policy partner_profile_insert_own_pending on partner_network.partner_profiles
+  for insert to authenticated with check (
+    user_id = auth.uid() and partner_origin = 'self_registration'
+    and verification_status = 'pending' and account_status = 'pending'
+  );
+create policy partner_profile_update_own on partner_network.partner_profiles
+  for update to authenticated using (user_id = auth.uid())
+  with check (user_id = auth.uid());
+
+create policy partner_services_read_own on partner_network.partner_services
+  for select to authenticated using (partner_id = auth.uid());
+create policy partner_services_insert_own on partner_network.partner_services
+  for insert to authenticated with check (partner_id = auth.uid());
+create policy partner_services_delete_own on partner_network.partner_services
+  for delete to authenticated using (partner_id = auth.uid());
+
+create policy partner_areas_read_own on partner_network.partner_service_areas
+  for select to authenticated using (partner_id = auth.uid());
+create policy partner_areas_insert_own on partner_network.partner_service_areas
+  for insert to authenticated with check (partner_id = auth.uid());
+create policy partner_areas_delete_own on partner_network.partner_service_areas
+  for delete to authenticated using (partner_id = auth.uid());
+
+create policy partner_entitlement_read_own on partner_network.partner_entitlements
+  for select to authenticated using (partner_id = auth.uid());
+
+create policy partner_leads_read_assigned on partner_network.customer_leads
+  for select to authenticated using (
+    exists (
+      select 1 from partner_network.lead_assignments a
+      where a.lead_id = customer_leads.id and a.partner_id = auth.uid()
+    )
+  );
+create policy partner_assignments_read_own on partner_network.lead_assignments
+  for select to authenticated using (partner_id = auth.uid());
+create policy partner_history_read_own on partner_network.lead_status_history
+  for select to authenticated using (partner_id = auth.uid());
+
+-- No direct browser writes to leads, assignments, quotas, verification, premium status,
+-- or audit history. Trusted Edge Functions/admin tools will perform those operations.
+comment on schema partner_network is
+  'Private business partner network; expose only through reviewed RPCs and trusted server functions.';
