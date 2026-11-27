@@ -68,10 +68,10 @@ This is a database-driven module, not a generated page per partner.
 - [x] Add authenticated portal gate: checks session + own approval status via a minimal RPC; hides all sample dashboard metrics and lead rows.
 - [x] Add live dashboard rendering for approved partners; shows only their assigned leads and provides guarded status actions (requires reviewed SQL deployment).
 - [x] Add approved-partner dashboard RPC draft and live renderer for own assigned leads, quota and aggregate counts (SQL draft only; not deployed or runtime-tested).
-- [ ] Build the admin approval/activation workflow and verify lead status transitions.
+- [x] Add admin allowlist, partner directory and approve/reject/suspend/reactivate RPC/UI (SQL draft only; no admin seeded or runtime-tested).
 - [ ] Build trusted lead-routing Edge Function (exclusive assignment + atomic quota).
 - [ ] Connect only approved service pages using a reusable enquiry component.
-- [ ] Build admin partner directory, legacy partner invitation/import and lead controls.
+- [ ] Add legacy partner invitation/import and trusted lead assignment controls.
 - [ ] Add browser push + in-dashboard notifications.
 - [ ] Add performance-based eligibility and premium feature controls.
 - [ ] Test RLS with two partner accounts, Admin, anonymous visitor and service-role routing.
@@ -91,3 +91,13 @@ File: `supabase/partner-network-foundation.sql`
 - `public.partner_get_portal_access()` returns only the current user's profile approval state and starter entitlement summary. It never returns lead or customer contact data.
 - Only `account_status = active` AND `verification_status = verified` passes the approval gate. Even approved partners see a dashboard-integration notice until real lead data is connected; demo figures are not presented as real.
 - This guard depends on the SQL draft being reviewed and deployed. It is not live until Supabase credentials and migrations are configured.
+
+
+### Admin control center
+
+- Open the isolated admin page at `partner-network/admin.html` on the feature branch.
+- `admin.js` requires Supabase Auth sign-in and then checks `public.partner_admin_is_authorized()`. A valid partner login alone is not sufficient.
+- `partner_admin_get_overview()` returns a capped directory of the latest 200 partner profiles and entitlement summaries; it does not return customer leads.
+- `partner_admin_review_partner()` supports approve, reject, suspend and verified-partner reactivation, with an admin action audit row.
+- `partner_network.admin_memberships` is a closed allowlist. No public or authenticated client write is granted. The first owner must be added manually in the trusted Supabase SQL Editor after deployment and after independently verifying the intended Auth user UUID. No admin identity is pre-seeded by this branch.
+- Admin UI and RPCs are implementation drafts only. They have not been runtime-tested and no SQL has been executed.
