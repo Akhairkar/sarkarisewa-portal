@@ -69,9 +69,9 @@ This is a database-driven module, not a generated page per partner.
 - [x] Add live dashboard rendering for approved partners; shows only their assigned leads and provides guarded status actions (requires reviewed SQL deployment).
 - [x] Add approved-partner dashboard RPC draft and live renderer for own assigned leads, quota and aggregate counts (SQL draft only; not deployed or runtime-tested).
 - [x] Add admin allowlist, partner directory and approve/reject/suspend/reactivate RPC/UI (SQL draft only; no admin seeded or runtime-tested).
-- [ ] Build trusted lead-routing Edge Function (exclusive assignment + atomic quota).
+- [x] Add service-role-only routing RPC draft and internal Edge Function (exclusive assignment + atomic quota; not deployed or runtime-tested).
 - [ ] Connect only approved service pages using a reusable enquiry component.
-- [ ] Add legacy partner invitation/import and trusted lead assignment controls.
+- [ ] Connect lead intake to trusted routing invocation; add legacy partner invitation/import and admin lead controls.
 - [ ] Add browser push + in-dashboard notifications.
 - [ ] Add performance-based eligibility and premium feature controls.
 - [ ] Test RLS with two partner accounts, Admin, anonymous visitor and service-role routing.
@@ -101,3 +101,12 @@ File: `supabase/partner-network-foundation.sql`
 - `partner_admin_review_partner()` supports approve, reject, suspend and verified-partner reactivation, with an admin action audit row.
 - `partner_network.admin_memberships` is a closed allowlist. No public or authenticated client write is granted. The first owner must be added manually in the trusted Supabase SQL Editor after deployment and after independently verifying the intended Auth user UUID. No admin identity is pre-seeded by this branch.
 - Admin UI and RPCs are implementation drafts only. They have not been runtime-tested and no SQL has been executed.
+
+
+### Trusted lead routing
+
+- SQL RPC: `public.partner_route_customer_lead(uuid)`. It rejects non-service-role callers, locks the new lead, selects one eligible partner with matching service and state/district, prefers exact district coverage, then balances the partner's recent seven-day assignment count.
+- Candidate eligibility requires both active account and verified status, plus available free quota or active premium entitlement. The existing assignment trigger performs the quota charge in the same transaction as the exclusive assignment.
+- Edge Function: `supabase/functions/partner-route-lead/index.ts`. It accepts POST with a lead UUID and requires the exact server-side service-role bearer secret. The secret is read only from Edge Function environment and is never embedded in frontend code.
+- No browser or anonymous caller can invoke the routing RPC directly. The Edge Function is not yet deployed, and the public lead-intake flow is not yet wired to invoke it. A trusted server-side event/queue integration is the next required step; do not expose the service-role key to make this work.
+- No SQL has been run and no function has been deployed.
