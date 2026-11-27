@@ -73,5 +73,7 @@ begin
 end;
 $function$;
 
-revoke all on function public.partner_submit_customer_lead(text,text,text,text,text,text,text,text,boolean,text) from public;
-grant execute on function public.partner_submit_customer_lead(text,text,text,text,text,text,text,text,boolean,text) to anon, authenticated;
+-- The public browser must use the Turnstile-protected Edge Function gateway.
+-- Only the server-side service_role may execute this SECURITY DEFINER RPC.
+revoke all on function public.partner_submit_customer_lead(text,text,text,text,text,text,text,text,boolean,text) from public, anon, authenticated;
+grant execute on function public.partner_submit_customer_lead(text,text,text,text,text,text,text,text,boolean,text) to service_role;
