@@ -106,7 +106,7 @@ footer{text-align:center;color:#a0a2b0;font-size:10px;padding:0 15px 25px}
    if(error)throw error;
    if(!data){show('This enquiry could not be accepted because of a recent duplicate or submission limit. Please try again later.','err');return;}
    form.reset();
-   show('Demo enquiry received successfully. Lead reference: '+data+'. Automatic partner assignment is not connected yet; this record remains awaiting trusted routing.','ok');
+   show('Enquiry received successfully. Reference: '+data+'. The system has attempted to match your request with an eligible verified service partner. If no matching partner is available yet, your request remains queued for review.','ok');
   }catch(error){
    show('Enquiry could not be submitted. '+(error?.message||'Please check the Supabase setup and try again.'),'err');
   }finally{button.disabled=false;button.textContent='Submit enquiry securely →';}
