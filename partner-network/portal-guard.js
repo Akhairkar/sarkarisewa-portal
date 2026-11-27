@@ -68,7 +68,8 @@
       setState("Your application is under review", "Your partner profile has been received. The admin team must verify and activate your account before leads or customer contact details can be accessed.", "Pending admin approval", false, true);
       return;
     }
-    setState("Your partner account is approved", "Your account has passed the approval check. The live lead dashboard is still being connected, so this page will not show demo figures or placeholder customer records.", "Approved · Dashboard integration pending", false, true);
+    try { await window.loadPartnerDashboard(client); }
+    catch (dashboardError) { setState("Your account is approved", "Your approval is valid, but live dashboard data could not be loaded. Please retry later; no sample data is displayed.", "Dashboard data unavailable", false, true); }
   }
 
   verifyAccess().catch(() => setState("Partner access check failed", "Please refresh or sign in again. Your dashboard remains locked until the account can be verified.", "Temporary error", true));
