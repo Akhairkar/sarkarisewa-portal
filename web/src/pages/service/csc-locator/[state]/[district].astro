@@ -43,7 +43,7 @@ const near = nearbyPages(p, 8);
 const stateHref = cscStateHref(p.stateDir);
 const jaHref = janAushadhiHref(p.stateDir, p.slug);
 const topPin = p.top[0];
-const verified = lg ? "16 अक्टूबर 2026 (2018 की सरकारी सूची से)" : "3 अक्टूबर 2026";
+const verified = lg ? "16 अक्टूबर 2026 (2018 की सरकारी सूची से)" : "डेटा snapshot: 4 अक्टूबर 2026";
 // Approved centres of this district, written into the HTML so search
 // engines can follow the links (csc-listing.js later replaces them with
 // full cards).
@@ -71,7 +71,7 @@ const portal = isTop ? STATE_PORTAL[p.stateDir] : undefined;
 const districtSite = TOP_DISTRICTS[key] ?? null;
 
 const faq = [
-  lg ? { q: `${p.name} में कितने CSC सेंटर हैं?`, a: `महाराष्ट्र सरकार की 2018 की CSC सूची में ${p.name} ज़िले के ${n} केंद्र ${lg.talukas.length} तालुकों में दर्ज हैं। यह सूची पुरानी है, इसलिए इनमें से कुछ केंद्र बंद हो चुके या बदल चुके हो सकते हैं। जाने से पहले गांव या पंचायत में पूछ लें, या CSC हेल्पलाइन 1800-121-3468 पर पूछें।` } : { q: `${p.name} में कितने CSC सेंटर हैं?`, a: `CSC के रिकॉर्ड के अनुसार ${town ? `${p.name} जिस ${town} ज़िले में है, उसमें` : `${p.name} (${st.name}) में`} ${n} CSC / जन सेवा केंद्र दर्ज हैं, जो ${p.pins} PIN कोड इलाकों में हैं।${topPin ? ` सबसे ज़्यादा केंद्र PIN ${topPin[0]} में हैं (${topPin[1]})।` : ""} ऊपर PIN कोड या "मेरे पास" बटन से अपने सबसे नज़दीकी केंद्र देखें।` },
+  lg ? { q: `${p.name} में कितने CSC सेंटर हैं?`, a: `महाराष्ट्र सरकार की 2018 की CSC सूची में ${p.name} ज़िले के ${n} केंद्र ${lg.talukas.length} तालुकों में दर्ज हैं। यह सूची पुरानी है, इसलिए इनमें से कुछ केंद्र बंद हो चुके या बदल चुके हो सकते हैं। जाने से पहले गांव या पंचायत में पूछ लें, या CSC हेल्पलाइन 1800-121-3468 पर पूछें।` } : { q: `${p.name} में कितने CSC सेंटर हैं?`, a: `हमारे 4 अक्टूबर 2026 के CSC directory export में ${town ? `${p.name} (${town} ज़िला)` : `${p.name} (${st.name})`} के ${n} रिकॉर्ड ${p.pins} PIN कोड इलाकों में दर्ज हैं। यह database entries की संख्या है, active/verified सरकारी केंद्रों की संख्या नहीं।${topPin ? ` सबसे अधिक रिकॉर्ड PIN ${topPin[0]} में हैं (${topPin[1]})।` : ""} ऊपर PIN कोड या "मेरे पास" बटन से उपलब्ध रिकॉर्ड खोजें।` },
   { q: `${p.name} में मेरे पास का CSC कैसे खोजें?`, a: `इस पेज पर "📍 मेरे पास के CSC" बटन दबाएं और लोकेशन की अनुमति दें, आपके सबसे पास के 20 केंद्र दूरी के साथ दिखेंगे। या अपना 6 अंकों का PIN कोड डालें। हर केंद्र के साथ Google Maps पर रास्ता देखने का बटन है।` },
   { q: "क्या यहां CSC का फोन नंबर मिलेगा?", a: "CSC के सार्वजनिक रिकॉर्ड में संचालक (VLE) का फोन नंबर नहीं होता, इसलिए हम नंबर नहीं दिखाते। केंद्र का नाम, पता और नक्शा देखकर सीधे जाएं। कोई VLE अपना केंद्र claim करके नंबर जोड़ सकता है। शिकायत या मदद के लिए CSC हेल्पलाइन 1800-121-3468 पर कॉल करें।" },
   { q: "CSC पर आधार अपडेट की फीस कितनी है?", a: "UIDAI के अनुसार नाम, पता, जन्मतिथि जैसा demographic अपडेट ₹75 और फोटो/फिंगरप्रिंट वाला biometric अपडेट ₹125 का है। नया आधार बनवाना मुफ्त है। ज़्यादा पैसा मांगा जाए तो 1947 पर शिकायत करें। ध्यान दें, आधार सेवा हर CSC पर नहीं होती।" },
@@ -110,7 +110,7 @@ const faq = [
         <p class="answer-title" id="answer-title">सीधा जवाब</p>
         {lg ? (
         <p class="answer-lead">
-          महाराष्ट्र सरकार की CSC सूची में <strong>{p.name} ज़िले के {n} CSC / जन सेवा केंद्र</strong> {lg.talukas.length} तालुकों में दर्ज हैं। नीचे अपने तालुका पर दबाएं, उसके गांव और केंद्र चलाने वाले (VLE) का नाम दिखेगा।
+          {inArea} <strong>{n} CSC directory records</strong> दर्ज हैं, जो {p.pins} PIN कोड इलाकों में फैले हैं। यह active/verified केंद्रों की आधिकारिक संख्या नहीं है। नीचे अपना PIN कोड डालें या "मेरे पास" बटन दबाएं और उपलब्ध रिकॉर्ड खोजें।
         </p>
         ) : (
         <p class="answer-lead">
@@ -119,13 +119,17 @@ const faq = [
         </p>
         )}
         <dl class="facts">
-          <div><dt>कुल CSC केंद्र</dt><dd>{n}</dd></div>
+          <div><dt>डायरेक्टरी रिकॉर्ड</dt><dd>{n}</dd></div>
           {lg ? <div><dt>तालुके</dt><dd>{lg.talukas.length}</dd></div> : <div><dt>PIN कोड इलाके</dt><dd>{p.pins}</dd></div>}
           {lg && <div><dt>सूची का साल</dt><dd>फरवरी {lg.year}</dd></div>}
           {topPin && <div><dt>सबसे ज़्यादा केंद्र</dt><dd>PIN {topPin[0]} ({topPin[1]})</dd></div>}
           <div><dt>CSC हेल्पलाइन</dt><dd><a href="tel:18001213468">1800-121-3468</a></dd></div>
         </dl>
       </section>
+
+      {!lg && (
+        <div class="callout warn"><p><strong>डेटा की सीमा:</strong> यह संख्या CSC directory dataset के 4 अक्टूबर 2026 export में दर्ज rows की है। duplicate, पुराने या बंद केंद्रों के रिकॉर्ड हो सकते हैं; हर entry को सक्रिय/सरकारी रूप से सत्यापित न मानें। केंद्र जाने से पहले CSC के आधिकारिक locator या स्थानीय स्रोत से पुष्टि करें।</p></div>
+      )}
 
       {lg && (
         <div class="callout warn"><p><strong>ध्यान दें:</strong> यह सूची महाराष्ट्र परिवहन विभाग की वेबसाइट पर छपी सरकारी फाइल "Address of CSCs in Maharashtra" (फरवरी {lg.year}) से है। इतने सालों में कुछ केंद्र बंद हो चुके, जगह बदल चुके या नए संचालक के पास जा चुके हो सकते हैं। इसमें PIN कोड और नक्शा नहीं है। जाने से पहले गांव, पंचायत या आसपास के लोगों से पूछ लें।</p></div>
@@ -143,7 +147,7 @@ const faq = [
       </div>
 
       <CscTool title={`${p.name} में अपना नज़दीकी CSC खोजें`} dbState={p.d.dbState} names={p.d.names} area={area} total={p.d.count}
-        pin={topPin?.[0] ?? "110001"} allLabel={`${area} के सभी ${n} केंद्र देखें`} />
+        pin={topPin?.[0] ?? "110001"} allLabel={`${area} के सभी ${n} रिकॉर्ड देखें`} />
 
       {p.top.length > 0 && (
         <section class="section" id="pin-code">
@@ -179,7 +183,7 @@ const faq = [
 
       {centres.length > 0 && (
         <section class="section" id="list">
-          <h2>{p.name} के कुछ CSC केंद्र (पता और नक्शा)</h2>
+          <h2>{p.name} के कुछ CSC रिकॉर्ड (पता और नक्शा)</h2>
           <p>ये {centres.length} केंद्र CSC के रिकॉर्ड से हैं। पूरी और ताज़ा लिस्ट ऊपर "सभी केंद्र देखें" से मिलेगी।</p>
           <ul class="csc-list">
             {centres.map((c) => (

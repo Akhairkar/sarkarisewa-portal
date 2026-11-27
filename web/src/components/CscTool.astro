@@ -131,7 +131,7 @@ const live = { url: SUPABASE_URL, key: SUPABASE_ANON_KEY, state: dbState, names,
       }
     }
 
-    const listAll = () => run(`${cfg.name} के ${cfg.total.toLocaleString("en-IN")} केंद्र (PIN के क्रम में)`, (o) =>
+    const listAll = () => run(`${cfg.name} के ${cfg.total.toLocaleString("en-IN")} directory records (PIN के क्रम में)`, (o) =>
       get(`csc_centers?select=${COLS}&${base}&order=pincode.asc,vle_name.asc&limit=${PAGE}&offset=${o}`));
     const byPin = (pin: string) => run(`PIN ${pin} में {n} केंद्र`, (o) =>
       get(`csc_centers?select=${COLS}&pincode=eq.${pin}&order=vle_name.asc&limit=${PAGE}&offset=${o}`));

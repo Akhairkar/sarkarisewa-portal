@@ -23,7 +23,7 @@ const byCount = [...districts].filter((p) => !p.d.town).sort((a, b) => b.d.count
 const top3 = byCount.slice(0, 3);
 const others = oldOnlyPages(sp.stateDir);
 const pin = byCount[0]?.top[0]?.[0] ?? "110001";
-const verified = "3 अक्टूबर 2026";
+const verified = "डेटा snapshot: 4 अक्टूबर 2026";
 const { services } = cscServices(st);
 const mainHref = `/service/csc-locator/${cscStatePages().find((s) => s.stateDir === sp.stateDir && !s.canonical)!.file}`;
 const otherStates = cscStatePages().filter((s) => !s.canonical && s.stateDir !== sp.stateDir);
@@ -38,7 +38,7 @@ const crumbs = [
   { label: `${st.hi} CSC` },
 ];
 const faq = [
-  { q: `${st.hi} में कितने CSC सेंटर हैं?`, a: `CSC के रिकॉर्ड के अनुसार ${st.name} में ${n} CSC / जन सेवा केंद्र दर्ज हैं, जो ${tot.districts} ज़िलों में हैं।${top3.length ? ` सबसे ज़्यादा केंद्र ${top3.map((p) => `${p.name} (${p.d.count.toLocaleString("en-IN")})`).join(", ")} में हैं।` : ""}` },
+  { q: `${st.hi} में कितने CSC सेंटर हैं?`, a: `हमारे CSC directory dataset के 4 अक्टूबर 2026 export में ${st.name} के ${tot.districts} ज़िला-समूहों में ${n} रिकॉर्ड हैं। यह डेटाबेस entries की संख्या है, सरकारी रूप से सक्रिय/सत्यापित केंद्रों की संख्या नहीं।${top3.length ? ` सबसे अधिक रिकॉर्ड ${top3.map((p) => `${p.name} (${p.d.count.toLocaleString("en-IN")})`).join(", ")} में हैं।` : ""}` },
   { q: `${st.hi} में मेरे पास का CSC कैसे खोजें?`, a: `इस पेज पर "📍 मेरे पास के CSC" बटन दबाएं या अपना 6 अंकों का PIN कोड डालें। अपने ज़िले के पेज पर उस ज़िले के सभी केंद्रों की लिस्ट, PIN कोड के हिसाब से गिनती और नक्शा मिलेगा।` },
   { q: "क्या यहां CSC का फोन नंबर मिलेगा?", a: "CSC के सार्वजनिक रिकॉर्ड में संचालक (VLE) का फोन नंबर नहीं होता, इसलिए हम नंबर नहीं दिखाते। केंद्र का पता और नक्शा देखकर सीधे जाएं। मदद या शिकायत के लिए CSC हेल्पलाइन 1800-121-3468 पर कॉल करें।" },
   { q: "CSC पर आधार अपडेट की फीस कितनी है?", a: "UIDAI के अनुसार demographic अपडेट (नाम, पता, जन्मतिथि, मोबाइल) ₹75 और biometric अपडेट ₹125 का है। नया आधार मुफ्त बनता है। आधार सेवा सिर्फ UIDAI से मंज़ूर केंद्रों पर होती है।" },
@@ -55,16 +55,18 @@ const faq = [
       <section class="answer" aria-labelledby="answer-title">
         <p class="answer-title" id="answer-title">सीधा जवाब</p>
         <p class="answer-lead">
-          {st.hi} में <strong>{n} CSC / जन सेवा केंद्र</strong> दर्ज हैं, जो {tot.districts} ज़िलों में फैले हैं।
-          नीचे अपने ज़िले पर दबाएं या PIN कोड डालकर सबसे नज़दीकी केंद्र खोजें।
+          हमारे 4 अक्टूबर 2026 के CSC directory export में {st.hi} के <strong>{n} केंद्र-रिकॉर्ड</strong> {tot.districts} ज़िला-समूहों में दर्ज हैं। यह active/verified केंद्रों की सरकारी गिनती नहीं है।
+          नीचे ज़िला चुनें या PIN कोड डालकर उपलब्ध रिकॉर्ड में केंद्र खोजें।
         </p>
         <dl class="facts">
-          <div><dt>कुल CSC केंद्र</dt><dd>{n}</dd></div>
+          <div><dt>डायरेक्टरी रिकॉर्ड</dt><dd>{n}</dd></div>
           <div><dt>ज़िले</dt><dd>{tot.districts}</dd></div>
           {top3[0] && <div><dt>सबसे ज़्यादा केंद्र</dt><dd>{top3[0].name} ({top3[0].d.count.toLocaleString("en-IN")})</dd></div>}
           <div><dt>CSC हेल्पलाइन</dt><dd><a href="tel:18001213468">1800-121-3468</a></dd></div>
         </dl>
       </section>
+
+      <div class="callout warn"><p><strong>डेटा की सीमा:</strong> ऊपर की संख्या Supabase के CSC directory dataset के 4 अक्टूबर 2026 export से है। इसमें duplicate, पुराने या अब बंद हो चुके केंद्रों के रिकॉर्ड हो सकते हैं। इसे सरकार की active CSC count या सभी केंद्रों के live verification के रूप में न मानें। अलग से जिन ज़िलों का डेटा उपलब्ध नहीं है, उनके लिंक पुराने सरकारी/स्थानीय स्रोतों पर आधारित हैं और उनकी तारीख पेज पर दी गई है।</p></div>
 
       <div class="claim-cta">
         <p><strong>{st.hi} में CSC / जन सेवा केंद्र चलाते हैं?</strong> अपना केंद्र फ्री में जोड़ें। जांच के बाद आपका WhatsApp और सेवाएं आपके ज़िले के पेज पर सबसे ऊपर दिखेंगी। साथ ही इलाके के जो लोग घर बैठे काम करवाना चाहते हैं, उनकी requests हम WhatsApp पर सबसे पहले सत्यापित केंद्रों को भेजते हैं।</p>
@@ -84,11 +86,11 @@ const faq = [
       <CscTool title={`${st.hi} में नज़दीकी CSC खोजें`} dbState={sp.dbState} names={[]} area={st.hi} total={tot.total} pin={pin} />
 
       <section class="section" id="zile">
-        <h2>{st.hi} के ज़िलेवार CSC केंद्र</h2>
-        <p>अपने ज़िले पर दबाएं। वहां उस ज़िले के सभी केंद्र, PIN कोड के हिसाब से गिनती और नक्शा मिलेगा।</p>
+        <h2>{st.hi} के ज़िलेवार CSC रिकॉर्ड</h2>
+        <p>अपने ज़िले पर दबाएं। वहां उपलब्ध directory records, PIN कोड के हिसाब से खोज और नक्शा मिलेगा।</p>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>ज़िला / शहर</th><th>CSC केंद्र</th></tr></thead>
+            <thead><tr><th>ज़िला / शहर</th><th>डेटाबेस रिकॉर्ड</th></tr></thead>
             <tbody>
               {districts.map((p) => (
                 <tr><td><a href={p.href}>{p.name}</a>{p.d.town && <small> ({p.d.town} ज़िला)</small>}</td><td>{p.d.count.toLocaleString("en-IN")}</td></tr>
