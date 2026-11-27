@@ -26,13 +26,33 @@ const SECTOR_HI: Record<string, string> = {
   SSC: "SSC", UPSC: "UPSC", Banking: "बैंक", Railway: "रेलवे", Defence: "रक्षा", Scientific: "ISRO / वैज्ञानिक",
   "State Govt": "राज्य सरकार", Health: "स्वास्थ्य", Post: "डाक विभाग", PSU: "PSU / सरकारी कंपनी", "Central Govt": "केंद्र सरकार",
 };
-const today = new Date().toISOString().slice(0, 10);
+const now = new Date();
+const indiaParts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+const indiaPart = (type: string) => indiaParts.find((p) => p.type === type)?.value ?? "";
+const today = `${indiaPart("year")}-${indiaPart("month")}-${indiaPart("day")}`;
+const timeParts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(now);
+const nowMinutes = Number(timeParts.find((p) => p.type === "hour")?.value ?? "0") * 60 + Number(timeParts.find((p) => p.type === "minute")?.value ?? "0");
+const deadlineMinutes = (note?: string) => {
+  if (!note) return undefined;
+  const m = note.match(/(सुबह|दोपहर|शाम|रात)\s*(\d{1,2})(?::(\d{2}))?\s*बजे/);
+  if (!m) return undefined;
+  let hour = Number(m[2]);
+  if ((m[1] === "शाम" || m[1] === "रात") && hour < 12) hour += 12;
+  if (m[1] === "सुबह" && hour === 12) hour = 0;
+  return hour * 60 + Number(m[3] ?? "0");
+};
 const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("hi-IN", { day: "numeric", month: "long", year: "numeric" });
 const jobs = JOBS.map((j) => {
   const m = meta(j.slug);
   return { ...j, href: `/jobs/${j.slug}.html`, title: m.title.replace(/\s*[|—]\s*SarkariSewa.*$/i, "").trim(), text: m.description };
 });
-const state = (j: (typeof jobs)[number]) => (j.status === "expected" ? "expected" : j.last >= today ? "open" : "closed");
+const state = (j: (typeof jobs)[number]) => {
+  if (j.status === "expected") return "expected";
+  if (j.last < today) return "closed";
+  if (j.last > today) return "open";
+  const deadline = deadlineMinutes(j.lastNote);
+  return deadline !== undefined && nowMinutes >= deadline ? "closed" : "open";
+};
 const groups = [
   { id: "chalu", title: "आवेदन चालू है", note: "इन भर्तियों में अभी ऑनलाइन आवेदन हो रहा है। आखिरी तारीख से पहले official वेबसाइट पर फॉर्म भरें.", list: jobs.filter((j) => state(j) === "open") },
   { id: "jald", title: "जल्द आने वाली भर्तियां", note: "इनकी तारीखें अभी संभावित हैं; official नोटिफिकेशन आने पर बदल सकती हैं.", list: jobs.filter((j) => state(j) === "expected") },
@@ -80,7 +100,7 @@ const faq = [
         <p class="block-lead">{g.note}</p>
         <div class="job-list">
           {g.list.map((j) => (
-            <a class={`job-card ${state(j)}`} href={j.href} data-sector={j.sector} data-last={j.last} data-expected={j.status === "expected" ? "1" : undefined} data-q={`${j.title} ${j.slug.replace(/-/g, " ")} ${j.sector} ${SECTOR_HI[j.sector] ?? ""}`.toLowerCase()}>
+            <a class={`job-card ${state(j)}`} href={j.href} data-sector={j.sector} data-last={j.last} data-deadline-minute={deadlineMinutes(j.lastNote) ?? ""} data-expected={j.status === "expected" ? "1" : undefined} data-q={`${j.title} ${j.slug.replace(/-/g, " ")} ${j.sector} ${SECTOR_HI[j.sector] ?? ""}`.toLowerCase()}>
               <span class="job-top">
                 <span class="tag">{SECTOR_HI[j.sector] ?? j.sector}</span>
                 <span class={`job-status ${state(j)}`}>{state(j) === "open" ? "● आवेदन चालू" : state(j) === "expected" ? "संभावित" : "आवेदन बंद"}</span>
@@ -113,11 +133,18 @@ const faq = [
 
   <script is:inline>
   (function () {
-    var today = new Date().toISOString().slice(0, 10);
+    var now = new Date();
+    var parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+    var part = function (type) { return (parts.find(function (p) { return p.type === type; }) || {}).value || ""; };
+    var today = part("year") + "-" + part("month") + "-" + part("day");
+    var clock = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(now);
+    var nowMinute = Number((clock.find(function (p) { return p.type === "hour"; }) || {}).value || 0) * 60 + Number((clock.find(function (p) { return p.type === "minute"; }) || {}).value || 0);
     var cards = [].slice.call(document.querySelectorAll(".job-card"));
-    // Refresh status in the browser, so a card closes on its last date.
+    // Refresh status in India time, including explicit same-day cut-off times.
     cards.forEach(function (c) {
-      if (c.dataset.expected || c.dataset.last >= today || !c.classList.contains("open")) return;
+      if (c.dataset.expected) return;
+      var expired = c.dataset.last < today || (c.dataset.last === today && c.dataset.deadlineMinute !== "" && nowMinute >= Number(c.dataset.deadlineMinute));
+      if (!expired || !c.classList.contains("open")) return;
       c.classList.remove("open"); c.classList.add("closed");
       var s = c.querySelector(".job-status"); s.className = "job-status closed"; s.textContent = "आवेदन बंद";
     });
