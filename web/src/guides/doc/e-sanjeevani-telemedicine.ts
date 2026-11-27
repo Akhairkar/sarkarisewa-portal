@@ -1,18 +1,10 @@
 import type { DocGuide } from "./types";
 
-// Sources (checked 15 Oct 2026; esanjeevani.mohfw.gov.in and esanjeevaniopd.in
-// were blocked from this sandbox, so no detail is taken from their pages):
-// - Rajya Sabha answer, 4 Feb 2025 (rsdebate.nic.in PQ 267 U304, via search
-//   extract): eSanjeevani continues to give free consultations; two variants,
-//   eSanjeevani OPD (patient-to-doctor from home, launched April 2020) and
-//   eSanjeevani AB-AAM (doctor-to-doctor hub-and-spoke at Ayushman Arogya
-//   Mandirs, launched November 2019).
-// - CGHS teleconsultation flow (gconnect.in copy of the CGHS order) and
-//   explainers: mobile number + OTP registration, choose state/OPD/clinic,
-//   Patient ID and token by SMS, video call, e-prescription to save/print;
-//   camera, microphone and internet needed.
-// Left out (not confirmable from an official page): OPD timings, helpline,
-// app store listing details, consultation totals, AIIMS claims.
+// Sources: MoHFW official eSanjeevani service note (provider-to-provider
+// eSanjeevani-AAM and patient-to-provider eSanjeevaniOPD models) and the
+// Government reply on free consultations. This page explains the service
+// architecture and assisted Ayushman Arogya Mandir route; OPD registration
+// steps are kept on the separate teleconsultation how-to page.
 export const eSanjeevaniTelemedicine: DocGuide = {
   crumbs: [
     { label: "होम", href: "/" },
@@ -50,19 +42,14 @@ export const eSanjeevaniTelemedicine: DocGuide = {
     },
     {
       id: "opd",
-      title: "घर से OPD परामर्श: छोटे में तरीका",
-      steps: [
-        '<a href="https://esanjeevani.mohfw.gov.in/" target="_blank" rel="noopener nofollow">esanjeevani.mohfw.gov.in</a> या eSanjeevani ऐप खोलें और मोबाइल नंबर से OTP डालकर पंजीकरण करें।',
-        "राज्य और OPD चुनें, मरीज़ की जानकारी भरें और टोकन लें।",
-        "बारी आने पर वीडियो कॉल से डॉक्टर से बात करें।",
-        "ई-प्रिस्क्रिप्शन डाउनलोड करके सेव/प्रिंट करें।",
-      ],
-      html: "<p>पूरे स्टेप और आम दिक्कतों के हल: <a href=\"/service/e-sanjeevani-teleconsultation.html\">ई-संजीवनी फ्री डॉक्टर परामर्श गाइड</a>।</p>",
+      title: "घर से डॉक्टर से बात करने वाली सेवा: eSanjeevani OPD",
+      intro: "इस मॉडल में मरीज खुद स्मार्टफोन या लैपटॉप से डॉक्टर से जुड़ता है। मोबाइल OTP, OPD चयन, टोकन, वीडियो कॉल और e-prescription का पूरा step-by-step तरीका अलग गाइड में रखा गया है ताकि यहां दोनों सेवा मॉडलों की तुलना पर ध्यान रहे।",
+      html: "<p>घर से परामर्श लेने के लिए <a href=\"/service/e-sanjeevani-teleconsultation.html\">eSanjeevani OPD: पंजीकरण और वीडियो-कॉल की पूरी प्रक्रिया</a> देखें।</p>
     },
     {
       id: "aarogya-mandir",
       title: "आयुष्मान आरोग्य मंदिर से परामर्श",
-      intro: "घर पर फोन या इंटरनेट न हो, या बुज़ुर्ग खुद ऐप न चला सकें, तो पास के आयुष्मान आरोग्य मंदिर (पहले हेल्थ एंड वेलनेस सेंटर) जाएं। वहां के स्वास्थ्यकर्मी ई-संजीवनी के ज़रिए आपको बड़े अस्पताल (हब) के डॉक्टर या विशेषज्ञ से जोड़ सकते हैं, और डॉक्टर की पर्ची वहीं मिलती है।",
+      intro: "eSanjeevani-AAM provider-to-provider मॉडल है। मरीज आयुष्मान आरोग्य मंदिर (AAM) जाता है; वहां का Community Health Officer/स्वास्थ्यकर्मी आवश्यक जानकारी लेकर hub अस्पताल या मेडिकल कॉलेज के डॉक्टर/विशेषज्ञ से teleconsultation कराता है। यह घर से स्वयं OPD login करने वाली सेवा से अलग है।",
       callout: { kind: "info", html: "किस केंद्र पर यह सुविधा किस दिन/समय मिलती है, यह राज्य और ज़िले के हिसाब से अलग है। अपने ANM/आशा कार्यकर्ता या केंद्र से पूछ लें।" },
     },
     {
