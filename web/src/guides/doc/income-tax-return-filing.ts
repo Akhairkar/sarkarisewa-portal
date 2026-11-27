@@ -25,8 +25,8 @@ export const incomeTaxReturnFiling: DocGuide = {
   title: "आयकर रिटर्न (ITR) फाइलिंग 2026",
   description: "आय की घोषणा, कटौतियों का दावा, और कर का भुगतान/रिफंड का दावा करने के लिए आयकर विभाग के साथ आय विवरण की वार्षिक फाइलिंग।",
   published: "2024-06-01",
-  modified: "2026-10-15",
-  verified: "15 अक्टूबर 2026",
+  modified: "2026-11-27",
+  verified: "27 नवंबर 2026 (CBDT और Income Tax Department)",
   h1: "आयकर रिटर्न (ITR) फाइलिंग 2026: आखिरी तारीख, कौन सा फॉर्म, लेट फीस और ई-वेरिफिकेशन",
   lead: "आयकर रिटर्न (ITR) आयकर विभाग के e-Filing पोर्टल incometax.gov.in पर मुफ्त भरा जाता है। वित्त वर्ष 2025-26 (AY 2026-27) के लिए सामान्य (बिना ऑडिट) रिटर्न की आखिरी तारीख ITR-1/ITR-2 के लिए 31 जुलाई 2026 और कारोबार वाले ITR-3/ITR-4 के लिए 31 अगस्त 2026 थी; ऑडिट वाले मामलों की तारीख बढ़ाकर 21 नवंबर 2026 की गई है। जो चूक गए हैं वे लेट फीस के साथ 31 दिसंबर 2026 तक बिलेटेड रिटर्न भर सकते हैं। रिटर्न भरने के बाद 30 दिन में ई-वेरिफाई करना ज़रूरी है।",
   facts: [
@@ -35,7 +35,7 @@ export const incomeTaxReturnFiling: DocGuide = {
     ["लेट फीस (234F)", "₹5,000; कुल आय ₹5 लाख तक हो तो ₹1,000"],
     ["e-Filing हेल्पडेस्क", "1800 103 0025"],
   ],
-  notice: "आज (15 अक्टूबर 2026) की स्थिति: ITR-1/2 की 31 जुलाई और ITR-3/4 (बिना ऑडिट) की 31 अगस्त 2026 की तारीख निकल चुकी है। ऑडिट वाले मामलों में ऑडिट रिपोर्ट 21 अक्टूबर और ITR 21 नवंबर 2026 तक भरी जा सकती है (CBDT, 28 सितंबर 2026)।",
+  notice: "27 नवंबर 2026 की स्थिति: ITR-1/ITR-2 की 31 जुलाई, non-audit ITR-3/ITR-4 की 31 अगस्त और audit-case ITR की 21 नवंबर 2026 की नियत तारीखें निकल चुकी हैं। पात्र करदाता 31 दिसंबर 2026 तक belated return दाखिल कर सकते हैं, या assessment पूरा होने से पहले—जो पहले हो। AY 2026-27 की belated return और revised return के नियम Income Tax Department के FAQ में देखें।",
   sections: [
     {
       id: "tarikhen",
@@ -106,6 +106,8 @@ export const incomeTaxReturnFiling: DocGuide = {
   official: [
     { href: "https://www.incometax.gov.in/", title: "आयकर e-Filing पोर्टल", note: "रिटर्न, रिफंड स्टेटस, AIS, ई-वेरिफिकेशन" },
     { href: "https://incometaxindia.gov.in/", title: "आयकर विभाग (कानून, नियम, नोटिफिकेशन)" },
+    { href: "https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/income-tax-returns?mobile-app=1", title: "Income Tax Department: AY 2026-27 ITR FAQ", note: "Belated return 31 दिसंबर 2026 और revised return नियम" },
+    { href: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2316050&lang=1&reg=48", title: "CBDT Press Release, 28 सितंबर 2026", note: "Audit-case ITR deadline 21 नवंबर 2026" },
     { href: "tel:18001030025", title: "e-Filing हेल्पडेस्क", note: "1800 103 0025" },
   ],
   faq: [
