@@ -29,9 +29,9 @@ order by ordinal_position;
 
 -- 4) Intake and internal routing must remain service-role-only.
 select 'public.partner_submit_customer_lead' as function_name,
-       has_function_privilege('anon', 'public.partner_submit_customer_lead(text,text,text,text,text,text,text,boolean)', 'EXECUTE') as anon_execute,
-       has_function_privilege('authenticated', 'public.partner_submit_customer_lead(text,text,text,text,text,text,text,boolean)', 'EXECUTE') as authenticated_execute,
-       has_function_privilege('service_role', 'public.partner_submit_customer_lead(text,text,text,text,text,text,text,boolean)', 'EXECUTE') as service_role_execute;
+       has_function_privilege('anon', 'public.partner_submit_customer_lead(text,text,text,text,text,text,text,text,boolean,text)', 'EXECUTE') as anon_execute,
+       has_function_privilege('authenticated', 'public.partner_submit_customer_lead(text,text,text,text,text,text,text,text,boolean,text)', 'EXECUTE') as authenticated_execute,
+       has_function_privilege('service_role', 'public.partner_submit_customer_lead(text,text,text,text,text,text,text,text,boolean,text)', 'EXECUTE') as service_role_execute;
 
 -- 5) Admin allowlist must remain empty until the owner explicitly authorizes a test Admin.
 select count(*) as admin_allowlist_entries
