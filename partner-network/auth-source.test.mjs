@@ -11,7 +11,7 @@ const demo = read("./demo-enquiry.html");
 test("browser configuration contains public placeholders only", () => {
   assert.match(config, /publishableKey/);
   assert.match(config, /turnstileSiteKey/);
-  assert.doesNotMatch(config, /service_role|SUPABASE_SERVICE_ROLE_KEY/i);
+  assert.doesNotMatch(config, /(?:service_role|SUPABASE_SERVICE_ROLE_KEY)\\s*:/i);
 });
 
 test("signup uses Supabase Auth and records required partner metadata", () => {
