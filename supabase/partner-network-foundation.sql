@@ -349,7 +349,7 @@ grant usage, select on all sequences in schema partner_network to service_role;
 grant select on partner_network.partner_profiles to authenticated;
 grant insert (user_id, partner_type, business_name, owner_name, email, phone, state, district, pincode, csc_id)
   on partner_network.partner_profiles to authenticated;
-grant update (business_name, owner_name, phone, state, district, pincode, csc_id)
+grant update (partner_type, business_name, owner_name, email, phone, state, district, pincode, csc_id)
   on partner_network.partner_profiles to authenticated;
 
 grant select, insert, delete on partner_network.partner_services to authenticated;
@@ -403,3 +403,89 @@ create policy partner_history_read_own on partner_network.lead_status_history
 -- or audit history. Trusted Edge Functions/admin tools will perform those operations.
 comment on schema partner_network is
   'Private business partner network; expose only through reviewed RPCs and trusted server functions.';
+
+
+-- Authenticated, idempotent partner onboarding.
+-- SECURITY INVOKER is intentional: this function does not bypass RLS or table grants.
+-- It accepts editable profile fields, but derives the account identity from auth.uid()
+-- and the email claim. Verification/account/premium/quota fields are never client inputs.
+create or replace function public.partner_complete_registration(
+  p_partner_type text,
+  p_business_name text,
+  p_owner_name text,
+  p_phone text,
+  p_state text,
+  p_district text,
+  p_service_code text
+) returns text
+language plpgsql
+security invoker
+set search_path = pg_catalog
+as $$
+declare
+  v_user_id uuid := auth.uid();
+  v_email text := lower(trim(coalesce(auth.jwt() ->> 'email', '')));
+  v_phone text := regexp_replace(coalesce(p_phone, ''), '[^0-9]', '', 'g');
+  v_service_name text;
+  v_account_status text;
+begin
+  if v_user_id is null then
+    raise exception 'Authentication required';
+  end if;
+
+  if v_email = ''
+    or p_partner_type not in ('csc_vle','existing_business','new_business','cyber_cafe','consultant','other')
+    or length(trim(coalesce(p_business_name,''))) not between 2 and 120
+    or length(trim(coalesce(p_owner_name,''))) not between 2 and 80
+    or v_phone !~ '^[6-9][0-9]{9}$'
+    or length(trim(coalesce(p_state,''))) not between 2 and 60
+    or length(trim(coalesce(p_district,''))) not between 2 and 60 then
+    raise exception 'Please provide valid partner profile details';
+  end if;
+
+  v_service_name := case p_service_code
+    when 'govt_form_assistance' then 'Government form assistance'
+    when 'pan_tax_gst' then 'PAN / Tax / GST services'
+    when 'business_registration' then 'Business registration'
+    when 'insurance_vehicle' then 'Insurance / Vehicle services'
+    when 'digital_documentation' then 'Digital documentation'
+    when 'multiple_services' then 'Multiple services'
+    else null
+  end;
+
+  if v_service_name is null then
+    raise exception 'Unsupported primary service';
+  end if;
+
+  insert into partner_network.partner_profiles (
+    user_id, partner_type, business_name, owner_name, email, phone, state, district
+  ) values (
+    v_user_id, p_partner_type, trim(p_business_name), trim(p_owner_name),
+    v_email, v_phone, trim(p_state), trim(p_district)
+  )
+  on conflict (user_id) do update set
+    partner_type = excluded.partner_type,
+    business_name = excluded.business_name,
+    owner_name = excluded.owner_name,
+    email = excluded.email,
+    phone = excluded.phone,
+    state = excluded.state,
+    district = excluded.district
+  returning account_status into v_account_status;
+
+  insert into partner_network.partner_services (partner_id, service_code, service_name)
+  values (v_user_id, p_service_code, v_service_name)
+  on conflict (partner_id, service_code) do nothing;
+
+  insert into partner_network.partner_service_areas (partner_id, state, district)
+  values (v_user_id, trim(p_state), trim(p_district))
+  on conflict (partner_id, state, district) do nothing;
+
+  return v_account_status;
+end;
+$$;
+
+revoke all on function public.partner_complete_registration(text,text,text,text,text,text,text) from public, anon;
+grant execute on function public.partner_complete_registration(text,text,text,text,text,text,text) to authenticated;
+comment on function public.partner_complete_registration(text,text,text,text,text,text,text) is
+  'Creates or updates only the signed-in partner profile and primary service/area; never activates or verifies the account.';
