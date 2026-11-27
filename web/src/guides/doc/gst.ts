@@ -1,9 +1,9 @@
 import type { DocGuide } from "./types";
 
-// Sources: CBIC GST Rules and the GST Council / Gazette notifications for
-// registration thresholds, Rule 9A/14A, and the conditional exemption for
-// small intra-State e-commerce goods suppliers. State-specific processing
-// guidance is not treated as a nationwide rule. GSTN helpdesk 1800-103-4786.
+// Sources: CBIC Notification 18/2025-Central Tax (Rules 9A and 14A), GST
+// Council notifications 10/2019 and 34/2023, and the GSTN Rule 14A advisory.
+// State-specific processing guidance is not treated as a nationwide rule.
+// GSTN helpdesk 1800-103-4786.
 export const gst: DocGuide = {
   crumbs: [
     { label: "होम", href: "/" },
@@ -74,11 +74,11 @@ export const gst: DocGuide = {
         rows: [
           ["आधार प्रमाणीकरण सफल, कोई जांच नहीं", "आमतौर पर 7 कार्य दिवस"],
           ["जगह की भौतिक जांच (physical verification) ज़रूरी", "30 दिन तक"],
-          ["<strong>Rule 14A</strong>: छोटे taxpayer, मुख्यतः unregistered customers को supply या registered customers को ITC pass-through का monthly output tax ₹2.5 लाख से कम", "3 कार्य दिवस में (1 नवंबर 2025 से; शर्तों के साथ)"],
+          ["<strong>Rule 14A</strong>: जिनकी registered persons को supplies पर कुल monthly output tax liability ₹2.5 लाख से अधिक नहीं", "सफल Aadhaar authentication के बाद 3 working days में electronic registration"],
         ],
       },
       list: [
-        "Rule 14A का विकल्प REG-01 में चुनना होता है। यह मुख्यतः unregistered customers को supply करने वाले छोटे taxpayers या registered customers को monthly ITC pass-through ₹2.5 लाख से कम रखने वालों के लिए है।",
+        "Rule 14A का विकल्प FORM GST REG-01 में चुनना होता है। पात्रता का आधार registered persons को की गई supplies पर कुल monthly output tax liability ₹2.5 लाख से अधिक न होना है। Primary Authorised Signatory और कम-से-कम एक Promoter/Partner का Aadhaar authentication जरूरी है; एक PAN पर एक State/UT में इस rule के तहत एक ही registration लिया जा सकता है।",
         "इसमें मुख्य अधिकृत हस्ताक्षरकर्ता और कम से कम एक प्रमोटर/पार्टनर का आधार प्रमाणीकरण ज़रूरी है।",
         "इस विकल्प में एक राज्य में एक PAN पर एक ही पंजीकरण मिलता है। बाद में बाहर निकलने के लिए REG-32 भरना होता है।",
       ],
@@ -98,6 +98,8 @@ export const gst: DocGuide = {
   official: [
     { href: "https://www.gst.gov.in/", title: "GST पोर्टल (GSTN)", note: "नया पंजीकरण, स्टेटस, रिटर्न" },
     { href: "https://cbic-gst.gov.in/", title: "CBIC GST", note: "कानून, नियम, नोटिफिकेशन" },
+    { href: "https://taxinformation.cbic.gov.in/view-pdf/1010504/ENG/Notifications", title: "CBIC Notification 18/2025-Central Tax", note: "Rules 9A and 14A; 3-working-day registration route" },
+    { href: "https://www.gstcouncil.gov.in/sites/default/files/2025-12/newsletter_november_2025.pdf", title: "GST Council November 2025 Newsletter", note: "Rule 14A conditions and Aadhaar authentication" },
     { href: "https://www.gstcouncil.gov.in/en/node/4096", title: "Notification 10/2019-Central Tax", note: "Exclusive goods suppliers की threshold exemption" },
     { href: "https://gstcouncil.gov.in/sites/default/files/2024-05/gst-ct-34-2023.pdf", title: "Notification 34/2023-Central Tax", note: "छोटे intra-State e-commerce goods suppliers की शर्तें" },
     { href: "https://www.gstcouncil.gov.in/", title: "GST काउंसिल" },
