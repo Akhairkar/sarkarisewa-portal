@@ -66,14 +66,14 @@ This is a database-driven module, not a generated page per partner.
 - [ ] Configure the project URL/publishable key and verify email confirmation + recovery redirects.
 - [x] Add the authenticated profile-completion RPC and client onboarding call (SQL draft only; not deployed or live-tested).
 - [x] Add authenticated portal gate: checks session + own approval status via a minimal RPC; hides all sample dashboard metrics and lead rows.
-- [ ] Build the live data-backed partner dashboard and admin approval/activation workflow.
-- [ ] Build responsive partner dashboard and lead workflow.
+- [ ] Build the live data-backed partner dashboard, lead workflow and admin approval/activation workflow.
 - [ ] Build trusted lead-routing Edge Function (exclusive assignment + atomic quota).
 - [ ] Connect only approved service pages using a reusable enquiry component.
 - [ ] Build admin partner directory, legacy partner invitation/import and lead controls.
 - [ ] Add browser push + in-dashboard notifications.
 - [ ] Add performance-based eligibility and premium feature controls.
 - [ ] Test RLS with two partner accounts, Admin, anonymous visitor and service-role routing.
+- [ ] Verify quota trigger rejects assignments unless partner is both verified and active (enforced in migration draft).
 - [ ] Obtain explicit approval before any merge or production deployment.
 
 ## Migration
