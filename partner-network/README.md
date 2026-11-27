@@ -66,7 +66,9 @@ This is a database-driven module, not a generated page per partner.
 - [ ] Configure the project URL/publishable key and verify email confirmation + recovery redirects.
 - [x] Add the authenticated profile-completion RPC and client onboarding call (SQL draft only; not deployed or live-tested).
 - [x] Add authenticated portal gate: checks session + own approval status via a minimal RPC; hides all sample dashboard metrics and lead rows.
-- [ ] Build the live data-backed partner dashboard, lead workflow and admin approval/activation workflow.
+- [x] Add live dashboard rendering for approved partners; shows only their assigned leads and provides guarded status actions (requires reviewed SQL deployment).
+- [x] Add approved-partner dashboard RPC draft and live renderer for own assigned leads, quota and aggregate counts (SQL draft only; not deployed or runtime-tested).
+- [ ] Build the admin approval/activation workflow and verify lead status transitions.
 - [ ] Build trusted lead-routing Edge Function (exclusive assignment + atomic quota).
 - [ ] Connect only approved service pages using a reusable enquiry component.
 - [ ] Build admin partner directory, legacy partner invitation/import and lead controls.
