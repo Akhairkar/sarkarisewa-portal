@@ -28,6 +28,7 @@ This is a database-driven module, not a generated page per partner.
 - One private database schema: `partner_network`.
 - Public enquiries are accepted through a consent-backed RPC; assignment and quota charging happen on a trusted server/Edge Function.
 - Supabase Auth is used for identity. Partner-created passwords are handled by Supabase Auth, never stored in application tables.
+- After a confirmed sign-in, the client calls `public.partner_complete_registration`; this SECURITY INVOKER RPC derives the user ID/email from the authenticated JWT and writes only editable profile/service/area fields. Account status, verification, premium and quota values remain database-controlled.
 - Existing `csc_centres`, `csc_claims`, `service_requests`, and existing account pages are not rewritten. Legacy migration is an explicit later step.
 
 ## Data model
@@ -60,7 +61,8 @@ This is a database-driven module, not a generated page per partner.
 - [x] Inspect existing Supabase Auth, CSC and service-request foundations.
 - [x] Add additive database foundation migration (not executed).
 - [ ] Review migration against the live Supabase schema and current policies.
-- [x] Add responsive partner registration/login UI preview (`auth.html`).\n- [x] Wire registration, password login and password-reset requests to the Supabase Auth client scaffold.\n- [ ] Configure the project URL/publishable key and verify email confirmation + recovery redirects.\n- [ ] Add secure partner profile creation/activation and authenticated dashboard guards.
+- [x] Add responsive partner registration/login UI preview (`auth.html`).\n- [x] Wire registration, password login and password-reset requests to the Supabase Auth client scaffold.\n- [ ] Configure the project URL/publishable key and verify email confirmation + recovery redirects.\n- [x] Add the authenticated profile-completion RPC and client onboarding call (SQL draft only; not deployed or live-tested).
+- [ ] Add admin approval/activation and authenticated dashboard guards.
 - [ ] Build responsive partner dashboard and lead workflow.
 - [ ] Build trusted lead-routing Edge Function (exclusive assignment + atomic quota).
 - [ ] Connect only approved service pages using a reusable enquiry component.
