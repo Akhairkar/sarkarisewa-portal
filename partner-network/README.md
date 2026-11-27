@@ -72,7 +72,8 @@ This is a database-driven module, not a generated page per partner.
 - [x] Add service-role-only routing RPC draft and internal Edge Function (exclusive assignment + atomic quota; not deployed or runtime-tested).
 - [x] Add one isolated noindex/nofollow demo enquiry page; existing service pages remain untouched.
 - [ ] Connect only approved service pages using a reusable enquiry component after separate approval.
-- [ ] Connect accepted demo/public enquiries to trusted routing invocation; add legacy partner invitation/import and admin lead controls.
+- [x] Auto-attempt routing immediately after a public enquiry is inserted (database trigger; unmatched leads remain new for trusted retry).
+- [ ] Add admin lead management, unmatched-lead retry controls and legacy partner invitation/import.
 - [ ] Add browser push + in-dashboard notifications.
 - [ ] Add performance-based eligibility and premium feature controls.
 - [ ] Test RLS with two partner accounts, Admin, anonymous visitor and service-role routing.
@@ -106,10 +107,10 @@ File: `supabase/partner-network-foundation.sql`
 
 ### Trusted lead routing
 
-- SQL RPC: `public.partner_route_customer_lead(uuid)`. It rejects non-service-role callers, locks the new lead, selects one eligible partner with matching service and state/district, prefers exact district coverage, then balances the partner's recent seven-day assignment count.
+- Internal SQL function: `partner_network.route_new_customer_lead(uuid)`. It locks the new lead, selects one eligible partner with matching service and state/district, prefers exact district coverage, then balances the partner's recent seven-day assignment count. It is called automatically by the customer-lead AFTER INSERT trigger.
 - Candidate eligibility requires both active account and verified status, plus available free quota or active premium entitlement. The existing assignment trigger performs the quota charge in the same transaction as the exclusive assignment.
-- Edge Function: `supabase/functions/partner-route-lead/index.ts`. It accepts POST with a lead UUID and requires the exact server-side service-role bearer secret. The secret is read only from Edge Function environment and is never embedded in frontend code.
-- No browser or anonymous caller can invoke the routing RPC directly. The Edge Function is not yet deployed, and the public lead-intake flow is not yet wired to invoke it. A trusted server-side event/queue integration is the next required step; do not expose the service-role key to make this work.
+- Trusted retry SQL RPC: `public.partner_route_customer_lead(uuid)`. It rejects non-service-role callers and retries an unmatched lead. Edge Function: `supabase/functions/partner-route-lead/index.ts`; it accepts POST with a lead UUID and requires the exact server-side service-role bearer secret. The secret is read only from Edge Function environment and is never embedded in frontend code.
+- No browser or anonymous caller can invoke the trusted routing/retry RPC directly. The Edge Function is not yet deployed; automatic first-attempt routing is performed by the database trigger and does not require a browser call. Do not expose the service-role key to make this work.
 - No SQL has been run and no function has been deployed.
 
 
@@ -118,6 +119,6 @@ File: `supabase/partner-network-foundation.sql`
 - Demo page: `partner-network/demo-enquiry.html` (feature branch only).
 - The page has `noindex,nofollow`, is not linked from existing service pages, and does not edit any current public service page, title, metadata, canonical, URL, CSS or sitemap.
 - The form requires explicit consent before sending customer contact details to the public intake RPC. It validates mobile format and uses only the public Supabase publishable/anon key from `config.js`.
-- Successful submission creates a lead through `public.partner_submit_customer_lead`. It does **not** yet automatically assign the lead. The UI explicitly says the lead is awaiting trusted routing.
+- Successful submission creates a lead through `public.partner_submit_customer_lead`. A database AFTER INSERT trigger immediately attempts exclusive routing; the lead remains `new` if no eligible partner is available. The UI confirms matching was attempted without promising an assignment.
 - To test after approved setup: review/deploy the SQL migration, configure the public Supabase URL and publishable key in `config.js`, then open this page on the feature branch. No production site changes are made by this commit.
 - Existing service pages must remain untouched until the owner explicitly approves a later integration.
