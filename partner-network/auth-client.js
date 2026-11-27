@@ -14,7 +14,7 @@
     toastNode.style.background = error ? "#8b2f45" : "#202238";
     toastNode.classList.add("show");
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toastNode.classList.remove("show"), 4800);
+    toastTimer = setTimeout(() => toastNode.classList.remove("show"), 6000);
   }
 
   function setBusy(form, busy) {
@@ -44,6 +44,27 @@
       "Digital documentation": "digital_documentation",
       "Multiple services": "multiple_services"
     })[value] || "multiple_services";
+  }
+
+  async function savePartnerProfile(user) {
+    const meta = user?.user_metadata || {};
+    const required = ["business_name", "full_name", "phone", "state", "district", "partner_type", "primary_service_code"];
+    const missing = required.filter((key) => !String(meta[key] || "").trim());
+    if (missing.length) {
+      throw new Error("Your account is signed in, but partner details are incomplete. Please contact support to complete onboarding.");
+    }
+
+    const { data, error } = await supabaseClient.rpc("partner_complete_registration", {
+      p_partner_type: meta.partner_type,
+      p_business_name: meta.business_name,
+      p_owner_name: meta.full_name,
+      p_phone: meta.phone,
+      p_state: meta.state,
+      p_district: meta.district,
+      p_service_code: meta.primary_service_code
+    });
+    if (error) throw error;
+    return data;
   }
 
   if (validConfig && window.supabase?.createClient) {
@@ -113,10 +134,14 @@
         }
       });
       if (error) throw error;
-      if (data.session) {
-        toast("Account created and signed in. Partner profile setup is the next activation step.");
+
+      if (data.session && data.user) {
+        const status = await savePartnerProfile(data.user);
+        toast(status === "active"
+          ? "Partner profile saved. Your account is active."
+          : "Account created. Your partner profile is saved and awaiting admin verification/activation.");
       } else {
-        toast("Registration received. Check your email to confirm your account, then log in.");
+        toast("Registration received. Confirm your email, then log in to finish saving your partner profile.");
       }
       reg.reset();
       show("login");
@@ -137,15 +162,18 @@
     }
     setBusy(login, true);
     try {
-      const { error } = await supabaseClient.auth.signInWithPassword({
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
         email: $("loginEmail").value.trim().toLowerCase(),
         password: $("loginPassword").value
       });
       if (error) throw error;
-      toast("Login successful. Partner profile and dashboard access will be connected in the next phase.");
+      const status = await savePartnerProfile(data.user);
+      toast(status === "active"
+        ? "Login successful. Your partner account is active; dashboard connection is the next phase."
+        : "Login successful. Partner profile saved; your account is awaiting admin verification/activation.");
       login.reset();
     } catch (error) {
-      toast(error.message || "Login failed. Check your details and try again.", true);
+      toast(error.message || "Login failed or partner profile could not be saved.", true);
     } finally {
       setBusy(login, false);
     }
