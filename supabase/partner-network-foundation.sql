@@ -487,3 +487,53 @@ revoke all on function public.partner_complete_registration(text,text,text,text,
 grant execute on function public.partner_complete_registration(text,text,text,text,text,text,text) to authenticated;
 comment on function public.partner_complete_registration(text,text,text,text,text,text,text) is
   'Creates or updates only the signed-in partner profile and primary service/area; never activates or verifies the account.';
+
+
+-- Minimal portal gate RPC. It returns only the signed-in partner's approval
+-- state and starter quota; customer leads and contact details are never returned.
+create or replace function public.partner_get_portal_access()
+returns jsonb
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
+declare
+  v_user_id uuid := auth.uid();
+  v_profile record;
+  v_entitlement record;
+begin
+  if v_user_id is null then
+    raise exception 'Authentication required';
+  end if;
+
+  select p.account_status, p.verification_status, p.business_name, p.owner_name
+    into v_profile
+  from partner_network.partner_profiles p
+  where p.user_id = v_user_id;
+
+  if not found then
+    return jsonb_build_object('profile_exists', false);
+  end if;
+
+  select e.free_leads_granted, e.free_leads_used, e.premium_status
+    into v_entitlement
+  from partner_network.partner_entitlements e
+  where e.partner_id = v_user_id;
+
+  return jsonb_build_object(
+    'profile_exists', true,
+    'account_status', v_profile.account_status,
+    'verification_status', v_profile.verification_status,
+    'business_name', v_profile.business_name,
+    'owner_name', v_profile.owner_name,
+    'free_leads_granted', coalesce(v_entitlement.free_leads_granted, 10),
+    'free_leads_used', coalesce(v_entitlement.free_leads_used, 0),
+    'premium_status', coalesce(v_entitlement.premium_status, 'not_eligible')
+  );
+end;
+$$;
+
+revoke all on function public.partner_get_portal_access() from public, anon;
+grant execute on function public.partner_get_portal_access() to authenticated;
+comment on function public.partner_get_portal_access() is
+  'Returns only the current authenticated partner approval state and entitlement summary for the portal gate.';
