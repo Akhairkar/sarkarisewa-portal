@@ -122,7 +122,7 @@ const faq = [
           <div><dt>डायरेक्टरी रिकॉर्ड</dt><dd>{n}</dd></div>
           {lg ? <div><dt>तालुके</dt><dd>{lg.talukas.length}</dd></div> : <div><dt>PIN कोड इलाके</dt><dd>{p.pins}</dd></div>}
           {lg && <div><dt>सूची का साल</dt><dd>फरवरी {lg.year}</dd></div>}
-          {topPin && <div><dt>सबसे ज़्यादा केंद्र</dt><dd>PIN {topPin[0]} ({topPin[1]})</dd></div>}
+          {topPin && <div><dt>सबसे ज़्यादा रिकॉर्ड</dt><dd>PIN {topPin[0]} ({topPin[1]})</dd></div>}
           <div><dt>CSC हेल्पलाइन</dt><dd><a href="tel:18001213468">1800-121-3468</a></dd></div>
         </dl>
       </section>
@@ -155,7 +155,7 @@ const faq = [
           <p>इन PIN कोड इलाकों में सबसे ज़्यादा CSC केंद्र हैं। किसी PIN पर दबाएं, उस इलाके के सभी केंद्र ऊपर दिख जाएंगे।</p>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>PIN कोड</th><th>CSC केंद्र</th><th></th></tr></thead>
+              <thead><tr><th>PIN कोड</th><th>रिकॉर्ड</th><th></th></tr></thead>
               <tbody>
                 {p.top.map(([pin, c]) => (
                   <tr><td><strong>{pin}</strong></td><td>{c}</td><td><a class="csc-pin" href={`#khojen`} data-pin={pin}>केंद्र देखें →</a></td></tr>
