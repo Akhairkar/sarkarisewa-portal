@@ -101,7 +101,7 @@ export function dailyGuide(d: DailyJob): DocGuide {
   const today = `${datePart("year")}-${datePart("month")}-${datePart("day")}`;
   const timeParts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(now);
   const nowMinutes = Number(timeParts.find((p) => p.type === "hour")?.value ?? "0") * 60 + Number(timeParts.find((p) => p.type === "minute")?.value ?? "0");
-  const deadline = d.lastNote?.match(/(सुबह|दोपहर|शाम|रात)\\s*(\\d{1,2})(?::(\\d{2}))?\\s*बजे/);
+  const deadline = d.lastNote?.match(/(सुबह|दोपहर|शाम|रात)\s*(\d{1,2})(?::(\d{2}))?\s*बजे/);
   let deadlineMinutes: number | undefined;
   if (deadline) {
     let hour = Number(deadline[2]);
