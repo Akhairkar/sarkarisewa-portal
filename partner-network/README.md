@@ -41,7 +41,7 @@ This is a database-driven module, not a generated page per partner.
 | `partner_entitlements` | 10-lead trial quota and future premium entitlement |
 | `customer_leads` | Consent-backed enquiries from service pages |
 | `lead_assignments` | Exclusive assignment and partner workflow status |
-| `lead_status_history` | Auditable status transitions |
+| `lead_status_history` | Auditable status transitions |\n| `partner_notifications` | Private partner-scoped alerts for new assignments; excludes customer PII |
 
 ## Security and operational boundaries
 
@@ -59,7 +59,7 @@ This is a database-driven module, not a generated page per partner.
 
 - [x] Create isolated feature branch from current `main`.
 - [x] Inspect existing Supabase Auth, CSC and service-request foundations.
-- [x] Add additive database foundation migration (not executed).
+- [x] Add additive database foundation migration and apply it to the isolated `sarkarisewa-partner-test` project only.
 - [ ] Review migration against the live Supabase schema and current policies.
 - [x] Add responsive partner registration/login UI preview (`auth.html`).
 - [x] Wire registration, password login and password-reset requests to the Supabase Auth client scaffold.
@@ -75,9 +75,9 @@ This is a database-driven module, not a generated page per partner.
 - [x] Auto-attempt routing immediately after a public enquiry is inserted (database trigger; unmatched leads remain new for trusted retry).
 - [x] Add Admin-only lead directory, customer enquiry details, assignment visibility and audited unmatched-lead retry controls.
 - [ ] Add legacy partner invitation/import.
-- [ ] Add browser push + in-dashboard notifications.
+- [x] Add private in-dashboard notification inbox, assignment trigger, unread count and mark-as-read RPCs (test project migration applied; authenticated runtime test pending).\n- [ ] Add optional browser push notifications.
 - [ ] Add performance-based eligibility and premium feature controls.
-- [ ] Test RLS with two partner accounts, Admin, anonymous visitor and service-role routing.
+- [ ] Test RLS with two partner accounts, Admin, anonymous visitor and service-role routing.\n- [x] Run initial test-project catalog checks: 10/10 partner tables have RLS enabled; no Admin or partner records seeded; public lead intake remains callable; anonymous lead-status update is revoked.\n- [ ] Complete authenticated end-to-end tests for assignment, notification delivery and cross-partner isolation.
 - [ ] Verify quota trigger rejects assignments unless partner is both verified and active (enforced in migration draft).
 - [ ] Obtain explicit approval before any merge or production deployment.
 
@@ -112,7 +112,7 @@ File: `supabase/partner-network-foundation.sql`
 - Candidate eligibility requires both active account and verified status, plus available free quota or active premium entitlement. The existing assignment trigger performs the quota charge in the same transaction as the exclusive assignment.
 - Trusted retry SQL RPC: `public.partner_route_customer_lead(uuid)`. It rejects non-service-role callers and retries an unmatched lead. Edge Function: `supabase/functions/partner-route-lead/index.ts`; it accepts POST with a lead UUID and requires the exact server-side service-role bearer secret. The secret is read only from Edge Function environment and is never embedded in frontend code.
 - No browser or anonymous caller can invoke the trusted routing/retry RPC directly. The Edge Function is not yet deployed; automatic first-attempt routing is performed by the database trigger and does not require a browser call. Do not expose the service-role key to make this work.
-- No SQL has been run and no function has been deployed.
+- The foundation and notification migrations are installed only in the isolated test project. The trusted routing Edge Function is not deployed. No production SQL has been run.
 
 
 ### Isolated customer enquiry demo
@@ -132,3 +132,4 @@ File: `supabase/partner-network-foundation.sql`
 - `public.partner_admin_retry_lead(lead_id)` permits an allowlisted Admin to retry only a lead still in `new` state. The result is written to `partner_network.admin_lead_action_history`.
 - Customer name, phone and enquiry details are visible only in this Admin-only RPC and to the partner who owns an assignment through the partner dashboard RPC.
 - Admin page changes are still feature-branch drafts; SQL has not been executed and the UI has not been runtime-tested.
+\n\n### Partner notification inbox\n\n- Migration: `supabase/partner-network-notifications.sql`. It creates a private `partner_notifications` table with RLS enabled and no direct client table grants.\n- An AFTER INSERT trigger on `partner_network.lead_assignments` creates one deduplicated notification for the assigned partner. Notification copy includes service and location only; customer name, phone and enquiry details are intentionally excluded.\n- `public.partner_get_notifications(limit)` returns only the signed-in active, verified partner's notifications and unread count. `public.partner_mark_notification_read(id)` updates only a notification owned by that partner. Both RPCs are authenticated-only.\n- `partner-live.js` renders the inbox, refresh action, unread count, mark-as-read and a link to the corresponding lead.\n- Database migration is applied to the test project. Authenticated browser flow and real assignment notification delivery still require test partner accounts and runtime tests.\n
